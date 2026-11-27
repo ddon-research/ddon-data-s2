@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rNpcIsNoSetPS3.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cNpcIsNoSetPS3::getDTI() const {
     return cNpcIsNoSetPS3::DTI;
-}
-
-inline void* cNpcIsNoSetPS3::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cNpcIsNoSetPS3::DTI)->memAlloc(sz, align, cNpcIsNoSetPS3::DTI.getID());
-}
-
-inline void cNpcIsNoSetPS3::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNpcIsNoSetPS3::DTI)->memFree(p_addr);
 }
 
 void cNpcIsNoSetPS3::createProperty(MtPropertyList& s) {
@@ -42,14 +32,6 @@ MtObject* cNpcIsNoSetPS3::MyDTI::newInstance() const {
 
 const MtDTI& rNpcIsNoSetPS3::getDTI() const {
     return rNpcIsNoSetPS3::DTI;
-}
-
-inline void* rNpcIsNoSetPS3::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNpcIsNoSetPS3::DTI)->memAlloc(sz, align, rNpcIsNoSetPS3::DTI.getID());
-}
-
-inline void rNpcIsNoSetPS3::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcIsNoSetPS3::DTI)->memFree(p_addr);
 }
 
 bool rNpcIsNoSetPS3::loadData(MtDataReader& in, cNpcIsNoSetPS3* pData) {

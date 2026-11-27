@@ -176,3 +176,15 @@ inline void cGUIContentsExecutor::setNpcId(u32 npc) {
 inline void cGUIContentsExecutor::offStatus(u32 Status) {
     this->mStatus = this->mStatus & 0xFFFFFFFEu;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cGUIContentsExecutor::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGUIContentsExecutor::DTI);
+}
+
+inline void cGUIContentsExecutor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIContentsExecutor::DTI)->memFree(p_addr);
+}

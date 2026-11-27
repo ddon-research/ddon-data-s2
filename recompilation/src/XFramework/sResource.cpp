@@ -5,7 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sResource.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtFile.h"
@@ -27,10 +26,6 @@
 
 const MtDTI& sResource::getDTI() const {
     return sResource::DTI;
-}
-
-inline void sResource::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sResource::DTI)->memFree(p_addr);
 }
 
 sResource::sResource(u32 ringbufsize) {
@@ -340,9 +335,120 @@ __attribute__((weak)) sResource::ResourceInfo* sResource::createResourceInfo(MT_
     return nullptr;
 }
 
-__attribute__((weak)) const MtDTI* sResource::getResourceDTI(MT_CTSTR ext, bool isNative, const MtDTI* pbase) {
-    DDON_STUB("sResource::getResourceDTI")
-    return nullptr;
+const MtDTI* sResource::getResourceDTI(MT_CTSTR ext, bool isNative, const MtDTI* pbase) {
+    u32 v0_9 = mTypeInfoNum;
+    const MtDTI* v9_2;
+    if (v0_9 == 0) {
+        v9_2 = nullptr;
+    } else {
+        const MtDTI* pdti;
+        if (!isNative) {
+            const MtDTI* v5_4 = nullptr;
+            unsigned int i5_8 = 0;
+            const MtDTI* v6_0;
+            const MtDTI* v8_4;
+            for (;;) {
+                u32 v6_3 = mTypeInfo[i5_8].mAttr;
+                if ((mTypeInfo[i5_8].mAttr & 16u) != 0) {
+                    v8_4 = v5_4;
+                } else {
+                    MT_CTSTR v6_2 = pbase->mName;
+                    if (v6_2 == mTypeInfo[i5_8].mpDTI->mName) {
+                        pdti = mTypeInfo[i5_8].mpDTI;
+                    } else {
+                        v6_0 = mTypeInfo[i5_8].mpDTI;
+                        pdti = mTypeInfo[i5_8].mpDTI;
+                        for (;;) {
+                            if (v6_0->mpParent == nullptr) {
+                                v8_4 = v5_4;
+                                goto region_126d430;
+                            } else {
+                                if (v6_2 != v6_0->mpParent->mName) {
+                                    v6_0 = v6_0->mpParent;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (mTypeInfo[i5_8].mExt != nullptr) {
+                        if (strcasecmp(mTypeInfo[i5_8].mExt, ext) != 0) {
+                            v8_4 = v5_4;
+                        } else {
+                            if ((v6_3 & 32u) != 0) {
+                                v8_4 = pdti;
+                            } else {
+                                v9_2 = pdti;
+                                break;
+                            }
+                        }
+                    } else {
+                        v8_4 = v5_4;
+                    }
+                }
+                region_126d430:;
+                if ((i5_8 + 1u) < v0_9) {
+                    v5_4 = v8_4;
+                    i5_8 += 1u;
+                } else {
+                    v9_2 = v8_4;
+                    break;
+                }
+            }
+        } else {
+            const MtDTI* v0_4 = nullptr;
+            unsigned int i0_8 = 0;
+            const MtDTI* v1_0;
+            const MtDTI* v3_4;
+            for (;;) {
+                u32 v1_3 = mTypeInfo[i0_8].mAttr;
+                if ((mTypeInfo[i0_8].mAttr & 16u) == 0) {
+                    v3_4 = v0_4;
+                } else {
+                    pdti = mTypeInfo[i0_8].mpDTI;
+                    MT_CTSTR v1_2 = pbase->mName;
+                    if (v1_2 != pdti->mName) {
+                        v1_0 = pdti;
+                        for (;;) {
+                            if (v1_0->mpParent == nullptr) {
+                                v3_4 = v0_4;
+                                goto region_126d390;
+                            } else {
+                                if (v1_2 != v1_0->mpParent->mName) {
+                                    v1_0 = v1_0->mpParent;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    if (mTypeInfo[i0_8].mExt != nullptr) {
+                        if (strcasecmp(mTypeInfo[i0_8].mExt, ext) != 0) {
+                            v3_4 = v0_4;
+                        } else {
+                            if ((v1_3 & 32u) != 0) {
+                                v3_4 = pdti;
+                            } else {
+                                v9_2 = pdti;
+                                return v9_2;
+                            }
+                        }
+                    } else {
+                        v3_4 = v0_4;
+                    }
+                }
+                region_126d390:;
+                if ((i0_8 + 1u) < v0_9) {
+                    v0_4 = v3_4;
+                    i0_8 += 1u;
+                } else {
+                    break;
+                }
+            }
+            v9_2 = v3_4;
+        }
+    }
+    return v9_2;
 }
 
 __attribute__((weak)) void sResource::buildFolder(MtString path, MtString* folder_list, s32& folder_num, MtString* archive_list, s32& archive_num) {
@@ -368,10 +474,6 @@ __attribute__((weak)) MtObject* sResource::MyDTI::newInstance() const {
 
 const MtDTI& sResource::TypeInfo::getDTI() const {
     return sResource::TypeInfo::DTI;
-}
-
-inline void sResource::TypeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sResource::TypeInfo::DTI)->memFree(p_addr);
 }
 
 sResource::TypeInfo::~TypeInfo() {
@@ -411,9 +513,8 @@ inline sResource::TypeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 
 sResource::TypeInfo::MyDTI sResource::TypeInfo::DTI("sResource::TypeInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sResource::TypeInfo::MyDTI::newInstance() const {
-    DDON_STUB("sResource::TypeInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sResource::TypeInfo::MyDTI::newInstance() const {
+    return new (16u) sResource::TypeInfo;
 }
 
 MT_CTSTR sResource::Property::getName() {
@@ -457,14 +558,6 @@ __attribute__((weak)) void sResource::Property::setParam(MtProperty* pp, const M
 
 const MtDTI& sResource::RemoteInfo::getDTI() const {
     return sResource::RemoteInfo::DTI;
-}
-
-inline void* sResource::RemoteInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sResource::RemoteInfo::DTI)->memAlloc(sz, align, sResource::RemoteInfo::DTI.mID);
-}
-
-inline void sResource::RemoteInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sResource::RemoteInfo::DTI)->memFree(p_addr);
 }
 
 inline sResource::RemoteInfo::RemoteInfo() {
@@ -519,10 +612,6 @@ MtObject* sResource::RemoteInfo::MyDTI::newInstance() const {
 
 const MtDTI& sResource::DecompressStream::getDTI() const {
     return sResource::DecompressStream::DTI;
-}
-
-inline void sResource::DecompressStream::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sResource::DecompressStream::DTI)->memFree(p_addr);
 }
 
 sResource::DecompressStream::~DecompressStream() {

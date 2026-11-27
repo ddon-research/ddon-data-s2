@@ -299,3 +299,43 @@ inline void* uSoundZoneBase::operator new(size_t sz, void* p_addr) {
 inline void* uSoundZoneBase::cGroupManager::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cSoundLayoutInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundLayoutInfo::DTI)->memAlloc(sz, align, ::cSoundLayoutInfo::DTI.::MtDTI::getID());
+}
+
+inline void cSoundLayoutInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundLayoutInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cSoundZoneListener::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundZoneListener::DTI)->memAlloc(sz, align, ::cSoundZoneListener::DTI.::MtDTI::getID());
+}
+
+inline void cSoundZoneListener::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundZoneListener::DTI)->memFree(p_addr);
+}
+
+inline void* nSoundZoneBase::cSoundZoneContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSoundZoneBase::cSoundZoneContents::DTI)->memAlloc(sz, align, ::nSoundZoneBase::cSoundZoneContents::DTI.::MtDTI::getID());
+}
+
+inline void nSoundZoneBase::cSoundZoneContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundZoneBase::cSoundZoneContents::DTI)->memFree(p_addr);
+}
+
+inline void uSoundZoneBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundZoneBase::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundZoneBase::cGroupManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundZoneBase::cGroupManager::DTI)->memAlloc(sz, align, ::uSoundZoneBase::cGroupManager::DTI.::MtDTI::getID());
+}
+
+inline void uSoundZoneBase::cGroupManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundZoneBase::cGroupManager::DTI)->memFree(p_addr);
+}

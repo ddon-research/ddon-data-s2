@@ -232,3 +232,35 @@ inline void cOcdIrAdjPL::operator delete[](void* p_addr) {
 inline void* cOcdIrAdjPL::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cOcdIrAdjPL::DTI)->memAlloc(sz, align, ::cOcdIrAdjPL::DTI.::MtDTI::getID());
 }
+
+inline void* cOcdIrAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdIrAdj::DTI)->memAlloc(sz, align, ::cOcdIrAdj::DTI.::MtDTI::getID());
+}
+
+inline void cOcdIrAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdIrAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cOcdIrAdjPL::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdIrAdjPL::DTI)->memAlloc(sz, align, ::cOcdIrAdjPL::DTI.::MtDTI::getID());
+}
+
+inline void cOcdIrAdjPL::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdIrAdjPL::DTI)->memFree(p_addr);
+}
+
+inline void* rOcdIrAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOcdIrAdj::DTI)->memAlloc(sz, align, ::rOcdIrAdj::DTI.::MtDTI::getID());
+}
+
+inline void rOcdIrAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOcdIrAdj::DTI)->memFree(p_addr);
+}
+
+inline void* rOcdIrAdjPL::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOcdIrAdjPL::DTI)->memAlloc(sz, align, ::rOcdIrAdjPL::DTI.::MtDTI::getID());
+}
+
+inline void rOcdIrAdjPL::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOcdIrAdjPL::DTI)->memFree(p_addr);
+}

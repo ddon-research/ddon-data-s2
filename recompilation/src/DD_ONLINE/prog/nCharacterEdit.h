@@ -11,11 +11,6 @@
 class MtAllocator;
 class MtDTI;
 
-// Declarations
-namespace nCharacterEdit { class cPaletteParams; }
-namespace nCharacterEdit { struct stEquipIconCash; }
-namespace nCharacterEdit { struct stStageIconCash; }
-
 namespace nCharacterEdit {
     enum BODY_TYPE
     {
@@ -243,6 +238,11 @@ namespace nCharacterEdit {
     };
 }  // namespace nCharacterEdit
 
+// Declarations
+namespace nCharacterEdit { class cPaletteParams; }
+namespace nCharacterEdit { struct stEquipIconCash; }
+namespace nCharacterEdit { struct stStageIconCash; }
+
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
@@ -318,4 +318,16 @@ inline nCharacterEdit::cPaletteParams::cPaletteParams() {
 }
 
 inline nCharacterEdit::stEquipIconCash::stEquipIconCash() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* nCharacterEdit::cPaletteParams::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nCharacterEdit::cPaletteParams::DTI);
+}
+
+inline void nCharacterEdit::cPaletteParams::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCharacterEdit::cPaletteParams::DTI)->memFree(p_addr);
 }

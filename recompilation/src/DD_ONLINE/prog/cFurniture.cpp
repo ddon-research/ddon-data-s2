@@ -16,6 +16,7 @@
 #include "rFurnitureData.h"
 #include "rFurnitureItem.h"
 #include "../../XFramework/sArea.h"
+#include "sMyRoom.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sOmManager.h"
@@ -28,16 +29,8 @@ const MtDTI& cFurniture::getDTI() const {
     return cFurniture::DTI;
 }
 
-inline MtAllocator* cFurniture::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cFurniture::DTI);
-}
-
 void* cFurniture::operator new(size_t sz, u32 align) {
     return cFurniture::getAllocator()->memAlloc(sz, align, cFurniture::DTI.getID());
-}
-
-inline void cFurniture::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFurniture::DTI)->memFree(p_addr);
 }
 
 cFurniture::cFurniture() {
@@ -117,14 +110,46 @@ bool cFurniture::isSetOm(u32 om_id) {
     return false;
 }
 
-__attribute__((weak)) void cFurniture::setRoomWear() {
-    DDON_STUB("cFurniture::setRoomWear")
-    /* stub */
+void cFurniture::setRoomWear() {
+    if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isLogin()) {
+        return;
+    }
+    sMyRoom::getInstance()->clearWearInfo();
+    if (mInfoMaster.mLength == 0) {
+        return;
+    }
+    u32 i = 0;
+    do {
+        if (mInfoMaster.getBuffer()[static_cast<int>(i)] != nullptr) {
+            if (static_cast<Info*>(mInfoMaster.getBuffer()[static_cast<int>(i)])->mItemId != 0) {
+                if (static_cast<Info*>(mInfoMaster.getBuffer()[static_cast<int>(i)])->mOnOff) {
+                    sMyRoom::getInstance()->checkRoomWear(static_cast<Info*>(mInfoMaster.getBuffer()[static_cast<int>(i)])->mItemId);
+                }
+            }
+        }
+        i += 1u;
+    } while (i < mInfoMaster.mLength);
 }
 
-__attribute__((weak)) void cFurniture::setRoomWearTrial() {
-    DDON_STUB("cFurniture::setRoomWearTrial")
-    /* stub */
+void cFurniture::setRoomWearTrial() {
+    if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isLogin()) {
+        return;
+    }
+    sMyRoom::getInstance()->clearWearInfo();
+    if (mInfoDisp.mLength == 0) {
+        return;
+    }
+    u32 i = 0;
+    do {
+        if (mInfoDisp.getBuffer()[static_cast<int>(i)] != nullptr) {
+            if (static_cast<Info*>(mInfoDisp.getBuffer()[static_cast<int>(i)])->mItemId != 0) {
+                if (static_cast<Info*>(mInfoDisp.getBuffer()[static_cast<int>(i)])->mOnOff) {
+                    sMyRoom::getInstance()->checkRoomWear(static_cast<Info*>(mInfoDisp.getBuffer()[static_cast<int>(i)])->mItemId);
+                }
+            }
+        }
+        i += 1u;
+    } while (i < mInfoDisp.mLength);
 }
 
 __attribute__((weak)) void cFurniture::change(u32 item_id, bool onoff) {
@@ -221,30 +246,6 @@ __attribute__((weak)) MtObject* cFurniture::MyDTI::newInstance() const {
 
 const MtDTI& cFurniture::Info::getDTI() const {
     return cFurniture::Info::DTI;
-}
-
-inline void* cFurniture::Info::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFurniture::Info::DTI)->memAlloc(sz, align, cFurniture::Info::DTI.getID());
-}
-
-inline void cFurniture::Info::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFurniture::Info::DTI)->memFree(p_addr);
-}
-
-inline cFurniture::Info::Info() {
-    mLayoutId = 0;
-    mOnOff = false;
-    mItemId = 0;
-    mOmId = 0;
-    mpOmCtrl = nullptr;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mAngle.x = MtVector3::Zero.x;
-    mAngle.y = MtVector3::Zero.y;
-    mAngle.z = MtVector3::Zero.z;
-    mAngle.pad_ = 0.0f;
 }
 
 cFurniture::Info::~Info() {

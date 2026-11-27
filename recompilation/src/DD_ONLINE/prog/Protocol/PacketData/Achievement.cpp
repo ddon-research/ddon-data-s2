@@ -3,19 +3,34 @@
 #include "Achievement.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
-const MtDTI& CDataAchieveRewardCommon::getDTI() const {
-    return CDataAchieveRewardCommon::DTI;
+const MtDTI& CDataAchieveCategoryStatus::getDTI() const {
+    return CDataAchieveCategoryStatus::DTI;
 }
 
-inline MtAllocator* CDataAchieveRewardCommon::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAchieveRewardCommon::DTI);
+void* CDataAchieveCategoryStatus::operator new(size_t sz, u32 align) {
+    return CDataAchieveCategoryStatus::getAllocator()->memAlloc(sz, align, CDataAchieveCategoryStatus::DTI.getID());
+}
+
+__attribute__((weak)) void CDataAchieveCategoryStatus::operator delete(void* p_addr) {
+    CDataAchieveCategoryStatus::getAllocator()->memFree(p_addr);
+}
+
+inline CDataAchieveCategoryStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataAchieveCategoryStatus::MyDTI CDataAchieveCategoryStatus::DTI("CDataAchieveCategoryStatus", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataAchieveCategoryStatus::MyDTI::newInstance() const {
+    return new (16u) CDataAchieveCategoryStatus;
+}
+
+const MtDTI& CDataAchieveRewardCommon::getDTI() const {
+    return CDataAchieveRewardCommon::DTI;
 }
 
 void* CDataAchieveRewardCommon::operator new(size_t sz, u32 align) {
@@ -38,10 +53,6 @@ const MtDTI& CDataAchievementFurnitureReward::getDTI() const {
     return CDataAchievementFurnitureReward::DTI;
 }
 
-inline MtAllocator* CDataAchievementFurnitureReward::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAchievementFurnitureReward::DTI);
-}
-
 void* CDataAchievementFurnitureReward::operator new(size_t sz, u32 align) {
     return CDataAchievementFurnitureReward::getAllocator()->memAlloc(sz, align, CDataAchievementFurnitureReward::DTI.getID());
 }
@@ -62,14 +73,6 @@ const MtDTI& CDataAchievementIdentifier::getDTI() const {
     return CDataAchievementIdentifier::DTI;
 }
 
-inline MtAllocator* CDataAchievementIdentifier::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAchievementIdentifier::DTI);
-}
-
-inline void* CDataAchievementIdentifier::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataAchievementIdentifier::DTI)->memAlloc(sz, align, CDataAchievementIdentifier::DTI.getID());
-}
-
 __attribute__((weak)) void CDataAchievementIdentifier::operator delete(void* p_addr) {
     CDataAchievementIdentifier::getAllocator()->memFree(p_addr);
 }
@@ -84,10 +87,6 @@ MtObject* CDataAchievementIdentifier::MyDTI::newInstance() const {
 
 const MtDTI& CDataAchievementProgress::getDTI() const {
     return CDataAchievementProgress::DTI;
-}
-
-inline MtAllocator* CDataAchievementProgress::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAchievementProgress::DTI);
 }
 
 void* CDataAchievementProgress::operator new(size_t sz, u32 align) {
@@ -108,10 +107,6 @@ MtObject* CDataAchievementProgress::MyDTI::newInstance() const {
 
 const MtDTI& CDataAchievementRewardProgress::getDTI() const {
     return CDataAchievementRewardProgress::DTI;
-}
-
-inline MtAllocator* CDataAchievementRewardProgress::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAchievementRewardProgress::DTI);
 }
 
 void* CDataAchievementRewardProgress::operator new(size_t sz, u32 align) {

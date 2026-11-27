@@ -181,3 +181,32 @@ inline uShlArrowRainCtrl::uShlArrowRainCtrl() {
 inline void uShlArrowRainCtrl::setUseArrowNum(u32 num) {
     this->mUseArrowNum = num;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* cShlParamArrowRainCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamArrowRainCtrl::DTI)->memAlloc(sz, align, ::cShlParamArrowRainCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamArrowRainCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamArrowRainCtrl::DTI)->memFree(p_addr);
+}
+
+inline void cShlParamArrowRainCtrl::cShootCtrlParamArrowRainCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamArrowRainCtrl::cShootCtrlParamArrowRainCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* uShlArrowRainCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlArrowRainCtrl::DTI)->memAlloc(sz, align, ::uShlArrowRainCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uShlArrowRainCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlArrowRainCtrl::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamArrowRainCtrl* uShlArrowRainCtrl::getShlParam() const {
+    return static_cast<const cShlParamArrowRainCtrl*>(this->::uShlBase::mpShlParam2);
+}

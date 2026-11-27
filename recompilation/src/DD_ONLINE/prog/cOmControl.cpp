@@ -68,16 +68,8 @@ const MtDTI& cOmControl::getDTI() const {
     return cOmControl::DTI;
 }
 
-inline MtAllocator* cOmControl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cOmControl::DTI);
-}
-
 void* cOmControl::operator new(size_t sz, u32 align) {
     return cOmControl::getAllocator()->memAlloc(sz, align, cOmControl::DTI.getID());
-}
-
-inline void cOmControl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOmControl::DTI)->memFree(p_addr);
 }
 
 cOmControl::cOmControl() {
@@ -476,15 +468,6 @@ __attribute__((weak)) void cOmControl::initZone() {
     /* stub */
 }
 
-inline void cOmControl::eraseZone() {
-    (sWeatherManager::mpInstance)->sWeatherManager::eraseZoneIndoorRes(mhZone);
-    if (mpuSndGen == nullptr) {
-        return;
-    }
-    mpuSndGen->kill();
-    mpuSndGen = nullptr;
-}
-
 __attribute__((weak)) bool cOmControl::isNoZonePL(bool isLoad) {
     DDON_STUB("cOmControl::isNoZonePL")
     return {};
@@ -501,10 +484,6 @@ __attribute__((weak)) MtObject* cOmControl::MyDTI::newInstance() const {
 
 const MtDTI& cOmControl::InputLot::getDTI() const {
     return cOmControl::InputLot::DTI;
-}
-
-inline void cOmControl::InputLot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOmControl::InputLot::DTI)->memFree(p_addr);
 }
 
 cOmControl::InputLot::InputLot() {
@@ -528,16 +507,8 @@ const MtDTI& cOmTreeControl::getDTI() const {
     return cOmTreeControl::DTI;
 }
 
-inline MtAllocator* cOmTreeControl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cOmTreeControl::DTI);
-}
-
 void* cOmTreeControl::operator new(size_t sz, u32 align) {
     return cOmTreeControl::getAllocator()->memAlloc(sz, align, cOmTreeControl::DTI.getID());
-}
-
-inline void cOmTreeControl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOmTreeControl::DTI)->memFree(p_addr);
 }
 
 cOmTreeControl::cOmTreeControl() {

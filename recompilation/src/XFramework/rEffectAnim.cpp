@@ -23,14 +23,6 @@ const MtDTI& rEffectAnim::getDTI() const {
     return rEffectAnim::DTI;
 }
 
-inline void* rEffectAnim::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectAnim::DTI)->memAlloc(sz, align, rEffectAnim::DTI.mID);
-}
-
-inline void rEffectAnim::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectAnim::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rEffectAnim::getExt() const {
     return "ean";
 }
@@ -128,8 +120,15 @@ bool rEffectAnim::save(MtStream& out) {
 }
 
 __attribute__((weak)) void rEffectAnim::clear() {
-    DDON_STUB("rEffectAnim::clear")
-    /* stub */
+    if (mpParamBuff != nullptr) {
+        MtMemoryAllocator::getAllocator(rEffectAnim::DTI)->memFree(static_cast<void*>(mpParamBuff));
+        mpParamBuff = nullptr;
+    }
+    mSeqIndexArray = nullptr;
+    mParamBuffSize = 0;
+    mSeqNum = 0;
+    mOptionFlag = 0;
+    setAttribute(ATTR_SAVEABLE | ATTR_CREATABLE | ATTR_NATIVE);
 }
 
 void rEffectAnim::createProperty(MtPropertyList& s) {

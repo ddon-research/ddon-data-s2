@@ -27,16 +27,8 @@ const MtDTI& sZoneUnitCtrl::getDTI() const {
     return sZoneUnitCtrl::DTI;
 }
 
-inline MtAllocator* sZoneUnitCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sZoneUnitCtrl::DTI);
-}
-
 void* sZoneUnitCtrl::operator new(size_t sz, u32 align) {
     return sZoneUnitCtrl::getAllocator()->memAlloc(sz, align, sZoneUnitCtrl::DTI.getID());
-}
-
-inline void sZoneUnitCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sZoneUnitCtrl::DTI)->memFree(p_addr);
 }
 
 sZoneUnitCtrl::sZoneUnitCtrl() {
@@ -50,8 +42,22 @@ __attribute__((noinline)) sZoneUnitCtrl::~sZoneUnitCtrl() {
 }
 
 __attribute__((weak)) void sZoneUnitCtrl::move() {
-    DDON_STUB("sZoneUnitCtrl::move")
-    /* stub */
+    MtVector3 pos;
+    aStage* p_stage = static_cast<sAreaExt*>(sArea::getInstance())->getCurrentStage();
+    if (p_stage == nullptr) {
+        return;
+    }
+    bool is_ok = p_stage->getLoadPos(pos);
+    if (!is_ok) {
+        return;
+    }
+    // workaround
+    __builtin_memcpy(&mDisableType, &mReqDisableType, sizeof(mDisableType));
+    __builtin_memset(&mReqDisableType, 0, sizeof(mReqDisableType));
+    for (u32 i = 0; i < ZONE_UNIT_CTRL_TYPE_NUM; ++i) {
+        cZoneUnitCtrl* p_ctrl = &mUnitCtrl.elems[i];
+        p_ctrl->initZoneUnitCtrl(pos, static_cast<ZONE_UNIT_CTRL_TYPE>(i), cZoneUnitCtrl::CKZONE_TYPE_OM);
+    }
 }
 
 void sZoneUnitCtrl::reset() {

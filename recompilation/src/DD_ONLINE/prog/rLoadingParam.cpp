@@ -18,19 +18,6 @@ const MtDTI& rLoadingParam::getDTI() const {
     return rLoadingParam::DTI;
 }
 
-inline void* rLoadingParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLoadingParam::DTI)->memAlloc(sz, align, rLoadingParam::DTI.getID());
-}
-
-inline void rLoadingParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLoadingParam::DTI)->memFree(p_addr);
-}
-
-inline rLoadingParam::rLoadingParam() {
-    setAttribute(18u);
-    mArray.mAutoDelete = true;
-}
-
 rLoadingParam::~rLoadingParam() {
     if (mArray.mLength != 0) {
         u32 v0_0 = mArray.mLength;
@@ -122,10 +109,6 @@ const MtDTI& rLoadingParam::cDataList::getDTI() const {
     return rLoadingParam::cDataList::DTI;
 }
 
-inline void rLoadingParam::cDataList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLoadingParam::cDataList::DTI)->memFree(p_addr);
-}
-
 rLoadingParam::cDataList::~cDataList() {
     if (mList.mLength != 0) {
         u32 v0_0 = mList.mLength;
@@ -177,14 +160,6 @@ __attribute__((weak)) MtObject* rLoadingParam::cDataList::MyDTI::newInstance() c
 
 const MtDTI& rLoadingParam::cData::getDTI() const {
     return rLoadingParam::cData::DTI;
-}
-
-inline void* rLoadingParam::cData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLoadingParam::cData::DTI)->memAlloc(sz, align, rLoadingParam::cData::DTI.getID());
-}
-
-inline void rLoadingParam::cData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLoadingParam::cData::DTI)->memFree(p_addr);
 }
 
 rLoadingParam::cData::~cData() {

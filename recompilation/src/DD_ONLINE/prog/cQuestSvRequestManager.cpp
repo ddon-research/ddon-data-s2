@@ -29,16 +29,8 @@ const MtDTI& cQuestSvRequestManager::getDTI() const {
     return cQuestSvRequestManager::DTI;
 }
 
-inline MtAllocator* cQuestSvRequestManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cQuestSvRequestManager::DTI);
-}
-
 void* cQuestSvRequestManager::operator new(size_t sz, u32 align) {
     return cQuestSvRequestManager::getAllocator()->memAlloc(sz, align, cQuestSvRequestManager::DTI.getID());
-}
-
-inline void cQuestSvRequestManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestSvRequestManager::DTI)->memFree(p_addr);
 }
 
 cQuestSvRequest* cQuestSvRequestManager::pushRequest(const MtDTI& requestClassDti) {
@@ -68,8 +60,8 @@ bool cQuestSvRequestManager::canRequest(bool isDispAnnounce) {
     if (t2 != sNetworkExt::NET_STAT_REQ) {
         sGame* t3 = sGame::getInstance();
         s32 t4 = t3->getSelfMemberIndex();
-        unsigned char t6 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(t3) + t4) + 216);
-        if (t6 == 0) {
+        bool t6 = t3->mIsParty[t4];
+        if (!t6) {
             if (!isDispAnnounce) {
                 return false;
             } else {

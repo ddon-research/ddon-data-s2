@@ -43,10 +43,6 @@ const MtDTI& cCycleQuestManagerBase::getDTI() const {
     return cCycleQuestManagerBase::DTI;
 }
 
-inline void cCycleQuestManagerBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCycleQuestManagerBase::DTI)->memFree(p_addr);
-}
-
 u8 cCycleQuestManagerBase::getRno0() const {
     return mR0;
 }
@@ -176,14 +172,6 @@ __attribute__((weak)) void cCycleQuestManagerBase::routineInterrupt() {
 __attribute__((weak)) void cCycleQuestManagerBase::routineResult() {
     DDON_STUB("cCycleQuestManagerBase::routineResult")
     /* stub */
-}
-
-inline void cCycleQuestManagerBase::routineFinalize() {
-    (sFlag::mpInstance)->sFlag::setFlag(4u, 2u, false, true, false);
-    (sQuestManagerExt::mpInstance)->sQuestManagerExt::finishCycleContentsTimer();
-    (sQuestManagerExt::mpInstance)->sQuestManagerExt::resetHasCycleContentsPlayEndNotice();
-    mR0 = 0;
-    mR1 = 0;
 }
 
 __attribute__((weak)) void cCycleQuestManagerBase::mainInit() {
@@ -593,10 +581,6 @@ MtObject* cCycleQuestManagerBase::MyDTI::newInstance() const {
 
 const MtDTI& cCycleQuestManagerBase::cDieEmInfo::getDTI() const {
     return cCycleQuestManagerBase::cDieEmInfo::DTI;
-}
-
-inline void cCycleQuestManagerBase::cDieEmInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCycleQuestManagerBase::cDieEmInfo::DTI)->memFree(p_addr);
 }
 
 inline cCycleQuestManagerBase::cDieEmInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

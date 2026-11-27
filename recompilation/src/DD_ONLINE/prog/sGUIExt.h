@@ -76,6 +76,7 @@ class MtString;
 class MtVector2;
 class MtVector3;
 class MtVector4;
+class aStage;
 class cAchievementData;
 namespace cAcquirement { class cCustomSkillData; }
 namespace cAcquirement { class cNormalSkillData; }
@@ -134,12 +135,14 @@ class uGUIAim;
 class uGUIAnnounce;
 class uGUIBase;
 class uGUIBrowserBG;
+class uGUICaplinkImageSelect;
 class uGUIChargesHUD;
 class uGUIChat;
 class uGUICommunityList;
 class uGUIDamage;
 class uGUIEngageInfo;
 class uGUIFKeyPalette;
+class uGUIGPShop;
 class uGUIGainInfo;
 class uGUIGameMenu;
 class uGUIGauge;
@@ -234,6 +237,7 @@ using u8 = unsigned char;
 
 class sGUIExt : public sGUI
 {
+    friend class aStage;
     friend class cGUIContentsExecutor;
     friend class cMenuMatchingProfile;
     friend class cpJob02;
@@ -243,15 +247,19 @@ class sGUIExt : public sGUI
     friend class sScenario;
     friend class sTalkManager;
     friend class uCharacterEdit;
+    friend class uGUIAnnounce;
     friend class uGUIBase;
     friend class uGUIBrowserBG;
+    friend class uGUICaplinkImageSelect;
     friend class uGUIChat;
     friend class uGUICommunityList;
+    friend class uGUIGPShop;
     friend class uGUIGauge;
     friend class uGUIItemBase01;
     friend class uGUIKeyConfig;
     friend class uGUINewspaper;
     friend class uGUIOption;
+    friend class uGUIPSStore;
     friend class uGUIPhoto;
     friend class uGUIPick01;
     friend class uGUIShopBuy;
@@ -1547,6 +1555,7 @@ public:
 public:
     class cSCM : public MtObject
     {
+        friend class aStage;
         friend class uGUIMap;
         friend class uGUIMenuComm;
         friend class uGUIRetry;
@@ -3360,6 +3369,10 @@ inline rGUIMessage* sGUIExt::getMsgHud() const {
     return this->mpMsgHud;
 }
 
+inline rGUIMessage* sGUIExt::getMsgPlatformWord() const {
+    return this->mpMsgPlatformWord;
+}
+
 inline rSoundRequest* sGUIExt::getSndReqCmn() const {
     return this->mpSndReqCmn;
 }
@@ -3376,8 +3389,16 @@ inline bool sGUIExt::isItemDetailVisibleDetail() {
     return this->mIsItemDetailVisibleDefault;
 }
 
+inline uGUIBase* sGUIExt::getSingletonMenu() {
+    return this->mpSingletonMenu;
+}
+
 inline bool sGUIExt::isUseWindowActive() {
     return this->mIsUseWindowActive;
+}
+
+inline bool sGUIExt::isCompleteMaintenanceRequest() {
+    return this->mNetMgr.mIsComplete;
 }
 
 inline const cGUIExtNetMgr::DogmaOrbInfo* sGUIExt::getDogmaOrbInfo() {
@@ -3388,8 +3409,16 @@ inline const cGUIExtNetMgr::DogmaOrbInfo* sGUIExt::getPawnDogmaOrbInfo() {
     return &this->mNetMgr.mData.PawnDogmaOrb[0];
 }
 
+inline u32 sGUIExt::getSCMReqMenuIdSCM() {
+    return this->mSCM.::sGUIExt::cSCM::getReqMenuIdSCM();
+}
+
 inline bool sGUIExt::isReqTutorialAnnouce() const {
     return this->mIsReqTutorialAnnouce;
+}
+
+inline s32 sGUIExt::getChatArea() {
+    return this->mChat.::sGUIExt::cChat::getChatArea();
 }
 
 inline uGUIInfo* sGUIExt::getGUIInfo() {
@@ -3439,6 +3468,10 @@ inline void* sGUIExt::cChat::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline s32 sGUIExt::cChat::getChatArea() {
+    return this->mChatArea;
+}
+
 inline uGUIChat* sGUIExt::cChat::getGUIChat() {
     return this->mpGUIChat;
 }
@@ -3484,6 +3517,10 @@ inline void* sGUIExt::cMap::cMarkerSave::operator new(size_t sz, void* p_addr) {
 
 inline void* sGUIExt::cSCM::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline u32 sGUIExt::cSCM::getReqMenuIdSCM() {
+    return this->mReqMenuIdSCM;
 }
 
 inline void* sGUIExt::cChatMacro::operator new(size_t sz, void* p_addr) {
@@ -3534,4 +3571,135 @@ inline void* sGUIExt::cItemTmp::operator new(size_t sz, void* p_addr) {
 inline sGUIExt::cItemTmp::cItemTmp() {
     this->mItemId = 0;
     this->mItemNum = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sGUIExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sGUIExt::DTI);
+}
+
+inline void sGUIExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::DTI)->memFree(p_addr);
+}
+
+inline void* sGUIExt::cMousePointer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sGUIExt::cMousePointer::DTI)->memAlloc(sz, align, ::sGUIExt::cMousePointer::DTI.::MtDTI::getID());
+}
+
+inline void sGUIExt::cMousePointer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cMousePointer::DTI)->memFree(p_addr);
+}
+
+inline sGUIExt::cMousePointer::cMousePointer() {
+    this->mTimeDblClick = 0.0f;
+    this->mpGUIMOC = nullptr;
+    this->mpGUI = nullptr;
+    this->mTimeDisable = 300.0f;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mPosOld.x = this->mPos.x;
+    this->mPosOld.y = this->mPos.y;
+    this->mPosOld.z = this->mPos.z;
+    this->mPosOld.pad_ = 0.0f;
+    this->mPosDrag.x = this->mPosOld.x;
+    this->mPosDrag.y = this->mPosOld.y;
+    this->mPosDrag.z = this->mPosOld.z;
+    this->mMsgDragRev = 0;
+    this->mMove.y = 0.0f;
+    this->mMsg = 0;
+    this->mPosDrag.pad_ = 0.0f;
+    this->mMove.x = 0.0f;
+    this->mIsMouseMode = false;
+    this->mIsActiveMouse = false;
+    this->mAnmTypeReq = 0;
+    this->mAnmTypeReqPrio = 0;
+}
+
+inline void* sGUIExt::cPrioHandle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sGUIExt::cPrioHandle::DTI)->memAlloc(sz, align, ::sGUIExt::cPrioHandle::DTI.::MtDTI::getID());
+}
+
+inline void sGUIExt::cPrioHandle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cPrioHandle::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cRatingEmoteInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cRatingEmoteInfo::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cChat::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cChat::DTI)->memFree(p_addr);
+}
+
+inline void* sGUIExt::cSEPlayer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sGUIExt::cSEPlayer::DTI)->memAlloc(sz, align, ::sGUIExt::cSEPlayer::DTI.::MtDTI::getID());
+}
+
+inline void sGUIExt::cSEPlayer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cSEPlayer::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cDivItemIcon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cDivItemIcon::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cMap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cMap::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sGUIExt::cMap::cMarkerSave::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sGUIExt::cMap::cMarkerSave::DTI);
+}
+
+inline void sGUIExt::cMap::cMarkerSave::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cMap::cMarkerSave::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cSCM::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cSCM::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cChatMacro::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cChatMacro::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cJpegDecode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cJpegDecode::DTI)->memFree(p_addr);
+}
+
+inline void* sGUIExt::cWardInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sGUIExt::cWardInfo::DTI)->memAlloc(sz, align, ::sGUIExt::cWardInfo::DTI.::MtDTI::getID());
+}
+
+inline void sGUIExt::cWardInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cWardInfo::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cSameWardInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cSameWardInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sGUIExt::cReplaceWardMap::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sGUIExt::cReplaceWardMap::DTI)->memAlloc(sz, align, ::sGUIExt::cReplaceWardMap::DTI.::MtDTI::getID());
+}
+
+inline void sGUIExt::cReplaceWardMap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cReplaceWardMap::DTI)->memFree(p_addr);
+}
+
+inline void sGUIExt::cDlTicket::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cDlTicket::DTI)->memFree(p_addr);
+}
+
+inline void* sGUIExt::cItemTmp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sGUIExt::cItemTmp::DTI)->memAlloc(sz, align, ::sGUIExt::cItemTmp::DTI.::MtDTI::getID());
+}
+
+inline void sGUIExt::cItemTmp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUIExt::cItemTmp::DTI)->memFree(p_addr);
 }

@@ -69,3 +69,15 @@ inline void* cpJointOrder::operator new(size_t sz, void* p_addr) {
 inline rJointOrder* cpJointOrder::getResource() {
     return this->mpResource;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJointOrder::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJointOrder::DTI);
+}
+
+inline void cpJointOrder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJointOrder::DTI)->memFree(p_addr);
+}

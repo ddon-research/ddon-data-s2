@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rWeaponOffset.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -15,58 +13,6 @@
 
 const MtDTI& cWeaponOffset::getDTI() const {
     return cWeaponOffset::DTI;
-}
-
-inline void* cWeaponOffset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWeaponOffset::DTI)->memAlloc(sz, align, cWeaponOffset::DTI.getID());
-}
-
-inline void cWeaponOffset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeaponOffset::DTI)->memFree(p_addr);
-}
-
-cWeaponOffset::cWeaponOffset() {
-    mConstType = 0;
-    mJntNo = 0;
-    mRot.x = MtVector3::Zero.x;
-    mRot.y = MtVector3::Zero.y;
-    mRot.z = MtVector3::Zero.z;
-    mRot.pad_ = 0.0f;
-    mOfs.x = MtVector3::Zero.x;
-    mOfs.y = MtVector3::Zero.y;
-    mOfs.z = MtVector3::Zero.z;
-    mOfs.pad_ = 0.0f;
-    mFat = 1.0f;
-    mJntNoHold = 0;
-    mRotHold.x = MtVector3::Zero.x;
-    mRotHold.y = MtVector3::Zero.y;
-    mRotHold.z = MtVector3::Zero.z;
-    mRotHold.pad_ = 0.0f;
-    mOfsHold.x = MtVector3::Zero.x;
-    mOfsHold.y = MtVector3::Zero.y;
-    mOfsHold.z = MtVector3::Zero.z;
-    mOfsHold.pad_ = 0.0f;
-    mFatHold = 1.0f;
-    mJntNoDamage = 0;
-    mRotDamage.x = MtVector3::Zero.x;
-    mRotDamage.y = MtVector3::Zero.y;
-    mRotDamage.z = MtVector3::Zero.z;
-    mRotDamage.pad_ = 0.0f;
-    mOfsDamage.x = MtVector3::Zero.x;
-    mOfsDamage.y = MtVector3::Zero.y;
-    mOfsDamage.z = MtVector3::Zero.z;
-    mOfsDamage.pad_ = 0.0f;
-    mFatDamage = 1.0f;
-    mJntNoSpecial = 0;
-    mRotSpecial.x = MtVector3::Zero.x;
-    mRotSpecial.y = MtVector3::Zero.y;
-    mRotSpecial.z = MtVector3::Zero.z;
-    mRotSpecial.pad_ = 0.0f;
-    mOfsSpecial.x = MtVector3::Zero.x;
-    mOfsSpecial.y = MtVector3::Zero.y;
-    mOfsSpecial.z = MtVector3::Zero.z;
-    mOfsSpecial.pad_ = 0.0f;
-    mFatSpecial = 1.0f;
 }
 
 inline cWeaponOffset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -79,14 +25,6 @@ MtObject* cWeaponOffset::MyDTI::newInstance() const {
 
 const MtDTI& rWeaponOffset::getDTI() const {
     return rWeaponOffset::DTI;
-}
-
-inline void* rWeaponOffset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWeaponOffset::DTI)->memAlloc(sz, align, rWeaponOffset::DTI.getID());
-}
-
-inline void rWeaponOffset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWeaponOffset::DTI)->memFree(p_addr);
 }
 
 bool rWeaponOffset::loadData(MtDataReader& r, cWeaponOffset* pData) {

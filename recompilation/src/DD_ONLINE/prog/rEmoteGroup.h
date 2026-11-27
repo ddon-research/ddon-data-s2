@@ -159,3 +159,50 @@ inline void* rEmoteGroup::InfoBinary::MotDataBinary::operator new(size_t sz, voi
 inline rEmoteGroup::InfoBinary::MotDataBinary::MotDataBinary() {
     this->mEmo = -1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rEmoteGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmoteGroup::DTI)->memAlloc(sz, align, ::rEmoteGroup::DTI.::MtDTI::getID());
+}
+
+inline void rEmoteGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmoteGroup::DTI)->memFree(p_addr);
+}
+
+inline rEmoteGroup::rEmoteGroup() {
+    this->::cResource::setAttribute(18u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void rEmoteGroup::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayNum != 0) {
+        do {
+            this->mpArray[i0].~InfoBinary();
+            i0 += 1u;
+        } while (i0 < this->mArrayNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rEmoteGroup::DTI)->memFree(static_cast<void*>(this->mpArray));
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void* rEmoteGroup::InfoBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmoteGroup::InfoBinary::DTI)->memAlloc(sz, align, ::rEmoteGroup::InfoBinary::DTI.::MtDTI::getID());
+}
+
+inline void rEmoteGroup::InfoBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmoteGroup::InfoBinary::DTI)->memFree(p_addr);
+}
+
+inline void* rEmoteGroup::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmoteGroup::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, ::rEmoteGroup::InfoBinary::MotDataBinary::DTI.::MtDTI::getID());
+}
+
+inline void rEmoteGroup::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmoteGroup::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
+}

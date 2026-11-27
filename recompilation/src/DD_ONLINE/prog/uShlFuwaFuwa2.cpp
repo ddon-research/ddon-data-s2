@@ -25,10 +25,6 @@ const MtDTI& cShlParamFuwaFuwa2::getDTI() const {
     return cShlParamFuwaFuwa2::DTI;
 }
 
-inline void cShlParamFuwaFuwa2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamFuwaFuwa2::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamFuwaFuwa2::getShlDTI() const {
     return uShlFuwaFuwa2::DTI;
 }
@@ -67,18 +63,6 @@ __attribute__((weak)) MtObject* cShlParamFuwaFuwa2::MyDTI::newInstance() const {
 
 const MtDTI& uShlFuwaFuwa2::getDTI() const {
     return uShlFuwaFuwa2::DTI;
-}
-
-inline void* uShlFuwaFuwa2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlFuwaFuwa2::DTI)->memAlloc(sz, align, uShlFuwaFuwa2::DTI.getID());
-}
-
-inline void uShlFuwaFuwa2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlFuwaFuwa2::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamFuwaFuwa2* uShlFuwaFuwa2::getShlParam() const {
-    return static_cast<const cShlParamFuwaFuwa2*>(mpShlParam2);
 }
 
 uShlFuwaFuwa2::~uShlFuwaFuwa2() {

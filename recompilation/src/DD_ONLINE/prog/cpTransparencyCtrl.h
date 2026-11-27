@@ -12,6 +12,7 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtPropertyList;
+class cOmComponent;
 class uDDOModel;
 
 // Declarations
@@ -27,6 +28,7 @@ using u32 = unsigned int;
 
 class cpTransparencyCtrl : public cpComponent
 {
+    friend class cOmComponent;
 public:
     enum
     {
@@ -113,4 +115,16 @@ inline void* cpTransparencyCtrl::operator new(size_t sz, void* p_addr) {
 
 inline bool cpTransparencyCtrl::isActive() const {
     return this->mIsActive;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpTransparencyCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpTransparencyCtrl::DTI);
+}
+
+inline void cpTransparencyCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpTransparencyCtrl::DTI)->memFree(p_addr);
 }

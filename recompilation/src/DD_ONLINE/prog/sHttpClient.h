@@ -23,6 +23,7 @@ class MtProperty;
 class MtPropertyList;
 class MtString;
 class MtUI;
+class sCaplinkManager;
 
 // Declarations
 class cGameHttpClient;
@@ -46,6 +47,7 @@ using u64 = __uint64_t;
 
 class cGameHttpClient : public cHttpClient
 {
+    friend class sCaplinkManager;
 public:
     enum
     {
@@ -295,6 +297,8 @@ public:
 
 class sHttpClient : public cSystem
 {
+    friend class cGameHttpClient;
+    friend class sCaplinkManager;
 public:
     class MyDTI;
     class cGameHttpClientInfo;
@@ -308,6 +312,8 @@ public:
 public:
     class cGameHttpClientInfo
     {
+        friend class cGameHttpClient;
+        friend class sCaplinkManager;
     public:
         cGameHttpClientInfo();
         ~cGameHttpClientInfo();
@@ -386,8 +392,16 @@ inline void cGameHttpClient::setContentLength(s32 value) {
     this->mContentLength = value;
 }
 
+inline bool cGameHttpClient::isExecOpeningServerFlow() {
+    return this->mRno == 8;
+}
+
 inline void* cGameHttpClient::cLoginBackDoorInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cGameHttpClient* cGameHttpClient::MyListener::getOwner() {
+    return this->mpOwner;
 }
 
 inline void* cGameHttpClient::cServerEnvironmentInfo::operator new(size_t sz, void* p_addr) {
@@ -403,4 +417,28 @@ inline cGameHttpClient::hLoginBackDoor::hLoginBackDoor() {
 
 inline void* sHttpClient::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sHttpClient* sHttpClient::getInstance() {
+    return ::sHttpClient::mpInstance;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cGameHttpClient::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGameHttpClient::DTI)->memFree(p_addr);
+}
+
+inline void* cGameHttpClient::cServerEnvironmentInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGameHttpClient::cServerEnvironmentInfo::DTI)->memAlloc(sz, align, ::cGameHttpClient::cServerEnvironmentInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* sHttpClient::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sHttpClient::DTI);
+}
+
+inline void sHttpClient::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sHttpClient::DTI)->memFree(p_addr);
 }

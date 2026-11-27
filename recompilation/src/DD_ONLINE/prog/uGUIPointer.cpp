@@ -29,16 +29,8 @@ const MtDTI& uGUIPointer::getDTI() const {
     return uGUIPointer::DTI;
 }
 
-inline MtAllocator* uGUIPointer::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPointer::DTI);
-}
-
 void* uGUIPointer::operator new(size_t sz, u32 align) {
     return uGUIPointer::getAllocator()->memAlloc(sz, align, uGUIPointer::DTI.getID());
-}
-
-inline void uGUIPointer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPointer::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIPointer::~uGUIPointer() {

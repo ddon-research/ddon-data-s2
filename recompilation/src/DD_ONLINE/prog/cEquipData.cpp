@@ -24,10 +24,6 @@ const MtDTI& cEquipData::getDTI() const {
     return cEquipData::DTI;
 }
 
-inline MtAllocator* cEquipData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cEquipData::DTI);
-}
-
 void* cEquipData::operator new(size_t sz, u32 align) {
     return cEquipData::getAllocator()->memAlloc(sz, align, cEquipData::DTI.getID());
 }
@@ -345,9 +341,11 @@ __attribute__((weak)) u32 cEquipData::calcCrestElement(u32* pParam, u32* pType, 
     return {};
 }
 
-__attribute__((weak)) void cEquipData::setArrowEquip(nCharacterData::ARROW_EQUIP index, u32 id) {
-    DDON_STUB("cEquipData::setArrowEquip")
-    /* stub */
+void cEquipData::setArrowEquip(nCharacterData::ARROW_EQUIP index, u32 id) {
+    if (index == nCharacterData::ARROW_EQUIP_NONE) {
+        return;
+    }
+    mArrowEquip[index - 1] = id;
 }
 
 __attribute__((weak)) void cEquipData::attachCraftEnchantElement(uDDOModel* pTarget, bool isMain) {
@@ -781,14 +779,6 @@ const MtDTI& nEquipAbilityInfo::cEquipAbilityData::getDTI() const {
     return nEquipAbilityInfo::cEquipAbilityData::DTI;
 }
 
-inline void* nEquipAbilityInfo::cEquipAbilityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nEquipAbilityInfo::cEquipAbilityData::DTI)->memAlloc(sz, align, ::nEquipAbilityInfo::cEquipAbilityData::DTI.getID());
-}
-
-inline void nEquipAbilityInfo::cEquipAbilityData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nEquipAbilityInfo::cEquipAbilityData::DTI)->memFree(p_addr);
-}
-
 inline nEquipAbilityInfo::cEquipAbilityData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nEquipAbilityInfo::cEquipAbilityData::MyDTI nEquipAbilityInfo::cEquipAbilityData::DTI("nEquipAbilityInfo::cEquipAbilityData", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -799,14 +789,6 @@ MtObject* nEquipAbilityInfo::cEquipAbilityData::MyDTI::newInstance() const {
 
 const MtDTI& nEquipDataJewelry::cJewelryData::getDTI() const {
     return nEquipDataJewelry::cJewelryData::DTI;
-}
-
-inline void* nEquipDataJewelry::cJewelryData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nEquipDataJewelry::cJewelryData::DTI)->memAlloc(sz, align, ::nEquipDataJewelry::cJewelryData::DTI.getID());
-}
-
-inline void nEquipDataJewelry::cJewelryData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nEquipDataJewelry::cJewelryData::DTI)->memFree(p_addr);
 }
 
 inline nEquipDataJewelry::cJewelryData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

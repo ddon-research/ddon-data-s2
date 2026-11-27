@@ -20,16 +20,8 @@ const MtDTI& cOcdInfo::getDTI() const {
     return cOcdInfo::DTI;
 }
 
-inline MtAllocator* cOcdInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cOcdInfo::DTI);
-}
-
 void* cOcdInfo::operator new(size_t sz, u32 align) {
     return cOcdInfo::getAllocator()->memAlloc(sz, align, cOcdInfo::DTI.getID());
-}
-
-inline void cOcdInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdInfo::DTI)->memFree(p_addr);
 }
 
 cOcdInfo::~cOcdInfo() {

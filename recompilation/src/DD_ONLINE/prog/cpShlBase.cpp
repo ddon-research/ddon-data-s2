@@ -14,10 +14,6 @@ const MtDTI& cShlParamComponent::getDTI() const {
     return cShlParamComponent::DTI;
 }
 
-inline void cShlParamComponent::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamComponent::DTI)->memFree(p_addr);
-}
-
 const MtDTI& cShlParamComponent::getComponentDTI() const {
     return cpShlBase::DTI;
 }
@@ -36,14 +32,6 @@ __attribute__((weak)) MtObject* cShlParamComponent::MyDTI::newInstance() const {
 
 const MtDTI& cpShlBase::getDTI() const {
     return cpShlBase::DTI;
-}
-
-inline void* cpShlBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpShlBase::DTI)->memAlloc(sz, align, cpShlBase::DTI.getID());
-}
-
-inline void cpShlBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlBase::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cpShlBase::initSub() {

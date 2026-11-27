@@ -42,6 +42,7 @@
 #include "uArmor.h"
 #include "../../XFramework/uBaseModel.h"
 #include "uControl.h"
+#include "uDDOActorModel.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "../../XFramework/uModel.h"
@@ -55,16 +56,8 @@ const MtDTI& cpEquip::getDTI() const {
     return cpEquip::DTI;
 }
 
-inline MtAllocator* cpEquip::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpEquip::DTI);
-}
-
 void* cpEquip::operator new(size_t sz, u32 align) {
     return cpEquip::getAllocator()->memAlloc(sz, align, cpEquip::DTI.getID());
-}
-
-inline void cpEquip::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpEquip::DTI)->memFree(p_addr);
 }
 
 cpEquip::cpEquip() {
@@ -1179,10 +1172,6 @@ __attribute__((weak)) MtObject* cpEquip::MyDTI::newInstance() const {
 
 const MtDTI& cpEquip::cEquipInfo::getDTI() const {
     return cpEquip::cEquipInfo::DTI;
-}
-
-inline void cpEquip::cEquipInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpEquip::cEquipInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cpEquip::cEquipInfo::~cEquipInfo() {

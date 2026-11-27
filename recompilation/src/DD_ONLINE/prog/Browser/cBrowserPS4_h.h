@@ -198,3 +198,19 @@ inline void cBrowserPS4::setPos(const int x, const int y) {
 inline cBrowserRenderDevicePS4* cBrowserPS4::getRenderDevice() {
     return this->m_pRenderDevice;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../MT/MtAllocator.h"
+#include "../../../MT/MtMemoryAllocator.h"
+
+inline void cBrowserKeepString::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBrowserKeepString::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cBrowserPS4::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cBrowserPS4::DTI);
+}
+
+inline void cBrowserPS4::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBrowserPS4::DTI)->memFree(p_addr);
+}

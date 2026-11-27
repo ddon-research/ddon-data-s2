@@ -322,3 +322,31 @@ inline void cpCorePointCtrl::clearReqestInfo() {
     this->mReqCashArray.elems[7].mIsReceive = false;
     this->mReqCashArray.elems[7].mCreatedTime = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCorePointInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCorePointInfo::DTI)->memAlloc(sz, align, ::cCorePointInfo::DTI.::MtDTI::getID());
+}
+
+inline void cCorePointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCorePointInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cCorePointReqestInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCorePointReqestInfo::DTI)->memAlloc(sz, align, ::cCorePointReqestInfo::DTI.::MtDTI::getID());
+}
+
+inline void cCorePointReqestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCorePointReqestInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cpCorePointCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpCorePointCtrl::DTI);
+}
+
+inline void cpCorePointCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpCorePointCtrl::DTI)->memFree(p_addr);
+}

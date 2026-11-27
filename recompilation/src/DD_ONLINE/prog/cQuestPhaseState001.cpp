@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cQuestPhaseState001.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cQuestPhaseState.h"
 #ifndef DDON_STUB
@@ -12,14 +10,6 @@
 
 const MtDTI& cQuestPhaseState001::getDTI() const {
     return cQuestPhaseState001::DTI;
-}
-
-inline void* cQuestPhaseState001::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestPhaseState001::DTI)->memAlloc(sz, align, cQuestPhaseState001::DTI.getID());
-}
-
-inline void cQuestPhaseState001::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPhaseState001::DTI)->memFree(p_addr);
 }
 
 u32 cQuestPhaseState001::getType() const {

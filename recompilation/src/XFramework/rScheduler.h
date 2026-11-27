@@ -167,3 +167,15 @@ inline rScheduler::rScheduler() {
     this->::cResource::mAttr = 16;
     this->mpHeader = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rScheduler::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rScheduler::DTI)->memAlloc(sz, align, ::rScheduler::DTI.::MtDTI::mID);
+}
+
+inline void rScheduler::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rScheduler::DTI)->memFree(p_addr);
+}

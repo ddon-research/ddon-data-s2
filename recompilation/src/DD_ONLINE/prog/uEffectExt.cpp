@@ -61,16 +61,8 @@ const MtDTI& uEffectExt::getDTI() const {
     return uEffectExt::DTI;
 }
 
-inline MtAllocator* uEffectExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uEffectExt::DTI);
-}
-
 void* uEffectExt::operator new(size_t sz, u32 align) {
     return uEffectExt::getAllocator()->memAlloc(sz, align, uEffectExt::DTI.getID());
-}
-
-inline void uEffectExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uEffectExt::DTI)->memFree(p_addr);
 }
 
 uEffectExt::uEffectExt() {
@@ -201,7 +193,7 @@ static auto ddon_emit_0x01ad6130 __attribute__((used)) = &uEffectExt::getWorkRat
 
 void uEffectExt::setParentActor(uDDOModel* pParent, bool Flg0, bool Flg1) {
     mpParentActor = pParent;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 652) = static_cast<unsigned int>((static_cast<unsigned long>(Flg1 * 2) | static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 652)) & 0xFFFFFFFCu)) | static_cast<unsigned long>(Flg0));
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 652) = static_cast<unsigned int>((static_cast<unsigned long>(static_cast<long>(Flg1) * 2) | static_cast<unsigned long>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 652)) & 0xFFFFFFFCu)) | static_cast<unsigned long>(Flg0));
 }
 
 static auto ddon_emit_0x01ad6610 __attribute__((used)) = &uEffectExt::setParentBaseModelFlag;
@@ -315,9 +307,35 @@ __attribute__((weak)) void uEffectExt::correctColorIntensity(cParticleGenerator*
     /* stub */
 }
 
-__attribute__((weak)) u32 uEffectExt::updateParticlePosForce(u32 ForceType, f32 ForceRate, const MtVector3& ForceVec, MtVector3& Pos) {
-    DDON_STUB("uEffectExt::updateParticlePosForce")
-    return {};
+u32 uEffectExt::updateParticlePosForce(u32 ForceType, f32 ForceRate, const MtVector3& ForceVec, MtVector3& Pos) {
+    if (ForceType == 1) {
+        CORRECT_WIND_PARAM::ZONE_WIND_PARAM* pZoneParam = mCorrectWindParam.mpZoneWindParam;
+        if (pZoneParam != nullptr) {
+            if ((pZoneParam->mFlag & 1u) != 0) {
+                const f32 t0 = ForceVec.y;
+                const f32 t1 = ForceVec.z;
+                f32 t2 = pZoneParam->mDirection.y;
+                f32 t3 = pZoneParam->mDirection.z;
+                Pos.x = Pos.x + (ForceRate * (ForceVec.x + pZoneParam->mDirection.x));
+                Pos.y = Pos.y + (ForceRate * (t0 + t2));
+                Pos.z = Pos.z + (ForceRate * (t1 + t3));
+                Pos.pad_ = 0.0f;
+                return 0;
+            } else {
+                const f32 t4 = ForceVec.y;
+                const f32 t5 = ForceVec.z;
+                Pos.x = Pos.x + (ForceVec.x * ForceRate);
+                Pos.y = Pos.y + (t4 * ForceRate);
+                Pos.z = Pos.z + (t5 * ForceRate);
+                Pos.pad_ = 0.0f;
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) u32 uEffectExt::checkCollisionLine(sCollision::TriangleInfo* pTriangleInfo, u32* pPtclFlag, const MtLineSegment& LineSegment, rEffectList::EFL_PARAM_COLL* pCollParam) {
@@ -375,8 +393,14 @@ __attribute__((weak)) void uEffectExt::requestSoundSe(cParticleManager* pManager
 }
 
 __attribute__((weak)) void uEffectExt::stopSoundSe(cParticleManager* pManager) {
-    DDON_STUB("uEffectExt::stopSoundSe")
-    /* stub */
+    rSoundRequest* pSoundRequest = pManager->getSoundRequest();
+    if (pSoundRequest != nullptr) {
+        if ((mStatus & STATUS_SE_STOP) != 0) {
+            sSound::getInstance()->stopSe(pSoundRequest, pManager->mSeReqNo, reinterpret_cast<uintptr>(pManager), false);
+        } else if (((pManager->mSeOptionFlag & rEffectList::SE_OPTION_FLAG_SYNCHRO_KEY_OFF) != 0) || sSound::getInstance()->getSeIsLoop(pSoundRequest, pManager->mSeReqNo)) {
+            static_cast<sSoundExt*>(sSound::getInstance())->keyOffSe(pSoundRequest, pManager->mSeReqNo, reinterpret_cast<uintptr>(pManager), sSoundExt::SE_SEARCH_KEY_ALL);
+        }
+    }
 }
 
 __attribute__((weak)) bool uEffectExt::checkEffectList(u32 ListNo) {
@@ -466,14 +490,6 @@ uEffectExt::MyDTI uEffectExt::DTI("uEffectExt", &::uEffect::DTI, 880ul, 0u, 0u);
 __attribute__((weak)) MtObject* uEffectExt::MyDTI::newInstance() const {
     DDON_STUB("uEffectExt::MyDTI::newInstance")
     return nullptr;
-}
-
-inline void uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
-    MtMemoryAllocator::getAllocator(uEffectExt::DTI)->memFree(padr);
-}
-
-inline void uEffectExt::CORRECT_WIND_PARAM::ZONE_WIND_PARAM::operator delete[](void* padr) {
-    MtMemoryAllocator::getAllocator(uEffectExt::DTI)->memFree(padr);
 }
 
 bool uEffectExt::cRequestDispCtrlFlagCtrl::isProgressDispOff() {

@@ -34,16 +34,8 @@ const MtDTI& cpEnemyReact::getDTI() const {
     return cpEnemyReact::DTI;
 }
 
-inline MtAllocator* cpEnemyReact::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpEnemyReact::DTI);
-}
-
 void* cpEnemyReact::operator new(size_t sz, u32 align) {
     return cpEnemyReact::getAllocator()->memAlloc(sz, align, cpEnemyReact::DTI.getID());
-}
-
-inline void cpEnemyReact::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpEnemyReact::DTI)->memFree(p_addr);
 }
 
 cpEnemyReact::cpEnemyReact() {

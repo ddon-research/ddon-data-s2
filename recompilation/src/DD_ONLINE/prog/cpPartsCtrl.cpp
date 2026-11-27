@@ -3,7 +3,6 @@
 #include "cpPartsCtrl.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cBitCtrl.h"
 #include "cDelegate.h"
@@ -21,16 +20,8 @@ const MtDTI& cpPartsCtrl::getDTI() const {
     return cpPartsCtrl::DTI;
 }
 
-inline MtAllocator* cpPartsCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpPartsCtrl::DTI);
-}
-
 void* cpPartsCtrl::operator new(size_t sz, u32 align) {
     return cpPartsCtrl::getAllocator()->memAlloc(sz, align, cpPartsCtrl::DTI.getID());
-}
-
-inline void cpPartsCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpPartsCtrl::DTI)->memFree(p_addr);
 }
 
 cpPartsCtrl::cpPartsCtrl() {

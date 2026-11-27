@@ -38,16 +38,8 @@ const MtDTI& uGUIContentsBoard::getDTI() const {
     return uGUIContentsBoard::DTI;
 }
 
-inline MtAllocator* uGUIContentsBoard::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIContentsBoard::DTI);
-}
-
 void* uGUIContentsBoard::operator new(size_t sz, u32 align) {
     return uGUIContentsBoard::getAllocator()->memAlloc(sz, align, uGUIContentsBoard::DTI.getID());
-}
-
-inline void uGUIContentsBoard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIContentsBoard::DTI)->memFree(p_addr);
 }
 
 uGUIContentsBoard::~uGUIContentsBoard() {
@@ -95,8 +87,62 @@ void uGUIContentsBoard::outsideDecide() {
 }
 
 __attribute__((weak)) void uGUIContentsBoard::setFlowId(u32 flow_id) {
-    DDON_STUB("uGUIContentsBoard::setFlowId")
-    /* stub */
+    mFlowId = flow_id;
+    
+    if (mpDecideCtrl) {
+        reinterpret_cast<void (*)(cControl*, bool)>(
+            (*reinterpret_cast<void***>(mpDecideCtrl))[0x78 / sizeof(void*)])(mpDecideCtrl, false);
+    }
+    if (mpCancelCtrl) {
+        reinterpret_cast<void (*)(cControl*, bool)>(
+            (*reinterpret_cast<void***>(mpCancelCtrl))[0x78 / sizeof(void*)])(mpCancelCtrl, false);
+    }
+    if (mpChkoutCtrl) {
+        reinterpret_cast<void (*)(cControl*, bool)>(
+            (*reinterpret_cast<void***>(mpChkoutCtrl))[0x78 / sizeof(void*)])(mpChkoutCtrl, false);
+    }
+    
+    switch (mFlowId) {
+    case 4: {
+        u32& t1 = reinterpret_cast<u32*>(this)[0x10 / sizeof(u32)];
+        const u32 t2 = t1;
+        const u32 t3 = t2 & 0x4807u;
+        t1 = t2 & 0xfffff7ffu;
+    
+        if (t3 == 0x4802u) {
+            reinterpret_cast<void (*)(uGUIContentsBoard*)>(
+                (*reinterpret_cast<void***>(this))[0x98 / sizeof(void*)])(this);
+        }
+    
+        reinterpret_cast<volatile decltype(sizeof(void*))* >(&mpCurrentFunc)[1] = 0;
+        reinterpret_cast<volatile decltype(sizeof(void*))* >(&mpCurrentFunc)[0] = 0x2e1;
+        break;
+    }
+    
+    case 3:
+        mList.mListCtrl.mIsDecide = true;
+        return mList.mListCtrl.setListFocus(false);
+    
+    case 2:
+        mList.mListCtrl.mIsDecide = false;
+        mList.mListCtrl.setListFocus(false);
+        if (mpCancelCtrl) {
+            reinterpret_cast<void (*)(cControl*, bool)>(
+                (*reinterpret_cast<void***>(mpCancelCtrl))[0x78 / sizeof(void*)])(mpCancelCtrl, true);
+        }
+        if (mpDecideCtrl) {
+            reinterpret_cast<void (*)(cControl*, bool)>(
+                (*reinterpret_cast<void***>(mpDecideCtrl))[0x78 / sizeof(void*)])(mpDecideCtrl, true);
+        }
+        if (mpChkoutCtrl) {
+            reinterpret_cast<void (*)(cControl*, bool)>(
+                (*reinterpret_cast<void***>(mpChkoutCtrl))[0x78 / sizeof(void*)])(mpChkoutCtrl, true);
+        }
+        return adjustListCursor();
+    
+    default:
+        break;
+    }
 }
 
 void uGUIContentsBoard::moveInput() {
@@ -275,46 +321,8 @@ __attribute__((weak)) void uGUIContentsBoard::adjustListCursor() {
     /* stub */
 }
 
-inline void uGUIContentsBoard::enableChangeBtn() {
-    if (mIsWindowActive) {
-        if (mpDecideCtrl != nullptr) {
-            mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF & 0xFFFFFFF7u;
-        }
-        if (mpCancelCtrl != nullptr) {
-            mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF & 0xFFFFFFF7u;
-        }
-        if (mpChkoutCtrl != nullptr) {
-            mpChkoutCtrl->mCtrlF = mpChkoutCtrl->mCtrlF & 0xFFFFFFF7u;
-        }
-        mMain.mClose.mEnable = true;
-        mList.mListCtrl.setEnableKey(true);
-    } else {
-        if (mpDecideCtrl != nullptr) {
-            mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF | 8u;
-        }
-        if (mpCancelCtrl != nullptr) {
-            mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF | 8u;
-        }
-        if (mpChkoutCtrl != nullptr) {
-            mpChkoutCtrl->mCtrlF = mpChkoutCtrl->mCtrlF | 8u;
-        }
-        mMain.mClose.mEnable = false;
-        mList.mListCtrl.setEnableKey(false);
-    }
-}
-
 bool uGUIContentsBoard::isExitContentBoard() {
     return static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isExecuteMenuJump();
-}
-
-inline void uGUIContentsBoard::eventChkout() {
-    if (mFlowId != 2) {
-        return;
-    }
-    if ((sQuestManagerExt::mpInstance)->mNowCallEntryBoardContentsType != nNetSv::CONTENT_TYPE_CYCLE) {
-        return;
-    }
-    mbCallNews = true;
 }
 
 __attribute__((weak)) u32 uGUIContentsBoard::evCtrlDecide(cControl::Message* msg) {
@@ -369,10 +377,6 @@ __attribute__((weak)) MtObject* uGUIContentsBoard::MyDTI::newInstance() const {
 
 const MtDTI& uGUIContentsBoard::cListItemInfo::getDTI() const {
     return uGUIContentsBoard::cListItemInfo::DTI;
-}
-
-inline void uGUIContentsBoard::cListItemInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIContentsBoard::cListItemInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIContentsBoard::cListItemInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

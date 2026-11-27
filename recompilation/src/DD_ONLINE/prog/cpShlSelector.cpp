@@ -18,14 +18,6 @@ const MtDTI& cShlParamCompList::getDTI() const {
     return cShlParamCompList::DTI;
 }
 
-inline void* cShlParamCompList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamCompList::DTI)->memAlloc(sz, align, cShlParamCompList::DTI.getID());
-}
-
-inline void cShlParamCompList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamCompList::DTI)->memFree(p_addr);
-}
-
 const MtDTI& cShlParamCompList::getComponentDTI() const {
     return cpShlList::DTI;
 }
@@ -77,10 +69,6 @@ MtObject* cShlParamCompList::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamCompSelector::getDTI() const {
     return cShlParamCompSelector::DTI;
-}
-
-inline MtAllocator* cShlParamCompSelector::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cShlParamCompSelector::DTI);
 }
 
 __attribute__((weak)) void cShlParamCompSelector::operator delete(void* p_addr) {
@@ -140,10 +128,6 @@ const MtDTI& cpShlList::getDTI() const {
     return cpShlList::DTI;
 }
 
-inline void cpShlList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cpShlList::initSub() {
     DDON_STUB("cpShlList::initSub")
     /* stub */
@@ -160,10 +144,6 @@ __attribute__((weak)) MtObject* cpShlList::MyDTI::newInstance() const {
 
 const MtDTI& cpShlSelector::getDTI() const {
     return cpShlSelector::DTI;
-}
-
-inline void cpShlSelector::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlSelector::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cpShlSelector::initSub() {

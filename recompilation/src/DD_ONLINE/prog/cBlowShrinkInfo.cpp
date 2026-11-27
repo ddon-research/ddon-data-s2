@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cBlowShrinkInfo.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "nRegionStatus.h"
 #include "sWorkRate.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cBlowShrinkInfo::getDTI() const {
     return cBlowShrinkInfo::DTI;
-}
-
-inline void* cBlowShrinkInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cBlowShrinkInfo::DTI)->memAlloc(sz, align, cBlowShrinkInfo::DTI.getID());
-}
-
-inline void cBlowShrinkInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBlowShrinkInfo::DTI)->memFree(p_addr);
 }
 
 cBlowShrinkInfo::cBlowShrinkInfo() {

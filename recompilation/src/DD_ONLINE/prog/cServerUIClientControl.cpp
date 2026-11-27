@@ -15,6 +15,7 @@
 #include "../../XFramework/sUnit.h"
 #include "sUnitExt.h"
 #include "uGUIServerUIBase.h"
+#include "uGUIServerUIDialog.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -23,16 +24,8 @@ const MtDTI& cServerUIClientControl::getDTI() const {
     return cServerUIClientControl::DTI;
 }
 
-inline MtAllocator* cServerUIClientControl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cServerUIClientControl::DTI);
-}
-
 void* cServerUIClientControl::operator new(size_t sz, u32 align) {
     return cServerUIClientControl::getAllocator()->memAlloc(sz, align, cServerUIClientControl::DTI.getID());
-}
-
-inline void cServerUIClientControl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cServerUIClientControl::DTI)->memFree(p_addr);
 }
 
 cServerUIClientControl::cServerUIClientControl() {

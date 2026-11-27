@@ -15,24 +15,12 @@ const MtDTI& CDataCharacterListElement::getDTI() const {
     return CDataCharacterListElement::DTI;
 }
 
-inline MtAllocator* CDataCharacterListElement::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterListElement::DTI);
-}
-
 void* CDataCharacterListElement::operator new(size_t sz, u32 align) {
     return CDataCharacterListElement::getAllocator()->memAlloc(sz, align, CDataCharacterListElement::DTI.getID());
 }
 
 __attribute__((weak)) void CDataCharacterListElement::operator delete(void* p_addr) {
     CDataCharacterListElement::getAllocator()->memFree(p_addr);
-}
-
-CDataCharacterListElement::CDataCharacterListElement() {
-    m_ucOnlineStatus = 0;
-    m_usServerID = 0;
-    m_BaseInfo.m_wstrClanName.value = nullptr;
-    m_BaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
-    m_BaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
 }
 
 inline CDataCharacterListElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -45,14 +33,6 @@ MtObject* CDataCharacterListElement::MyDTI::newInstance() const {
 
 const MtDTI& CDataCharacterName::getDTI() const {
     return CDataCharacterName::DTI;
-}
-
-inline MtAllocator* CDataCharacterName::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterName::DTI);
-}
-
-inline void* CDataCharacterName::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataCharacterName::DTI)->memAlloc(sz, align, CDataCharacterName::DTI.getID());
 }
 
 __attribute__((weak)) void CDataCharacterName::operator delete(void* p_addr) {
@@ -76,10 +56,6 @@ const MtDTI& CDataCommunityCharacterBaseInfo::getDTI() const {
     return CDataCommunityCharacterBaseInfo::DTI;
 }
 
-inline MtAllocator* CDataCommunityCharacterBaseInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCommunityCharacterBaseInfo::DTI);
-}
-
 void* CDataCommunityCharacterBaseInfo::operator new(size_t sz, u32 align) {
     return CDataCommunityCharacterBaseInfo::getAllocator()->memAlloc(sz, align, CDataCommunityCharacterBaseInfo::DTI.getID());
 }
@@ -98,10 +74,6 @@ MtObject* CDataCommunityCharacterBaseInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataFriendInfo::getDTI() const {
     return CDataFriendInfo::DTI;
-}
-
-inline MtAllocator* CDataFriendInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataFriendInfo::DTI);
 }
 
 void* CDataFriendInfo::operator new(size_t sz, u32 align) {
@@ -125,10 +97,6 @@ const MtDTI& CDataJobBaseInfo::getDTI() const {
     return CDataJobBaseInfo::DTI;
 }
 
-inline MtAllocator* CDataJobBaseInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataJobBaseInfo::DTI);
-}
-
 void* CDataJobBaseInfo::operator new(size_t sz, u32 align) {
     return CDataJobBaseInfo::getAllocator()->memAlloc(sz, align, CDataJobBaseInfo::DTI.getID());
 }
@@ -147,10 +115,6 @@ MtObject* CDataJobBaseInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataUpdateMatchingProfileInfo::getDTI() const {
     return CDataUpdateMatchingProfileInfo::DTI;
-}
-
-inline MtAllocator* CDataUpdateMatchingProfileInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataUpdateMatchingProfileInfo::DTI);
 }
 
 void* CDataUpdateMatchingProfileInfo::operator new(size_t sz, u32 align) {

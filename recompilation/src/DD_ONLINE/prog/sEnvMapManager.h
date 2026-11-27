@@ -212,3 +212,23 @@ inline void* sEnvMapManager::cManageEnvMapBase::operator new(size_t sz, void* p_
 inline void* sEnvMapManager::cManageEnvMapField::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sEnvMapManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sEnvMapManager::DTI);
+}
+
+inline void sEnvMapManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEnvMapManager::DTI)->memFree(p_addr);
+}
+
+inline void sEnvMapManager::cManageEnvMapBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEnvMapManager::cManageEnvMapBase::DTI)->memFree(p_addr);
+}
+
+inline void sEnvMapManager::cManageEnvMapField::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEnvMapManager::cManageEnvMapField::DTI)->memFree(p_addr);
+}

@@ -141,3 +141,23 @@ inline cQuestResourceLoadManager::cLoadTask::cLoadTask() {
     this->mpCallbackFunc = static_cast<cQuestResourceLoadManager::PCALLBACK_FUNC>(0);
     this->mpClass = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cQuestResourceLoadManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cQuestResourceLoadManager::DTI);
+}
+
+inline void cQuestResourceLoadManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestResourceLoadManager::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestResourceLoadManager::cLoadTask::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestResourceLoadManager::cLoadTask::DTI)->memAlloc(sz, align, ::cQuestResourceLoadManager::cLoadTask::DTI.::MtDTI::getID());
+}
+
+inline void cQuestResourceLoadManager::cLoadTask::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestResourceLoadManager::cLoadTask::DTI)->memFree(p_addr);
+}

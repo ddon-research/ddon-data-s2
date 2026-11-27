@@ -120,3 +120,31 @@ inline void cFurnitureData::operator delete[](void* p_addr) {
 inline void* cFurnitureData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cFurnitureData::DTI)->memAlloc(sz, align, ::cFurnitureData::DTI.::MtDTI::getID());
 }
+
+inline void* cFurnitureData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFurnitureData::DTI)->memAlloc(sz, align, ::cFurnitureData::DTI.::MtDTI::getID());
+}
+
+inline void cFurnitureData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFurnitureData::DTI)->memFree(p_addr);
+}
+
+inline cFurnitureData::cFurnitureData() {
+    this->mOmId = 0;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mAngle.x = ::MtVector3::Zero.x;
+    this->mAngle.y = ::MtVector3::Zero.y;
+    this->mAngle.z = ::MtVector3::Zero.z;
+    this->mAngle.pad_ = 0.0f;
+}
+
+inline void* rFurnitureData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFurnitureData::DTI)->memAlloc(sz, align, ::rFurnitureData::DTI.::MtDTI::getID());
+}
+
+inline void rFurnitureData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFurnitureData::DTI)->memFree(p_addr);
+}

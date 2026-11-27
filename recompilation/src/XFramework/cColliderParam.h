@@ -161,3 +161,19 @@ inline cColliderNodeParam::cColliderNodeParam() {
 inline u16 cColliderNodeParam::getVersion() const {
     return 1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cColliderGeometryParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cColliderGeometryParam::DTI)->memFree(p_addr);
+}
+
+inline void* cColliderNodeParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cColliderNodeParam::DTI)->memAlloc(sz, align, ::cColliderNodeParam::DTI.::MtDTI::mID);
+}
+
+inline void cColliderNodeParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cColliderNodeParam::DTI)->memFree(p_addr);
+}

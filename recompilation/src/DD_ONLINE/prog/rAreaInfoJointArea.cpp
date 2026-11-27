@@ -20,20 +20,8 @@ const MtDTI& rAreaInfoJointArea::getDTI() const {
     return rAreaInfoJointArea::DTI;
 }
 
-inline void* rAreaInfoJointArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaInfoJointArea::DTI)->memAlloc(sz, align, rAreaInfoJointArea::DTI.getID());
-}
-
-inline void rAreaInfoJointArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaInfoJointArea::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rAreaInfoJointArea::getExt() const {
     return "arj";
-}
-
-inline rAreaInfoJointArea::rAreaInfoJointArea() {
-    setAttribute(22u);
 }
 
 rAreaInfoJointArea::~rAreaInfoJointArea() {
@@ -109,14 +97,6 @@ MtObject* rAreaInfoJointArea::MyDTI::newInstance() const {
 
 const MtDTI& rAreaInfoJointArea::cAreaInfoJointArea::getDTI() const {
     return rAreaInfoJointArea::cAreaInfoJointArea::DTI;
-}
-
-void* rAreaInfoJointArea::cAreaInfoJointArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memAlloc(sz, align, rAreaInfoJointArea::cAreaInfoJointArea::DTI.getID());
-}
-
-inline void rAreaInfoJointArea::cAreaInfoJointArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memFree(p_addr);
 }
 
 rAreaInfoJointArea::cAreaInfoJointArea::~cAreaInfoJointArea() {

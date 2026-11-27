@@ -604,3 +604,58 @@ inline CDataSupplyItem::CDataSupplyItem() {
     this->m_unItemID = 0;
     this->m_usItemNum = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataAreaBaseInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAreaBaseInfo::DTI);
+}
+
+inline MtAllocator* CDataAreaQuestHint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAreaQuestHint::DTI);
+}
+
+inline MtAllocator* CDataAreaRank::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAreaRank::DTI);
+}
+
+inline MtAllocator* CDataAreaRankUpQuestInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAreaRankUpQuestInfo::DTI);
+}
+
+inline MtAllocator* CDataAreaSpotSet::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAreaSpotSet::DTI);
+}
+
+inline MtAllocator* CDataBorderSupplyItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataBorderSupplyItem::DTI);
+}
+
+inline MtAllocator* CDataReleaseAreaInfoSet::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataReleaseAreaInfoSet::DTI);
+}
+
+inline MtAllocator* CDataRewardItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRewardItemInfo::DTI);
+}
+
+inline MtAllocator* CDataSelectItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSelectItemInfo::DTI);
+}
+
+inline MtAllocator* CDataSpotEnemyInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSpotEnemyInfo::DTI);
+}
+
+inline MtAllocator* CDataSpotInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSpotInfo::DTI);
+}
+
+inline MtAllocator* CDataSpotItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSpotItemInfo::DTI);
+}
+
+inline MtAllocator* CDataSupplyItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSupplyItem::DTI);
+}

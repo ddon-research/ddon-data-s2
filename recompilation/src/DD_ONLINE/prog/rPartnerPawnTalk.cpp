@@ -17,20 +17,6 @@ const MtDTI& rPartnerPawnTalk::getDTI() const {
     return rPartnerPawnTalk::DTI;
 }
 
-inline void* rPartnerPawnTalk::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPartnerPawnTalk::DTI)->memAlloc(sz, align, rPartnerPawnTalk::DTI.getID());
-}
-
-inline void rPartnerPawnTalk::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPartnerPawnTalk::DTI)->memFree(p_addr);
-}
-
-inline rPartnerPawnTalk::rPartnerPawnTalk() {
-    setAttribute(18u);
-    mpArray = nullptr;
-    mArrayNum = 0;
-}
-
 rPartnerPawnTalk::~rPartnerPawnTalk() {
     unsigned int i3 = 0;
     if (mArrayNum != 0) {
@@ -134,14 +120,6 @@ const MtDTI& rPartnerPawnTalk::InfoBinary::getDTI() const {
     return rPartnerPawnTalk::InfoBinary::DTI;
 }
 
-inline void* rPartnerPawnTalk::InfoBinary::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPartnerPawnTalk::InfoBinary::DTI)->memAlloc(sz, align, rPartnerPawnTalk::InfoBinary::DTI.getID());
-}
-
-inline void rPartnerPawnTalk::InfoBinary::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPartnerPawnTalk::InfoBinary::DTI)->memFree(p_addr);
-}
-
 rPartnerPawnTalk::InfoBinary::~InfoBinary() {
     for (u32 i = 0; i < mTalkListNum; ++i) {
         mpTalkList[i].~TalkDataBinary();
@@ -181,14 +159,6 @@ MtObject* rPartnerPawnTalk::InfoBinary::MyDTI::newInstance() const {
 
 const MtDTI& rPartnerPawnTalk::InfoBinary::TalkDataBinary::getDTI() const {
     return rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI;
-}
-
-inline void* rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI)->memAlloc(sz, align, rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI.getID());
-}
-
-inline void rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI)->memFree(p_addr);
 }
 
 inline rPartnerPawnTalk::InfoBinary::TalkDataBinary::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSoundSpeakerSet.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
@@ -18,10 +17,6 @@
 
 const MtDTI& rSoundSpeakerSetXml::getDTI() const {
     return rSoundSpeakerSetXml::DTI;
-}
-
-inline void rSoundSpeakerSetXml::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSpeakerSetXml::DTI)->memFree(p_addr);
 }
 
 rSoundSpeakerSetXml::~rSoundSpeakerSetXml() {

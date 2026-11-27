@@ -225,3 +225,15 @@ inline rModel::PRIMITIVE_INFO* cBakeModel::getPrimitives() const {
 inline u32 cBakeModel::getPrimitiveNum() const {
     return this->mPrimitiveInfoNum;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cBakeModel::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBakeModel::DTI)->memAlloc(sz, align, ::cBakeModel::DTI.::MtDTI::getID());
+}
+
+inline void cBakeModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBakeModel::DTI)->memFree(p_addr);
+}

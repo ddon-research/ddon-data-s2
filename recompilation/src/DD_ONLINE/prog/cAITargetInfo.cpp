@@ -21,14 +21,6 @@ const MtDTI& cAITargetInfo::getDTI() const {
     return cAITargetInfo::DTI;
 }
 
-inline void* cAITargetInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAITargetInfo::DTI)->memAlloc(sz, align, cAITargetInfo::DTI.getID());
-}
-
-inline void cAITargetInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAITargetInfo::DTI)->memFree(p_addr);
-}
-
 const MtVector3& cAITargetInfo::getAITargetInfoOfsPos() const {
     if (mpTargetPoint.cGeneralPointPtr::operator const cGeneralPoint *() != nullptr) {
         return mpTargetPoint.cGeneralPointPtr::operator const cGeneralPoint *()->mPos;

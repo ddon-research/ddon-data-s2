@@ -175,3 +175,22 @@ inline s32 cpTalk::getNpcId() const {
 inline void cpTalk::onTalkedSituationTalk() {
     this->mIsTalkedSituationTalk = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+#include "aStage.h"
+#include "../../XFramework/cArea.h"
+#include "../../XFramework/sArea.h"
+
+inline MtAllocator* cpTalk::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpTalk::DTI);
+}
+
+inline void cpTalk::moveFace_none() {
+    if (!static_cast<aStage*>((::sArea::mpInstance)->mpArea[2])->mbFsmEventPlay) {
+        return;
+    }
+    this->mVoiceHandle = 0;
+    this->mRno0 = 2;
+    this->mRno1 = 0;
+}

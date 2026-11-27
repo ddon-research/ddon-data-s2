@@ -168,3 +168,11 @@ inline s32 cPlayerLoadManager::getLoadStatus() const {
 inline void cPlayerLoadManager::finishJobChange() {
     this->mIsJobChange = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cPlayerLoadManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPlayerLoadManager::DTI)->memFree(p_addr);
+}

@@ -211,3 +211,15 @@ private:
 inline void* uGUIDamage::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIDamage::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIDamage::DTI);
+}
+
+inline void uGUIDamage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIDamage::DTI)->memFree(p_addr);
+}

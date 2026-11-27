@@ -1481,6 +1481,18 @@ inline u32 sItemManager::cItemBag::getUseItemSlotNum() {
     return this->mUseItemSlotNum;
 }
 
+inline u32 sItemManager::cItemBag::getArmItemSlotNum() {
+    return this->mArmItemSlotNum;
+}
+
+inline u32 sItemManager::cItemBag::getMaterialItemSlotNum() {
+    return this->mMaterialItemSlotNum;
+}
+
+inline u32 sItemManager::cItemBag::getJobItemSlotNum() {
+    return this->mJobItemSlotNum;
+}
+
 inline u32 sItemManager::cItemBag::getAllItemSlotNum() {
     return this->mAllItemSlotNum;
 }
@@ -1628,4 +1640,137 @@ inline void* sItemManager::cItemList::operator new(size_t sz, void* p_addr) {
 inline sItemManager::cItemList::cItemList() {
     this->mItemNo = 0;
     this->mItemNum = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+
+inline MtAllocator* sItemManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::DTI);
+}
+
+inline void sItemManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::DTI)->memFree(p_addr);
+}
+
+inline void sItemManager::cShop::releaseResource() {
+    if (this->mpGoodsList == nullptr) {
+        return;
+    }
+    this->mpGoodsList->::cResource::release();
+    this->mpGoodsList = nullptr;
+}
+
+inline MtAllocator* sItemManager::stRequest::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::stRequest::DTI);
+}
+
+inline void sItemManager::cItemBag::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::DTI)->memFree(p_addr);
+}
+
+inline void* sItemManager::cItemBag::cGetItemListData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cGetItemListData::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cGetItemListData::DTI.::MtDTI::getID());
+}
+
+inline void sItemManager::cItemBag::cGetItemListData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cGetItemListData::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sItemManager::cItemBag::cGatheringItemData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cGatheringItemData::DTI);
+}
+
+inline void* sItemManager::cItemBag::cGatheringItemData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cGatheringItemData::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cGatheringItemData::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* sItemManager::cItemBag::cCraftStartData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftStartData::DTI);
+}
+
+inline void* sItemManager::cItemBag::cCraftStartData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftStartData::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cCraftStartData::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* sItemManager::cItemBag::cCraftUpGradeData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftUpGradeData::DTI);
+}
+
+inline void* sItemManager::cItemBag::cCraftUpGradeData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftUpGradeData::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cCraftUpGradeData::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* sItemManager::cItemBag::cCraftColorChange::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftColorChange::DTI);
+}
+
+inline void* sItemManager::cItemBag::cCraftColorChange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cCraftColorChange::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cCraftColorChange::DTI.::MtDTI::getID());
+}
+
+inline void* sItemManager::cItemBag::cAreaMasterSuppyData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memAlloc(sz, align, ::sItemManager::cItemBag::cAreaMasterSuppyData::DTI.::MtDTI::getID());
+}
+
+inline void sItemManager::cItemBag::cAreaMasterSuppyData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memFree(p_addr);
+}
+
+inline void* sItemManager::cSortParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cSortParam::DTI)->memAlloc(sz, align, ::sItemManager::cSortParam::DTI.::MtDTI::getID());
+}
+
+inline void sItemManager::cSortParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cSortParam::DTI)->memFree(p_addr);
+}
+
+inline void* sItemManager::cItemParamList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemParamList::DTI)->memAlloc(sz, align, ::sItemManager::cItemParamList::DTI.::MtDTI::getID());
+}
+
+inline void sItemManager::cItemParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cItemParamList::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sItemManager::cEquipList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cEquipList::DTI);
+}
+
+inline void sItemManager::cEquipList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cEquipList::DTI)->memFree(p_addr);
+}
+
+inline void* sItemManager::cEquipList::cEquipData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cEquipList::cEquipData::DTI)->memAlloc(sz, align, ::sItemManager::cEquipList::cEquipData::DTI.::MtDTI::getID());
+}
+
+inline void sItemManager::cEquipList::cEquipData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cEquipList::cEquipData::DTI)->memFree(p_addr);
+}
+
+inline void* sItemManager::cChangeJob::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cChangeJob::DTI)->memAlloc(sz, align, ::sItemManager::cChangeJob::DTI.::MtDTI::getID());
+}
+
+inline void sItemManager::cChangeJob::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cChangeJob::DTI)->memFree(p_addr);
+}
+
+inline void sItemManager::cGPDetail::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cGPDetail::DTI)->memFree(p_addr);
+}
+
+inline void* sItemManager::cHideEquip::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cHideEquip::DTI)->memAlloc(sz, align, ::sItemManager::cHideEquip::DTI.::MtDTI::getID());
+}
+
+inline void sItemManager::cHideEquip::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sItemManager::cHideEquip::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sItemManager::cItemList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sItemManager::cItemList::DTI);
 }

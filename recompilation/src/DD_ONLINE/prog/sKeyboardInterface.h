@@ -152,3 +152,22 @@ inline void* sKeyboardInterface::operator new(size_t sz, void* p_addr) {
 inline sKeyboardInterface* sKeyboardInterface::getInstance() {
     return ::sKeyboardInterface::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nUnicode.h"
+
+inline MtAllocator* sKeyboardInterface::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sKeyboardInterface::DTI);
+}
+
+inline void sKeyboardInterface::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sKeyboardInterface::DTI)->memFree(p_addr);
+}
+
+inline void sKeyboardInterface::setInputField(MT_CTSTR titleText, MT_CTSTR defaultText, u32 maxCharacterCount) {
+    ::nUnicode::ConvertUtf8toUcs16(&this->mTitleText[0], titleText, (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u);
+    ::nUnicode::ConvertUtf8toUcs16(&this->mDefaultText[0], defaultText, (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u);
+    this->mMaxCharacterCount = (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u;
+}

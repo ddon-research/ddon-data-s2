@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cAIObject.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -11,14 +9,6 @@
 
 const MtDTI& cAIObject::getDTI() const {
     return cAIObject::DTI;
-}
-
-inline void* cAIObject::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIObject::DTI)->memAlloc(sz, align, cAIObject::DTI.mID);
-}
-
-inline void cAIObject::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIObject::DTI)->memFree(p_addr);
 }
 
 cAIObject::cAIObject() {
@@ -44,14 +34,6 @@ MtObject* cAIObject::MyDTI::newInstance() const {
 
 const MtDTI& cAIResource::getDTI() const {
     return cAIResource::DTI;
-}
-
-inline void* cAIResource::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIResource::DTI)->memAlloc(sz, align, cAIResource::DTI.mID);
-}
-
-inline void cAIResource::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIResource::DTI)->memFree(p_addr);
 }
 
 cAIResource::cAIResource() {

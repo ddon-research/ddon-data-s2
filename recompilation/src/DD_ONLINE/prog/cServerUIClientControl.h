@@ -29,6 +29,7 @@ using u32 = unsigned int;
 class cServerUIClientControl : public MtObject
 {
     friend class sGUIExt;
+    friend class uGUIServerUIBase;
 public:
     enum
     {
@@ -87,4 +88,16 @@ public:
 
 inline void* cServerUIClientControl::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cServerUIClientControl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cServerUIClientControl::DTI);
+}
+
+inline void cServerUIClientControl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cServerUIClientControl::DTI)->memFree(p_addr);
 }

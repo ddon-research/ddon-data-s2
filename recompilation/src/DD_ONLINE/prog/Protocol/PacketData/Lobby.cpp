@@ -4,7 +4,6 @@
 #include "Community.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
@@ -14,14 +13,6 @@
 
 const MtDTI& CDataLobbyInfo::getDTI() const {
     return CDataLobbyInfo::DTI;
-}
-
-inline MtAllocator* CDataLobbyInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataLobbyInfo::DTI);
-}
-
-inline void* CDataLobbyInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataLobbyInfo::DTI)->memAlloc(sz, align, CDataLobbyInfo::DTI.getID());
 }
 
 __attribute__((weak)) void CDataLobbyInfo::operator delete(void* p_addr) {
@@ -40,27 +31,12 @@ const MtDTI& CDataLobbyMemberInfo::getDTI() const {
     return CDataLobbyMemberInfo::DTI;
 }
 
-inline MtAllocator* CDataLobbyMemberInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataLobbyMemberInfo::DTI);
-}
-
 void* CDataLobbyMemberInfo::operator new(size_t sz, u32 align) {
     return CDataLobbyMemberInfo::getAllocator()->memAlloc(sz, align, CDataLobbyMemberInfo::DTI.getID());
 }
 
 __attribute__((weak)) void CDataLobbyMemberInfo::operator delete(void* p_addr) {
     CDataLobbyMemberInfo::getAllocator()->memFree(p_addr);
-}
-
-CDataLobbyMemberInfo::CDataLobbyMemberInfo() {
-    m_unPawnId = 0;
-    m_ucPlatform = 0;
-    m_ucClientVersion = 0;
-    m_ucSessionStatus = 0;
-    m_ucOnlineStatus = 0;
-    m_CommunityCharacterBaseInfo.m_wstrClanName.value = nullptr;
-    m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
-    m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
 }
 
 inline CDataLobbyMemberInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

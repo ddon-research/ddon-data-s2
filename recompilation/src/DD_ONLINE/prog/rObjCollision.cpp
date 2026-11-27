@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rObjCollision.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -21,21 +19,6 @@
 
 const MtDTI& rObjCollision::getDTI() const {
     return rObjCollision::DTI;
-}
-
-inline void* rObjCollision::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rObjCollision::DTI)->memAlloc(sz, align, rObjCollision::DTI.getID());
-}
-
-inline void rObjCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rObjCollision::DTI)->memFree(p_addr);
-}
-
-inline rObjCollision::rObjCollision() {
-    setAttribute(16u);
-    mpAttackParam = nullptr;
-    mpCollNode = nullptr;
-    mpCollIndex = nullptr;
 }
 
 rObjCollision::~rObjCollision() {

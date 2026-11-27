@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rReaction.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -20,14 +18,6 @@ const MtDTI& cReaction::getDTI() const {
     return cReaction::DTI;
 }
 
-inline void* cReaction::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cReaction::DTI)->memAlloc(sz, align, cReaction::DTI.getID());
-}
-
-inline void cReaction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cReaction::DTI)->memFree(p_addr);
-}
-
 inline cReaction::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cReaction::MyDTI cReaction::DTI("cReaction", &::MtObject::DTI, 312ul, 0u, 0u);
@@ -38,14 +28,6 @@ MtObject* cReaction::MyDTI::newInstance() const {
 
 const MtDTI& cReaction::cCondition::getDTI() const {
     return cReaction::cCondition::DTI;
-}
-
-inline void* cReaction::cCondition::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cReaction::cCondition::DTI)->memAlloc(sz, align, cReaction::cCondition::DTI.getID());
-}
-
-inline void cReaction::cCondition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cReaction::cCondition::DTI)->memFree(p_addr);
 }
 
 inline cReaction::cCondition::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -60,14 +42,6 @@ const MtDTI& cReaction::cTrigger::getDTI() const {
     return cReaction::cTrigger::DTI;
 }
 
-inline void* cReaction::cTrigger::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cReaction::cTrigger::DTI)->memAlloc(sz, align, cReaction::cTrigger::DTI.getID());
-}
-
-inline void cReaction::cTrigger::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cReaction::cTrigger::DTI)->memFree(p_addr);
-}
-
 inline cReaction::cTrigger::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cReaction::cTrigger::MyDTI cReaction::cTrigger::DTI("cReaction::cTrigger", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -80,14 +54,6 @@ const MtDTI& cReaction::cAction::getDTI() const {
     return cReaction::cAction::DTI;
 }
 
-inline void* cReaction::cAction::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cReaction::cAction::DTI)->memAlloc(sz, align, cReaction::cAction::DTI.getID());
-}
-
-inline void cReaction::cAction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cReaction::cAction::DTI)->memFree(p_addr);
-}
-
 inline cReaction::cAction::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cReaction::cAction::MyDTI cReaction::cAction::DTI("cReaction::cAction", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -98,14 +64,6 @@ MtObject* cReaction::cAction::MyDTI::newInstance() const {
 
 const MtDTI& rReaction::getDTI() const {
     return rReaction::DTI;
-}
-
-inline void* rReaction::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rReaction::DTI)->memAlloc(sz, align, rReaction::DTI.getID());
-}
-
-inline void rReaction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rReaction::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rReaction::loadData(MtDataReader& r, cReaction* pData) {

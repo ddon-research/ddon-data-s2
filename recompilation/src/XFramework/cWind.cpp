@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cWind.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtLogisticMap.h"
 #include "../MT/MtMath.h"
@@ -16,10 +15,6 @@
 
 const MtDTI& cWind::getDTI() const {
     return cWind::DTI;
-}
-
-inline void cWind::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWind::DTI)->memFree(p_addr);
 }
 
 cWind::cWind() {
@@ -75,9 +70,17 @@ static auto ddon_emit_0x01bc6c30 __attribute__((used)) = &cWind::getDirPitchAmpV
 
 static auto ddon_emit_0x01bc6c70 __attribute__((used)) = &cWind::getDirPitchAmpRate;
 
-__attribute__((weak)) MtRangeF cWind::getDirPitchParam() const {
-    DDON_STUB("cWind::getDirPitchParam")
-    __builtin_unreachable();
+MtRangeF cWind::getDirPitchParam() const {
+    MtRangeF param;
+    const f32 t0 = mDirPitchParamAmp;
+    if (0.0f > t0) {
+        param.s = mDirPitchParamBase + t0;
+        param.r = t0 * -2.0f;
+    } else {
+        param.s = mDirPitchParamBase - t0;
+        param.r = t0 + t0;
+    }
+    return param;
 }
 
 static auto ddon_emit_0x01bc6c00 __attribute__((used)) = &cWind::setDirPitchCycle;
@@ -88,9 +91,10 @@ static auto ddon_emit_0x01bc6c40 __attribute__((used)) = &cWind::setDirPitchAmpV
 
 static auto ddon_emit_0x01bc6c80 __attribute__((used)) = &cWind::setDirPitchAmpRate;
 
-__attribute__((weak)) void cWind::setDirPitchParam(const MtRangeF& Param) {
-    DDON_STUB("cWind::setDirPitchParam")
-    /* stub */
+void cWind::setDirPitchParam(const MtRangeF& Param) {
+    const f32 t0 = Param.r;
+    mDirPitchParamBase = Param.s + (t0 * 0.5f);
+    mDirPitchParamAmp = t0 * 0.5f;
 }
 
 static auto ddon_emit_0x01bc6d10 __attribute__((used)) = &cWind::getDirYawCycle;
@@ -101,9 +105,17 @@ static auto ddon_emit_0x01bc6d50 __attribute__((used)) = &cWind::getDirYawAmpVal
 
 static auto ddon_emit_0x01bc6d90 __attribute__((used)) = &cWind::getDirYawAmpRate;
 
-__attribute__((weak)) MtRangeF cWind::getDirYawParam() const {
-    DDON_STUB("cWind::getDirYawParam")
-    __builtin_unreachable();
+MtRangeF cWind::getDirYawParam() const {
+    MtRangeF param;
+    const f32 t0 = mDirYawParamAmp;
+    if (0.0f > t0) {
+        param.s = mDirYawParamBase + t0;
+        param.r = t0 * -2.0f;
+    } else {
+        param.s = mDirYawParamBase - t0;
+        param.r = t0 + t0;
+    }
+    return param;
 }
 
 static auto ddon_emit_0x01bc6d20 __attribute__((used)) = &cWind::setDirYawCycle;
@@ -114,9 +126,10 @@ static auto ddon_emit_0x01bc6d60 __attribute__((used)) = &cWind::setDirYawAmpVal
 
 static auto ddon_emit_0x01bc6da0 __attribute__((used)) = &cWind::setDirYawAmpRate;
 
-__attribute__((weak)) void cWind::setDirYawParam(const MtRangeF& Param) {
-    DDON_STUB("cWind::setDirYawParam")
-    /* stub */
+void cWind::setDirYawParam(const MtRangeF& Param) {
+    const f32 t0 = Param.r;
+    mDirYawParamBase = Param.s + (t0 * 0.5f);
+    mDirYawParamAmp = t0 * 0.5f;
 }
 
 static auto ddon_emit_0x01bc6e30 __attribute__((used)) = &cWind::getSpeedCycle;
@@ -127,9 +140,17 @@ static auto ddon_emit_0x01bc6e70 __attribute__((used)) = &cWind::getSpeedAmpValu
 
 static auto ddon_emit_0x01bc6eb0 __attribute__((used)) = &cWind::getSpeedAmpRate;
 
-__attribute__((weak)) MtRangeF cWind::getSpeedParam() const {
-    DDON_STUB("cWind::getSpeedParam")
-    __builtin_unreachable();
+MtRangeF cWind::getSpeedParam() const {
+    MtRangeF param;
+    const f32 t0 = mSpeedParamAmp;
+    if (0.0f > t0) {
+        param.s = mSpeedParamBase + t0;
+        param.r = t0 * -2.0f;
+    } else {
+        param.s = mSpeedParamBase - t0;
+        param.r = t0 + t0;
+    }
+    return param;
 }
 
 static auto ddon_emit_0x01bc6e40 __attribute__((used)) = &cWind::setSpeedCycle;
@@ -140,9 +161,10 @@ static auto ddon_emit_0x01bc6e80 __attribute__((used)) = &cWind::setSpeedAmpValu
 
 static auto ddon_emit_0x01bc6ec0 __attribute__((used)) = &cWind::setSpeedAmpRate;
 
-__attribute__((weak)) void cWind::setSpeedParam(const MtRangeF& Param) {
-    DDON_STUB("cWind::setSpeedParam")
-    /* stub */
+void cWind::setSpeedParam(const MtRangeF& Param) {
+    const f32 t0 = Param.r;
+    mSpeedParamBase = Param.s + (t0 * 0.5f);
+    mSpeedParamAmp = t0 * 0.5f;
 }
 
 inline cWind::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

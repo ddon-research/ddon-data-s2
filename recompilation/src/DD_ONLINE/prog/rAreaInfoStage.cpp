@@ -20,20 +20,8 @@ const MtDTI& rAreaInfoStage::getDTI() const {
     return rAreaInfoStage::DTI;
 }
 
-inline void* rAreaInfoStage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaInfoStage::DTI)->memAlloc(sz, align, rAreaInfoStage::DTI.getID());
-}
-
-inline void rAreaInfoStage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaInfoStage::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rAreaInfoStage::getExt() const {
     return "ars";
-}
-
-inline rAreaInfoStage::rAreaInfoStage() {
-    setAttribute(22u);
 }
 
 rAreaInfoStage::~rAreaInfoStage() {
@@ -109,14 +97,6 @@ MtObject* rAreaInfoStage::MyDTI::newInstance() const {
 
 const MtDTI& rAreaInfoStage::cAreaInfoStage::getDTI() const {
     return rAreaInfoStage::cAreaInfoStage::DTI;
-}
-
-void* rAreaInfoStage::cAreaInfoStage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaInfoStage::cAreaInfoStage::DTI)->memAlloc(sz, align, rAreaInfoStage::cAreaInfoStage::DTI.getID());
-}
-
-inline void rAreaInfoStage::cAreaInfoStage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaInfoStage::cAreaInfoStage::DTI)->memFree(p_addr);
 }
 
 rAreaInfoStage::cAreaInfoStage::~cAreaInfoStage() {

@@ -14,6 +14,7 @@
 #include "../MT/MtRandom.h"
 #include "cAI.h"
 #include "cAIObject.h"
+#include "cAISvDynamicPathFinding.h"
 #include "cAISvPathFinding.h"
 #include "cAITask.h"
 #include "sAI.h"
@@ -29,10 +30,6 @@ const MtDTI& cAINavPathTrace::getDTI() const {
 
 void* cAINavPathTrace::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAINavPathTrace::DTI)->memAlloc(sz, align, cAINavPathTrace::DTI.mID);
-}
-
-inline void cAINavPathTrace::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAINavPathTrace::DTI)->memFree(p_addr);
 }
 
 cAINavPathTrace::cAINavPathTrace() {
@@ -170,10 +167,6 @@ const MtDTI& cAIPathTrace::getDTI() const {
     return cAIPathTrace::DTI;
 }
 
-inline void cAIPathTrace::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIPathTrace::DTI)->memFree(p_addr);
-}
-
 cAIPathTrace::cAIPathTrace() {
     DDON_STUB("cAIPathTrace::cAIPathTrace")
     /* stub */
@@ -304,23 +297,6 @@ MtObject* cAIPathTrace::MyDTI::newInstance() const {
 
 const MtDTI& cAIPathTrace::TracePoint::getDTI() const {
     return cAIPathTrace::TracePoint::DTI;
-}
-
-inline void* cAIPathTrace::TracePoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIPathTrace::TracePoint::DTI)->memAlloc(sz, align, cAIPathTrace::TracePoint::DTI.mID);
-}
-
-inline void cAIPathTrace::TracePoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIPathTrace::TracePoint::DTI)->memFree(p_addr);
-}
-
-inline cAIPathTrace::TracePoint::TracePoint() {
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mLinkAttribute = 0;
-    mpData = nullptr;
 }
 
 inline cAIPathTrace::TracePoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

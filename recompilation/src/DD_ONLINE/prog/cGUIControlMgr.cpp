@@ -16,10 +16,6 @@ const MtDTI& cGUIControlMgr::getDTI() const {
     return cGUIControlMgr::DTI;
 }
 
-inline void cGUIControlMgr::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIControlMgr::DTI)->memFree(p_addr);
-}
-
 void cGUIControlMgr::setup(uGUIBase* pParent) {
     mpParent = pParent;
 }

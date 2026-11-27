@@ -70,9 +70,23 @@ void MtNetContext::removeDependency(MtNetObject* obj) {
     }
 }
 
-__attribute__((weak)) void MtNetContext::addListener(MtNetContext::Listener* listener) {
-    DDON_STUB("MtNetContext::addListener")
-    /* stub */
+void MtNetContext::addListener(MtNetContext::Listener* listener) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        mpListener = listener;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        mpListener = listener;
+    }
 }
 
 __attribute__((weak)) void MtNetContext::reqStart(u32* req_seq, s32 sign_in_level) {
@@ -98,19 +112,124 @@ __attribute__((weak)) void MtNetContext::beginMove() {
 __attribute__((weak)) void MtNetContext::endMove() {
 }
 
-__attribute__((weak)) void MtNetContext::cbNtcSignInChange(s32 sign_in_level, MtNetError* net_err) {
-    DDON_STUB("MtNetContext::cbNtcSignInChange")
-    /* stub */
+void MtNetContext::cbNtcSignInChange(s32 sign_in_level, MtNetError* net_err) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        if (mpListener != nullptr) {
+            if (!isFatal()) {
+                mpListener->onNtcSignInChange(sign_in_level, net_err);
+            }
+            if (mIsThreadSafe) {
+                mLockCount = mLockCount - 1;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = t0;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+    } else {
+        if (mpListener != nullptr) {
+            if (!isFatal()) {
+                mpListener->onNtcSignInChange(sign_in_level, net_err);
+            }
+        }
+        if (mIsThreadSafe) {
+            mLockCount = mLockCount - 1;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void MtNetContext::cbNtcFriendListChange(MtNetFriendList* friend_list) {
-    DDON_STUB("MtNetContext::cbNtcFriendListChange")
-    /* stub */
+void MtNetContext::cbNtcFriendListChange(MtNetFriendList* friend_list) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        if (mpListener != nullptr) {
+            if (!isFatal()) {
+                mpListener->onNtcFriendListChange(friend_list);
+            }
+            if (mIsThreadSafe) {
+                mLockCount = mLockCount - 1;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = t0;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+    } else {
+        if (mpListener != nullptr) {
+            if (!isFatal()) {
+                mpListener->onNtcFriendListChange(friend_list);
+            }
+        }
+        if (mIsThreadSafe) {
+            mLockCount = mLockCount - 1;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void MtNetContext::cbNtcInviteAccept() {
-    DDON_STUB("MtNetContext::cbNtcInviteAccept")
-    /* stub */
+void MtNetContext::cbNtcInviteAccept() {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        if (mpListener != nullptr) {
+            if (!isFatal()) {
+                mpListener->onNtcInviteAccept();
+            }
+            if (mIsThreadSafe) {
+                mLockCount = mLockCount - 1;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = t0;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+    } else {
+        if (mpListener != nullptr) {
+            if (!isFatal()) {
+                mpListener->onNtcInviteAccept();
+            }
+        }
+        if (mIsThreadSafe) {
+            mLockCount = mLockCount - 1;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void MtNetContext::cbNtcInviteAcceptSucceed(MtNetSessionInfo* info) {
@@ -128,9 +247,45 @@ __attribute__((weak)) void MtNetContext::cbAnsStartFail(MtNetRequest* req, MtNet
     /* stub */
 }
 
-__attribute__((weak)) void MtNetContext::cbAnsFinalize(MtNetRequest* req) {
-    DDON_STUB("MtNetContext::cbAnsFinalize")
-    /* stub */
+void MtNetContext::cbAnsFinalize(MtNetRequest* req) {
+    if (!req->isNeedAnswer()) {
+        return;
+    }
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        Listener* t1 = mpListener;
+        if (t1 != nullptr) {
+            t1->onAnsFinalize(req->getSequence());
+            if (mIsThreadSafe) {
+                mLockCount = mLockCount - 1;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = t0;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+    } else {
+        Listener* t1 = mpListener;
+        if (t1 != nullptr) {
+            t1->onAnsFinalize(req->getSequence());
+        }
+        if (mIsThreadSafe) {
+            mLockCount = mLockCount - 1;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
 }
 
 bool MtNetContext::canMoveRequest(MtNetRequest* req) {

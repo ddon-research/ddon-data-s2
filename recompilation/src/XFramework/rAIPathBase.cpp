@@ -24,14 +24,6 @@ const MtDTI& rAIPathBase::getDTI() const {
     return rAIPathBase::DTI;
 }
 
-inline void* rAIPathBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAIPathBase::DTI)->memAlloc(sz, align, rAIPathBase::DTI.mID);
-}
-
-inline void rAIPathBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIPathBase::DTI)->memFree(p_addr);
-}
-
 rAIPathBase::rAIPathBase() {
     mAttr = 16;
     mNumberOfTotalAreaLink = 0;
@@ -213,10 +205,6 @@ MtObject* rAIPathBase::MyDTI::newInstance() const {
 
 const MtDTI& rAIPathBase::HierarchyArea::getDTI() const {
     return rAIPathBase::HierarchyArea::DTI;
-}
-
-inline void rAIPathBase::HierarchyArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIPathBase::HierarchyArea::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rAIPathBase::HierarchyArea::~HierarchyArea() {

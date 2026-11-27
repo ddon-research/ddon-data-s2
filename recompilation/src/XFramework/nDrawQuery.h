@@ -122,3 +122,15 @@ inline void* nDraw::OcclusionQuery::operator new(size_t sz, void* p_addr) {
 inline void* nDraw::Query::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nDraw::OcclusionQuery::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::OcclusionQuery::DTI)->memFree(p_addr);
+}
+
+inline void nDraw::Query::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::Query::DTI)->memFree(p_addr);
+}

@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_fs.h>
 #include <string.h>
 #include "MtFile.h"
 #include "MtAllocator.h"
@@ -26,10 +27,6 @@ void* MtFile::operator new(size_t sz, u32 align) {
 
 void* MtFile::operator new[](size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtFile::DTI)->memAlloc(sz, align, MtFile::DTI.mID);
-}
-
-inline void MtFile::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtFile::DTI)->memFree(p_addr);
 }
 
 void MtFile::operator delete[](void* p_addr) {
@@ -141,14 +138,144 @@ bool MtFile::isAsyncReading() const {
     return mAsyncExec;
 }
 
-__attribute__((weak)) u32 MtFile::write(const void* in, u32 bytes) {
-    DDON_STUB("MtFile::write")
-    return {};
+u32 MtFile::write(const void* in, u32 bytes) {
+    if (mDLCHandle == 0xFFFFFFFFu) {
+        ssize_t writebytes = sceKernelWrite(mHandle, in, bytes);
+        MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(writebytes & (writebytes >> 63)));
+        u32 t0 = mSeekPt;
+        mSeekPt = t0 + ((writebytes <= -1l) ? 0u : static_cast<unsigned int>(writebytes));
+        if (mSize < mSeekPt) {
+            mSize = mSeekPt;
+        }
+        return static_cast<unsigned int>((writebytes <= -1l) ? 0l : writebytes);
+    } else {
+        return 0;
+    }
 }
 
-__attribute__((weak)) u32 MtFile::seek(s32 offset, MtFile::SEEKBASE base) {
-    DDON_STUB("MtFile::seek")
-    return {};
+u32 MtFile::seek(s32 offset, MtFile::SEEKBASE base) {
+    if (base != SEEKBASE_END) {
+        if (base == SEEKBASE_CUR) {
+            u32 t0 = mSeekPt;
+            mSeekPt = (mSize < (offset + t0)) ? mSize : (offset + t0);
+            if (mMode == MODE_READ_ASYNC) {
+                readWait();
+                ssize_t pos = sceKernelLseek(mHandle, mSeekPt, 0);
+                if (pos > -1l) {
+                    MtFile::mLastError = 0;
+                    return static_cast<unsigned int>(pos);
+                } else {
+                    MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                    return 0;
+                }
+            } else {
+                ssize_t pos = sceKernelLseek(mHandle, (mSize < (offset + t0)) ? mSize : (offset + t0), 0);
+                if (pos > -1l) {
+                    MtFile::mLastError = 0;
+                    return static_cast<unsigned int>(pos);
+                } else {
+                    MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                    return 0;
+                }
+            }
+        } else {
+            if (base == SEEKBASE_SET) {
+                if (offset > -1) {
+                    if (mSize >= static_cast<unsigned int>(offset)) {
+                        mSeekPt = static_cast<u32>(offset);
+                        if (mMode == MODE_READ_ASYNC) {
+                            readWait();
+                            ssize_t pos = sceKernelLseek(mHandle, mSeekPt, 0);
+                            if (pos > -1l) {
+                                MtFile::mLastError = 0;
+                                return static_cast<unsigned int>(pos);
+                            } else {
+                                MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                                return 0;
+                            }
+                        } else {
+                            ssize_t pos = sceKernelLseek(mHandle, static_cast<unsigned int>(offset), 0);
+                            if (pos > -1l) {
+                                MtFile::mLastError = 0;
+                                return static_cast<unsigned int>(pos);
+                            } else {
+                                MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                                return 0;
+                            }
+                        }
+                    } else {
+                        mSeekPt = mSize;
+                        if (mMode == MODE_READ_ASYNC) {
+                            readWait();
+                            ssize_t pos = sceKernelLseek(mHandle, mSeekPt, 0);
+                            if (pos > -1l) {
+                                MtFile::mLastError = 0;
+                                return static_cast<unsigned int>(pos);
+                            } else {
+                                MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                                return 0;
+                            }
+                        } else {
+                            ssize_t pos = sceKernelLseek(mHandle, mSize, 0);
+                            if (pos > -1l) {
+                                MtFile::mLastError = 0;
+                                return static_cast<unsigned int>(pos);
+                            } else {
+                                MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                                return 0;
+                            }
+                        }
+                    }
+                } else {
+                    mSeekPt = 0;
+                    if (mMode == MODE_READ_ASYNC) {
+                        readWait();
+                        ssize_t pos = sceKernelLseek(mHandle, mSeekPt, 0);
+                        if (pos > -1l) {
+                            MtFile::mLastError = 0;
+                            return static_cast<unsigned int>(pos);
+                        } else {
+                            MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                            return 0;
+                        }
+                    } else {
+                        ssize_t pos = sceKernelLseek(mHandle, 0l, 0);
+                        if (pos > -1l) {
+                            MtFile::mLastError = 0;
+                            return static_cast<unsigned int>(pos);
+                        } else {
+                            MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                            return 0;
+                        }
+                    }
+                }
+            } else {
+                return 0;
+            }
+        }
+    } else {
+        mSeekPt = (static_cast<unsigned int>(offset) < mSize) ? (mSize - offset) : 0u;
+        if (mMode == MODE_READ_ASYNC) {
+            readWait();
+            ssize_t pos = sceKernelLseek(mHandle, mSeekPt, 0);
+            if (pos > -1l) {
+                MtFile::mLastError = 0;
+                return static_cast<unsigned int>(pos);
+            } else {
+                MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                return 0;
+            }
+        } else {
+            ssize_t pos = sceKernelLseek(mHandle, static_cast<off_t>((static_cast<unsigned int>(offset) < mSize) ? (mSize - offset) : 0u), 0);
+            if (pos > -1l) {
+                MtFile::mLastError = 0;
+                return static_cast<unsigned int>(pos);
+            } else {
+                MtFile::mLastError = static_cast<FileError>(static_cast<unsigned int>(pos));
+                return 0;
+            }
+        }
+    }
 }
 
 u32 MtFile::getPosition() {
@@ -160,9 +287,11 @@ __attribute__((weak)) u32 MtFile::length() {
     return {};
 }
 
-__attribute__((weak)) void MtFile::setLength(u32 len) {
-    DDON_STUB("MtFile::setLength")
-    /* stub */
+void MtFile::setLength(u32 len) {
+    if (mDLCHandle != 0xFFFFFFFFu) {
+        return;
+    }
+    mLastErrorCode = sceKernelFtruncate(mHandle, len);
 }
 
 bool MtFile::isReadable() {
@@ -197,14 +326,16 @@ u32 MtFile::getAsyncTransferredSize() const {
     return mAsyncTransferredSize;
 }
 
-__attribute__((weak)) bool MtFile::isReadableMode(MtFile::MODE mode) {
-    DDON_STUB("MtFile::isReadableMode")
-    return {};
+bool MtFile::isReadableMode(MtFile::MODE mode) {
+    if (static_cast<unsigned int>(mode - 17) <= 5) {
+        return static_cast<bool>((51ul >> static_cast<unsigned long>(static_cast<unsigned char>(mode + 239) & 31)) & 1ul);
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) bool MtFile::isWritableMode(MtFile::MODE mode) {
-    DDON_STUB("MtFile::isWritableMode")
-    return {};
+bool MtFile::isWritableMode(MtFile::MODE mode) {
+    return static_cast<unsigned int>(mode - 19) <= 3;
 }
 
 bool MtFile::isAsyncReadableMode(MtFile::MODE mode) {
@@ -245,10 +376,6 @@ __attribute__((weak)) void* MtFile::AsyncThreadPool::readAsyncProc(void* pArg) {
 
 const MtDTI& MtFile::FileInfo::getDTI() const {
     return MtFile::FileInfo::DTI;
-}
-
-inline void MtFile::FileInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtFile::FileInfo::DTI)->memFree(p_addr);
 }
 
 MtFile::FileInfo::FileInfo() {

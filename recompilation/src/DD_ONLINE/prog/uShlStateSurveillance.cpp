@@ -20,10 +20,6 @@ const MtDTI& cShlParamStateSurveillance::getDTI() const {
     return cShlParamStateSurveillance::DTI;
 }
 
-inline void cShlParamStateSurveillance::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamStateSurveillance::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamStateSurveillance::getShlDTI() const {
     return uShlStateSurveillance::DTI;
 }
@@ -93,14 +89,6 @@ const MtDTI& uShlStateSurveillance::getDTI() const {
     return uShlStateSurveillance::DTI;
 }
 
-inline void uShlStateSurveillance::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlStateSurveillance::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamStateSurveillance* uShlStateSurveillance::getShlParam() const {
-    return static_cast<const cShlParamStateSurveillance*>(mpShlParam2);
-}
-
 uShlStateSurveillance::~uShlStateSurveillance() {
     if (mCheckArray.mLength != 0) {
         u32 v0_0 = mCheckArray.mLength;
@@ -150,14 +138,6 @@ __attribute__((weak)) MtObject* uShlStateSurveillance::MyDTI::newInstance() cons
 
 const MtDTI& uShlStateSurveillance::cStateSurveillanceInfo::getDTI() const {
     return uShlStateSurveillance::cStateSurveillanceInfo::DTI;
-}
-
-inline void* uShlStateSurveillance::cStateSurveillanceInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlStateSurveillance::cStateSurveillanceInfo::DTI)->memAlloc(sz, align, uShlStateSurveillance::cStateSurveillanceInfo::DTI.getID());
-}
-
-inline void uShlStateSurveillance::cStateSurveillanceInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlStateSurveillance::cStateSurveillanceInfo::DTI)->memFree(p_addr);
 }
 
 void uShlStateSurveillance::cStateSurveillanceInfo::createProperty(MtPropertyList& s) {

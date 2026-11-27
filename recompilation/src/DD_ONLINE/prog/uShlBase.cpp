@@ -62,6 +62,7 @@
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "sWorkRate.h"
+#include "../../XFramework/uBaseModel.h"
 #include "uControl.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
@@ -278,16 +279,12 @@ inline cShlParamBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 cShlParamBase::MyDTI cShlParamBase::DTI("cShlParamBase", &::MtObject::DTI, 352ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cShlParamBase::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cShlParamBase::DTI)->memAlloc(sizeof(cShlParamBase), 16u, cShlParamBase::DTI.getID())) cShlParamBase;
+MtObject* cShlParamBase::MyDTI::newInstance() const {
+    return new (16u) cShlParamBase;
 }
 
 const MtDTI& uShlBase::getDTI() const {
     return uShlBase::DTI;
-}
-
-inline void uShlBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlBase::DTI)->memFree(p_addr);
 }
 
 const cShlParamBase* uShlBase::getShlParam() const {
@@ -312,9 +309,105 @@ __attribute__((weak)) void uShlBase::kill() {
     /* stub */
 }
 
-__attribute__((weak)) void uShlBase::updatePtr() {
-    DDON_STUB("uShlBase::updatePtr")
-    /* stub */
+void uShlBase::updatePtr() {
+    this->uDDOModel::updatePtr();
+    if (mpParent != nullptr) {
+        if (!mpParent->isEnable()) {
+            mpParent = nullptr;
+        }
+    }
+    if (mpOwner != nullptr) {
+        if (!mpOwner->isEnable()) {
+            mpOwner = nullptr;
+        }
+    }
+    if (mpHitTarget != nullptr) {
+        if (!mpHitTarget->isEnable()) {
+            mpHitTarget = nullptr;
+        }
+    }
+    if (mpHitTargetObjMdl != nullptr) {
+        if (!mpHitTargetObjMdl->isEnable()) {
+            mpHitTargetObjMdl = nullptr;
+        }
+    }
+    if (mpOnlyTarget != nullptr) {
+        if (!mpOnlyTarget->isEnable()) {
+            mpOnlyTarget = nullptr;
+        }
+    }
+    if (mpNoHitTarget != nullptr) {
+        if (!mpNoHitTarget->isEnable()) {
+            mpNoHitTarget = nullptr;
+        }
+    }
+    if (mpParentTarget != nullptr) {
+        if (!mpParentTarget->isEnable()) {
+            mpParentTarget = nullptr;
+        }
+    }
+    if (mpEnchantOwner != nullptr) {
+        if (!mpEnchantOwner->isEnable()) {
+            mpEnchantOwner = nullptr;
+        }
+    }
+    mStickObjCtrl.nShlStick::cStickObjectCtrl::updatePtr();
+    if (mpHitUnits[0] != nullptr) {
+        if ((mpHitUnits[0]->mBeFlag - 1u) > 1u) {
+            mpHitUnits[0] = nullptr;
+            mHitUnitTimer[0] = -1.0f;
+            mHitCount[0] = 0;
+        }
+    }
+    if (mpHitUnits[1] != nullptr) {
+        if ((mpHitUnits[1]->mBeFlag - 1u) > 1u) {
+            mpHitUnits[1] = nullptr;
+            mHitUnitTimer[1] = -1.0f;
+            mHitCount[1] = 0;
+        }
+    }
+    if (mpHitUnits[2] != nullptr) {
+        if ((mpHitUnits[2]->mBeFlag - 1u) > 1u) {
+            mpHitUnits[2] = nullptr;
+            mHitUnitTimer[2] = -1.0f;
+            mHitCount[2] = 0;
+        }
+    }
+    if (mpHitUnits[3] != nullptr) {
+        if ((mpHitUnits[3]->mBeFlag - 1u) > 1u) {
+            mpHitUnits[3] = nullptr;
+            mHitUnitTimer[3] = -1.0f;
+            mHitCount[3] = 0;
+        }
+    }
+    if (mpHitUnits[4] != nullptr) {
+        if ((mpHitUnits[4]->mBeFlag - 1u) > 1u) {
+            mpHitUnits[4] = nullptr;
+            mHitUnitTimer[4] = -1.0f;
+            mHitCount[4] = 0;
+        }
+    }
+    if (mpHitUnits[5] != nullptr) {
+        if ((mpHitUnits[5]->mBeFlag - 1u) > 1u) {
+            mpHitUnits[5] = nullptr;
+            mHitUnitTimer[5] = -1.0f;
+            mHitCount[5] = 0;
+        }
+    }
+    if (mpHitUnits[6] != nullptr) {
+        if ((mpHitUnits[6]->mBeFlag - 1u) > 1u) {
+            mpHitUnits[6] = nullptr;
+            mHitUnitTimer[6] = -1.0f;
+            mHitCount[6] = 0;
+        }
+    }
+    if (mpHitUnits[7] != nullptr) {
+        if ((mpHitUnits[7]->mBeFlag - 1u) > 1u) {
+            mpHitUnits[7] = nullptr;
+            mHitUnitTimer[7] = -1.0f;
+            mHitCount[7] = 0;
+        }
+    }
 }
 
 void uShlBase::before() {
@@ -384,9 +477,23 @@ void uShlBase::setupComponentPtr() {
     this->uDDOModel::setupComponentPtr();
 }
 
-__attribute__((weak)) void uShlBase::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlBase::applyWorldOffset")
-    /* stub */
+void uShlBase::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uDDOModel::applyWorldOffset(offset, absolute_offset);
+    mTargetPos.x = offset.x + mTargetPos.x;
+    mTargetPos.y = offset.y + mTargetPos.y;
+    mTargetPos.z = offset.z + mTargetPos.z;
+    mInitPos.x = offset.x + mInitPos.x;
+    mInitPos.y = offset.y + mInitPos.y;
+    mInitPos.z = offset.z + mInitPos.z;
+    mHitPos.x = offset.x + mHitPos.x;
+    mHitPos.y = offset.y + mHitPos.y;
+    mHitPos.z = offset.z + mHitPos.z;
+    mLookPos.x = offset.x + mLookPos.x;
+    mLookPos.y = offset.y + mLookPos.y;
+    mLookPos.z = offset.z + mLookPos.z;
+    mWorldOffset.x = offset.x + mWorldOffset.x;
+    mWorldOffset.y = offset.y + mWorldOffset.y;
+    mWorldOffset.z = offset.z + mWorldOffset.z;
 }
 
 __attribute__((weak)) void uShlBase::callbackAttack(cHitInfo* pHitInfo) {

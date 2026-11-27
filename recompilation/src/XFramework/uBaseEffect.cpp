@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uBaseEffect.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "cDraw.h"
 #include "cEffect.h"
 #include "cResource.h"
@@ -23,10 +21,6 @@
 
 const MtDTI& uBaseEffect::getDTI() const {
     return uBaseEffect::DTI;
-}
-
-inline void uBaseEffect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uBaseEffect::DTI)->memFree(p_addr);
 }
 
 uBaseEffect::uBaseEffect() {
@@ -50,9 +44,27 @@ u64 uBaseEffect::getSystemUnitGroup() const {
     return 16;
 }
 
-__attribute__((weak)) MT_CTSTR uBaseEffect::getName() {
-    DDON_STUB("uBaseEffect::getName")
-    return {};
+MT_CTSTR uBaseEffect::getName() {
+    rEffectList* v0_0 = mpEffectList;
+    unsigned int i0_1;
+    unsigned int v0_3;
+    if (v0_0 == nullptr) {
+        return this->cUnit::getName();
+    } else {
+        i0_1 = 0;
+        v0_3 = 0;
+    }
+    for (;;) {
+        if (v0_0->mPath[i0_1] == 0) {
+            break;
+        } else {
+            if (v0_0->mPath[i0_1] == 92) {
+                v0_3 = i0_1 + 1u;
+            }
+            i0_1 += 1u;
+        }
+    }
+    return &v0_0->mPath[v0_3];
 }
 
 __attribute__((weak)) void uBaseEffect::updateWorldMatrix() {

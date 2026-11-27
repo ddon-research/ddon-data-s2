@@ -32,16 +32,8 @@ const MtDTI& uGUIGPConfirm::getDTI() const {
     return uGUIGPConfirm::DTI;
 }
 
-inline MtAllocator* uGUIGPConfirm::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGPConfirm::DTI);
-}
-
 void* uGUIGPConfirm::operator new(size_t sz, u32 align) {
     return uGUIGPConfirm::getAllocator()->memAlloc(sz, align, uGUIGPConfirm::DTI.getID());
-}
-
-inline void uGUIGPConfirm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPConfirm::DTI)->memFree(p_addr);
 }
 
 void uGUIGPConfirm::setItemInfo(MT_CTSTR pCategoryName, MT_CTSTR pItemName, u32 Price, u32 IconId, u32 LineupId) {

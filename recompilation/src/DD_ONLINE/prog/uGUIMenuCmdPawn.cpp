@@ -33,16 +33,8 @@ const MtDTI& uGUIMenuCmdPawn::getDTI() const {
     return uGUIMenuCmdPawn::DTI;
 }
 
-inline MtAllocator* uGUIMenuCmdPawn::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMenuCmdPawn::DTI);
-}
-
 void* uGUIMenuCmdPawn::operator new(size_t sz, u32 align) {
     return uGUIMenuCmdPawn::getAllocator()->memAlloc(sz, align, uGUIMenuCmdPawn::DTI.getID());
-}
-
-inline void uGUIMenuCmdPawn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuCmdPawn::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMenuCmdPawn::~uGUIMenuCmdPawn() {

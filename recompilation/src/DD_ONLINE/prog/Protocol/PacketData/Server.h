@@ -279,3 +279,35 @@ inline CDataWorldInfo::CDataWorldInfo() {
     this->m_unTemp1 = 0;
     this->m_ucCycleContentsState = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataGameServerListInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameServerListInfo::DTI);
+}
+
+inline MtAllocator* CDataGameTime::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameTime::DTI);
+}
+
+inline void* CDataGameTime::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameTime::DTI)->memAlloc(sz, align, ::CDataGameTime::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataURLInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataURLInfo::DTI);
+}
+
+inline MtAllocator* CDataWeatherForecast::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataWeatherForecast::DTI);
+}
+
+inline MtAllocator* CDataWorldInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataWorldInfo::DTI);
+}
+
+inline void* CDataWorldInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataWorldInfo::DTI)->memAlloc(sz, align, ::CDataWorldInfo::DTI.::MtDTI::getID());
+}

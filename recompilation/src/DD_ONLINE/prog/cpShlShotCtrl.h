@@ -258,3 +258,78 @@ inline void cpShlShotCtrl::setShlOwner(uDDOModel* pOwner) {
 inline void* cpShlShotCtrl::cShlShotReqInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline s32 cpShlShotCtrl::cShlShotReqInfo::getShotStsPrivate() const {
+    return this->mShotSts_Guard;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cpObjCollision.h"
+
+inline MtAllocator* cpShlShotCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpShlShotCtrl::DTI);
+}
+
+inline void cpShlShotCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlShotCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cpShlShotCtrl::cShlShotReqInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpShlShotCtrl::cShlShotReqInfo::DTI)->memAlloc(sz, align, ::cpShlShotCtrl::cShlShotReqInfo::DTI.::MtDTI::getID());
+}
+
+inline void cpShlShotCtrl::cShlShotReqInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlShotCtrl::cShlShotReqInfo::DTI)->memFree(p_addr);
+}
+
+inline cpShlShotCtrl::cShlShotReqInfo::cShlShotReqInfo() {
+    this->mpTarget = nullptr;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mDirection.x = ::MtVector3::AxisZ.x;
+    this->mDirection.y = ::MtVector3::AxisZ.y;
+    this->mDirection.z = ::MtVector3::AxisZ.z;
+    this->mDirection.pad_ = 0.0f;
+    this->mTargetPos.x = ::MtVector3::Zero.x;
+    this->mTargetPos.y = ::MtVector3::Zero.y;
+    this->mTargetPos.z = ::MtVector3::Zero.z;
+    this->mTargetPos.pad_ = 0.0f;
+    this->mShlUId = 0;
+    this->mTargetUId = 0;
+    this->mLockOnIndex = -1;
+    this->mShotGroup = -1;
+    this->mShotIndex = -1;
+    this->mShotTimer = 0.0f;
+    this->mIsCalcDirTargetPos = false;
+    this->mIsInherit = false;
+    this->mShotSts_Guard = 0;
+    this->mIsNotifyDelete = false;
+    this->mWork = -1;
+    this->mIsUseShotCoordMatrix = false;
+    this->mIsConst = false;
+    this->mConstUId = 0;
+    this->mConstJoint = 255;
+    this->mSharedUID[6] = 0;
+    this->mSharedUID[7] = 0;
+    this->mSharedUID[4] = 0;
+    this->mSharedUID[5] = 0;
+    this->mSharedUID[2] = 0;
+    this->mSharedUID[3] = 0;
+    this->mSharedUID[0] = 0;
+    this->mSharedUID[1] = 0;
+}
+
+inline void cpShlShotCtrl::cShlShotReqInfo::copySharedUIDToObjCollision(cpObjCollisionBase* pDst) {
+    pDst->mSharedUID[0] = this->mSharedUID[0];
+    pDst->mSharedUID[1] = this->mSharedUID[1];
+    pDst->mSharedUID[2] = this->mSharedUID[2];
+    pDst->mSharedUID[3] = this->mSharedUID[3];
+    pDst->mSharedUID[4] = this->mSharedUID[4];
+    pDst->mSharedUID[5] = this->mSharedUID[5];
+    pDst->mSharedUID[6] = this->mSharedUID[6];
+    pDst->mSharedUID[7] = this->mSharedUID[7];
+}

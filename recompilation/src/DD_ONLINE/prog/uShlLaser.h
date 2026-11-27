@@ -121,3 +121,29 @@ inline cShlParamLaser::cShlParamLaser() {
 inline void* uShlLaser::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamLaser::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamLaser::DTI)->memAlloc(sz, align, ::cShlParamLaser::DTI.::MtDTI::getID());
+}
+
+inline void* uShlLaser::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlLaser::DTI)->memAlloc(sz, align, ::uShlLaser::DTI.::MtDTI::getID());
+}
+
+inline void uShlLaser::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlLaser::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamLaser* uShlLaser::getShlParam() const {
+    return static_cast<const cShlParamLaser*>(this->::uShlBase::mpShlParam2);
+}
+
+inline uShlLaser::uShlLaser() {
+    this->mHitLandPos = ::MtVector3::Zero;
+    this->mFlgHitLand = false;
+    this->mpEfcHandleLand = nullptr;
+}

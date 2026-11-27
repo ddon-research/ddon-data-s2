@@ -486,3 +486,35 @@ inline void* uGUICaplinkChat::cSystemInfo::operator new(size_t sz, void* p_addr)
 inline void* uGUICaplinkChat::cMessageInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkChat::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::DTI);
+}
+
+inline void* uGUICaplinkChat::cDateItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cDateItem::DTI)->memAlloc(sz, align, ::uGUICaplinkChat::cDateItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkChat::cDateItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cDateItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICaplinkChat::cSystemItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cSystemItem::DTI)->memAlloc(sz, align, ::uGUICaplinkChat::cSystemItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkChat::cSystemItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cSystemItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkChat::cMessageItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cMessageItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkChat::cDateInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkChat::cDateInfo::DTI)->memFree(p_addr);
+}

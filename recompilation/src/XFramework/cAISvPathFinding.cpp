@@ -15,6 +15,7 @@
 #include "../MT/MtPropertyList.h"
 #include "cAI.h"
 #include "cAIService.h"
+#include "cAISvDynamicPathFinding.h"
 #include "cResource.h"
 #include "rAIPathBase.h"
 #include "rNavigationMesh.h"
@@ -26,10 +27,6 @@
 
 const MtDTI& cAISvNavPathFinding::getDTI() const {
     return cAISvNavPathFinding::DTI;
-}
-
-inline void cAISvNavPathFinding::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAISvNavPathFinding::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cAISvNavPathFinding::~cAISvNavPathFinding() {
@@ -201,14 +198,6 @@ const MtDTI& cAISvNavPathFinding::navCell::getDTI() const {
     return cAISvNavPathFinding::navCell::DTI;
 }
 
-inline void* cAISvNavPathFinding::navCell::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAISvNavPathFinding::navCell::DTI)->memAlloc(sz, align, cAISvNavPathFinding::navCell::DTI.mID);
-}
-
-inline void cAISvNavPathFinding::navCell::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAISvNavPathFinding::navCell::DTI)->memFree(p_addr);
-}
-
 inline cAISvNavPathFinding::navCell::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAISvNavPathFinding::navCell::MyDTI cAISvNavPathFinding::navCell::DTI("cAISvNavPathFinding::navCell", &::MtObject::DTI, 32ul, 0u, 0u);
@@ -219,10 +208,6 @@ MtObject* cAISvNavPathFinding::navCell::MyDTI::newInstance() const {
 
 const MtDTI& cAISvNavPathFinding::NavArea::getDTI() const {
     return cAISvNavPathFinding::NavArea::DTI;
-}
-
-inline void* cAISvNavPathFinding::NavArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAISvNavPathFinding::NavArea::DTI)->memAlloc(sz, align, cAISvNavPathFinding::NavArea::DTI.mID);
 }
 
 cAISvNavPathFinding::NavArea::~NavArea() {
@@ -245,10 +230,6 @@ MtObject* cAISvNavPathFinding::NavArea::MyDTI::newInstance() const {
 
 const MtDTI& cAISvPathFinding::getDTI() const {
     return cAISvPathFinding::DTI;
-}
-
-inline void cAISvPathFinding::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAISvPathFinding::DTI)->memFree(p_addr);
 }
 
 cAISvPathFinding::cAISvPathFinding() {
@@ -345,10 +326,6 @@ MtObject* cAISvPathFinding::MyDTI::newInstance() const {
 
 const MtDTI& cAISvPathFinding::Node::getDTI() const {
     return cAISvPathFinding::Node::DTI;
-}
-
-inline void* cAISvPathFinding::Node::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAISvPathFinding::Node::DTI)->memAlloc(sz, align, cAISvPathFinding::Node::DTI.mID);
 }
 
 cAISvPathFinding::Node::Node() {

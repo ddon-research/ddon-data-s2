@@ -8,28 +8,36 @@
 #include "../MT/MtMath.h"
 #include "nEffect.h"
 #include "nPrim.h"
+#include "rEffectAnim.h"
 #include "rEffectList.h"
 
 // Forward declarations
 class MtColor;
+struct MtFloat2;
 struct MtFloat3;
 class MtMatrix;
 class MtVector3;
-class cClothCurve;
+class cClothPolygonDrawParam;
 class cClothZigzag;
+class cEffectAnim;
 class cParticleGenerator;
+class cPrim;
 class cUnit;
 namespace nEffect { class SimpleCurve; }
 namespace nPrim { struct Material; }
+class rEffectAnim;
 
 // Declarations
 class cClothChain;
+class cClothCurve;
 class cClothStraight;
 class cClothVertex;
+class cEffectChain;
 class cEffectStrip;
 class cLineParticle;
 class cMatrixParticle;
 class cParticle;
+class cParticleAnimParam;
 class cParticleLifeCommon;
 class cParticleLifeCurveframe;
 class cParticleLifeFrame;
@@ -38,9 +46,12 @@ class cParticleMoveBase;
 class cParticleMoveCommon;
 class cParticleMoveMul;
 class cParticleMoveNone;
+class cParticleMovePathChain;
 class cParticleMovePathKeyframe;
+class cParticleMovePathLine;
 class cParticleMovePathStrip;
 class cParticleMoveSpin;
+class cPolygon;
 
 // Type aliases from DWARF
 using f32 = float;
@@ -86,6 +97,67 @@ private:
     MtVector3* mPos;  // offset: 0x8
     u32 mClothVertex3208;  // offset: 0x10
     u32 mClothVertex320c;  // offset: 0x14
+};
+
+class cEffectChain
+{
+public:
+    enum CHAIN_STATUS
+    {
+        CHAIN_STATUS_BLEND = 1,
+        CHAIN_STATUS_CALC_LENGTH = 2,
+        CHAIN_STATUS_KEYFRAME_LENGTH = 4,
+        CHAIN_STATUS_KEYFRAME_ROT = 8,
+        CHAIN_STATUS_KEYFRAME_BLEND_ROT = 16,
+        CHAIN_STATUS_KEYFRAME_BLEND_RATE = 32,
+        CHAIN_STATUS_CONSTRAIN_ORD = 64,
+        CHAIN_STATUS_CONSTRAIN_REV = 128,
+        CHAIN_STATUS_RESET = 256,
+        CHAIN_STATUS_STRETCH_LENGTH = 512,
+    };
+    enum CHAIN_MODE
+    {
+        CHAIN_MODE_PARTICLE = 0,
+        CHAIN_MODE_PATH = 1,
+        CHAIN_MODE_CLOTH_POLYGON = 2,
+    };
+public:
+    void initChain(rEffectList::EFL_PARAM_CHAIN* pChainParam, u32 DataIndex, f32 Length, const MtVector3& Vec, const MtVector3& ForceVec);
+    void initBlendChain(rEffectList::EFL_PARAM_CHAIN* pChainParam, u32 DataIndex, f32 Length, const MtVector3& Vec0, const MtVector3& Vec1, const MtVector3& ForceVec);
+    void calcChain(MtVector3* pOfs, MtVector3* pSpd, const MtVector3& AccelerationVec, f32 Length);
+    void calcChainForce(MtVector3* pOfs, MtVector3* pSpd, const MtVector3& AccelerationVec, f32 Length, const MtVector3& ForceVec);
+    void calcBlendChain(MtVector3* pOfs, MtVector3* pSpd, const MtVector3& AccelerationVec0, const MtVector3& AccelerationVec1, f32 Length);
+    void calcBlendChainForce(MtVector3* pOfs, MtVector3* pSpd, const MtVector3& AccelerationVec0, const MtVector3& AccelerationVec1, f32 Length, const MtVector3& ForceVec);
+    MtVector3 blendChainVector(const MtVector3& Vec0, const MtVector3& Vec1, u32 No, u32 Max);
+    MtVector3* getChainSpd() const;
+    MtVector3* getChainOfs(u32 DataIndex) const;
+    void applyWorldOffset(const MtVector3& Offset);
+public:
+    f32 mLength;  // offset: 0x0
+    f32 mLengthAdd;  // offset: 0x4
+    f32 mTotalLength;  // offset: 0x8
+    f32 mAcceleration;  // offset: 0xc
+    f32 mFrameInf;  // offset: 0x10
+    f32 mVertexInf;  // offset: 0x14
+    f32 mBlendRate;  // offset: 0x18
+    u32 mStatus : 12;  // offset: 0x1c
+    u32 mMode : 4;  // offset: 0x1c
+    u32 mOfsNum : 8;  // offset: 0x1c
+    u32 mHoldOfsNum : 8;  // offset: 0x1c
+    u32 mLengthKeyframeTimer : 16;  // offset: 0x20
+    u32 mRotKeyframeTimer : 16;  // offset: 0x20
+    u32 mBlendRotKeyframeTimer : 16;  // offset: 0x24
+    u32 mBlendRateKeyframeTimer : 16;  // offset: 0x24
+    f32 mForceRate;  // offset: 0x28
+    f32 mForceVertexAttenuateCoef;  // offset: 0x2c
+    MtFloat3 mRotKeyframeRate;  // offset: 0x30
+    MtFloat3 mBlendRotKeyframeRate;  // offset: 0x3c
+    f32 mBlendRateKeyframeRate;  // offset: 0x48
+    f32 mOriginalLength;  // offset: 0x4c
+    MtVector3 mWorldDir;  // offset: 0x50
+    MtVector3 mLocalDir;  // offset: 0x60
+    MtVector3 mLocalBlendDir;  // offset: 0x70
+    MtVector3 mWorldPos;  // offset: 0x80
 };
 
 class cEffectStrip
@@ -332,6 +404,16 @@ protected:
     f32 mSrcIntensityKeyframeRate;  // offset: 0x74
 };
 
+class cParticleAnimParam
+{
+public:
+    u32 mAnimFlag;  // offset: 0x0
+    u32 mSeqNo;  // offset: 0x4
+    f32 mPatNoRate;  // offset: 0x8
+    f32 mPatSpeed;  // offset: 0xc
+    f32 mKeyframeRate;  // offset: 0x10
+};
+
 class cParticleLifeCommon
 {
 public:
@@ -420,6 +502,22 @@ public:
     u32 mClothChain32b4;  // offset: 0xb4
     u32 mClothChain32b8;  // offset: 0xb8
     u32 mClothChain32bc;  // offset: 0xbc
+};
+
+class cClothCurve : public cClothStraight
+{
+public:
+    MtVector3 interpolateDir(u32 DataIndex, f32 InpRate) const;
+public:
+    MtVector3 mDir[2];  // offset: 0x10
+    MtVector3 mRot;  // offset: 0x30
+    MtVector3 mRotAdd;  // offset: 0x40
+    f32 mCurveCoef;  // offset: 0x50
+    u32 mCurveType : 8;  // offset: 0x54
+    u32 mClothCurve084d : 8;  // offset: 0x54
+    u32 mCurveStatus : 16;  // offset: 0x54
+    u32 mClothCurve3258;  // offset: 0x58
+    u32 mClothCurve325c;  // offset: 0x5c
 };
 
 class cLineParticle : public cParticle
@@ -515,6 +613,13 @@ public:
     MtVector3 mSpeedVec;  // offset: 0x50
 };
 
+class cParticleMovePathChain : public cParticleMoveBase
+{
+public:
+    MtVector3 mOfs;  // offset: 0x50
+    MtVector3 mRot;  // offset: 0x60
+};
+
 class cParticleMovePathKeyframe : public cParticleMoveBase
 {
 public:
@@ -522,6 +627,13 @@ public:
     MtVector3 mRot;  // offset: 0x70
     MtFloat3 mOfsKeyframeRate;  // offset: 0x80
     u32 mMovePathKeyframe327c;  // offset: 0x8c
+};
+
+class cParticleMovePathLine : public cParticleMoveBase
+{
+public:
+    cEffectStrip mStrip;  // offset: 0x50
+    MtVector3 mRot;  // offset: 0x70
 };
 
 class cParticleMovePathStrip : public cParticleMoveBase
@@ -548,6 +660,101 @@ public:
     f32 mCircleRadiusAdd;  // offset: 0x94
     f32 mCircleAngle;  // offset: 0x98
     f32 mCircleAngleAdd;  // offset: 0x9c
+};
+
+class cPolygon : public cMatrixParticle
+{
+public:
+    struct CLOTH_POLYGON_PARAM;
+    struct ADHESION_PARAM;
+public:
+    using CLOTH_POLYGON_PARAM = cPolygon::CLOTH_POLYGON_PARAM;
+    using ADHESION_PARAM = cPolygon::ADHESION_PARAM;
+public:
+    struct CLOTH_POLYGON_PARAM
+    {
+    public:
+        u32 ChainNum : 8;  // offset: 0x0
+        u32 VertexNum : 8;  // offset: 0x0
+        u32 Offset : 16;  // offset: 0x0
+    };
+public:
+    struct ADHESION_PARAM
+    {
+    public:
+        u32 InfoNum : 16;  // offset: 0x0
+        u32 UpdateFlag : 8;  // offset: 0x0
+        u32 Param0803 : 8;  // offset: 0x0
+    };
+public:
+    bool initAnim(rEffectAnim* pAnim, const cParticleAnimParam& Param);
+    void initTexScrollWorkOffset(u32 Offset);
+    void initSrcColor(const MtColor& Color);
+    void initSrcColorKeyframeRate(u32 Rate);
+    void initColor(const MtColor& Color);
+    void initWidth(f32 Width, f32 WidthAdd);
+    void initHeight(f32 Height, f32 HeightAdd);
+    cEffectAnim* getAnim();
+    f32 getPatNoKeyframeRate() const;
+    u32 getTexScrollWorkOffset() const;
+    bool isTexScroll() const;
+    const MtColor& getSrcColor() const;
+    const MtColor& getCurColor() const;
+    MtColor* getCurColorPtr();
+    u32 getSrcColorKeyframeRate() const;
+    f32 getCurWidth() const;
+    f32 getWidthAdd() const;
+    f32 getHeightAdd() const;
+    f32 getNextWidth() const;
+    f32 getNextHeight() const;
+    f32 getTangentCoef() const;
+    u32 getBinormalFlag() const;
+    u32 getTangentFlag() const;
+    void setSrcColor(const MtColor& Color);
+    void setCurColor(const MtColor& Color);
+    void setCurWidth(f32 Width);
+    void setCurHeight(f32 Height);
+    void updatePatNoRate();
+    void updateCurColor();
+    rEffectAnim::SEQ_PAT* getSeqPat(rEffectAnim* pAnim, f32 InpRate) const;
+    MtFloat2 interpolateTexScrollOffset(f32 InpRate) const;
+    MtColor interpolateColor(s32 IntInpRate) const;
+    f32 interpolateWidth(f32 InpRate) const;
+    f32 interpolateHeight(f32 InpRate) const;
+    void initAdhesion();
+    void setAdhesionSizeUpdate();
+    void setAlwaysAdhesionUpdate();
+    void clearAdhesionUpdate();
+    void setAdhesionInfoNum(u32 Num);
+    bool isAdhesionUpdate() const;
+    u32 getAdhesionInfoNum() const;
+    void initClothPolygon(rEffectList::EFL_PARTICLE_CLOTH_POLYGON* pClothPolygonParam);
+    u32 getClothPolygonChainNum() const;
+    u32 getClothPolygonVertexNum() const;
+    u32 getClothPolygonOffset() const;
+    void drawClothPolygon(cPrim* pPrim, MtVector3* pPosBuff, rEffectAnim::SEQ_PAT* pSeqPat, const cClothPolygonDrawParam& DrawParam);
+protected:
+    cEffectAnim mAnim;  // offset: 0xd0
+    f32 mWidth[2];  // offset: 0xe0
+    f32 mHeight[2];  // offset: 0xe8
+    MtColor mColor[2];  // offset: 0xf0
+    f32 mPatNoRate[2];  // offset: 0xf8
+    f32 mTangentCoef;  // offset: 0x100
+    u32 mBinormalFlag : 8;  // offset: 0x104
+    u32 mTangentFlag : 8;  // offset: 0x104
+    u32 mTexScrollWorkOffset : 16;  // offset: 0x104
+    union
+    {
+    public:
+        cPolygon::CLOTH_POLYGON_PARAM mClothPolygonParam;  // offset: 0x0
+        cPolygon::ADHESION_PARAM mAdhesionParam;  // offset: 0x0
+    };  // offset: 0x108
+    u32 mSrcColorKeyframeRate : 16;  // offset: 0x10c
+    u32 mPolygon16ee : 16;  // offset: 0x10c
+    MtColor mSrcColor;  // offset: 0x110
+    f32 mWidthAdd;  // offset: 0x114
+    f32 mHeightAdd;  // offset: 0x118
+    f32 mPatNoKeyframeRate;  // offset: 0x11c
 };
 
 class cParticleMoveAdd : public cParticleMoveBase

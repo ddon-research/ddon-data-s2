@@ -297,3 +297,23 @@ inline sKeyboardExt::cKeyArray::cKeyArray() {
     this->mKey0 = 0;
     this->mKey1 = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sKeyboardExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sKeyboardExt::DTI);
+}
+
+inline void sKeyboardExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sKeyboardExt::DTI)->memFree(p_addr);
+}
+
+inline void* sKeyboardExt::cKeyArray::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sKeyboardExt::cKeyArray::DTI)->memAlloc(sz, align, ::sKeyboardExt::cKeyArray::DTI.::MtDTI::getID());
+}
+
+inline void sKeyboardExt::cKeyArray::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sKeyboardExt::cKeyArray::DTI)->memFree(p_addr);
+}

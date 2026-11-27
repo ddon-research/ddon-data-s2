@@ -231,3 +231,19 @@ inline void cAttackParam::operator delete[](void* p_addr) {
 inline void* cAttackParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAttackParam::DTI)->memAlloc(sz, align, ::cAttackParam::DTI.::MtDTI::getID());
 }
+
+inline MtAllocator* cAttackParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cAttackParam::DTI);
+}
+
+inline void cAttackParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAttackParam::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* rAttackParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rAttackParam::DTI);
+}
+
+inline void rAttackParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAttackParam::DTI)->memFree(p_addr);
+}

@@ -27,12 +27,13 @@
 #define DDON_STUB(name)
 #endif
 
-const MtDTI& nGUIItem::cItem::getDTI() const {
-    return nGUIItem::cItem::DTI;
+ElementList::ElementList(const cCraftParam& craftParam) {
+    DDON_STUB("ElementList::ElementList")
+    /* stub */
 }
 
-inline void* nGUIItem::cItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nGUIItem::cItem::DTI)->memAlloc(sz, align, ::nGUIItem::cItem::DTI.getID());
+const MtDTI& nGUIItem::cItem::getDTI() const {
+    return nGUIItem::cItem::DTI;
 }
 
 nGUIItem::cItem::~cItem() {
@@ -330,10 +331,6 @@ MtObject* nGUIItem::cItem::MyDTI::newInstance() const {
 
 const MtDTI& nGUIItem::cItemList::getDTI() const {
     return nGUIItem::cItemList::DTI;
-}
-
-inline void nGUIItem::cItemList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nGUIItem::cItemList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) nGUIItem::cItemList::~cItemList() {

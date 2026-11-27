@@ -204,7 +204,11 @@ namespace MtCollisionUtil {
         void* memAlloc(size_t s);
         void memFree(void* padr);
         virtual void clear();  // vtable slot 2
+        type& add(const type& obj);
         void reserve(u32 siz);
+        type& operator[](u32 index);
+        const type& at_const(u32 index) const;
+        void erase(u32 index);
         type& getElem(u32 index);
     };
 }  // namespace MtCollisionUtil
@@ -312,4 +316,24 @@ inline void* MtCollisionUtil::MtFuncBase::operator new(size_t sz, void* p_addr) 
 
 inline MtCollisionUtil::MtFuncBase::MtFuncBase() {
     this->mpName = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void MtCollisionUtil::MtArrayEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtArrayEx::DTI)->memFree(p_addr);
+}
+
+inline void MtCollisionUtil::MtDtiObject::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDtiObject::DTI)->memFree(p_addr);
+}
+
+inline void MtCollisionUtil::MtDtiSelecterIntermediate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDtiSelecterIntermediate::DTI)->memFree(p_addr);
+}
+
+inline void* MtCollisionUtil::MtFuncBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtFuncBase::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtFuncBase::DTI.::MtDTI::mID);
 }

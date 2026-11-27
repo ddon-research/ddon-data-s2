@@ -15,19 +15,6 @@ const MtDTI& rLanguageResIDConverter::getDTI() const {
     return rLanguageResIDConverter::DTI;
 }
 
-inline void* rLanguageResIDConverter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memAlloc(sz, align, rLanguageResIDConverter::DTI.getID());
-}
-
-inline void rLanguageResIDConverter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLanguageResIDConverter::DTI)->memFree(p_addr);
-}
-
-inline rLanguageResIDConverter::rLanguageResIDConverter() {
-    setAttribute(16u);
-    mpHeader = nullptr;
-}
-
 rLanguageResIDConverter::~rLanguageResIDConverter() {
     if (mpHeader == nullptr) {
         return;

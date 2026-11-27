@@ -19,10 +19,6 @@ const MtDTI& cGUIMessageAnalyzer::getDTI() const {
     return cGUIMessageAnalyzer::DTI;
 }
 
-inline void cGUIMessageAnalyzer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIMessageAnalyzer::DTI)->memFree(p_addr);
-}
-
 cGUIMessageAnalyzer::cGUIMessageAnalyzer(cGUIInstMessage* pInstance, s32 pageIndex) {
     DDON_STUB("cGUIMessageAnalyzer::cGUIMessageAnalyzer")
     /* stub */

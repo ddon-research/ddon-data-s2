@@ -2,10 +2,8 @@
 #include <new>
 #include <string.h>
 #include "cPacket.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #ifndef DDON_STUB
@@ -14,14 +12,6 @@
 
 const MtDTI& CPacketDataBase::getDTI() const {
     return CPacketDataBase::DTI;
-}
-
-inline void* CPacketDataBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CPacketDataBase::DTI)->memAlloc(sz, align, CPacketDataBase::DTI.getID());
-}
-
-inline void CPacketDataBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(CPacketDataBase::DTI)->memFree(p_addr);
 }
 
 inline CPacketDataBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

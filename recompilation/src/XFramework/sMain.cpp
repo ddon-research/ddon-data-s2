@@ -1,5 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <kernel.h>
+#include <stdlib.h>
 #include "sMain.h"
 #include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
@@ -17,6 +20,7 @@
 #include "../MT/MtSynchronize.h"
 #include "cResource.h"
 #include "cSystem.h"
+#include "nSyncPoint.h"
 #include "sApp.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -24,10 +28,6 @@
 
 const MtDTI& sMain::getDTI() const {
     return sMain::DTI;
-}
-
-inline void sMain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sMain::DTI)->memFree(p_addr);
 }
 
 sMain::~sMain() {
@@ -194,9 +194,19 @@ void sMain::skip() {
     mSkip = 2;
 }
 
-__attribute__((weak)) u32 sMain::jobLoop(sMain::JOB_THREAD* ph) {
-    DDON_STUB("sMain::jobLoop")
-    return {};
+u32 sMain::jobLoop(sMain::JOB_THREAD* ph) {
+    ph->active = true;
+    const u64 wakeup_bit = 1ul << static_cast<unsigned long>(static_cast<unsigned char>(ph->job_index * 2u) & 63);
+    for (const u64 sleep_bit = 1ul << static_cast<unsigned long>(static_cast<unsigned char>((ph->job_index * 2u) + 1u) & 63);;) {
+        if (ph->exit) {
+            break;
+        } else {
+            sceKernelWaitEventFlag(mJobThreadEventFlag, wakeup_bit, 33u, static_cast<uint64_t*>(nullptr), static_cast<SceKernelUseconds*>(nullptr));
+            sMain::jobProc(ph);
+            sceKernelSetEventFlag(mJobThreadEventFlag, sleep_bit);
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) u32 sMain::delayJobLoop(sMain::JOB_THREAD* ph) {
@@ -219,9 +229,64 @@ __attribute__((weak)) void sMain::jobProc(const sMain::JOB_THREAD* ph) {
     /* stub */
 }
 
-__attribute__((weak)) sMain::JOB_WORK_PARAM* sMain::getDelayJob(JOBHANDLE* phandle) {
-    DDON_STUB("sMain::getDelayJob")
-    return nullptr;
+sMain::JOB_WORK_PARAM* sMain::getDelayJob(JOBHANDLE* phandle) {
+    sceKernelWaitSema(mDelayJobSemaphore.mHandle, 1, static_cast<SceKernelUseconds*>(nullptr));
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        JOBHANDLE jobhandle = mDelayJobReadPt;
+        if (mDelayJobWritePt == jobhandle) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        } else {
+            if (jobhandle < mDelayJobWritePt) {
+                mDelayJobReadPt = jobhandle + 1ul;
+                *phandle = jobhandle;
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return &mDelayJob[jobhandle & 4095ul];
+            }
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+        return nullptr;
+    } else {
+        JOBHANDLE jobhandle = mDelayJobReadPt;
+        if (mDelayJobWritePt == jobhandle) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        } else {
+            if (jobhandle < mDelayJobWritePt) {
+                mDelayJobReadPt = jobhandle + 1ul;
+                *phandle = jobhandle;
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return &mDelayJob[jobhandle & 4095ul];
+            }
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+        return nullptr;
+    }
 }
 
 inline sMain::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

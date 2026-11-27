@@ -1,6 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "sBazaarManager.h"
+#include "Protocol/PacketData/Bazaar.h"
 #include "Protocol/PacketData/Character.h"
 #include "Protocol/PacketData/Common.h"
 #include "Protocol/PacketData/Item.h"
@@ -34,16 +35,8 @@ const MtDTI& sBazaarManager::getDTI() const {
     return sBazaarManager::DTI;
 }
 
-inline MtAllocator* sBazaarManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::DTI);
-}
-
 void* sBazaarManager::operator new(size_t sz, u32 align) {
     return sBazaarManager::getAllocator()->memAlloc(sz, align, sBazaarManager::DTI.getID());
-}
-
-inline void sBazaarManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::DTI)->memFree(p_addr);
 }
 
 sBazaarManager::sBazaarManager() {
@@ -425,65 +418,6 @@ void sBazaarManager::reqBazaarCharList() {
     }
 }
 
-inline void sBazaarManager::moveBazaarCharList() {
-    switch (mBazaarCharListTaskRno - 1u) {
-        case 0:
-        {
-            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->getBazaarExhibitPossibleNum()) {
-                mBazaarCharListTaskRno = 2;
-            } else {
-                mBazaarCharListTaskRno = 5;
-            }
-            break;
-        }
-        case 1:
-        {
-            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[440] != sNetworkExt::NET_STAT_REQ) {
-                if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[440] == sNetworkExt::NET_STAT_ERROR) {
-                    mBazaarCharListTaskRno = 5;
-                } else {
-                    mBazaarCharListTaskRno = 3;
-                }
-            }
-            break;
-        }
-        case 2:
-        {
-            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->getBazaarCharacterInfo()) {
-                mBazaarCharListTaskRno = 4;
-            } else {
-                mBazaarCharListTaskRno = 5;
-            }
-            break;
-        }
-        case 3:
-        {
-            if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[430] != sNetworkExt::NET_STAT_REQ) {
-                if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[430] == sNetworkExt::NET_STAT_ERROR) {
-                    mBazaarCharListTaskRno = 5;
-                } else {
-                    mBazaarCharListTaskRno = 6;
-                }
-            }
-            break;
-        }
-        case 4:
-        {
-            mBazaarCharListTaskRno = 0;
-            break;
-        }
-        case 5:
-        {
-            mBazaarCharListTaskRno = 0;
-            break;
-        }
-        default:
-        {
-            break;
-        }
-    }
-}
-
 __attribute__((weak)) void sBazaarManager::setBazaarCharListToServer(void* packet) {
     DDON_STUB("sBazaarManager::setBazaarCharListToServer")
     /* stub */
@@ -689,20 +623,6 @@ __attribute__((weak)) bool sBazaarManager::reqGetAnExhibitItemProceeds() {
     return {};
 }
 
-inline void sBazaarManager::moveGetAnExhibitItemProceeds() {
-    if (mGetAnExhibitItemProceedsReqResult != 1) {
-        return;
-    }
-    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[437] == sNetworkExt::NET_STAT_REQ) {
-        return;
-    }
-    if (static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mStatus[437] == sNetworkExt::NET_STAT_ERROR) {
-        mGetAnExhibitItemProceedsReqResult = 3;
-    } else {
-        mGetAnExhibitItemProceedsReqResult = 2;
-    }
-}
-
 __attribute__((weak)) void sBazaarManager::setBazaarGetAnExhibitItemProceedsToServer(void* packet) {
     DDON_STUB("sBazaarManager::setBazaarGetAnExhibitItemProceedsToServer")
     /* stub */
@@ -770,14 +690,6 @@ __attribute__((weak)) MtObject* sBazaarManager::MyDTI::newInstance() const {
 
 const MtDTI& sBazaarManager::cBazaarCharListCtrl::getDTI() const {
     return sBazaarManager::cBazaarCharListCtrl::DTI;
-}
-
-inline void* sBazaarManager::cBazaarCharListCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarCharListCtrl::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarCharListCtrl::DTI.getID());
-}
-
-inline void sBazaarManager::cBazaarCharListCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarCharListCtrl::DTI)->memFree(p_addr);
 }
 
 sBazaarManager::cBazaarCharListCtrl::~cBazaarCharListCtrl() {
@@ -849,10 +761,6 @@ const MtDTI& sBazaarManager::cBazaarCharListData::getDTI() const {
     return sBazaarManager::cBazaarCharListData::DTI;
 }
 
-inline void* sBazaarManager::cBazaarCharListData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarCharListData::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarCharListData::DTI.getID());
-}
-
 sBazaarManager::cBazaarCharListData::~cBazaarCharListData() {
 }
 
@@ -884,14 +792,6 @@ const MtDTI& sBazaarManager::cBazaarProceedsCtrl::getDTI() const {
     return sBazaarManager::cBazaarProceedsCtrl::DTI;
 }
 
-inline void* sBazaarManager::cBazaarProceedsCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarProceedsCtrl::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarProceedsCtrl::DTI.getID());
-}
-
-inline void sBazaarManager::cBazaarProceedsCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarProceedsCtrl::DTI)->memFree(p_addr);
-}
-
 sBazaarManager::cBazaarProceedsCtrl::~cBazaarProceedsCtrl() {
 }
 
@@ -909,14 +809,6 @@ MtObject* sBazaarManager::cBazaarProceedsCtrl::MyDTI::newInstance() const {
 
 const MtDTI& sBazaarManager::cBazaarItemListCtrl::getDTI() const {
     return sBazaarManager::cBazaarItemListCtrl::DTI;
-}
-
-inline void* sBazaarManager::cBazaarItemListCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemListCtrl::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarItemListCtrl::DTI.getID());
-}
-
-inline void sBazaarManager::cBazaarItemListCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemListCtrl::DTI)->memFree(p_addr);
 }
 
 sBazaarManager::cBazaarItemListCtrl::~cBazaarItemListCtrl() {
@@ -1003,14 +895,6 @@ const MtDTI& sBazaarManager::cBazaarItemListData::getDTI() const {
     return sBazaarManager::cBazaarItemListData::DTI;
 }
 
-inline void* sBazaarManager::cBazaarItemListData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemListData::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarItemListData::DTI.getID());
-}
-
-inline void sBazaarManager::cBazaarItemListData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemListData::DTI)->memFree(p_addr);
-}
-
 void sBazaarManager::cBazaarItemListData::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240ID", &mItemId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mpItemParam", reinterpret_cast<MtObject* *>(&mpItemParam), 0u, 0u);
@@ -1027,14 +911,6 @@ MtObject* sBazaarManager::cBazaarItemListData::MyDTI::newInstance() const {
 
 const MtDTI& sBazaarManager::cBazaarItemInfoCtrl::getDTI() const {
     return sBazaarManager::cBazaarItemInfoCtrl::DTI;
-}
-
-inline void* sBazaarManager::cBazaarItemInfoCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemInfoCtrl::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarItemInfoCtrl::DTI.getID());
-}
-
-inline void sBazaarManager::cBazaarItemInfoCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemInfoCtrl::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) sBazaarManager::cBazaarItemInfoCtrl::~cBazaarItemInfoCtrl() {
@@ -1221,10 +1097,6 @@ const MtDTI& sBazaarManager::cBazaarItemInfoData::getDTI() const {
     return sBazaarManager::cBazaarItemInfoData::DTI;
 }
 
-inline void* sBazaarManager::cBazaarItemInfoData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemInfoData::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarItemInfoData::DTI.getID());
-}
-
 sBazaarManager::cBazaarItemInfoData::~cBazaarItemInfoData() {
 }
 
@@ -1255,14 +1127,6 @@ const MtDTI& sBazaarManager::cBazaarItemHistoryData::getDTI() const {
     return sBazaarManager::cBazaarItemHistoryData::DTI;
 }
 
-inline void* sBazaarManager::cBazaarItemHistoryData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemHistoryData::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarItemHistoryData::DTI.getID());
-}
-
-inline void sBazaarManager::cBazaarItemHistoryData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemHistoryData::DTI)->memFree(p_addr);
-}
-
 void sBazaarManager::cBazaarItemHistoryData::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240ID", &mItemId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mpItemParam", reinterpret_cast<MtObject* *>(&mpItemParam), 0u, 0u);
@@ -1280,14 +1144,6 @@ MtObject* sBazaarManager::cBazaarItemHistoryData::MyDTI::newInstance() const {
 
 const MtDTI& sBazaarManager::cBazaarItemPrimLimit::getDTI() const {
     return sBazaarManager::cBazaarItemPrimLimit::DTI;
-}
-
-inline void* sBazaarManager::cBazaarItemPrimLimit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemPrimLimit::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarItemPrimLimit::DTI.getID());
-}
-
-inline void sBazaarManager::cBazaarItemPrimLimit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarItemPrimLimit::DTI)->memFree(p_addr);
 }
 
 void sBazaarManager::cBazaarItemPrimLimit::createProperty(MtPropertyList& s) {
@@ -1330,14 +1186,6 @@ MtObject* sBazaarManager::cBazaarItemPrimLimit::MyDTI::newInstance() const {
 
 const MtDTI& sBazaarManager::cBazaarExhibitItemCtrl::getDTI() const {
     return sBazaarManager::cBazaarExhibitItemCtrl::DTI;
-}
-
-inline void* sBazaarManager::cBazaarExhibitItemCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarExhibitItemCtrl::DTI)->memAlloc(sz, align, sBazaarManager::cBazaarExhibitItemCtrl::DTI.getID());
-}
-
-inline void sBazaarManager::cBazaarExhibitItemCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBazaarManager::cBazaarExhibitItemCtrl::DTI)->memFree(p_addr);
 }
 
 void sBazaarManager::cBazaarExhibitItemCtrl::createProperty(MtPropertyList& s) {

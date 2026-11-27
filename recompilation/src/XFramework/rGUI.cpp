@@ -36,14 +36,6 @@ const MtDTI& rGUI::getDTI() const {
     return rGUI::DTI;
 }
 
-inline void* rGUI::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rGUI::DTI)->memAlloc(sz, align, rGUI::DTI.mID);
-}
-
-inline void rGUI::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGUI::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rGUI::~rGUI() {
         clear();
 }

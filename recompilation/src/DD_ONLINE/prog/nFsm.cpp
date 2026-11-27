@@ -31,16 +31,8 @@ const MtDTI& nFsm::cCameraCtrl::getDTI() const {
     return nFsm::cCameraCtrl::DTI;
 }
 
-inline MtAllocator* nFsm::cCameraCtrl::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nFsm::cCameraCtrl::DTI);
-}
-
 void* nFsm::cCameraCtrl::operator new(size_t sz, u32 align) {
     return ::nFsm::cCameraCtrl::getAllocator()->memAlloc(sz, align, ::nFsm::cCameraCtrl::DTI.getID());
-}
-
-inline void nFsm::cCameraCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nFsm::cCameraCtrl::DTI)->memFree(p_addr);
 }
 
 bool nFsm::cCameraCtrl::isCameraEnded() const {

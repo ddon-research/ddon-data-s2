@@ -31,16 +31,8 @@ const MtDTI& cpFsmCtrl::getDTI() const {
     return cpFsmCtrl::DTI;
 }
 
-inline MtAllocator* cpFsmCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpFsmCtrl::DTI);
-}
-
 void* cpFsmCtrl::operator new(size_t sz, u32 align) {
     return cpFsmCtrl::getAllocator()->memAlloc(sz, align, cpFsmCtrl::DTI.getID());
-}
-
-inline void cpFsmCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpFsmCtrl::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cpFsmCtrl::setupFSM(MT_CTSTR filePath) {

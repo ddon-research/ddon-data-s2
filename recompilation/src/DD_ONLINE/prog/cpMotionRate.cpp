@@ -15,16 +15,8 @@ const MtDTI& cpMotionRate::getDTI() const {
     return cpMotionRate::DTI;
 }
 
-inline MtAllocator* cpMotionRate::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpMotionRate::DTI);
-}
-
 void* cpMotionRate::operator new(size_t sz, u32 align) {
     return cpMotionRate::getAllocator()->memAlloc(sz, align, cpMotionRate::DTI.getID());
-}
-
-inline void cpMotionRate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpMotionRate::DTI)->memFree(p_addr);
 }
 
 cpMotionRate::cpMotionRate() {

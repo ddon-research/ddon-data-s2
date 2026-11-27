@@ -33,6 +33,7 @@ class MtPropertyList;
 class MtQuaternion;
 class MtVector3;
 class MtVector4;
+class aTitle;
 class cCommonSkyFogData;
 class cDayNightColorFogParam;
 class cDayNightLightParam;
@@ -73,10 +74,6 @@ class uSkyInfiniteLight;
 class uSkySpotLight;
 class uSkyStableShadow;
 
-// Declarations
-class cCustomWeatherParam;
-class sWeatherManager;
-
 enum CUSTOM_WEATHER_FLAG
 {
     CUSTOM_WEATHER_FLAG_ENABLE = 0,
@@ -95,6 +92,10 @@ enum CUSTOM_WEATHER_FLAG
     CUSTOM_WEATHER_FLAG_DISABLE_SCRL_ZONE = 13,
     CUSTOM_WEATHER_FLAG_NUM = 14,
 };
+
+// Declarations
+class cCustomWeatherParam;
+class sWeatherManager;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -202,6 +203,7 @@ public:
 
 class sWeatherManager : public cSystem
 {
+    friend class aTitle;
     friend class cOmControl;
 public:
     enum WEATHER_PHASE
@@ -847,4 +849,88 @@ inline void sWeatherManager::initZoneIndoorParam() {
     this->mZoneIsUseSkyColorFog = false;
     this->mZoneIsUseSkyColorFogOld = false;
     this->mZoneSkyColorFogUseFrame = 30.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../generated/shared/nDDOMath.h"
+#include "sGame.h"
+
+inline void cCustomWeatherParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCustomWeatherParam::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sWeatherManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sWeatherManager::DTI);
+}
+
+inline void sWeatherManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sWeatherManager::DTI)->memFree(p_addr);
+}
+
+inline void sWeatherManager::updateWeatherTimeSync() {
+    this->mWeatherTime = (::sGame::mpInstance)->::sGame::getGameTime();
+}
+
+inline void sWeatherManager::initLightZoneRes() {
+    this->mLightAndFogZoneMultiListener.mStack.::cZoneMultiStack::releaseZoneAll();
+    this->mLightAndFogZoneMultiListener.mStack.::cZoneMultiStack::addZone(this->mpLightAndFogZone.mpPtr, ::MtVector3::Zero);
+}
+
+inline void sWeatherManager::eraseLightZoneRes() {
+    this->mLightAndFogZoneMultiListener.mStack.::cZoneMultiStack::releaseZoneAll();
+}
+
+inline void sWeatherManager::updateWaterLRate() {
+    this->mWaterLRate = ::nDDOMath::lerp(((this->mpWeatherInfomOld == nullptr) ? (&this->WeatherInfoNone) : this->mpWeatherInfomOld)->mWaterLRate, ((this->mpWeatherInfoNow == nullptr) ? (&this->WeatherInfoNone) : this->mpWeatherInfoNow)->mWaterLRate, this->mWeatherBlend);
+}
+
+inline void sWeatherManager::constructorZoneIndoor() {
+    this->mZoneIndoorListenerScr.::cZoneMultiListener::mpCallbackOwner = static_cast<MtObject*>(this);
+    this->mZoneIndoorListenerScr.::cZoneMultiListener::mpCallbackFunc = static_cast<cZoneMultiListener::CallbackFunc>(&::sWeatherManager::callbackZoneIndoorNotifiedScr);
+    this->mZoneIndoorListenerEfc.::cZoneMultiListener::mpCallbackOwner = static_cast<MtObject*>(this);
+    this->mZoneIndoorListenerEfc.::cZoneMultiListener::mpCallbackFunc = static_cast<cZoneMultiListener::CallbackFunc>(&::sWeatherManager::callbackZoneIndoorNotifiedEfc);
+    this->mZoneIndoorListenerSnd.::cZoneMultiListener::mpCallbackOwner = static_cast<MtObject*>(this);
+    this->mZoneIndoorListenerSnd.::cZoneMultiListener::mpCallbackFunc = static_cast<cZoneMultiListener::CallbackFunc>(&::sWeatherManager::callbackZoneIndoorNotifiedSnd);
+    this->mZoneIndoorInfiniteLightRate.now = 1.0f;
+    this->mZoneIndoorInfiniteLightRate.to = 1.0f;
+    this->mZoneIndoorInfiniteLightRate.toOld = 1.0f;
+    this->mZoneIndoorInfiniteLightRate.rate = 0.0f;
+    this->mZoneIndoorHemiLightRate.now = 1.0f;
+    this->mZoneIndoorHemiLightRate.to = 1.0f;
+    this->mZoneIndoorHemiLightRate.toOld = 1.0f;
+    this->mZoneIndoorHemiLightRate.rate = 0.0f;
+    this->mZoneIndoorHemiLightRevRate.now = 1.0f;
+    this->mZoneIndoorHemiLightRevRate.to = 1.0f;
+    this->mZoneIndoorHemiLightRevRate.toOld = 1.0f;
+    this->mZoneIndoorHemiLightRevRate.rate = 0.0f;
+    this->mZoneIndoorSubLightRate.now = 1.0f;
+    this->mZoneIndoorSubLightRate.to = 1.0f;
+    this->mZoneIndoorSubLightRate.toOld = 1.0f;
+    this->mZoneIndoorEfcBlend = 0.0f;
+    this->mZoneIndoorSubLightRate.rate = 0.0f;
+    this->mZoneIndoorEfcWeatherOff = false;
+    this->mZoneIndoorLightIn = false;
+    this->mZoneIndoorEfcEpvOff = false;
+    this->mZoneIndoorWindCtrlOff = false;
+    this->mZoneIndoorPosIsCameraToPl = 200.0f;
+    this->mZoneIndoorBlendFrame = 30.0f;
+    this->mZoneIndoorSoundReqNo = 0;
+    this->mZoneIndoorSoundReqNoOld = 0;
+    this->mZoneIsUseSkyColorFog = false;
+    this->mZoneIsUseSkyColorFogOld = false;
+    this->mZoneSkyColorFogUseFrame = 30.0f;
+}
+
+inline void sWeatherManager::eraseZoneIndoor() {
+    this->mZoneIndoorListenerScr.mStack.::cZoneMultiStack::releaseZoneAll();
+    this->mZoneIndoorListenerEfc.mStack.::cZoneMultiStack::releaseZoneAll();
+    this->mZoneIndoorListenerSnd.mStack.::cZoneMultiStack::releaseZoneAll();
+}
+
+inline void sWeatherManager::initZoneIndoorRes() {
+    this->mZoneIndoorListenerScr.mStack.::cZoneMultiStack::releaseZoneAll();
+    this->mZoneIndoorListenerEfc.mStack.::cZoneMultiStack::releaseZoneAll();
+    this->mZoneIndoorListenerSnd.mStack.::cZoneMultiStack::releaseZoneAll();
 }

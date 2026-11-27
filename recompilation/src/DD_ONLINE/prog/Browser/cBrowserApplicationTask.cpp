@@ -3,7 +3,6 @@
 #include "cBrowserApplicationTask.h"
 #include "../../../MT/MtAllocator.h"
 #include "../../../MT/MtDTI.h"
-#include "../../../MT/MtMemoryAllocator.h"
 #include "../../../MT/MtObject.h"
 #include "cBrowserPS4_h.h"
 #ifndef DDON_STUB
@@ -14,41 +13,85 @@ const MtDTI& cBrowserApplicationTask::getDTI() const {
     return cBrowserApplicationTask::DTI;
 }
 
-inline MtAllocator* cBrowserApplicationTask::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cBrowserApplicationTask::DTI);
-}
-
 void* cBrowserApplicationTask::operator new(size_t sz, u32 align) {
     return cBrowserApplicationTask::getAllocator()->memAlloc(sz, align, cBrowserApplicationTask::DTI.getID());
 }
 
-inline void cBrowserApplicationTask::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBrowserApplicationTask::DTI)->memFree(p_addr);
-}
-
 cBrowserApplicationTask::cBrowserApplicationTask(cBrowserPS4* brw) {
-    DDON_STUB("cBrowserApplicationTask::cBrowserApplicationTask")
-    /* stub */
+    m_brw = brw;
+    reset_member();
 }
 
 cBrowserApplicationTask::~cBrowserApplicationTask() {
-    DDON_STUB("cBrowserApplicationTask::~cBrowserApplicationTask")
-    /* stub */
+    if (m_tskidx != 0) {
+        m_tskidx = 0;
+        m_rno0 = 0;
+        m_prm = nullptr;
+        m_brw->pause_end();
+    }
+    m_brw->pause_end();
+    m_ini = 0;
+    m_rno0 = 0;
+    m_tskidx = 0;
+    m_prm = nullptr;
 }
 
-__attribute__((weak)) int cBrowserApplicationTask::initialize() {
-    DDON_STUB("cBrowserApplicationTask::initialize")
-    return {};
+int cBrowserApplicationTask::initialize() {
+    if (m_ini != 0) {
+        if (m_tskidx != 0) {
+            m_tskidx = 0;
+            m_rno0 = 0;
+            m_prm = nullptr;
+            m_brw->pause_end();
+        }
+        m_brw->pause_end();
+        m_ini = 0;
+        m_rno0 = 0;
+        m_tskidx = 0;
+        m_prm = nullptr;
+    }
+    m_ini = 1;
+    return 1;
 }
 
-__attribute__((weak)) void cBrowserApplicationTask::finalize() {
-    DDON_STUB("cBrowserApplicationTask::finalize")
-    /* stub */
+void cBrowserApplicationTask::finalize() {
+    if (m_tskidx != 0) {
+        m_tskidx = 0;
+        m_rno0 = 0;
+        m_prm = nullptr;
+        m_brw->pause_end();
+    }
+    m_brw->pause_end();
+    m_ini = 0;
+    m_rno0 = 0;
+    m_tskidx = 0;
+    m_prm = nullptr;
 }
 
-__attribute__((weak)) void cBrowserApplicationTask::move() {
-    DDON_STUB("cBrowserApplicationTask::move")
-    /* stub */
+void cBrowserApplicationTask::move() {
+    if (m_ini == 0) {
+        return;
+    }
+    if (m_tskidx == 0) {
+        return;
+    }
+    if (m_rno0 != 2) {
+        if (m_rno0 == 1) {
+            m_rno0 = 2;
+        } else {
+            if (m_rno0 == 0) {
+                m_tskidx = 0;
+                m_rno0 = 0;
+                m_prm = nullptr;
+                m_brw->pause_end();
+            }
+        }
+    } else {
+        m_tskidx = 0;
+        m_rno0 = 0;
+        m_prm = nullptr;
+        m_brw->pause_end();
+    }
 }
 
 __attribute__((weak)) void cBrowserApplicationTask::draw() {
@@ -58,8 +101,7 @@ inline cBrowserApplicationTask::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cBrowserApplicationTask::MyDTI cBrowserApplicationTask::DTI("cBrowserApplicationTask", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cBrowserApplicationTask::MyDTI::newInstance() const {
-    DDON_STUB("cBrowserApplicationTask::MyDTI::newInstance")
-    return nullptr;
+MtObject* cBrowserApplicationTask::MyDTI::newInstance() const {
+    return new (16u) cBrowserApplicationTask;
 }
 

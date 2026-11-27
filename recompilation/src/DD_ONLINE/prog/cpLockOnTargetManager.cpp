@@ -25,20 +25,14 @@
 #define DDON_STUB(name)
 #endif
 
+void elf_v_Z29GUIAIM_TARGET_MARKER_SAFE_ENDRj(unsigned int&) __asm__("_Z29GUIAIM_TARGET_MARKER_SAFE_ENDRj");
+
 const MtDTI& cpLockOnTargetManager::getDTI() const {
     return cpLockOnTargetManager::DTI;
 }
 
-inline MtAllocator* cpLockOnTargetManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpLockOnTargetManager::DTI);
-}
-
 void* cpLockOnTargetManager::operator new(size_t sz, u32 align) {
     return cpLockOnTargetManager::getAllocator()->memAlloc(sz, align, cpLockOnTargetManager::DTI.getID());
-}
-
-inline void cpLockOnTargetManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpLockOnTargetManager::DTI)->memFree(p_addr);
 }
 
 cpLockOnTargetManager::cpLockOnTargetManager() {
@@ -54,14 +48,33 @@ cpLockOnTargetManager::~cpLockOnTargetManager() {
     mprSE = nullptr;
 }
 
-__attribute__((weak)) void cpLockOnTargetManager::init(u32 maxLockOnNum, bool isSameMulti, nGUIAim::TARGET_MARKER_TYPE targetMarkerType, nDDOModel::LOCKON_TARGET_TYPE lockOnTargetType) {
-    DDON_STUB("cpLockOnTargetManager::init")
-    /* stub */
+void cpLockOnTargetManager::init(u32 maxLockOnNum, bool isSameMulti, nGUIAim::TARGET_MARKER_TYPE targetMarkerType, nDDOModel::LOCKON_TARGET_TYPE lockOnTargetType) {
+    mMaxNum = maxLockOnNum;
+    mNextIndex = 0;
+    mTargetMarkerIdNow = 0xFFFFFFFF;
+    mTargetMarkerIds.elems[6] = 0xFFFFFFFF;
+    mTargetMarkerIds.elems[7] = 0xFFFFFFFF;
+    mTargetMarkerIds.elems[4] = 0xFFFFFFFF;
+    mTargetMarkerIds.elems[5] = 0xFFFFFFFF;
+    mTargetMarkerIds.elems[2] = 0xFFFFFFFF;
+    mTargetMarkerIds.elems[3] = 0xFFFFFFFF;
+    mTargetMarkerIds.elems[0] = 0xFFFFFFFF;
+    mTargetMarkerIds.elems[1] = 0xFFFFFFFF;
+    mpLockOnLast = nullptr;
+    mTargetMarkerType = targetMarkerType;
+    mLockOnType = lockOnTargetType;
+    mIsInit = true;
+    mIsSameMulti = isSameMulti;
+    mEffectiveDist = 3000.0f;
+    mMaterialFlag = 0xFFFFFFFF;
 }
 
-__attribute__((weak)) void cpLockOnTargetManager::setMaxLockOnNum(u32 num) {
-    DDON_STUB("cpLockOnTargetManager::setMaxLockOnNum")
-    /* stub */
+void cpLockOnTargetManager::setMaxLockOnNum(u32 num) {
+    mMaxNum = num;
+    if (mPtrs.elems[(mNextIndex <= 7u) ? mNextIndex : 0u].mpPtr == nullptr) {
+        return;
+    }
+    mNextIndex = ((mNextIndex + 1u) < num) ? (mNextIndex + 1u) : 0u;
 }
 
 __attribute__((weak)) void cpLockOnTargetManager::add(const cpLockOn::cLockOnTarget* p, bool isEffect) {
@@ -101,9 +114,10 @@ void cpLockOnTargetManager::updateEfcHandle() {
     static_cast<sGUIExt*>(sGUI::getInstance())->updateAimTargetMarkerId(mTargetMarkerIdNow);
 }
 
-__attribute__((weak)) void cpLockOnTargetManager::end(u32 index) {
-    DDON_STUB("cpLockOnTargetManager::end")
-    /* stub */
+void cpLockOnTargetManager::end(u32 index) {
+    mPtrs.elems[(index <= 7u) ? index : 0u].mpPtr = nullptr;
+    elf_v_Z29GUIAIM_TARGET_MARKER_SAFE_ENDRj(mTargetMarkerIds.elems[(index <= 7u) ? index : 0u]);
+    elf_v_Z29GUIAIM_TARGET_MARKER_SAFE_ENDRj(mTargetMarkerIdNow);
 }
 
 __attribute__((weak)) void cpLockOnTargetManager::endAll() {

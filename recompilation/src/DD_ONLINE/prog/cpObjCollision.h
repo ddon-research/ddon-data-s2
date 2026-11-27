@@ -45,6 +45,7 @@ class rAttackParam;
 class rBitTable;
 class rObjCollision;
 class uDDOModel;
+class uNpc;
 class uShlBase;
 class uShlJob08CS13;
 
@@ -52,6 +53,7 @@ class uShlJob08CS13;
 class cHitInfo;
 class cModelList;
 class cpObjCollisionBase;
+template <unsigned int chachSize, unsigned int chachTempSize> class cpObjCollisionInst;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -171,6 +173,7 @@ class cpObjCollisionBase : public cpComponent
     friend class cpShlShotCtrl;
     friend class cpStatusChange;
     friend class uDDOModel;
+    friend class uNpc;
     friend class uShlBase;
     friend class uShlJob08CS13;
 public:
@@ -422,6 +425,38 @@ public:
     static MyDTI DTI;
 };
 
+template <unsigned int chachSize, unsigned int chachTempSize>
+class cpObjCollisionInst : public cpObjCollisionBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cpObjCollisionInst();
+public:
+    cObjHitCache mHitCacheInst[64];  // offset: 0x5a0
+    nObjCollision::HIT_CACHE_HANDLE mHitCacheTmpInst[6][8];  // offset: 0x1ba0
+    cObjHitCache mHitCacheTmpMergeInst[48];  // offset: 0x1c60
+    static MyDTI DTI;
+};
+
 inline void* cHitInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -470,4 +505,64 @@ inline cpObjCollisionBase::cHitFlag::cHitFlag() {
     this->mCheckedHit = 0;
     this->mAttackHit = 0;
     this->mDamageHit = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cGuardInfo.h"
+#include "rAttackParam.h"
+
+template <unsigned int chachSize, unsigned int chachTempSize>
+const MtDTI& cpObjCollisionInst<chachSize, chachTempSize>::getDTI() const {
+    return cpObjCollisionInst<chachSize, chachTempSize>::DTI;
+}
+
+inline void* cHitInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHitInfo::DTI)->memAlloc(sz, align, ::cHitInfo::DTI.::MtDTI::getID());
+}
+
+inline void cHitInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHitInfo::DTI)->memFree(p_addr);
+}
+
+inline cHitInfo::cHitInfo() {
+    this->mDamage = 0.0f;
+    this->mpDfdGeom = nullptr;
+    this->mpAtkGeom = nullptr;
+    this->mpDfdNode = nullptr;
+    this->mpAtkNode = nullptr;
+    this->mpDfdModel = nullptr;
+    this->mpAtkModel = nullptr;
+    this->mHitPos.x = ::MtVector3::Zero.x;
+    this->mHitPos.y = ::MtVector3::Zero.y;
+    this->mHitPos.z = ::MtVector3::Zero.z;
+    this->mHitPos.pad_ = 0.0f;
+    this->mHitNormal.x = ::MtVector3::AxisX.x;
+    this->mHitNormal.y = ::MtVector3::AxisX.y;
+    this->mHitNormal.z = ::MtVector3::AxisX.z;
+    this->mHitNormal.pad_ = 0.0f;
+    this->mHitStopSlowResultType = 0;
+    this->mAttackReactionType = 1;
+    this->mAtkAdjustUniqueId = 0;
+    this->mpDfdCollGeom = nullptr;
+    this->mpDfdCollNode = nullptr;
+    this->mpGuardInfo = new (16u) ::cGuardInfo;
+    this->mpAttackParam = new (16u) ::cAttackParam;
+}
+
+inline void cModelList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cModelList::DTI)->memFree(p_addr);
+}
+
+inline void cpObjCollisionBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpObjCollisionBase::DTI)->memFree(p_addr);
+}
+
+inline void* cpObjCollisionBase::cHitFlag::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpObjCollisionBase::cHitFlag::DTI)->memAlloc(sz, align, ::cpObjCollisionBase::cHitFlag::DTI.::MtDTI::getID());
+}
+
+inline void cpObjCollisionBase::cHitFlag::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpObjCollisionBase::cHitFlag::DTI)->memFree(p_addr);
 }

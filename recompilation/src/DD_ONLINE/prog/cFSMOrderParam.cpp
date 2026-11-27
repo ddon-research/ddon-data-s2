@@ -23,14 +23,6 @@ const MtDTI& cFSMOrderParam::getDTI() const {
     return cFSMOrderParam::DTI;
 }
 
-inline void* cFSMOrderParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFSMOrderParam::DTI)->memAlloc(sz, align, cFSMOrderParam::DTI.getID());
-}
-
-inline void cFSMOrderParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParam::DTI)->memFree(p_addr);
-}
-
 inline cFSMOrderParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cFSMOrderParam::MyDTI cFSMOrderParam::DTI("cFSMOrderParam", &::cAICopiableParameter::DTI, 8ul, 0u, 0u);
@@ -41,10 +33,6 @@ MtObject* cFSMOrderParam::MyDTI::newInstance() const {
 
 const MtDTI& cFSMOrderParamAreaHit::getDTI() const {
     return cFSMOrderParamAreaHit::DTI;
-}
-
-inline void cFSMOrderParamAreaHit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamAreaHit::DTI)->memFree(p_addr);
 }
 
 cScenario* cFSMOrderParamAreaHit::getScenario() const {
@@ -73,22 +61,12 @@ inline cFSMOrderParamAreaHit::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 cFSMOrderParamAreaHit::MyDTI cFSMOrderParamAreaHit::DTI("cFSMOrderParamAreaHit", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-inline cFSMOrderParamAreaHit::cFSMOrderParamAreaHit() {
-    mAct = 1;
-    mTaskType = 0;
-    mSceNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamAreaHit::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamAreaHit::DTI)->memAlloc(sizeof(cFSMOrderParamAreaHit), 16u, cFSMOrderParamAreaHit::DTI.getID())) cFSMOrderParamAreaHit;
+MtObject* cFSMOrderParamAreaHit::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamAreaHit;
 }
 
 const MtDTI& cFSMOrderParamBGMCommon::getDTI() const {
     return cFSMOrderParamBGMCommon::DTI;
-}
-
-inline void cFSMOrderParamBGMCommon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamBGMCommon::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamBGMCommon::createProperty(MtPropertyList& s) {
@@ -100,17 +78,12 @@ inline cFSMOrderParamBGMCommon::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMOrderParamBGMCommon::MyDTI cFSMOrderParamBGMCommon::DTI("cFSMOrderParamBGMCommon", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMOrderParamBGMCommon::MyDTI::newInstance() const {
-    DDON_STUB("cFSMOrderParamBGMCommon::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMOrderParamBGMCommon::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamBGMCommon;
 }
 
 const MtDTI& cFSMOrderParamBGMRequest::getDTI() const {
     return cFSMOrderParamBGMRequest::DTI;
-}
-
-inline void cFSMOrderParamBGMRequest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamBGMRequest::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamBGMRequest::setRequestEditType(u32 editType) {
@@ -306,41 +279,24 @@ inline cFSMOrderParamBGMRequest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 cFSMOrderParamBGMRequest::MyDTI cFSMOrderParamBGMRequest::DTI("cFSMOrderParamBGMRequest", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-inline cFSMOrderParamBGMRequest::cFSMOrderParamBGMRequest() {
-    mBgmRequestType = 0;
-    mBgmRequestNo = 0;
-    mBgmRequestEditType = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamBGMRequest::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamBGMRequest::DTI)->memAlloc(sizeof(cFSMOrderParamBGMRequest), 16u, cFSMOrderParamBGMRequest::DTI.getID())) cFSMOrderParamBGMRequest;
+MtObject* cFSMOrderParamBGMRequest::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamBGMRequest;
 }
 
 const MtDTI& cFSMOrderParamBGMStop::getDTI() const {
     return cFSMOrderParamBGMStop::DTI;
 }
 
-inline void cFSMOrderParamBGMStop::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamBGMStop::DTI)->memFree(p_addr);
-}
-
 inline cFSMOrderParamBGMStop::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cFSMOrderParamBGMStop::MyDTI cFSMOrderParamBGMStop::DTI("cFSMOrderParamBGMStop", &::cFSMOrderParam::DTI, 8ul, 0u, 0u);
 
-inline cFSMOrderParamBGMStop::cFSMOrderParamBGMStop() {
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamBGMStop::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamBGMStop::DTI)->memAlloc(sizeof(cFSMOrderParamBGMStop), 16u, cFSMOrderParamBGMStop::DTI.getID())) cFSMOrderParamBGMStop;
+MtObject* cFSMOrderParamBGMStop::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamBGMStop;
 }
 
 const MtDTI& cFSMOrderParamCallAnnounce::getDTI() const {
     return cFSMOrderParamCallAnnounce::DTI;
-}
-
-inline void cFSMOrderParamCallAnnounce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamCallAnnounce::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamCallAnnounce::~cFSMOrderParamCallAnnounce() {
@@ -360,22 +316,12 @@ inline cFSMOrderParamCallAnnounce::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 cFSMOrderParamCallAnnounce::MyDTI cFSMOrderParamCallAnnounce::DTI("cFSMOrderParamCallAnnounce", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-inline cFSMOrderParamCallAnnounce::cFSMOrderParamCallAnnounce() {
-    mType = 1;
-    mQuestId = 0;
-    mMsgNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamCallAnnounce::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamCallAnnounce::DTI)->memAlloc(sizeof(cFSMOrderParamCallAnnounce), 16u, cFSMOrderParamCallAnnounce::DTI.getID())) cFSMOrderParamCallAnnounce;
+MtObject* cFSMOrderParamCallAnnounce::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamCallAnnounce;
 }
 
 const MtDTI& cFSMOrderParamCallEvent::getDTI() const {
     return cFSMOrderParamCallEvent::DTI;
-}
-
-inline void cFSMOrderParamCallEvent::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamCallEvent::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamCallEvent::~cFSMOrderParamCallEvent() {
@@ -426,25 +372,12 @@ inline cFSMOrderParamCallEvent::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMOrderParamCallEvent::MyDTI cFSMOrderParamCallEvent::DTI("cFSMOrderParamCallEvent", &::cFSMOrderParam::DTI, 48ul, 0u, 0u);
 
-inline cFSMOrderParamCallEvent::cFSMOrderParamCallEvent() {
-    mStageNo = 0;
-    mEventNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamCallEvent::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamCallEvent::DTI)->memAlloc(sizeof(cFSMOrderParamCallEvent), 16u, cFSMOrderParamCallEvent::DTI.getID())) cFSMOrderParamCallEvent;
+MtObject* cFSMOrderParamCallEvent::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamCallEvent;
 }
 
 const MtDTI& cFSMOrderParamCallEvent::cNpcId::getDTI() const {
     return cFSMOrderParamCallEvent::cNpcId::DTI;
-}
-
-inline void* cFSMOrderParamCallEvent::cNpcId::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFSMOrderParamCallEvent::cNpcId::DTI)->memAlloc(sz, align, cFSMOrderParamCallEvent::cNpcId::DTI.getID());
-}
-
-inline void cFSMOrderParamCallEvent::cNpcId::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamCallEvent::cNpcId::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamCallEvent::cNpcId::createProperty(MtPropertyList& s) {
@@ -471,10 +404,6 @@ const MtDTI& cFSMOrderParamCamera::getDTI() const {
     return cFSMOrderParamCamera::DTI;
 }
 
-inline void cFSMOrderParamCamera::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamCamera::DTI)->memFree(p_addr);
-}
-
 void cFSMOrderParamCamera::createProperty(MtPropertyList& s) {
     this->cAIResource::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "Camera:ActType", &mActType, 0u, 0u);
@@ -494,32 +423,12 @@ inline cFSMOrderParamCamera::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 
 cFSMOrderParamCamera::MyDTI cFSMOrderParamCamera::DTI("cFSMOrderParamCamera", &::cFSMOrderParam::DTI, 32ul, 0u, 0u);
 
-inline cFSMOrderParamCamera::cFSMOrderParamCamera() {
-    mCamId = 0;
-    mCamType = 0;
-    mActType = 0;
-    mCamRes = 0;
-    mCantActPl = false;
-    mIsFsmEvent = true;
-    mStartPosNo = 0;
-    mPlStopTime = 0.0f;
-    mSetPosType = 0;
-    mIsSelfDisplayed = false;
-    mIsEnemyAndNpcDisplayed = false;
-    mIsMessageCleared = false;
-    mIsSelfStopped = false;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamCamera::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamCamera::DTI)->memAlloc(sizeof(cFSMOrderParamCamera), 16u, cFSMOrderParamCamera::DTI.getID())) cFSMOrderParamCamera;
+MtObject* cFSMOrderParamCamera::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamCamera;
 }
 
 const MtDTI& cFSMOrderParamChangeBattleThink::getDTI() const {
     return cFSMOrderParamChangeBattleThink::DTI;
-}
-
-inline void cFSMOrderParamChangeBattleThink::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamChangeBattleThink::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamChangeBattleThink::createProperty(MtPropertyList& s) {
@@ -536,17 +445,12 @@ inline cFSMOrderParamChangeBattleThink::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI*
 
 cFSMOrderParamChangeBattleThink::MyDTI cFSMOrderParamChangeBattleThink::DTI("cFSMOrderParamChangeBattleThink", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMOrderParamChangeBattleThink::MyDTI::newInstance() const {
-    DDON_STUB("cFSMOrderParamChangeBattleThink::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMOrderParamChangeBattleThink::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamChangeBattleThink;
 }
 
 const MtDTI& cFSMOrderParamCheckLayout::getDTI() const {
     return cFSMOrderParamCheckLayout::DTI;
-}
-
-inline void cFSMOrderParamCheckLayout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamCheckLayout::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamCheckLayout::~cFSMOrderParamCheckLayout() {
@@ -566,17 +470,12 @@ inline cFSMOrderParamCheckLayout::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 cFSMOrderParamCheckLayout::MyDTI cFSMOrderParamCheckLayout::DTI("cFSMOrderParamCheckLayout", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMOrderParamCheckLayout::MyDTI::newInstance() const {
-    DDON_STUB("cFSMOrderParamCheckLayout::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMOrderParamCheckLayout::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamCheckLayout;
 }
 
 const MtDTI& cFSMOrderParamCtrlSubSdl::getDTI() const {
     return cFSMOrderParamCtrlSubSdl::DTI;
-}
-
-inline void cFSMOrderParamCtrlSubSdl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamCtrlSubSdl::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamCtrlSubSdl::createProperty(MtPropertyList& s) {
@@ -593,17 +492,12 @@ inline cFSMOrderParamCtrlSubSdl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 cFSMOrderParamCtrlSubSdl::MyDTI cFSMOrderParamCtrlSubSdl::DTI("cFSMOrderParamCtrlSubSdl", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMOrderParamCtrlSubSdl::MyDTI::newInstance() const {
-    DDON_STUB("cFSMOrderParamCtrlSubSdl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMOrderParamCtrlSubSdl::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamCtrlSubSdl;
 }
 
 const MtDTI& cFSMOrderParamFlagCommon::getDTI() const {
     return cFSMOrderParamFlagCommon::DTI;
-}
-
-inline void cFSMOrderParamFlagCommon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamFlagCommon::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamFlagCommon::createProperty(MtPropertyList& s) {
@@ -619,20 +513,12 @@ inline cFSMOrderParamFlagCommon::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 cFSMOrderParamFlagCommon::MyDTI cFSMOrderParamFlagCommon::DTI("cFSMOrderParamFlagCommon", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-inline cFSMOrderParamFlagCommon::cFSMOrderParamFlagCommon() {
-    mFlagNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamFlagCommon::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamFlagCommon::DTI)->memAlloc(sizeof(cFSMOrderParamFlagCommon), 16u, cFSMOrderParamFlagCommon::DTI.getID())) cFSMOrderParamFlagCommon;
+MtObject* cFSMOrderParamFlagCommon::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamFlagCommon;
 }
 
 const MtDTI& cFSMOrderParamFlagQuest::getDTI() const {
     return cFSMOrderParamFlagQuest::DTI;
-}
-
-inline void cFSMOrderParamFlagQuest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamFlagQuest::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamFlagQuest::createProperty(MtPropertyList& s) {
@@ -645,21 +531,12 @@ inline cFSMOrderParamFlagQuest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMOrderParamFlagQuest::MyDTI cFSMOrderParamFlagQuest::DTI("cFSMOrderParamFlagQuest", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-inline cFSMOrderParamFlagQuest::cFSMOrderParamFlagQuest() {
-    mQuestNo = 0;
-    mFlagNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamFlagQuest::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamFlagQuest::DTI)->memAlloc(sizeof(cFSMOrderParamFlagQuest), 16u, cFSMOrderParamFlagQuest::DTI.getID())) cFSMOrderParamFlagQuest;
+MtObject* cFSMOrderParamFlagQuest::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamFlagQuest;
 }
 
 const MtDTI& cFSMOrderParamIsMyQuestFlag::getDTI() const {
     return cFSMOrderParamIsMyQuestFlag::DTI;
-}
-
-inline void cFSMOrderParamIsMyQuestFlag::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamIsMyQuestFlag::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamIsMyQuestFlag::~cFSMOrderParamIsMyQuestFlag() {
@@ -679,22 +556,12 @@ inline cFSMOrderParamIsMyQuestFlag::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps,
 
 cFSMOrderParamIsMyQuestFlag::MyDTI cFSMOrderParamIsMyQuestFlag::DTI("cFSMOrderParamIsMyQuestFlag", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-inline cFSMOrderParamIsMyQuestFlag::cFSMOrderParamIsMyQuestFlag() {
-    mArrayIdx = 0;
-    mQuestId = 0;
-    mFlagNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamIsMyQuestFlag::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamIsMyQuestFlag::DTI)->memAlloc(sizeof(cFSMOrderParamIsMyQuestFlag), 16u, cFSMOrderParamIsMyQuestFlag::DTI.getID())) cFSMOrderParamIsMyQuestFlag;
+MtObject* cFSMOrderParamIsMyQuestFlag::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamIsMyQuestFlag;
 }
 
 const MtDTI& cFSMOrderParamJumpArea::getDTI() const {
     return cFSMOrderParamJumpArea::DTI;
-}
-
-inline void cFSMOrderParamJumpArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamJumpArea::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamJumpArea::createProperty(MtPropertyList& s) {
@@ -707,17 +574,12 @@ inline cFSMOrderParamJumpArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 cFSMOrderParamJumpArea::MyDTI cFSMOrderParamJumpArea::DTI("cFSMOrderParamJumpArea", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMOrderParamJumpArea::MyDTI::newInstance() const {
-    DDON_STUB("cFSMOrderParamJumpArea::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMOrderParamJumpArea::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamJumpArea;
 }
 
 const MtDTI& cFSMOrderParamJumpPos::getDTI() const {
     return cFSMOrderParamJumpPos::DTI;
-}
-
-inline void cFSMOrderParamJumpPos::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamJumpPos::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamJumpPos::~cFSMOrderParamJumpPos() {
@@ -739,24 +601,12 @@ inline cFSMOrderParamJumpPos::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 cFSMOrderParamJumpPos::MyDTI cFSMOrderParamJumpPos::DTI("cFSMOrderParamJumpPos", &::cFSMOrderParam::DTI, 48ul, 0u, 0u);
 
-inline cFSMOrderParamJumpPos::cFSMOrderParamJumpPos() {
-    mJumpType = 1;
-    mJumpStagePosNo = 0;
-    mPos = MtVector3::Zero;
-    mFadeOutTime = 15.0f;
-    mFadeInTime = 15.0f;
-}
-
 __attribute__((weak)) MtObject* cFSMOrderParamJumpPos::MyDTI::newInstance() const {
     return new (MtMemoryAllocator::getAllocator(cFSMOrderParamJumpPos::DTI)->memAlloc(sizeof(cFSMOrderParamJumpPos), 16u, cFSMOrderParamJumpPos::DTI.getID())) cFSMOrderParamJumpPos;
 }
 
 const MtDTI& cFSMOrderParamQuestInfo::getDTI() const {
     return cFSMOrderParamQuestInfo::DTI;
-}
-
-inline void cFSMOrderParamQuestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamQuestInfo::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamQuestInfo::~cFSMOrderParamQuestInfo() {
@@ -776,21 +626,12 @@ inline cFSMOrderParamQuestInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMOrderParamQuestInfo::MyDTI cFSMOrderParamQuestInfo::DTI("cFSMOrderParamQuestInfo", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-inline cFSMOrderParamQuestInfo::cFSMOrderParamQuestInfo() {
-    mQuestType = 0;
-    mQuestId = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamQuestInfo::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamQuestInfo::DTI)->memAlloc(sizeof(cFSMOrderParamQuestInfo), 16u, cFSMOrderParamQuestInfo::DTI.getID())) cFSMOrderParamQuestInfo;
+MtObject* cFSMOrderParamQuestInfo::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamQuestInfo;
 }
 
 const MtDTI& cFSMOrderParamSetCallSe::getDTI() const {
     return cFSMOrderParamSetCallSe::DTI;
-}
-
-inline void cFSMOrderParamSetCallSe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetCallSe::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamSetCallSe::createProperty(MtPropertyList& s) {
@@ -811,16 +652,6 @@ inline cFSMOrderParamSetCallSe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMOrderParamSetCallSe::MyDTI cFSMOrderParamSetCallSe::DTI("cFSMOrderParamSetCallSe", &::cFSMOrderParam::DTI, 48ul, 0u, 0u);
 
-inline cFSMOrderParamSetCallSe::cFSMOrderParamSetCallSe() {
-    mSeId = 0;
-    mTarget = 0;
-    mGroup = -1;
-    mId = -1;
-    mJointNo = -1;
-    mDelayFrame = 0;
-    mPos = MtVector3::Zero;
-}
-
 __attribute__((weak)) MtObject* cFSMOrderParamSetCallSe::MyDTI::newInstance() const {
     return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetCallSe::DTI)->memAlloc(sizeof(cFSMOrderParamSetCallSe), 16u, cFSMOrderParamSetCallSe::DTI.getID())) cFSMOrderParamSetCallSe;
 }
@@ -829,16 +660,8 @@ const MtDTI& cFSMOrderParamSetDispUnit::getDTI() const {
     return cFSMOrderParamSetDispUnit::DTI;
 }
 
-inline MtAllocator* cFSMOrderParamSetDispUnit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cFSMOrderParamSetDispUnit::DTI);
-}
-
 void* cFSMOrderParamSetDispUnit::operator new(size_t sz, u32 align) {
     return cFSMOrderParamSetDispUnit::getAllocator()->memAlloc(sz, align, cFSMOrderParamSetDispUnit::DTI.getID());
-}
-
-inline void cFSMOrderParamSetDispUnit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetDispUnit::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamSetDispUnit::cFSMOrderParamSetDispUnit() {
@@ -870,16 +693,12 @@ inline cFSMOrderParamSetDispUnit::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 cFSMOrderParamSetDispUnit::MyDTI cFSMOrderParamSetDispUnit::DTI("cFSMOrderParamSetDispUnit", &::cFSMOrderParam::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMOrderParamSetDispUnit::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetDispUnit::DTI)->memAlloc(sizeof(cFSMOrderParamSetDispUnit), 16u, cFSMOrderParamSetDispUnit::DTI.getID())) cFSMOrderParamSetDispUnit;
+MtObject* cFSMOrderParamSetDispUnit::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamSetDispUnit;
 }
 
 const MtDTI& cFSMOrderParamSetEffect::getDTI() const {
     return cFSMOrderParamSetEffect::DTI;
-}
-
-inline void cFSMOrderParamSetEffect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetEffect::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamSetEffect::createProperty(MtPropertyList& s) {
@@ -906,32 +725,12 @@ inline cFSMOrderParamSetEffect::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMOrderParamSetEffect::MyDTI cFSMOrderParamSetEffect::DTI("cFSMOrderParamSetEffect", &::cFSMOrderParam::DTI, 96ul, 0u, 0u);
 
-inline cFSMOrderParamSetEffect::cFSMOrderParamSetEffect() {
-    mEfcId = 0;
-    mTarget = 0;
-    mGroup = -1;
-    mId = -1;
-    mHaveItem = false;
-    mOmId = 0;
-    mAct = 0;
-    mType = 0;
-    mIndex = 0;
-    mElement = 0;
-    mPos = MtVector3::Zero;
-    mAng = MtVector3::Zero;
-    mScl = MtVector3::One;
-}
-
 __attribute__((weak)) MtObject* cFSMOrderParamSetEffect::MyDTI::newInstance() const {
     return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetEffect::DTI)->memAlloc(sizeof(cFSMOrderParamSetEffect), 16u, cFSMOrderParamSetEffect::DTI.getID())) cFSMOrderParamSetEffect;
 }
 
 const MtDTI& cFSMOrderParamSetEnemy::getDTI() const {
     return cFSMOrderParamSetEnemy::DTI;
-}
-
-inline void cFSMOrderParamSetEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetEnemy::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamSetEnemy::~cFSMOrderParamSetEnemy() {
@@ -979,21 +778,12 @@ inline cFSMOrderParamSetEnemy::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 cFSMOrderParamSetEnemy::MyDTI cFSMOrderParamSetEnemy::DTI("cFSMOrderParamSetEnemy", &::cFSMOrderParam::DTI, 48ul, 0u, 0u);
 
-inline cFSMOrderParamSetEnemy::cFSMOrderParamSetEnemy() {
-    mGroupId = 257;
-    mLayoutId = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamSetEnemy::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetEnemy::DTI)->memAlloc(sizeof(cFSMOrderParamSetEnemy), 16u, cFSMOrderParamSetEnemy::DTI.getID())) cFSMOrderParamSetEnemy;
+MtObject* cFSMOrderParamSetEnemy::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamSetEnemy;
 }
 
 const MtDTI& cFSMOrderParamSetEnemy::cSetEmInfo::getDTI() const {
     return cFSMOrderParamSetEnemy::cSetEmInfo::DTI;
-}
-
-inline void cFSMOrderParamSetEnemy::cSetEmInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetEnemy::cSetEmInfo::DTI)->memFree(p_addr);
 }
 
 u32 cFSMOrderParamSetEnemy::cSetEmInfo::getEnemyId() const {
@@ -1044,10 +834,6 @@ const MtDTI& cFSMOrderParamSetFade::getDTI() const {
     return cFSMOrderParamSetFade::DTI;
 }
 
-inline void cFSMOrderParamSetFade::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetFade::DTI)->memFree(p_addr);
-}
-
 void cFSMOrderParamSetFade::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mFadeType", &mFadeType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mFadeTime", &mFadeTime, 0u, 0u);
@@ -1061,21 +847,12 @@ inline cFSMOrderParamSetFade::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 
 cFSMOrderParamSetFade::MyDTI cFSMOrderParamSetFade::DTI("cFSMOrderParamSetFade", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-inline cFSMOrderParamSetFade::cFSMOrderParamSetFade() {
-    mFadeType = 0;
-    mFadeTime = 1.0f;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamSetFade::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetFade::DTI)->memAlloc(sizeof(cFSMOrderParamSetFade), 16u, cFSMOrderParamSetFade::DTI.getID())) cFSMOrderParamSetFade;
+MtObject* cFSMOrderParamSetFade::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamSetFade;
 }
 
 const MtDTI& cFSMOrderParamSetLayout::getDTI() const {
     return cFSMOrderParamSetLayout::DTI;
-}
-
-inline void cFSMOrderParamSetLayout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetLayout::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamSetLayout::createProperty(MtPropertyList& s) {
@@ -1093,22 +870,12 @@ inline cFSMOrderParamSetLayout::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMOrderParamSetLayout::MyDTI cFSMOrderParamSetLayout::DTI("cFSMOrderParamSetLayout", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-inline cFSMOrderParamSetLayout::cFSMOrderParamSetLayout() {
-    mActType = 0;
-    mStageNo = 0;
-    mFlagNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamSetLayout::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetLayout::DTI)->memAlloc(sizeof(cFSMOrderParamSetLayout), 16u, cFSMOrderParamSetLayout::DTI.getID())) cFSMOrderParamSetLayout;
+MtObject* cFSMOrderParamSetLayout::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamSetLayout;
 }
 
 const MtDTI& cFSMOrderParamSetLocationName::getDTI() const {
     return cFSMOrderParamSetLocationName::DTI;
-}
-
-inline void cFSMOrderParamSetLocationName::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetLocationName::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamSetLocationName::createProperty(MtPropertyList& s) {
@@ -1119,20 +886,12 @@ inline cFSMOrderParamSetLocationName::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 cFSMOrderParamSetLocationName::MyDTI cFSMOrderParamSetLocationName::DTI("cFSMOrderParamSetLocationName", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-inline cFSMOrderParamSetLocationName::cFSMOrderParamSetLocationName() {
-    mStageNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamSetLocationName::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetLocationName::DTI)->memAlloc(sizeof(cFSMOrderParamSetLocationName), 16u, cFSMOrderParamSetLocationName::DTI.getID())) cFSMOrderParamSetLocationName;
+MtObject* cFSMOrderParamSetLocationName::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamSetLocationName;
 }
 
 const MtDTI& cFSMOrderParamSetOpenDoor::getDTI() const {
     return cFSMOrderParamSetOpenDoor::DTI;
-}
-
-inline void cFSMOrderParamSetOpenDoor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetOpenDoor::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamSetOpenDoor::createProperty(MtPropertyList& s) {
@@ -1150,23 +909,12 @@ inline cFSMOrderParamSetOpenDoor::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 cFSMOrderParamSetOpenDoor::MyDTI cFSMOrderParamSetOpenDoor::DTI("cFSMOrderParamSetOpenDoor", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-inline cFSMOrderParamSetOpenDoor::cFSMOrderParamSetOpenDoor() {
-    mIsQuestSet = false;
-    mQuestId = 0;
-    mGroupNo = 0;
-    mSetNo = 0;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamSetOpenDoor::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetOpenDoor::DTI)->memAlloc(sizeof(cFSMOrderParamSetOpenDoor), 16u, cFSMOrderParamSetOpenDoor::DTI.getID())) cFSMOrderParamSetOpenDoor;
+MtObject* cFSMOrderParamSetOpenDoor::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamSetOpenDoor;
 }
 
 const MtDTI& cFSMOrderParamSetVib::getDTI() const {
     return cFSMOrderParamSetVib::DTI;
-}
-
-inline void cFSMOrderParamSetVib::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamSetVib::DTI)->memFree(p_addr);
 }
 
 void cFSMOrderParamSetVib::createProperty(MtPropertyList& s) {
@@ -1179,22 +927,12 @@ inline cFSMOrderParamSetVib::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 
 cFSMOrderParamSetVib::MyDTI cFSMOrderParamSetVib::DTI("cFSMOrderParamSetVib", &::cFSMOrderParam::DTI, 24ul, 0u, 0u);
 
-inline cFSMOrderParamSetVib::cFSMOrderParamSetVib() {
-    mVib = 0;
-    mNum = 1;
-    mWaitSec = 0.0f;
-}
-
-__attribute__((weak)) MtObject* cFSMOrderParamSetVib::MyDTI::newInstance() const {
-    return new (MtMemoryAllocator::getAllocator(cFSMOrderParamSetVib::DTI)->memAlloc(sizeof(cFSMOrderParamSetVib), 16u, cFSMOrderParamSetVib::DTI.getID())) cFSMOrderParamSetVib;
+MtObject* cFSMOrderParamSetVib::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamSetVib;
 }
 
 const MtDTI& cFSMOrderParamStartQuake::getDTI() const {
     return cFSMOrderParamStartQuake::DTI;
-}
-
-inline void cFSMOrderParamStartQuake::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamStartQuake::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamStartQuake::~cFSMOrderParamStartQuake() {
@@ -1232,17 +970,12 @@ inline cFSMOrderParamStartQuake::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 cFSMOrderParamStartQuake::MyDTI cFSMOrderParamStartQuake::DTI("cFSMOrderParamStartQuake", &::cFSMOrderParam::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMOrderParamStartQuake::MyDTI::newInstance() const {
-    DDON_STUB("cFSMOrderParamStartQuake::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMOrderParamStartQuake::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamStartQuake;
 }
 
 const MtDTI& cFSMOrderParamStopQuake::getDTI() const {
     return cFSMOrderParamStopQuake::DTI;
-}
-
-inline void cFSMOrderParamStopQuake::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMOrderParamStopQuake::DTI)->memFree(p_addr);
 }
 
 cFSMOrderParamStopQuake::~cFSMOrderParamStopQuake() {
@@ -1256,9 +989,8 @@ inline cFSMOrderParamStopQuake::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 cFSMOrderParamStopQuake::MyDTI cFSMOrderParamStopQuake::DTI("cFSMOrderParamStopQuake", &::cFSMOrderParam::DTI, 16ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cFSMOrderParamStopQuake::MyDTI::newInstance() const {
-    DDON_STUB("cFSMOrderParamStopQuake::MyDTI::newInstance")
-    return nullptr;
+MtObject* cFSMOrderParamStopQuake::MyDTI::newInstance() const {
+    return new (16u) cFSMOrderParamStopQuake;
 }
 
 template MtTypedArray<cFSMOrderParamCallEvent::cNpcId>::~MtTypedArray();

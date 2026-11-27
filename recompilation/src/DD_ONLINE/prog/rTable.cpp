@@ -15,14 +15,6 @@ const MtDTI& rTable::getDTI() const {
     return rTable::DTI;
 }
 
-inline void* rTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTable::DTI)->memAlloc(sz, align, rTable::DTI.getID());
-}
-
-inline void rTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTable::DTI)->memFree(p_addr);
-}
-
 rTable::rTable() {
     mAttr = 16;
     mUParam64[1] = 0;

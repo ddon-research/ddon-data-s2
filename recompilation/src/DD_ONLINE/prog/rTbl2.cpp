@@ -115,6 +115,7 @@
 #include "rNpcMeetingPlace.h"
 #include "rOcdElectricParam.h"
 #include "rOcdIrAdj.h"
+#include "rOmLoadList.h"
 #include "rPartnerReactParam.h"
 #include "rPartsCtrlTable.h"
 #include "rPawnAI.h"
@@ -163,14 +164,6 @@ extern template __attribute__((noinline)) void rTbl2<cJointOrder>::deleteData();
 
 const MtDTI& rTbl2Base::getDTI() const {
     return rTbl2Base::DTI;
-}
-
-inline MtAllocator* rTbl2Base::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rTbl2Base::DTI);
-}
-
-inline void* rTbl2Base::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTbl2Base::DTI)->memAlloc(sz, align, rTbl2Base::DTI.getID());
 }
 
 __attribute__((weak)) void rTbl2Base::operator delete(void* p_addr) {
@@ -462,6 +455,8 @@ template void rTbl2<cOcdPriorityParam>::allocData(unsigned int);
 
 template void rTbl2<cOcdStatusParamRes>::allocData(unsigned int);
 
+template void rTbl2<cOmLoadList>::allocData(unsigned int);
+
 template void rTbl2<cPartnerReactParam>::allocData(unsigned int);
 
 template void rTbl2<cPartsCtrlTable>::allocData(unsigned int);
@@ -537,6 +532,8 @@ template void rTbl2<cCollNode>::deleteData();
 template void rTbl2<cEnemyGroup>::deleteData();
 
 template void rTbl2<cJointOrder>::deleteData();
+
+template void rTbl2<cOmLoadList>::deleteData();
 
 template void rTbl2<cStageMap>::deleteData();
 

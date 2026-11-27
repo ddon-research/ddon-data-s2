@@ -511,3 +511,19 @@ inline s32 uCnsIK::JointInfo::getJntNo() const {
 inline void* uCnsIK::uCnsJoint::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uCnsIK::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsIK::DTI)->memFree(p_addr);
+}
+
+inline void uCnsIK::JointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsIK::JointInfo::DTI)->memFree(p_addr);
+}
+
+inline void uCnsIK::uCnsJoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsIK::uCnsJoint::DTI)->memFree(p_addr);
+}

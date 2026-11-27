@@ -17,23 +17,42 @@ class MtAllocator;
 class MtDataWriter;
 class cAISvUserProcess;
 class cAIUserProcessContainer;
+class cGUIExtNetMgr;
 class cGUIUtility;
 class cMenuLostPawnRevive;
 class cMenuSubMenu;
 namespace nCaplink { class ContextListener; }
 namespace nUserSession { class CPacket_S2C_ADD_BLACK_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC; }
+namespace nUserSession { class CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC; }
+namespace nUserSession { class CPacket_S2C_LOBBY_CHAT_MSG_NOTICE; }
 namespace nUserSession { class CPacket_S2C_MAIL_SEND_NTC; }
 namespace nUserSession { class CPacket_S2C_SEND_TELL_MSG_RES; }
 namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_SEND_NTC; }
 class rItemList;
 class sAI;
 class sBrowser;
+class sCaplinkManager;
 class sMain;
 class sResource;
 class sSavedataExt;
 class sSceneExt;
+class uGUIAnnounce;
 class uGUIBase;
+class uGUICaplinkChat;
+class uGUICaplinkFriendList;
+class uGUICaplinkProfile;
+class uGUICaplinkTopMenu;
+class uGUICaplinkTrophyReceive;
+class uGUICaplinkTrophyTop;
+class uGUIGameMenu;
+class uGUIGaugeNpc;
+class uGUIKeyConfig;
 class uGUINewspaper;
+class uGUIPlace;
+class uGUIShopTitle;
+class uGUISkill;
+namespace via { namespace module { namespace http_patch { class ClientManager; } } }
 
 // Declarations
 class MtString;
@@ -63,12 +82,16 @@ class MtString
     friend class CDataPawnHistory;
     friend class cAISvUserProcess;
     friend class cAIUserProcessContainer;
+    friend class cGUIExtNetMgr;
     friend class cGUIUtility;
     friend class cMenuLostPawnRevive;
     friend class cMenuSubMenu;
     friend class nCaplink::ContextListener;
     friend void nDDOIO::writeData(MtDataWriter& w, const MtString& data);
     friend class nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES;
+    friend class nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC;
+    friend class nUserSession::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC;
+    friend class nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE;
     friend class nUserSession::CPacket_S2C_MAIL_SEND_NTC;
     friend class nUserSession::CPacket_S2C_SEND_TELL_MSG_RES;
     friend class nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC;
@@ -79,8 +102,12 @@ class MtString
     friend class sResource;
     friend class sSavedataExt;
     friend class sSceneExt;
+    friend class uGUIAnnounce;
     friend class uGUIBase;
+    friend class uGUIGaugeNpc;
     friend class uGUINewspaper;
+    friend class uGUISkill;
+    friend class via::module::http_patch::ClientManager;
 public:
     struct STRING;
 public:
@@ -153,6 +180,22 @@ private:
 template <int _size>
 class MtStringEx
 {
+    friend class sCaplinkManager;
+    friend class uGUIAnnounce;
+    friend class uGUIBase;
+    friend class uGUICaplinkChat;
+    friend class uGUICaplinkFriendList;
+    friend class uGUICaplinkProfile;
+    friend class uGUICaplinkTopMenu;
+    friend class uGUICaplinkTrophyReceive;
+    friend class uGUICaplinkTrophyTop;
+    friend class uGUIGameMenu;
+    friend class uGUIGaugeNpc;
+    friend class uGUIKeyConfig;
+    friend class uGUIPlace;
+    friend class uGUIShopTitle;
+    friend class uGUISkill;
+    friend class via::module::http_patch::ClientManager;
 public:
     MtStringEx();
     MtStringEx(MT_CTSTR str);

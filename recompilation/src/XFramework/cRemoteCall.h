@@ -14,9 +14,12 @@ class MtProperty;
 class MtPropertyList;
 class MtStream;
 class MtUI;
+namespace nNetwork { class RpcNetSystem_AnsDetour; }
+namespace nNetwork { class RpcNetSystem_Config; }
 namespace nNetwork { class RpcNetSystem_LinkState; }
 namespace nNetwork { class RpcNetSystem_Match; }
 namespace nNetwork { class RpcNetSystem_RouteKey; }
+namespace nNetwork { class RpcNetSystem_Terminate; }
 namespace nNetwork { class TagChecker; }
 
 // Declarations
@@ -33,9 +36,12 @@ using u32 = unsigned int;
 
 class cRemoteCall : public MtObject
 {
+    friend class nNetwork::RpcNetSystem_AnsDetour;
+    friend class nNetwork::RpcNetSystem_Config;
     friend class nNetwork::RpcNetSystem_LinkState;
     friend class nNetwork::RpcNetSystem_Match;
     friend class nNetwork::RpcNetSystem_RouteKey;
+    friend class nNetwork::RpcNetSystem_Terminate;
     friend class nNetwork::TagChecker;
 public:
     enum
@@ -117,4 +123,12 @@ inline void cRemoteCall::setAttribute(u32 attr) {
 }
 
 inline cRemoteCall::MyType::MyType() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cRemoteCall::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cRemoteCall::DTI)->memFree(p_addr);
 }

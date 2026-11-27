@@ -39,16 +39,8 @@ const MtDTI& uGUIRetry::getDTI() const {
     return uGUIRetry::DTI;
 }
 
-inline MtAllocator* uGUIRetry::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIRetry::DTI);
-}
-
 void* uGUIRetry::operator new(size_t sz, u32 align) {
     return uGUIRetry::getAllocator()->memAlloc(sz, align, uGUIRetry::DTI.getID());
-}
-
-inline void uGUIRetry::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRetry::DTI)->memFree(p_addr);
 }
 
 uGUIRetry::~uGUIRetry() {
@@ -148,25 +140,6 @@ __attribute__((weak)) void uGUIRetry::restartDown() {
 __attribute__((weak)) void uGUIRetry::initDialog(MT_CTSTR text, MT_CTSTR analyze) {
     DDON_STUB("uGUIRetry::initDialog")
     /* stub */
-}
-
-inline void uGUIRetry::updateDialog() {
-    if (mpGUISystemMsg != nullptr) {
-        if (mpGUISystemMsg->mResult == RESULT_EXIT) {
-            mDialogResult = 1;
-            if (mpGUISystemMsg->getChoicePos(-1) == 0) {
-                mDialogResult = 0;
-            }
-            if (mpGUISystemMsg != nullptr) {
-                mpGUISystemMsg->mEndType = 0;
-                mpGUISystemMsg->end();
-            }
-            mpGUISystemMsg = nullptr;
-            static_cast<sGUIExt*>(sGUI::mpInstance)->reqWindowActive(static_cast<uGUIBase*>(this));
-        }
-    } else {
-        mDialogResult = 1;
-    }
 }
 
 __attribute__((weak)) void uGUIRetry::initRevive(u32 type) {

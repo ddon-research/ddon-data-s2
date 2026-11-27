@@ -31,10 +31,6 @@ const MtDTI& AreaHitShape::getDTI() const {
     return AreaHitShape::DTI;
 }
 
-inline MtAllocator* AreaHitShape::getAllocator() {
-    return MtMemoryAllocator::getAllocator(AreaHitShape::DTI);
-}
-
 void* AreaHitShape::operator new(size_t sz, u32 align) {
     return AreaHitShape::getAllocator()->memAlloc(sz, align, AreaHitShape::DTI.getID());
 }
@@ -236,9 +232,100 @@ bool AreaHitShape::hitCheck(const MtVector3& tarPos) const {
     }
 }
 
-__attribute__((weak)) bool AreaHitShape::calcIntersectionLine2Line2D(const MtVector3& pos0, const MtVector3& pos1, const MtVector3& pos2, const MtVector3& pos3, MtVector3& pos_out) const {
-    DDON_STUB("AreaHitShape::calcIntersectionLine2Line2D")
-    return {};
+bool AreaHitShape::calcIntersectionLine2Line2D(const MtVector3& pos0, const MtVector3& pos1, const MtVector3& pos2, const MtVector3& pos3, MtVector3& pos_out) const {
+    float x0 = pos0.x;
+    float z0 = pos0.z;
+    float x1 = pos1.x;
+    float z1 = pos1.z;
+    float x2 = pos2.x;
+    float z2 = pos2.z;
+    float x3 = pos3.x;
+    float z3 = pos3.z;
+    if (1.1920929e-7f >= __builtin_fabsf(((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))) {
+        return false;
+    } else {
+        if (((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))) > 1.0f) {
+            return false;
+        } else {
+            if (0.0f > ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2))))) {
+                return false;
+            } else {
+                if (x0 > x1) {
+                    if ((x2 + ((x3 - x2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))))) > x0) {
+                        return false;
+                    } else {
+                        if (x1 > (x2 + ((x3 - x2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2))))))) {
+                            return false;
+                        } else {
+                            if (z0 > z1) {
+                                if ((z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))))) > z0) {
+                                    return false;
+                                } else {
+                                    if (z1 > (z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2))))))) {
+                                        return false;
+                                    } else {
+                                        pos_out.x = x2 + ((x3 - x2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))));
+                                        pos_out.y = pos0.y;
+                                        pos_out.z = z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))));
+                                        return true;
+                                    }
+                                }
+                            } else {
+                                if (z0 > (z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2))))))) {
+                                    return false;
+                                } else {
+                                    if ((z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))))) > z1) {
+                                        return false;
+                                    } else {
+                                        pos_out.x = x2 + ((x3 - x2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))));
+                                        pos_out.y = pos0.y;
+                                        pos_out.z = z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))));
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    if (x0 > (x2 + ((x3 - x2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2))))))) {
+                        return false;
+                    } else {
+                        if ((x2 + ((x3 - x2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))))) > x1) {
+                            return false;
+                        } else {
+                            if (z0 > z1) {
+                                if ((z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))))) > z0) {
+                                    return false;
+                                } else {
+                                    if (z1 > (z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2))))))) {
+                                        return false;
+                                    } else {
+                                        pos_out.x = x2 + ((x3 - x2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))));
+                                        pos_out.y = pos0.y;
+                                        pos_out.z = z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))));
+                                        return true;
+                                    }
+                                }
+                            } else {
+                                if (z0 > (z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2))))))) {
+                                    return false;
+                                } else {
+                                    if ((z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))))) > z1) {
+                                        return false;
+                                    } else {
+                                        pos_out.x = x2 + ((x3 - x2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))));
+                                        pos_out.y = pos0.y;
+                                        pos_out.z = z2 + ((z3 - z2) * ((((x1 - x0) * (z2 - z0)) - ((z1 - z0) * (x2 - x0))) / (((z1 - z0) * (x3 - x2)) - ((x1 - x0) * (z3 - z2)))));
+                                        return true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void AreaHitShape::setZone(ZShape* p) {
@@ -273,47 +360,6 @@ __attribute__((weak)) MtObject* AreaHitShape::MyDTI::newInstance() const {
 
 const MtDTI& cAreaHit::getDTI() const {
     return cAreaHit::DTI;
-}
-
-inline void* cAreaHit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAreaHit::DTI)->memAlloc(sz, align, cAreaHit::DTI.getID());
-}
-
-inline void cAreaHit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAreaHit::DTI)->memFree(p_addr);
-}
-
-inline cAreaHit::cAreaHit() {
-    mpOwner = nullptr;
-    mOwnerId = 0;
-    mbEnable = true;
-    mbFix = false;
-    mUID = 0;
-    mDetect = 0;
-    mpShape = nullptr;
-    mAttr = 0;
-    mWorld.x = MtVector3::Zero.x;
-    mWorld.y = MtVector3::Zero.y;
-    mWorld.z = MtVector3::Zero.z;
-    mWorld.pad_ = 0.0f;
-    mLocal.x = MtVector3::Zero.x;
-    mLocal.y = MtVector3::Zero.y;
-    mLocal.z = MtVector3::Zero.z;
-    mLocal.pad_ = 0.0f;
-    mRotate.x = MtVector3::Zero.x;
-    mRotate.y = MtVector3::Zero.y;
-    mRotate.z = MtVector3::Zero.z;
-    mpSpTarget = nullptr;
-    mCkRange = 0.0f;
-    mCkToward = 0.0f;
-    mRotate.pad_ = 0.0f;
-    mCkAngle = 0.0f;
-    mRefPos.x = MtVector3::Zero.x;
-    mRefPos.y = MtVector3::Zero.y;
-    mRefPos.z = MtVector3::Zero.z;
-    mRefPos.pad_ = 0.0f;
-    mRefJointNo = 0;
-    mOwnerJointNo = 0;
 }
 
 cAreaHit::~cAreaHit() {
@@ -400,8 +446,32 @@ __attribute__((weak)) void cAreaHit::copyShape(AreaHitShape* pShape) {
 }
 
 __attribute__((weak)) bool cAreaHit::collide(uDDOModel* pObj) {
-    DDON_STUB("cAreaHit::collide")
-    return {};
+    f32 ang = 0.0f;
+    MtVector3 pos = MtVector3::Zero;
+    MtVector3 underPos = MtVector3::Zero;
+    if ((mAttr & 1024u) != 0) {
+        getTargetPos(mpSpTarget, &pos, &underPos);
+        if (mpSpTarget != nullptr) {
+            ang = mpSpTarget->getAngle().y;
+        }
+    } else {
+        getTargetPos(pObj, &pos, &underPos);
+        ang = pObj->getAngle().y;
+    }
+    if (mpShape != nullptr) {
+        // workaround
+        const MtAABB* t1 = reinterpret_cast<const MtAABB*>(mpShape + 1) - 1;
+        if (pos.x < t1->minpos.x || pos.z < t1->minpos.z || pos.x > t1->maxpos.x || pos.z > t1->maxpos.z || pos.y < t1->minpos.y || pos.y > t1->maxpos.y) {
+            return false;
+        }
+    }
+    if ((mAttr & 0x4000000u) != 0) {
+        if (!checkToward(pObj)) {
+            return false;
+        }
+    }
+    bool f = collide(pos, ang);
+    return f;
 }
 
 __attribute__((weak)) bool cAreaHit::collide(const MtVector3& pos, f32 ang) {

@@ -40,10 +40,6 @@ void* sZone::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sZone::DTI)->memAlloc(sz, align, sZone::DTI.mID);
 }
 
-inline void sZone::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sZone::DTI)->memFree(p_addr);
-}
-
 sZone::sZone() {
     DDON_STUB("sZone::sZone")
     /* stub */
@@ -127,14 +123,6 @@ void sZone::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_
                 v0_0 = mZoneLayoutArray.mLength;
                 i = i + 1u;
             }
-        }
-    }
-}
-
-void sZone::setWorldOffset(u32 handle, const MtVector3& ofsPos) {
-    if (handle < mZoneLayoutArray.mLength) {
-        if (mZoneLayoutArray.mpArray[handle] != nullptr) {
-            static_cast<cZoneLayout*>(mZoneLayoutArray.mpArray[handle])->applyWorldOffset(MtVector3::Zero, ofsPos);
         }
     }
 }

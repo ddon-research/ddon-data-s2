@@ -63,3 +63,15 @@ inline void* cCaplinkObject::operator new(size_t sz, void* p_addr) {
 
 inline cCaplinkObject::cCaplinkObject() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCaplinkObject::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCaplinkObject::DTI);
+}
+
+inline void* cCaplinkObject::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaplinkObject::DTI)->memAlloc(sz, align, ::cCaplinkObject::DTI.::MtDTI::getID());
+}

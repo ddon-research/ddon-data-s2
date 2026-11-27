@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCraftQuality.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cCraftQualityData::getDTI() const {
     return cCraftQualityData::DTI;
-}
-
-inline void* cCraftQualityData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCraftQualityData::DTI)->memAlloc(sz, align, cCraftQualityData::DTI.getID());
-}
-
-inline void cCraftQualityData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftQualityData::DTI)->memFree(p_addr);
 }
 
 void cCraftQualityData::createProperty(MtPropertyList& s) {
@@ -42,14 +32,6 @@ MtObject* cCraftQualityData::MyDTI::newInstance() const {
 
 const MtDTI& rCraftQuality::getDTI() const {
     return rCraftQuality::DTI;
-}
-
-inline void* rCraftQuality::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCraftQuality::DTI)->memAlloc(sz, align, rCraftQuality::DTI.getID());
-}
-
-inline void rCraftQuality::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCraftQuality::DTI)->memFree(p_addr);
 }
 
 bool rCraftQuality::loadData(MtDataReader& in, cCraftQualityData* pData) {

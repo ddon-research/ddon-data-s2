@@ -91,3 +91,15 @@ public:
 inline void* sResourceExt::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sResourceExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sResourceExt::DTI);
+}
+
+inline void sResourceExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sResourceExt::DTI)->memFree(p_addr);
+}

@@ -19,18 +19,6 @@ const MtDTI& rOccluderEx::getDTI() const {
     return rOccluderEx::DTI;
 }
 
-inline void* rOccluderEx::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOccluderEx::DTI)->memAlloc(sz, align, rOccluderEx::DTI.getID());
-}
-
-inline void rOccluderEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOccluderEx::DTI)->memFree(p_addr);
-}
-
-inline rOccluderEx::rOccluderEx() {
-    setAttribute(22u);
-}
-
 rOccluderEx::~rOccluderEx() {
     if (mAreaList.mLength != 0) {
         u32 v0_0 = mAreaList.mLength;

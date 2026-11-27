@@ -39,14 +39,6 @@ const MtDTI& cCorePointInfo::getDTI() const {
     return cCorePointInfo::DTI;
 }
 
-inline void* cCorePointInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCorePointInfo::DTI)->memAlloc(sz, align, cCorePointInfo::DTI.getID());
-}
-
-inline void cCorePointInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCorePointInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cCorePointInfo::init() {
     DDON_STUB("cCorePointInfo::init")
     /* stub */
@@ -74,14 +66,6 @@ const MtDTI& cCorePointReqestInfo::getDTI() const {
     return cCorePointReqestInfo::DTI;
 }
 
-inline void* cCorePointReqestInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCorePointReqestInfo::DTI)->memAlloc(sz, align, cCorePointReqestInfo::DTI.getID());
-}
-
-inline void cCorePointReqestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCorePointReqestInfo::DTI)->memFree(p_addr);
-}
-
 inline cCorePointReqestInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCorePointReqestInfo::MyDTI cCorePointReqestInfo::DTI("cCorePointReqestInfo", &::MtObject::DTI, 40ul, 0u, 0u);
@@ -94,16 +78,8 @@ const MtDTI& cpCorePointCtrl::getDTI() const {
     return cpCorePointCtrl::DTI;
 }
 
-inline MtAllocator* cpCorePointCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpCorePointCtrl::DTI);
-}
-
 void* cpCorePointCtrl::operator new(size_t sz, u32 align) {
     return cpCorePointCtrl::getAllocator()->memAlloc(sz, align, cpCorePointCtrl::DTI.getID());
-}
-
-inline void cpCorePointCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpCorePointCtrl::DTI)->memFree(p_addr);
 }
 
 cpCorePointCtrl::cpCorePointCtrl() {
@@ -168,9 +144,9 @@ void cpCorePointCtrl::updatePtr() {
     if (static_cast<int>(v0_0) > 0) {
         for (s32 i = 0;;) {
             if (mActiveCorePointArray.getBuffer()[i] != nullptr) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mActiveCorePointArray.getBuffer()[i]) + 24)) != 0) {
-                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mActiveCorePointArray.getBuffer()[i]) + 24)) + 16)) & 7u) - 1u) > 1u) {
-                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mActiveCorePointArray.getBuffer()[i]) + 24) = 0;
+                if (static_cast<cCorePointInfo*>(mActiveCorePointArray.getBuffer()[i])->mpEnemy != nullptr) {
+                    if (!static_cast<cCorePointInfo*>(mActiveCorePointArray.getBuffer()[i])->mpEnemy->isEnable()) {
+                        static_cast<cCorePointInfo*>(mActiveCorePointArray.getBuffer()[i])->mpEnemy = nullptr;
                     }
                 }
             }
@@ -222,14 +198,183 @@ __attribute__((weak)) bool cpCorePointCtrl::isCorePoint(u32 regionNo, nRegionSta
     return {};
 }
 
-__attribute__((weak)) bool cpCorePointCtrl::isCorePointActive(u32 regionNo, nRegionStatus::CORE_POINT_TYPE coreType) const {
-    DDON_STUB("cpCorePointCtrl::isCorePointActive")
-    return {};
+bool cpCorePointCtrl::isCorePointActive(u32 regionNo, nRegionStatus::CORE_POINT_TYPE coreType) const {
+    u32 v3_1 = mActiveCorePointArray.mLength;
+    bool b12_0;
+    if (v3_1 == 0) {
+        b12_0 = false;
+    } else {
+        if (coreType == nRegionStatus::CORE_POINT_TYPE_EROSION_TENTACLE_ALL) {
+            u32 v8_1 = v3_1;
+            unsigned int i8_3 = 0;
+            u32 v9_1;
+            for (;;) {
+                MtObject* t1 = mActiveCorePointArray.mpArray[i8_3];
+                if (t1 == nullptr) {
+                    v9_1 = v8_1;
+                } else {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + 32)) != regionNo) {
+                        v9_1 = v8_1;
+                    } else {
+                        if (nRegionStatus::isCorePointErosionTentacle(static_cast<nRegionStatus::CORE_POINT_TYPE>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + 48)))) {
+                            b12_0 = true;
+                            return b12_0;
+                        } else {
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + 48)) == 13) {
+                                b12_0 = true;
+                                return b12_0;
+                            } else {
+                                v9_1 = mActiveCorePointArray.mLength;
+                            }
+                        }
+                    }
+                }
+                if ((i8_3 + 1u) < v9_1) {
+                    v8_1 = v9_1;
+                    i8_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        } else {
+            if (coreType == nRegionStatus::CORE_POINT_TYPE_EROSION_ALL) {
+                u32 v0_1 = v3_1;
+                unsigned int i0_3 = 0;
+                u32 v1_1;
+                for (;;) {
+                    MtObject* t0 = mActiveCorePointArray.mpArray[i0_3];
+                    if (t0 == nullptr) {
+                        v1_1 = v0_1;
+                    } else {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 32)) != regionNo) {
+                            v1_1 = v0_1;
+                        } else {
+                            if (nRegionStatus::isCorePointErosion(static_cast<nRegionStatus::CORE_POINT_TYPE>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 48)))) {
+                                b12_0 = true;
+                                return b12_0;
+                            } else {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 48)) == 12) {
+                                    b12_0 = true;
+                                    return b12_0;
+                                } else {
+                                    v1_1 = mActiveCorePointArray.mLength;
+                                }
+                            }
+                        }
+                    }
+                    if ((i0_3 + 1u) < v1_1) {
+                        v0_1 = v1_1;
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            } else {
+                if (coreType == nRegionStatus::CORE_POINT_TYPE_ALL) {
+                    MtObject* * v3_2 = mActiveCorePointArray.mpArray;
+                    for (unsigned int i3_3 = 0;;) {
+                        if (v3_2[i3_3] != nullptr) {
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_2[i3_3]) + 32)) == regionNo) {
+                                b12_0 = true;
+                                return b12_0;
+                            }
+                        }
+                        if ((i3_3 + 1u) < v3_1) {
+                            i3_3 = i3_3 + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                } else {
+                    MtObject* * v6_3 = mActiveCorePointArray.mpArray;
+                    for (unsigned int i6_4 = 0;;) {
+                        if (v6_3[i6_4] != nullptr) {
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_3[i6_4]) + 32)) == regionNo) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_3[i6_4]) + 48)) == static_cast<unsigned int>(coreType)) {
+                                    b12_0 = true;
+                                    return b12_0;
+                                }
+                            }
+                        }
+                        if ((i6_4 + 1u) < v3_1) {
+                            i6_4 = i6_4 + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        b12_0 = false;
+    }
+    return b12_0;
 }
 
-__attribute__((weak)) bool cpCorePointCtrl::isCorePointActive(nRegionStatus::CORE_POINT_TYPE coreType) const {
-    DDON_STUB("cpCorePointCtrl::isCorePointActive")
-    return {};
+bool cpCorePointCtrl::isCorePointActive(nRegionStatus::CORE_POINT_TYPE coreType) const {
+    u32 v0_1 = mActiveCorePointArray.mLength;
+    bool b5_0;
+    if (v0_1 == 0) {
+        b5_0 = false;
+    } else {
+        if (coreType != nRegionStatus::CORE_POINT_TYPE_ALL) {
+            u32 v2_1 = v0_1;
+            unsigned int i2_3 = 0;
+            u32 v3_1;
+            for (;;) {
+                MtObject* t0 = mActiveCorePointArray.mpArray[i2_3];
+                if (t0 == nullptr) {
+                    v3_1 = v2_1;
+                } else {
+                    if (coreType == nRegionStatus::CORE_POINT_TYPE_EROSION_ALL) {
+                        if (nRegionStatus::isCorePointErosion(static_cast<nRegionStatus::CORE_POINT_TYPE>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 48)))) {
+                            b5_0 = true;
+                            return b5_0;
+                        } else {
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 48)) == static_cast<unsigned int>(coreType)) {
+                                b5_0 = true;
+                                return b5_0;
+                            } else {
+                                v3_1 = mActiveCorePointArray.mLength;
+                            }
+                        }
+                    } else {
+                        if ((coreType == nRegionStatus::CORE_POINT_TYPE_EROSION_TENTACLE_ALL) && nRegionStatus::isCorePointErosionTentacle(static_cast<nRegionStatus::CORE_POINT_TYPE>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 48)))) {
+                            b5_0 = true;
+                            return b5_0;
+                        }
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 48)) == static_cast<unsigned int>(coreType)) {
+                            b5_0 = true;
+                            return b5_0;
+                        } else {
+                            v3_1 = mActiveCorePointArray.mLength;
+                        }
+                    }
+                }
+                if ((i2_3 + 1u) < v3_1) {
+                    v2_1 = v3_1;
+                    i2_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        } else {
+            MtObject* * v0_2 = mActiveCorePointArray.mpArray;
+            for (unsigned int i0_3 = 0;;) {
+                if (v0_2[i0_3] != nullptr) {
+                    b5_0 = true;
+                    return b5_0;
+                } else {
+                    if ((i0_3 + 1u) < v0_1) {
+                        i0_3 = i0_3 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+        b5_0 = false;
+    }
+    return b5_0;
 }
 
 __attribute__((weak)) u32 cpCorePointCtrl::getCorePointNum(nRegionStatus::CORE_POINT_TYPE coreType) const {

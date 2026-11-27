@@ -32,10 +32,6 @@ const MtDTI& cShlParamSpeed::getDTI() const {
     return cShlParamSpeed::DTI;
 }
 
-inline void* cShlParamSpeed::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamSpeed::DTI)->memAlloc(sz, align, cShlParamSpeed::DTI.getID());
-}
-
 inline void cShlParamSpeed::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamSpeed::DTI)->memFree(p_addr);
 }
@@ -112,10 +108,6 @@ const MtDTI& uShlSpeed::getDTI() const {
     return uShlSpeed::DTI;
 }
 
-inline void uShlSpeed::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlSpeed::DTI)->memFree(p_addr);
-}
-
 uShlSpeed::uShlSpeed() {
     DDON_STUB("uShlSpeed::uShlSpeed")
     /* stub */
@@ -169,9 +161,11 @@ __attribute__((weak)) u32 uShlSpeed::getCollisionIndex() const {
     return {};
 }
 
-__attribute__((weak)) void uShlSpeed::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlSpeed::applyWorldOffset")
-    /* stub */
+void uShlSpeed::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlBase::applyWorldOffset(offset, absolute_offset);
+    mFuwaMove.mPos.x = offset.x + mFuwaMove.mPos.x;
+    mFuwaMove.mPos.y = offset.y + mFuwaMove.mPos.y;
+    mFuwaMove.mPos.z = offset.z + mFuwaMove.mPos.z;
 }
 
 __attribute__((weak)) void uShlSpeed::checkScr() {

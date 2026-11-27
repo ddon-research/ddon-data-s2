@@ -117,14 +117,6 @@ const MtDTI& uShlHoming::getDTI() const {
     return uShlHoming::DTI;
 }
 
-inline void* uShlHoming::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlHoming::DTI)->memAlloc(sz, align, uShlHoming::DTI.getID());
-}
-
-inline void uShlHoming::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlHoming::DTI)->memFree(p_addr);
-}
-
 uShlHoming::uShlHoming() {
     mHomingPos.z = 0.0f;
     mHomingPos.pad_ = 0.0f;
@@ -163,9 +155,11 @@ __attribute__((weak)) void uShlHoming::homingPosMove(f32 spd) {
     /* stub */
 }
 
-__attribute__((weak)) void uShlHoming::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlHoming::applyWorldOffset")
-    /* stub */
+void uShlHoming::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlSpeed::applyWorldOffset(offset, absolute_offset);
+    mHomingPos.x = offset.x + mHomingPos.x;
+    mHomingPos.y = offset.y + mHomingPos.y;
+    mHomingPos.z = offset.z + mHomingPos.z;
 }
 
 __attribute__((weak)) void uShlHoming::movePosSub(f32 speed) {
@@ -186,18 +180,6 @@ MtObject* uShlHoming::MyDTI::newInstance() const {
 
 const MtDTI& uShlJob08CS12Npc::getDTI() const {
     return uShlJob08CS12Npc::DTI;
-}
-
-inline void* uShlJob08CS12Npc::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlJob08CS12Npc::DTI)->memAlloc(sz, align, uShlJob08CS12Npc::DTI.getID());
-}
-
-inline void uShlJob08CS12Npc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlJob08CS12Npc::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamJob08CS12Npc* uShlJob08CS12Npc::getShlParam() const {
-    return static_cast<const cShlParamJob08CS12Npc*>(mpShlParam2);
 }
 
 uShlJob08CS12Npc::~uShlJob08CS12Npc() {

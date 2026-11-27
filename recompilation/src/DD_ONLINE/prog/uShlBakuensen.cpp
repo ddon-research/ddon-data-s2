@@ -38,14 +38,6 @@ const MtDTI& cShlBakuensenLogNode::getDTI() const {
     return cShlBakuensenLogNode::DTI;
 }
 
-inline void* cShlBakuensenLogNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlBakuensenLogNode::DTI)->memAlloc(sz, align, cShlBakuensenLogNode::DTI.getID());
-}
-
-inline void cShlBakuensenLogNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlBakuensenLogNode::DTI)->memFree(p_addr);
-}
-
 cShlBakuensenLogNode::~cShlBakuensenLogNode() {
 }
 
@@ -69,10 +61,6 @@ MtObject* cShlBakuensenLogNode::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamBakuensen::getDTI() const {
     return cShlParamBakuensen::DTI;
-}
-
-inline void* cShlParamBakuensen::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamBakuensen::DTI)->memAlloc(sz, align, cShlParamBakuensen::DTI.getID());
 }
 
 inline void cShlParamBakuensen::operator delete(void* p_addr) {
@@ -108,10 +96,6 @@ const MtDTI& cShlParamBakuensenSpark::getDTI() const {
     return cShlParamBakuensenSpark::DTI;
 }
 
-inline void* cShlParamBakuensenSpark::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamBakuensenSpark::DTI)->memAlloc(sz, align, cShlParamBakuensenSpark::DTI.getID());
-}
-
 inline void cShlParamBakuensenSpark::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamBakuensenSpark::DTI)->memFree(p_addr);
 }
@@ -130,14 +114,6 @@ MtObject* cShlParamBakuensenSpark::MyDTI::newInstance() const {
 
 const MtDTI& uBakuenseSpark::getDTI() const {
     return uBakuenseSpark::DTI;
-}
-
-inline void* uBakuenseSpark::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uBakuenseSpark::DTI)->memAlloc(sz, align, uBakuenseSpark::DTI.getID());
-}
-
-inline void uBakuenseSpark::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uBakuenseSpark::DTI)->memFree(p_addr);
 }
 
 uBakuenseSpark::~uBakuenseSpark() {
@@ -187,14 +163,6 @@ MtObject* uBakuenseSpark::MyDTI::newInstance() const {
 
 const MtDTI& uShlBakuensen::getDTI() const {
     return uShlBakuensen::DTI;
-}
-
-inline void uShlBakuensen::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlBakuensen::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamBakuensen* uShlBakuensen::getShlParam() const {
-    return static_cast<const cShlParamBakuensen*>(mpShlParam2);
 }
 
 const MtDTI* uShlBakuensen::getLogNodeDTI() {
@@ -263,9 +231,53 @@ __attribute__((weak)) void uShlBakuensen::initSub() {
     /* stub */
 }
 
-__attribute__((weak)) void uShlBakuensen::updateSub() {
-    DDON_STUB("uShlBakuensen::updateSub")
-    /* stub */
+void uShlBakuensen::updateSub() {
+    if (mpOwner == nullptr) {
+        return;
+    }
+    this->uShlKeepOwnerLog::updateSub();
+    switch (static_cast<unsigned int>(mBakuenPhase - 1)) {
+        case 0:
+        {
+            traceWait();
+            break;
+        }
+        case 1:
+        {
+            if (setupReverse()) {
+                mBakuenPhase = nShlBakuensen::MODE_BAKUEN_REVERSE;
+                updateReverse();
+            }
+            break;
+        }
+        case 2:
+        {
+            updateReverse();
+            break;
+        }
+        case 3:
+        {
+            mShotWaitTimer = mShotWaitTimer - mDeltaTime;
+            if (0.0f > mShotWaitTimer) {
+                mBakuenPhase = nShlBakuensen::MODE_BAKUEN_SHOT;
+            }
+            break;
+        }
+        case 4:
+        {
+            shotBakuensen();
+            break;
+        }
+        case 5:
+        {
+            requestKill();
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 void uShlBakuensen::requestIgnite() {

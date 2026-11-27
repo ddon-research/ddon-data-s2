@@ -1,15 +1,14 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cPlDeadFlow.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
 #include "cMenuBase.h"
 #include "cNetGameServer.h"
 #include "cNetSessionManager.h"
+#include "cState.h"
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
 #include "cpOcdCtrl.h"
@@ -34,14 +33,6 @@
 
 const MtDTI& cPlDeadFlow::getDTI() const {
     return cPlDeadFlow::DTI;
-}
-
-inline void* cPlDeadFlow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPlDeadFlow::DTI)->memAlloc(sz, align, cPlDeadFlow::DTI.getID());
-}
-
-inline void cPlDeadFlow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPlDeadFlow::DTI)->memFree(p_addr);
 }
 
 cPlDeadFlow::cPlDeadFlow() {

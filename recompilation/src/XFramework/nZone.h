@@ -1395,3 +1395,63 @@ inline MtObject* nZone::cLayoutElement::getExtendObj() const {
 inline u32 nZone::cLayoutElement::getUniqueID() const {
     return this->mUniqueID;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nZone::ShapeInfoAABB::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoAABB::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoArea::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoBase::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoCapsule::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCapsule::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoCone::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCone::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoCylinder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCylinder::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoGlobal::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoGlobal::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoLine::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoLine::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoOBB::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoOBB::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoPanel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPanel::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPoint::DTI)->memFree(p_addr);
+}
+
+inline void nZone::ShapeInfoSphere::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoSphere::DTI)->memFree(p_addr);
+}
+
+inline void nZone::cContentsPool::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::DTI)->memFree(p_addr);
+}
+
+inline void nZone::cContentsPool::cContentsList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::cContentsList::DTI)->memFree(p_addr);
+}

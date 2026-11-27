@@ -3210,10 +3210,6 @@ void* nCaplink::cContentTagInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cContentTagInfo::DTI)->memAlloc(sz, align, ::nCaplink::cContentTagInfo::DTI.mID);
 }
 
-inline void nCaplink::cContentTagInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cContentTagInfo::DTI)->memFree(p_addr);
-}
-
 inline nCaplink::cContentTagInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCaplink::cContentTagInfo::MyDTI nCaplink::cContentTagInfo::DTI("cContentTagInfo", &::MtObject::DTI, 584ul, 0u, 0u);
@@ -3230,10 +3226,6 @@ void* nCaplink::cFreeTagInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cFreeTagInfo::DTI)->memAlloc(sz, align, ::nCaplink::cFreeTagInfo::DTI.mID);
 }
 
-inline void nCaplink::cFreeTagInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cFreeTagInfo::DTI)->memFree(p_addr);
-}
-
 inline nCaplink::cFreeTagInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCaplink::cFreeTagInfo::MyDTI nCaplink::cFreeTagInfo::DTI("cFreeTagInfo", &::MtObject::DTI, 72ul, 0u, 0u);
@@ -3248,10 +3240,6 @@ const MtDTI& nCaplink::cFriendEntryInfo::getDTI() const {
 
 void* nCaplink::cFriendEntryInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cFriendEntryInfo::DTI)->memAlloc(sz, align, ::nCaplink::cFriendEntryInfo::DTI.mID);
-}
-
-inline void nCaplink::cFriendEntryInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cFriendEntryInfo::DTI)->memFree(p_addr);
 }
 
 nCaplink::cFriendEntryInfo::cFriendEntryInfo(MT_CTSTR unique_id, MT_CTSTR nickname, MT_CTSTR icon, MT_CTSTR message, s32 status, MT_CTSTR request_at, MT_CTSTR update_at) {
@@ -4787,10 +4775,6 @@ void* nCaplink::cFriendInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cFriendInfo::DTI)->memAlloc(sz, align, ::nCaplink::cFriendInfo::DTI.mID);
 }
 
-inline void nCaplink::cFriendInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cFriendInfo::DTI)->memFree(p_addr);
-}
-
 nCaplink::cFriendInfo::cFriendInfo(MT_CTSTR unique_id, MT_CTSTR nickname, MT_CTSTR labelname, MT_CTSTR memo, MT_CTSTR icon, MT_CTSTR comment, MT_CTSTR accordat, MT_CTSTR updateat, s8 privacy, s8 attribute, s8 alive) {
     DDON_STUB("nCaplink::cFriendInfo::cFriendInfo")
     /* stub */
@@ -4813,10 +4797,6 @@ void* nCaplink::cIgnoreUserInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cIgnoreUserInfo::DTI)->memAlloc(sz, align, ::nCaplink::cIgnoreUserInfo::DTI.mID);
 }
 
-inline void nCaplink::cIgnoreUserInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cIgnoreUserInfo::DTI)->memFree(p_addr);
-}
-
 inline nCaplink::cIgnoreUserInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCaplink::cIgnoreUserInfo::MyDTI nCaplink::cIgnoreUserInfo::DTI("cIgnoreUserInfo", &::nCaplink::cUserBaseInfo::DTI, 1176ul, 0u, 0u);
@@ -4832,10 +4812,6 @@ const MtDTI& nCaplink::cNotifyAppInfo::getDTI() const {
 
 void* nCaplink::cNotifyAppInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cNotifyAppInfo::DTI)->memAlloc(sz, align, ::nCaplink::cNotifyAppInfo::DTI.mID);
-}
-
-inline void nCaplink::cNotifyAppInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cNotifyAppInfo::DTI)->memFree(p_addr);
 }
 
 nCaplink::cNotifyAppInfo::cNotifyAppInfo(s32 notify_id, MT_CTSTR content_id, MT_CTSTR message, MT_CTSTR param, MT_CTSTR unique_id, MT_CTSTR nickname, MT_CTSTR icon, s32 notify_type, s32 view_type, MT_CTSTR update_at) {
@@ -5059,10 +5035,6 @@ void* nCaplink::cResourceInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cResourceInfo::DTI)->memAlloc(sz, align, ::nCaplink::cResourceInfo::DTI.mID);
 }
 
-inline void nCaplink::cResourceInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cResourceInfo::DTI)->memFree(p_addr);
-}
-
 inline nCaplink::cResourceInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCaplink::cResourceInfo::MyDTI nCaplink::cResourceInfo::DTI("cResourceInfo", &::MtObject::DTI, 360ul, 0u, 0u);
@@ -5120,10 +5092,6 @@ void* nCaplink::cUserContentInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cUserContentInfo::DTI)->memAlloc(sz, align, ::nCaplink::cUserContentInfo::DTI.mID);
 }
 
-inline void nCaplink::cUserContentInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cUserContentInfo::DTI)->memFree(p_addr);
-}
-
 inline nCaplink::cUserContentInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nCaplink::cUserContentInfo::MyDTI nCaplink::cUserContentInfo::DTI("cUserContentInfo", &::MtObject::DTI, 1072ul, 0u, 0u);
@@ -5160,10 +5128,6 @@ const MtDTI& nCaplink::cWebsocketServerInfo::getDTI() const {
 
 void* nCaplink::cWebsocketServerInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCaplink::cWebsocketServerInfo::DTI)->memAlloc(sz, align, ::nCaplink::cWebsocketServerInfo::DTI.mID);
-}
-
-inline void nCaplink::cWebsocketServerInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCaplink::cWebsocketServerInfo::DTI)->memFree(p_addr);
 }
 
 inline nCaplink::cWebsocketServerInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

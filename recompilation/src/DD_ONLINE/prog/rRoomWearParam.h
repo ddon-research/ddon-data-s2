@@ -166,3 +166,19 @@ inline void cRoomWearParam::operator delete[](void* p_addr) {
 inline void* cRoomWearParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cRoomWearParam::DTI)->memAlloc(sz, align, ::cRoomWearParam::DTI.::MtDTI::getID());
 }
+
+inline void* cRoomWearParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cRoomWearParam::DTI)->memAlloc(sz, align, ::cRoomWearParam::DTI.::MtDTI::getID());
+}
+
+inline void cRoomWearParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cRoomWearParam::DTI)->memFree(p_addr);
+}
+
+inline void* rRoomWearParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rRoomWearParam::DTI)->memAlloc(sz, align, ::rRoomWearParam::DTI.::MtDTI::getID());
+}
+
+inline void rRoomWearParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rRoomWearParam::DTI)->memFree(p_addr);
+}

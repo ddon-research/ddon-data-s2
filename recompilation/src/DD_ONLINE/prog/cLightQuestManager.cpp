@@ -3,7 +3,7 @@
 #include "cLightQuestManager.h"
 #include "Protocol/PacketData/Common.h"
 #include "../../MT/MtAllocator.h"
-#include "../../MT/MtCharset.h"
+#include "../../MT/MtCharSet.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
@@ -34,16 +34,8 @@ const MtDTI& cLightQuestManager::getDTI() const {
     return cLightQuestManager::DTI;
 }
 
-inline MtAllocator* cLightQuestManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cLightQuestManager::DTI);
-}
-
 void* cLightQuestManager::operator new(size_t sz, u32 align) {
     return cLightQuestManager::getAllocator()->memAlloc(sz, align, cLightQuestManager::DTI.getID());
-}
-
-inline void cLightQuestManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLightQuestManager::DTI)->memFree(p_addr);
 }
 
 u32 cLightQuestManager::getQuestManagerType() const {
@@ -73,9 +65,29 @@ void cLightQuestManager::move() {
     this->cQuestManagerBase::move();
 }
 
-__attribute__((weak)) void cLightQuestManager::getQuestList() {
-    DDON_STUB("cLightQuestManager::getQuestList")
-    /* stub */
+void cLightQuestManager::getQuestList() {
+    const u32 questNum = getQuestNum();
+    if (questNum != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            cQuestTask* t0 = getQuestTask(i0_3);
+            if (!t0->isOrder()) {
+                t0->forceDelete();
+            }
+            if (questNum != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (sQuestManagerExt::getInstance()->isEnableLightQuest()) {
+        this->cQuestManagerBase::getQuestList();
+        cQuestSvRequest* t1 = cQuestSvRequestManager::pushRequest(cQuestSvReqGetLightQuestList::DTI);
+        if (t1 != nullptr) {
+            t1->setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvRequest::PCallbackFunc>(&::cLightQuestManager::callbackGetLightQuestList));
+        }
+        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + 40) = mQuestBoardBaseId;
+    }
 }
 
 __attribute__((weak)) void cLightQuestManager::registTask(const LightQuestOrderListVec& list) {
@@ -175,10 +187,6 @@ MtObject* cLightQuestManager::MyDTI::newInstance() const {
 
 const MtDTI& cLightQuestManager::cLightQuestInfo::getDTI() const {
     return cLightQuestManager::cLightQuestInfo::DTI;
-}
-
-inline void* cLightQuestManager::cLightQuestInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cLightQuestManager::cLightQuestInfo::DTI)->memAlloc(sz, align, cLightQuestManager::cLightQuestInfo::DTI.getID());
 }
 
 cLightQuestManager::cLightQuestInfo::~cLightQuestInfo() {

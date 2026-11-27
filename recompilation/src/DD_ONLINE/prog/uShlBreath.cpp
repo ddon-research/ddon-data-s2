@@ -5,7 +5,6 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtProperty.h"
@@ -99,18 +98,6 @@ __attribute__((weak)) MtObject* cShlParamBreath::MyDTI::newInstance() const {
 
 const MtDTI& uShlBreath::getDTI() const {
     return uShlBreath::DTI;
-}
-
-inline void* uShlBreath::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlBreath::DTI)->memAlloc(sz, align, uShlBreath::DTI.getID());
-}
-
-inline void uShlBreath::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlBreath::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamBreath* uShlBreath::getShlParam() const {
-    return static_cast<const cShlParamBreath*>(mpShlParam2);
 }
 
 uShlBreath::~uShlBreath() {

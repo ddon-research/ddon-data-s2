@@ -6,6 +6,8 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "nObjCollision.h"
+#include "rAttackParam.h"
+#include "rCalcDamage.h"
 #include "sObjCollision.h"
 #include "uDDOModel.h"
 #ifndef DDON_STUB
@@ -16,31 +18,59 @@ const MtDTI& cBlowShrinkDmInfo::getDTI() const {
     return cBlowShrinkDmInfo::DTI;
 }
 
-inline MtAllocator* cBlowShrinkDmInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cBlowShrinkDmInfo::DTI);
-}
-
 void* cBlowShrinkDmInfo::operator new(size_t sz, u32 align) {
     return cBlowShrinkDmInfo::getAllocator()->memAlloc(sz, align, cBlowShrinkDmInfo::DTI.getID());
 }
 
-inline void cBlowShrinkDmInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBlowShrinkDmInfo::DTI)->memFree(p_addr);
+f32 cBlowShrinkDmInfo::calcBaseShrinkAttack(const cAttackParam* pAttackParam) {
+    if (pAttackParam != nullptr) {
+        if ((pAttackParam->mShrinkRate * (mPower + mShrinkWep)) > 1.1920929e-7f) {
+            return mPawnAdjShrinkBlowAt + (pAttackParam->mShrinkRate * (mPower + mShrinkWep));
+        } else {
+            return pAttackParam->mShrinkRate * (mPower + mShrinkWep);
+        }
+    } else {
+        return 0.0f;
+    }
 }
 
-__attribute__((weak)) f32 cBlowShrinkDmInfo::calcBaseShrinkAttack(const cAttackParam* pAttackParam) {
-    DDON_STUB("cBlowShrinkDmInfo::calcBaseShrinkAttack")
-    return {};
+f32 cBlowShrinkDmInfo::calcBaseBlowAttack(const cAttackParam* pAttackParam) {
+    if (pAttackParam != nullptr) {
+        if ((pAttackParam->mBlowRate * (mPower + mBlowWep)) > 1.1920929e-7f) {
+            return mPawnAdjShrinkBlowAt + (pAttackParam->mBlowRate * (mPower + mBlowWep));
+        } else {
+            return pAttackParam->mBlowRate * (mPower + mBlowWep);
+        }
+    } else {
+        return 0.0f;
+    }
 }
 
-__attribute__((weak)) f32 cBlowShrinkDmInfo::calcBaseBlowAttack(const cAttackParam* pAttackParam) {
-    DDON_STUB("cBlowShrinkDmInfo::calcBaseBlowAttack")
-    return {};
-}
-
-__attribute__((weak)) f32 cBlowShrinkDmInfo::calcSaveShrinkBlowAttack(const cDmJobAdjParam* pJobAdjParam, uDDOModel* pDefender) {
-    DDON_STUB("cBlowShrinkDmInfo::calcSaveShrinkBlowAttack")
-    return {};
+f32 cBlowShrinkDmInfo::calcSaveShrinkBlowAttack(const cDmJobAdjParam* pJobAdjParam, uDDOModel* pDefender) {
+    if (pJobAdjParam != nullptr) {
+        if (pDefender != nullptr) {
+            if ((pDefender->mUnitId & 2u) != 0) {
+                sObjCollision* t1 = sObjCollision::getInstance();
+                u32 t2 = pDefender->getLv();
+                const cBlowSaveEmLvParam* pSaveLvParam = t1->getBlowSaveEmLvParam(t2);
+                if (pSaveLvParam != nullptr) {
+                    sObjCollision* t4 = sObjCollision::getInstance();
+                    f32 baseAdj = t4->getSystemParam(sObjCollision::BLOW_SAVE_BASE_ADJ);
+                    const f32 t5 = pJobAdjParam->mShrinkBlowSaveAdj;
+                    u32 t6 = pDefender->getLv();
+                    return (t5 * baseAdj) * (pSaveLvParam->mSaveRate * static_cast<float>((t6 - pSaveLvParam->mKeyLv) + 1u));
+                } else {
+                    return 0.0f;
+                }
+            } else {
+                return 0.0f;
+            }
+        } else {
+            return 0.0f;
+        }
+    } else {
+        return 0.0f;
+    }
 }
 
 void cBlowShrinkDmInfo::clear() {

@@ -209,3 +209,23 @@ inline void* sMarker::cLoadResource::operator new(size_t sz, void* p_addr) {
 inline sMarker::cLoadResource::cLoadResource() {
     this->mDataType = static_cast<sMarker::DATA_TYPE>(0);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sMarker::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sMarker::DTI);
+}
+
+inline void sMarker::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sMarker::DTI)->memFree(p_addr);
+}
+
+inline void* sMarker::cLoadResource::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sMarker::cLoadResource::DTI)->memAlloc(sz, align, ::sMarker::cLoadResource::DTI.::MtDTI::getID());
+}
+
+inline void sMarker::cLoadResource::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sMarker::cLoadResource::DTI)->memFree(p_addr);
+}

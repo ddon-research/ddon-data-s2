@@ -206,3 +206,30 @@ inline void nDDOIO::writeMtArray<rFieldAreaAdjoinList::cAdjoinInfo::cVector3>(Mt
 inline void* rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI)->memAlloc(sz, align, rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI.getID());
 }
+
+inline void* rFieldAreaAdjoinList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::DTI)->memAlloc(sz, align, ::rFieldAreaAdjoinList::DTI.::MtDTI::getID());
+}
+
+inline void rFieldAreaAdjoinList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::DTI)->memFree(p_addr);
+}
+
+inline rFieldAreaAdjoinList::rFieldAreaAdjoinList() {
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+    this->mFieldAreaId = -1;
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rFieldAreaAdjoinList::cAdjoinInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::cAdjoinInfo::DTI)->memAlloc(sz, align, ::rFieldAreaAdjoinList::cAdjoinInfo::DTI.::MtDTI::getID());
+}
+
+inline void rFieldAreaAdjoinList::cAdjoinInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::cAdjoinInfo::DTI)->memFree(p_addr);
+}
+
+inline void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI)->memFree(p_addr);
+}

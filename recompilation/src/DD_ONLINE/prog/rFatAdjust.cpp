@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rFatAdjust.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -20,26 +18,6 @@ const MtDTI& cFatAdjust::getDTI() const {
     return cFatAdjust::DTI;
 }
 
-inline void* cFatAdjust::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFatAdjust::DTI)->memAlloc(sz, align, cFatAdjust::DTI.getID());
-}
-
-inline void cFatAdjust::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFatAdjust::DTI)->memFree(p_addr);
-}
-
-cFatAdjust::cFatAdjust() {
-    mThreshold = 0.5f;
-    mRot.x = MtVector3::Zero.x;
-    mRot.y = MtVector3::Zero.y;
-    mRot.z = MtVector3::Zero.z;
-    mRot.pad_ = 0.0f;
-    mTrans.x = MtVector3::Zero.x;
-    mTrans.y = MtVector3::Zero.y;
-    mTrans.z = MtVector3::Zero.z;
-    mTrans.pad_ = 0.0f;
-}
-
 inline cFatAdjust::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cFatAdjust::MyDTI cFatAdjust::DTI("cFatAdjust", &::MtObject::DTI, 48ul, 0u, 0u);
@@ -50,14 +28,6 @@ MtObject* cFatAdjust::MyDTI::newInstance() const {
 
 const MtDTI& rFatAdjust::getDTI() const {
     return rFatAdjust::DTI;
-}
-
-inline void* rFatAdjust::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFatAdjust::DTI)->memAlloc(sz, align, rFatAdjust::DTI.getID());
-}
-
-inline void rFatAdjust::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFatAdjust::DTI)->memFree(p_addr);
 }
 
 bool rFatAdjust::loadData(MtDataReader& r, cFatAdjust* pData) {

@@ -263,3 +263,10 @@ inline void* MtScalableAllocator::operator new(size_t sz, void* p_addr) {
 
 inline MtScalableAllocator::CTRL::CTRL() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtMemoryAllocator.h"
+
+inline void MtScalableAllocator::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtScalableAllocator::DTI)->memFree(p_addr);
+}

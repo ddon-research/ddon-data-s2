@@ -53,10 +53,6 @@ const MtDTI& cAIAStar::getDTI() const {
     return cAIAStar::DTI;
 }
 
-inline void cAIAStar::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIAStar::DTI)->memFree(p_addr);
-}
-
 cAIAStar::cAIAStar() {
     DDON_STUB("cAIAStar::cAIAStar")
     /* stub */
@@ -159,10 +155,6 @@ const MtDTI& cAIGraph::getDTI() const {
 
 void* cAIGraph::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIGraph::DTI)->memAlloc(sz, align, cAIGraph::DTI.mID);
-}
-
-inline void cAIGraph::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIGraph::DTI)->memFree(p_addr);
 }
 
 cAIGraph::cAIGraph() {
@@ -323,14 +315,6 @@ const MtDTI& cAIGraph::Node::getDTI() const {
     return cAIGraph::Node::DTI;
 }
 
-inline void* cAIGraph::Node::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIGraph::Node::DTI)->memAlloc(sz, align, cAIGraph::Node::DTI.mID);
-}
-
-inline void cAIGraph::Node::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIGraph::Node::DTI)->memFree(p_addr);
-}
-
 cAIGraph::Node::~Node() {
     if (!mAutoDeleteLink) {
         return;
@@ -365,10 +349,6 @@ const MtDTI& cAIGraph::Area::getDTI() const {
     return cAIGraph::Area::DTI;
 }
 
-inline void cAIGraph::Area::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIGraph::Area::DTI)->memFree(p_addr);
-}
-
 cAIGraph::Area::~Area() {
     DDON_STUB("cAIGraph::Area::~Area")
     /* stub */
@@ -389,10 +369,6 @@ const MtDTI& cAIQuadTree::getDTI() const {
 
 void* cAIQuadTree::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIQuadTree::DTI)->memAlloc(sz, align, cAIQuadTree::DTI.mID);
-}
-
-inline void cAIQuadTree::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIQuadTree::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cAIQuadTree::cAIQuadTree() {
@@ -449,10 +425,6 @@ const MtDTI& cAITreeBase::getDTI() const {
     return cAITreeBase::DTI;
 }
 
-inline void* cAITreeBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAITreeBase::DTI)->memAlloc(sz, align, cAITreeBase::DTI.mID);
-}
-
 cAITreeBase::~cAITreeBase() {
     if (mpNode) delete[] mpNode;
 }
@@ -467,10 +439,6 @@ MtObject* cAITreeBase::MyDTI::newInstance() const {
 
 const MtDTI& cAITreeBase::Node::getDTI() const {
     return cAITreeBase::Node::DTI;
-}
-
-inline void cAITreeBase::Node::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAITreeBase::Node::DTI)->memFree(p_addr);
 }
 
 cAITreeBase::Node::~Node() {

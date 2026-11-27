@@ -24,16 +24,8 @@ const MtDTI& uGUISkillLvUp::getDTI() const {
     return uGUISkillLvUp::DTI;
 }
 
-inline MtAllocator* uGUISkillLvUp::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUISkillLvUp::DTI);
-}
-
 void* uGUISkillLvUp::operator new(size_t sz, u32 align) {
     return uGUISkillLvUp::getAllocator()->memAlloc(sz, align, uGUISkillLvUp::DTI.getID());
-}
-
-inline void uGUISkillLvUp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUISkillLvUp::DTI)->memFree(p_addr);
 }
 
 uGUISkillLvUp::~uGUISkillLvUp() {

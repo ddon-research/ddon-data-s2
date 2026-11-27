@@ -28,33 +28,6 @@ const MtDTI& rItemList::getDTI() const {
     return rItemList::DTI;
 }
 
-inline void* rItemList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rItemList::DTI)->memAlloc(sz, align, rItemList::DTI.getID());
-}
-
-inline void rItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(p_addr);
-}
-
-inline rItemList::rItemList() {
-    setAttribute(22u);
-    this->cResource::clear();
-    mpItemList = nullptr;
-    mArrayDataNum = 0;
-    mpParamList = nullptr;
-    mArrayParamDataNum = 0;
-    mpVsParamList = nullptr;
-    mArrayVsParamDataNum = 0;
-    mpWeaponParamList = nullptr;
-    mArrayWeaponParamDataNum = 0;
-    mpProtectParamList = nullptr;
-    mArrayProtectParamDataNum = 0;
-    mpEquipParamS8List = nullptr;
-    mArrayEquipParamS8DataNum = 0;
-    mMaxId = 0;
-    mpIndexTbl = nullptr;
-}
-
 rItemList::~rItemList() {
     releaseWork();
     MtMemoryAllocator::getAllocator(rItemList::DTI)->memFree(static_cast<void*>(mpIndexTbl));
@@ -280,10 +253,6 @@ MtObject* rItemList::MyDTI::newInstance() const {
 
 const MtDTI& rItemList::rItemParam::getDTI() const {
     return rItemList::rItemParam::DTI;
-}
-
-inline void rItemList::rItemParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::rItemParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rItemList::rItemParam::~rItemParam() {
@@ -810,10 +779,6 @@ const MtDTI& rItemList::rParam::getDTI() const {
     return rItemList::rParam::DTI;
 }
 
-inline void rItemList::rParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::rParam::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void rItemList::rParam::createProperty(MtPropertyList& s) {
     DDON_STUB("rItemList::rParam::createProperty")
     /* stub */
@@ -852,14 +817,6 @@ const MtDTI& rItemList::rVsEnemyParam::getDTI() const {
     return rItemList::rVsEnemyParam::DTI;
 }
 
-inline void* rItemList::rVsEnemyParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rItemList::rVsEnemyParam::DTI)->memAlloc(sz, align, rItemList::rVsEnemyParam::DTI.getID());
-}
-
-inline void rItemList::rVsEnemyParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::rVsEnemyParam::DTI)->memFree(p_addr);
-}
-
 void rItemList::rVsEnemyParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mKindType", &mKindType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mParam", &mParam, 0u, 0u);
@@ -896,14 +853,6 @@ MtObject* rItemList::rVsEnemyParam::MyDTI::newInstance() const {
 
 const MtDTI& rItemList::rWeaponParam::getDTI() const {
     return rItemList::rWeaponParam::DTI;
-}
-
-inline void* rItemList::rWeaponParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rItemList::rWeaponParam::DTI)->memAlloc(sz, align, rItemList::rWeaponParam::DTI.getID());
-}
-
-inline void rItemList::rWeaponParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::rWeaponParam::DTI)->memFree(p_addr);
 }
 
 rItemList::rWeaponParam::~rWeaponParam() {
@@ -994,10 +943,6 @@ const MtDTI& rItemList::rEquipParamS8::getDTI() const {
     return rItemList::rEquipParamS8::DTI;
 }
 
-inline void rItemList::rEquipParamS8::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::rEquipParamS8::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void rItemList::rEquipParamS8::createProperty(MtPropertyList& s) {
     DDON_STUB("rItemList::rEquipParamS8::createProperty")
     /* stub */
@@ -1058,14 +1003,6 @@ __attribute__((weak)) MtObject* rItemList::rEquipParamS8::MyDTI::newInstance() c
 
 const MtDTI& rItemList::rItemParamXml::getDTI() const {
     return rItemList::rItemParamXml::DTI;
-}
-
-inline void* rItemList::rItemParamXml::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rItemList::rItemParamXml::DTI)->memAlloc(sz, align, rItemList::rItemParamXml::DTI.getID());
-}
-
-inline void rItemList::rItemParamXml::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::rItemParamXml::DTI)->memFree(p_addr);
 }
 
 void rItemList::rItemParamXml::createProperty(MtPropertyList& s) {
@@ -1217,14 +1154,6 @@ const MtDTI& rItemList::rProtectorParam::getDTI() const {
     return rItemList::rProtectorParam::DTI;
 }
 
-inline void* rItemList::rProtectorParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rItemList::rProtectorParam::DTI)->memAlloc(sz, align, rItemList::rProtectorParam::DTI.getID());
-}
-
-inline void rItemList::rProtectorParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::rProtectorParam::DTI)->memFree(p_addr);
-}
-
 rItemList::rProtectorParam::~rProtectorParam() {
     if (mpEquipParamS8List != nullptr) {
         for (u8 i = 0; i < mEquipParamS8Num; ++i) {
@@ -1360,10 +1289,6 @@ MtObject* rItemList::rProtectorParam::MyDTI::newInstance() const {
 
 const MtDTI& rItemList::rEquipParamS32::getDTI() const {
     return rItemList::rEquipParamS32::DTI;
-}
-
-inline void rItemList::rEquipParamS32::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rItemList::rEquipParamS32::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void rItemList::rEquipParamS32::createProperty(MtPropertyList& s) {

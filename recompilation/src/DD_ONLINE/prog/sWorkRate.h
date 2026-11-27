@@ -123,3 +123,15 @@ inline void* sWorkRate::operator new(size_t sz, void* p_addr) {
 inline sWorkRate* sWorkRate::getInstance() {
     return ::sWorkRate::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sWorkRate::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sWorkRate::DTI);
+}
+
+inline void sWorkRate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sWorkRate::DTI)->memFree(p_addr);
+}

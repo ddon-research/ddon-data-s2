@@ -30,10 +30,6 @@ void* uGeometry2::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uGeometry2::DTI)->memAlloc(sz, align, uGeometry2::DTI.mID);
 }
 
-inline void uGeometry2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGeometry2::DTI)->memFree(p_addr);
-}
-
 uGeometry2::~uGeometry2() {
     if (mpRGeometry2 == nullptr) {
         return;

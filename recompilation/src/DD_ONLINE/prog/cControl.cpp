@@ -29,10 +29,6 @@ const MtDTI& cControl::getDTI() const {
     return cControl::DTI;
 }
 
-inline MtAllocator* cControl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cControl::DTI);
-}
-
 void* cControl::operator new(size_t sz, u32 align) {
     return cControl::getAllocator()->memAlloc(sz, align, cControl::DTI.getID());
 }
@@ -410,10 +406,6 @@ const MtDTI& cControl::cMouseExecution::getDTI() const {
     return cControl::cMouseExecution::DTI;
 }
 
-inline void cControl::cMouseExecution::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cControl::cMouseExecution::DTI)->memFree(p_addr);
-}
-
 cControl::cMouseExecution::~cMouseExecution() {
 }
 
@@ -432,10 +424,6 @@ MtObject* cControl::cMouseExecution::MyDTI::newInstance() const {
 
 const MtDTI& cControl::cMouseExecution::cMouseTouchInfo::getDTI() const {
     return cControl::cMouseExecution::cMouseTouchInfo::DTI;
-}
-
-inline void cControl::cMouseExecution::cMouseTouchInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cControl::cMouseExecution::cMouseTouchInfo::DTI)->memFree(p_addr);
 }
 
 inline cControl::cMouseExecution::cMouseTouchInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

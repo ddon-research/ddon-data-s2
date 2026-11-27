@@ -43,10 +43,6 @@ const MtDTI& uGUIRankingBoard::getDTI() const {
     return uGUIRankingBoard::DTI;
 }
 
-inline void uGUIRankingBoard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRankingBoard::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIRankingBoard::~uGUIRankingBoard() {
     if (mpGMDRes != nullptr) {
         mpGMDRes->release();
@@ -462,21 +458,15 @@ __attribute__((weak)) MtObject* uGUIRankingBoard::MyDTI::newInstance() const {
     return nullptr;
 }
 
-uGUIRankingBoard::stList::stList() {
-    DDON_STUB("uGUIRankingBoard::stList::stList")
-    /* stub */
+uGUIRankingBoard::stList::stList() : mpObjPolyMaskBottom(static_cast<cGUIObjPolygon*>(nullptr)), mpObjPolyMaskCenter(static_cast<cGUIObjPolygon*>(nullptr)), mpObjPolyMaskTop(static_cast<cGUIObjPolygon*>(nullptr)), mpObjMsgNotice(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgTitleSub(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgTitle(static_cast<cGUIObjMessage*>(nullptr)), mpInstAnimFrame(static_cast<cGUIInstAnimation*>(nullptr)) {
+    mPointerPos.x = MtVector2::Zero.x;
+    mPointerPos.y = MtVector2::Zero.y;
+    mListTop = 0.0f;
+    mListOffset = 0.0f;
 }
 
 const MtDTI& uGUIRankingBoard::cListItem::getDTI() const {
     return uGUIRankingBoard::cListItem::DTI;
-}
-
-inline void* uGUIRankingBoard::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIRankingBoard::cListItem::DTI)->memAlloc(sz, align, uGUIRankingBoard::cListItem::DTI.getID());
-}
-
-inline void uGUIRankingBoard::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRankingBoard::cListItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIRankingBoard::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -496,14 +486,6 @@ const MtDTI& uGUIRankingBoard::cRankingItem::getDTI() const {
     return uGUIRankingBoard::cRankingItem::DTI;
 }
 
-inline void* uGUIRankingBoard::cRankingItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIRankingBoard::cRankingItem::DTI)->memAlloc(sz, align, uGUIRankingBoard::cRankingItem::DTI.getID());
-}
-
-inline void uGUIRankingBoard::cRankingItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRankingBoard::cRankingItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIRankingBoard::cRankingItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIRankingBoard::cRankingItem::MyDTI uGUIRankingBoard::cRankingItem::DTI("uGUIRankingBoard::cRankingItem", &::uGUIBase::cScrollListItemBase::DTI, 184ul, 0u, 0u);
@@ -514,10 +496,6 @@ MtObject* uGUIRankingBoard::cRankingItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIRankingBoard::cListInfo::getDTI() const {
     return uGUIRankingBoard::cListInfo::DTI;
-}
-
-inline void uGUIRankingBoard::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRankingBoard::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIRankingBoard::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -531,10 +509,6 @@ __attribute__((weak)) MtObject* uGUIRankingBoard::cListInfo::MyDTI::newInstance(
 
 const MtDTI& uGUIRankingBoard::cRankingInfo::getDTI() const {
     return uGUIRankingBoard::cRankingInfo::DTI;
-}
-
-inline void uGUIRankingBoard::cRankingInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRankingBoard::cRankingInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIRankingBoard::cRankingInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

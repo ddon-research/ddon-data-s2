@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSoundStreamRequest.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
@@ -130,10 +129,6 @@ __attribute__((weak)) void rSoundStreamRequest::usage() {
 
 const MtDTI& rSoundStreamRequest::getDTI() const {
     return rSoundStreamRequest::DTI;
-}
-
-inline void rSoundStreamRequest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rSoundStreamRequest::~rSoundStreamRequest() {

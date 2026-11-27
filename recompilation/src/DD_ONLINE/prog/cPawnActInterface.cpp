@@ -22,6 +22,8 @@
 #include "cGeneralPointPtr.h"
 #include "cHumanActBow.h"
 #include "cHumanActId.h"
+#include "cHumanAction.h"
+#include "cHumanActionClimb.h"
 #include "../../XFramework/cUnit.h"
 #include "cpAIPawnEmChecker.h"
 #include "cpActionManager.h"
@@ -43,6 +45,7 @@
 #include "cpOcdCtrl.h"
 #include "cpPathFinding.h"
 #include "cpPawnThink.h"
+#include "cpRootComponent.h"
 #include "cpScrCollision.h"
 #include "cpSequenceCtrl.h"
 #include "cpShlShotCtrl.h"
@@ -86,10 +89,6 @@ const MtDTI& cPawnActInterActArrow::getDTI() const {
     return cPawnActInterActArrow::DTI;
 }
 
-inline void cPawnActInterActArrow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActArrow::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) ACTINTER_CODERET cPawnActInterActArrow::initInter(cPawnActInterIO& param, uCharacter& owner) {
     DDON_STUB("cPawnActInterActArrow::initInter")
     return {};
@@ -111,14 +110,6 @@ __attribute__((weak)) MtObject* cPawnActInterActArrow::MyDTI::newInstance() cons
 
 const MtDTI& cPawnActInterActArrowChange::getDTI() const {
     return cPawnActInterActArrowChange::DTI;
-}
-
-inline void* cPawnActInterActArrowChange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterActArrowChange::DTI)->memAlloc(sz, align, cPawnActInterActArrowChange::DTI.getID());
-}
-
-inline void cPawnActInterActArrowChange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActArrowChange::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cPawnActInterActArrowChange::isEnableActInterPre(uCharacter& owner) const {
@@ -155,10 +146,6 @@ MtObject* cPawnActInterActArrowChange::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterActBindAnchor::getDTI() const {
     return cPawnActInterActBindAnchor::DTI;
-}
-
-inline void cPawnActInterActBindAnchor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActBindAnchor::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) ACTINTER_CODERET cPawnActInterActBindAnchor::initInter(cPawnActInterIO& param, uCharacter& owner) {
@@ -257,10 +244,6 @@ const MtDTI& cPawnActInterActChant::getDTI() const {
     return cPawnActInterActChant::DTI;
 }
 
-inline void cPawnActInterActChant::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActChant::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool cPawnActInterActChant::isEnableActInterTarget(uCharacter& owner, cGeneralPoint* pTarget, u32 baseActNo, const cPawnEnableArea* pEnableArea, const MtVector3* pEnableAreaPos) const {
     DDON_STUB("cPawnActInterActChant::isEnableActInterTarget")
     return {};
@@ -322,10 +305,6 @@ const MtDTI& cPawnActInterActChargeMove::getDTI() const {
     return cPawnActInterActChargeMove::DTI;
 }
 
-inline void cPawnActInterActChargeMove::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActChargeMove::DTI)->memFree(p_addr);
-}
-
 bool cPawnActInterActChargeMove::isEnableActInterTarget(uCharacter& owner, cGeneralPoint* pTarget, u32 baseActNo, const cPawnEnableArea* pEnableArea, const MtVector3* pEnableAreaPos) const {
     if (pTarget != nullptr) {
         return pTarget->getDDOModelOwner() != nullptr;
@@ -375,10 +354,6 @@ const MtDTI& cPawnActInterActCircleCancel::getDTI() const {
     return cPawnActInterActCircleCancel::DTI;
 }
 
-inline void cPawnActInterActCircleCancel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActCircleCancel::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool cPawnActInterActCircleCancel::isEnableActInterPre(uCharacter& owner) const {
     DDON_STUB("cPawnActInterActCircleCancel::isEnableActInterPre")
     return {};
@@ -400,10 +375,6 @@ __attribute__((weak)) MtObject* cPawnActInterActCircleCancel::MyDTI::newInstance
 
 const MtDTI& cPawnActInterActElementArrow::getDTI() const {
     return cPawnActInterActElementArrow::DTI;
-}
-
-inline void cPawnActInterActElementArrow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActElementArrow::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cPawnActInterActElementArrow::isEnableActInterTarget(uCharacter& owner, cGeneralPoint* pTarget, u32 baseActNo, const cPawnEnableArea* pEnableArea, const MtVector3* pEnableAreaPos) const {
@@ -432,10 +403,6 @@ __attribute__((weak)) MtObject* cPawnActInterActElementArrow::MyDTI::newInstance
 
 const MtDTI& cPawnActInterActElementChange::getDTI() const {
     return cPawnActInterActElementChange::DTI;
-}
-
-inline void cPawnActInterActElementChange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActElementChange::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cPawnActInterActElementChange::isEnableActInterPre(uCharacter& owner) const {
@@ -477,10 +444,6 @@ __attribute__((weak)) MtObject* cPawnActInterActElementChange::MyDTI::newInstanc
 
 const MtDTI& cPawnActInterActEnchant::getDTI() const {
     return cPawnActInterActEnchant::DTI;
-}
-
-inline void cPawnActInterActEnchant::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActEnchant::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cPawnActInterActEnchant::isEnableActInterPre(uCharacter& owner) const {
@@ -547,10 +510,6 @@ const MtDTI& cPawnActInterActLight::getDTI() const {
     return cPawnActInterActLight::DTI;
 }
 
-inline void cPawnActInterActLight::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActLight::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool cPawnActInterActLight::isEnableActInterTarget(uCharacter& owner, cGeneralPoint* pTarget, u32 baseActNo, const cPawnEnableArea* pEnableArea, const MtVector3* pEnableAreaPos) const {
     DDON_STUB("cPawnActInterActLight::isEnableActInterTarget")
     return {};
@@ -597,14 +556,6 @@ const MtDTI& cPawnActInterActMedalChange::getDTI() const {
     return cPawnActInterActMedalChange::DTI;
 }
 
-inline void* cPawnActInterActMedalChange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterActMedalChange::DTI)->memAlloc(sz, align, cPawnActInterActMedalChange::DTI.getID());
-}
-
-inline void cPawnActInterActMedalChange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActMedalChange::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool cPawnActInterActMedalChange::isEnableActInterPre(uCharacter& owner) const {
     DDON_STUB("cPawnActInterActMedalChange::isEnableActInterPre")
     return {};
@@ -640,10 +591,6 @@ MtObject* cPawnActInterActMedalChange::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterActNo::getDTI() const {
     return cPawnActInterActNo::DTI;
-}
-
-inline void cPawnActInterActNo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActNo::DTI)->memFree(p_addr);
 }
 
 cPawnActInterActNo::~cPawnActInterActNo() {
@@ -761,10 +708,6 @@ const MtDTI& cPawnActInterActProvoke::getDTI() const {
     return cPawnActInterActProvoke::DTI;
 }
 
-inline void cPawnActInterActProvoke::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActProvoke::DTI)->memFree(p_addr);
-}
-
 ACTINTER_CODERET cPawnActInterActProvoke::updateInter(cPawnActInterIO& param, uCharacter& owner) {
     return ACTINTER_CODERET_END;
 }
@@ -780,10 +723,6 @@ __attribute__((weak)) MtObject* cPawnActInterActProvoke::MyDTI::newInstance() co
 
 const MtDTI& cPawnActInterActRapid::getDTI() const {
     return cPawnActInterActRapid::DTI;
-}
-
-inline void cPawnActInterActRapid::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterActRapid::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) ACTINTER_CODERET cPawnActInterActRapid::initInter(cPawnActInterIO& param, uCharacter& owner) {
@@ -812,14 +751,6 @@ __attribute__((weak)) MtObject* cPawnActInterActRapid::MyDTI::newInstance() cons
 
 const MtDTI& cPawnActInterAtkHerald::getDTI() const {
     return cPawnActInterAtkHerald::DTI;
-}
-
-inline void* cPawnActInterAtkHerald::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterAtkHerald::DTI)->memAlloc(sz, align, cPawnActInterAtkHerald::DTI.getID());
-}
-
-inline void cPawnActInterAtkHerald::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterAtkHerald::DTI)->memFree(p_addr);
 }
 
 cPawnActInterAtkHerald::~cPawnActInterAtkHerald() {
@@ -851,14 +782,6 @@ MtObject* cPawnActInterAtkHerald::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterAutoMotion::getDTI() const {
     return cPawnActInterAutoMotion::DTI;
-}
-
-inline void* cPawnActInterAutoMotion::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterAutoMotion::DTI)->memAlloc(sz, align, cPawnActInterAutoMotion::DTI.getID());
-}
-
-inline void cPawnActInterAutoMotion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterAutoMotion::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cPawnActInterAutoMotion::isEnableActInterPre(uCharacter& owner) const {
@@ -918,14 +841,6 @@ MtObject* cPawnActInterAutoMotion::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterBase::getDTI() const {
     return cPawnActInterBase::DTI;
-}
-
-inline void* cPawnActInterBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterBase::DTI)->memAlloc(sz, align, cPawnActInterBase::DTI.getID());
-}
-
-inline void cPawnActInterBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterBase::DTI)->memFree(p_addr);
 }
 
 cPawnActInterBase::~cPawnActInterBase() {
@@ -1075,10 +990,6 @@ const MtDTI& cPawnActInterBreak::getDTI() const {
     return cPawnActInterBreak::DTI;
 }
 
-inline void cPawnActInterBreak::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterBreak::DTI)->memFree(p_addr);
-}
-
 cPawnActInterBreak::cPawnActInterBreak() {
     DDON_STUB("cPawnActInterBreak::cPawnActInterBreak")
     /* stub */
@@ -1102,14 +1013,6 @@ const MtDTI& cPawnActInterCliffClimb::getDTI() const {
     return cPawnActInterCliffClimb::DTI;
 }
 
-inline void* cPawnActInterCliffClimb::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterCliffClimb::DTI)->memAlloc(sz, align, cPawnActInterCliffClimb::DTI.getID());
-}
-
-inline void cPawnActInterCliffClimb::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterCliffClimb::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) ACTINTER_CODERET cPawnActInterCliffClimb::updateInter(cPawnActInterIO& param, uCharacter& owner) {
     DDON_STUB("cPawnActInterCliffClimb::updateInter")
     return {};
@@ -1127,14 +1030,6 @@ const MtDTI& cPawnActInterClimbBegin::getDTI() const {
     return cPawnActInterClimbBegin::DTI;
 }
 
-inline void* cPawnActInterClimbBegin::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterClimbBegin::DTI)->memAlloc(sz, align, cPawnActInterClimbBegin::DTI.getID());
-}
-
-inline void cPawnActInterClimbBegin::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterClimbBegin::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) ACTINTER_CODERET cPawnActInterClimbBegin::updateInter(cPawnActInterIO& param, uCharacter& owner) {
     DDON_STUB("cPawnActInterClimbBegin::updateInter")
     return {};
@@ -1150,10 +1045,6 @@ MtObject* cPawnActInterClimbBegin::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterCommon::getDTI() const {
     return cPawnActInterCommon::DTI;
-}
-
-inline void cPawnActInterCommon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterCommon::DTI)->memFree(p_addr);
 }
 
 cPawnActInterCommon::cPawnActInterCommon() {
@@ -1182,14 +1073,6 @@ __attribute__((weak)) MtObject* cPawnActInterCommon::MyDTI::newInstance() const 
 
 const MtDTI& cPawnActInterDamage::getDTI() const {
     return cPawnActInterDamage::DTI;
-}
-
-inline void* cPawnActInterDamage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterDamage::DTI)->memAlloc(sz, align, cPawnActInterDamage::DTI.getID());
-}
-
-inline void cPawnActInterDamage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterDamage::DTI)->memFree(p_addr);
 }
 
 cPawnActInterDamage::~cPawnActInterDamage() {
@@ -1319,16 +1202,8 @@ const MtDTI& cPawnActInterDisableMgr::getDTI() const {
     return cPawnActInterDisableMgr::DTI;
 }
 
-inline MtAllocator* cPawnActInterDisableMgr::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cPawnActInterDisableMgr::DTI);
-}
-
 void* cPawnActInterDisableMgr::operator new(size_t sz, u32 align) {
     return cPawnActInterDisableMgr::getAllocator()->memAlloc(sz, align, cPawnActInterDisableMgr::DTI.getID());
-}
-
-inline void cPawnActInterDisableMgr::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterDisableMgr::DTI)->memFree(p_addr);
 }
 
 cPawnActInterDisableMgr::cPawnActInterDisableMgr() {
@@ -1362,14 +1237,6 @@ __attribute__((weak)) MtObject* cPawnActInterDisableMgr::MyDTI::newInstance() co
 
 const MtDTI& cPawnActInterEnemyClimb::getDTI() const {
     return cPawnActInterEnemyClimb::DTI;
-}
-
-inline void* cPawnActInterEnemyClimb::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterEnemyClimb::DTI)->memAlloc(sz, align, cPawnActInterEnemyClimb::DTI.getID());
-}
-
-inline void cPawnActInterEnemyClimb::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterEnemyClimb::DTI)->memFree(p_addr);
 }
 
 cPawnActInterEnemyClimb::~cPawnActInterEnemyClimb() {
@@ -1406,14 +1273,6 @@ MtObject* cPawnActInterEnemyClimb::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterEnemyClimbAttack::getDTI() const {
     return cPawnActInterEnemyClimbAttack::DTI;
-}
-
-inline void* cPawnActInterEnemyClimbAttack::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterEnemyClimbAttack::DTI)->memAlloc(sz, align, cPawnActInterEnemyClimbAttack::DTI.getID());
-}
-
-inline void cPawnActInterEnemyClimbAttack::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterEnemyClimbAttack::DTI)->memFree(p_addr);
 }
 
 cPawnActInterEnemyClimbAttack::~cPawnActInterEnemyClimbAttack() {
@@ -1458,10 +1317,6 @@ MtObject* cPawnActInterEnemyClimbAttack::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterEnemyClimbMove::getDTI() const {
     return cPawnActInterEnemyClimbMove::DTI;
-}
-
-inline void cPawnActInterEnemyClimbMove::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterEnemyClimbMove::DTI)->memFree(p_addr);
 }
 
 cPawnActInterEnemyClimbMove::~cPawnActInterEnemyClimbMove() {
@@ -1520,14 +1375,6 @@ const MtDTI& cPawnActInterEscape::getDTI() const {
     return cPawnActInterEscape::DTI;
 }
 
-inline void* cPawnActInterEscape::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterEscape::DTI)->memAlloc(sz, align, cPawnActInterEscape::DTI.getID());
-}
-
-inline void cPawnActInterEscape::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterEscape::DTI)->memFree(p_addr);
-}
-
 ACTINTER_CODERET cPawnActInterEscape::initInter(cPawnActInterIO& param, uCharacter& owner) {
     param.mFreeU32.elems[0] = 0;
     return ACTINTER_CODERET_END;
@@ -1554,14 +1401,6 @@ MtObject* cPawnActInterEscape::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterEscapeNotice::getDTI() const {
     return cPawnActInterEscapeNotice::DTI;
-}
-
-inline void* cPawnActInterEscapeNotice::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterEscapeNotice::DTI)->memAlloc(sz, align, cPawnActInterEscapeNotice::DTI.getID());
-}
-
-inline void cPawnActInterEscapeNotice::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterEscapeNotice::DTI)->memFree(p_addr);
 }
 
 cPawnActInterEscapeNotice::~cPawnActInterEscapeNotice() {
@@ -1737,14 +1576,6 @@ const MtDTI& cPawnActInterFree::getDTI() const {
     return cPawnActInterFree::DTI;
 }
 
-inline void* cPawnActInterFree::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterFree::DTI)->memAlloc(sz, align, cPawnActInterFree::DTI.getID());
-}
-
-inline void cPawnActInterFree::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterFree::DTI)->memFree(p_addr);
-}
-
 cPawnActInterFree::~cPawnActInterFree() {
 }
 
@@ -1758,10 +1589,6 @@ MtObject* cPawnActInterFree::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterGuard::getDTI() const {
     return cPawnActInterGuard::DTI;
-}
-
-inline void cPawnActInterGuard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterGuard::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) ACTINTER_CODERET cPawnActInterGuard::updateInter(cPawnActInterIO& param, uCharacter& owner) {
@@ -1789,14 +1616,6 @@ __attribute__((weak)) MtObject* cPawnActInterGuard::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterGuardCancel::getDTI() const {
     return cPawnActInterGuardCancel::DTI;
-}
-
-inline void* cPawnActInterGuardCancel::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterGuardCancel::DTI)->memAlloc(sz, align, cPawnActInterGuardCancel::DTI.getID());
-}
-
-inline void cPawnActInterGuardCancel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterGuardCancel::DTI)->memFree(p_addr);
 }
 
 ACTINTER_CODERET cPawnActInterGuardCancel::initInter(cPawnActInterIO& param, uCharacter& owner) {
@@ -1837,14 +1656,6 @@ const MtDTI& cPawnActInterHold::getDTI() const {
     return cPawnActInterHold::DTI;
 }
 
-inline void* cPawnActInterHold::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterHold::DTI)->memAlloc(sz, align, cPawnActInterHold::DTI.getID());
-}
-
-inline void cPawnActInterHold::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterHold::DTI)->memFree(p_addr);
-}
-
 cPawnActInterHold::~cPawnActInterHold() {
 }
 
@@ -1873,14 +1684,6 @@ MtObject* cPawnActInterHold::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterHoldWait::getDTI() const {
     return cPawnActInterHoldWait::DTI;
-}
-
-inline void* cPawnActInterHoldWait::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterHoldWait::DTI)->memAlloc(sz, align, cPawnActInterHoldWait::DTI.getID());
-}
-
-inline void cPawnActInterHoldWait::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterHoldWait::DTI)->memFree(p_addr);
 }
 
 cPawnActInterHoldWait::~cPawnActInterHoldWait() {
@@ -1940,14 +1743,6 @@ const MtDTI& cPawnActInterIfLen::getDTI() const {
     return cPawnActInterIfLen::DTI;
 }
 
-inline void* cPawnActInterIfLen::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterIfLen::DTI)->memAlloc(sz, align, cPawnActInterIfLen::DTI.getID());
-}
-
-inline void cPawnActInterIfLen::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterIfLen::DTI)->memFree(p_addr);
-}
-
 cPawnActInterIfLen::~cPawnActInterIfLen() {
 }
 
@@ -1972,14 +1767,6 @@ MtObject* cPawnActInterIfLen::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterLantern::getDTI() const {
     return cPawnActInterLantern::DTI;
-}
-
-inline void* cPawnActInterLantern::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterLantern::DTI)->memAlloc(sz, align, cPawnActInterLantern::DTI.getID());
-}
-
-inline void cPawnActInterLantern::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterLantern::DTI)->memFree(p_addr);
 }
 
 cPawnActInterLantern::~cPawnActInterLantern() {
@@ -2015,10 +1802,6 @@ MtObject* cPawnActInterLantern::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterMove::getDTI() const {
     return cPawnActInterMove::DTI;
-}
-
-inline void cPawnActInterMove::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterMove::DTI)->memFree(p_addr);
 }
 
 cPawnActInterMove::~cPawnActInterMove() {
@@ -2084,14 +1867,6 @@ const MtDTI& cPawnActInterMoveAlchemyTrap::getDTI() const {
     return cPawnActInterMoveAlchemyTrap::DTI;
 }
 
-inline void* cPawnActInterMoveAlchemyTrap::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterMoveAlchemyTrap::DTI)->memAlloc(sz, align, cPawnActInterMoveAlchemyTrap::DTI.getID());
-}
-
-inline void cPawnActInterMoveAlchemyTrap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterMoveAlchemyTrap::DTI)->memFree(p_addr);
-}
-
 ACTINTER_CODERET cPawnActInterMoveAlchemyTrap::initInter(cPawnActInterIO& param, uCharacter& owner) {
     return ACTINTER_CODERET_END;
 }
@@ -2118,14 +1893,6 @@ const MtDTI& cPawnActInterMoveEnergySpot::getDTI() const {
     return cPawnActInterMoveEnergySpot::DTI;
 }
 
-inline void* cPawnActInterMoveEnergySpot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterMoveEnergySpot::DTI)->memAlloc(sz, align, cPawnActInterMoveEnergySpot::DTI.getID());
-}
-
-inline void cPawnActInterMoveEnergySpot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterMoveEnergySpot::DTI)->memFree(p_addr);
-}
-
 ACTINTER_CODERET cPawnActInterMoveEnergySpot::initInter(cPawnActInterIO& param, uCharacter& owner) {
     return ACTINTER_CODERET_END;
 }
@@ -2150,14 +1917,6 @@ MtObject* cPawnActInterMoveEnergySpot::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterMoveJump::getDTI() const {
     return cPawnActInterMoveJump::DTI;
-}
-
-inline void* cPawnActInterMoveJump::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterMoveJump::DTI)->memAlloc(sz, align, cPawnActInterMoveJump::DTI.getID());
-}
-
-inline void cPawnActInterMoveJump::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterMoveJump::DTI)->memFree(p_addr);
 }
 
 ACTINTER_CODERET cPawnActInterMoveJump::initInter(cPawnActInterIO& param, uCharacter& owner) {
@@ -2192,14 +1951,6 @@ const MtDTI& cPawnActInterMoveLightingAnchor::getDTI() const {
     return cPawnActInterMoveLightingAnchor::DTI;
 }
 
-inline void* cPawnActInterMoveLightingAnchor::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterMoveLightingAnchor::DTI)->memAlloc(sz, align, cPawnActInterMoveLightingAnchor::DTI.getID());
-}
-
-inline void cPawnActInterMoveLightingAnchor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterMoveLightingAnchor::DTI)->memFree(p_addr);
-}
-
 ACTINTER_CODERET cPawnActInterMoveLightingAnchor::initInter(cPawnActInterIO& param, uCharacter& owner) {
     param.mFreeF32.elems[0] = 0.0f;
     param.mFreeRealPos.elems[0] = MtVector3::Zero;
@@ -2227,14 +1978,6 @@ MtObject* cPawnActInterMoveLightingAnchor::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterMoveReksElement::getDTI() const {
     return cPawnActInterMoveReksElement::DTI;
-}
-
-inline void* cPawnActInterMoveReksElement::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterMoveReksElement::DTI)->memAlloc(sz, align, cPawnActInterMoveReksElement::DTI.getID());
-}
-
-inline void cPawnActInterMoveReksElement::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterMoveReksElement::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cPawnActInterMoveReksElement::isEnableActInterPre(uCharacter& owner) const {
@@ -2266,14 +2009,6 @@ MtObject* cPawnActInterMoveReksElement::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterRecover::getDTI() const {
     return cPawnActInterRecover::DTI;
-}
-
-inline void* cPawnActInterRecover::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterRecover::DTI)->memAlloc(sz, align, cPawnActInterRecover::DTI.getID());
-}
-
-inline void cPawnActInterRecover::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterRecover::DTI)->memFree(p_addr);
 }
 
 cPawnActInterRecover::~cPawnActInterRecover() {
@@ -2312,20 +2047,25 @@ const MtDTI& cPawnActInterReload::getDTI() const {
     return cPawnActInterReload::DTI;
 }
 
-inline void* cPawnActInterReload::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterReload::DTI)->memAlloc(sz, align, cPawnActInterReload::DTI.getID());
-}
-
-inline void cPawnActInterReload::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterReload::DTI)->memFree(p_addr);
-}
-
 cPawnActInterReload::~cPawnActInterReload() {
 }
 
-__attribute__((weak)) bool cPawnActInterReload::isEnableActInterTarget(uCharacter& owner, cGeneralPoint* pTarget, u32 baseActNo, const cPawnEnableArea* pEnableArea, const MtVector3* pEnableAreaPos) const {
-    DDON_STUB("cPawnActInterReload::isEnableActInterTarget")
-    return {};
+bool cPawnActInterReload::isEnableActInterTarget(uCharacter& owner, cGeneralPoint* pTarget, u32 baseActNo, const cPawnEnableArea* pEnableArea, const MtVector3* pEnableAreaPos) const {
+    cpComponent* t0 = owner.mComponentMgr.getRootComponent()->find(cpJob03::DTI, true, true);
+    if (t0 != nullptr) {
+        if ((owner.uDDOModel::mUnitId & 1152u) != 0) {
+            u32 arrow_num = static_cast<cpJob03*>(t0)->getArrowNum();
+            if (arrow_num == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 100))) {
+                return false;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 ACTINTER_CODERET cPawnActInterReload::initInter(cPawnActInterIO& param, uCharacter& owner) {
@@ -2436,14 +2176,6 @@ const MtDTI& cPawnActInterRot::getDTI() const {
     return cPawnActInterRot::DTI;
 }
 
-inline void* cPawnActInterRot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterRot::DTI)->memAlloc(sz, align, cPawnActInterRot::DTI.getID());
-}
-
-inline void cPawnActInterRot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterRot::DTI)->memFree(p_addr);
-}
-
 cPawnActInterRot::~cPawnActInterRot() {
 }
 
@@ -2466,10 +2198,6 @@ MtObject* cPawnActInterRot::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterSearchCorePoint::getDTI() const {
     return cPawnActInterSearchCorePoint::DTI;
-}
-
-inline void cPawnActInterSearchCorePoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterSearchCorePoint::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cPawnActInterSearchCorePoint::isEnableActInterTarget(uCharacter& owner, cGeneralPoint* pTarget, u32 baseActNo, const cPawnEnableArea* pEnableArea, const MtVector3* pEnableAreaPos) const {
@@ -2544,14 +2272,6 @@ __attribute__((weak)) MtObject* cPawnActInterSearchCorePoint::MyDTI::newInstance
 
 const MtDTI& cPawnActInterSearchMaskPoint::getDTI() const {
     return cPawnActInterSearchMaskPoint::DTI;
-}
-
-inline void* cPawnActInterSearchMaskPoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterSearchMaskPoint::DTI)->memAlloc(sz, align, cPawnActInterSearchMaskPoint::DTI.getID());
-}
-
-inline void cPawnActInterSearchMaskPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterSearchMaskPoint::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cPawnActInterSearchMaskPoint::isEnableActInterTarget(uCharacter& owner, cGeneralPoint* pTarget, u32 baseActNo, const cPawnEnableArea* pEnableArea, const MtVector3* pEnableAreaPos) const {
@@ -2629,14 +2349,6 @@ const MtDTI& cPawnActInterStandOff::getDTI() const {
     return cPawnActInterStandOff::DTI;
 }
 
-inline void* cPawnActInterStandOff::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterStandOff::DTI)->memAlloc(sz, align, cPawnActInterStandOff::DTI.getID());
-}
-
-inline void cPawnActInterStandOff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterStandOff::DTI)->memFree(p_addr);
-}
-
 cPawnActInterStandOff::~cPawnActInterStandOff() {
 }
 
@@ -2671,14 +2383,6 @@ MtObject* cPawnActInterStandOff::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterStandOffHmEm::getDTI() const {
     return cPawnActInterStandOffHmEm::DTI;
-}
-
-inline void* cPawnActInterStandOffHmEm::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterStandOffHmEm::DTI)->memAlloc(sz, align, cPawnActInterStandOffHmEm::DTI.getID());
-}
-
-inline void cPawnActInterStandOffHmEm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterStandOffHmEm::DTI)->memFree(p_addr);
 }
 
 cPawnActInterStandOffHmEm::~cPawnActInterStandOffHmEm() {
@@ -2720,14 +2424,6 @@ const MtDTI& cPawnActInterTalkToPl::getDTI() const {
     return cPawnActInterTalkToPl::DTI;
 }
 
-inline void* cPawnActInterTalkToPl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterTalkToPl::DTI)->memAlloc(sz, align, cPawnActInterTalkToPl::DTI.getID());
-}
-
-inline void cPawnActInterTalkToPl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterTalkToPl::DTI)->memFree(p_addr);
-}
-
 ACTINTER_CODERET cPawnActInterTalkToPl::updateInter(cPawnActInterIO& param, uCharacter& owner) {
     if (owner.getActMgrPtr() != nullptr) {
         if (owner.getActMgrPtr()->getActionNo() != 382) {
@@ -2749,14 +2445,6 @@ MtObject* cPawnActInterTalkToPl::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterWait::getDTI() const {
     return cPawnActInterWait::DTI;
-}
-
-inline void* cPawnActInterWait::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterWait::DTI)->memAlloc(sz, align, cPawnActInterWait::DTI.getID());
-}
-
-inline void cPawnActInterWait::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterWait::DTI)->memFree(p_addr);
 }
 
 cPawnActInterWait::~cPawnActInterWait() {
@@ -2791,14 +2479,6 @@ const MtDTI& cPawnActInterWaitFootwork::getDTI() const {
     return cPawnActInterWaitFootwork::DTI;
 }
 
-inline void* cPawnActInterWaitFootwork::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterWaitFootwork::DTI)->memAlloc(sz, align, cPawnActInterWaitFootwork::DTI.getID());
-}
-
-inline void cPawnActInterWaitFootwork::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterWaitFootwork::DTI)->memFree(p_addr);
-}
-
 cPawnActInterWaitFootwork::cPawnActInterWaitFootwork() {
 }
 
@@ -2824,14 +2504,6 @@ MtObject* cPawnActInterWaitFootwork::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterWarp::getDTI() const {
     return cPawnActInterWarp::DTI;
-}
-
-inline void* cPawnActInterWarp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnActInterWarp::DTI)->memAlloc(sz, align, cPawnActInterWarp::DTI.getID());
-}
-
-inline void cPawnActInterWarp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterWarp::DTI)->memFree(p_addr);
 }
 
 cPawnActInterWarp::~cPawnActInterWarp() {
@@ -2880,10 +2552,6 @@ MtObject* cPawnActInterWarp::MyDTI::newInstance() const {
 
 const MtDTI& cPawnActInterface::getDTI() const {
     return cPawnActInterface::DTI;
-}
-
-inline void cPawnActInterface::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnActInterface::DTI)->memFree(p_addr);
 }
 
 cPawnActInterface::cPawnActInterface() {

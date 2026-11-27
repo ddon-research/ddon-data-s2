@@ -19,14 +19,45 @@ u32 nMenuKeyConfig::CategoryListItems::getItemNum() const {
     return 3;
 }
 
-__attribute__((weak)) MT_CTSTR nMenuKeyConfig::CategoryListItems::getName(u32 itemIndex) const {
-    DDON_STUB("nMenuKeyConfig::CategoryListItems::getName")
-    return {};
+MT_CTSTR nMenuKeyConfig::CategoryListItems::getName(u32 itemIndex) const {
+    if (itemIndex < getItemNum()) {
+        if (mBaseKeyCustomManagers != nullptr) {
+            if (itemIndex <= 2u) {
+                if (mBaseKeyCustomManagers->mKeyCustomManagers[itemIndex] != nullptr) {
+                    return mBaseKeyCustomManagers->mKeyCustomManagers[itemIndex]->mUserName.::MtString::ptr();
+                }
+            }
+            return "";
+        } else {
+            return ::sInputManager::getInstance()->mCommonKeyCustomManager[itemIndex].mUserName.ptr();
+        }
+    } else {
+        return "";
+    }
 }
 
-__attribute__((weak)) nGUIKeyConfig::CATEGORY_STATE nMenuKeyConfig::CategoryListItems::getState(u32 itemIndex) const {
-    DDON_STUB("nMenuKeyConfig::CategoryListItems::getState")
-    return {};
+nGUIKeyConfig::CATEGORY_STATE nMenuKeyConfig::CategoryListItems::getState(u32 itemIndex) const {
+    if (itemIndex < getItemNum()) {
+        if (itemIndex <= 2u) {
+            if (mKeyCustomManagers.mKeyCustomManagers[itemIndex] != nullptr) {
+                if (!mKeyCustomManagers.mKeyCustomManagers[itemIndex]->::cKeyCustomManager::isExistOverlap()) {
+                    if (mKeyCustomManagers.mKeyCustomManagers[itemIndex] != nullptr) {
+                        return static_cast<nGUIKeyConfig::CATEGORY_STATE>(!::sInputManager::getInstance()->editCompare(*mKeyCustomManagers.mKeyCustomManagers[itemIndex], itemIndex, false));
+                    } else {
+                        return ::nGUIKeyConfig::CATEGORY_STATE_NONE;
+                    }
+                } else {
+                    return ::nGUIKeyConfig::CATEGORY_STATE_OVERLAPPED;
+                }
+            } else {
+                return ::nGUIKeyConfig::CATEGORY_STATE_NONE;
+            }
+        } else {
+            return ::nGUIKeyConfig::CATEGORY_STATE_NONE;
+        }
+    } else {
+        return ::nGUIKeyConfig::CATEGORY_STATE_NONE;
+    }
 }
 
 nMenuKeyConfig::KeyCustomManagers::KeyCustomManagers() {
@@ -318,8 +349,21 @@ nKeyCustom::KB_CUSTOM nMenuKeyConfig::KeyListItems::getKeyCustom(u32 itemIndex) 
     }
 }
 
-__attribute__((weak)) cKeyCustom* nMenuKeyConfig::KeyListItems::getKeyCustomData(u32 itemIndex, u32 categoryListIndex) const {
-    DDON_STUB("nMenuKeyConfig::KeyListItems::getKeyCustomData")
-    return nullptr;
+cKeyCustom* nMenuKeyConfig::KeyListItems::getKeyCustomData(u32 itemIndex, u32 categoryListIndex) const {
+    if (mResTextTable != nullptr) {
+        const nKeyConfigTextTable::cKeyText* t0 = mResTextTable->getSortedData(itemIndex);
+        if (t0 != nullptr) {
+            if (t0->mKeyCustom != 0) {
+                if (categoryListIndex <= 2u) {
+                    if (mKeyCustomManagers.mKeyCustomManagers[categoryListIndex] != nullptr) {
+                        return static_cast<cKeyCustom*>(mKeyCustomManagers.mKeyCustomManagers[categoryListIndex]->mCustomArray.::MtArray::mpArray[t0->mKeyCustom]);
+                    }
+                }
+            }
+        }
+        return nullptr;
+    } else {
+        return nullptr;
+    }
 }
 

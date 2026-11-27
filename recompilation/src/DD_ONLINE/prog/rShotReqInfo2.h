@@ -192,3 +192,15 @@ inline cShotReqInfo2::cShotReqInfo2() {
         param.mHpRateLimit2 = 100.0f;
     }
 }
+
+inline void cShotReqInfo2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShotReqInfo2::DTI)->memFree(p_addr);
+}
+
+inline void* rShotReqInfo2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rShotReqInfo2::DTI)->memAlloc(sz, align, ::rShotReqInfo2::DTI.::MtDTI::getID());
+}
+
+inline void rShotReqInfo2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rShotReqInfo2::DTI)->memFree(p_addr);
+}

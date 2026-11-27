@@ -74,3 +74,15 @@ inline u32 cpNpc::getNpcId() const {
 inline void cpNpc::setNpcId(u32 npcId) {
     this->mNpcId = npcId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpNpc::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpNpc::DTI);
+}
+
+inline void cpNpc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpNpc::DTI)->memFree(p_addr);
+}

@@ -206,3 +206,31 @@ inline cShlParamGenerator::cShootCtrlParam::cShootCtrlParam() {
 inline void* uShlGenerator::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamGenerator::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamGenerator::DTI)->memAlloc(sz, align, ::cShlParamGenerator::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamGenerator::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamGenerator::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cShlParamGenerator::cShootCtrlParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamGenerator::cShootCtrlParam::DTI);
+}
+
+inline void* uShlGenerator::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlGenerator::DTI)->memAlloc(sz, align, ::uShlGenerator::DTI.::MtDTI::getID());
+}
+
+inline void uShlGenerator::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlGenerator::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamGenerator* uShlGenerator::getShlParam() const {
+    return static_cast<const cShlParamGenerator*>(this->::uShlBase::mpShlParam2);
+}

@@ -20,12 +20,15 @@ class MtNetUniqueId;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+namespace nNetwork { class Connect; }
 namespace nNetwork { class Match; }
 namespace nNetwork { class Member; }
 namespace nNetwork { class Route; }
 namespace nNetwork { class SearchResultListPtr; }
+namespace nNetwork { class Session; }
 namespace nNetwork { class SessionDriver; }
 namespace nNetwork { class SessionInfoPtr; }
+namespace nNetwork { class VoiceChat; }
 
 // Declarations
 namespace nNetwork { class SessionDatabase; }
@@ -43,8 +46,11 @@ using u8 = unsigned char;
 namespace nNetwork {
     class SessionDatabase : public ::MtObject
     {
+        friend class nNetwork::Connect;
         friend class nNetwork::Match;
+        friend class nNetwork::Session;
         friend class nNetwork::SessionDriver;
+        friend class nNetwork::VoiceChat;
     public:
         enum
         {
@@ -200,4 +206,12 @@ namespace nNetwork {
 
 inline void* nNetwork::SessionDatabase::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::SessionDatabase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::SessionDatabase::DTI)->memFree(p_addr);
 }

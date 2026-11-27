@@ -137,3 +137,19 @@ inline void* uShlJob10CS07::operator new(size_t sz, void* p_addr) {
 inline uShlJob10CS07::uShlJob10CS07() {
     this->mSkillLv = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamJob10CS07::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamJob10CS07::DTI)->memAlloc(sz, align, ::cShlParamJob10CS07::DTI.::MtDTI::getID());
+}
+
+inline void* uShlJob10CS07::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlJob10CS07::DTI)->memAlloc(sz, align, ::uShlJob10CS07::DTI.::MtDTI::getID());
+}
+
+inline void uShlJob10CS07::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlJob10CS07::DTI)->memFree(p_addr);
+}

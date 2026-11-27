@@ -4,7 +4,6 @@
 #include "uEditSaveLoadFlow.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cEditParam.h"
 #include "cGUIUtility.h"
@@ -28,16 +27,8 @@ const MtDTI& uEditSaveLoadFlow::getDTI() const {
     return uEditSaveLoadFlow::DTI;
 }
 
-inline MtAllocator* uEditSaveLoadFlow::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uEditSaveLoadFlow::DTI);
-}
-
 void* uEditSaveLoadFlow::operator new(size_t sz, u32 align) {
     return uEditSaveLoadFlow::getAllocator()->memAlloc(sz, align, uEditSaveLoadFlow::DTI.getID());
-}
-
-inline void uEditSaveLoadFlow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uEditSaveLoadFlow::DTI)->memFree(p_addr);
 }
 
 uEditSaveLoadFlow::uEditSaveLoadFlow() {
@@ -71,9 +62,68 @@ void uEditSaveLoadFlow::setup() {
     }
 }
 
-__attribute__((weak)) void uEditSaveLoadFlow::move() {
-    DDON_STUB("uEditSaveLoadFlow::move")
-    /* stub */
+void uEditSaveLoadFlow::move() {
+    switch (static_cast<unsigned int>(mSaveLoadProcess - 1)) {
+        case 0:
+        {
+            processSelect();
+            break;
+        }
+        case 1:
+        {
+            processSave();
+            break;
+        }
+        case 2:
+        {
+            processLoad();
+            break;
+        }
+        case 3:
+        {
+            if (mProcessRno != 2) {
+                if (mProcessRno == 1) {
+                    if (sGame::getInstance()->isFadeEnd()) {
+                        mProcessRno = mProcessRno + 1;
+                    }
+                } else {
+                    if (mProcessRno == 0) {
+                        if (sGame::getInstance()->isFadeOut()) {
+                            sGame::getInstance()->fadeIn(mFadeFrame, 0u);
+                            mProcessRno = mProcessRno + 1;
+                        } else {
+                            mProcessRno = mProcessRno + 1;
+                        }
+                    }
+                }
+            } else {
+                mIsBusy = false;
+            }
+            break;
+        }
+        default:
+        {
+            if (mProcessRno != 2) {
+                if (mProcessRno == 1) {
+                    if (sGame::getInstance()->isFadeEnd()) {
+                        mProcessRno = mProcessRno + 1;
+                    }
+                } else {
+                    if (mProcessRno == 0) {
+                        if (sGame::getInstance()->isFadeOut()) {
+                            sGame::getInstance()->fadeIn(mFadeFrame, 0u);
+                            mProcessRno = mProcessRno + 1;
+                        } else {
+                            mProcessRno = mProcessRno + 1;
+                        }
+                    }
+                }
+            } else {
+                mIsBusy = false;
+            }
+            break;
+        }
+    }
 }
 
 void uEditSaveLoadFlow::kill() {
@@ -157,7 +207,7 @@ void uEditSaveLoadFlow::setCharaInfo(s32 bodyType, MT_CTSTR firstName, MT_CTSTR 
     }
 }
 
-void uEditSaveLoadFlow::processSelect() {
+__attribute__((weak)) void uEditSaveLoadFlow::processSelect() {
     if (mProcessRno == 1) {
         if (mpGUISystemMsg != nullptr) {
             if (mpGUISystemMsg->mResult == uGUIBase::RESULT_EXIT) {

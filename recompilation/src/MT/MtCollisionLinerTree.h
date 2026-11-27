@@ -293,3 +293,23 @@ inline void* MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator new(size
 inline MtCollisionUtil::MtLinerTree::cRegistReserveInfo::cRegistReserveInfo() {
     this->mpTreeTargetElemArray = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void* MtCollisionUtil::MtLinerTree::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtLinerTree::DTI.::MtDTI::mID);
+}
+
+inline void MtCollisionUtil::MtLinerTree::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::DTI)->memFree(p_addr);
+}
+
+inline void* MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI.::MtDTI::mID);
+}
+
+inline void MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI)->memFree(p_addr);
+}

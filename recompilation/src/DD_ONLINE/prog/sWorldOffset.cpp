@@ -28,16 +28,8 @@ const MtDTI& sWorldOffset::getDTI() const {
     return sWorldOffset::DTI;
 }
 
-inline MtAllocator* sWorldOffset::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sWorldOffset::DTI);
-}
-
 void* sWorldOffset::operator new(size_t sz, u32 align) {
     return sWorldOffset::getAllocator()->memAlloc(sz, align, sWorldOffset::DTI.getID());
-}
-
-inline void sWorldOffset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sWorldOffset::DTI)->memFree(p_addr);
 }
 
 sWorldOffset::sWorldOffset() {
@@ -80,9 +72,19 @@ __attribute__((weak)) void sWorldOffset::InitEdit(const MtVector3& targetPos) {
     /* stub */
 }
 
-__attribute__((weak)) void sWorldOffset::clearEdit() {
-    DDON_STUB("sWorldOffset::clearEdit")
-    /* stub */
+void sWorldOffset::clearEdit() {
+    const f32 t0 = MtVector3::Zero.x;
+    const f32 t1 = MtVector3::Zero.y;
+    const f32 t2 = MtVector3::Zero.z;
+    mWorldOffset.x = t0 - mWorldAbsoluteOffset.x;
+    mWorldOffset.y = t1 - mWorldAbsoluteOffset.y;
+    mWorldOffset.z = t2 - mWorldAbsoluteOffset.z;
+    mWorldOffset.pad_ = 0.0f;
+    mWorldAbsoluteOffset.x = mWorldAbsoluteOffset.x + (t0 - mWorldAbsoluteOffset.x);
+    mWorldAbsoluteOffset.y = mWorldAbsoluteOffset.y + (t1 - mWorldAbsoluteOffset.y);
+    mWorldAbsoluteOffset.z = mWorldAbsoluteOffset.z + (t2 - mWorldAbsoluteOffset.z);
+    mEnabelWorldOffset = false;
+    mStatus = 1;
 }
 
 __attribute__((weak)) MtVector3 sWorldOffset::getRealPos(const MtVector3& worldPos) const {
@@ -138,7 +140,16 @@ sWorldOffset::MyDTI sWorldOffset::DTI("sWorldOffset", &::cSystem::DTI, 96ul, 0u,
 sWorldOffset* sWorldOffset::mpInstance;
 
 __attribute__((weak)) MtObject* sWorldOffset::MyDTI::newInstance() const {
-    DDON_STUB("sWorldOffset::MyDTI::newInstance")
-    return nullptr;
+    sWorldOffset* t1 = new (16u) sWorldOffset;
+    sWorldOffset::mpInstance = t1;
+    t1->mRno = 0;
+    t1->mIdZ = -1;
+    t1->mIdX = -1;
+    t1->mEnabelWorldOffset = false;
+    t1->mStatus = ST_INIT;
+    t1->mWorldOffset = MtVector3::Zero;
+    t1->mWorldAbsoluteOffset = MtVector3::Zero;
+    t1->mUpdate = false;
+    return t1;
 }
 

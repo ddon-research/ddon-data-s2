@@ -319,3 +319,39 @@ inline void* CDataEntryRecruitJob::operator new(size_t sz, void* p_addr) {
 inline CDataEntryRecruitJob::CDataEntryRecruitJob() {
     this->m_ucjob = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataEntryBoardItemSearchParameter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEntryBoardItemSearchParameter::DTI);
+}
+
+inline void* CDataEntryBoardItemSearchParameter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataEntryBoardItemSearchParameter::DTI)->memAlloc(sz, align, ::CDataEntryBoardItemSearchParameter::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataEntryItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEntryItem::DTI);
+}
+
+inline MtAllocator* CDataEntryItemParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEntryItemParam::DTI);
+}
+
+inline void* CDataEntryItemParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataEntryItemParam::DTI)->memAlloc(sz, align, ::CDataEntryItemParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataEntryMemberData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEntryMemberData::DTI);
+}
+
+inline MtAllocator* CDataEntryRecruitData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEntryRecruitData::DTI);
+}
+
+inline MtAllocator* CDataEntryRecruitJob::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEntryRecruitJob::DTI);
+}

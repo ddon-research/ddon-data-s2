@@ -76,16 +76,8 @@ const MtDTI& uGUIFKeyPalette::getDTI() const {
     return uGUIFKeyPalette::DTI;
 }
 
-inline MtAllocator* uGUIFKeyPalette::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIFKeyPalette::DTI);
-}
-
 void* uGUIFKeyPalette::operator new(size_t sz, u32 align) {
     return uGUIFKeyPalette::getAllocator()->memAlloc(sz, align, uGUIFKeyPalette::DTI.getID());
-}
-
-inline void uGUIFKeyPalette::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIFKeyPalette::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIFKeyPalette::~uGUIFKeyPalette() {

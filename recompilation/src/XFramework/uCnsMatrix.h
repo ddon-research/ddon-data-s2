@@ -97,3 +97,11 @@ inline void* uCnsMatrix::operator new(size_t sz, void* p_addr) {
 inline u32 uCnsMatrix::getJoint() {
     return static_cast<u32>(this->mJoint);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uCnsMatrix::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsMatrix::DTI)->memFree(p_addr);
+}

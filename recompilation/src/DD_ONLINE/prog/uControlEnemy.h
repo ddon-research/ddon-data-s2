@@ -184,3 +184,11 @@ inline void uControlEnemy::setRaidBossID(u32 id) {
 inline u32 uControlEnemy::getErosionMode() const {
     return this->mErosionMode;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* uControlEnemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uControlEnemy::DTI)->memAlloc(sz, align, ::uControlEnemy::DTI.::MtDTI::getID());
+}

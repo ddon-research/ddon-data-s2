@@ -115,3 +115,30 @@ inline void cAnimalData::operator delete[](void* p_addr) {
 inline void* cAnimalData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAnimalData::DTI)->memAlloc(sz, align, ::cAnimalData::DTI.::MtDTI::getID());
 }
+
+inline void* cAnimalData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAnimalData::DTI)->memAlloc(sz, align, ::cAnimalData::DTI.::MtDTI::getID());
+}
+
+inline void cAnimalData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAnimalData::DTI)->memFree(p_addr);
+}
+
+inline cAnimalData::cAnimalData() {
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mAngle.x = ::MtVector3::Zero.x;
+    this->mAngle.y = ::MtVector3::Zero.y;
+    this->mAngle.z = ::MtVector3::Zero.z;
+    this->mAngle.pad_ = 0.0f;
+}
+
+inline void* rAnimalData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAnimalData::DTI)->memAlloc(sz, align, ::rAnimalData::DTI.::MtDTI::getID());
+}
+
+inline void rAnimalData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAnimalData::DTI)->memFree(p_addr);
+}

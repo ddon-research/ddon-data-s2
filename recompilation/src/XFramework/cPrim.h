@@ -45,6 +45,7 @@ namespace nPrim { struct Vertex; }
 namespace nPrim { struct VertexFormat; }
 class rModel;
 class rTexture;
+class sPrimitive;
 
 // Declarations
 class cPrim;
@@ -64,6 +65,7 @@ using uintptr = __uintptr_t;
 
 class cPrim : public cPrimObj
 {
+    friend class sPrimitive;
 public:
     enum SpriteStatus
     {
@@ -366,4 +368,12 @@ public:
 
 inline void* cPrim::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cPrim::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrim::DTI)->memFree(p_addr);
 }

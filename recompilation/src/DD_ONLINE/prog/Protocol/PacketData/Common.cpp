@@ -3,19 +3,35 @@
 #include "Common.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
+#include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
-const MtDTI& CDataCommonU32::getDTI() const {
-    return CDataCommonU32::DTI;
+const MtDTI& CDataCommonString::getDTI() const {
+    return CDataCommonString::DTI;
 }
 
-inline MtAllocator* CDataCommonU32::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCommonU32::DTI);
+void* CDataCommonString::operator new(size_t sz, u32 align) {
+    return CDataCommonString::getAllocator()->memAlloc(sz, align, CDataCommonString::DTI.getID());
+}
+
+__attribute__((weak)) void CDataCommonString::operator delete(void* p_addr) {
+    CDataCommonString::getAllocator()->memFree(p_addr);
+}
+
+inline CDataCommonString::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataCommonString::MyDTI CDataCommonString::DTI("CDataCommonString", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataCommonString::MyDTI::newInstance() const {
+    return new (16u) CDataCommonString;
+}
+
+const MtDTI& CDataCommonU32::getDTI() const {
+    return CDataCommonU32::DTI;
 }
 
 void* CDataCommonU32::operator new(size_t sz, u32 align) {
@@ -38,10 +54,6 @@ const MtDTI& CDataCommonU8::getDTI() const {
     return CDataCommonU8::DTI;
 }
 
-inline MtAllocator* CDataCommonU8::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCommonU8::DTI);
-}
-
 void* CDataCommonU8::operator new(size_t sz, u32 align) {
     return CDataCommonU8::getAllocator()->memAlloc(sz, align, CDataCommonU8::DTI.getID());
 }
@@ -60,10 +72,6 @@ MtObject* CDataCommonU8::MyDTI::newInstance() const {
 
 const MtDTI& CDataQuestId::getDTI() const {
     return CDataQuestId::DTI;
-}
-
-inline MtAllocator* CDataQuestId::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataQuestId::DTI);
 }
 
 void* CDataQuestId::operator new(size_t sz, u32 align) {

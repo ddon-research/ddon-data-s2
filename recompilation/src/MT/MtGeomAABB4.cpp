@@ -19,10 +19,6 @@ void* MtGeomAABB4::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomAABB4::DTI)->memAlloc(sz, align, MtGeomAABB4::DTI.mID);
 }
 
-inline void MtGeomAABB4::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomAABB4::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void MtGeomAABB4::load(MtDataReader& fin) {
     DDON_STUB("MtGeomAABB4::load")
     /* stub */

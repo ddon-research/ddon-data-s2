@@ -164,3 +164,15 @@ inline void* uGUIsMenuBase::operator new(size_t sz, void* p_addr) {
 inline void* uGUIsMenuBase::cPulldown::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIsMenuBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIsMenuBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIsMenuBase::cPulldown::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIsMenuBase::cPulldown::DTI);
+}

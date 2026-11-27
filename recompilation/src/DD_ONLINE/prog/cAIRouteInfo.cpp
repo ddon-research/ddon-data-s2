@@ -24,10 +24,6 @@ const MtDTI& cAIRouteInfo::getDTI() const {
     return cAIRouteInfo::DTI;
 }
 
-inline void cAIRouteInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIRouteInfo::DTI)->memFree(p_addr);
-}
-
 cAIRouteInfo::cAIRouteInfo() {
     DDON_STUB("cAIRouteInfo::cAIRouteInfo")
     /* stub */
@@ -109,10 +105,6 @@ __attribute__((weak)) MtObject* cAIRouteInfo::MyDTI::newInstance() const {
 
 const MtDTI& cAIRouteInfoParts::getDTI() const {
     return cAIRouteInfoParts::DTI;
-}
-
-inline void cAIRouteInfoParts::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIRouteInfoParts::DTI)->memFree(p_addr);
 }
 
 cAIRouteInfoParts::~cAIRouteInfoParts() {

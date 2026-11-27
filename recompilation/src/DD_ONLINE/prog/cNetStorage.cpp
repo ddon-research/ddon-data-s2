@@ -19,16 +19,8 @@ const MtDTI& cNetStorage::getDTI() const {
     return cNetStorage::DTI;
 }
 
-inline MtAllocator* cNetStorage::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cNetStorage::DTI);
-}
-
 void* cNetStorage::operator new(size_t sz, u32 align) {
     return cNetStorage::getAllocator()->memAlloc(sz, align, cNetStorage::DTI.getID());
-}
-
-inline void cNetStorage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNetStorage::DTI)->memFree(p_addr);
 }
 
 cNetStorage::cNetStorage() {

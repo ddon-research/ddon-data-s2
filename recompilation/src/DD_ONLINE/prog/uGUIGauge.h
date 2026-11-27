@@ -368,3 +368,19 @@ inline void* uGUIGauge::cGaugeInfo::operator new(size_t sz, void* p_addr) {
 
 inline uGUIGauge::cGaugeInfo::StatusInfo::StatusInfo() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIGauge::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGauge::DTI);
+}
+
+inline void uGUIGauge::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGauge::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGauge::cGaugeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGauge::cGaugeInfo::DTI)->memFree(p_addr);
+}

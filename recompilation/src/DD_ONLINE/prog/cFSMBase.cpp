@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cFSMBase.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -36,14 +34,6 @@
 
 const MtDTI& cFSMBase::getDTI() const {
     return cFSMBase::DTI;
-}
-
-inline void* cFSMBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFSMBase::DTI)->memAlloc(sz, align, cFSMBase::DTI.getID());
-}
-
-inline void cFSMBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMBase::DTI)->memFree(p_addr);
 }
 
 void cFSMBase::callbackUpdate() {
@@ -394,14 +384,6 @@ const MtDTI& cFSMBase::cParamCallMessage::getDTI() const {
     return cFSMBase::cParamCallMessage::DTI;
 }
 
-inline void* cFSMBase::cParamCallMessage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFSMBase::cParamCallMessage::DTI)->memAlloc(sz, align, cFSMBase::cParamCallMessage::DTI.getID());
-}
-
-inline void cFSMBase::cParamCallMessage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMBase::cParamCallMessage::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cFSMBase::cParamCallMessage::createProperty(MtPropertyList& s) {
     this->cAIResource::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mMsgType", &mMsgType, 0u, 0u);
@@ -427,14 +409,6 @@ MtObject* cFSMBase::cParamCallMessage::MyDTI::newInstance() const {
 
 const MtDTI& cFSMBase::cParamCallMessageFortDef_Common::getDTI() const {
     return cFSMBase::cParamCallMessageFortDef_Common::DTI;
-}
-
-inline void* cFSMBase::cParamCallMessageFortDef_Common::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFSMBase::cParamCallMessageFortDef_Common::DTI)->memAlloc(sz, align, cFSMBase::cParamCallMessageFortDef_Common::DTI.getID());
-}
-
-inline void cFSMBase::cParamCallMessageFortDef_Common::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMBase::cParamCallMessageFortDef_Common::DTI)->memFree(p_addr);
 }
 
 void cFSMBase::cParamCallMessageFortDef_Common::createProperty(MtPropertyList& s) {

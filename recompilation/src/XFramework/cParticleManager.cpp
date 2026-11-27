@@ -11,6 +11,7 @@
 #include "cDraw.h"
 #include "nDraw.h"
 #include "nEffect.h"
+#include "nPrim.h"
 #include "rEffectList.h"
 #include "sCamera.h"
 #include "sEffect.h"
@@ -20,6 +21,43 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+void cEffectCulling::init(rEffectList::EFL_PARAM_CULLING* pCullingParam, const MtMatrix& Wmat) {
+    f32 t0 = pCullingParam->CullingRot.x;
+    f32 t1 = pCullingParam->CullingRot.y;
+    f32 t2 = pCullingParam->CullingRot.z;
+    unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pCullingParam) + 0);
+    MtVector3 frame72;
+    frame72.x = t0;
+    frame72.y = t1;
+    frame72.z = t2;
+    frame72.pad_ = 0.0f;
+    MtVector3 frame56(uEffect::calcDir(frame72, pCullingParam->CullingRotOrder, pCullingParam->CullingRotAxisType));
+    f32 t4 = frame56.x;
+    mLocalDir.x = t4;
+    f32 t5 = frame56.y;
+    mLocalDir.y = t5;
+    f32 t6 = frame56.z;
+    mLocalDir.z = t6;
+    mLocalDir.pad_ = 0.0f;
+    const f32 t7 = Wmat.m[0].x;
+    const f32 t8 = Wmat.m[1].x;
+    const f32 t9 = Wmat.m[2].x;
+    const f32 t10 = Wmat.m[0].y;
+    const f32 t11 = Wmat.m[1].y;
+    const f32 t12 = Wmat.m[2].y;
+    const f32 t13 = Wmat.m[0].z;
+    const f32 t14 = Wmat.m[1].z;
+    const f32 t15 = Wmat.m[2].z;
+    mCullingDir[1].x = ((t4 * t7) + (t5 * t8)) + (t6 * t9);
+    mCullingDir[1].y = ((t4 * t10) + (t5 * t11)) + (t6 * t12);
+    mCullingDir[1].z = ((t4 * t13) + (t5 * t14)) + (t6 * t15);
+    mCullingDir[1].pad_ = 0.0f;
+    mCullingDir[0].x = mCullingDir[1].x;
+    mCullingDir[0].y = mCullingDir[1].y;
+    mCullingDir[0].z = mCullingDir[1].z;
+    mCullingDir[0].pad_ = 0.0f;
+}
 
 void cEffectJoint::constructParam(uEffect* pOwner) {
     mpOwner = pOwner;

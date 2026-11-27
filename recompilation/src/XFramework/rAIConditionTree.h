@@ -836,3 +836,55 @@ inline void rAIConditionTreeNode::setChildNum(u32 num) {
 inline u32 rAIConditionTreeNode::getChildNum() {
     return this->mChildNum;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* cAIDEnum::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIDEnum::DTI)->memAlloc(sz, align, ::cAIDEnum::DTI.::MtDTI::mID);
+}
+
+inline void cAIDEnum::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIDEnum::DTI)->memFree(p_addr);
+}
+
+inline void* rAIConditionTree::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAIConditionTree::DTI)->memAlloc(sz, align, ::rAIConditionTree::DTI.::MtDTI::mID);
+}
+
+inline void rAIConditionTree::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIConditionTree::DTI)->memFree(p_addr);
+}
+
+inline void rAIConditionTree::TreeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIConditionTree::TreeInfo::DTI)->memFree(p_addr);
+}
+
+inline void rAIConditionTree::OperationNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIConditionTree::OperationNode::DTI)->memFree(p_addr);
+}
+
+inline void rAIConditionTree::StateNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIConditionTree::StateNode::DTI)->memFree(p_addr);
+}
+
+inline void rAIConditionTree::VariableNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIConditionTree::VariableNode::DTI)->memFree(p_addr);
+}
+
+inline void* rAIConditionTree::VariableNode::VariableInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAIConditionTree::VariableNode::VariableInfo::DTI)->memAlloc(sz, align, ::rAIConditionTree::VariableNode::VariableInfo::DTI.::MtDTI::mID);
+}
+
+inline void rAIConditionTree::ConstF32Node::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIConditionTree::ConstF32Node::DTI)->memFree(p_addr);
+}
+
+inline void rAIConditionTree::ConstF64Node::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIConditionTree::ConstF64Node::DTI)->memFree(p_addr);
+}
+
+inline void rAIConditionTreeNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIConditionTreeNode::DTI)->memFree(p_addr);
+}

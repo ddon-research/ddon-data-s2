@@ -809,3 +809,71 @@ inline u32 cAIFSMData::ClusterLog::getTransitionOnceStateNum() const {
 inline void* cAIFSMProcessContainer::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cAIFSM::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSM::DTI)->memFree(p_addr);
+}
+
+inline void cAIFSM::Core::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::DTI)->memFree(p_addr);
+}
+
+inline void* cAIFSM::Core::ClusterDriveInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterDriveInfo::DTI)->memAlloc(sz, align, ::cAIFSM::Core::ClusterDriveInfo::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSM::Core::ClusterDriveInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterDriveInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cAIFSM::Core::ClusterWork::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memAlloc(sz, align, ::cAIFSM::Core::ClusterWork::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSM::Core::ClusterWork::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClusterWork::DTI)->memFree(p_addr);
+}
+
+inline void cAIFSM::Core::ClearTransitionFromAllOnceParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI)->memFree(p_addr);
+}
+
+inline void* cAIFSMData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSMData::DTI)->memAlloc(sz, align, ::cAIFSMData::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSMData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMData::DTI)->memFree(p_addr);
+}
+
+inline void* cAIFSMData::Core::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSMData::Core::DTI)->memAlloc(sz, align, ::cAIFSMData::Core::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSMData::Core::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMData::Core::DTI)->memFree(p_addr);
+}
+
+inline void* cAIFSMData::Cluster::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSMData::Cluster::DTI)->memAlloc(sz, align, ::cAIFSMData::Cluster::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSMData::Cluster::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMData::Cluster::DTI)->memFree(p_addr);
+}
+
+inline void* cAIFSMData::ClusterLog::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI)->memAlloc(sz, align, ::cAIFSMData::ClusterLog::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSMData::ClusterLog::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMData::ClusterLog::DTI)->memFree(p_addr);
+}
+
+inline void cAIFSMProcessContainer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMProcessContainer::DTI)->memFree(p_addr);
+}

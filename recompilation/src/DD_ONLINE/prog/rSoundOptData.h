@@ -133,3 +133,19 @@ inline void cSoundOptData::operator delete[](void* p_addr) {
 inline void* cSoundOptData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cSoundOptData::DTI)->memAlloc(sz, align, ::cSoundOptData::DTI.::MtDTI::getID());
 }
+
+inline void* cSoundOptData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundOptData::DTI)->memAlloc(sz, align, ::cSoundOptData::DTI.::MtDTI::getID());
+}
+
+inline void cSoundOptData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundOptData::DTI)->memFree(p_addr);
+}
+
+inline void* rSoundOptData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundOptData::DTI)->memAlloc(sz, align, ::rSoundOptData::DTI.::MtDTI::getID());
+}
+
+inline void rSoundOptData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundOptData::DTI)->memFree(p_addr);
+}

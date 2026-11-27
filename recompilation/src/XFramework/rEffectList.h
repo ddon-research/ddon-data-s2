@@ -2366,3 +2366,15 @@ inline bool rEffectList::isJointShare() const {
 inline u32 rEffectList::getResourceSize() const {
     return (this->mParamBuffSize + (this->mResourceInfoNum * 120u)) + 184u;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rEffectList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectList::DTI)->memAlloc(sz, align, ::rEffectList::DTI.::MtDTI::mID);
+}
+
+inline void rEffectList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectList::DTI)->memFree(p_addr);
+}

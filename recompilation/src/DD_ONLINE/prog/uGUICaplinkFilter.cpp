@@ -32,16 +32,8 @@ const MtDTI& uGUICaplinkFilter::getDTI() const {
     return uGUICaplinkFilter::DTI;
 }
 
-inline MtAllocator* uGUICaplinkFilter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkFilter::DTI);
-}
-
 void* uGUICaplinkFilter::operator new(size_t sz, u32 align) {
     return uGUICaplinkFilter::getAllocator()->memAlloc(sz, align, uGUICaplinkFilter::DTI.getID());
-}
-
-inline void uGUICaplinkFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkFilter::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkFilter::~uGUICaplinkFilter() {
@@ -265,9 +257,52 @@ u32 uGUICaplinkFilter::evCtrlStart(cControl::Message* msg) {
     return 1;
 }
 
-__attribute__((weak)) u32 uGUICaplinkFilter::evCtrlAdjustCursor(cControl::Message* msg) {
-    DDON_STUB("uGUICaplinkFilter::evCtrlAdjustCursor")
-    return {};
+u32 uGUICaplinkFilter::evCtrlAdjustCursor(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            if (msg->pSender == mpListCtrl) {
+                if (mpListCtrl->mCurrentPos != 0) {
+                    if (mMain.mListCtrl.getCtrl() != nullptr) {
+                        if (msg->reason == nGUIExt::TRG_DOWN) {
+                            if (mMain.mListCtrl.getCtrl()->mCurrentPos != (mMain.mListCtrl.getCtrl()->mItemNum - 1)) {
+                                mpListCtrl->setCurrentPos(0, false);
+                                setInputEvent(0u);
+                            } else {
+                                setInputEvent(68u);
+                            }
+                        } else {
+                            if (msg->reason == nGUIExt::BTN_START) {
+                                if (mMain.mListCtrl.getCtrl()->isTopLimit()) {
+                                    mpListCtrl->setCurrentPos(0, false);
+                                    setInputEvent(0u);
+                                } else {
+                                    setInputEvent(68u);
+                                }
+                            } else {
+                                setInputEvent(68u);
+                            }
+                        }
+                    } else {
+                        setInputEvent(68u);
+                    }
+                } else {
+                    if (msg->reason != nGUIExt::BTN_START) {
+                        mMain.mListCtrl.setListPos(0u, false);
+                    } else {
+                        mMain.mListCtrl.setListPos(mMain.mListCtrl.length() - 1u, false);
+                    }
+                    setInputEvent(68u);
+                }
+            } else {
+                setInputEvent(68u);
+            }
+        } else {
+            setInputEvent(68u);
+        }
+    } else {
+        setInputEvent(68u);
+    }
+    return 0;
 }
 
 u32 uGUICaplinkFilter::evCtrlMouseClick(cControl::Message* msg) {
@@ -300,30 +335,28 @@ const MtDTI& uGUICaplinkFilter::cListItem::getDTI() const {
     return uGUICaplinkFilter::cListItem::DTI;
 }
 
-inline void uGUICaplinkFilter::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkFilter::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUICaplinkFilter::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkFilter::cListItem::MyDTI uGUICaplinkFilter::cListItem::DTI("uGUICaplinkFilter::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 176ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkFilter::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkFilter::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkFilter::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkFilter::cListItem;
 }
 
 const MtDTI& uGUICaplinkFilter::cListInfo::getDTI() const {
     return uGUICaplinkFilter::cListInfo::DTI;
 }
 
-inline void uGUICaplinkFilter::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkFilter::cListInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uGUICaplinkFilter::cListInfo::addMouseTouchList(cControl* pCtrl, s32 pos) {
-    DDON_STUB("uGUICaplinkFilter::cListInfo::addMouseTouchList")
-    /* stub */
+    if (pCtrl == nullptr) {
+        return;
+    }
+    cListItem* pItem = static_cast<cListItem*>(mpItem);
+    if (pItem == nullptr) {
+        return;
+    }
+    pCtrl->addMouseTouchListLight(pItem->mCheck.getInstance(), pItem->mCheck.getMouseOverObject(), pos, 0);
+    pCtrl->addMouseTouchListLight(pItem->mpInstMouseCollision, pItem->mpObjMouseCollision, pos, 1);
 }
 
 inline uGUICaplinkFilter::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rStartPosArea.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cStartPosArea::getDTI() const {
     return cStartPosArea::DTI;
-}
-
-inline void* cStartPosArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStartPosArea::DTI)->memAlloc(sz, align, cStartPosArea::DTI.getID());
-}
-
-inline void cStartPosArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStartPosArea::DTI)->memFree(p_addr);
 }
 
 void cStartPosArea::createProperty(MtPropertyList& s) {
@@ -44,14 +34,6 @@ MtObject* cStartPosArea::MyDTI::newInstance() const {
 
 const MtDTI& rStartPosArea::getDTI() const {
     return rStartPosArea::DTI;
-}
-
-inline void* rStartPosArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStartPosArea::DTI)->memAlloc(sz, align, rStartPosArea::DTI.getID());
-}
-
-inline void rStartPosArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStartPosArea::DTI)->memFree(p_addr);
 }
 
 bool rStartPosArea::loadData(MtDataReader& in, cStartPosArea* pData) {

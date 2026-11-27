@@ -24,10 +24,6 @@ const MtDTI& uLight::getDTI() const {
     return uLight::DTI;
 }
 
-inline void uLight::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uLight::DTI)->memFree(p_addr);
-}
-
 uLight::~uLight() {
     (sScene::mpInstance)->sScene::detach(static_cast<cUnit*>(this));
     (sScene::mpInstance)->sScene::detachNode(mNode);
@@ -42,7 +38,7 @@ uLight::~uLight() {
     mplightVolume = nullptr;
 }
 
-void uLight::createProperty(MtPropertyList& s) {
+__attribute__((weak)) void uLight::createProperty(MtPropertyList& s) {
     this->cUnit::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mGroup", &mGroup, 2048u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mAttr", reinterpret_cast<MT_MFUNC>(&::uLight::getAttr), reinterpret_cast<MT_MFUNC>(&::uLight::setAttr), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
@@ -216,10 +212,6 @@ void* uLight::cHardwareDispCtrlLight::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uLight::cHardwareDispCtrlLight::DTI)->memAlloc(sz, align, uLight::cHardwareDispCtrlLight::DTI.mID);
 }
 
-inline void uLight::cHardwareDispCtrlLight::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uLight::cHardwareDispCtrlLight::DTI)->memFree(p_addr);
-}
-
 void uLight::cHardwareDispCtrlLight::update() {
     bool t0 = (sScene::mpInstance)->mLightRestrictPS4;
     bool t1 = (sScene::mpInstance)->mLightRestrictPC;
@@ -241,6 +233,118 @@ uLight::cHardwareDispCtrlLight::MyDTI uLight::cHardwareDispCtrlLight::DTI("uLigh
 
 __attribute__((weak)) MtObject* uLight::cHardwareDispCtrlLight::MyDTI::newInstance() const {
     DDON_STUB("uLight::cHardwareDispCtrlLight::MyDTI::newInstance")
+    return nullptr;
+}
+
+__attribute__((weak)) void uPointLight::usage() {
+}
+
+const MtDTI& uPointLight::getDTI() const {
+    return uPointLight::DTI;
+}
+
+uPointLight::uPointLight() {
+    DDON_STUB("uPointLight::uPointLight")
+    /* stub */
+}
+
+uPointLight::~uPointLight() {
+}
+
+__attribute__((weak)) void uPointLight::moveAfter() {
+    DDON_STUB("uPointLight::moveAfter")
+    /* stub */
+}
+
+void uPointLight::createProperty(MtPropertyList& s) {
+    this->uLight::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "ShadowGroup0", &mShadowAtten.x, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ShadowGroup1", &mShadowAtten.y, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParentNo", &mParentNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mStart", &mStart, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mEnd", &mEnd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpProjectionTexture", "resource", static_cast<void*>(&mpProjectionTexture), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mProjectionAngle", &mProjectionAngle, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "LimitRangeEnable", reinterpret_cast<MT_MFUNC>(&::uLight::isLimitRangeEnable), reinterpret_cast<MT_MFUNC>(&::uLight::setLimitRangeEnable), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mRangeOBB", &mRangeOBB, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRangeOBB.extent", &mRangeOBB.extent, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRangeOBB.coord", &mRangeOBB.coord, 0u, 0u);
+}
+
+MtUI* uPointLight::createUI(MtProperty& prop) {
+    return this->cUnit::createUI(prop);
+}
+
+__attribute__((weak)) void uPointLight::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    DDON_STUB("uPointLight::applyWorldOffset")
+    /* stub */
+}
+
+__attribute__((weak)) bool uPointLight::getSHFactor(cDraw* pdraw, const MtSphere& sphere, uLight::SHFACTOR* pfactor) const {
+    DDON_STUB("uPointLight::getSHFactor")
+    return {};
+}
+
+bool uPointLight::getLimitRangeOBB(MtOBB* obb) const {
+    if ((mAttr & 128u) != 0) {
+        if (obb != nullptr) {
+            obb->extent.x = mRangeOBB.extent.x;
+            obb->extent.y = mRangeOBB.extent.y;
+            obb->extent.z = mRangeOBB.extent.z;
+            obb->extent.pad_ = 0.0f;
+            obb->coord.m[0].x = mRangeOBB.coord.m[0].x;
+            obb->coord.m[0].y = mRangeOBB.coord.m[0].y;
+            obb->coord.m[0].z = mRangeOBB.coord.m[0].z;
+            obb->coord.m[0].w = mRangeOBB.coord.m[0].w;
+            obb->coord.m[1].x = mRangeOBB.coord.m[1].x;
+            obb->coord.m[1].y = mRangeOBB.coord.m[1].y;
+            obb->coord.m[1].z = mRangeOBB.coord.m[1].z;
+            obb->coord.m[1].w = mRangeOBB.coord.m[1].w;
+            obb->coord.m[2].x = mRangeOBB.coord.m[2].x;
+            obb->coord.m[2].y = mRangeOBB.coord.m[2].y;
+            obb->coord.m[2].z = mRangeOBB.coord.m[2].z;
+            obb->coord.m[2].w = mRangeOBB.coord.m[2].w;
+            obb->coord.m[3].x = mRangeOBB.coord.m[3].x;
+            obb->coord.m[3].y = mRangeOBB.coord.m[3].y;
+            obb->coord.m[3].z = mRangeOBB.coord.m[3].z;
+            obb->coord.m[3].w = mRangeOBB.coord.m[3].w;
+            return true;
+        }
+    }
+    return false;
+}
+
+void uPointLight::setLimitRangeOBB(const MtOBB& obb) {
+    mRangeOBB.extent.x = obb.extent.x;
+    mRangeOBB.extent.y = obb.extent.y;
+    mRangeOBB.extent.z = obb.extent.z;
+    mRangeOBB.extent.pad_ = 0.0f;
+    mRangeOBB.coord.m[0].x = obb.coord.m[0].x;
+    mRangeOBB.coord.m[0].y = obb.coord.m[0].y;
+    mRangeOBB.coord.m[0].z = obb.coord.m[0].z;
+    mRangeOBB.coord.m[0].w = obb.coord.m[0].w;
+    mRangeOBB.coord.m[1].x = obb.coord.m[1].x;
+    mRangeOBB.coord.m[1].y = obb.coord.m[1].y;
+    mRangeOBB.coord.m[1].z = obb.coord.m[1].z;
+    mRangeOBB.coord.m[1].w = obb.coord.m[1].w;
+    mRangeOBB.coord.m[2].x = obb.coord.m[2].x;
+    mRangeOBB.coord.m[2].y = obb.coord.m[2].y;
+    mRangeOBB.coord.m[2].z = obb.coord.m[2].z;
+    mRangeOBB.coord.m[2].w = obb.coord.m[2].w;
+    mRangeOBB.coord.m[3].x = obb.coord.m[3].x;
+    mRangeOBB.coord.m[3].y = obb.coord.m[3].y;
+    mRangeOBB.coord.m[3].z = obb.coord.m[3].z;
+    mRangeOBB.coord.m[3].w = obb.coord.m[3].w;
+}
+
+inline uPointLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uPointLight::MyDTI uPointLight::DTI("uPointLight", &::uLight::DTI, 1152ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* uPointLight::MyDTI::newInstance() const {
+    DDON_STUB("uPointLight::MyDTI::newInstance")
     return nullptr;
 }
 

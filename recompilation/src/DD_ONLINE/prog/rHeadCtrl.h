@@ -176,3 +176,11 @@ inline void* cHeadCtrl::operator new[](size_t sz, u32 align) {
 inline void* rHeadCtrl::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rHeadCtrl::DTI)->memAlloc(sz, align, rHeadCtrl::DTI.getID());
 }
+
+inline void cHeadCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHeadCtrl::DTI)->memFree(p_addr);
+}
+
+inline void rHeadCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rHeadCtrl::DTI)->memFree(p_addr);
+}

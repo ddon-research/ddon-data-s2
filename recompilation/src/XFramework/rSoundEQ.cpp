@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSoundEQ.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemory.h"
@@ -18,10 +17,6 @@
 
 const MtDTI& rSoundEQ::getDTI() const {
     return rSoundEQ::DTI;
-}
-
-inline void rSoundEQ::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundEQ::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rSoundEQ::~rSoundEQ() {
@@ -140,10 +135,6 @@ __attribute__((weak)) MtObject* rSoundEQ::MyDTI::newInstance() const {
 
 const MtDTI& rSoundEQ::cEQData::getDTI() const {
     return rSoundEQ::cEQData::DTI;
-}
-
-inline void rSoundEQ::cEQData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundEQ::cEQData::DTI)->memFree(p_addr);
 }
 
 rSoundEQ::cEQData::~cEQData() {

@@ -26,7 +26,6 @@
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "uJobEquip.h"
-#include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -41,16 +40,8 @@ const MtDTI& cpItemThrow::getDTI() const {
     return cpItemThrow::DTI;
 }
 
-inline MtAllocator* cpItemThrow::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpItemThrow::DTI);
-}
-
 void* cpItemThrow::operator new(size_t sz, u32 align) {
     return cpItemThrow::getAllocator()->memAlloc(sz, align, cpItemThrow::DTI.getID());
-}
-
-inline void cpItemThrow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpItemThrow::DTI)->memFree(p_addr);
 }
 
 cpItemThrow::cpItemThrow() : mBackUpItemTblList() {
@@ -110,10 +101,6 @@ bool cpItemThrow::requestThrowItem(u32 id, MT_CTSTR uid) {
 __attribute__((weak)) void cpItemThrow::checkItemMode() {
     DDON_STUB("cpItemThrow::checkItemMode")
     /* stub */
-}
-
-uModel* cpItemThrow::getItemModel() const {
-    return mpItemModel;
 }
 
 MT_CTSTR cpItemThrow::getNowThrowItemUId() const {

@@ -168,3 +168,15 @@ public:
 inline void* uGUIGaugeEnemyBoss::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIGaugeEnemyBoss::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeEnemyBoss::DTI);
+}
+
+inline void uGUIGaugeEnemyBoss::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGaugeEnemyBoss::DTI)->memFree(p_addr);
+}

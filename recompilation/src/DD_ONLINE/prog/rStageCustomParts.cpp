@@ -24,14 +24,6 @@ const MtDTI& rStageCustomParts::getDTI() const {
     return rStageCustomParts::DTI;
 }
 
-inline void* rStageCustomParts::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomParts::DTI)->memAlloc(sz, align, rStageCustomParts::DTI.getID());
-}
-
-inline void rStageCustomParts::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageCustomParts::DTI)->memFree(p_addr);
-}
-
 rStageCustomParts::rStageCustomParts() {
     mAttr = 18;
     mpArrayInfo = nullptr;
@@ -211,14 +203,6 @@ MtObject* rStageCustomParts::MyDTI::newInstance() const {
 
 const MtDTI& rStageCustomParts::Param::getDTI() const {
     return rStageCustomParts::Param::DTI;
-}
-
-inline void* rStageCustomParts::Param::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomParts::Param::DTI)->memAlloc(sz, align, rStageCustomParts::Param::DTI.getID());
-}
-
-inline void rStageCustomParts::Param::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageCustomParts::Param::DTI)->memFree(p_addr);
 }
 
 void rStageCustomParts::Param::createProperty(MtPropertyList& s) {
@@ -425,29 +409,12 @@ void rStageCustomParts::Info::setOccluderName(const MtString& name) {
 
 static auto ddon_emit_0x01ab2d70 __attribute__((used)) = &rStageCustomParts::Info::getOccluderName;
 
-u64 rStageCustomParts::Info::getEfcColorZone() const {
-    return mEfcColorZone.mId;
-}
-
-u64 rStageCustomParts::Info::getEfcCtrlZone() const {
-    return mEfcCtrlZone.mId;
-}
-
-u64 rStageCustomParts::Info::getLightAndFogZone() const {
-    return mLightAndFogZone.mId;
-}
-
-u64 rStageCustomParts::Info::getSoundAreaInfo() const {
-    return mSoundAreaInfo.mId;
-}
-
-__attribute__((weak)) u64 rStageCustomParts::Info::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE type) const {
-    DDON_STUB("rStageCustomParts::Info::getZoneUnitCtrl")
-    return {};
-}
-
-u64 rStageCustomParts::Info::getZoneStatus() const {
-    return mZoneStatus.mId;
+u64 rStageCustomParts::Info::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE type) const {
+    if (static_cast<unsigned int>(type) <= 2) {
+        return mZoneUnitCtrl[type].getResId();
+    } else {
+        return 0;
+    }
 }
 
 inline rStageCustomParts::Info::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -461,14 +428,6 @@ __attribute__((weak)) MtObject* rStageCustomParts::Info::MyDTI::newInstance() co
 
 const MtDTI& rStageCustomParts::Filter::getDTI() const {
     return rStageCustomParts::Filter::DTI;
-}
-
-inline void* rStageCustomParts::Filter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomParts::Filter::DTI)->memAlloc(sz, align, rStageCustomParts::Filter::DTI.getID());
-}
-
-inline void rStageCustomParts::Filter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageCustomParts::Filter::DTI)->memFree(p_addr);
 }
 
 rStageCustomParts::Filter::Filter() {

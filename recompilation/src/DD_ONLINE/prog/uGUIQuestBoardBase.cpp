@@ -31,10 +31,6 @@ const MtDTI& uGUIQuestBoardBase::getDTI() const {
     return uGUIQuestBoardBase::DTI;
 }
 
-inline void uGUIQuestBoardBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIQuestBoardBase::~uGUIQuestBoardBase() {
     if (mpGMDQuest != nullptr) {
         mpGMDQuest->release();
@@ -143,14 +139,6 @@ const MtDTI& uGUIQuestBoardBase::cListHeader::getDTI() const {
     return uGUIQuestBoardBase::cListHeader::DTI;
 }
 
-inline void* uGUIQuestBoardBase::cListHeader::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListHeader::DTI)->memAlloc(sz, align, uGUIQuestBoardBase::cListHeader::DTI.getID());
-}
-
-inline void uGUIQuestBoardBase::cListHeader::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListHeader::DTI)->memFree(p_addr);
-}
-
 inline uGUIQuestBoardBase::cListHeader::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIQuestBoardBase::cListHeader::MyDTI uGUIQuestBoardBase::cListHeader::DTI("uGUIQuestBoardBase::cListHeader", &::uGUIBase::cScrollListItemBase::DTI, 136ul, 0u, 0u);
@@ -161,14 +149,6 @@ MtObject* uGUIQuestBoardBase::cListHeader::MyDTI::newInstance() const {
 
 const MtDTI& uGUIQuestBoardBase::cListItem::getDTI() const {
     return uGUIQuestBoardBase::cListItem::DTI;
-}
-
-inline void* uGUIQuestBoardBase::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListItem::DTI)->memAlloc(sz, align, uGUIQuestBoardBase::cListItem::DTI.getID());
-}
-
-inline void uGUIQuestBoardBase::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestBoardBase::cListItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIQuestBoardBase::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

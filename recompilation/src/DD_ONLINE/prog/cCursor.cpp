@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cCursor.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -14,14 +12,6 @@
 
 const MtDTI& cCursor::getDTI() const {
     return cCursor::DTI;
-}
-
-inline void* cCursor::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCursor::DTI)->memAlloc(sz, align, cCursor::DTI.getID());
-}
-
-inline void cCursor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCursor::DTI)->memFree(p_addr);
 }
 
 cCursor::cCursor() {

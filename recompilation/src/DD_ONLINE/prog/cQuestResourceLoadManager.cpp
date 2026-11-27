@@ -17,16 +17,8 @@ const MtDTI& cQuestResourceLoadManager::getDTI() const {
     return cQuestResourceLoadManager::DTI;
 }
 
-inline MtAllocator* cQuestResourceLoadManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::DTI);
-}
-
 void* cQuestResourceLoadManager::operator new(size_t sz, u32 align) {
     return cQuestResourceLoadManager::getAllocator()->memAlloc(sz, align, cQuestResourceLoadManager::DTI.getID());
-}
-
-inline void cQuestResourceLoadManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::DTI)->memFree(p_addr);
 }
 
 void cQuestResourceLoadManager::addQuestId(cQuestResourceLoadManager::cLoadTask* pTask, nQuest::QUEST_ID questId) {
@@ -121,14 +113,6 @@ MtObject* cQuestResourceLoadManager::MyDTI::newInstance() const {
 
 const MtDTI& cQuestResourceLoadManager::cLoadTask::getDTI() const {
     return cQuestResourceLoadManager::cLoadTask::DTI;
-}
-
-inline void* cQuestResourceLoadManager::cLoadTask::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::cLoadTask::DTI)->memAlloc(sz, align, cQuestResourceLoadManager::cLoadTask::DTI.getID());
-}
-
-inline void cQuestResourceLoadManager::cLoadTask::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestResourceLoadManager::cLoadTask::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cQuestResourceLoadManager::cLoadTask::addQuestId(nQuest::QUEST_ID questId) {

@@ -3,7 +3,6 @@
 #include "cpSoftBody.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -12,6 +11,7 @@
 #include "cpComponent.h"
 #include "sBakingJointOrder.h"
 #include "../../XFramework/sUnit.h"
+#include "uDDOActorModelPl.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "../../XFramework/uModel.h"
@@ -24,16 +24,8 @@ const MtDTI& cpSoftBody::getDTI() const {
     return cpSoftBody::DTI;
 }
 
-inline MtAllocator* cpSoftBody::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpSoftBody::DTI);
-}
-
 void* cpSoftBody::operator new(size_t sz, u32 align) {
     return cpSoftBody::getAllocator()->memAlloc(sz, align, cpSoftBody::DTI.getID());
-}
-
-inline void cpSoftBody::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpSoftBody::DTI)->memFree(p_addr);
 }
 
 cpSoftBody::cpSoftBody() {
@@ -152,9 +144,44 @@ __attribute__((weak)) bool cpSoftBody::setSoftBody(uModel* pOwner, rDeformWeight
     return {};
 }
 
-__attribute__((weak)) bool cpSoftBody::isSoftBodyDraw() {
-    DDON_STUB("cpSoftBody::isSoftBodyDraw")
-    return {};
+bool cpSoftBody::isSoftBodyDraw() {
+    if (mprDeformWeightMap != nullptr) {
+        if (mpSimSoftBody != nullptr) {
+            if (mIsActive) {
+                if (mpOwner != nullptr) {
+                    if (!mpOwner->isKindOf(uHuman::DTI)) {
+                        if (mpOwner != nullptr) {
+                            if (!mpOwner->isKindOf(uDDOActorModelPl::DTI)) {
+                                return true;
+                            } else {
+                                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpOwner) + 11032)) != 0) {
+                                    return sBakingJointOrder::getInstance()->isBaked(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpOwner) + 11032)) + 17596));
+                                } else {
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return true;
+                        }
+                    } else {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpOwner) + 11032)) != 0) {
+                            return sBakingJointOrder::getInstance()->isBaked(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpOwner) + 11032)) + 17596));
+                        } else {
+                            return false;
+                        }
+                    }
+                } else {
+                    return true;
+                }
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void cpSoftBody::draw(cDraw* pDraw) {

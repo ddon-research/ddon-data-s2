@@ -129,3 +129,15 @@ inline void* uStageFieldCtrl::operator new(size_t sz, void* p_addr) {
 inline bool uStageFieldCtrl::isSetup() {
     return this->mIsSetup;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uStageFieldCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uStageFieldCtrl::DTI);
+}
+
+inline void uStageFieldCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uStageFieldCtrl::DTI)->memFree(p_addr);
+}

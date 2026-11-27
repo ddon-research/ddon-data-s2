@@ -335,3 +335,51 @@ inline void rStageCustomParts::Filter::clear() {
 inline MT_CTSTR rStageCustomParts::Filter::getFilterName() const {
     return &this->mFilter[0];
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rStageCustomParts::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomParts::DTI)->memAlloc(sz, align, ::rStageCustomParts::DTI.::MtDTI::getID());
+}
+
+inline void rStageCustomParts::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageCustomParts::DTI)->memFree(p_addr);
+}
+
+inline void* rStageCustomParts::Param::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomParts::Param::DTI)->memAlloc(sz, align, ::rStageCustomParts::Param::DTI.::MtDTI::getID());
+}
+
+inline void rStageCustomParts::Param::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageCustomParts::Param::DTI)->memFree(p_addr);
+}
+
+inline u64 rStageCustomParts::Info::getEfcColorZone() const {
+    return this->mEfcColorZone.::cResPathBase::mId;
+}
+
+inline u64 rStageCustomParts::Info::getEfcCtrlZone() const {
+    return this->mEfcCtrlZone.::cResPathBase::mId;
+}
+
+inline u64 rStageCustomParts::Info::getLightAndFogZone() const {
+    return this->mLightAndFogZone.::cResPathBase::mId;
+}
+
+inline u64 rStageCustomParts::Info::getSoundAreaInfo() const {
+    return this->mSoundAreaInfo.::cResPathBase::mId;
+}
+
+inline u64 rStageCustomParts::Info::getZoneStatus() const {
+    return this->mZoneStatus.::cResPathBase::mId;
+}
+
+inline void* rStageCustomParts::Filter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomParts::Filter::DTI)->memAlloc(sz, align, ::rStageCustomParts::Filter::DTI.::MtDTI::getID());
+}
+
+inline void rStageCustomParts::Filter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageCustomParts::Filter::DTI)->memFree(p_addr);
+}

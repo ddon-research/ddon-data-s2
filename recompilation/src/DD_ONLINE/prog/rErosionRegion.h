@@ -483,3 +483,67 @@ inline void cErosionSuperInfoRes::operator delete[](void* p_addr) {
 inline void* cErosionSuperInfoRes::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cErosionSuperInfoRes::DTI)->memAlloc(sz, align, ::cErosionSuperInfoRes::DTI.::MtDTI::getID());
 }
+
+inline void* cErosionInfoRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionInfoRes::DTI)->memAlloc(sz, align, ::cErosionInfoRes::DTI.::MtDTI::getID());
+}
+
+inline void cErosionInfoRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionInfoRes::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionRegionRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionRegionRes::DTI)->memAlloc(sz, align, ::cErosionRegionRes::DTI.::MtDTI::getID());
+}
+
+inline void cErosionRegionRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionRegionRes::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionSmallInfoRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionSmallInfoRes::DTI)->memAlloc(sz, align, ::cErosionSmallInfoRes::DTI.::MtDTI::getID());
+}
+
+inline void cErosionSmallInfoRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionSmallInfoRes::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionSuperInfoRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionSuperInfoRes::DTI)->memAlloc(sz, align, ::cErosionSuperInfoRes::DTI.::MtDTI::getID());
+}
+
+inline void cErosionSuperInfoRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionSuperInfoRes::DTI)->memFree(p_addr);
+}
+
+inline void* rErosionInfoRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rErosionInfoRes::DTI)->memAlloc(sz, align, ::rErosionInfoRes::DTI.::MtDTI::getID());
+}
+
+inline void rErosionInfoRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rErosionInfoRes::DTI)->memFree(p_addr);
+}
+
+inline void* rErosionRegion::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rErosionRegion::DTI)->memAlloc(sz, align, ::rErosionRegion::DTI.::MtDTI::getID());
+}
+
+inline void rErosionRegion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rErosionRegion::DTI)->memFree(p_addr);
+}
+
+inline void* rErosionSmallInfoRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rErosionSmallInfoRes::DTI)->memAlloc(sz, align, ::rErosionSmallInfoRes::DTI.::MtDTI::getID());
+}
+
+inline void rErosionSmallInfoRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rErosionSmallInfoRes::DTI)->memFree(p_addr);
+}
+
+inline void* rErosionSuperInfoRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rErosionSuperInfoRes::DTI)->memAlloc(sz, align, ::rErosionSuperInfoRes::DTI.::MtDTI::getID());
+}
+
+inline void rErosionSuperInfoRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rErosionSuperInfoRes::DTI)->memFree(p_addr);
+}

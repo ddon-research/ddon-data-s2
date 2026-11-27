@@ -652,3 +652,22 @@ inline void* cDraw::operator new(size_t sz, void* p_addr) {
 inline nDraw::Scene* cDraw::getScene() const {
     return this->mContext.pscene;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+#include "nDrawIndexBuffer.h"
+#include "nDrawResource.h"
+
+inline void cDraw::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDraw::DTI)->memFree(p_addr);
+}
+
+inline void cDraw::setIndexBuffer(nDraw::IndexBuffer* pibuf, u32 offset) {
+    if (pibuf == this->mContext.gstate.pibuf) {
+        return;
+    }
+    pibuf->::nDraw::Resource::mRefFrame = (::nDraw::Resource::mProtectFrame) + (::nDraw::Resource::mRenderFrame);
+    this->mContext.gstate.pibuf = pibuf;
+    this->mContext.gstate.modified = 1;
+}

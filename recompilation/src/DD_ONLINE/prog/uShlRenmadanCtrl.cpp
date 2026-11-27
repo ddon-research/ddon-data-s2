@@ -30,14 +30,6 @@ const MtDTI& cShlParamRenmadanCtrl::getDTI() const {
     return cShlParamRenmadanCtrl::DTI;
 }
 
-inline void* cShlParamRenmadanCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamRenmadanCtrl::DTI)->memAlloc(sz, align, cShlParamRenmadanCtrl::DTI.getID());
-}
-
-inline void cShlParamRenmadanCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamRenmadanCtrl::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamRenmadanCtrl::getShlDTI() const {
     return uShlRenmadanCtrl::DTI;
 }
@@ -97,7 +89,7 @@ void cShlParamRenmadanCtrl::copy(const cShlParamBase* pParamBase) {
     renmaSubList.mpArray = nullptr;
     renmaSubList.mBufsiz = 0;
     renmaSubList.mLength = 0;
-    addShlList(static_cast<const cShlParamRenmadanCtrl*>(pParamBase));
+    addShlList(pParam);
 }
 
 __attribute__((weak)) void cShlParamRenmadanCtrl::addShlList(const cShlParamRenmadanCtrl* pParam) {
@@ -115,14 +107,6 @@ MtObject* cShlParamRenmadanCtrl::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamRenmadanCtrl::cRenmaSubCtrlParam::getDTI() const {
     return cShlParamRenmadanCtrl::cRenmaSubCtrlParam::DTI;
-}
-
-inline void* cShlParamRenmadanCtrl::cRenmaSubCtrlParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamRenmadanCtrl::cRenmaSubCtrlParam::DTI)->memAlloc(sz, align, cShlParamRenmadanCtrl::cRenmaSubCtrlParam::DTI.getID());
-}
-
-inline void cShlParamRenmadanCtrl::cRenmaSubCtrlParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamRenmadanCtrl::cRenmaSubCtrlParam::DTI)->memFree(p_addr);
 }
 
 void cShlParamRenmadanCtrl::cRenmaSubCtrlParam::createProperty(MtPropertyList& s) {
@@ -176,43 +160,32 @@ const MtDTI& uShlRenmadanCtrl::getDTI() const {
     return uShlRenmadanCtrl::DTI;
 }
 
-inline void uShlRenmadanCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlRenmadanCtrl::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamRenmadanCtrl* uShlRenmadanCtrl::getShlParam() const {
-    return static_cast<const cShlParamRenmadanCtrl*>(mpShlParam2);
-}
-
-inline uShlRenmadanCtrl::uShlRenmadanCtrl() {
-    mpRenmaTarget = nullptr;
-    mpRenmaMain = nullptr;
-    mSubWaitTimer = 0.0f;
-    mSubDelayTimer = 0.0f;
-    mShlSetNum = 0;
-    mShlSetFrame = 0.0f;
-    mpTargetEfcHandle = nullptr;
-    mSubTargetUID = 0;
-    mJointNo = -1;
-    mOffset.x = MtVector3::Zero.x;
-    mOffset.y = MtVector3::Zero.y;
-    mOffset.z = MtVector3::Zero.z;
-    mOffset.pad_ = 0.0f;
-    mRenmaState = 0;
-    mSubHomingFirstArray.mpArray = nullptr;
-    mSubHomingFirstArray.mBufsiz = 0;
-    mSubHomingFirstArray.mLength = 0;
-    mSubHomingSecondArray.mpArray = nullptr;
-    mSubHomingSecondArray.mLength = 0;
-    mSubHomingSecondArray.mBufsiz = 0;
-}
-
 uShlRenmadanCtrl::~uShlRenmadanCtrl() {
 }
 
-__attribute__((weak)) void uShlRenmadanCtrl::setup() {
-    DDON_STUB("uShlRenmadanCtrl::setup")
-    /* stub */
+void uShlRenmadanCtrl::setup() {
+    this->uShlBase::setup();
+    if (static_cast<int>(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(getShlParamBase()) + 352)) > -1) {
+        uShlBase* v0_9 = setShl(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(getShlParamBase()) + 352), MtVector3::Zero, 0.0f, 0.0f, mTargetUId, mLockOnIndex);
+        if (v0_9 != nullptr) {
+            const MtDTI& t0 = v0_9->getDTI();
+            MT_CTSTR v0_1 = uShlRenmadanMain::DTI.mName;
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    uShlRenmadanMain* pRenma = static_cast<uShlRenmadanMain*>(v0_9);
+                    pRenma->mpRenmaCtrl = this;
+                    mpRenmaMain = static_cast<uShlRenmadanMain*>(v0_9);
+                    return;
+                }
+            }
+        }
+    }
 }
 
 void uShlRenmadanCtrl::kill() {
@@ -262,14 +235,6 @@ __attribute__((weak)) MtObject* uShlRenmadanCtrl::MyDTI::newInstance() const {
 
 const MtDTI& uShlRenmadanMain::getDTI() const {
     return uShlRenmadanMain::DTI;
-}
-
-inline void* uShlRenmadanMain::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlRenmadanMain::DTI)->memAlloc(sz, align, uShlRenmadanMain::DTI.getID());
-}
-
-inline void uShlRenmadanMain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlRenmadanMain::DTI)->memFree(p_addr);
 }
 
 uShlRenmadanMain::~uShlRenmadanMain() {

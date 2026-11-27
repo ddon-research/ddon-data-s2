@@ -10,6 +10,7 @@
 struct SceNpId;
 
 // Declarations
+struct SceNpPartyJoinedInfo;
 struct SceNpPartyMemberInfo;
 struct SceNpPartyRoomLeftInfo;
 
@@ -23,6 +24,17 @@ using SceNpPartyRoomLeftReason = uint32_t;
 using __uint16_t = unsigned short;
 using uint16_t = __uint16_t;
 using SceNpPartyRoomMemberId = uint16_t;
+
+struct SceNpPartyJoinedInfo
+{
+public:
+    SceNpId members[8];  // offset: 0x0
+    SceNpPartyRoomMemberId memberIds[8];  // offset: 0x120
+    uint8_t memberNum;  // offset: 0x130
+    bool privateParty;  // offset: 0x131
+    uint8_t memberJoinedIndex;  // offset: 0x132
+    uint8_t reserved;  // offset: 0x133
+};
 
 struct SceNpPartyMemberInfo
 {

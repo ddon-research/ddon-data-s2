@@ -21,10 +21,6 @@ const MtDTI& cAIPawnActNoSwitch::getDTI() const {
     return cAIPawnActNoSwitch::DTI;
 }
 
-inline void cAIPawnActNoSwitch::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIPawnActNoSwitch::DTI)->memFree(p_addr);
-}
-
 cAIPawnActNoSwitch::~cAIPawnActNoSwitch() {
 }
 
@@ -38,14 +34,6 @@ __attribute__((weak)) MtObject* cAIPawnActNoSwitch::MyDTI::newInstance() const {
 
 const MtDTI& rAIPawnActNoSwitch::getDTI() const {
     return rAIPawnActNoSwitch::DTI;
-}
-
-inline void* rAIPawnActNoSwitch::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAIPawnActNoSwitch::DTI)->memAlloc(sz, align, rAIPawnActNoSwitch::DTI.getID());
-}
-
-inline void rAIPawnActNoSwitch::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIPawnActNoSwitch::DTI)->memFree(p_addr);
 }
 
 rAIPawnActNoSwitch::~rAIPawnActNoSwitch() {

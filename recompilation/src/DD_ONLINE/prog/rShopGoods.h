@@ -244,3 +244,36 @@ inline cShopGoods::cShopGoods()
     mReplenishType = 0;
     mInGameDays = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+
+inline MtAllocator* cShopGoods::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cShopGoods::DTI);
+}
+
+inline void cShopGoods::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShopGoods::DTI)->memFree(p_addr);
+}
+
+inline void* cShopGoods::rDate::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShopGoods::rDate::DTI)->memAlloc(sz, align, ::cShopGoods::rDate::DTI.::MtDTI::getID());
+}
+
+inline void cShopGoods::rDate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShopGoods::rDate::DTI)->memFree(p_addr);
+}
+
+inline void* rShopGoods::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rShopGoods::DTI)->memAlloc(sz, align, ::rShopGoods::DTI.::MtDTI::getID());
+}
+
+inline void rShopGoods::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rShopGoods::DTI)->memFree(p_addr);
+}
+
+inline rShopGoods::rShopGoods() {
+    this->::cResource::setAttribute(16u);
+}

@@ -436,3 +436,27 @@ inline u8 nCollision::cScrCommonFilter::getScrGroupIndex() const {
 inline void* nCollisionUtil::cOwnerSystem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nCollision::cAllocaterIntermediate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cAllocaterIntermediate::DTI)->memFree(p_addr);
+}
+
+inline void* nCollision::cScrCommonFilter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nCollision::cScrCommonFilter::DTI)->memAlloc(sz, align, ::nCollision::cScrCommonFilter::DTI.::MtDTI::mID);
+}
+
+inline void nCollision::cScrCommonFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cScrCommonFilter::DTI)->memFree(p_addr);
+}
+
+inline void* nCollisionUtil::cOwnerSystem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nCollisionUtil::cOwnerSystem::DTI)->memAlloc(sz, align, ::nCollisionUtil::cOwnerSystem::DTI.::MtDTI::mID);
+}
+
+inline void nCollisionUtil::cOwnerSystem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollisionUtil::cOwnerSystem::DTI)->memFree(p_addr);
+}

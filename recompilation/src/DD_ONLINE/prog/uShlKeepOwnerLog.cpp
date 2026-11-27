@@ -20,10 +20,6 @@ const MtDTI& cShlLogNode::getDTI() const {
     return cShlLogNode::DTI;
 }
 
-inline void cShlLogNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlLogNode::DTI)->memFree(p_addr);
-}
-
 cShlLogNode::cShlLogNode() {
     DDON_STUB("cShlLogNode::cShlLogNode")
     /* stub */
@@ -50,9 +46,10 @@ void cShlLogNode::updatePtr() {
     mpOwnerShl = nullptr;
 }
 
-__attribute__((weak)) void cShlLogNode::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cShlLogNode::applyWorldOffset")
-    /* stub */
+void cShlLogNode::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mPos.x = offset.x + mPos.x;
+    mPos.y = offset.y + mPos.y;
+    mPos.z = offset.z + mPos.z;
 }
 
 void cShlLogNode::init() {
@@ -88,10 +85,6 @@ __attribute__((weak)) MtObject* cShlLogNode::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamKeepLog::getDTI() const {
     return cShlParamKeepLog::DTI;
-}
-
-inline void* cShlParamKeepLog::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamKeepLog::DTI)->memAlloc(sz, align, cShlParamKeepLog::DTI.getID());
 }
 
 MtDTI& cShlParamKeepLog::getShlDTI() const {
@@ -143,14 +136,6 @@ const MtDTI& uShlKeepOwnerLog::getDTI() const {
     return uShlKeepOwnerLog::DTI;
 }
 
-inline void uShlKeepOwnerLog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlKeepOwnerLog::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamKeepLog* uShlKeepOwnerLog::getShlParam() const {
-    return static_cast<const cShlParamKeepLog*>(mpShlParam2);
-}
-
 uShlKeepOwnerLog::uShlKeepOwnerLog() {
     DDON_STUB("uShlKeepOwnerLog::uShlKeepOwnerLog")
     /* stub */
@@ -163,19 +148,55 @@ void uShlKeepOwnerLog::setup() {
     this->uShlBase::setup();
 }
 
-__attribute__((weak)) void uShlKeepOwnerLog::kill() {
-    DDON_STUB("uShlKeepOwnerLog::kill")
-    /* stub */
+void uShlKeepOwnerLog::kill() {
+    this->uShlBase::kill();
+    u32 num = mLogNodeArray.mLength;
+    if (num != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mLogNodeArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cShlLogNode*>(mLogNodeArray.getBuffer()[static_cast<int>(i0_3)])->final();
+            }
+            if (num != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uShlKeepOwnerLog::updatePtr() {
-    DDON_STUB("uShlKeepOwnerLog::updatePtr")
-    /* stub */
+void uShlKeepOwnerLog::updatePtr() {
+    this->uShlBase::updatePtr();
+    u32 length = mLogNodeArray.mLength;
+    if (length != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mLogNodeArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cShlLogNode*>(mLogNodeArray.getBuffer()[static_cast<int>(i0_3)])->updatePtr();
+            }
+            if (length != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uShlKeepOwnerLog::updateEfcHandle() {
-    DDON_STUB("uShlKeepOwnerLog::updateEfcHandle")
-    /* stub */
+void uShlKeepOwnerLog::updateEfcHandle() {
+    this->uShlBase::updateEfcHandle();
+    u32 length = mLogNodeArray.mLength;
+    if (length != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mLogNodeArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cShlLogNode*>(mLogNodeArray.getBuffer()[static_cast<int>(i0_3)])->updateEfcHandle();
+            }
+            if (length != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 void uShlKeepOwnerLog::createProperty(MtPropertyList& s) {

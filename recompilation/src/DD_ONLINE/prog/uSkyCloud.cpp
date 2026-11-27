@@ -5,7 +5,6 @@
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -25,16 +24,8 @@ const MtDTI& uSkyCloudModel::getDTI() const {
     return uSkyCloudModel::DTI;
 }
 
-inline MtAllocator* uSkyCloudModel::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uSkyCloudModel::DTI);
-}
-
 void* uSkyCloudModel::operator new(size_t sz, u32 align) {
     return uSkyCloudModel::getAllocator()->memAlloc(sz, align, uSkyCloudModel::DTI.getID());
-}
-
-inline void uSkyCloudModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSkyCloudModel::DTI)->memFree(p_addr);
 }
 
 uSkyCloudModel::uSkyCloudModel() {

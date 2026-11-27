@@ -139,3 +139,19 @@ inline void cJobMasterCtrl::operator delete[](void* p_addr) {
 inline void* cJobMasterCtrl::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cJobMasterCtrl::DTI)->memAlloc(sz, align, ::cJobMasterCtrl::DTI.::MtDTI::getID());
 }
+
+inline void* cJobMasterCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cJobMasterCtrl::DTI)->memAlloc(sz, align, ::cJobMasterCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cJobMasterCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cJobMasterCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* rJobMasterCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rJobMasterCtrl::DTI)->memAlloc(sz, align, ::rJobMasterCtrl::DTI.::MtDTI::getID());
+}
+
+inline void rJobMasterCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rJobMasterCtrl::DTI)->memFree(p_addr);
+}

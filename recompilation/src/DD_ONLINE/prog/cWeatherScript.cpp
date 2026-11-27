@@ -21,10 +21,6 @@ const MtDTI& cWeatherScript::getDTI() const {
     return cWeatherScript::DTI;
 }
 
-inline void cWeatherScript::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherScript::DTI)->memFree(p_addr);
-}
-
 cWeatherScript::cWeatherScript() {
     DDON_STUB("cWeatherScript::cWeatherScript")
     /* stub */
@@ -205,17 +201,12 @@ const MtDTI& cWeatherScriptCmdCtrl::getDTI() const {
     return cWeatherScriptCmdCtrl::DTI;
 }
 
-inline void cWeatherScriptCmdCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherScriptCmdCtrl::DTI)->memFree(p_addr);
-}
-
 inline cWeatherScriptCmdCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cWeatherScriptCmdCtrl::MyDTI cWeatherScriptCmdCtrl::DTI("cWeatherScriptCmdCtrl", &::cWeatherObjectSys::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cWeatherScriptCmdCtrl::MyDTI::newInstance() const {
-    DDON_STUB("cWeatherScriptCmdCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* cWeatherScriptCmdCtrl::MyDTI::newInstance() const {
+    return new (16u) cWeatherScriptCmdCtrl;
 }
 
 template MtTypedArray<cWSCParam>::~MtTypedArray();

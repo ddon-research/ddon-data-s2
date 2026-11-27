@@ -164,3 +164,15 @@ inline void* uGUIPopEventTop::operator new(size_t sz, void* p_addr) {
 
 inline uGUIPopEventTop::ctgryList::ctgryList() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopEventTop::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopEventTop::DTI);
+}
+
+inline void uGUIPopEventTop::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopEventTop::DTI)->memFree(p_addr);
+}

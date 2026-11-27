@@ -191,7 +191,7 @@ void cLayoutSet::moveSetUnit() {
                     for (unsigned int i0_3 = 0;;) {
                         if (mUnitArray.mpArray[i0_3] == nullptr) {
                             if (isUseUnitData()) {
-                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitDataArray.getBuffer()[static_cast<int>(i0_3)]) + 8)) == 0) {
+                                if (static_cast<cUnitData*>(mUnitDataArray.getBuffer()[static_cast<int>(i0_3)])->mState == STATE_EMPTY) {
                                     rLayout::SetInfo* t0 = mpRsrc->getSetInfo(i0_3);
                                     if (t0 != nullptr) {
                                         if (t0->mpInfo != nullptr) {
@@ -248,7 +248,7 @@ MtObject* cLayoutSet::setLayoutUnit(rLayout* pLayout, u32 no, bool isFroceSet, u
 
 bool cLayoutSet::isUnitDataEmpty(u32 no) {
     if (isUseUnitData()) {
-        return (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mUnitDataArray.getBuffer()[static_cast<int>(no)]) + 8)) == 0;
+        return static_cast<cUnitData*>(mUnitDataArray.getBuffer()[static_cast<int>(no)])->mState == STATE_EMPTY;
     } else {
         return true;
     }
@@ -284,17 +284,12 @@ const MtDTI& cLayoutSet::cUnitData::getDTI() const {
     return cLayoutSet::cUnitData::DTI;
 }
 
-inline void cLayoutSet::cUnitData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLayoutSet::cUnitData::DTI)->memFree(p_addr);
-}
-
 inline cLayoutSet::cUnitData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cLayoutSet::cUnitData::MyDTI cLayoutSet::cUnitData::DTI("cLayoutSet::cUnitData", &::MtObject::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cLayoutSet::cUnitData::MyDTI::newInstance() const {
-    DDON_STUB("cLayoutSet::cUnitData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cLayoutSet::cUnitData::MyDTI::newInstance() const {
+    return new (16u) cLayoutSet::cUnitData;
 }
 
 template MtTypedArray<cLayoutSet::cUnitData>::~MtTypedArray();

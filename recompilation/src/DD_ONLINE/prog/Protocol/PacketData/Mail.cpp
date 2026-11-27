@@ -5,7 +5,6 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
@@ -15,10 +14,6 @@
 
 const MtDTI& CDataMailAttachmentInfo::getDTI() const {
     return CDataMailAttachmentInfo::DTI;
-}
-
-inline MtAllocator* CDataMailAttachmentInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMailAttachmentInfo::DTI);
 }
 
 void* CDataMailAttachmentInfo::operator new(size_t sz, u32 align) {
@@ -41,14 +36,6 @@ const MtDTI& CDataMailAttachmentList::getDTI() const {
     return CDataMailAttachmentList::DTI;
 }
 
-inline MtAllocator* CDataMailAttachmentList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMailAttachmentList::DTI);
-}
-
-inline void* CDataMailAttachmentList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataMailAttachmentList::DTI)->memAlloc(sz, align, CDataMailAttachmentList::DTI.getID());
-}
-
 __attribute__((weak)) void CDataMailAttachmentList::operator delete(void* p_addr) {
     CDataMailAttachmentList::getAllocator()->memFree(p_addr);
 }
@@ -63,10 +50,6 @@ MtObject* CDataMailAttachmentList::MyDTI::newInstance() const {
 
 const MtDTI& CDataMailGPInfo::getDTI() const {
     return CDataMailGPInfo::DTI;
-}
-
-inline MtAllocator* CDataMailGPInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMailGPInfo::DTI);
 }
 
 void* CDataMailGPInfo::operator new(size_t sz, u32 align) {
@@ -89,10 +72,6 @@ const MtDTI& CDataMailInfo::getDTI() const {
     return CDataMailInfo::DTI;
 }
 
-inline MtAllocator* CDataMailInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMailInfo::DTI);
-}
-
 void* CDataMailInfo::operator new(size_t sz, u32 align) {
     return CDataMailInfo::getAllocator()->memAlloc(sz, align, CDataMailInfo::DTI.getID());
 }
@@ -111,10 +90,6 @@ MtObject* CDataMailInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataMailItemInfo::getDTI() const {
     return CDataMailItemInfo::DTI;
-}
-
-inline MtAllocator* CDataMailItemInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMailItemInfo::DTI);
 }
 
 void* CDataMailItemInfo::operator new(size_t sz, u32 align) {
@@ -137,10 +112,6 @@ const MtDTI& CDataMailLegendPawnInfo::getDTI() const {
     return CDataMailLegendPawnInfo::DTI;
 }
 
-inline MtAllocator* CDataMailLegendPawnInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMailLegendPawnInfo::DTI);
-}
-
 void* CDataMailLegendPawnInfo::operator new(size_t sz, u32 align) {
     return CDataMailLegendPawnInfo::getAllocator()->memAlloc(sz, align, CDataMailLegendPawnInfo::DTI.getID());
 }
@@ -161,10 +132,6 @@ const MtDTI& CDataMailOptionCourseInfo::getDTI() const {
     return CDataMailOptionCourseInfo::DTI;
 }
 
-inline MtAllocator* CDataMailOptionCourseInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMailOptionCourseInfo::DTI);
-}
-
 void* CDataMailOptionCourseInfo::operator new(size_t sz, u32 align) {
     return CDataMailOptionCourseInfo::getAllocator()->memAlloc(sz, align, CDataMailOptionCourseInfo::DTI.getID());
 }
@@ -183,14 +150,6 @@ MtObject* CDataMailOptionCourseInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataMailTextInfo::getDTI() const {
     return CDataMailTextInfo::DTI;
-}
-
-inline MtAllocator* CDataMailTextInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMailTextInfo::DTI);
-}
-
-inline void* CDataMailTextInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataMailTextInfo::DTI)->memAlloc(sz, align, CDataMailTextInfo::DTI.getID());
 }
 
 __attribute__((weak)) void CDataMailTextInfo::operator delete(void* p_addr) {

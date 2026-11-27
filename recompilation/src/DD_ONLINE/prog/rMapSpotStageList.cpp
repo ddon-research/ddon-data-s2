@@ -18,20 +18,6 @@ const MtDTI& rMapSpotStageList::getDTI() const {
     return rMapSpotStageList::DTI;
 }
 
-inline void* rMapSpotStageList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMapSpotStageList::DTI)->memAlloc(sz, align, rMapSpotStageList::DTI.getID());
-}
-
-inline void rMapSpotStageList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMapSpotStageList::DTI)->memFree(p_addr);
-}
-
-inline rMapSpotStageList::rMapSpotStageList() {
-    setAttribute(22u);
-    mpArray = nullptr;
-    mArrayNum = 0;
-}
-
 rMapSpotStageList::~rMapSpotStageList() {
     unsigned int i3 = 0;
     if (mArrayNum != 0) {
@@ -91,14 +77,6 @@ MtObject* rMapSpotStageList::MyDTI::newInstance() const {
 
 const MtDTI& rMapSpotStageList::Data::getDTI() const {
     return rMapSpotStageList::Data::DTI;
-}
-
-inline void* rMapSpotStageList::Data::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMapSpotStageList::Data::DTI)->memAlloc(sz, align, rMapSpotStageList::Data::DTI.getID());
-}
-
-inline void rMapSpotStageList::Data::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMapSpotStageList::Data::DTI)->memFree(p_addr);
 }
 
 void rMapSpotStageList::Data::createProperty(MtPropertyList& s) {

@@ -22,10 +22,6 @@ const MtDTI& uGUIServerUIBase::getDTI() const {
     return uGUIServerUIBase::DTI;
 }
 
-inline void uGUIServerUIBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIServerUIBase::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIServerUIBase::~uGUIServerUIBase() {
     DDON_STUB("uGUIServerUIBase::~uGUIServerUIBase")
     /* stub */
@@ -75,9 +71,47 @@ CDataUIListCommand* uGUIServerUIBase::getCommnadInfo(u32 commnadId) {
     return nullptr;
 }
 
-__attribute__((weak)) bool uGUIServerUIBase::startRequest(u32 serverUICommand) {
-    DDON_STUB("uGUIServerUIBase::startRequest")
-    return {};
+bool uGUIServerUIBase::startRequest(u32 serverUICommand) {
+    if (mpServerUIControl != nullptr) {
+        if ((mpServerUIControl->mState == 0) && !mIsRequestCommand) {
+            mIsRequestCommand = true;
+            if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIServerUIBase::requestUICommand);
+                mServerCommandStatusRsv = 502;
+                mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIServerUIBase::callbackUICommand);
+                mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            } else {
+                mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIServerUIBase::requestUICommand);
+                mServerCommandStatus = 502;
+                mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIServerUIBase::callbackUICommand);
+                mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                mServerRno = 0;
+                mServerResult = 0;
+            }
+            return true;
+        }
+        return false;
+    } else {
+        if (mIsRequestCommand) {
+            return false;
+        } else {
+            mIsRequestCommand = true;
+            if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIServerUIBase::requestUICommand);
+                mServerCommandStatusRsv = 502;
+                mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIServerUIBase::callbackUICommand);
+                mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            } else {
+                mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIServerUIBase::requestUICommand);
+                mServerCommandStatus = 502;
+                mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIServerUIBase::callbackUICommand);
+                mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                mServerRno = 0;
+                mServerResult = 0;
+            }
+            return true;
+        }
+    }
 }
 
 bool uGUIServerUIBase::requestUICommand() {

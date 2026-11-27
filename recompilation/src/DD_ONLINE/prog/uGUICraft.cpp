@@ -210,10 +210,6 @@ const MtDTI& uGUICraft::getDTI() const {
     return uGUICraft::DTI;
 }
 
-inline void uGUICraft::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICraft::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUICraft::~uGUICraft() {
     DDON_STUB("uGUICraft::~uGUICraft")
     /* stub */
@@ -636,10 +632,10 @@ void uGUICraft::updateCharaSelect() {
                 if (select != -1) {
                     if (static_cast<unsigned int>(select - 1) < static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mLength) {
                         if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mpArray[static_cast<unsigned int>(select - 1)] != nullptr) {
-                            unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mpArray[static_cast<unsigned int>(select - 1)]) + 8);
-                            if (t0 != mCompPawnId) {
-                                mCompPawnId = t0;
-                                if (t0 == cContextInterface::getPawnId(&mPawnContext)) {
+                            s32 t0 = static_cast<cPawnListParam*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mpArray[static_cast<unsigned int>(select - 1)])->m_nPawnId;
+                            if (t0 != static_cast<int>(mCompPawnId)) {
+                                mCompPawnId = static_cast<u32>(t0);
+                                if (t0 == static_cast<int>(cContextInterface::getPawnId(&mPawnContext))) {
                                     setFlowId(mReturnFlowId);
                                 } else {
                                     setFlowId(51u);
@@ -1513,13 +1509,6 @@ __attribute__((weak)) void uGUICraft::setMakeOrderPointerPos() {
     /* stub */
 }
 
-inline void uGUICraft::resetItemDetailPage() {
-    if (mpDetail == nullptr) {
-        return;
-    }
-    mpDetail->resetPageType();
-}
-
 __attribute__((weak)) void uGUICraft::setupItemDetail(bool bDraw, bool bCraft, cItemParam* pParam, rItemList::rItemParam* pItemParam) {
     DDON_STUB("uGUICraft::setupItemDetail")
     /* stub */
@@ -2198,10 +2187,6 @@ const MtDTI& uGUICraft::cListItem::getDTI() const {
     return uGUICraft::cListItem::DTI;
 }
 
-inline void uGUICraft::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICraft::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUICraft::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICraft::cListItem::MyDTI uGUICraft::cListItem::DTI("uGUICraft::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 656ul, 0u, 0u);
@@ -2213,10 +2198,6 @@ __attribute__((weak)) MtObject* uGUICraft::cListItem::MyDTI::newInstance() const
 
 const MtDTI& uGUICraft::cAddListItem::getDTI() const {
     return uGUICraft::cAddListItem::DTI;
-}
-
-inline void uGUICraft::cAddListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICraft::cAddListItem::DTI)->memFree(p_addr);
 }
 
 inline uGUICraft::cAddListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2232,10 +2213,6 @@ const MtDTI& uGUICraft::cListInfo::getDTI() const {
     return uGUICraft::cListInfo::DTI;
 }
 
-inline void uGUICraft::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICraft::cListInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUICraft::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICraft::cListInfo::MyDTI uGUICraft::cListInfo::DTI("uGUICraft::cListInfo", &::uGUIBase::cScrollListInfoBase::DTI, 64ul, 0u, 0u);
@@ -2247,10 +2224,6 @@ __attribute__((weak)) MtObject* uGUICraft::cListInfo::MyDTI::newInstance() const
 
 const MtDTI& uGUICraft::cCreateRecipeSort::getDTI() const {
     return uGUICraft::cCreateRecipeSort::DTI;
-}
-
-inline void uGUICraft::cCreateRecipeSort::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICraft::cCreateRecipeSort::DTI)->memFree(p_addr);
 }
 
 inline uGUICraft::cCreateRecipeSort::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

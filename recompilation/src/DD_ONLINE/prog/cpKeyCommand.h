@@ -228,3 +228,15 @@ inline void cpKeyCommand::clearAttackLockOnTarget() {
         this->mAttackLockOnTarget.mpPtr = nullptr;
     }
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpKeyCommand::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpKeyCommand::DTI);
+}
+
+inline void cpKeyCommand::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpKeyCommand::DTI)->memFree(p_addr);
+}

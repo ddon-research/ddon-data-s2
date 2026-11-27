@@ -168,3 +168,70 @@ inline void rStartPos::Info::setOfsAng(f32 ang, u32 idx) {
 inline u32 rStartPos::Info::getOfsAngNum() {
     return 7;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rStartPos::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStartPos::DTI)->memAlloc(sz, align, ::rStartPos::DTI.::MtDTI::getID());
+}
+
+inline void rStartPos::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStartPos::DTI)->memFree(p_addr);
+}
+
+inline rStartPos::rStartPos() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rStartPos::Info::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStartPos::Info::DTI)->memAlloc(sz, align, ::rStartPos::Info::DTI.::MtDTI::getID());
+}
+
+inline void rStartPos::Info::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStartPos::Info::DTI)->memFree(p_addr);
+}
+
+inline rStartPos::Info::Info() {
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mAng = 0.0f;
+    this->mOfsPos[0].x = ::MtVector3::Zero.x;
+    this->mOfsPos[0].y = ::MtVector3::Zero.y;
+    this->mOfsPos[0].z = ::MtVector3::Zero.z;
+    this->mOfsPos[0].pad_ = 0.0f;
+    this->mOfsAng[0] = 0.0f;
+    this->mOfsPos[1].x = ::MtVector3::Zero.x;
+    this->mOfsPos[1].y = ::MtVector3::Zero.y;
+    this->mOfsPos[1].z = ::MtVector3::Zero.z;
+    this->mOfsPos[1].pad_ = 0.0f;
+    this->mOfsAng[1] = 0.0f;
+    this->mOfsPos[2].x = ::MtVector3::Zero.x;
+    this->mOfsPos[2].y = ::MtVector3::Zero.y;
+    this->mOfsPos[2].z = ::MtVector3::Zero.z;
+    this->mOfsPos[2].pad_ = 0.0f;
+    this->mOfsAng[2] = 0.0f;
+    this->mOfsPos[3].x = ::MtVector3::Zero.x;
+    this->mOfsPos[3].y = ::MtVector3::Zero.y;
+    this->mOfsPos[3].z = ::MtVector3::Zero.z;
+    this->mOfsPos[3].pad_ = 0.0f;
+    this->mOfsAng[3] = 0.0f;
+    this->mOfsPos[4].x = ::MtVector3::Zero.x;
+    this->mOfsPos[4].y = ::MtVector3::Zero.y;
+    this->mOfsPos[4].z = ::MtVector3::Zero.z;
+    this->mOfsPos[4].pad_ = 0.0f;
+    this->mOfsAng[4] = 0.0f;
+    this->mOfsPos[5].x = ::MtVector3::Zero.x;
+    this->mOfsPos[5].y = ::MtVector3::Zero.y;
+    this->mOfsPos[5].z = ::MtVector3::Zero.z;
+    this->mOfsPos[5].pad_ = 0.0f;
+    this->mOfsAng[5] = 0.0f;
+    this->mOfsPos[6].x = ::MtVector3::Zero.x;
+    this->mOfsPos[6].y = ::MtVector3::Zero.y;
+    this->mOfsPos[6].z = ::MtVector3::Zero.z;
+    this->mOfsPos[6].pad_ = 0.0f;
+    this->mOfsAng[6] = 0.0f;
+}

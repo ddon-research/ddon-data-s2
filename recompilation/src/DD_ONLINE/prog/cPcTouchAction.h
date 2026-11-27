@@ -72,3 +72,15 @@ public:
 inline void* cPcTouchAction::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cPcTouchAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPcTouchAction::DTI)->memAlloc(sz, align, ::cPcTouchAction::DTI.::MtDTI::getID());
+}
+
+inline void cPcTouchAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPcTouchAction::DTI)->memFree(p_addr);
+}

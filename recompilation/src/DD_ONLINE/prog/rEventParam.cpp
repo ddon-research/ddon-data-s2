@@ -24,10 +24,6 @@ const MtDTI& cEventParam::getDTI() const {
     return cEventParam::DTI;
 }
 
-inline void cEventParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEventParam::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) cEventParam::~cEventParam() {
     this->mOmList.deleteAll(true);
 }
@@ -69,14 +65,6 @@ const MtDTI& cEventParam::cOmList::getDTI() const {
     return cEventParam::cOmList::DTI;
 }
 
-inline void* cEventParam::cOmList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEventParam::cOmList::DTI)->memAlloc(sz, align, cEventParam::cOmList::DTI.getID());
-}
-
-inline void cEventParam::cOmList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEventParam::cOmList::DTI)->memFree(p_addr);
-}
-
 void cEventParam::cOmList::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mOmId", &mOmId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mCtrlType", &mCtrlType, 0u, 0u);
@@ -95,14 +83,6 @@ MtObject* cEventParam::cOmList::MyDTI::newInstance() const {
 
 const MtDTI& rEventParam::getDTI() const {
     return rEventParam::DTI;
-}
-
-inline void* rEventParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEventParam::DTI)->memAlloc(sz, align, rEventParam::DTI.getID());
-}
-
-inline void rEventParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEventParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rEventParam::loadData(MtDataReader& in, cEventParam* pData) {

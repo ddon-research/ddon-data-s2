@@ -18,6 +18,7 @@ class MtPropertyList;
 class MtString;
 class MtVector3;
 class MtVector4;
+class uGUIBase;
 
 // Declarations
 namespace nDDOUtility { template <typename T, unsigned int N> class cArray; }
@@ -662,6 +663,7 @@ namespace nDDOUtility {
     template <typename T>
     class cNoObjectArray
     {
+        friend class ::uGUIBase;
     public:
         cNoObjectArray();
         virtual ~cNoObjectArray();
@@ -793,6 +795,11 @@ template <> inline nDDOUtility::cBitSet<4>::cBitSet() {
 }
 
 template <> inline nDDOUtility::cBitSet<64>::cBitSet() {
+    mBit[0] = 0u;
+    mBit[1] = 0u;
+}
+
+template <> inline void nDDOUtility::cBitSet<64>::clear() {
     mBit[0] = 0u;
     mBit[1] = 0u;
 }

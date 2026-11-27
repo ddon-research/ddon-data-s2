@@ -3113,3 +3113,330 @@ inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::operator new(
 inline void* cDDMaterialCtrl::cShaderDataMaterialOmBlink::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/uBaseModel.h"
+#include "uDDOModel.h"
+
+inline MtAllocator* cDDMaterialCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::DTI);
+}
+
+inline void cDDMaterialCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataDamage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDamage::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataDamage::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataDamage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDamage::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderData::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderData::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderData::DTI)->memFree(p_addr);
+}
+
+inline uDDOModel* cDDMaterialCtrl::cShaderData::getOwnerDDO() {
+    return static_cast<uDDOModel*>(this->mpOwner);
+}
+
+inline void cDDMaterialCtrl::cShaderDataStatusAilments::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataStatusAilments::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataOutline::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataOutline::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataEmission::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataEmission::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataEmission::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataEmission::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataEmission::DTI)->memFree(p_addr);
+}
+
+inline cDDMaterialCtrl::cShaderDataEmission::cShaderDataEmission() {
+    this->mEmissionColor.x = ::MtVector3::Zero.x;
+    this->mEmissionColor.y = ::MtVector3::Zero.y;
+    this->mEmissionColor.z = ::MtVector3::Zero.z;
+    this->mEmissionColor.pad_ = 0.0f;
+    this->mEmissionBlendColor.x = ::MtVector3::Zero.x;
+    this->mEmissionBlendColor.y = ::MtVector3::Zero.y;
+    this->mEmissionBlendColor.z = ::MtVector3::Zero.z;
+    this->mEmissionBlendColor.pad_ = 0.0f;
+    this->mEmissionBlendFactor = 0.0f;
+    this->mEmissionIntensity = 1.0f;
+    this->mDiffuseColor.x = ::MtVector3::Zero.x;
+    this->mDiffuseColor.y = ::MtVector3::Zero.y;
+    this->mDiffuseColor.z = ::MtVector3::Zero.z;
+    this->mDiffuseColor.pad_ = 0.0f;
+    this->mDiffuseBlendColor.x = ::MtVector3::Zero.x;
+    this->mDiffuseBlendColor.y = ::MtVector3::Zero.y;
+    this->mDiffuseBlendColor.z = ::MtVector3::Zero.z;
+    this->mDiffuseBlendColor.pad_ = 0.0f;
+    this->mDiffuseBlendFactor = 0.0f;
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterial::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterial::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataMaterial::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterial::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterial::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataAnimation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataAnimation::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataAnimationToDefault::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataAnimationToDefault::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialOldData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialOldData::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataMaterialOldData::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialOldData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialOldData::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataDamageDrawOn::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataDamageDrawOn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataDead::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDead::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataDead::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataDead::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataDead::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataBloodStain::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataBloodStain::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataBloodStain::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataBloodStain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataBloodStain::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataHakuryuStone::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataHakuryuStone::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataHakuryuStone::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataHakuryuStone::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataHakuryuStone::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataFireDamage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataFireDamage::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataFireDamage::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataFireDamage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataFireDamage::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataFire::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataFire::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataFreeze::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataFreeze::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataGeneral::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataGeneral::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataWetOil::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataWetOil::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataStone::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataStone::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataGold::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataGold::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataErosion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataErosion::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataOutlineOn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataOutlineOn::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataEmissionEye::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataEmissionEye::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataEmissionEye::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataEmissionEye::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataEmissionEye::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialColor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialColor::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialDead::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialDead::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataMaterialDead::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialDead::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialDead::DTI)->memFree(p_addr);
+}
+
+inline cDDMaterialCtrl::cShaderDataMaterialDead::cShaderDataMaterialDead() {
+    this->mSubColor.x = ::MtVector4::Zero.x;
+    this->mSubColor.y = ::MtVector4::Zero.y;
+    this->mSubColor.z = ::MtVector4::Zero.z;
+    this->mSubColor.pad_ = 0.0f;
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantFire::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantFire::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchant::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchant::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantIce::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantIce::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantDark::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantDark::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataWaterColor::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataWaterColor::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataWaterColor::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataWaterColor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataWaterColor::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataConstantMaterialColor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataConstantMaterialColor::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataSdl::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataSdlData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataSdlData::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::DTI)->memFree(p_addr);
+}
+
+inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI)->memAlloc(sz, align, ::cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI.::MtDTI::getID());
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI)->memFree(p_addr);
+}
+
+inline cDDMaterialCtrl::cShaderDataMaterialElementEnemy::cShaderDataMaterialElementEnemy() {
+    this->mEmissionColor.x = ::MtVector3::Zero.x;
+    this->mEmissionColor.y = ::MtVector3::Zero.y;
+    this->mEmissionColor.z = ::MtVector3::Zero.z;
+    this->mEmissionColor.pad_ = 0.0f;
+    this->mStartEmissionIntensity = 10.0f;
+    this->mEndEmissionIntensity = 40.0f;
+    this->mPastFrame = 0.0f;
+    this->mAnimationFrame = 20.0f;
+    this->mInterpolateFrame = 15.0f;
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::DTI)->memFree(p_addr);
+}
+
+inline void cDDMaterialCtrl::cShaderDataMaterialOmBlink::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDDMaterialCtrl::cShaderDataMaterialOmBlink::DTI)->memFree(p_addr);
+}

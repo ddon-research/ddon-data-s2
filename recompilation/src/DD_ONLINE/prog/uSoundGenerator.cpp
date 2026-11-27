@@ -85,14 +85,6 @@ const MtDTI& cSoundGeneratorLayoutInfo::getDTI() const {
     return cSoundGeneratorLayoutInfo::DTI;
 }
 
-inline void* cSoundGeneratorLayoutInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSoundGeneratorLayoutInfo::DTI)->memAlloc(sz, align, cSoundGeneratorLayoutInfo::DTI.getID());
-}
-
-inline void cSoundGeneratorLayoutInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundGeneratorLayoutInfo::DTI)->memFree(p_addr);
-}
-
 cSoundGeneratorLayoutInfo::~cSoundGeneratorLayoutInfo() {
 }
 
@@ -136,14 +128,6 @@ const MtDTI& cSoundGeneratorListener::getDTI() const {
     return cSoundGeneratorListener::DTI;
 }
 
-inline void* cSoundGeneratorListener::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSoundGeneratorListener::DTI)->memAlloc(sz, align, cSoundGeneratorListener::DTI.getID());
-}
-
-inline void cSoundGeneratorListener::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundGeneratorListener::DTI)->memFree(p_addr);
-}
-
 cSoundGeneratorListener::~cSoundGeneratorListener() {
 }
 
@@ -183,10 +167,6 @@ const MtDTI& nSoundGenerator::cBaseContents::getDTI() const {
     return nSoundGenerator::cBaseContents::DTI;
 }
 
-inline void nSoundGenerator::cBaseContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cBaseContents::DTI)->memFree(p_addr);
-}
-
 nSoundGenerator::cBaseContents::~cBaseContents() {
 }
 
@@ -215,17 +195,6 @@ const MtDTI& nSoundGenerator::cCategory::getDTI() const {
     return nSoundGenerator::cCategory::DTI;
 }
 
-inline void nSoundGenerator::cCategory::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cCategory::DTI)->memFree(p_addr);
-}
-
-inline nSoundGenerator::cCategory::cCategory() {
-    setCategoryName("SoundGenerator");
-    setExtendObjectDTI(::cSoundGeneratorLayoutInfo::DTI);
-    setBroadPhaseSearchMode(2u);
-    setAttribute(0x10000u, true);
-}
-
 nSoundGenerator::cCategory::~cCategory() {
 }
 
@@ -247,10 +216,6 @@ MtObject* nSoundGenerator::cCategory::MyDTI::newInstance() const {
 
 const MtDTI& nSoundGenerator::cFreeWorkContents::getDTI() const {
     return nSoundGenerator::cFreeWorkContents::DTI;
-}
-
-inline void nSoundGenerator::cFreeWorkContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cFreeWorkContents::DTI)->memFree(p_addr);
 }
 
 nSoundGenerator::cFreeWorkContents::~cFreeWorkContents() {
@@ -282,10 +247,6 @@ __attribute__((weak)) MtObject* nSoundGenerator::cFreeWorkContents::MyDTI::newIn
 
 const MtDTI& nSoundGenerator::cSeContents::getDTI() const {
     return nSoundGenerator::cSeContents::DTI;
-}
-
-inline void nSoundGenerator::cSeContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cSeContents::DTI)->memFree(p_addr);
 }
 
 nSoundGenerator::cSeContents::~cSeContents() {
@@ -322,10 +283,6 @@ const MtDTI& nSoundGenerator::cSeqSeContents::getDTI() const {
     return nSoundGenerator::cSeqSeContents::DTI;
 }
 
-inline void nSoundGenerator::cSeqSeContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cSeqSeContents::DTI)->memFree(p_addr);
-}
-
 nSoundGenerator::cSeqSeContents::~cSeqSeContents() {
     if (mpSequenceSe == nullptr) {
         return;
@@ -357,10 +314,6 @@ __attribute__((weak)) MtObject* nSoundGenerator::cSeqSeContents::MyDTI::newInsta
 
 const MtDTI& nSoundGenerator::cStreamContents::getDTI() const {
     return nSoundGenerator::cStreamContents::DTI;
-}
-
-inline void nSoundGenerator::cStreamContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cStreamContents::DTI)->memFree(p_addr);
 }
 
 nSoundGenerator::cStreamContents::~cStreamContents() {
@@ -398,16 +351,8 @@ const MtDTI& uSoundGenerator::getDTI() const {
     return uSoundGenerator::DTI;
 }
 
-inline MtAllocator* uSoundGenerator::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uSoundGenerator::DTI);
-}
-
 void* uSoundGenerator::operator new(size_t sz, u32 align) {
     return uSoundGenerator::getAllocator()->memAlloc(sz, align, uSoundGenerator::DTI.getID());
-}
-
-inline void uSoundGenerator::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundGenerator::DTI)->memFree(p_addr);
 }
 
 uSoundGenerator::uSoundGenerator() {
@@ -467,8 +412,63 @@ __attribute__((weak)) void uSoundGenerator::generateMain() {
 }
 
 __attribute__((weak)) void uSoundGenerator::allStopNowRequestCommon(uSoundGenerator::cGeneratorGroupManager& TargetGroupManager, u32 PlayLayoutUniqueID) {
-    DDON_STUB("uSoundGenerator::allStopNowRequestCommon")
-    /* stub */
+    cZoneLayout* pZone = getZoneLayout();
+    if (pZone == nullptr) {
+        return;
+    }
+    nZone::cLayoutElement* pLayout = pZone->getLayoutElementFromUniqueID(PlayLayoutUniqueID);
+    if (pLayout == nullptr) {
+        return;
+    }
+    cSoundGeneratorLayoutInfo* pLayoutInfo = static_cast<cSoundGeneratorLayoutInfo*>(pLayout->getExtendObj());
+    if (pLayoutInfo == nullptr) {
+        return;
+    }
+    
+    u32 thisId = static_cast<u32>(reinterpret_cast<uintptr>(&TargetGroupManager));
+    if (TargetGroupManager.mpResourceGroupManager->mGroupID == rZone::INVALID_GROUP_ID) {
+        thisId = static_cast<u32>(reinterpret_cast<uintptr>(pLayout));
+    }
+    
+    const u32 ContentsIndexSE = pLayoutInfo->getContentsIndex(1u);
+    nSoundGenerator::cSeContents* pSeContents = static_cast<nSoundGenerator::cSeContents*>(pLayout->getContents(ContentsIndexSE));
+    if (pSeContents != nullptr && *reinterpret_cast<rSoundRequest**>(reinterpret_cast<char*>(pSeContents) + 0x20) != nullptr) {
+        u32 t4 = *reinterpret_cast<u32*>(reinterpret_cast<char*>(pSeContents) + 0x1c);
+        static_cast<sSoundExt*>(sSound::getInstance())->keyOffSe(
+            *reinterpret_cast<rSoundRequest**>(reinterpret_cast<char*>(pSeContents) + 0x20), t4, thisId, sSoundExt::SE_SEARCH_KEY_ALL);
+    }
+    
+    const u32 ContentsIndexStream = pLayoutInfo->getContentsIndex(2u);
+    nSoundGenerator::cStreamContents* pStreamContents = static_cast<nSoundGenerator::cStreamContents*>(pLayout->getContents(ContentsIndexStream));
+    if (pStreamContents != nullptr && *reinterpret_cast<rSoundStreamRequest**>(reinterpret_cast<char*>(pStreamContents) + 0x20) != nullptr) {
+        u32 t5 = *reinterpret_cast<u32*>(reinterpret_cast<char*>(pStreamContents) + 0x1c);
+        static_cast<sSoundExt*>(sSound::getInstance())->stopStream(
+            *reinterpret_cast<rSoundStreamRequest**>(reinterpret_cast<char*>(pStreamContents) + 0x20), t5, thisId, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+    }
+    
+    if (nSoundZone::getContentsFromLayout(pLayout, 0u) == nullptr) {
+        return;
+    }
+    auto* t1 = static_cast<cGeneratorGroupManager*>(getGroupManagerFromLayout(pLayout));
+    if (t1 == nullptr) {
+        return;
+    }
+    auto* t3 = *reinterpret_cast<cGeneratorGroupManager::cSoundPlayInfomation**>(reinterpret_cast<char*>(t1) + 0x38);
+    uSoundSequenceSe** t2;
+    if (t1->mpResourceGroupManager->mGroupID != rZone::INVALID_GROUP_ID) {
+        if (t3 == nullptr) {
+            return;
+        }
+        t2 = reinterpret_cast<uSoundSequenceSe**>(reinterpret_cast<char*>(t3) + 0x28);
+    } else {
+        if (t3 == nullptr) {
+            return;
+        }
+        t2 = reinterpret_cast<uSoundSequenceSe**>(reinterpret_cast<char*>(t3 + *reinterpret_cast<u32*>(reinterpret_cast<char*>(pLayout) + 0x34)) + 0x28);
+    }
+    if (*t2 != nullptr) {
+        *reinterpret_cast<s8*>(reinterpret_cast<char*>(*t2) + 0x48) = uSoundSequenceSe::STATE_STOP;
+    }
 }
 
 __attribute__((weak)) void uSoundGenerator::generate(cZoneLayout& MyZoneLayout, uSoundGenerator::cGeneratorGroupManager& TargetGroupManager, nZone::cLayoutElement& TargetLayoutElement, const MtVector3& pos) {
@@ -507,14 +507,6 @@ __attribute__((weak)) MtObject* uSoundGenerator::MyDTI::newInstance() const {
 
 const MtDTI& uSoundGenerator::cGeneratorGroupManager::getDTI() const {
     return uSoundGenerator::cGeneratorGroupManager::DTI;
-}
-
-inline void* uSoundGenerator::cGeneratorGroupManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::DTI)->memAlloc(sz, align, uSoundGenerator::cGeneratorGroupManager::DTI.getID());
-}
-
-inline void uSoundGenerator::cGeneratorGroupManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::DTI)->memFree(p_addr);
 }
 
 uSoundGenerator::cGeneratorGroupManager::~cGeneratorGroupManager() {
@@ -574,20 +566,6 @@ MtObject* uSoundGenerator::cGeneratorGroupManager::MyDTI::newInstance() const {
 
 const MtDTI& uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::getDTI() const {
     return uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI;
-}
-
-inline void* uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI)->memAlloc(sz, align, uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI.getID());
-}
-
-inline void uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI)->memFree(p_addr);
-}
-
-inline uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::cSoundPlayInfomation() {
-    mRequestPos = MtVector3::Zero;
-    mLayoutUniqueId = -1;
-    mpUSequenceSe = nullptr;
 }
 
 uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::~cSoundPlayInfomation() {

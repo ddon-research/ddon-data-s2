@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cCharParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -11,14 +9,6 @@
 
 const MtDTI& cCharParam::getDTI() const {
     return cCharParam::DTI;
-}
-
-inline void* cCharParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCharParam::DTI)->memAlloc(sz, align, cCharParam::DTI.getID());
-}
-
-inline void cCharParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharParam::DTI)->memFree(p_addr);
 }
 
 cCharParam::cCharParam() {

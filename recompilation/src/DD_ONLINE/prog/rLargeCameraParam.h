@@ -146,3 +146,19 @@ inline void cLargeCameraParam::operator delete[](void* p_addr) {
 inline void* cLargeCameraParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cLargeCameraParam::DTI)->memAlloc(sz, align, ::cLargeCameraParam::DTI.::MtDTI::getID());
 }
+
+inline void* cLargeCameraParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cLargeCameraParam::DTI)->memAlloc(sz, align, ::cLargeCameraParam::DTI.::MtDTI::getID());
+}
+
+inline void cLargeCameraParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLargeCameraParam::DTI)->memFree(p_addr);
+}
+
+inline void* rLargeCameraParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLargeCameraParam::DTI)->memAlloc(sz, align, ::rLargeCameraParam::DTI.::MtDTI::getID());
+}
+
+inline void rLargeCameraParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLargeCameraParam::DTI)->memFree(p_addr);
+}

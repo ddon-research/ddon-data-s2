@@ -25,23 +25,6 @@ const MtDTI& rEditStageParam::getDTI() const {
     return rEditStageParam::DTI;
 }
 
-inline void* rEditStageParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEditStageParam::DTI)->memAlloc(sz, align, rEditStageParam::DTI.getID());
-}
-
-inline void rEditStageParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEditStageParam::DTI)->memFree(p_addr);
-}
-
-inline rEditStageParam::rEditStageParam() {
-    setAttribute(18u);
-    this->cResource::clear();
-    mpArrayInfo = nullptr;
-    mArrayInfoNum = 0;
-    mpArrayList = nullptr;
-    mArrayListNum = 0;
-}
-
 rEditStageParam::~rEditStageParam() {
     destruct();
 }
@@ -203,10 +186,6 @@ const MtDTI& rEditStageParam::Info::getDTI() const {
     return rEditStageParam::Info::DTI;
 }
 
-inline void rEditStageParam::Info::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEditStageParam::Info::DTI)->memFree(p_addr);
-}
-
 void rEditStageParam::Info::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mModelSdl", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::getModelName), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::setModelName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "mFilterSdl", reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::getFilterName), reinterpret_cast<MT_MFUNC>(&::rEditStageParam::Info::setFilterName), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
@@ -358,14 +337,6 @@ const MtDTI& rEditStageParam::Info::WeatherData::getDTI() const {
     return rEditStageParam::Info::WeatherData::DTI;
 }
 
-inline void* rEditStageParam::Info::WeatherData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEditStageParam::Info::WeatherData::DTI)->memAlloc(sz, align, rEditStageParam::Info::WeatherData::DTI.getID());
-}
-
-inline void rEditStageParam::Info::WeatherData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEditStageParam::Info::WeatherData::DTI)->memFree(p_addr);
-}
-
 void rEditStageParam::Info::WeatherData::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mWeatherID", &mWeatherID, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mHour", &mHour, 0u, 0u);
@@ -386,10 +357,6 @@ MtObject* rEditStageParam::Info::WeatherData::MyDTI::newInstance() const {
 
 const MtDTI& rEditStageParam::List::getDTI() const {
     return rEditStageParam::List::DTI;
-}
-
-inline void rEditStageParam::List::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEditStageParam::List::DTI)->memFree(p_addr);
 }
 
 void rEditStageParam::List::createProperty(MtPropertyList& s) {

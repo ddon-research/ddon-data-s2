@@ -126,3 +126,19 @@ inline void cJointOrder::operator delete[](void* p_addr) {
 inline void* cJointOrder::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memAlloc(sz, align, ::cJointOrder::DTI.::MtDTI::getID());
 }
+
+inline void* cJointOrder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memAlloc(sz, align, ::cJointOrder::DTI.::MtDTI::getID());
+}
+
+inline void cJointOrder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cJointOrder::DTI)->memFree(p_addr);
+}
+
+inline void* rJointOrder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rJointOrder::DTI)->memAlloc(sz, align, ::rJointOrder::DTI.::MtDTI::getID());
+}
+
+inline void rJointOrder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rJointOrder::DTI)->memFree(p_addr);
+}

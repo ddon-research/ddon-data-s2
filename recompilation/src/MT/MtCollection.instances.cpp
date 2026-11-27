@@ -4,9 +4,12 @@
 #include "MtCollection.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Achievement.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/AreaMaster.h"
+#include "../DD_ONLINE/prog/Protocol/PacketData/Bazaar.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/BoxGacha.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Character.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/CharacterCommon.h"
+#include "../DD_ONLINE/prog/Protocol/PacketData/CharacterEdit.h"
+#include "../DD_ONLINE/prog/Protocol/PacketData/CharacterItem.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/CharacterParam.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Cheat.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Clan.h"
@@ -27,6 +30,7 @@
 #include "../DD_ONLINE/prog/Protocol/PacketData/Loading.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Lobby.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Mail.h"
+#include "../DD_ONLINE/prog/Protocol/PacketData/Message.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
@@ -37,6 +41,7 @@
 #include "../DD_ONLINE/prog/Protocol/PacketData/Party.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Pawn.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Quest.h"
+#include "../DD_ONLINE/prog/Protocol/PacketData/RaidBoss.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Ranking.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/ScreenShot.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Server.h"
@@ -49,9 +54,9 @@
 #include "../DD_ONLINE/prog/Protocol/PacketData/Warp.h"
 #include "../DD_ONLINE/prog/Protocol/PacketData/Weather.h"
 #include "../DD_ONLINE/prog/cAreaReleaseManager.h"
-#include "../XFramework/cCaplinkDataDef.h"
 #include "../DD_ONLINE/prog/cControl.h"
 #include "../DD_ONLINE/prog/cCraftRecipe.h"
+#include "../DD_ONLINE/prog/cCycle04QuestManager.h"
 #include "../DD_ONLINE/prog/cCycleQuestManagerBase.h"
 #include "../DD_ONLINE/prog/cCycleQuestSubCategoryManager.h"
 #include "../DD_ONLINE/prog/cDDMaterialCtrl.h"
@@ -65,8 +70,10 @@
 #include "../DD_ONLINE/prog/cNetGameServer.h"
 #include "../DD_ONLINE/prog/cPawnQuestManager.h"
 #include "../DD_ONLINE/prog/cPlayPointInfo.h"
+#include "../DD_ONLINE/prog/cQuestMarkerManager.h"
 #include "../DD_ONLINE/prog/cQuestPhaseEvent.h"
 #include "../DD_ONLINE/prog/cQuestResourceLoadManager.h"
+#include "../DD_ONLINE/prog/cQuestResourceManager.h"
 #include "../DD_ONLINE/prog/cQuestTask.h"
 #include "../DD_ONLINE/prog/cQuestTaskParam.h"
 #include "../DD_ONLINE/prog/cStageCtrl.h"
@@ -77,6 +84,7 @@
 #include "../DD_ONLINE/prog/cpLockOn.h"
 #include "../DD_ONLINE/prog/cpReaction.h"
 #include "../DD_ONLINE/prog/cpShlShotCtrl.h"
+#include "../DD_ONLINE/prog/cpWaypoint.h"
 #include "../DD_ONLINE/prog/nFurnitureMenuFlow.h"
 #include "../DD_ONLINE/prog/nMarker.h"
 #include "../DD_ONLINE/prog/nNet.h"
@@ -103,6 +111,7 @@
 #include "../DD_ONLINE/prog/rMsgSet.h"
 #include "../DD_ONLINE/prog/rNpcLedgerList.h"
 #include "../DD_ONLINE/prog/rOmKey.h"
+#include "../DD_ONLINE/prog/rOmLoadList.h"
 #include "../DD_ONLINE/prog/rPawnQuestTalk.h"
 #include "../DD_ONLINE/prog/rPriorityThink.h"
 #include "../DD_ONLINE/prog/rQuestMarkerInfo.h"
@@ -141,6 +150,7 @@
 #include "../DD_ONLINE/prog/sObjCollision.h"
 #include "../DD_ONLINE/prog/sOmManager.h"
 #include "../DD_ONLINE/prog/sQuestManagerExt.h"
+#include "../DD_ONLINE/prog/sReward.h"
 #include "../DD_ONLINE/prog/sSetManager.h"
 #include "../DD_ONLINE/prog/sShlManager.h"
 #include "../DD_ONLINE/prog/sSoundExt.h"
@@ -148,16 +158,18 @@
 #include "../DD_ONLINE/prog/sTalkManager.h"
 #include "../DD_ONLINE/prog/sTutorialGuide.h"
 #include "../DD_ONLINE/prog/sUnitManager.h"
-#include "../DD_ONLINE/prog/uDDOModel.h"
 #include "../DD_ONLINE/prog/uGUIBase.h"
+#include "../DD_ONLINE/prog/uGUIBazaarItemSearch.h"
 #include "../DD_ONLINE/prog/uGUICaplinkFriendList.h"
 #include "../DD_ONLINE/prog/uGUICaplinkMenuBase.h"
 #include "../DD_ONLINE/prog/uGUICharaEditPartsWrap.h"
 #include "../DD_ONLINE/prog/uGUICharacterEdit.h"
+#include "../DD_ONLINE/prog/uGUICharacterSelect.h"
 #include "../DD_ONLINE/prog/uGUICommunityList.h"
 #include "../DD_ONLINE/prog/uGUICredit.h"
 #include "../DD_ONLINE/prog/uGUIEntryBoard.h"
 #include "../DD_ONLINE/prog/uGUIEntryBoardInfo.h"
+#include "../DD_ONLINE/prog/uGUIFreeGroupChat.h"
 #include "../DD_ONLINE/prog/uGUIGiveAndTake.h"
 #include "../DD_ONLINE/prog/uGUIItem01.h"
 #include "../DD_ONLINE/prog/uGUIJobSelect.h"
@@ -173,8 +185,10 @@
 #include "../DD_ONLINE/prog/uGUIPopDetail01.h"
 #include "../DD_ONLINE/prog/uGUIPopFilter.h"
 #include "../DD_ONLINE/prog/uGUIPopListDialog.h"
+#include "../DD_ONLINE/prog/uGUIPopPartyList.h"
 #include "../DD_ONLINE/prog/uGUIQuestDelivery.h"
 #include "../DD_ONLINE/prog/uGUIRimWarp.h"
+#include "../DD_ONLINE/prog/uGUIServerSelect.h"
 #include "../DD_ONLINE/prog/uGUISkill.h"
 #include "../DD_ONLINE/prog/uGUISystemMsg.h"
 #include "../DD_ONLINE/prog/uGUIsMenuBase.h"
@@ -189,9 +203,13 @@
 #define DDON_STUB(name)
 #endif
 
+template MtTypedArray<CDataAbilityLevelBaseParam>::~MtTypedArray();
+
 template MtTypedArray<CDataAbilityLevelParam>::~MtTypedArray();
 
 template MtTypedArray<CDataAbilityParam>::~MtTypedArray();
+
+template MtTypedArray<CDataAchieveCategoryStatus>::~MtTypedArray();
 
 template MtTypedArray<CDataAchieveRewardCommon>::~MtTypedArray();
 
@@ -216,6 +234,14 @@ template MtTypedArray<CDataAreaRankUpQuestInfo>::~MtTypedArray();
 template MtTypedArray<CDataAreaSpotSet>::~MtTypedArray();
 
 template MtTypedArray<CDataAreaWarpPoint>::~MtTypedArray();
+
+template MtTypedArray<CDataBazaarCharacterInfo>::~MtTypedArray();
+
+template MtTypedArray<CDataBazaarItemHistoryInfo>::~MtTypedArray();
+
+template MtTypedArray<CDataBazaarItemInfo>::~MtTypedArray();
+
+template MtTypedArray<CDataBazaarItemNumOfExhibitionInfo>::~MtTypedArray();
 
 template MtTypedArray<CDataBorderRewardRecord>::~MtTypedArray();
 
@@ -242,6 +268,8 @@ template MtTypedArray<CDataCharacterListInfo>::~MtTypedArray();
 template MtTypedArray<CDataCharacterMessage>::~MtTypedArray();
 
 template MtTypedArray<CDataCharacterMsgSet>::~MtTypedArray();
+
+template MtTypedArray<CDataCharacterReleaseElement>::~MtTypedArray();
 
 template MtTypedArray<CDataCheatInfo>::~MtTypedArray();
 
@@ -277,7 +305,7 @@ template MtTypedArray<CDataClearTimePointBonus>::~MtTypedArray();
 
 template MtTypedArray<CDataClientPartyListInfo>::~MtTypedArray();
 
-template MtTypedArray<CDataCommonU32>::~MtTypedArray();
+template MtTypedArray<CDataCommonString>::~MtTypedArray();
 
 template MtTypedArray<CDataCommonU8>::~MtTypedArray();
 
@@ -355,9 +383,17 @@ template MtTypedArray<CDataDispelLotPlus>::~MtTypedArray();
 
 template MtTypedArray<CDataDispelResultInfo>::~MtTypedArray();
 
+template MtTypedArray<CDataDropItemSetInfo>::~MtTypedArray();
+
+template MtTypedArray<CDataEditParam>::~MtTypedArray();
+
+template MtTypedArray<CDataEditParts>::~MtTypedArray();
+
 template MtTypedArray<CDataEntryItem>::~MtTypedArray();
 
 template MtTypedArray<CDataEntryMemberData>::~MtTypedArray();
+
+template MtTypedArray<CDataEquipBindNotice>::~MtTypedArray();
 
 template MtTypedArray<CDataEquipElementParam>::~MtTypedArray();
 
@@ -377,6 +413,8 @@ template MtTypedArray<CDataFreeRentalPawnList>::~MtTypedArray();
 
 template MtTypedArray<CDataFriendInfo>::~MtTypedArray();
 
+template MtTypedArray<CDataFurnitureLayout>::~MtTypedArray();
+
 template MtTypedArray<CDataGPCourseAvailable>::~MtTypedArray();
 
 template MtTypedArray<CDataGPCourseEffectParam>::~MtTypedArray();
@@ -387,6 +425,8 @@ template MtTypedArray<CDataGPCourseValid>::~MtTypedArray();
 
 template MtTypedArray<CDataGPDetail>::~MtTypedArray();
 
+template MtTypedArray<CDataGPEditVoiceBuyHistory>::~MtTypedArray();
+
 template MtTypedArray<CDataGPPeriod>::~MtTypedArray();
 
 template MtTypedArray<CDataGPShopBuyHistoryElement>::~MtTypedArray();
@@ -396,6 +436,10 @@ template MtTypedArray<CDataGPShopDisplayLineup>::~MtTypedArray();
 template MtTypedArray<CDataGPShopDisplayType>::~MtTypedArray();
 
 template MtTypedArray<CDataGPShopLineupElementCourse>::~MtTypedArray();
+
+template MtTypedArray<CDataGPShopLineupElementItem>::~MtTypedArray();
+
+template MtTypedArray<CDataGPShopLineupElementPawn>::~MtTypedArray();
 
 template MtTypedArray<CDataGachaDrawGroupInfo>::~MtTypedArray();
 
@@ -423,6 +467,8 @@ template MtTypedArray<CDataGoodsParam>::~MtTypedArray();
 
 template MtTypedArray<CDataHasRegionBreakReward>::~MtTypedArray();
 
+template MtTypedArray<CDataHistoryElement>::~MtTypedArray();
+
 template MtTypedArray<CDataItemEquipElement>::~MtTypedArray();
 
 template MtTypedArray<CDataItemList>::~MtTypedArray();
@@ -437,6 +483,8 @@ template MtTypedArray<CDataItemUpdateResult>::~MtTypedArray();
 
 template MtTypedArray<CDataJewelryEquipLimit>::~MtTypedArray();
 
+template MtTypedArray<CDataJobBaseInfo>::~MtTypedArray();
+
 template MtTypedArray<CDataJobOrbDevoteElement>::~MtTypedArray();
 
 template MtTypedArray<CDataJobOrbTreeStatus>::~MtTypedArray();
@@ -447,7 +495,11 @@ template MtTypedArray<CDataJobValueShopItem>::~MtTypedArray();
 
 template MtTypedArray<CDataLayoutEnemyData>::~MtTypedArray();
 
+template MtTypedArray<CDataLayoutItemData>::~MtTypedArray();
+
 template MtTypedArray<CDataLearnNormalSkillParam>::~MtTypedArray();
+
+template MtTypedArray<CDataLightQuestClearList>::~MtTypedArray();
 
 template MtTypedArray<CDataLightQuestList>::~MtTypedArray();
 
@@ -462,6 +514,12 @@ template MtTypedArray<CDataLostPawnList>::~MtTypedArray();
 template MtTypedArray<CDataLotQuestList>::~MtTypedArray();
 
 template MtTypedArray<CDataLotQuestOrderList>::~MtTypedArray();
+
+template MtTypedArray<CDataMDataCraftGradeupRecipe>::~MtTypedArray();
+
+template MtTypedArray<CDataMDataCraftMaterial>::~MtTypedArray();
+
+template MtTypedArray<CDataMDataCraftRecipe>::~MtTypedArray();
 
 template MtTypedArray<CDataMailAttachmentInfo>::~MtTypedArray();
 
@@ -485,6 +543,10 @@ template MtTypedArray<CDataMoonSchedule>::~MtTypedArray();
 
 template MtTypedArray<CDataMoveItemUIDFromTo>::~MtTypedArray();
 
+template MtTypedArray<CDataNGWordInfo>::~MtTypedArray();
+
+template MtTypedArray<CDataNamedEnemyParamClient>::~MtTypedArray();
+
 template MtTypedArray<CDataOcdActive>::~MtTypedArray();
 
 template MtTypedArray<CDataOcdImmuneLv>::~MtTypedArray();
@@ -492,6 +554,10 @@ template MtTypedArray<CDataOcdImmuneLv>::~MtTypedArray();
 template MtTypedArray<CDataOmData>::~MtTypedArray();
 
 template MtTypedArray<CDataOrbCategoryStatus>::~MtTypedArray();
+
+template MtTypedArray<CDataOrbElement>::~MtTypedArray();
+
+template MtTypedArray<CDataOrbElementGroup>::~MtTypedArray();
 
 template MtTypedArray<CDataOrbPageStatus>::~MtTypedArray();
 
@@ -567,6 +633,8 @@ template MtTypedArray<CDataQuestTalkInfo>::~MtTypedArray();
 
 template MtTypedArray<CDataRaidBossNoticeData>::~MtTypedArray();
 
+template MtTypedArray<CDataRaidBossRegionInfo>::~MtTypedArray();
+
 template MtTypedArray<CDataRandomStageInfo>::~MtTypedArray();
 
 template MtTypedArray<CDataRankingBoard>::~MtTypedArray();
@@ -609,6 +677,8 @@ template MtTypedArray<CDataS2CCharacterEquipInfo>::~MtTypedArray();
 
 template MtTypedArray<CDataS2CPawnEquipInfo>::~MtTypedArray();
 
+template MtTypedArray<CDataSameLetterInfo>::~MtTypedArray();
+
 template MtTypedArray<CDataScreenShotCategory>::~MtTypedArray();
 
 template MtTypedArray<CDataSelectItemInfo>::~MtTypedArray();
@@ -622,6 +692,8 @@ template MtTypedArray<CDataSetQuestOpenDate>::~MtTypedArray();
 template MtTypedArray<CDataSetQuestOrderList>::~MtTypedArray();
 
 template MtTypedArray<CDataShortCut>::~MtTypedArray();
+
+template MtTypedArray<CDataSkillLevelBaseParam>::~MtTypedArray();
 
 template MtTypedArray<CDataSpotEnemyInfo>::~MtTypedArray();
 
@@ -643,6 +715,8 @@ template MtTypedArray<CDataSupplyItem>::~MtTypedArray();
 
 template MtTypedArray<CDataSupportRate>::~MtTypedArray();
 
+template MtTypedArray<CDataSwitchStorage>::~MtTypedArray();
+
 template MtTypedArray<CDataTimeGainQuestList>::~MtTypedArray();
 
 template MtTypedArray<CDataTimeLimitedQuestList>::~MtTypedArray();
@@ -662,6 +736,12 @@ template MtTypedArray<CDataUIListElement>::~MtTypedArray();
 template MtTypedArray<CDataUIListElementChild>::~MtTypedArray();
 
 template MtTypedArray<CDataURLInfo>::~MtTypedArray();
+
+template MtTypedArray<CDataUnlockEditParam>::~MtTypedArray();
+
+template MtTypedArray<CDataUnlockEmotion>::~MtTypedArray();
+
+template MtTypedArray<CDataUnlockPawnTalk>::~MtTypedArray();
 
 template MtTypedArray<CDataUpdateMatchingProfileInfo>::~MtTypedArray();
 
@@ -695,21 +775,15 @@ template MtTypedArray<cPawnListParam>::~MtTypedArray();
 
 template MtTypedArray<cPawnVoiceData>::~MtTypedArray();
 
-template MtTypedArray<nCaplink::cAchievementRewardInfo>::~MtTypedArray();
-
 template MtTypedArray<nEquipAbilityInfo::cEquipAbilityData>::~MtTypedArray();
 
 template MtTypedArray<nEquipDataJewelry::cJewelryData>::~MtTypedArray();
 
 template MtTypedArray<nQuest::SCHEDULE_ID>::~MtTypedArray();
 
-template MtTypedArray<nQuest::cQuestMarker>::~MtTypedArray();
-
 template MtTypedArray<sOmManager::cOmArcLoader>::~MtTypedArray();
 
 template MtTypedArray<sOmManager::cWarpData>::~MtTypedArray();
-
-template MtTypedArray<uDDOModel>::~MtTypedArray();
 
 template MtTypedArray<uGUIBase::cScrollListInfoBase>::~MtTypedArray();
 

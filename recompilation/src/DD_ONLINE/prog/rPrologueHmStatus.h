@@ -151,3 +151,19 @@ inline void cPrologueHmStatus::operator delete[](void* p_addr) {
 inline void* cPrologueHmStatus::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPrologueHmStatus::DTI)->memAlloc(sz, align, ::cPrologueHmStatus::DTI.::MtDTI::getID());
 }
+
+inline void* cPrologueHmStatus::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrologueHmStatus::DTI)->memAlloc(sz, align, ::cPrologueHmStatus::DTI.::MtDTI::getID());
+}
+
+inline void cPrologueHmStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrologueHmStatus::DTI)->memFree(p_addr);
+}
+
+inline void* rPrologueHmStatus::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPrologueHmStatus::DTI)->memAlloc(sz, align, ::rPrologueHmStatus::DTI.::MtDTI::getID());
+}
+
+inline void rPrologueHmStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPrologueHmStatus::DTI)->memFree(p_addr);
+}

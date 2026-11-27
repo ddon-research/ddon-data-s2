@@ -86,3 +86,15 @@ inline void* cpPartsCtrl::operator new(size_t sz, void* p_addr) {
 inline cBitCtrl* cpPartsCtrl::getBitCtrl() {
     return this->mpBitCtrl;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpPartsCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpPartsCtrl::DTI);
+}
+
+inline void cpPartsCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpPartsCtrl::DTI)->memFree(p_addr);
+}

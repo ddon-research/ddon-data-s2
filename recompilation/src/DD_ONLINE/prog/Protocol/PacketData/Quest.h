@@ -12,6 +12,7 @@
 
 // Forward declarations
 class CDataCommonU32;
+class CDataQuestId;
 class MtAllocator;
 class MtDTI;
 class MtObject;
@@ -43,11 +44,13 @@ class CDataFortDefenseNoticeData;
 class CDataFortDefensePlayStartData;
 class CDataGetRewardBoxItem;
 class CDataHasRegionBreakReward;
+class CDataLightQuestClearList;
 class CDataLightQuestDetail;
 class CDataLightQuestList;
 class CDataLightQuestOrderList;
 class CDataLotQuestList;
 class CDataLotQuestOrderList;
+class CDataMainQuestCompleteInfo;
 class CDataMainQuestList;
 class CDataMainQuestOrderList;
 class CDataOrderConditionInfo;
@@ -69,6 +72,7 @@ class CDataQuestKeyItemPointRecord;
 class CDataQuestLayoutFlag;
 class CDataQuestLayoutFlagSetInfo;
 class CDataQuestList;
+class CDataQuestListDetail;
 class CDataQuestLog;
 class CDataQuestOrderConditionParam;
 class CDataQuestOrderList;
@@ -574,6 +578,39 @@ public:
     static MyDTI DTI;
 };
 
+class CDataLightQuestClearList : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataLightQuestClearList();
+    explicit CDataLightQuestClearList(u32, u32);
+public:
+    u32 m_unScheduleId;  // offset: 0x8
+    u32 m_unClearNum;  // offset: 0xc
+    static MyDTI DTI;
+};
+
 class CDataLightQuestDetail : public CPacketDataBase
 {
 public:
@@ -608,6 +645,39 @@ public:
     u32 m_unOrderLimit;  // offset: 0x14
     u32 m_unClearNum;  // offset: 0x18
     u32 m_unBoardType;  // offset: 0x1c
+    static MyDTI DTI;
+};
+
+class CDataMainQuestCompleteInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataMainQuestCompleteInfo();
+    explicit CDataMainQuestCompleteInfo(const MtTypedArray<CDataQuestId>&, u32);
+public:
+    MtTypedArray<CDataQuestId> m_QuestIdList;  // offset: 0x8
+    u32 m_unTotalNum;  // offset: 0x28
     static MyDTI DTI;
 };
 
@@ -1946,6 +2016,52 @@ public:
 public:
     u32 m_unLayoutFlagNo;  // offset: 0x8
     MtTypedArray<CDataQuestSetInfo> m_SetInfoList;  // offset: 0x10
+    static MyDTI DTI;
+};
+
+class CDataQuestListDetail : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataQuestListDetail();
+    explicit CDataQuestListDetail(u32, u32, u32, u32, u32, u32, u16, u16, u16, u16, u16, u8, u8, const MtTypedArray<CDataRewardItem>&, const MtTypedArray<CDataRewardItem>&);
+public:
+    u32 m_unAreaId;  // offset: 0x8
+    u32 m_unDetailMsgId;  // offset: 0xc
+    u32 m_unBaseAreaPoint;  // offset: 0x10
+    u32 m_unBaseExp;  // offset: 0x14
+    u32 m_unBaseGold;  // offset: 0x18
+    u32 m_unBaseRim;  // offset: 0x1c
+    u16 m_usExpRatio;  // offset: 0x20
+    u16 m_usGoldRatio;  // offset: 0x22
+    u16 m_usRimRatio;  // offset: 0x24
+    u16 m_usLeaderCompleteNum;  // offset: 0x26
+    u16 m_usRepeatRewardType;  // offset: 0x28
+    u8 m_ucRepeatRewardValue;  // offset: 0x2a
+    u8 m_ucRepeatRewardCompleteNum;  // offset: 0x2b
+    MtTypedArray<CDataRewardItem> m_FixedRewardSelectItemList;  // offset: 0x30
+    MtTypedArray<CDataRewardItem> m_FixedRewardItemList;  // offset: 0x50
     static MyDTI DTI;
 };
 
@@ -3450,6 +3566,15 @@ inline CDataHasRegionBreakReward::CDataHasRegionBreakReward() {
     this->m_ucRegionNo = 0;
 }
 
+inline void* CDataLightQuestClearList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataLightQuestClearList::CDataLightQuestClearList() {
+    this->m_unScheduleId = 0;
+    this->m_unClearNum = 0;
+}
+
 inline void* CDataLightQuestDetail::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -3477,6 +3602,14 @@ inline void* CDataLotQuestList::operator new(size_t sz, void* p_addr) {
 
 inline void* CDataLotQuestOrderList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* CDataMainQuestCompleteInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataMainQuestCompleteInfo::CDataMainQuestCompleteInfo() {
+    this->m_unTotalNum = 0;
 }
 
 inline void* CDataMainQuestList::operator new(size_t sz, void* p_addr) {
@@ -3642,6 +3775,10 @@ inline CDataQuestLayoutFlagSetInfo::CDataQuestLayoutFlagSetInfo() {
 }
 
 inline void* CDataQuestList::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataQuestListDetail::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
@@ -3922,4 +4059,408 @@ inline void* CDataWorldManageQuestList::operator new(size_t sz, void* p_addr) {
 
 inline void* CDataWorldManageQuestOrderList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataAreaBonus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAreaBonus::DTI);
+}
+
+inline MtAllocator* CDataAreaInfoList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAreaInfoList::DTI);
+}
+
+inline MtAllocator* CDataBorderRewardRecord::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataBorderRewardRecord::DTI);
+}
+
+inline MtAllocator* CDataClearTimePointBonus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClearTimePointBonus::DTI);
+}
+
+inline MtAllocator* CDataContentsPlayEnd::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContentsPlayEnd::DTI);
+}
+
+inline MtAllocator* CDataContentsPlayStartData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContentsPlayStartData::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsExtraReward::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsExtraReward::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsNews::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsNews::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsNewsDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsNewsDetail::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsNoticeData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsNoticeData::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsPlayEnd::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsPlayEnd::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsPlayStartData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsPlayStartData::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsRank::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsRank::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsReward::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsReward::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsRewardRecord::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsRewardRecord::DTI);
+}
+
+inline MtAllocator* CDataCycleContentsStateList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCycleContentsStateList::DTI);
+}
+
+inline MtAllocator* CDataDeliveredItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDeliveredItem::DTI);
+}
+
+inline MtAllocator* CDataDeliveredItemRecord::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDeliveredItemRecord::DTI);
+}
+
+inline MtAllocator* CDataDeliveryItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDeliveryItem::DTI);
+}
+
+inline MtAllocator* CDataEndContentsGroup::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEndContentsGroup::DTI);
+}
+
+inline void* CDataEndContentsGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataEndContentsGroup::DTI)->memAlloc(sz, align, ::CDataEndContentsGroup::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataExpiredQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataExpiredQuestList::DTI);
+}
+
+inline MtAllocator* CDataFortDefenseNoticeData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataFortDefenseNoticeData::DTI);
+}
+
+inline MtAllocator* CDataFortDefensePlayStartData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataFortDefensePlayStartData::DTI);
+}
+
+inline MtAllocator* CDataGetRewardBoxItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGetRewardBoxItem::DTI);
+}
+
+inline MtAllocator* CDataHasRegionBreakReward::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataHasRegionBreakReward::DTI);
+}
+
+inline MtAllocator* CDataLightQuestClearList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLightQuestClearList::DTI);
+}
+
+inline MtAllocator* CDataLightQuestDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLightQuestDetail::DTI);
+}
+
+inline void* CDataLightQuestDetail::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataLightQuestDetail::DTI)->memAlloc(sz, align, ::CDataLightQuestDetail::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataLightQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLightQuestList::DTI);
+}
+
+inline MtAllocator* CDataLightQuestOrderList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLightQuestOrderList::DTI);
+}
+
+inline MtAllocator* CDataLotQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLotQuestList::DTI);
+}
+
+inline MtAllocator* CDataLotQuestOrderList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLotQuestOrderList::DTI);
+}
+
+inline MtAllocator* CDataMainQuestCompleteInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMainQuestCompleteInfo::DTI);
+}
+
+inline void* CDataMainQuestCompleteInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataMainQuestCompleteInfo::DTI)->memAlloc(sz, align, ::CDataMainQuestCompleteInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataMainQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMainQuestList::DTI);
+}
+
+inline MtAllocator* CDataMainQuestOrderList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMainQuestOrderList::DTI);
+}
+
+inline MtAllocator* CDataOrderConditionInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOrderConditionInfo::DTI);
+}
+
+inline MtAllocator* CDataPartyQuestProgressInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartyQuestProgressInfo::DTI);
+}
+
+inline void* CDataPartyQuestProgressInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartyQuestProgressInfo::DTI)->memAlloc(sz, align, ::CDataPartyQuestProgressInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataPawnDungeonReward::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnDungeonReward::DTI);
+}
+
+inline MtAllocator* CDataPriorityQuest::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPriorityQuest::DTI);
+}
+
+inline MtAllocator* CDataPriorityQuestSetting::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPriorityQuestSetting::DTI);
+}
+
+inline MtAllocator* CDataQuestAnnounce::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestAnnounce::DTI);
+}
+
+inline MtAllocator* CDataQuestCommand::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestCommand::DTI);
+}
+
+inline MtAllocator* CDataQuestContents::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestContents::DTI);
+}
+
+inline void* CDataQuestContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestContents::DTI)->memAlloc(sz, align, ::CDataQuestContents::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataQuestContentsSituationInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestContentsSituationInfo::DTI);
+}
+
+inline MtAllocator* CDataQuestContentsSituationInfoDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestContentsSituationInfoDetail::DTI);
+}
+
+inline MtAllocator* CDataQuestDefine::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestDefine::DTI);
+}
+
+inline void* CDataQuestDefine::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestDefine::DTI)->memAlloc(sz, align, ::CDataQuestDefine::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataQuestEnemyInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestEnemyInfo::DTI);
+}
+
+inline MtAllocator* CDataQuestFlag::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestFlag::DTI);
+}
+
+inline MtAllocator* CDataQuestIdScheduleId::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestIdScheduleId::DTI);
+}
+
+inline MtAllocator* CDataQuestKeyItemPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestKeyItemPoint::DTI);
+}
+
+inline MtAllocator* CDataQuestKeyItemPointRecord::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestKeyItemPointRecord::DTI);
+}
+
+inline MtAllocator* CDataQuestLayoutFlag::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestLayoutFlag::DTI);
+}
+
+inline MtAllocator* CDataQuestLayoutFlagSetInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestLayoutFlagSetInfo::DTI);
+}
+
+inline MtAllocator* CDataQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestList::DTI);
+}
+
+inline MtAllocator* CDataQuestListDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestListDetail::DTI);
+}
+
+inline MtAllocator* CDataQuestLog::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestLog::DTI);
+}
+
+inline void* CDataQuestLog::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestLog::DTI)->memAlloc(sz, align, ::CDataQuestLog::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataQuestOrderConditionParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestOrderConditionParam::DTI);
+}
+
+inline MtAllocator* CDataQuestOrderList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestOrderList::DTI);
+}
+
+inline MtAllocator* CDataQuestPartyBonusInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestPartyBonusInfo::DTI);
+}
+
+inline MtAllocator* CDataQuestPhaseEvent::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestPhaseEvent::DTI);
+}
+
+inline MtAllocator* CDataQuestPhaseEventParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestPhaseEventParam::DTI);
+}
+
+inline MtAllocator* CDataQuestPointDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestPointDetail::DTI);
+}
+
+inline MtAllocator* CDataQuestPointDetailRecord::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestPointDetailRecord::DTI);
+}
+
+inline MtAllocator* CDataQuestProcessState::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestProcessState::DTI);
+}
+
+inline MtAllocator* CDataQuestProgressWork::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestProgressWork::DTI);
+}
+
+inline MtAllocator* CDataQuestSetInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestSetInfo::DTI);
+}
+
+inline MtAllocator* CDataQuestTalkInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestTalkInfo::DTI);
+}
+
+inline MtAllocator* CDataRaidBossEnemyParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRaidBossEnemyParam::DTI);
+}
+
+inline void* CDataRaidBossEnemyParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataRaidBossEnemyParam::DTI)->memAlloc(sz, align, ::CDataRaidBossEnemyParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataRaidBossNoticeData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRaidBossNoticeData::DTI);
+}
+
+inline MtAllocator* CDataRaidBossPlayStartData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRaidBossPlayStartData::DTI);
+}
+
+inline MtAllocator* CDataRankingRewardRecord::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRankingRewardRecord::DTI);
+}
+
+inline MtAllocator* CDataRecommendedQuestInfoList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRecommendedQuestInfoList::DTI);
+}
+
+inline MtAllocator* CDataRewardAbility::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRewardAbility::DTI);
+}
+
+inline MtAllocator* CDataRewardBoxItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRewardBoxItem::DTI);
+}
+
+inline MtAllocator* CDataRewardBoxRecord::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRewardBoxRecord::DTI);
+}
+
+inline MtAllocator* CDataRewardItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRewardItem::DTI);
+}
+
+inline MtAllocator* CDataRewardItemDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRewardItemDetail::DTI);
+}
+
+inline MtAllocator* CDataRewardJobValue::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRewardJobValue::DTI);
+}
+
+inline MtAllocator* CDataRewardWalletPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRewardWalletPoint::DTI);
+}
+
+inline MtAllocator* CDataSetQuestDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSetQuestDetail::DTI);
+}
+
+inline void* CDataSetQuestDetail::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataSetQuestDetail::DTI)->memAlloc(sz, align, ::CDataSetQuestDetail::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataSetQuestInfoList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSetQuestInfoList::DTI);
+}
+
+inline MtAllocator* CDataSetQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSetQuestList::DTI);
+}
+
+inline MtAllocator* CDataSetQuestOpenDate::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSetQuestOpenDate::DTI);
+}
+
+inline MtAllocator* CDataSetQuestOrderList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSetQuestOrderList::DTI);
+}
+
+inline MtAllocator* CDataTimeGainQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataTimeGainQuestList::DTI);
+}
+
+inline MtAllocator* CDataTimeGainQuestPlayStartData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataTimeGainQuestPlayStartData::DTI);
+}
+
+inline MtAllocator* CDataTimeLimitedQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataTimeLimitedQuestList::DTI);
+}
+
+inline MtAllocator* CDataTimeLimitedQuestOrderList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataTimeLimitedQuestOrderList::DTI);
+}
+
+inline MtAllocator* CDataTutorialQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataTutorialQuestList::DTI);
+}
+
+inline MtAllocator* CDataTutorialQuestOrderList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataTutorialQuestOrderList::DTI);
+}
+
+inline MtAllocator* CDataWorldManageQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataWorldManageQuestList::DTI);
+}
+
+inline MtAllocator* CDataWorldManageQuestOrderList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataWorldManageQuestOrderList::DTI);
 }

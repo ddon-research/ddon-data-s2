@@ -133,3 +133,23 @@ inline cPlayPointInfo::cPlayPoint::cPlayPoint() {
     this->mExpMode = 0;
     this->mPlayPoint = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cPlayPointInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cPlayPointInfo::DTI);
+}
+
+inline void cPlayPointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPlayPointInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cPlayPointInfo::cPlayPoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPlayPointInfo::cPlayPoint::DTI)->memAlloc(sz, align, ::cPlayPointInfo::cPlayPoint::DTI.::MtDTI::getID());
+}
+
+inline void cPlayPointInfo::cPlayPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPlayPointInfo::cPlayPoint::DTI)->memFree(p_addr);
+}

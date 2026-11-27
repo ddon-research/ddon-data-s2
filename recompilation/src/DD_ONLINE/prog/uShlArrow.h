@@ -267,3 +267,31 @@ inline void* uShlArrowInc::operator new(size_t sz, void* p_addr) {
 
 inline uShlArrowInc::uShlArrowInc() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamArrow::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamArrow::DTI)->memAlloc(sz, align, ::cShlParamArrow::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamArrowInc::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamArrowInc::DTI)->memAlloc(sz, align, ::cShlParamArrowInc::DTI.::MtDTI::getID());
+}
+
+inline void* uShlArrow::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlArrow::DTI)->memAlloc(sz, align, ::uShlArrow::DTI.::MtDTI::getID());
+}
+
+inline void uShlArrow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlArrow::DTI)->memFree(p_addr);
+}
+
+inline void* uShlArrowInc::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlArrowInc::DTI)->memAlloc(sz, align, ::uShlArrowInc::DTI.::MtDTI::getID());
+}
+
+inline void uShlArrowInc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlArrowInc::DTI)->memFree(p_addr);
+}

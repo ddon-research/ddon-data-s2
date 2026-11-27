@@ -19,18 +19,6 @@ const MtDTI& rTexDetailEdit::getDTI() const {
     return rTexDetailEdit::DTI;
 }
 
-inline void* rTexDetailEdit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTexDetailEdit::DTI)->memAlloc(sz, align, rTexDetailEdit::DTI.getID());
-}
-
-inline void rTexDetailEdit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTexDetailEdit::DTI)->memFree(p_addr);
-}
-
-inline rTexDetailEdit::rTexDetailEdit() {
-    setAttribute(18u);
-}
-
 rTexDetailEdit::~rTexDetailEdit() {
     if (mEditList.mLength != 0) {
         u32 v0_0 = mEditList.mLength;
@@ -133,10 +121,6 @@ MtObject* rTexDetailEdit::MyDTI::newInstance() const {
 
 const MtDTI& rTexDetailEdit::DetailParam::getDTI() const {
     return rTexDetailEdit::DetailParam::DTI;
-}
-
-inline void* rTexDetailEdit::DetailParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTexDetailEdit::DetailParam::DTI)->memAlloc(sz, align, rTexDetailEdit::DetailParam::DTI.getID());
 }
 
 void rTexDetailEdit::DetailParam::createProperty(MtPropertyList& s) {

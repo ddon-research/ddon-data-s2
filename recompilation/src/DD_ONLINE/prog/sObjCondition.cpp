@@ -27,16 +27,8 @@ const MtDTI& sObjCondition::getDTI() const {
     return sObjCondition::DTI;
 }
 
-inline MtAllocator* sObjCondition::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sObjCondition::DTI);
-}
-
 void* sObjCondition::operator new(size_t sz, u32 align) {
     return sObjCondition::getAllocator()->memAlloc(sz, align, sObjCondition::DTI.getID());
-}
-
-inline void sObjCondition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sObjCondition::DTI)->memFree(p_addr);
 }
 
 sObjCondition::sObjCondition() {

@@ -1646,3 +1646,361 @@ inline void* cFSMUnit::cParamSetEnemyHP::operator new(size_t sz, void* p_addr) {
 inline cFSMUnit::cParamSetEnemyHP::cParamSetEnemyHP() {
     this->mHPParcentage = 1.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cFSMUnit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::DTI);
+}
+
+inline void cFSMUnit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::uEvHeadTarget::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::uEvHeadTarget::DTI)->memAlloc(sz, align, ::cFSMUnit::uEvHeadTarget::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::uEvHeadTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::uEvHeadTarget::DTI)->memFree(p_addr);
+}
+
+inline cFSMUnit::uEvHeadTarget::uEvHeadTarget() {
+    this->mType = 0;
+    this->mGroup = 0;
+    this->mId = 0;
+    this->mTargetPos.x = ::MtVector3::Zero.x;
+    this->mTargetPos.y = ::MtVector3::Zero.y;
+    this->mTargetPos.z = ::MtVector3::Zero.z;
+    this->mTargetPos.pad_ = 0.0f;
+    this->mTargetOfsPos.x = ::MtVector3::Zero.x;
+    this->mTargetOfsPos.y = ::MtVector3::Zero.y;
+    this->mTargetOfsPos.z = ::MtVector3::Zero.z;
+    this->mTargetOfsPos.pad_ = 0.0f;
+    this->mTargetJointId = 0;
+}
+
+inline void* cFSMUnit::cParamSetMotion::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetMotion::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetMotion::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetMotion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetMotion::DTI)->memFree(p_addr);
+}
+
+inline cFSMUnit::cParamSetMotion::cParamSetMotion() {
+    this->mBankNo = 8;
+    this->mMotNo = 0;
+    this->mHokan = 5.0f;
+    this->mStartFrame = 0.0f;
+    this->mEndFrame = 0.0f;
+    this->mMotSpeed = 1.0f;
+    this->mIsLoop = true;
+    this->mIsSetDir = false;
+    this->mIsDispItem = false;
+    this->mIsSetEndFrame = false;
+    this->mIsNullTransFix = false;
+    this->mIsNullTransOff = false;
+    this->mIsNullAngleFix = false;
+    this->mDir.x = ::MtVector3::AxisX.x;
+    this->mDir.y = ::MtVector3::AxisX.y;
+    this->mDir.z = ::MtVector3::AxisX.z;
+    this->mDir.pad_ = 0.0f;
+    this->mSpeed = 0.087266475f;
+    this->mIsCallVoice = true;
+    this->mIsUseFingerMotion = false;
+    this->mFingerMotionNo = 0;
+    this->mFingerHokan = 5.0f;
+    this->mFingerSpeed = 1.0f;
+    this->mIsDisableFall = false;
+    this->mMotionSeOffBank = -1;
+}
+
+inline void* cFSMUnit::cParamSetAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAction::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetAction::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAction::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetNeck::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetNeck::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetNeck::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetNeck::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetNeck::DTI)->memFree(p_addr);
+}
+
+inline cFSMUnit::cParamSetNeck::cParamSetNeck() {
+    this->mIsSetNeck = false;
+    this->mTargetType = 0;
+    this->mTargetPos.x = ::MtVector3::Zero.x;
+    this->mTargetPos.y = ::MtVector3::Zero.y;
+    this->mTargetPos.z = ::MtVector3::Zero.z;
+    this->mTargetPos.pad_ = 0.0f;
+    this->mTargetGroup = 0;
+    this->mTargetSetId = 0;
+    this->mTargetJointId = -1;
+    this->mDisableSequence = false;
+    this->mIsAutoOffCtrl = true;
+    this->mSpeedRate = 1.0f;
+}
+
+inline void* cFSMUnit::cParamSetWait::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetWait::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetWait::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetWait::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetWait::DTI)->memFree(p_addr);
+}
+
+inline cFSMUnit::cParamSetWait::cParamSetWait() {
+    this->mIsSetDir = false;
+    this->mDir.x = ::MtVector3::AxisX.x;
+    this->mDir.y = ::MtVector3::AxisX.y;
+    this->mDir.z = ::MtVector3::AxisX.z;
+    this->mDir.pad_ = 0.0f;
+    this->mSpeed = 0.087266475f;
+}
+
+inline void* cFSMUnit::cParamSetGoto::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetGoto::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetGoto::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetGoto::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetGoto::DTI)->memFree(p_addr);
+}
+
+inline cFSMUnit::cParamSetGoto::cParamSetGoto() {
+    this->mTargetPos.x = ::MtVector3::Zero.x;
+    this->mTargetPos.y = ::MtVector3::Zero.y;
+    this->mTargetPos.z = ::MtVector3::Zero.z;
+    this->mTargetPos.pad_ = 0.0f;
+    this->mRunType = 0;
+    this->mStopBorder = 50.0f;
+    this->mIsSetDir = false;
+    this->mIsPathFinding = false;
+    this->mDir.x = ::MtVector3::AxisX.x;
+    this->mDir.y = ::MtVector3::AxisX.y;
+    this->mDir.z = ::MtVector3::AxisX.z;
+    this->mDir.pad_ = 0.0f;
+    this->mSpeed = 0.087266475f;
+}
+
+inline void* cFSMUnit::cParamSetGotoTarget::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetGotoTarget::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetGotoTarget::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetGotoTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetGotoTarget::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetMotionGoto::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetMotionGoto::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetMotionGoto::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetMotionGoto::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetMotionGoto::DTI)->memFree(p_addr);
+}
+
+inline cFSMUnit::cParamSetMotionGoto::cParamSetMotionGoto() {
+    this->mTargetPos.x = ::MtVector3::Zero.x;
+    this->mTargetPos.y = ::MtVector3::Zero.y;
+    this->mTargetPos.z = ::MtVector3::Zero.z;
+    this->mTargetPos.pad_ = 0.0f;
+    this->mStopBorder = 50.0f;
+    this->mIsSetVelocity = false;
+    this->mVelocity.x = ::MtVector3::Zero.x;
+    this->mVelocity.y = ::MtVector3::Zero.y;
+    this->mVelocity.z = ::MtVector3::Zero.z;
+    this->mVelocity.pad_ = 0.0f;
+    this->mAcceleration.x = ::MtVector3::Zero.x;
+    this->mAcceleration.y = ::MtVector3::Zero.y;
+    this->mAcceleration.z = ::MtVector3::Zero.z;
+    this->mIsHover = false;
+    this->mAccelerationScalar = 0.0f;
+    this->mAcceleration.pad_ = 0.0f;
+    this->mVelocityScalar = 0.0f;
+    this->mIsPosHokan = true;
+    this->::cFSMUnit::cParamSetMotion::mBankNo = 5;
+}
+
+inline void* cFSMUnit::cParamSetEffect::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEffect::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEffect::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetEffect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEffect::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetEyeBall::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEyeBall::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEyeBall::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetEyeBall::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEyeBall::DTI)->memFree(p_addr);
+}
+
+inline cFSMUnit::cParamSetEyeBall::cParamSetEyeBall() {
+    this->mTargetAngle.x = ::MtVector3::Zero.x;
+    this->mTargetAngle.y = ::MtVector3::Zero.y;
+    this->mTargetAngle.z = ::MtVector3::Zero.z;
+    this->mTargetAngle.pad_ = 0.0f;
+    this->mHokanFrame = 5;
+    this->mDelayFrame = 0;
+}
+
+inline void* cFSMUnit::cParamSetEmDie::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEmDie::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEmDie::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetEmDie::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEmDie::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetWaypoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetWaypoint::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetWaypoint::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetWaypoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetWaypoint::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetChangeThink::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetChangeThink::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetChangeThink::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetChangeThink::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetChangeThink::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetAdjustScrHit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAdjustScrHit::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetAdjustScrHit::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetAdjustScrHit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAdjustScrHit::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetAttendNpc::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAttendNpc::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetAttendNpc::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetAttendNpc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetAttendNpc::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetDisableTouchAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDisableTouchAction::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetDisableTouchAction::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetDisableTouchAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDisableTouchAction::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetDispWeapon::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDispWeapon::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetDispWeapon::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetDispWeapon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDispWeapon::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetShadowCast::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetShadowCast::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetShadowCast::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetShadowCast::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetShadowCast::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetHaveThing::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHaveThing::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetHaveThing::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetHaveThing::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHaveThing::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetCallSe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetCallSe::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetCallSe::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetCallSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetCallSe::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetHakuryuStoneLevel::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHakuryuStoneLevel::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetHakuryuStoneLevel::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetHakuryuStoneLevel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHakuryuStoneLevel::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetParts::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetParts::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetParts::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetParts::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetParts::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetVibUnit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetVibUnit::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetVibUnit::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetVibUnit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetVibUnit::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetEmMontage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEmMontage::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEmMontage::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetEmMontage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEmMontage::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetHeadCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHeadCtrl::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetHeadCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetHeadCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetHeadCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetEyeClose::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEyeClose::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEyeClose::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetEyeClose::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEyeClose::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetDispMiniMap::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDispMiniMap::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetDispMiniMap::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetDispMiniMap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetDispMiniMap::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetIK::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetIK::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetIK::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetIK::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetIK::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMUnit::cParamSetEnemyHP::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEnemyHP::DTI)->memAlloc(sz, align, ::cFSMUnit::cParamSetEnemyHP::DTI.::MtDTI::getID());
+}
+
+inline void cFSMUnit::cParamSetEnemyHP::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMUnit::cParamSetEnemyHP::DTI)->memFree(p_addr);
+}

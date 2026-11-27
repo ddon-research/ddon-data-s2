@@ -33,16 +33,8 @@ const MtDTI& uGUIBrowserBG::getDTI() const {
     return uGUIBrowserBG::DTI;
 }
 
-inline MtAllocator* uGUIBrowserBG::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBrowserBG::DTI);
-}
-
 void* uGUIBrowserBG::operator new(size_t sz, u32 align) {
     return uGUIBrowserBG::getAllocator()->memAlloc(sz, align, uGUIBrowserBG::DTI.getID());
-}
-
-inline void uGUIBrowserBG::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBrowserBG::DTI)->memFree(p_addr);
 }
 
 MtPoint uGUIBrowserBG::getBrowserPos() {

@@ -17,14 +17,6 @@ const MtDTI& nKeyConfigTextTable::cKeyText::getDTI() const {
     return nKeyConfigTextTable::cKeyText::DTI;
 }
 
-inline void* nKeyConfigTextTable::cKeyText::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memAlloc(sz, align, ::nKeyConfigTextTable::cKeyText::DTI.getID());
-}
-
-inline void nKeyConfigTextTable::cKeyText::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memFree(p_addr);
-}
-
 inline nKeyConfigTextTable::cKeyText::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nKeyConfigTextTable::cKeyText::MyDTI nKeyConfigTextTable::cKeyText::DTI("cKeyText", &::cUIObject::DTI, 32ul, 0u, 0u);
@@ -35,14 +27,6 @@ MtObject* nKeyConfigTextTable::cKeyText::MyDTI::newInstance() const {
 
 const MtDTI& rKeyConfigTextTable::getDTI() const {
     return rKeyConfigTextTable::DTI;
-}
-
-inline void* rKeyConfigTextTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rKeyConfigTextTable::DTI)->memAlloc(sz, align, rKeyConfigTextTable::DTI.getID());
-}
-
-inline void rKeyConfigTextTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rKeyConfigTextTable::DTI)->memFree(p_addr);
 }
 
 rKeyConfigTextTable::~rKeyConfigTextTable() {
@@ -89,7 +73,7 @@ const nKeyConfigTextTable::cKeyText* rKeyConfigTextTable::getSortedData(u32 inde
 void rKeyConfigTextTable::setCustomSortNo(u32 index, u32 customSortNo) {
     if (index < mSortedArray.mLength) {
         if (mSortedArray.getBuffer()[static_cast<int>(index)] != nullptr) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mSortedArray.getBuffer()[static_cast<int>(index)]) + 28) = customSortNo;
+            static_cast<nKeyConfigTextTable::cKeyText*>(mSortedArray.getBuffer()[static_cast<int>(index)])->mCustomSortNo = customSortNo;
         }
     }
 }

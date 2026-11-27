@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCollision.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
@@ -21,10 +20,6 @@
 
 const MtDTI& rCollision::getDTI() const {
     return rCollision::DTI;
-}
-
-inline void rCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCollision::DTI)->memFree(p_addr);
 }
 
 rCollision::~rCollision() {

@@ -126,3 +126,19 @@ inline void cCraftUpGradeExpData::operator delete[](void* p_addr) {
 inline void* cCraftUpGradeExpData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCraftUpGradeExpData::DTI)->memAlloc(sz, align, ::cCraftUpGradeExpData::DTI.::MtDTI::getID());
 }
+
+inline void* cCraftUpGradeExpData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftUpGradeExpData::DTI)->memAlloc(sz, align, ::cCraftUpGradeExpData::DTI.::MtDTI::getID());
+}
+
+inline void cCraftUpGradeExpData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftUpGradeExpData::DTI)->memFree(p_addr);
+}
+
+inline void* rCraftUpGradeExp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCraftUpGradeExp::DTI)->memAlloc(sz, align, ::rCraftUpGradeExp::DTI.::MtDTI::getID());
+}
+
+inline void rCraftUpGradeExp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCraftUpGradeExp::DTI)->memFree(p_addr);
+}

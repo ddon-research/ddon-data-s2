@@ -35,16 +35,8 @@ const MtDTI& uGUIGaugeSorcery::getDTI() const {
     return uGUIGaugeSorcery::DTI;
 }
 
-inline MtAllocator* uGUIGaugeSorcery::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGaugeSorcery::DTI);
-}
-
 void* uGUIGaugeSorcery::operator new(size_t sz, u32 align) {
     return uGUIGaugeSorcery::getAllocator()->memAlloc(sz, align, uGUIGaugeSorcery::DTI.getID());
-}
-
-inline void uGUIGaugeSorcery::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeSorcery::DTI)->memFree(p_addr);
 }
 
 uGUIGaugeSorcery::~uGUIGaugeSorcery() {

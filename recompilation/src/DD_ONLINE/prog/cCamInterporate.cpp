@@ -28,9 +28,56 @@ void cCamInterAll::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mInterF", &mInterF, 0u, 0u);
 }
 
-__attribute__((weak)) void cCamInterAll::initializeAll(const MtVector3& eye, const MtVector3& look, const MtVector3& up, f32 fov, f32 frame, f32 startSpring) {
-    DDON_STUB("cCamInterAll::initializeAll")
-    /* stub */
+void cCamInterAll::initializeAll(const MtVector3& eye, const MtVector3& look, const MtVector3& up, f32 fov, f32 frame, f32 startSpring) {
+    if (0.0f >= frame) {
+    } else {
+        mInterC.mNow.x = eye.x;
+        mInterC.mNow.y = eye.y;
+        mInterC.mNow.z = eye.z;
+        mInterC.mNow.pad_ = 0.0f;
+        mInterC.mVelocity.x = MtVector3::Zero.x;
+        mInterC.mVelocity.y = MtVector3::Zero.y;
+        mInterC.mVelocity.z = MtVector3::Zero.z;
+        mInterC.mVelocity.pad_ = 0.0f;
+        mInterC.mSpring = startSpring;
+        mInterT.mNow.x = look.x;
+        mInterT.mNow.y = look.y;
+        mInterT.mNow.z = look.z;
+        mInterT.mNow.pad_ = 0.0f;
+        mInterT.mVelocity.x = MtVector3::Zero.x;
+        mInterT.mVelocity.y = MtVector3::Zero.y;
+        mInterT.mVelocity.z = MtVector3::Zero.z;
+        mInterT.mVelocity.pad_ = 0.0f;
+        mInterT.mSpring = mInterC.mSpring;
+        mInterU.mNow.x = up.x;
+        mInterU.mNow.y = up.y;
+        mInterU.mNow.z = up.z;
+        mInterU.mNow.pad_ = 0.0f;
+        mInterU.mVelocity.x = MtVector3::Zero.x;
+        mInterU.mVelocity.y = MtVector3::Zero.y;
+        mInterU.mVelocity.z = MtVector3::Zero.z;
+        mInterU.mVelocity.pad_ = 0.0f;
+        mInterU.mSpring = mInterT.mSpring;
+        mInterF.mNow = fov;
+        mInterF.mVelocity = 0.0f;
+        mInterF.mSpring = mInterU.mSpring;
+        mInterFrameNow = 0.0f;
+        mInterFrame = frame;
+        mIsEnd = false;
+        mInitC.x = eye.x;
+        mInitC.y = eye.y;
+        mInitC.z = eye.z;
+        mInitC.pad_ = 0.0f;
+        mInitT.x = look.x;
+        mInitT.y = look.y;
+        mInitT.z = look.z;
+        mInitT.pad_ = 0.0f;
+        mInitU.x = up.x;
+        mInitU.y = up.y;
+        mInitU.z = up.z;
+        mInitU.pad_ = 0.0f;
+        mInitF = mInterF.mNow;
+    }
 }
 
 __attribute__((weak)) bool cCamInterAll::interporateAllXR(const MtVector3& eye, const MtVector3& look, const MtVector3& lookCenter, const MtVector3& up, f32 fov, f32 time) {
@@ -60,14 +107,19 @@ f32 cCamInterporateAng::calcDisplace(const f32& now, const f32& end) {
     return nDDOMath::getRadianDifference(now, end);
 }
 
-__attribute__((weak)) f32 cCamInterporateAng::calcAccel(const f32& displace, const f32& velocity) {
-    DDON_STUB("cCamInterporateAng::calcAccel")
-    return {};
+f32 cCamInterporateAng::calcAccel(const f32& displace, const f32& velocity) {
+    const f32 t0 = velocity;
+    f32 t1 = mDamping;
+    f32 t2 = nDDOMath::clampRadian(-((displace) * mSpring));
+    f32 f2 = nDDOMath::clampRadian(t0 * t1);
+    return nDDOMath::getRadianDifference(t2, f2);
 }
 
-__attribute__((weak)) void cCamInterporateAng::updateVelocity(const f32& accel) {
-    DDON_STUB("cCamInterporateAng::updateVelocity")
-    /* stub */
+void cCamInterporateAng::updateVelocity(const f32& accel) {
+    const f32 t0 = accel;
+    float t1 = mVelocity;
+    mVelocity = t0 + t1;
+    mVelocity = nDDOMath::clampRadian(t0 + t1);
 }
 
 void cCamInterporateAng::updatePosition(const f32& velocity) {
@@ -99,9 +151,15 @@ __attribute__((weak)) MtVector3 cCamInterporateAng3Time::calcAccel(const MtVecto
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void cCamInterporateAng3Time::updateVelocity(const MtVector3& accel) {
-    DDON_STUB("cCamInterporateAng3Time::updateVelocity")
-    /* stub */
+void cCamInterporateAng3Time::updateVelocity(const MtVector3& accel) {
+    const f32 t0 = accel.x;
+    f32 t1 = mVelocity.x;
+    mVelocity.x = t0 + t1;
+    mVelocity.y = accel.y + mVelocity.y;
+    mVelocity.z = accel.z + mVelocity.z;
+    mVelocity.x = nDDOMath::clampRadian(t0 + t1);
+    mVelocity.y = nDDOMath::clampRadian(mVelocity.y);
+    mVelocity.z = nDDOMath::clampRadian(mVelocity.z);
 }
 
 void cCamInterporateAng3Time::updatePosition(const MtVector3& velocity) {
@@ -123,14 +181,6 @@ const MtDTI& cCamInterporateRange::getDTI() const {
     return cCamInterporateRange::DTI;
 }
 
-inline MtAllocator* cCamInterporateRange::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamInterporateRange::DTI);
-}
-
-inline void* cCamInterporateRange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCamInterporateRange::DTI)->memAlloc(sz, align, cCamInterporateRange::DTI.getID());
-}
-
 __attribute__((weak)) void cCamInterporateRange::operator delete(void* p_addr) {
     cCamInterporateRange::getAllocator()->memFree(p_addr);
 }
@@ -146,10 +196,6 @@ MtObject* cCamInterporateRange::MyDTI::newInstance() const {
 
 const MtDTI& cCamInterporateRangeAng::getDTI() const {
     return cCamInterporateRangeAng::DTI;
-}
-
-inline MtAllocator* cCamInterporateRangeAng::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamInterporateRangeAng::DTI);
 }
 
 __attribute__((weak)) void cCamInterporateRangeAng::operator delete(void* p_addr) {
@@ -181,14 +227,6 @@ __attribute__((weak)) MtObject* cCamInterporateRangeF32::MyDTI::newInstance() co
 
 const MtDTI& cCamInterporateVec3::getDTI() const {
     return cCamInterporateVec3::DTI;
-}
-
-inline MtAllocator* cCamInterporateVec3::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamInterporateVec3::DTI);
-}
-
-inline void* cCamInterporateVec3::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCamInterporateVec3::DTI)->memAlloc(sz, align, cCamInterporateVec3::DTI.getID());
 }
 
 __attribute__((weak)) void cCamInterporateVec3::operator delete(void* p_addr) {

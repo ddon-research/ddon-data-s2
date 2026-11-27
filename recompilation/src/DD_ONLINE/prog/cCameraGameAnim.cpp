@@ -77,10 +77,6 @@ const MtDTI& cCamExParamAnim::getDTI() const {
     return cCamExParamAnim::DTI;
 }
 
-inline MtAllocator* cCamExParamAnim::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamExParamAnim::DTI);
-}
-
 void* cCamExParamAnim::operator new(size_t sz, u32 align) {
     return cCamExParamAnim::getAllocator()->memAlloc(sz, align, cCamExParamAnim::DTI.getID());
 }
@@ -136,10 +132,6 @@ const MtDTI& cCamExParamAnim2::getDTI() const {
     return cCamExParamAnim2::DTI;
 }
 
-inline MtAllocator* cCamExParamAnim2::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamExParamAnim2::DTI);
-}
-
 void* cCamExParamAnim2::operator new(size_t sz, u32 align) {
     return cCamExParamAnim2::getAllocator()->memAlloc(sz, align, cCamExParamAnim2::DTI.getID());
 }
@@ -180,10 +172,6 @@ __attribute__((weak)) MtObject* cCamExParamAnim2::MyDTI::newInstance() const {
 
 const MtDTI& cCamImpAnim::getDTI() const {
     return cCamImpAnim::DTI;
-}
-
-inline void cCamImpAnim::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpAnim::DTI)->memFree(p_addr);
 }
 
 cCamImpAnim::cCamImpAnim() {
@@ -270,18 +258,15 @@ const MtDTI& cCamImpAnimTar::getDTI() const {
     return cCamImpAnimTar::DTI;
 }
 
-inline void cCamImpAnimTar::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpAnimTar::DTI)->memFree(p_addr);
-}
-
 cCamImpAnimTar::~cCamImpAnimTar() {
     DDON_STUB("cCamImpAnimTar::~cCamImpAnimTar")
     /* stub */
 }
 
-__attribute__((weak)) void cCamImpAnimTar::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cCamImpAnimTar::applyWorldOffset")
-    /* stub */
+void cCamImpAnimTar::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mInterLockPos.mNow.x = offset.x + mInterLockPos.mNow.x;
+    mInterLockPos.mNow.y = offset.y + mInterLockPos.mNow.y;
+    mInterLockPos.mNow.z = offset.z + mInterLockPos.mNow.z;
 }
 
 __attribute__((weak)) bool cCamImpAnimTar::calcAnimTarPos(MtVector3& lockonPos) {

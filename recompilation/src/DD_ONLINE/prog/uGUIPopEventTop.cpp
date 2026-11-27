@@ -31,16 +31,8 @@ const MtDTI& uGUIPopEventTop::getDTI() const {
     return uGUIPopEventTop::DTI;
 }
 
-inline MtAllocator* uGUIPopEventTop::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopEventTop::DTI);
-}
-
 void* uGUIPopEventTop::operator new(size_t sz, u32 align) {
     return uGUIPopEventTop::getAllocator()->memAlloc(sz, align, uGUIPopEventTop::DTI.getID());
-}
-
-inline void uGUIPopEventTop::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopEventTop::DTI)->memFree(p_addr);
 }
 
 uGUIPopEventTop::uGUIPopEventTop() : uGUIsMenuBase(2u, false) {

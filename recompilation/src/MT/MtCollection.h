@@ -13,6 +13,7 @@ class CDataEntryMemberData;
 class MtAllocator;
 namespace MtCollisionUtil { class MtArrayEx; }
 class MtDTI;
+namespace MtNet { namespace Utility { namespace PS4 { class WebApi; } } }
 class MtObject;
 class MtProperty;
 class MtPropertyList;
@@ -28,12 +29,14 @@ class cAbilityData;
 class cAbilityParam;
 class cAreaMasterSpotDetailData;
 class cAreaReleaseManager;
+class cCamImpTemplate;
 class cCaptrophyContentData;
 class cCaptrophyRelationData;
 class cContextCharacter;
 class cContextInstChar;
 class cControl;
 class cCraftRecipe;
+class cCycle04QuestManager;
 class cCycleQuestManagerBase;
 class cCycleQuestSubCategoryManager;
 class cDDMaterialCtrl;
@@ -76,13 +79,14 @@ class cMenuPawnPoint;
 class cMenuPawnSearch;
 class cMenuPawnSetPartner;
 class cMenuRecentList;
+class cMenuRentalPawnList;
 class cMenuSearchFilter;
-class cMenuServerList;
 class cMenuSimplePartyReq;
 class cModelList;
 class cNetGameServer;
 class cNetLoginServer;
 class cOmControl;
+class cOmLoadList;
 class cOnceRequestEffectType;
 class cPartsGroupList;
 class cPawnAIAction;
@@ -92,13 +96,18 @@ class cPawnQuestManager;
 class cPlayPointInfo;
 class cPrioThkCmdIsTarget;
 class cPrioThkIO;
+class cQuestDeliverManager;
 class cQuestManagerBase;
+class cQuestMarkerManager;
 class cQuestPersonalData;
 class cQuestPhaseEvent;
 class cQuestPhaseManager;
 class cQuestResourceLoadManager;
+class cQuestResourceManager;
 class cQuestStage;
 class cQuestSvNoticeManager;
+class cQuestSvReqSendLeaderQuestOrderConditionInfo;
+class cQuestSvReqSendLeaderWaitOrderQuestList;
 class cQuestSvRequestManager;
 class cQuestTask;
 class cQuestTaskParam;
@@ -138,6 +147,7 @@ class cpCorePointCtrl;
 class cpDDMrlMgr;
 class cpEffectStatusManager;
 class cpEnemyThink;
+class cpHeadCtrl;
 class cpHpDamageCtrl;
 class cpItemThrow;
 class cpJob09;
@@ -150,10 +160,14 @@ class cpReaction;
 class cpShakeCtrl;
 class cpStateManager;
 class cpStatusChange;
+class cpWaypoint;
 namespace nCaplink { class ChatGroupListGetAns; }
 namespace nCaplink { class ContentAchievementGetAns; }
+namespace nCaplink { class ContentAchievementGetReqCtx; }
 namespace nCaplink { class ContentAchievementListGetAns; }
+namespace nCaplink { class ContentAchievementListGetReqCtx; }
 namespace nCaplink { class ContentAchievementRelationGetAns; }
+namespace nCaplink { class ContentAchievementRelationGetReqCtx; }
 namespace nCaplink { class ContentInviteAvailableListGetAns; }
 namespace nCaplink { class ContentInviteListGetAns; }
 namespace nCaplink { class ContentListGetAns; }
@@ -182,6 +196,7 @@ namespace nMarker { class cWarpMarkerInfo; }
 namespace nMarker { class cWarpMarkerInfoStage; }
 namespace nMenuKeyConfig { class KeyListItems; }
 namespace nNet { struct stEntryBoardItemInfo; }
+namespace nNetwork { namespace nSharedMemory2 { class CSessionListener; } }
 namespace nQuest { class cCycleContentsBorderRewardInfo; }
 namespace nQuest { class cCycleContentsInfo; }
 namespace nQuest { class cCycleContentsRankingRewardInfo; }
@@ -214,6 +229,7 @@ class rFieldAreaList;
 class rFieldAreaMarkerInfo;
 class rGUIMapSetting;
 class rGeometry2;
+class rGeometry2Group;
 class rGeometry3;
 class rItemList;
 class rJobTutorialQuestList;
@@ -269,8 +285,10 @@ class sEffectExt;
 class sEnemyManager;
 class sGUIExt;
 class sGame;
+class sGrass;
 class sInputManager;
 class sItemManager;
+class sLightExt;
 class sLockOnManager;
 class sMarker;
 class sMenu;
@@ -279,6 +297,7 @@ class sNpcManager;
 class sOccluderEx;
 class sOmManager;
 class sQuestManagerExt;
+class sReward;
 class sScenario;
 class sSetManager;
 class sShadow;
@@ -287,6 +306,7 @@ class sSoundManager;
 class sTalkManager;
 class sTutorialGuide;
 class sUnit;
+class sUnitExt;
 class sUnitManager;
 class sZone;
 class uCharacterEdit;
@@ -294,10 +314,16 @@ class uCharacterEditBase;
 class uDDOModel;
 class uEnemy;
 class uGUI;
+class uGUIAnnounce;
 class uGUIAreaMaster;
+class uGUIArisenCard;
+class uGUIArisenCardPop;
 class uGUIBase;
 class uGUIBaseExt;
+class uGUIBazaarItemSearch;
+class uGUIBazaarPopItemList;
 class uGUIBoxGachaInfo;
+class uGUICaplinkImageSelect;
 class uGUICaplinkMenuBase;
 class uGUICaplinkProfileEdit;
 class uGUICaplinkTag;
@@ -306,37 +332,56 @@ class uGUICaplinkTopMenu;
 class uGUICaplinkTrophyReceive;
 class uGUICharaEditPartsWrap;
 class uGUICharacterEdit;
+class uGUIClanEditInputNameBase;
 class uGUIClanScout;
+class uGUIClanScoutEntry;
 class uGUIClanSearch;
+class uGUIClanStatus;
 class uGUICommunityList;
 class uGUIContentsBoard;
 class uGUICraft;
+class uGUIDialogTextBox;
 class uGUIEntryBoard;
+class uGUIEntryBoardPopRecruit;
 class uGUIGPShop;
 class uGUIGiveAndTake;
 class uGUIInfo;
+class uGUIItem01;
 class uGUIItemBase01;
 class uGUIMap;
 class uGUIMapMini;
 class uGUIMissionResult;
 class uGUIMouseOverCursor;
+class uGUIMyRoom;
 class uGUIMyRoomPopup;
 class uGUINewspaper;
 class uGUINpcWindow;
+class uGUIPSStore;
+class uGUIPartyList;
+class uGUIPawnReview;
+class uGUIPhotoUpload;
+class uGUIPick01;
 class uGUIPopCmd01;
 class uGUIPopFilter;
 class uGUIPopListDialog;
+class uGUIPopNumber01;
+class uGUIPopPawnPoint;
+class uGUIPopProfile;
 class uGUIQuestBoard;
 class uGUIQuestDelivery;
 class uGUIRankingBoard;
+class uGUIServerSelectBase;
 class uGUIServerUIBase;
 class uGUIShopBuy;
 class uGUISkill;
 class uGUISystemMsg;
+class uGUIsMenuBase;
 class uGeometry2;
 class uGeometry2Group;
 class uGeometry2GroupCollider;
+class uGeometry3;
 class uScrollCollisionGeometry;
+class uScrollCollisionGeometryGroupModel;
 class uShlComponentCtrl;
 class uShlEmMultiLock;
 class uShlKeepOwnerLog;
@@ -381,6 +426,7 @@ class MtArray : public MtObject
     friend class cShlParamComponentCtrl;
     friend class AHShapePolygon;
     friend class MtCollisionUtil::MtArrayEx;
+    friend class MtNet::Utility::PS4::WebApi;
     friend class SCE_AH_LIST;
     friend class aStage;
     friend class cAINavPathTrace;
@@ -394,12 +440,14 @@ class MtArray : public MtObject
     friend class cAbilityParam;
     friend class cAreaMasterSpotDetailData;
     friend class cAreaReleaseManager;
+    friend class cCamImpTemplate;
     friend class cCaptrophyContentData;
     friend class cCaptrophyRelationData;
     friend class cContextCharacter;
     friend class cContextInstChar;
     friend class cControl;
     friend class cCraftRecipe;
+    friend class cCycle04QuestManager;
     friend class cCycleQuestManagerBase;
     friend class cCycleQuestSubCategoryManager;
     friend class cDDMaterialCtrl;
@@ -442,13 +490,14 @@ class MtArray : public MtObject
     friend class cMenuPawnSearch;
     friend class cMenuPawnSetPartner;
     friend class cMenuRecentList;
+    friend class cMenuRentalPawnList;
     friend class cMenuSearchFilter;
-    friend class cMenuServerList;
     friend class cMenuSimplePartyReq;
     friend class cModelList;
     friend class cNetGameServer;
     friend class cNetLoginServer;
     friend class cOmControl;
+    friend class cOmLoadList;
     friend class cOnceRequestEffectType;
     friend class cPartsGroupList;
     friend class cPawnAIAction;
@@ -458,13 +507,18 @@ class MtArray : public MtObject
     friend class cPlayPointInfo;
     friend class cPrioThkCmdIsTarget;
     friend class cPrioThkIO;
+    friend class cQuestDeliverManager;
     friend class cQuestManagerBase;
+    friend class cQuestMarkerManager;
     friend class cQuestPersonalData;
     friend class cQuestPhaseEvent;
     friend class cQuestPhaseManager;
     friend class cQuestResourceLoadManager;
+    friend class cQuestResourceManager;
     friend class cQuestStage;
     friend class cQuestSvNoticeManager;
+    friend class cQuestSvReqSendLeaderQuestOrderConditionInfo;
+    friend class cQuestSvReqSendLeaderWaitOrderQuestList;
     friend class cQuestSvRequestManager;
     friend class cQuestTask;
     friend class cQuestTaskParam;
@@ -504,6 +558,7 @@ class MtArray : public MtObject
     friend class cpDDMrlMgr;
     friend class cpEffectStatusManager;
     friend class cpEnemyThink;
+    friend class cpHeadCtrl;
     friend class cpHpDamageCtrl;
     friend class cpItemThrow;
     friend class cpJob09;
@@ -516,10 +571,14 @@ class MtArray : public MtObject
     friend class cpShakeCtrl;
     friend class cpStateManager;
     friend class cpStatusChange;
+    friend class cpWaypoint;
     friend class nCaplink::ChatGroupListGetAns;
     friend class nCaplink::ContentAchievementGetAns;
+    friend class nCaplink::ContentAchievementGetReqCtx;
     friend class nCaplink::ContentAchievementListGetAns;
+    friend class nCaplink::ContentAchievementListGetReqCtx;
     friend class nCaplink::ContentAchievementRelationGetAns;
+    friend class nCaplink::ContentAchievementRelationGetReqCtx;
     friend class nCaplink::ContentInviteAvailableListGetAns;
     friend class nCaplink::ContentInviteListGetAns;
     friend class nCaplink::ContentListGetAns;
@@ -579,6 +638,7 @@ class MtArray : public MtObject
     friend class rFieldAreaMarkerInfo;
     friend class rGUIMapSetting;
     friend class rGeometry2;
+    friend class rGeometry2Group;
     friend class rGeometry3;
     friend class rItemList;
     friend class rJobTutorialQuestList;
@@ -633,8 +693,10 @@ class MtArray : public MtObject
     friend class sEnemyManager;
     friend class sGUIExt;
     friend class sGame;
+    friend class sGrass;
     friend class sInputManager;
     friend class sItemManager;
+    friend class sLightExt;
     friend class sLockOnManager;
     friend class sMarker;
     friend class sMenu;
@@ -643,6 +705,7 @@ class MtArray : public MtObject
     friend class sOccluderEx;
     friend class sOmManager;
     friend class sQuestManagerExt;
+    friend class sReward;
     friend class sScenario;
     friend class sSetManager;
     friend class sShadow;
@@ -651,6 +714,7 @@ class MtArray : public MtObject
     friend class sTalkManager;
     friend class sTutorialGuide;
     friend class sUnit;
+    friend class sUnitExt;
     friend class sUnitManager;
     friend class sZone;
     friend class uCharacterEdit;
@@ -658,10 +722,16 @@ class MtArray : public MtObject
     friend class uDDOModel;
     friend class uEnemy;
     friend class uGUI;
+    friend class uGUIAnnounce;
     friend class uGUIAreaMaster;
+    friend class uGUIArisenCard;
+    friend class uGUIArisenCardPop;
     friend class uGUIBase;
     friend class uGUIBaseExt;
+    friend class uGUIBazaarItemSearch;
+    friend class uGUIBazaarPopItemList;
     friend class uGUIBoxGachaInfo;
+    friend class uGUICaplinkImageSelect;
     friend class uGUICaplinkMenuBase;
     friend class uGUICaplinkProfileEdit;
     friend class uGUICaplinkTag;
@@ -670,37 +740,56 @@ class MtArray : public MtObject
     friend class uGUICaplinkTrophyReceive;
     friend class uGUICharaEditPartsWrap;
     friend class uGUICharacterEdit;
+    friend class uGUIClanEditInputNameBase;
     friend class uGUIClanScout;
+    friend class uGUIClanScoutEntry;
     friend class uGUIClanSearch;
+    friend class uGUIClanStatus;
     friend class uGUICommunityList;
     friend class uGUIContentsBoard;
     friend class uGUICraft;
+    friend class uGUIDialogTextBox;
     friend class uGUIEntryBoard;
+    friend class uGUIEntryBoardPopRecruit;
     friend class uGUIGPShop;
     friend class uGUIGiveAndTake;
     friend class uGUIInfo;
+    friend class uGUIItem01;
     friend class uGUIItemBase01;
     friend class uGUIMap;
     friend class uGUIMapMini;
     friend class uGUIMissionResult;
     friend class uGUIMouseOverCursor;
+    friend class uGUIMyRoom;
     friend class uGUIMyRoomPopup;
     friend class uGUINewspaper;
     friend class uGUINpcWindow;
+    friend class uGUIPSStore;
+    friend class uGUIPartyList;
+    friend class uGUIPawnReview;
+    friend class uGUIPhotoUpload;
+    friend class uGUIPick01;
     friend class uGUIPopCmd01;
     friend class uGUIPopFilter;
     friend class uGUIPopListDialog;
+    friend class uGUIPopNumber01;
+    friend class uGUIPopPawnPoint;
+    friend class uGUIPopProfile;
     friend class uGUIQuestBoard;
     friend class uGUIQuestDelivery;
     friend class uGUIRankingBoard;
+    friend class uGUIServerSelectBase;
     friend class uGUIServerUIBase;
     friend class uGUIShopBuy;
     friend class uGUISkill;
     friend class uGUISystemMsg;
+    friend class uGUIsMenuBase;
     friend class uGeometry2;
     friend class uGeometry2Group;
     friend class uGeometry2GroupCollider;
+    friend class uGeometry3;
     friend class uScrollCollisionGeometry;
+    friend class uScrollCollisionGeometryGroupModel;
     friend class uShlComponentCtrl;
     friend class uShlEmMultiLock;
     friend class uShlKeepOwnerLog;
@@ -793,6 +882,7 @@ public:
 
 class MtMap : public MtObject
 {
+    friend class nNetwork::nSharedMemory2::CSessionListener;
 public:
     struct Cell;
     class MyDTI;
@@ -1176,4 +1266,16 @@ inline void MtArray::reserve(u32 siz) {
     if (mBufsiz < siz) {
         extendBuffer(siz);
     }
+}
+
+inline void* MtMap::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtMap::DTI)->memAlloc(sz, align, ::MtMap::DTI.::MtDTI::mID);
+}
+
+inline void MtMap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtMap::DTI)->memFree(p_addr);
+}
+
+inline void* MtTree::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtTree::DTI)->memAlloc(sz, align, ::MtTree::DTI.::MtDTI::mID);
 }

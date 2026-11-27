@@ -153,3 +153,11 @@ inline void* cWebsocketClient::operator new(size_t sz, void* p_addr) {
 inline cWebsocketClient::wsState cWebsocketClient::getState() {
     return this->mWsState;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cWebsocketClient::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWebsocketClient::DTI)->memFree(p_addr);
+}

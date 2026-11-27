@@ -52,10 +52,6 @@ const MtDTI& cHitInfo::getDTI() const {
     return cHitInfo::DTI;
 }
 
-inline void cHitInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHitInfo::DTI)->memFree(p_addr);
-}
-
 cHitInfo::~cHitInfo() {
     if (mpGuardInfo != nullptr) {
         delete mpGuardInfo;
@@ -119,17 +115,12 @@ inline cHitInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cHitInfo::MyDTI cHitInfo::DTI("cHitInfo", &::MtObject::DTI, 1792ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cHitInfo::MyDTI::newInstance() const {
-    DDON_STUB("cHitInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cHitInfo::MyDTI::newInstance() const {
+    return new (16u) cHitInfo;
 }
 
 const MtDTI& cModelList::getDTI() const {
     return cModelList::DTI;
-}
-
-inline void cModelList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cModelList::DTI)->memFree(p_addr);
 }
 
 void cModelList::add(uDDOModel* pModel) {
@@ -312,10 +303,6 @@ __attribute__((weak)) MtObject* cModelList::MyDTI::newInstance() const {
 
 const MtDTI& cpObjCollisionBase::getDTI() const {
     return cpObjCollisionBase::DTI;
-}
-
-inline void cpObjCollisionBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpObjCollisionBase::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cpObjCollisionBase::setResource(rObjCollision* pRes, u32 bank) {
@@ -551,8 +538,56 @@ void cpObjCollisionBase::update() {
 }
 
 __attribute__((weak)) cHitNode* cpObjCollisionBase::createNodeFromIndex(u32 bank, s32 index, bool MotionSync, u32 ExplicitUID) {
-    DDON_STUB("cpObjCollisionBase::createNodeFromIndex")
-    return nullptr;
+    if (bank >= 16u) {
+        return nullptr;
+    }
+    rObjCollision* pRes = mpResource[bank];
+    if (pRes == nullptr) {
+        return nullptr;
+    }
+    void* t1 = *reinterpret_cast<void**>(reinterpret_cast<char*>(pRes) + 0x70);
+    cCollIndex* pCollIndex = (*reinterpret_cast<cCollIndex* (**)(void*, s32)>(*static_cast<char**>(t1) + 0x88))(t1, index);
+    if (pCollIndex == nullptr) {
+        return nullptr;
+    }
+    if (mpModel == nullptr) {
+        return nullptr;
+    }
+    cCollNode* pCollNode = nullptr;
+    if (*reinterpret_cast<rCollNode**>(reinterpret_cast<char*>(pRes) + 0x78) != nullptr) {
+        rCollNode* t2 = *reinterpret_cast<rCollNode**>(reinterpret_cast<char*>(pRes) + 0x78);
+        if ((*reinterpret_cast<u32 (**)(rCollNode*)>(*reinterpret_cast<char**>(t2) + 0x98))(t2) != 0) {
+            s32 t3 = *reinterpret_cast<short*>(reinterpret_cast<char*>(pCollIndex) + 0x8);
+            if (t3 >= 0) {
+                rCollNode* t4 = *reinterpret_cast<rCollNode**>(reinterpret_cast<char*>(pRes) + 0x78);
+                pCollNode = (*reinterpret_cast<cCollNode* (**)(rCollNode*, s32)>(*reinterpret_cast<char**>(t4) + 0x88))(t4, t3);
+            }
+        }
+    }
+    rAttackParam* pAttackParamRes = nullptr;
+    cAttackParam* pAttackParam = nullptr;
+    if (*reinterpret_cast<short*>(reinterpret_cast<char*>(pCollIndex) + 0xa) >= 0) {
+        if (mpAttackParam[bank] != nullptr) {
+            pAttackParam = (*reinterpret_cast<cAttackParam* (**)(rAttackParam*, s32)>(*reinterpret_cast<char**>(mpAttackParam[bank]) + 0x88))(
+                mpAttackParam[bank], *reinterpret_cast<short*>(reinterpret_cast<char*>(pCollIndex) + 0xa));
+            pAttackParamRes = mpAttackParam[bank];
+        } else {
+            if (*reinterpret_cast<rAttackParam**>(reinterpret_cast<char*>(pRes) + 0x80) != nullptr) {
+                rAttackParam* t5 = *reinterpret_cast<rAttackParam**>(reinterpret_cast<char*>(pRes) + 0x80);
+                if ((*reinterpret_cast<u32 (**)(rAttackParam*)>(*reinterpret_cast<char**>(t5) + 0x98))(t5) != 0) {
+                    rAttackParam* t6 = *reinterpret_cast<rAttackParam**>(reinterpret_cast<char*>(pRes) + 0x80);
+                    pAttackParam = (*reinterpret_cast<cAttackParam* (**)(rAttackParam*, s32)>(*reinterpret_cast<char**>(t6) + 0x88))(
+                        t6, *reinterpret_cast<short*>(reinterpret_cast<char*>(pCollIndex) + 0xa));
+                    pAttackParamRes = *reinterpret_cast<rAttackParam**>(reinterpret_cast<char*>(pRes) + 0x80);
+                }
+            }
+        }
+    }
+    if (pCollNode == nullptr) {
+        return nullptr;
+    }
+    cHitNode* pNode = createNodeCore(mpResource[bank], pAttackParamRes, pCollNode, pAttackParam, pCollIndex, MotionSync, ExplicitUID);
+    return pNode;
 }
 
 __attribute__((weak)) cHitNode* cpObjCollisionBase::createNode(u32 bank, s32 NodeNo, s32 AttackNo, u32 ExplicitUID) {
@@ -838,14 +873,6 @@ MtObject* cpObjCollisionBase::MyDTI::newInstance() const {
 
 const MtDTI& cpObjCollisionBase::cHitFlag::getDTI() const {
     return cpObjCollisionBase::cHitFlag::DTI;
-}
-
-inline void* cpObjCollisionBase::cHitFlag::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpObjCollisionBase::cHitFlag::DTI)->memAlloc(sz, align, cpObjCollisionBase::cHitFlag::DTI.getID());
-}
-
-inline void cpObjCollisionBase::cHitFlag::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpObjCollisionBase::cHitFlag::DTI)->memFree(p_addr);
 }
 
 inline cpObjCollisionBase::cHitFlag::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

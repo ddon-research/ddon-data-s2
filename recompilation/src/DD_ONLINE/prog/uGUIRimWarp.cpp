@@ -47,16 +47,8 @@ const MtDTI& uGUIRimWarp::getDTI() const {
     return uGUIRimWarp::DTI;
 }
 
-inline MtAllocator* uGUIRimWarp::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIRimWarp::DTI);
-}
-
 void* uGUIRimWarp::operator new(size_t sz, u32 align) {
     return uGUIRimWarp::getAllocator()->memAlloc(sz, align, uGUIRimWarp::DTI.getID());
-}
-
-inline void uGUIRimWarp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRimWarp::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIRimWarp::~uGUIRimWarp() {
@@ -687,14 +679,6 @@ const MtDTI& uGUIRimWarp::cHeaderItem::getDTI() const {
     return uGUIRimWarp::cHeaderItem::DTI;
 }
 
-inline void* uGUIRimWarp::cHeaderItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIRimWarp::cHeaderItem::DTI)->memAlloc(sz, align, uGUIRimWarp::cHeaderItem::DTI.getID());
-}
-
-inline void uGUIRimWarp::cHeaderItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRimWarp::cHeaderItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIRimWarp::cHeaderItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIRimWarp::cHeaderItem::MyDTI uGUIRimWarp::cHeaderItem::DTI("uGUIRimWarp::cHeaderItem", &::uGUIBase::cScrollListItemBase::DTI, 96ul, 0u, 0u);
@@ -705,14 +689,6 @@ MtObject* uGUIRimWarp::cHeaderItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIRimWarp::cListItem::getDTI() const {
     return uGUIRimWarp::cListItem::DTI;
-}
-
-inline void* uGUIRimWarp::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIRimWarp::cListItem::DTI)->memAlloc(sz, align, uGUIRimWarp::cListItem::DTI.getID());
-}
-
-inline void uGUIRimWarp::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRimWarp::cListItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIRimWarp::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -727,10 +703,6 @@ const MtDTI& uGUIRimWarp::cListInfo::getDTI() const {
     return uGUIRimWarp::cListInfo::DTI;
 }
 
-inline void uGUIRimWarp::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRimWarp::cListInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUIRimWarp::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIRimWarp::cListInfo::MyDTI uGUIRimWarp::cListInfo::DTI("uGUIRimWarp::cListInfo", &::uGUIBase::cScrollListInfoBase::DTI, 72ul, 0u, 0u);
@@ -742,10 +714,6 @@ __attribute__((weak)) MtObject* uGUIRimWarp::cListInfo::MyDTI::newInstance() con
 
 const MtDTI& uGUIRimWarp::cHeaderInfo::getDTI() const {
     return uGUIRimWarp::cHeaderInfo::DTI;
-}
-
-inline void uGUIRimWarp::cHeaderInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRimWarp::cHeaderInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIRimWarp::cHeaderInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

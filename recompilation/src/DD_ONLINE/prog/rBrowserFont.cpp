@@ -15,20 +15,6 @@ const MtDTI& rBrowserFont::getDTI() const {
     return rBrowserFont::DTI;
 }
 
-inline void* rBrowserFont::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rBrowserFont::DTI)->memAlloc(sz, align, rBrowserFont::DTI.getID());
-}
-
-inline void rBrowserFont::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rBrowserFont::DTI)->memFree(p_addr);
-}
-
-inline rBrowserFont::rBrowserFont() {
-    mFontSize = 0;
-    mpFontData = nullptr;
-    setAttribute(16u);
-}
-
 rBrowserFont::~rBrowserFont() {
     if (mpFontData == nullptr) {
         return;

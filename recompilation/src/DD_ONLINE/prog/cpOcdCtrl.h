@@ -279,3 +279,74 @@ inline void cpOcdCtrl::clearMoveFreeze() {
 inline bool cpOcdCtrl::isOCDapplyContinue() {
     return this->mIsOCDapplyContinue;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cContextInterface.h"
+#include "cOcdBase.h"
+#include "cpDDMrlMgr.h"
+#include "uDDOModel.h"
+
+inline MtAllocator* cpOcdCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpOcdCtrl::DTI);
+}
+
+inline void cpOcdCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpOcdCtrl::DTI)->memFree(p_addr);
+}
+
+inline void cpOcdCtrl::callFinal(cOcdInfo* pOcdInfo) {
+    if (this->mIsInvalid) {
+        return;
+    }
+    if (pOcdInfo->mpObjCondition == nullptr) {
+        return;
+    }
+    pOcdInfo->::cOcdInfo::setOcdMode(static_cast<nObjCondition::OCD_MODE>(0));
+    pOcdInfo->mpObjCondition->final();
+    this->mMainActionNo = 0xFFFFFFFF;
+    this->mMainActPriority = static_cast<nAction::ACT_PRIO>(4);
+    this->mReactionStartTiming = 1;
+    this->mTimerStartTiming = 0;
+}
+
+inline void cpOcdCtrl::reqOcdActionEnd(cOcdInfo* pOcdInfo) {
+    if (this->mpModel == nullptr) {
+        return;
+    }
+    if (this->mpModel->mGuardComponent.mpActMgr == nullptr) {
+        return;
+    }
+    if (this->mpModel->mGuardComponent.mpActionRequest == nullptr) {
+        return;
+    }
+    if (this->mpModel->::uDDOModel::isDead()) {
+        return;
+    }
+    if (this->mpModel->mGuardComponent.mpStateLive != nullptr) {
+        if ((::cContextInterface::getStateLive(this->mpModel->mContextInterface.mpContextInstance, this->mpModel->mContextInterface.mpContextCharacter) | 4u) == 516) {
+            if (pOcdInfo->mOcdActParam.mEndActionNo != 0xFFFFFFFFu) {
+                this->mpModel->callbackReqOcdEndAction(pOcdInfo->mOcdActParam.mEndActionNo, pOcdInfo->mOcdActParam.mEndActPriority);
+            }
+        }
+    } else {
+        if (pOcdInfo->mOcdActParam.mEndActionNo != 0xFFFFFFFFu) {
+            this->mpModel->callbackReqOcdEndAction(pOcdInfo->mOcdActParam.mEndActionNo, pOcdInfo->mOcdActParam.mEndActPriority);
+        }
+    }
+}
+
+inline void cpOcdCtrl::callOcdShader() {
+    if (this->mpModel == nullptr) {
+        return;
+    }
+    if (this->mpModel->mpDDMrlMgr == nullptr) {
+        return;
+    }
+    this->mpModel->mpDDMrlMgr->::cpDDMrlMgr::requestAilmentShader(static_cast<u32>(this->mOcdShaderType), this->mShaderPriority);
+    if (this->mOcdShaderType != static_cast<nDDOShader::SHADER_MODE_ENUM>(7)) {
+        return;
+    }
+    this->mpModel->mpDDMrlMgr->::cpDDMrlMgr::setErosionLevel(this->mOcdShaderLv);
+}

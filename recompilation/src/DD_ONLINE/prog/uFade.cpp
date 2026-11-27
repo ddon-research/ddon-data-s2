@@ -19,16 +19,8 @@ const MtDTI& uFade::getDTI() const {
     return uFade::DTI;
 }
 
-inline MtAllocator* uFade::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uFade::DTI);
-}
-
 void* uFade::operator new(size_t sz, u32 align) {
     return uFade::getAllocator()->memAlloc(sz, align, uFade::DTI.getID());
-}
-
-inline void uFade::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFade::DTI)->memFree(p_addr);
 }
 
 uFade::uFade(s32 type, f32 time) {

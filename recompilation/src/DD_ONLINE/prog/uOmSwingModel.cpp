@@ -32,10 +32,6 @@ const MtDTI& uOmSwingModel::getDTI() const {
     return uOmSwingModel::DTI;
 }
 
-inline MtAllocator* uOmSwingModel::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uOmSwingModel::DTI);
-}
-
 void* uOmSwingModel::operator new(size_t sz, u32 align) {
     return uOmSwingModel::getAllocator()->memAlloc(sz, align, uOmSwingModel::DTI.getID());
 }

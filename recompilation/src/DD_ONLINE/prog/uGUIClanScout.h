@@ -350,3 +350,32 @@ inline void* uGUIClanScoutBase::operator new(size_t sz, void* p_addr) {
 inline void* uGUIClanScoutEntry::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "sMenu.h"
+
+inline void uGUIClanScout::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIClanScout::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIClanScout::cGUIPageListScoutEntry::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIClanScout::cGUIPageListScoutEntry::DTI)->memAlloc(sz, align, ::uGUIClanScout::cGUIPageListScoutEntry::DTI.::MtDTI::getID());
+}
+
+inline void uGUIClanScout::cGUIPageListScoutEntry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIClanScout::cGUIPageListScoutEntry::DTI)->memFree(p_addr);
+}
+
+inline void uGUIClanScoutBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIClanScoutBase::DTI)->memFree(p_addr);
+}
+
+inline void uGUIClanScoutEntry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIClanScoutEntry::DTI)->memFree(p_addr);
+}
+
+inline void uGUIClanScoutEntry::updateKeyword() {
+    this->mClanPolicyMessages.::uGUIBase::cClanPolicyMessages::applyPolicy(::sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, ::sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, ::sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, ::sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
+}

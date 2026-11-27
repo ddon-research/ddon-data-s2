@@ -564,3 +564,31 @@ inline rEffectProvider* cPlActWpnBow::getEpvCmn() {
 inline void* cPlActWpnBowBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline cPlActWpnBowBase::cPlActWpnBowBase() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+#include "../../XFramework/sSound.h"
+#include "sSoundExt.h"
+#include "../../XFramework/uCoord.h"
+#include "uHuman.h"
+
+inline void cPlActWpnBow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPlActWpnBow::DTI)->memFree(p_addr);
+}
+
+inline void cPlActWpnBow::stopMgcBowKamaeSe() {
+    static_cast<sSoundExt*>(::sSound::mpInstance)->::sSoundExt::requestSeEx(static_cast<sSoundExt*>(::sSound::mpInstance)->mprMagicRequest, 500u, static_cast<MtObject*>(this->::cHumanActBase::mpHuman), static_cast<const uCoord*>(this->::cHumanActBase::mpHuman), -1);
+}
+
+inline void* cPlActWpnBowBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPlActWpnBowBase::DTI)->memAlloc(sz, align, ::cPlActWpnBowBase::DTI.::MtDTI::getID());
+}
+
+inline void cPlActWpnBowBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPlActWpnBowBase::DTI)->memFree(p_addr);
+}

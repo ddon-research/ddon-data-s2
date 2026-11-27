@@ -14,11 +14,16 @@ class MtObject;
 
 // Declarations
 class CDataEditInfo;
+class CDataEditParam;
+class CDataEditParamPalette;
+class CDataUnlockEditParam;
 
 // Type aliases from DWARF
+using CEditParamPalette = CDataEditParamPalette;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
+using b8 = bool;
 using size_t = _Sizet;
 using u16 = unsigned short;
 using u32 = unsigned int;
@@ -126,6 +131,107 @@ public:
     static MyDTI DTI;
 };
 
+class CDataEditParamPalette : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataEditParamPalette();
+    explicit CDataEditParamPalette(u32, u32);
+public:
+    u32 m_unParamTypeId;  // offset: 0x8
+    u32 m_unUID;  // offset: 0xc
+    static MyDTI DTI;
+};
+
+class CDataUnlockEditParam : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataUnlockEditParam();
+    explicit CDataUnlockEditParam(const CEditParamPalette&, u8);
+public:
+    CEditParamPalette m_EditParamPalette;  // offset: 0x8
+    u8 m_ucUnlockType;  // offset: 0x18
+    static MyDTI DTI;
+};
+
+class CDataEditParam : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataEditParam();
+    explicit CDataEditParam(const CEditParamPalette&, b8, b8, b8);
+public:
+    CEditParamPalette m_EditParamPalette;  // offset: 0x8
+    b8 m_bIsValid;  // offset: 0x18
+    b8 m_bIsGp;  // offset: 0x19
+    b8 m_bIsPitchEnable;  // offset: 0x1a
+    static MyDTI DTI;
+};
+
 inline void* CDataEditInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -202,4 +308,59 @@ inline CDataEditInfo::CDataEditInfo() {
     this->m_ucSpeechFreq = 0;
     this->m_ucBodyType = 0;
     this->m_ucHair = 0;
+}
+
+inline void* CDataEditParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataEditParam::CDataEditParam() {
+    this->m_bIsPitchEnable = false;
+    this->m_bIsValid = false;
+    this->m_bIsGp = false;
+}
+
+inline void* CDataEditParamPalette::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataEditParamPalette::CDataEditParamPalette() {
+    this->m_unParamTypeId = 0;
+    this->m_unUID = 0;
+}
+
+inline void* CDataUnlockEditParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataUnlockEditParam::CDataUnlockEditParam() {
+    this->m_ucUnlockType = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataEditInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEditInfo::DTI);
+}
+
+inline void* CDataEditInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataEditInfo::DTI)->memAlloc(sz, align, ::CDataEditInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataEditParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEditParam::DTI);
+}
+
+inline MtAllocator* CDataEditParamPalette::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEditParamPalette::DTI);
+}
+
+inline void* CDataEditParamPalette::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataEditParamPalette::DTI)->memAlloc(sz, align, ::CDataEditParamPalette::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataUnlockEditParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUnlockEditParam::DTI);
 }

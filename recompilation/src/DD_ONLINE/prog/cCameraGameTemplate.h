@@ -133,3 +133,32 @@ inline cCamExParamTemplate::cCamExParamTemplate() {
 inline void* cCamImpTemplate::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline cCamImpTemplate::cCamImpTemplate() {
+    this->mIndex = 0;
+    this->mFrame = 0.0f;
+    this->mExtendFrame = 0.0f;
+    this->mpImple = nullptr;
+    this->mpParamTemplate = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
+
+inline MtAllocator* cCamExParamTemplate::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamTemplate::DTI);
+}
+
+inline void* cCamImpTemplate::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCamImpTemplate::DTI)->memAlloc(sz, align, ::cCamImpTemplate::DTI.::MtDTI::getID());
+}
+
+inline void cCamImpTemplate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpTemplate::DTI)->memFree(p_addr);
+}
+
+inline void cCamImpTemplate::setTemplateParam() {
+    this->::cCamImpBase::mpC->mpTemplateParam = static_cast<const nCameraGame::cTemplateParam*>(this->mpParamTemplate->mTemplateParamArray.mpArray[this->mIndex]);
+}

@@ -45,6 +45,7 @@
 #include "uGUIBase.h"
 #include "uGUIGPShop.h"
 #include "uGUIPointer.h"
+#include "uGUIPopBase.h"
 #include "uGUIPopCmd01.h"
 #include "uGUIPopDetail01.h"
 #include "uGUIPopListDialog.h"
@@ -58,28 +59,227 @@
 #define DDON_STUB(name)
 #endif
 
-const MtDTI& uGUIItem01::getDTI() const {
-    return uGUIItem01::DTI;
+const MtDTI& uGUIBazaarItem::getDTI() const {
+    return uGUIBazaarItem::DTI;
 }
 
-inline MtAllocator* uGUIItem01::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIItem01::DTI);
+void* uGUIBazaarItem::operator new(size_t sz, u32 align) {
+    return uGUIBazaarItem::getAllocator()->memAlloc(sz, align, uGUIBazaarItem::DTI.getID());
+}
+
+uGUIBazaarItem::~uGUIBazaarItem() {
+}
+
+__attribute__((weak)) void uGUIBazaarItem::setup() {
+    DDON_STUB("uGUIBazaarItem::setup")
+    /* stub */
+}
+
+void uGUIBazaarItem::updateWait() {
+    if (!mIsDetailVisibleFirst) {
+        mIsDetailVisibleFirst = true;
+        mDetailVisible = true;
+    }
+    settingItem(true, true);
+    mCloseButton.uGUIBase::cReferenceUICloseBtn::update();
+    if (mpDetail == nullptr) {
+        return;
+    }
+    mpDetail->mIsDraw = true;
+}
+
+__attribute__((weak)) void uGUIBazaarItem::moveInput() {
+    DDON_STUB("uGUIBazaarItem::moveInput")
+    /* stub */
+}
+
+void uGUIBazaarItem::moveEvent() {
+    this->uGUIItemBase01::moveEvent();
+    if (!mRefToggle.isSwitch()) {
+        return;
+    }
+    if (mStorageType == nCharacterData::ITEM_BAG_TYPE_EX_STORAGE) {
+        mStorageType = nCharacterData::ITEM_BAG_TYPE_STORAGE;
+        mServerStorageTypeOld = mServerStorageType;
+        mServerStorageType = nItem::STORAGE_TYPE_STORAGE_ALL;
+        mRefToggle.setTxt(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 80u));
+    } else {
+        if (mStorageType == nCharacterData::ITEM_BAG_TYPE_STORAGE) {
+            mStorageType = nCharacterData::ITEM_BAG_TYPE_EX_STORAGE;
+            mServerStorageTypeOld = mServerStorageType;
+            mServerStorageType = nItem::STORAGE_TYPE_STORAGE_EX1_ALL;
+            mRefToggle.setTxt(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 79u));
+        }
+    }
+    mIsResetTab = true;
+    mIsForceUpdate = true;
+}
+
+void uGUIBazaarItem::move() {
+    if (mpCtrlV != nullptr) {
+        mRefToggle.uGUIBase::cReferenceUIToggleBtn::setFocus(mCtrlFocus == 1);
+        setGuideBtn();
+    }
+    this->uGUIItemBase01::move();
+}
+
+u32 uGUIBazaarItem::evCtrlCatch(cControl::Message* msg) {
+    if (static_cast<unsigned int>(msg->reason) <= 42) {
+        if (((0x54000000000ul >> (static_cast<unsigned long>(msg->reason) & 63)) & 1ul) != 0) {
+            mCtrlFocus = 0;
+            evCtrlChangeBoxCore(msg, msg->reason);
+        }
+    }
+    return 0;
+}
+
+__attribute__((weak)) u32 uGUIBazaarItem::evCtrlDecide(cControl::Message* msg) {
+    DDON_STUB("uGUIBazaarItem::evCtrlDecide")
+    return {};
+}
+
+u32 uGUIBazaarItem::evCtrlCancel(cControl::Message* msg) {
+    if (isFocus()) {
+        mIsCancel = true;
+        mBaseF = mBaseF | 4u;
+        setFlowId(10u);
+    }
+    return 0;
+}
+
+u32 uGUIBazaarItem::evCtrlSubWindow(cControl::Message* msg) {
+    return 0;
+}
+
+u32 uGUIBazaarItem::evCtrlCheckMode(cControl::Message* msg) {
+    return 0;
+}
+
+void uGUIBazaarItem::setDetailVisible(bool isVisible) {
+    if (mpDetail == nullptr) {
+        return;
+    }
+    mpDetail->mIsDraw = isVisible;
+}
+
+void uGUIBazaarItem::setDetailPos(MtVector3& pos) {
+    mDetailPos = pos;
+}
+
+bool uGUIBazaarItem::isMatrixHeightLimitOver() {
+    return false;
+}
+
+sItemManager::cItemBag::ITEM_CATEGORY uGUIBazaarItem::getTab2Category() {
+    if (mStorageType != nCharacterData::ITEM_BAG_TYPE_PL) {
+        return sItemManager::cItemBag::ITEM_CATEGORY_ALL_ITEM;
+    } else {
+        return sItemManager::cItemBag::ITEM_CATEGORY_MATERIAL_ITEM;
+    }
+}
+
+__attribute__((weak)) void uGUIBazaarItem::loadItem() {
+    DDON_STUB("uGUIBazaarItem::loadItem")
+    /* stub */
+}
+
+void uGUIBazaarItem::setTitle() {
+    if (mStorageType == nCharacterData::ITEM_BAG_TYPE_PL) {
+        MT_CTSTR t0 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 19u);
+        MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 20u);
+        setObjectMessage(static_cast<cGUIObject*>(mData.mpOBJ_msg_top_m_top00), t0, 0u, false);
+        setObjectMessage(static_cast<cGUIObject*>(mData.mpOBJ_msg_top_m_top01), t2, 0u, false);
+        if (mData.mpOBJ_msg_top_m_top00 != nullptr) {
+            if (mData.mpOBJ_msg_top_m_top01 != nullptr) {
+                mData.mpOBJ_msg_top_m_top01->setPositionX(mData.mpOBJ_msg_top_m_top00->getMessageWidth() + 20.0f);
+            }
+        }
+    } else {
+        if (mStorageType == nCharacterData::ITEM_BAG_TYPE_STORAGE) {
+            MT_CTSTR t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 34u);
+            MT_CTSTR t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 10u);
+            setObjectMessage(static_cast<cGUIObject*>(mData.mpOBJ_msg_top_m_top00), t1, 0u, false);
+            setObjectMessage(static_cast<cGUIObject*>(mData.mpOBJ_msg_top_m_top01), t2, 0u, false);
+            if (mData.mpOBJ_msg_top_m_top00 != nullptr) {
+                if (mData.mpOBJ_msg_top_m_top01 != nullptr) {
+                    mData.mpOBJ_msg_top_m_top01->setPositionX(mData.mpOBJ_msg_top_m_top00->getMessageWidth() + 20.0f);
+                }
+            }
+        }
+    }
+}
+
+void uGUIBazaarItem::setupGuideBtn() {
+    mTblGuide[0].mType = uGUIBase::cReferenceUIBtnGuide::GUIDE_TYPE_CHANGE_TOGGLE;
+    mTblGuide[0].mKeyCustom = nKeyCustom::KEY_CUSTOM_NOTHING;
+    mTblGuide[0].mWayType = nGUIExt::ICONTAGKB_NONE;
+    mTblGuide[0].mIsIgnoreModifier = false;
+    mTblGuide[0].mpKbdMsg = nullptr;
+    mTblGuide[0].mpMsg = nullptr;
+    mButtonGuide.mpGuideDataPtr = &mTblGuide[0];
+    mButtonGuide.mWidth = 0.0f;
+}
+
+inline uGUIBazaarItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uGUIBazaarItem::MyDTI uGUIBazaarItem::DTI("uGUIBazaarItem", &::uGUIItemBase01::DTI, 4256ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* uGUIBazaarItem::MyDTI::newInstance() const {
+    DDON_STUB("uGUIBazaarItem::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& uGUIItem01::getDTI() const {
+    return uGUIItem01::DTI;
 }
 
 void* uGUIItem01::operator new(size_t sz, u32 align) {
     return uGUIItem01::getAllocator()->memAlloc(sz, align, uGUIItem01::DTI.getID());
 }
 
-inline void uGUIItem01::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIItem01::DTI)->memFree(p_addr);
-}
-
 uGUIItem01::~uGUIItem01() {
 }
 
-__attribute__((weak)) void uGUIItem01::setup() {
-    DDON_STUB("uGUIItem01::setup")
-    /* stub */
+void uGUIItem01::setup() {
+    this->uGUIItemBase01::setup();
+    if (!mIsEndLoadResource) {
+        return;
+    } else {
+        cGUIInstance* t0 = getInstance(24u, false);
+        mTab.setup(static_cast<uGUIBase*>(this), t0, 4u, static_cast<float>(getVariableInitParamS32FromId(11u)), uGUIBase::cReferenceUITab::ALIGN_CENTER);
+        mTab.setTabMessage(0u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[1], 104u));
+        mTab.setTabMessage(1u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[1], 105u));
+        mTab.setTabMessage(2u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[1], 106u));
+        mTab.setTabMessage(3u, static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[1], 108u));
+        setTitle();
+        if (mpCtrlTab != nullptr) {
+            mpCtrlTab->resetItemNum(static_cast<s32>(mTab.mWork.mLength), static_cast<const u32*>(nullptr), 0);
+            mTab.setupMouseTouchList(static_cast<cControl*>(mpCtrlTab), -1);
+            u32 t1 = getItemDrawNum();
+            unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 0)) + 1120);
+            u32 t3 = getItemDrawNum();
+            setRow(static_cast<s32>(static_cast<unsigned int>(((static_cast<unsigned long>(t1) * 0xCCCCCCCDul) >> 34) + (t3 != static_cast<unsigned int>(((static_cast<unsigned long>(t3) * 0xCCCCCCCDul) >> 34) * 5ul)))));
+        }
+        if (mpShareUnit != nullptr) {
+            const MtDTI& t4 = mpShareUnit->getDTI();
+            MT_CTSTR v0_1 = uGUIStorage::DTI.mName;
+            for (const MtDTI* v0_0 = &t4;;) {
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    setWindowActive(false);
+                    mCloseButton.mEnable = false;
+                    setupGuideBtn();
+                    return;
+                }
+            }
+        }
+    }
+    setupGuideBtn();
 }
 
 __attribute__((weak)) void uGUIItem01::move() {
@@ -178,10 +378,6 @@ __attribute__((weak)) MtObject* uGUIItem01::MyDTI::newInstance() const {
 
 const MtDTI& uGUIItemBase01::getDTI() const {
     return uGUIItemBase01::DTI;
-}
-
-inline void uGUIItemBase01::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIItemBase01::DTI)->memFree(p_addr);
 }
 
 uGUIItemBase01::uGUIItemBase01(u32 initFlags) : uGUIUseItemBase(initFlags), mData() {
@@ -718,7 +914,7 @@ u32 uGUIItemBase01::evSendsBagFromExBox(MtObject* pCaller, MtObject* pData) {
 u32 uGUIItemBase01::evSendNumBag(MtObject* pCaller, MtObject* pData) {
     if ((pData != nullptr) && pData->isKindOf(nGUIItem::cItem::DTI)) {
         nGUIItem::cItem* p = static_cast<nGUIItem::cItem*>(pData);
-        p->mToBagType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_GROUP_BAG, static_cast<nGUIItem::cItem*>(pData)->getResourceParam());
+        p->mToBagType = sItemManager::getInstance()->getItemNetStorageType(nItem::STORAGE_TYPE_GROUP_BAG, p->getResourceParam());
         _evSend(pCaller, pData, true, true);
         return 0;
     }
@@ -1160,8 +1356,18 @@ void uGUIItemBase01::updateShareWaitPopup() {
 }
 
 __attribute__((weak)) void uGUIItemBase01::updateOnlineShop() {
-    DDON_STUB("uGUIItemBase01::updateOnlineShop")
-    /* stub */
+    if (isEndPopup()) {
+        uGUISystemMsg* pUnit = mpUnitSystemMsg;
+        if (pUnit != nullptr && pUnit->getChoicePos(-1) == 0) {
+            mpWaitPopBase = new (16u) uGUIGPShop;
+            if (mpWaitPopBase != nullptr) {
+                sUnit::getInstance()->addBottom(static_cast<MOVE_LINE>(0x12), mpWaitPopBase, sUnitExt::GPT_UI_SUB);
+                static_cast<uGUIGPShop*>(mpWaitPopBase)->setStartType(static_cast<uGUIGPShop::SHOPMENU_TYPE>(0));
+                mpWaitPopBase->mEndType = 0;
+            }
+        }
+        setFlowId(5u);
+    }
 }
 
 void uGUIItemBase01::updateOnlineShopWait() {
@@ -1289,9 +1495,44 @@ __attribute__((weak)) s32 uGUIItemBase01::getSelectIdx() {
     return {};
 }
 
-__attribute__((weak)) u32 uGUIItemBase01::getItemDrawNum() {
-    DDON_STUB("uGUIItemBase01::getItemDrawNum")
-    return {};
+u32 uGUIItemBase01::getItemDrawNum() {
+    if (mItemList.getBagType(getTab2Category()) != nItem::STORAGE_TYPE_INVALID) {
+        sItemManager* t0 = sItemManager::getInstance();
+        sItemManager::cItemBag* pItemBag = t0->setLinkItem(t0->getItemBagType(mItemList.getBagType(getTab2Category())));
+        if (pItemBag != nullptr) {
+            sItemManager::cItemBag::ITEM_CATEGORY t1 = getTab2Category();
+            switch (static_cast<unsigned int>(t1 - 1)) {
+                case 0:
+                {
+                    return pItemBag->getUseItemSlotNum();
+                }
+                case 1:
+                {
+                    return pItemBag->getMaterialItemSlotNum();
+                }
+                case 2:
+                {
+                    return pItemBag->getArmItemSlotNum();
+                }
+                case 4:
+                {
+                    return pItemBag->getJobItemSlotNum();
+                }
+                case 8:
+                {
+                    return pItemBag->getAllItemSlotNum();
+                }
+                default:
+                {
+                    return 0;
+                }
+            }
+        } else {
+            return getRowNum() * 5u;
+        }
+    } else {
+        return getRowNum() * 5u;
+    }
 }
 
 u32 uGUIItemBase01::getItemMaxDrawNum() {
@@ -1533,10 +1774,6 @@ MtObject* uGUIItemBase01::MyDTI::newInstance() const {
 
 const MtDTI& uGUIItemBase01::cGUIItem::getDTI() const {
     return uGUIItemBase01::cGUIItem::DTI;
-}
-
-inline void uGUIItemBase01::cGUIItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIItemBase01::cGUIItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIItemBase01::cGUIItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

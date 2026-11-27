@@ -14,14 +14,6 @@ const MtDTI& MtPerformance::getDTI() const {
     return MtPerformance::DTI;
 }
 
-inline void* MtPerformance::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(MtPerformance::DTI)->memAlloc(sz, align, MtPerformance::DTI.mID);
-}
-
-inline void MtPerformance::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtPerformance::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void MtPerformance::start() {
     DDON_STUB("MtPerformance::start")
     /* stub */
@@ -42,14 +34,6 @@ MtObject* MtPerformance::MyDTI::newInstance() const {
 
 const MtDTI& MtPerformanceCounter::getDTI() const {
     return MtPerformanceCounter::DTI;
-}
-
-inline void* MtPerformanceCounter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(MtPerformanceCounter::DTI)->memAlloc(sz, align, MtPerformanceCounter::DTI.mID);
-}
-
-inline void MtPerformanceCounter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtPerformanceCounter::DTI)->memFree(p_addr);
 }
 
 s64 MtPerformanceCounter::getCurrent() {

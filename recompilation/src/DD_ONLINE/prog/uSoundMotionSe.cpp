@@ -32,14 +32,6 @@ const MtDTI& uSoundMotionSe::getDTI() const {
     return uSoundMotionSe::DTI;
 }
 
-inline MtAllocator* uSoundMotionSe::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uSoundMotionSe::DTI);
-}
-
-inline void uSoundMotionSe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundMotionSe::DTI)->memFree(p_addr);
-}
-
 uSoundMotionSe::uSoundMotionSe() {
     mpMotionSe = nullptr;
     mpTarModel = nullptr;

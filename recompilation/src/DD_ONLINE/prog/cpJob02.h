@@ -330,3 +330,27 @@ inline cpJob02::cKaenKoromoInfo::cKaenKoromoInfo() {
     this->mDamage = 0;
     this->mExecPhase = static_cast<cpJob02::cKaenKoromoInfo::eExecPhase>(2);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob02::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob02::DTI);
+}
+
+inline void cpJob02::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob02::DTI)->memFree(p_addr);
+}
+
+inline void cpJob02::cPullUpInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob02::cPullUpInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cpJob02::cKaenKoromoInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJob02::cKaenKoromoInfo::DTI)->memAlloc(sz, align, ::cpJob02::cKaenKoromoInfo::DTI.::MtDTI::getID());
+}
+
+inline void cpJob02::cKaenKoromoInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob02::cKaenKoromoInfo::DTI)->memFree(p_addr);
+}

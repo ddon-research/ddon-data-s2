@@ -112,3 +112,15 @@ inline void* cpLockOnTargetManager::operator new(size_t sz, void* p_addr) {
 inline void cpLockOnTargetManager::setEffectiveDist(f32 d) {
     this->mEffectiveDist = d;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpLockOnTargetManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpLockOnTargetManager::DTI);
+}
+
+inline void cpLockOnTargetManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpLockOnTargetManager::DTI)->memFree(p_addr);
+}

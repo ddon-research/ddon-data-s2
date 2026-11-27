@@ -82,3 +82,15 @@ public:
 inline void* cGuardInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cGuardInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGuardInfo::DTI);
+}
+
+inline void cGuardInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGuardInfo::DTI)->memFree(p_addr);
+}

@@ -125,3 +125,19 @@ inline void cEmWarpParam::operator delete[](void* p_addr) {
 inline void* cEmWarpParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmWarpParam::DTI)->memAlloc(sz, align, ::cEmWarpParam::DTI.::MtDTI::getID());
 }
+
+inline void* cEmWarpParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmWarpParam::DTI)->memAlloc(sz, align, ::cEmWarpParam::DTI.::MtDTI::getID());
+}
+
+inline void cEmWarpParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmWarpParam::DTI)->memFree(p_addr);
+}
+
+inline void* rEmWarpParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmWarpParam::DTI)->memAlloc(sz, align, ::rEmWarpParam::DTI.::MtDTI::getID());
+}
+
+inline void rEmWarpParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmWarpParam::DTI)->memFree(p_addr);
+}

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rGatheringItem.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cGatheringItem::getDTI() const {
     return cGatheringItem::DTI;
-}
-
-inline void* cGatheringItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGatheringItem::DTI)->memAlloc(sz, align, cGatheringItem::DTI.getID());
-}
-
-inline void cGatheringItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGatheringItem::DTI)->memFree(p_addr);
 }
 
 void cGatheringItem::createProperty(MtPropertyList& s) {
@@ -44,14 +34,6 @@ MtObject* cGatheringItem::MyDTI::newInstance() const {
 
 const MtDTI& rGatheringItem::getDTI() const {
     return rGatheringItem::DTI;
-}
-
-inline void* rGatheringItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rGatheringItem::DTI)->memAlloc(sz, align, rGatheringItem::DTI.getID());
-}
-
-inline void rGatheringItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGatheringItem::DTI)->memFree(p_addr);
 }
 
 bool rGatheringItem::loadData(MtDataReader& r, cGatheringItem* pData) {

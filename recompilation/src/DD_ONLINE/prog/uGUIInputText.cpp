@@ -27,16 +27,8 @@ const MtDTI& uGUIInputText::getDTI() const {
     return uGUIInputText::DTI;
 }
 
-inline MtAllocator* uGUIInputText::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIInputText::DTI);
-}
-
 void* uGUIInputText::operator new(size_t sz, u32 align) {
     return uGUIInputText::getAllocator()->memAlloc(sz, align, uGUIInputText::DTI.getID());
-}
-
-inline void uGUIInputText::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIInputText::DTI)->memFree(p_addr);
 }
 
 uGUIInputText::~uGUIInputText() {
@@ -54,9 +46,186 @@ bool uGUIInputText::loadResource() {
     return true;
 }
 
-__attribute__((weak)) void uGUIInputText::setup() {
-    DDON_STUB("uGUIInputText::setup")
-    /* stub */
+void uGUIInputText::setup() {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
+        return;
+    }
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(14u), true);
+    setPlay(true);
+    setFlowAndInit(3u, false);
+    mpINST_Null_all = static_cast<cGUIInstNull*>(getInstance(4u, false));
+    mpINST_msg_text = static_cast<cGUIInstAnimation*>(getInstance(3u, false));
+    cGUIObjMessage* obj_msg_text = static_cast<cGUIObjMessage*>(getObjectFromId(3u, 20u));
+    if (obj_msg_text != nullptr) {
+        obj_msg_text->mMsgAttr = obj_msg_text->mMsgAttr & 0xFFFFFFF7u;
+        mpOBJ_msg_texts.elems[0] = obj_msg_text;
+        cGUIObject* t0 = getObjectFromId(3u, 29u);
+        if (t0 != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296)) & 247;
+            mpOBJ_msg_texts.elems[1] = static_cast<cGUIObjMessage*>(t0);
+            cGUIObject* t1 = getObjectFromId(3u, 30u);
+            if (t1 != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 296)) & 247;
+                mpOBJ_msg_texts.elems[2] = static_cast<cGUIObjMessage*>(t1);
+                cGUIObject* t2 = getObjectFromId(3u, 31u);
+                if (t2 != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296)) & 247;
+                    mpOBJ_msg_texts.elems[3] = static_cast<cGUIObjMessage*>(t2);
+                }
+                mpOBJ_msg_text_caret = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 34u));
+                mpOBJ_msg_text_wallpaper = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 40u));
+                mpOBJ_msg_text_mask_center = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 37u));
+                mpOBJ_msg_text_Null_txt = static_cast<cGUIObjNull*>(getObjectFromId(3u, 39u));
+                if (mpINST_Null_all != nullptr) {
+                    mpINST_Null_all->setVisible(false);
+                    if (mpINST_Null_all != nullptr) {
+                        mpINST_Null_all->setExecute(false);
+                    }
+                }
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateInit);
+            } else {
+                cGUIObject* t2 = getObjectFromId(3u, 31u);
+                if (t2 != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296)) & 247;
+                    mpOBJ_msg_texts.elems[3] = static_cast<cGUIObjMessage*>(t2);
+                }
+                mpOBJ_msg_text_caret = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 34u));
+                mpOBJ_msg_text_wallpaper = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 40u));
+                mpOBJ_msg_text_mask_center = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 37u));
+                mpOBJ_msg_text_Null_txt = static_cast<cGUIObjNull*>(getObjectFromId(3u, 39u));
+                if (mpINST_Null_all != nullptr) {
+                    mpINST_Null_all->setVisible(false);
+                    if (mpINST_Null_all != nullptr) {
+                        mpINST_Null_all->setExecute(false);
+                    }
+                }
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateInit);
+            }
+        } else {
+            cGUIObject* t1 = getObjectFromId(3u, 30u);
+            if (t1 != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 296)) & 247;
+                mpOBJ_msg_texts.elems[2] = static_cast<cGUIObjMessage*>(t1);
+                cGUIObject* t2 = getObjectFromId(3u, 31u);
+                if (t2 != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296)) & 247;
+                    mpOBJ_msg_texts.elems[3] = static_cast<cGUIObjMessage*>(t2);
+                }
+                mpOBJ_msg_text_caret = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 34u));
+                mpOBJ_msg_text_wallpaper = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 40u));
+                mpOBJ_msg_text_mask_center = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 37u));
+                mpOBJ_msg_text_Null_txt = static_cast<cGUIObjNull*>(getObjectFromId(3u, 39u));
+                if (mpINST_Null_all != nullptr) {
+                    mpINST_Null_all->setVisible(false);
+                    if (mpINST_Null_all != nullptr) {
+                        mpINST_Null_all->setExecute(false);
+                    }
+                }
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateInit);
+            } else {
+                cGUIObject* t2 = getObjectFromId(3u, 31u);
+                if (t2 != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296)) & 247;
+                    mpOBJ_msg_texts.elems[3] = static_cast<cGUIObjMessage*>(t2);
+                }
+                mpOBJ_msg_text_caret = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 34u));
+                mpOBJ_msg_text_wallpaper = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 40u));
+                mpOBJ_msg_text_mask_center = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 37u));
+                mpOBJ_msg_text_Null_txt = static_cast<cGUIObjNull*>(getObjectFromId(3u, 39u));
+                if (mpINST_Null_all != nullptr) {
+                    mpINST_Null_all->setVisible(false);
+                    if (mpINST_Null_all != nullptr) {
+                        mpINST_Null_all->setExecute(false);
+                    }
+                }
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateInit);
+            }
+        }
+    } else {
+        cGUIObject* t0 = getObjectFromId(3u, 29u);
+        if (t0 != nullptr) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 296)) & 247;
+            mpOBJ_msg_texts.elems[1] = static_cast<cGUIObjMessage*>(t0);
+            cGUIObject* t1 = getObjectFromId(3u, 30u);
+            if (t1 != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 296)) & 247;
+                mpOBJ_msg_texts.elems[2] = static_cast<cGUIObjMessage*>(t1);
+                cGUIObject* t2 = getObjectFromId(3u, 31u);
+                if (t2 != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296)) & 247;
+                    mpOBJ_msg_texts.elems[3] = static_cast<cGUIObjMessage*>(t2);
+                }
+                mpOBJ_msg_text_caret = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 34u));
+                mpOBJ_msg_text_wallpaper = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 40u));
+                mpOBJ_msg_text_mask_center = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 37u));
+                mpOBJ_msg_text_Null_txt = static_cast<cGUIObjNull*>(getObjectFromId(3u, 39u));
+                if (mpINST_Null_all != nullptr) {
+                    mpINST_Null_all->setVisible(false);
+                    if (mpINST_Null_all != nullptr) {
+                        mpINST_Null_all->setExecute(false);
+                    }
+                }
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateInit);
+            } else {
+                cGUIObject* t2 = getObjectFromId(3u, 31u);
+                if (t2 != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296)) & 247;
+                    mpOBJ_msg_texts.elems[3] = static_cast<cGUIObjMessage*>(t2);
+                }
+                mpOBJ_msg_text_caret = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 34u));
+                mpOBJ_msg_text_wallpaper = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 40u));
+                mpOBJ_msg_text_mask_center = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 37u));
+                mpOBJ_msg_text_Null_txt = static_cast<cGUIObjNull*>(getObjectFromId(3u, 39u));
+                if (mpINST_Null_all != nullptr) {
+                    mpINST_Null_all->setVisible(false);
+                    if (mpINST_Null_all != nullptr) {
+                        mpINST_Null_all->setExecute(false);
+                    }
+                }
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateInit);
+            }
+        } else {
+            cGUIObject* t1 = getObjectFromId(3u, 30u);
+            if (t1 != nullptr) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t1) + 296)) & 247;
+                mpOBJ_msg_texts.elems[2] = static_cast<cGUIObjMessage*>(t1);
+                cGUIObject* t2 = getObjectFromId(3u, 31u);
+                if (t2 != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296)) & 247;
+                    mpOBJ_msg_texts.elems[3] = static_cast<cGUIObjMessage*>(t2);
+                }
+                mpOBJ_msg_text_caret = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 34u));
+                mpOBJ_msg_text_wallpaper = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 40u));
+                mpOBJ_msg_text_mask_center = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 37u));
+                mpOBJ_msg_text_Null_txt = static_cast<cGUIObjNull*>(getObjectFromId(3u, 39u));
+                if (mpINST_Null_all != nullptr) {
+                    mpINST_Null_all->setVisible(false);
+                    if (mpINST_Null_all != nullptr) {
+                        mpINST_Null_all->setExecute(false);
+                    }
+                }
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateInit);
+            } else {
+                cGUIObject* t2 = getObjectFromId(3u, 31u);
+                if (t2 != nullptr) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t2) + 296)) & 247;
+                    mpOBJ_msg_texts.elems[3] = static_cast<cGUIObjMessage*>(t2);
+                }
+                mpOBJ_msg_text_caret = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 34u));
+                mpOBJ_msg_text_wallpaper = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 40u));
+                mpOBJ_msg_text_mask_center = static_cast<cGUIObjPolygon*>(getObjectFromId(3u, 37u));
+                mpOBJ_msg_text_Null_txt = static_cast<cGUIObjNull*>(getObjectFromId(3u, 39u));
+                if (mpINST_Null_all != nullptr) {
+                    mpINST_Null_all->setVisible(false);
+                    if (mpINST_Null_all != nullptr) {
+                        mpINST_Null_all->setExecute(false);
+                    }
+                }
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIInputText::updateInit);
+            }
+        }
+    }
 }
 
 void uGUIInputText::kill() {

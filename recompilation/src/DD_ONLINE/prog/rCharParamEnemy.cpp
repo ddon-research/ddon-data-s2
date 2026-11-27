@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCharParamEnemy.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -19,20 +17,6 @@
 
 const MtDTI& rCharParamEnemy::getDTI() const {
     return rCharParamEnemy::DTI;
-}
-
-inline void* rCharParamEnemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCharParamEnemy::DTI)->memAlloc(sz, align, rCharParamEnemy::DTI.getID());
-}
-
-inline void rCharParamEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCharParamEnemy::DTI)->memFree(p_addr);
-}
-
-inline rCharParamEnemy::rCharParamEnemy() {
-    setAttribute(22u);
-    mFlgEnemyFly = false;
-    mpCharParamEnemy = nullptr;
 }
 
 rCharParamEnemy::~rCharParamEnemy() {

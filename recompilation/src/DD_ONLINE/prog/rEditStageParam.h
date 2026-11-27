@@ -365,3 +365,40 @@ inline bool rEditStageParam::List::save(MtDataWriter& w) {
     }
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rEditStageParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEditStageParam::DTI)->memAlloc(sz, align, ::rEditStageParam::DTI.::MtDTI::getID());
+}
+
+inline void rEditStageParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEditStageParam::DTI)->memFree(p_addr);
+}
+
+inline rEditStageParam::rEditStageParam() {
+    this->::cResource::setAttribute(18u);
+    this->::cResource::clear();
+    this->mpArrayInfo = nullptr;
+    this->mArrayInfoNum = 0;
+    this->mpArrayList = nullptr;
+    this->mArrayListNum = 0;
+}
+
+inline void rEditStageParam::Info::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEditStageParam::Info::DTI)->memFree(p_addr);
+}
+
+inline void* rEditStageParam::Info::WeatherData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEditStageParam::Info::WeatherData::DTI)->memAlloc(sz, align, ::rEditStageParam::Info::WeatherData::DTI.::MtDTI::getID());
+}
+
+inline void rEditStageParam::Info::WeatherData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEditStageParam::Info::WeatherData::DTI)->memFree(p_addr);
+}
+
+inline void rEditStageParam::List::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEditStageParam::List::DTI)->memFree(p_addr);
+}

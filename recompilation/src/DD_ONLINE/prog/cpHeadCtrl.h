@@ -129,3 +129,15 @@ inline void cpHeadCtrl::setAngleSpeedRate(f32 rate) {
 inline void cpHeadCtrl::setPitchSpeedRate(f32 rate) {
     this->mPitchSpeedRate = rate;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpHeadCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpHeadCtrl::DTI);
+}
+
+inline void cpHeadCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpHeadCtrl::DTI)->memFree(p_addr);
+}

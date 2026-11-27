@@ -49,10 +49,6 @@ void* uSimSoftBody::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uSimSoftBody::DTI)->memAlloc(sz, align, uSimSoftBody::DTI.mID);
 }
 
-inline void uSimSoftBody::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSimSoftBody::DTI)->memFree(p_addr);
-}
-
 uSimSoftBody::uSimSoftBody() {
     DDON_STUB("uSimSoftBody::uSimSoftBody")
     /* stub */
@@ -401,9 +397,8 @@ u32 uSimSoftBody::getTargetJointNum() const {
     return mpTargetUnit->mJointNum;
 }
 
-__attribute__((weak)) bool uSimSoftBody::isTargetPartsDisp(u32 no) const {
-    DDON_STUB("uSimSoftBody::isTargetPartsDisp")
-    return {};
+bool uSimSoftBody::isTargetPartsDisp(u32 no) const {
+    return ((static_cast<unsigned long>(mpTargetUnit->mPartsDisp[no >> 5]) >> static_cast<unsigned long>(no & 31u)) & 1ul) != 0;
 }
 
 const MtVector3& uSimSoftBody::getTargetPos() const {

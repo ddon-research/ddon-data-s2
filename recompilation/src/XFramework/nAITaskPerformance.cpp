@@ -19,10 +19,6 @@ void* nAI::TaskPerformanceInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nAI::TaskPerformanceInfo::DTI)->memAlloc(sz, align, ::nAI::TaskPerformanceInfo::DTI.mID);
 }
 
-inline void nAI::TaskPerformanceInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nAI::TaskPerformanceInfo::DTI)->memFree(p_addr);
-}
-
 void nAI::TaskPerformanceInfo::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nAI::TaskPerformanceInfo::DTI)->memFree(p_addr);
 }
@@ -77,17 +73,12 @@ inline nAI::TaskPerformanceInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 nAI::TaskPerformanceInfo::MyDTI nAI::TaskPerformanceInfo::DTI("nAI::TaskPerformanceInfo", &::MtObject::DTI, 40ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nAI::TaskPerformanceInfo::MyDTI::newInstance() const {
-    DDON_STUB("nAI::TaskPerformanceInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* nAI::TaskPerformanceInfo::MyDTI::newInstance() const {
+    return new (16u) ::nAI::TaskPerformanceInfo;
 }
 
 const MtDTI& nAI::TaskPerformanceInfo::LOD::getDTI() const {
     return nAI::TaskPerformanceInfo::LOD::DTI;
-}
-
-inline void nAI::TaskPerformanceInfo::LOD::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nAI::TaskPerformanceInfo::LOD::DTI)->memFree(p_addr);
 }
 
 void nAI::TaskPerformanceInfo::LOD::createProperty(MtPropertyList& s) {

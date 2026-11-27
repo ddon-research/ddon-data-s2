@@ -355,6 +355,10 @@ inline void* uGUIMenuAreaInfo::cListItem::operator new(size_t sz, void* p_addr) 
     return p_addr;
 }
 
+inline uGUIMenuAreaInfo::cListItem::cListItem() : mpObjMsgWeeklyPtClass(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgWeeklyPt(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgNextPtClass(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgNextPt(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgAreaRankVal(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgAreaRank(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgAreaName(static_cast<cGUIObjMessage*>(nullptr)), mpInstAnimIcon(static_cast<cGUIInstAnimation*>(nullptr)) {
+    this->::uGUIBase::cScrollListItemBase::mItemType = 2;
+}
+
 inline void* uGUIMenuAreaInfo::cHeaderItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -370,4 +374,40 @@ inline void* uGUIMenuAreaInfo::cListInfo::operator new(size_t sz, void* p_addr) 
 
 inline void* uGUIMenuAreaInfo::cHeaderInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIMenuAreaInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::DTI);
+}
+
+inline void uGUIMenuAreaInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIMenuAreaInfo::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cListItem::DTI)->memAlloc(sz, align, ::uGUIMenuAreaInfo::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMenuAreaInfo::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIMenuAreaInfo::cHeaderItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cHeaderItem::DTI)->memAlloc(sz, align, ::uGUIMenuAreaInfo::cHeaderItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMenuAreaInfo::cHeaderItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cHeaderItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMenuAreaInfo::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cListInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMenuAreaInfo::cHeaderInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMenuAreaInfo::cHeaderInfo::DTI)->memFree(p_addr);
 }

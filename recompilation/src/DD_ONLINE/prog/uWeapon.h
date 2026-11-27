@@ -159,3 +159,71 @@ inline rModel* uWeapon::getModelRes() {
 inline uModel* uWeapon::getOwner() {
     return this->mpOwner;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* uWeapon::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uWeapon::DTI)->memAlloc(sz, align, ::uWeapon::DTI.::MtDTI::getID());
+}
+
+inline void uWeapon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uWeapon::DTI)->memFree(p_addr);
+}
+
+inline uWeapon::uWeapon() {
+    this->mpOwner = nullptr;
+    this->mCnsJointNo[0] = -1;
+    this->mCnsJointNo[1] = -1;
+    this->mCnsRot[0].x = ::MtVector3::Zero.x;
+    this->mCnsRot[0].y = ::MtVector3::Zero.y;
+    this->mCnsRot[0].z = ::MtVector3::Zero.z;
+    this->mCnsRot[0].pad_ = 0.0f;
+    this->mCnsTrans[1].x = ::MtVector3::Zero.x;
+    this->mCnsTrans[1].y = ::MtVector3::Zero.y;
+    this->mCnsTrans[1].z = ::MtVector3::Zero.z;
+    this->mCnsTrans[1].pad_ = 0.0f;
+    this->mCnsTrans[0].x = this->mCnsTrans[1].x;
+    this->mCnsTrans[0].y = this->mCnsTrans[1].y;
+    this->mCnsTrans[0].z = this->mCnsTrans[1].z;
+    this->mCnsTrans[0].pad_ = 0.0f;
+    this->mMode = static_cast<uWeapon::WPN_MODE>(0);
+    this->mStatus = static_cast<uWeapon::WPN_MODE>(2);
+    this->mWepCategory = static_cast<nWeapon::WEAPON_CATEGORY>(0);
+    this->mpWepResData = nullptr;
+    this->mOffsetRot.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mOffsetRot.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mOffsetRot.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mOffsetRot.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mOffsetRot.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mOffsetRot.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mOffsetRot.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mOffsetRot.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mOffsetRot.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mOffsetRot.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mOffsetRot.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mOffsetRot.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mOffsetRot.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mOffsetRot.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mOffsetRot.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mOffsetRot.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mOffsetTrans.x = ::MtVector3::Zero.x;
+    this->mOffsetTrans.y = ::MtVector3::Zero.y;
+    this->mOffsetTrans.z = ::MtVector3::Zero.z;
+    this->mOffsetTrans.pad_ = 0.0f;
+    this->mCnsJntNo = 255;
+    this->mWeaponScale = 1.0f;
+    this->mFatRate = 1.0f;
+    this->mOffsetNo = 0;
+    this->mConstType = 0;
+    this->mPartsPatern = 0;
+    this->mColorPatern = -1;
+    this->mModelType = 10;
+    this->mOtherInfo = 0;
+    this->mHideInfo = 0;
+    this->mpMontage = nullptr;
+    this->mMontageType = 0;
+    this->mpModelRes = nullptr;
+    this->mDisp = true;
+}

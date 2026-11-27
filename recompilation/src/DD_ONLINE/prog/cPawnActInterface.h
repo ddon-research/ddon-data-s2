@@ -39,6 +39,14 @@ class uCoord;
 class uDDOModel;
 class uHuman;
 
+enum ACTINTER_CODERET
+{
+    ACTINTER_CODERET_END = 0,
+    ACTINTER_CODERET_BREAK = 1,
+    ACTINTER_CODERET_CONTINUE = 2,
+    ACTINTER_CODERET_NUM = 3,
+};
+
 // Declarations
 class cPawnActInterActArrow;
 class cPawnActInterActArrowChange;
@@ -96,14 +104,6 @@ class cPawnActInterWaitFootwork;
 class cPawnActInterWarp;
 class cPawnActInterface;
 struct stMoveAngleCtrl;
-
-enum ACTINTER_CODERET
-{
-    ACTINTER_CODERET_END = 0,
-    ACTINTER_CODERET_BREAK = 1,
-    ACTINTER_CODERET_CONTINUE = 2,
-    ACTINTER_CODERET_NUM = 3,
-};
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -3670,4 +3670,356 @@ inline cPawnActInterWarp::cPawnActInterWarp() {
 
 inline void* cPawnActInterface::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cPawnActInterActArrow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActArrow::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterActArrowChange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterActArrowChange::DTI)->memAlloc(sz, align, ::cPawnActInterActArrowChange::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterActArrowChange::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActArrowChange::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActBindAnchor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActBindAnchor::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActChant::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActChant::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActChargeMove::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActChargeMove::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActCircleCancel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActCircleCancel::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActElementArrow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActElementArrow::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActElementChange::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActElementChange::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActEnchant::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActEnchant::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActLight::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActLight::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterActMedalChange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterActMedalChange::DTI)->memAlloc(sz, align, ::cPawnActInterActMedalChange::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterActMedalChange::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActMedalChange::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActNo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActNo::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActProvoke::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActProvoke::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterActRapid::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterActRapid::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterAtkHerald::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterAtkHerald::DTI)->memAlloc(sz, align, ::cPawnActInterAtkHerald::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterAtkHerald::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterAtkHerald::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterAutoMotion::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterAutoMotion::DTI)->memAlloc(sz, align, ::cPawnActInterAutoMotion::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterAutoMotion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterAutoMotion::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterBase::DTI)->memAlloc(sz, align, ::cPawnActInterBase::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterBase::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterBreak::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterBreak::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterCliffClimb::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterCliffClimb::DTI)->memAlloc(sz, align, ::cPawnActInterCliffClimb::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterCliffClimb::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterCliffClimb::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterClimbBegin::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterClimbBegin::DTI)->memAlloc(sz, align, ::cPawnActInterClimbBegin::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterClimbBegin::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterClimbBegin::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterCommon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterCommon::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterDamage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterDamage::DTI)->memAlloc(sz, align, ::cPawnActInterDamage::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterDamage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterDamage::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cPawnActInterDisableMgr::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterDisableMgr::DTI);
+}
+
+inline void cPawnActInterDisableMgr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterDisableMgr::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterEnemyClimb::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterEnemyClimb::DTI)->memAlloc(sz, align, ::cPawnActInterEnemyClimb::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterEnemyClimb::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterEnemyClimb::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterEnemyClimbAttack::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterEnemyClimbAttack::DTI)->memAlloc(sz, align, ::cPawnActInterEnemyClimbAttack::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterEnemyClimbAttack::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterEnemyClimbAttack::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterEnemyClimbMove::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterEnemyClimbMove::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterEscape::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterEscape::DTI)->memAlloc(sz, align, ::cPawnActInterEscape::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterEscape::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterEscape::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterEscapeNotice::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterEscapeNotice::DTI)->memAlloc(sz, align, ::cPawnActInterEscapeNotice::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterEscapeNotice::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterEscapeNotice::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterFree::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterFree::DTI)->memAlloc(sz, align, ::cPawnActInterFree::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterFree::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterFree::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterGuard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterGuard::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterGuardCancel::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterGuardCancel::DTI)->memAlloc(sz, align, ::cPawnActInterGuardCancel::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterGuardCancel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterGuardCancel::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterHold::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterHold::DTI)->memAlloc(sz, align, ::cPawnActInterHold::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterHold::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterHold::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterHoldWait::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterHoldWait::DTI)->memAlloc(sz, align, ::cPawnActInterHoldWait::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterHoldWait::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterHoldWait::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterIfLen::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterIfLen::DTI)->memAlloc(sz, align, ::cPawnActInterIfLen::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterIfLen::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterIfLen::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterLantern::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterLantern::DTI)->memAlloc(sz, align, ::cPawnActInterLantern::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterLantern::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterLantern::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterMove::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterMove::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterMoveAlchemyTrap::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveAlchemyTrap::DTI)->memAlloc(sz, align, ::cPawnActInterMoveAlchemyTrap::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterMoveAlchemyTrap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveAlchemyTrap::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterMoveEnergySpot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveEnergySpot::DTI)->memAlloc(sz, align, ::cPawnActInterMoveEnergySpot::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterMoveEnergySpot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveEnergySpot::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterMoveJump::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveJump::DTI)->memAlloc(sz, align, ::cPawnActInterMoveJump::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterMoveJump::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveJump::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterMoveLightingAnchor::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveLightingAnchor::DTI)->memAlloc(sz, align, ::cPawnActInterMoveLightingAnchor::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterMoveLightingAnchor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveLightingAnchor::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterMoveReksElement::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveReksElement::DTI)->memAlloc(sz, align, ::cPawnActInterMoveReksElement::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterMoveReksElement::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterMoveReksElement::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterRecover::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterRecover::DTI)->memAlloc(sz, align, ::cPawnActInterRecover::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterRecover::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterRecover::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterReload::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterReload::DTI)->memAlloc(sz, align, ::cPawnActInterReload::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterReload::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterReload::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterRot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterRot::DTI)->memAlloc(sz, align, ::cPawnActInterRot::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterRot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterRot::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterSearchCorePoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterSearchCorePoint::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterSearchMaskPoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterSearchMaskPoint::DTI)->memAlloc(sz, align, ::cPawnActInterSearchMaskPoint::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterSearchMaskPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterSearchMaskPoint::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterStandOff::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterStandOff::DTI)->memAlloc(sz, align, ::cPawnActInterStandOff::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterStandOff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterStandOff::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterStandOffHmEm::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterStandOffHmEm::DTI)->memAlloc(sz, align, ::cPawnActInterStandOffHmEm::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterStandOffHmEm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterStandOffHmEm::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterTalkToPl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterTalkToPl::DTI)->memAlloc(sz, align, ::cPawnActInterTalkToPl::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterTalkToPl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterTalkToPl::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterWait::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterWait::DTI)->memAlloc(sz, align, ::cPawnActInterWait::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterWait::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterWait::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterWaitFootwork::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterWaitFootwork::DTI)->memAlloc(sz, align, ::cPawnActInterWaitFootwork::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterWaitFootwork::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterWaitFootwork::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnActInterWarp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnActInterWarp::DTI)->memAlloc(sz, align, ::cPawnActInterWarp::DTI.::MtDTI::getID());
+}
+
+inline void cPawnActInterWarp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterWarp::DTI)->memFree(p_addr);
+}
+
+inline void cPawnActInterface::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnActInterface::DTI)->memFree(p_addr);
 }

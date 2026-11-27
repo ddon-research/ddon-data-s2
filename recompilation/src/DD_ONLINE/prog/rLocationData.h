@@ -137,3 +137,57 @@ inline void* rLocationData::operator new(size_t sz, void* p_addr) {
 inline void* rLocationData::Data::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rLocationData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLocationData::DTI)->memAlloc(sz, align, ::rLocationData::DTI.::MtDTI::getID());
+}
+
+inline void rLocationData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLocationData::DTI)->memFree(p_addr);
+}
+
+inline rLocationData::rLocationData() {
+    this->::cResource::setAttribute(22u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void rLocationData::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayNum != 0) {
+        do {
+            this->mpArray[i0].~Data();
+            i0 += 1u;
+        } while (i0 < this->mArrayNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rLocationData::DTI)->memFree(static_cast<void*>(this->mpArray));
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void* rLocationData::Data::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLocationData::Data::DTI)->memAlloc(sz, align, ::rLocationData::Data::DTI.::MtDTI::getID());
+}
+
+inline void rLocationData::Data::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLocationData::Data::DTI)->memFree(p_addr);
+}
+
+inline rLocationData::Data::Data() {
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mRadius = 100.0f;
+    this->mAngle = 0.0f;
+    this->mRange = 360.0f;
+    this->mVersion = 0;
+    this->mSafeZone = false;
+    this->mMessageNo = 0;
+    this->mType = 0;
+    this->mWarpPointId = 0;
+}

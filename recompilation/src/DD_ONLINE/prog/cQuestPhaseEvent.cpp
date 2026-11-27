@@ -15,16 +15,8 @@ const MtDTI& cQuestPhaseEvent::getDTI() const {
     return cQuestPhaseEvent::DTI;
 }
 
-inline MtAllocator* cQuestPhaseEvent::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cQuestPhaseEvent::DTI);
-}
-
 void* cQuestPhaseEvent::operator new(size_t sz, u32 align) {
     return cQuestPhaseEvent::getAllocator()->memAlloc(sz, align, cQuestPhaseEvent::DTI.getID());
-}
-
-inline void cQuestPhaseEvent::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPhaseEvent::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool cQuestPhaseEvent::callPhaseEvent(cQuestPhaseState* pState, cQuestPhaseEvent* pEvent, const cQuestPhaseEvent::ParamArray& paramList) {
@@ -186,14 +178,6 @@ MtObject* cQuestPhaseEvent::MyDTI::newInstance() const {
 
 const MtDTI& cQuestPhaseEvent::cParam::getDTI() const {
     return cQuestPhaseEvent::cParam::DTI;
-}
-
-inline void* cQuestPhaseEvent::cParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestPhaseEvent::cParam::DTI)->memAlloc(sz, align, cQuestPhaseEvent::cParam::DTI.getID());
-}
-
-inline void cQuestPhaseEvent::cParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPhaseEvent::cParam::DTI)->memFree(p_addr);
 }
 
 cQuestPhaseEvent::cParam::~cParam() {

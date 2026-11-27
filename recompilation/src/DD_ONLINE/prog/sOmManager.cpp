@@ -38,6 +38,7 @@
 #include "rGatheringItem.h"
 #include "rObjCollision.h"
 #include "rOmKey.h"
+#include "rOmLoadList.h"
 #include "rOmParam.h"
 #include "../../XFramework/rRenderTargetTexture.h"
 #include "rShlParamList.h"
@@ -226,16 +227,8 @@ const MtDTI& sOmManager::getDTI() const {
     return sOmManager::DTI;
 }
 
-inline MtAllocator* sOmManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sOmManager::DTI);
-}
-
 void* sOmManager::operator new(size_t sz, u32 align) {
     return sOmManager::getAllocator()->memAlloc(sz, align, sOmManager::DTI.getID());
-}
-
-inline void sOmManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sOmManager::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool sOmManager::addOmArcLoader(s32 omID, u32 thisID, f32 len, u32 prio, bool bOmIns) {
@@ -248,9 +241,25 @@ __attribute__((weak)) bool sOmManager::isEnableArc(s32 omID) {
     return {};
 }
 
-__attribute__((weak)) void sOmManager::addOmArcLoaderLock(s32 omID, u32 thisID, f32 len, u32 prio, bool bOmIns) {
-    DDON_STUB("sOmManager::addOmArcLoaderLock")
-    /* stub */
+void sOmManager::addOmArcLoaderLock(s32 omID, u32 thisID, f32 len, u32 prio, bool bOmIns) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (addOmArcLoader(omID, u32(), len, prio, false)) {
+            mbSortLoader = true;
+        }
+    } else {
+        if (addOmArcLoader(omID, thisID, len, prio, false)) {
+            mbSortLoader = true;
+        }
+    }
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
 }
 
 __attribute__((weak)) void sOmManager::releaseOmArcLoaderLock(s32 omID, u32 thisID) {
@@ -258,7 +267,7 @@ __attribute__((weak)) void sOmManager::releaseOmArcLoaderLock(s32 omID, u32 this
     /* stub */
 }
 
-void sOmManager::releaseOmArcLoaderAll() {
+__attribute__((weak)) void sOmManager::releaseOmArcLoaderAll() {
     if (mArcLoader.mAutoDelete) {
         u32 v3_0;
         if (mArcLoader.mLength != 0) {
@@ -577,17 +586,6 @@ void sOmManager::fadeIn(f32 frame) {
     mBellTimer = 450.0f;
 }
 
-inline void sOmManager::moveBell() {
-    if ((sPlayerManager::mpInstance)->mpMyPlayer == nullptr) {
-        return;
-    }
-    if (mBellTimer > 0.0f) {
-        mBellTimer = mBellTimer - (sMain::mpInstance)->mDeltaTime;
-    } else {
-        mbBell = true;
-    }
-}
-
 bool sOmManager::isDoor(u32 uniqueId) {
     if (mRefOmCtrlArray.mLength != 0) {
         unsigned int i0 = 0;
@@ -755,14 +753,118 @@ bool sOmManager::isMoveFloorNow() {
     return mbMoveFloorNow;
 }
 
-__attribute__((weak)) MtVector3 sOmManager::getOmRealPos(u32 index) {
-    DDON_STUB("sOmManager::getOmRealPos")
-    __builtin_unreachable();
+MtVector3 sOmManager::getOmRealPos(u32 index) {
+    if (index < mRefOmCtrlArray.mLength) {
+        if (mRefOmCtrlArray.getBuffer()[static_cast<int>(index)] != nullptr) {
+            return static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mLot.mPos;
+        }
+    }
+    return MtVector3::Zero;
 }
 
-__attribute__((weak)) u32 sOmManager::getOmMapIcon(u32 index) {
-    DDON_STUB("sOmManager::getOmMapIcon")
-    return {};
+u32 sOmManager::getOmMapIcon(u32 index) {
+    if (index < mRefOmCtrlArray.mLength) {
+        if (mRefOmCtrlArray.getBuffer()[static_cast<int>(index)] != nullptr) {
+            if (!static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mbMapNone) {
+                if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mpOmParam != nullptr) {
+                    if ((static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mpOmParam->mUseComponent & 2u) != 0) {
+                        return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                    } else {
+                        if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID <= 522231) {
+                            if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID <= 512123) {
+                                if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID <= 510469) {
+                                    switch (static_cast<unsigned int>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID - 510430)) {
+                                        case 0:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 1:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 2:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 11:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 12:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 13:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 14:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 15:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 16:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 17:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        case 18:
+                                        {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        }
+                                        default:
+                                        {
+                                            return static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mpOmParam->mMapIcon;
+                                        }
+                                    }
+                                } else {
+                                    if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID != 510470) {
+                                        if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID == 510471) {
+                                            return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                        } else {
+                                            return static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mpOmParam->mMapIcon;
+                                        }
+                                    } else {
+                                        return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                    }
+                                }
+                            } else {
+                                if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID == 512124) {
+                                    return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                } else {
+                                    if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID == 512126) {
+                                        return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                                    } else {
+                                        return static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mpOmParam->mMapIcon;
+                                    }
+                                }
+                            }
+                        } else {
+                            if (static_cast<unsigned int>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mOmID - 522232) <= 4) {
+                                return static_cast<u32>(static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mMapIcon);
+                            } else {
+                                return static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mpOmParam->mMapIcon;
+                            }
+                        }
+                    }
+                } else {
+                    return 0;
+                }
+            } else {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) bool sOmManager::isClosedByCtrl(cOmControl* pctrl) {
@@ -785,9 +887,21 @@ __attribute__((weak)) void sOmManager::getOmMapErase(u32 index, MtVector3& out_p
     /* stub */
 }
 
-__attribute__((weak)) void sOmManager::getOmBadStatus(u32 index, MtVector3& out_pos, f32& out_radius, f32& out_height) {
-    DDON_STUB("sOmManager::getOmBadStatus")
-    /* stub */
+void sOmManager::getOmBadStatus(u32 index, MtVector3& out_pos, f32& out_radius, f32& out_height) {
+    if (index < mRefOmCtrlArray.mLength) {
+        if (mRefOmCtrlArray.getBuffer()[static_cast<int>(index)] != nullptr) {
+            if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mpOmParam != nullptr) {
+                if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mpOmParam->mMapIcon == 37) {
+                    out_pos.x = static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mLot.mBadPos.x;
+                    out_pos.y = static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mLot.mBadPos.y;
+                    out_pos.z = static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mLot.mBadPos.z;
+                    out_pos.pad_ = 0.0f;
+                    out_radius = 100.0f * static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mLot.mBadRadius;
+                    out_height = 100.0f * static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(index)])->mLot.mBadHeight;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sOmManager::callBackUseItemReq(void* param) {
@@ -956,14 +1070,119 @@ void sOmManager::deleteBad(u32 omID) {
     abort();
 }
 
-__attribute__((weak)) void sOmManager::startCutscene(const MtTypedArray<cEventParam::cOmList>* pomlist) {
-    DDON_STUB("sOmManager::startCutscene")
-    /* stub */
+void sOmManager::startCutscene(const MtTypedArray<cEventParam::cOmList>* pomlist) {
+    mbCutscene = true;
+    mpCutSceneOmList = pomlist;
+    mCutsceneLoadFrame = 0;
+    mCutsceneLoadOMIDNum = 0;
+    mCutsceneMoveOMIDNum = 0;
+    u32 num = pomlist->mLength;
+    if (num != 0) {
+        u32 v0_0 = 0;
+        const MtTypedArray<cEventParam::cOmList>* v0_3 = pomlist;
+        for (unsigned int i0_8 = 0;;) {
+            MtObject* * t0 = v0_3->mpArray;
+            MtObject* t1 = t0[i0_8];
+            if (t1 != nullptr) {
+                unsigned short t2 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t1) + 12);
+                if (t2 == 4) {
+                    if (v0_0 <= 63u) {
+                        unsigned int t3 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + 8);
+                        mCutsceneLoadOMID[v0_0] = static_cast<int>(t3);
+                        bool t4 = cSystem::mJobSafe;
+                        bool t5 = mThreadSafe;
+                        if (t4 || t5) {
+                            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                                abort();
+                                return;
+                            }
+                            float t7 = 10000.0f;
+                            if (addOmArcLoader(static_cast<s32>(t3), u32(), t7, 0u, false)) {
+                                mbSortLoader = true;
+                            }
+                        } else {
+                            float t7 = 10000.0f;
+                            if (addOmArcLoader(static_cast<s32>(t3), t2, t7, 0u, false)) {
+                                mbSortLoader = true;
+                            }
+                        }
+                        bool t9 = cSystem::mJobSafe;
+                        bool t10 = mThreadSafe;
+                        if (t9 || t10) {
+                            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                                abort();
+                                return;
+                            }
+                        }
+                        u32 t12 = mCutsceneLoadOMIDNum;
+                        mCutsceneLoadOMIDNum = t12 + 1u;
+                        if ((i0_8 + 1u) >= num) {
+                            break;
+                        } else {
+                            v0_0 = t12 + 1u;
+                            v0_3 = mpCutSceneOmList;
+                            i0_8 = i0_8 + 1u;
+                        }
+                    } else {
+                        break;
+                    }
+                } else {
+                    if ((i0_8 + 1u) >= num) {
+                        break;
+                    } else {
+                        v0_3 = mpCutSceneOmList;
+                        i0_8 = i0_8 + 1u;
+                    }
+                }
+            } else {
+                if ((i0_8 + 1u) >= num) {
+                    break;
+                } else {
+                    v0_3 = mpCutSceneOmList;
+                    i0_8 = i0_8 + 1u;
+                }
+            }
+        }
+        if (num != 0) {
+            for (unsigned int i2_0 = 0;;) {
+                const MtTypedArray<cEventParam::cOmList>* t13 = mpCutSceneOmList;
+                MtObject* * t14 = t13->mpArray;
+                MtObject* t15 = t14[i2_0];
+                if (t15 != nullptr) {
+                    unsigned short t16 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t15) + 12);
+                    if (t16 == 3) {
+                        u32 t17 = mCutsceneLoadOMIDNum;
+                        if (t17 > 63u) {
+                            break;
+                        } else {
+                            unsigned int t18 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t15) + 8);
+                            u32 t19 = mCutsceneMoveOMIDNum;
+                            mCutsceneMoveOMID[t19] = static_cast<int>(t18);
+                            u32 t20 = mCutsceneMoveOMIDNum;
+                            mCutsceneMoveOMIDNum = t20 + 1u;
+                        }
+                    }
+                }
+                if ((i2_0 + 1u) < num) {
+                    i2_0 = i2_0 + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void sOmManager::endCutscene() {
-    DDON_STUB("sOmManager::endCutscene")
-    /* stub */
+void sOmManager::endCutscene() {
+    mbCutscene = false;
+    mpCutSceneOmList = nullptr;
+    u32 cnt = 0;
+    if (mCutsceneLoadOMIDNum != 0) {
+        do {
+            releaseOmArcLoaderLock(mCutsceneLoadOMID[cnt], 1u);
+            cnt += 1u;
+        } while (cnt < mCutsceneLoadOMIDNum);
+    }
 }
 
 void sOmManager::callBackInsSync(const COmData& data) {
@@ -1007,42 +1226,6 @@ uBaseModel* sOmManager::getLayoutUnit(u32 uniqueId) {
     return nullptr;
 }
 
-inline void sOmManager::initAQC() {
-    mbEnableUnitKill = true;
-    mLoadLength = 100.0f;
-    mbAQCtrl = false;
-    mAQCKillLength = 0.0f;
-    mAQCScale = 1.0f;
-    mbSaveAQCScale = false;
-    mSaveAQCScale = 1.0f;
-    mbBaseArea = false;
-    mAQCLODScale = 1.0f;
-    mOMDispLimitLength = 40.0f;
-    mOMDispLength = 40.0f;
-    mGrassDispLength = 40.0f;
-    mInsDispLimitLength = 100.0f;
-    mInsDispLength = 200.0f;
-    mCameraFrame = 0;
-    mCameraYawDiff = 0.0f;
-    mCameraYawDiffMin = 1.0f;
-    mCameraYawDiffMax = 0.9975f;
-    mCameraYawPer = 0.0f;
-    mCameraYaw[0].x = MtVector3::Zero.x;
-    mCameraYaw[0].y = MtVector3::Zero.y;
-    mCameraYaw[0].z = MtVector3::Zero.z;
-    mCameraYaw[0].pad_ = 0.0f;
-    mCameraYaw[1].x = MtVector3::Zero.x;
-    mCameraYaw[1].y = MtVector3::Zero.y;
-    mCameraYaw[1].z = MtVector3::Zero.z;
-    mCameraYaw[1].pad_ = 0.0f;
-    mInsLODDist[0] = 1000.0f;
-    mInsLODDist[1] = 8500.0f;
-    mInsLODDist[2] = 30000.0f;
-    mInsLODDistPan[0] = 1000.0f;
-    mInsLODDistPan[1] = 8500.0f;
-    mInsLODDistPan[2] = 30000.0f;
-}
-
 __attribute__((weak)) void sOmManager::moveAQC() {
     DDON_STUB("sOmManager::moveAQC")
     /* stub */
@@ -1053,7 +1236,7 @@ void sOmManager::setUnitGroup(bool flag, s32 omNo, u32 setGroup) {
     if (num != 0) {
         for (unsigned int i0_9 = 0;;) {
             if (mRefOmCtrlArray.getBuffer()[static_cast<int>(i0_9)] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0_9)]) + 216)) == static_cast<unsigned int>(omNo)) {
+                if (static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0_9)])->mLot.mOmID == omNo) {
                     uBaseModel* t0 = static_cast<cOmControl*>(mRefOmCtrlArray.getBuffer()[static_cast<int>(i0_9)])->getUnit();
                     if (t0 != nullptr) {
                         bool t1 = t0->checkUnitGroup(setGroup);
@@ -1207,8 +1390,270 @@ __attribute__((weak)) void sOmManager::move() {
 }
 
 __attribute__((weak)) void sOmManager::releaseAllOmCtrlDirect() {
-    DDON_STUB("sOmManager::releaseAllOmCtrlDirect")
-    /* stub */
+    mbDeleteAll = true;
+    u32 num = mpuOmIns.mLength;
+    if (num != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mpuOmIns.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<uOmSwingInstancing*>(mpuOmIns.getBuffer()[static_cast<int>(i0_3)])->kill();
+                mpuOmIns.getBuffer()[static_cast<int>(i0_3)] = nullptr;
+            }
+            if (num != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mpuOmIns.mAutoDelete) {
+        u32 v4_0;
+        if (mpuOmIns.mLength != 0) {
+            u32 v2_0 = mpuOmIns.mLength;
+            unsigned int i2_3 = 0;
+            u32 v3_0;
+            for (;;) {
+                if (mpuOmIns.mpArray[i2_3] != nullptr) {
+                    delete mpuOmIns.mpArray[i2_3];
+                    if ((i2_3 + 1u) < mpuOmIns.mLength) {
+                        v2_0 = mpuOmIns.mLength;
+                        i2_3 += 1u;
+                    } else {
+                        v3_0 = mpuOmIns.mLength;
+                        break;
+                    }
+                } else {
+                    if ((i2_3 + 1u) < v2_0) {
+                        i2_3 += 1u;
+                    } else {
+                        v3_0 = v2_0;
+                        break;
+                    }
+                }
+            }
+            v4_0 = v3_0;
+        } else {
+            v4_0 = 0;
+        }
+        memset(static_cast<void*>(mpuOmIns.mpArray), 0, static_cast<size_t>(v4_0) * 8);
+    }
+    mpuOmIns.mLength = 0;
+    if (mDelOmIns.mAutoDelete) {
+        u32 v8_0;
+        if (mDelOmIns.mLength != 0) {
+            u32 v6_0 = mDelOmIns.mLength;
+            unsigned int i6_3 = 0;
+            u32 v7_0;
+            for (;;) {
+                if (mDelOmIns.mpArray[i6_3] != nullptr) {
+                    delete mDelOmIns.mpArray[i6_3];
+                    if ((i6_3 + 1u) < mDelOmIns.mLength) {
+                        v6_0 = mDelOmIns.mLength;
+                        i6_3 += 1u;
+                    } else {
+                        v7_0 = mDelOmIns.mLength;
+                        break;
+                    }
+                } else {
+                    if ((i6_3 + 1u) < v6_0) {
+                        i6_3 += 1u;
+                    } else {
+                        v7_0 = v6_0;
+                        break;
+                    }
+                }
+            }
+            v8_0 = v7_0;
+        } else {
+            v8_0 = 0;
+        }
+        memset(static_cast<void*>(mDelOmIns.mpArray), 0, static_cast<size_t>(v8_0) * 8);
+    }
+    mDelOmIns.mLength = 0;
+    if (mOmIns.mLength != 0) {
+        u32 v10_0 = mOmIns.mLength;
+        for (unsigned int i10_3 = 0;;) {
+            if (mOmIns.mpArray[i10_3] != nullptr) {
+                delete mOmIns.mpArray[i10_3];
+                if ((i10_3 + 1u) < mOmIns.mLength) {
+                    v10_0 = mOmIns.mLength;
+                    i10_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i10_3 + 1u) < v10_0) {
+                    i10_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mOmIns.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mOmIns.mpArray));
+    }
+    mOmIns.mpArray = nullptr;
+    mOmIns.mBufsiz = 0;
+    mOmIns.mLength = 0;
+    if (mpuTreeIns.mLength != 0) {
+        unsigned int i12_3 = 0;
+        num = mpuTreeIns.mLength;
+        for (;;) {
+            if (mpuTreeIns.getBuffer()[static_cast<int>(i12_3)] != nullptr) {
+                static_cast<uOmSwingInstancing*>(mpuTreeIns.getBuffer()[static_cast<int>(i12_3)])->kill();
+                mpuTreeIns.getBuffer()[static_cast<int>(i12_3)] = nullptr;
+            }
+            if (num != (i12_3 + 1u)) {
+                i12_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mpuTreeIns.mAutoDelete) {
+        u32 v16_0;
+        if (mpuTreeIns.mLength != 0) {
+            u32 v14_0 = mpuTreeIns.mLength;
+            unsigned int i14_3 = 0;
+            u32 v15_0;
+            for (;;) {
+                if (mpuTreeIns.mpArray[i14_3] != nullptr) {
+                    delete mpuTreeIns.mpArray[i14_3];
+                    if ((i14_3 + 1u) < mpuTreeIns.mLength) {
+                        v14_0 = mpuTreeIns.mLength;
+                        i14_3 += 1u;
+                    } else {
+                        v15_0 = mpuTreeIns.mLength;
+                        break;
+                    }
+                } else {
+                    if ((i14_3 + 1u) < v14_0) {
+                        i14_3 += 1u;
+                    } else {
+                        v15_0 = v14_0;
+                        break;
+                    }
+                }
+            }
+            v16_0 = v15_0;
+        } else {
+            v16_0 = 0;
+        }
+        memset(static_cast<void*>(mpuTreeIns.mpArray), 0, static_cast<size_t>(v16_0) * 8);
+    }
+    mpuTreeIns.mLength = 0;
+    if (mTreeIns.mLength != 0) {
+        u32 v18_0 = mTreeIns.mLength;
+        for (unsigned int i18_3 = 0;;) {
+            if (mTreeIns.mpArray[i18_3] != nullptr) {
+                delete mTreeIns.mpArray[i18_3];
+                if ((i18_3 + 1u) < mTreeIns.mLength) {
+                    v18_0 = mTreeIns.mLength;
+                    i18_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i18_3 + 1u) < v18_0) {
+                    i18_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mTreeIns.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mTreeIns.mpArray));
+    }
+    mTreeIns.mpArray = nullptr;
+    mTreeIns.mBufsiz = 0;
+    mTreeIns.mLength = 0;
+    if (mRefOmCtrlArray.mLength != 0) {
+        u32 v20_0 = mRefOmCtrlArray.mLength;
+        for (unsigned int i20_3 = 0;;) {
+            if (mRefOmCtrlArray.mpArray[i20_3] != nullptr) {
+                delete mRefOmCtrlArray.mpArray[i20_3];
+                if ((i20_3 + 1u) < mRefOmCtrlArray.mLength) {
+                    v20_0 = mRefOmCtrlArray.mLength;
+                    i20_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i20_3 + 1u) < v20_0) {
+                    i20_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mRefOmCtrlArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRefOmCtrlArray.mpArray));
+    }
+    mRefOmCtrlArray.mpArray = nullptr;
+    mRefOmCtrlArray.mBufsiz = 0;
+    mRefOmCtrlArray.mLength = 0;
+    if (mAddOmCtrlArray.mLength != 0) {
+        u32 v22_0 = mAddOmCtrlArray.mLength;
+        for (unsigned int i22_3 = 0;;) {
+            if (mAddOmCtrlArray.mpArray[i22_3] != nullptr) {
+                delete mAddOmCtrlArray.mpArray[i22_3];
+                if ((i22_3 + 1u) < mAddOmCtrlArray.mLength) {
+                    v22_0 = mAddOmCtrlArray.mLength;
+                    i22_3 += 1u;
+                } else {
+                    break;
+                }
+            } else {
+                if ((i22_3 + 1u) < v22_0) {
+                    i22_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mAddOmCtrlArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddOmCtrlArray.mpArray));
+    }
+    mAddOmCtrlArray.mpArray = nullptr;
+    mAddOmCtrlArray.mBufsiz = 0;
+    mAddOmCtrlArray.mLength = 0;
+    if (mDelOmCtrlArray.mAutoDelete) {
+        u32 v26_0;
+        if (mDelOmCtrlArray.mLength != 0) {
+            u32 v24_0 = mDelOmCtrlArray.mLength;
+            unsigned int i24_3 = 0;
+            u32 v25_0;
+            for (;;) {
+                if (mDelOmCtrlArray.mpArray[i24_3] != nullptr) {
+                    delete mDelOmCtrlArray.mpArray[i24_3];
+                    if ((i24_3 + 1u) < mDelOmCtrlArray.mLength) {
+                        v24_0 = mDelOmCtrlArray.mLength;
+                        i24_3 += 1u;
+                    } else {
+                        v25_0 = mDelOmCtrlArray.mLength;
+                        break;
+                    }
+                } else {
+                    if ((i24_3 + 1u) < v24_0) {
+                        i24_3 += 1u;
+                    } else {
+                        v25_0 = v24_0;
+                        break;
+                    }
+                }
+            }
+            v26_0 = v25_0;
+        } else {
+            v26_0 = 0;
+        }
+        memset(static_cast<void*>(mDelOmCtrlArray.mpArray), 0, static_cast<size_t>(v26_0) * 8);
+    }
+    mDelOmCtrlArray.mLength = 0;
+    releaseOmArcLoaderAll();
+    mbDeleteAll = false;
 }
 
 __attribute__((weak)) void sOmManager::moveParallel(uintptr interlockAddr) {
@@ -1337,8 +1782,61 @@ void sOmManager::remove603000(cOmControl* pctrl) {
 }
 
 __attribute__((weak)) void sOmManager::releaseWarpList() {
-    DDON_STUB("sOmManager::releaseWarpList")
-    /* stub */
+    if (mWarpList.mLength != 0) {
+        u32 v0_0 = mWarpList.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mWarpList.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                delete mWarpList.mpArray[i0_3];
+                v1_0 = mWarpList.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mWarpList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mWarpList.mpArray));
+    }
+    mWarpList.mpArray = nullptr;
+    mWarpList.mBufsiz = 0;
+    mWarpList.mLength = 0;
+    if (mWarpArcLoader.mLength != 0) {
+        u32 v3_0 = mWarpArcLoader.mLength;
+        unsigned int i3_3 = 0;
+        u32 v4_0;
+        for (;;) {
+            if (mWarpArcLoader.mpArray[i3_3] == nullptr) {
+                v4_0 = v3_0;
+            } else {
+                delete mWarpArcLoader.mpArray[i3_3];
+                v4_0 = mWarpArcLoader.mLength;
+            }
+            if ((i3_3 + 1u) < v4_0) {
+                v3_0 = v4_0;
+                i3_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mWarpArcLoader.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mWarpArcLoader.mpArray));
+    }
+    mWarpArcLoader.mpArray = nullptr;
+    mWarpArcLoader.mBufsiz = 0;
+    mWarpArcLoader.mLength = 0;
+    mpWarpNearest = nullptr;
+    if (mpOmLoadList != nullptr) {
+        mpOmLoadList->release();
+        mpOmLoadList = nullptr;
+    }
 }
 
 __attribute__((weak)) f32 sOmManager::getWarpDist(sOmManager::cWarpData* data, MtVector3& pos) {
@@ -1361,9 +1859,58 @@ __attribute__((weak)) void sOmManager::moveWarpList() {
     /* stub */
 }
 
-__attribute__((weak)) void sOmManager::addWarpArcLoader(s32 stageNo, s32 startPos) {
-    DDON_STUB("sOmManager::addWarpArcLoader")
-    /* stub */
+void sOmManager::addWarpArcLoader(s32 stageNo, s32 startPos) {
+    if (mpOmLoadList != nullptr) {
+        cOmLoadList* pList = mpOmLoadList->searchData(stageNo, startPos);
+        if (pList != nullptr) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                    abort();
+                    return;
+                }
+            }
+            if (pList->mOmList.mLength != 0) {
+                unsigned int i0_3 = 0;
+                const MtDTI* v1_0;
+                for (;;) {
+                    MtObject* v1_9 = pList->mOmList.mpArray[i0_3];
+                    const MtDTI& t0 = v1_9->getDTI();
+                    MT_CTSTR v1_1 = cOmLoadList::cOmList::DTI.mName;
+                    v1_0 = &t0;
+                    for (;;) {
+                        if (v1_1 != v1_0->mName) {
+                            if (v1_0->mpParent != nullptr) {
+                                v1_0 = v1_0->mpParent;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            if (v1_9 != nullptr) {
+                                cOmLoadList::cOmList* pData = static_cast<cOmLoadList::cOmList*>(v1_9);
+                                addWarpArcLoaderSub(pData->mOmId);
+                            }
+                            break;
+                        }
+                    }
+                    if ((i0_3 + 1u) < pList->mOmList.mLength) {
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } else {
+            return;
+        }
+    } else {
+        return;
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
 }
 
 __attribute__((weak)) void sOmManager::addWarpArcLoaderSub(u32 omID) {
@@ -1389,10 +1936,6 @@ __attribute__((weak)) MtObject* sOmManager::MyDTI::newInstance() const {
 
 const MtDTI& sOmManager::cOmArcLoader::getDTI() const {
     return sOmManager::cOmArcLoader::DTI;
-}
-
-inline void sOmManager::cOmArcLoader::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sOmManager::cOmArcLoader::DTI)->memFree(p_addr);
 }
 
 sOmManager::cOmArcLoader::~cOmArcLoader() {
@@ -1430,14 +1973,6 @@ const MtDTI& sOmManager::cWarpData::getDTI() const {
     return sOmManager::cWarpData::DTI;
 }
 
-inline void* sOmManager::cWarpData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sOmManager::cWarpData::DTI)->memAlloc(sz, align, sOmManager::cWarpData::DTI.getID());
-}
-
-inline void sOmManager::cWarpData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sOmManager::cWarpData::DTI)->memFree(p_addr);
-}
-
 inline sOmManager::cWarpData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sOmManager::cWarpData::MyDTI sOmManager::cWarpData::DTI("sOmManager::cWarpData", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -1448,14 +1983,6 @@ MtObject* sOmManager::cWarpData::MyDTI::newInstance() const {
 
 const MtDTI& sOmManager::cClanEmblemTextureCtrl::getDTI() const {
     return sOmManager::cClanEmblemTextureCtrl::DTI;
-}
-
-inline void* sOmManager::cClanEmblemTextureCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sOmManager::cClanEmblemTextureCtrl::DTI)->memAlloc(sz, align, sOmManager::cClanEmblemTextureCtrl::DTI.getID());
-}
-
-inline void sOmManager::cClanEmblemTextureCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sOmManager::cClanEmblemTextureCtrl::DTI)->memFree(p_addr);
 }
 
 sOmManager::cClanEmblemTextureCtrl::~cClanEmblemTextureCtrl() {

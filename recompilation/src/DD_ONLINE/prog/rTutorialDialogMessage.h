@@ -119,10 +119,34 @@ inline rTutorialDialogMessage::cDialogPage::cDialogPage() {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 inline bool rTutorialDialogMessage::cDialogPage::load(MtDataReader& r) {
     mTextGmdIdx = r.readU32();
     mImageId = r.readU32();
     return true;
+}
+
+inline void* rTutorialDialogMessage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::DTI)->memAlloc(sz, align, ::rTutorialDialogMessage::DTI.::MtDTI::getID());
+}
+
+inline void rTutorialDialogMessage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::DTI)->memFree(p_addr);
+}
+
+inline rTutorialDialogMessage::rTutorialDialogMessage() {
+    this->mTitleGmdIdx = 0;
+    this->mCategoryGmdIdx = 0;
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rTutorialDialogMessage::cDialogPage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::cDialogPage::DTI)->memAlloc(sz, align, ::rTutorialDialogMessage::cDialogPage::DTI.::MtDTI::getID());
+}
+
+inline void rTutorialDialogMessage::cDialogPage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTutorialDialogMessage::cDialogPage::DTI)->memFree(p_addr);
 }

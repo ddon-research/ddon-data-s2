@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUICaplinkTopMenu.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -8,6 +9,7 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemory.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtNetDevice.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
 #include "../../MT/MtString.h"
@@ -49,14 +51,6 @@ const MtDTI& cCaptrophyContentData::getDTI() const {
     return cCaptrophyContentData::DTI;
 }
 
-inline void* cCaptrophyContentData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCaptrophyContentData::DTI)->memAlloc(sz, align, cCaptrophyContentData::DTI.getID());
-}
-
-inline void cCaptrophyContentData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCaptrophyContentData::DTI)->memFree(p_addr);
-}
-
 inline cCaptrophyContentData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCaptrophyContentData::MyDTI cCaptrophyContentData::DTI("cCaptrophyContentData", &::cUIObject::DTI, 608ul, 0u, 0u);
@@ -67,14 +61,6 @@ MtObject* cCaptrophyContentData::MyDTI::newInstance() const {
 
 const MtDTI& cCaptrophyData::getDTI() const {
     return cCaptrophyData::DTI;
-}
-
-inline void* cCaptrophyData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCaptrophyData::DTI)->memAlloc(sz, align, cCaptrophyData::DTI.getID());
-}
-
-inline void cCaptrophyData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCaptrophyData::DTI)->memFree(p_addr);
 }
 
 inline cCaptrophyData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -89,14 +75,6 @@ const MtDTI& cCaptrophyRelationData::getDTI() const {
     return cCaptrophyRelationData::DTI;
 }
 
-inline void* cCaptrophyRelationData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCaptrophyRelationData::DTI)->memAlloc(sz, align, cCaptrophyRelationData::DTI.getID());
-}
-
-inline void cCaptrophyRelationData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCaptrophyRelationData::DTI)->memFree(p_addr);
-}
-
 inline cCaptrophyRelationData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCaptrophyRelationData::MyDTI cCaptrophyRelationData::DTI("cCaptrophyRelationData", &::cUIObject::DTI, 840ul, 0u, 0u);
@@ -109,14 +87,6 @@ const MtDTI& cCaptrophyRewardData::getDTI() const {
     return cCaptrophyRewardData::DTI;
 }
 
-inline void* cCaptrophyRewardData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCaptrophyRewardData::DTI)->memAlloc(sz, align, cCaptrophyRewardData::DTI.getID());
-}
-
-inline void cCaptrophyRewardData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCaptrophyRewardData::DTI)->memFree(p_addr);
-}
-
 inline cCaptrophyRewardData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCaptrophyRewardData::MyDTI cCaptrophyRewardData::DTI("cCaptrophyRewardData", &::cUIObject::DTI, 24ul, 0u, 0u);
@@ -127,10 +97,6 @@ MtObject* cCaptrophyRewardData::MyDTI::newInstance() const {
 
 const MtDTI& uGUICaplinkTopMenu::getDTI() const {
     return uGUICaplinkTopMenu::DTI;
-}
-
-inline void uGUICaplinkTopMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTopMenu::DTI)->memFree(p_addr);
 }
 
 uGUICaplinkTopMenu::~uGUICaplinkTopMenu() {
@@ -258,9 +224,23 @@ void uGUICaplinkTopMenu::updatePtr() {
     }
 }
 
-__attribute__((weak)) void uGUICaplinkTopMenu::setChatInfo(s32 id_type, MT_CTSTR id) {
-    DDON_STUB("uGUICaplinkTopMenu::setChatInfo")
-    /* stub */
+void uGUICaplinkTopMenu::setChatInfo(s32 id_type, MT_CTSTR id) {
+    mChatIdType = static_cast<s8>(static_cast<unsigned char>(id_type));
+    if (id != nullptr) {
+        if (id != (&mChatId.mStr[0])) {
+            size_t t0 = strlen(id);
+            mChatId.mLength = (static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u;
+            if (((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u) != 0) {
+                memcpy(static_cast<void*>(&mChatId.mStr[0]), static_cast<const void*>(id), static_cast<size_t>((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u));
+                mChatId.mStr[(static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u] = 0;
+            } else {
+                mChatId.mStr[0] = 0;
+            }
+        }
+    } else {
+        mChatId.mStr[0] = 0;
+        mChatId.mLength = 0;
+    }
 }
 
 cCaptrophyData* uGUICaplinkTopMenu::getCaptrophyData(s32 id) {

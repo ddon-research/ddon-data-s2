@@ -25,6 +25,7 @@
 #include "uGUIGaugeArts.h"
 #include "uGUIGaugeArtsV01_03.h"
 #include "uGUIKeyConfig.h"
+#include "uGUIPawnReview.h"
 #include "uGUIPopTopSel.h"
 #include "uGUIQuestActive.h"
 #include "uHuman.h"

@@ -8,11 +8,18 @@
 // `pthread_mutex_t = pthread_mutex*`), and those names are left to it. The
 // definitions are the runtime's (`runtime.cpp`). `ScePthreadMutexattr` is the
 // SDK's own alias.
+// The thread calls (MtThread, nPhysicsSystem) take `ScePthread` written out
+// the same way, as the `pthread*` the bundle's `pthread_t` names;
+// `SceKernelCpumask` is the SDK's `_types.h` alias.
 #pragma once
 
+#include <cstdint>
+
+struct pthread;
 struct pthread_mutex;
 struct pthread_mutexattr;
 using ScePthreadMutexattr = pthread_mutexattr*;
+typedef uint64_t SceKernelCpumask;
 
 extern "C" {
 int scePthreadMutexLock(pthread_mutex** mutex);
@@ -22,4 +29,8 @@ int scePthreadMutexDestroy(pthread_mutex** mutex);
 int scePthreadMutexattrInit(ScePthreadMutexattr* attr);
 int scePthreadMutexattrSettype(ScePthreadMutexattr* attr, int type);
 int scePthreadMutexattrDestroy(ScePthreadMutexattr* attr);
+int scePthreadSetprio(pthread* thread, int prio);
+int scePthreadSetaffinity(pthread* thread, const SceKernelCpumask mask);
+int scePthreadJoin(pthread* thread, void** value);
+[[noreturn]] void scePthreadExit(void* value);
 }

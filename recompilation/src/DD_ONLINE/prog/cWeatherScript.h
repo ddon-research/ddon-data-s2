@@ -138,3 +138,24 @@ inline void* cWeatherScript::operator new(size_t sz, void* p_addr) {
 inline void* cWeatherScriptCmdCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline cWeatherScriptCmdCtrl::cWeatherScriptCmdCtrl() {
+    this->mpCmd = nullptr;
+    this->mStatus = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cWeatherScript::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherScript::DTI)->memFree(p_addr);
+}
+
+inline void* cWeatherScriptCmdCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherScriptCmdCtrl::DTI)->memAlloc(sz, align, ::cWeatherScriptCmdCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cWeatherScriptCmdCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherScriptCmdCtrl::DTI)->memFree(p_addr);
+}

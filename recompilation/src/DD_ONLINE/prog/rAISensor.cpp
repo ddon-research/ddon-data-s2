@@ -23,10 +23,6 @@ const MtDTI& cAISensorNodeRes::getDTI() const {
     return cAISensorNodeRes::DTI;
 }
 
-inline void cAISensorNodeRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAISensorNodeRes::DTI)->memFree(p_addr);
-}
-
 inline cAISensorNodeRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAISensorNodeRes::MyDTI cAISensorNodeRes::DTI("cAISensorNodeRes", &::cAIResource::DTI, 80ul, 0u, 0u);
@@ -37,21 +33,6 @@ MtObject* cAISensorNodeRes::MyDTI::newInstance() const {
 
 const MtDTI& rAISensor::getDTI() const {
     return rAISensor::DTI;
-}
-
-inline void* rAISensor::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAISensor::DTI)->memAlloc(sz, align, rAISensor::DTI.getID());
-}
-
-inline void rAISensor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAISensor::DTI)->memFree(p_addr);
-}
-
-inline rAISensor::rAISensor() {
-    setAttribute(16u);
-    mMagic = 0x32524E53;
-    mVersion = 1;
-    mNodes.mAutoDelete = true;
 }
 
 rAISensor::~rAISensor() {

@@ -174,3 +174,39 @@ inline void rFieldMapData::Data::clear() {
 inline rFieldMapData::Data::Data() {
     clear();
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rFieldMapData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFieldMapData::DTI)->memAlloc(sz, align, ::rFieldMapData::DTI.::MtDTI::getID());
+}
+
+inline void rFieldMapData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldMapData::DTI)->memFree(p_addr);
+}
+
+inline rFieldMapData::rFieldMapData() {
+    this->::cResource::setAttribute(18u);
+    this->::cResource::clear();
+    this->mpArrayData = nullptr;
+    this->mArrayDataNum = 0;
+}
+
+inline void rFieldMapData::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayDataNum != 0) {
+        do {
+            this->mpArrayData[i0].~Data();
+            i0 += 1u;
+        } while (i0 < this->mArrayDataNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rFieldMapData::DTI)->memFree(static_cast<void*>(this->mpArrayData));
+    this->mpArrayData = nullptr;
+    this->mArrayDataNum = 0;
+}
+
+inline void rFieldMapData::Data::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldMapData::Data::DTI)->memFree(p_addr);
+}

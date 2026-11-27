@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nDrawMaterialSSS.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
@@ -23,10 +22,6 @@ __attribute__((weak)) void nDraw::MaterialSSS::usage() {
 
 const MtDTI& nDraw::MaterialSSS::getDTI() const {
     return nDraw::MaterialSSS::DTI;
-}
-
-inline void nDraw::MaterialSSS::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::MaterialSSS::DTI)->memFree(p_addr);
 }
 
 void nDraw::MaterialSSS::createProperty(MtPropertyList& s) {

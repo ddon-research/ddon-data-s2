@@ -1251,3 +1251,195 @@ inline void cShrinkBlowValue::operator delete[](void* p_addr) {
 inline void* cShrinkBlowValue::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cShrinkBlowValue::DTI)->memAlloc(sz, align, ::cShrinkBlowValue::DTI.::MtDTI::getID());
 }
+
+inline void* cAdjLimitParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAdjLimitParam::DTI)->memAlloc(sz, align, ::cAdjLimitParam::DTI.::MtDTI::getID());
+}
+
+inline void cAdjLimitParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAdjLimitParam::DTI)->memFree(p_addr);
+}
+
+inline void* cBlowSaveEmLvParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBlowSaveEmLvParam::DTI)->memAlloc(sz, align, ::cBlowSaveEmLvParam::DTI.::MtDTI::getID());
+}
+
+inline void cBlowSaveEmLvParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBlowSaveEmLvParam::DTI)->memFree(p_addr);
+}
+
+inline void* cCalcDamageAtdmAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, ::cCalcDamageAtdmAdj::DTI.::MtDTI::getID());
+}
+
+inline void cCalcDamageAtdmAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cCalcDamageAtdmAdjRate::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, ::cCalcDamageAtdmAdjRate::DTI.::MtDTI::getID());
+}
+
+inline void cCalcDamageAtdmAdjRate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
+}
+
+inline void* cCalcDamageLvAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCalcDamageLvAdj::DTI)->memAlloc(sz, align, ::cCalcDamageLvAdj::DTI.::MtDTI::getID());
+}
+
+inline void cCalcDamageLvAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCalcDamageLvAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cDamageSaveEmLvParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDamageSaveEmLvParam::DTI)->memAlloc(sz, align, ::cDamageSaveEmLvParam::DTI.::MtDTI::getID());
+}
+
+inline void cDamageSaveEmLvParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDamageSaveEmLvParam::DTI)->memFree(p_addr);
+}
+
+inline void* cDamageSpecialAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDamageSpecialAdj::DTI)->memAlloc(sz, align, ::cDamageSpecialAdj::DTI.::MtDTI::getID());
+}
+
+inline void cDamageSpecialAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDamageSpecialAdj::DTI)->memFree(p_addr);
+}
+
+inline void* cDmJobAdjParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDmJobAdjParam::DTI)->memAlloc(sz, align, ::cDmJobAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void cDmJobAdjParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDmJobAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* cDmJobPawnAdjParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDmJobPawnAdjParam::DTI)->memAlloc(sz, align, ::cDmJobPawnAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void cDmJobPawnAdjParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDmJobPawnAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* cDmLvPawnAdjParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDmLvPawnAdjParam::DTI)->memAlloc(sz, align, ::cDmLvPawnAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void cDmLvPawnAdjParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDmLvPawnAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* cErosionShakeConvert::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionShakeConvert::DTI)->memAlloc(sz, align, ::cErosionShakeConvert::DTI.::MtDTI::getID());
+}
+
+inline void cErosionShakeConvert::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionShakeConvert::DTI)->memFree(p_addr);
+}
+
+inline void* cShrinkBlowValue::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShrinkBlowValue::DTI)->memAlloc(sz, align, ::cShrinkBlowValue::DTI.::MtDTI::getID());
+}
+
+inline void cShrinkBlowValue::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShrinkBlowValue::DTI)->memFree(p_addr);
+}
+
+inline void* rAdjLimitParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAdjLimitParam::DTI)->memAlloc(sz, align, ::rAdjLimitParam::DTI.::MtDTI::getID());
+}
+
+inline void rAdjLimitParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAdjLimitParam::DTI)->memFree(p_addr);
+}
+
+inline void* rBlowSaveEmLvParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rBlowSaveEmLvParam::DTI)->memAlloc(sz, align, ::rBlowSaveEmLvParam::DTI.::MtDTI::getID());
+}
+
+inline void rBlowSaveEmLvParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rBlowSaveEmLvParam::DTI)->memFree(p_addr);
+}
+
+inline void* rCalcDamageAtdmAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, ::rCalcDamageAtdmAdj::DTI.::MtDTI::getID());
+}
+
+inline void rCalcDamageAtdmAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCalcDamageAtdmAdj::DTI)->memFree(p_addr);
+}
+
+inline void* rCalcDamageAtdmAdjRate::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, ::rCalcDamageAtdmAdjRate::DTI.::MtDTI::getID());
+}
+
+inline void rCalcDamageAtdmAdjRate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
+}
+
+inline void* rCalcDamageLvAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCalcDamageLvAdj::DTI)->memAlloc(sz, align, ::rCalcDamageLvAdj::DTI.::MtDTI::getID());
+}
+
+inline void rCalcDamageLvAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCalcDamageLvAdj::DTI)->memFree(p_addr);
+}
+
+inline void* rDamageSaveEmLvParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDamageSaveEmLvParam::DTI)->memAlloc(sz, align, ::rDamageSaveEmLvParam::DTI.::MtDTI::getID());
+}
+
+inline void rDamageSaveEmLvParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDamageSaveEmLvParam::DTI)->memFree(p_addr);
+}
+
+inline void* rDamageSpecialAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDamageSpecialAdj::DTI)->memAlloc(sz, align, ::rDamageSpecialAdj::DTI.::MtDTI::getID());
+}
+
+inline void rDamageSpecialAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDamageSpecialAdj::DTI)->memFree(p_addr);
+}
+
+inline void* rDmJobAdjParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDmJobAdjParam::DTI)->memAlloc(sz, align, ::rDmJobAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void rDmJobAdjParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDmJobAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* rDmJobPawnAdjParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDmJobPawnAdjParam::DTI)->memAlloc(sz, align, ::rDmJobPawnAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void rDmJobPawnAdjParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDmJobPawnAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* rDmLvPawnAdjParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDmLvPawnAdjParam::DTI)->memAlloc(sz, align, ::rDmLvPawnAdjParam::DTI.::MtDTI::getID());
+}
+
+inline void rDmLvPawnAdjParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDmLvPawnAdjParam::DTI)->memFree(p_addr);
+}
+
+inline void* rErosionShakeConvert::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rErosionShakeConvert::DTI)->memAlloc(sz, align, ::rErosionShakeConvert::DTI.::MtDTI::getID());
+}
+
+inline void rErosionShakeConvert::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rErosionShakeConvert::DTI)->memFree(p_addr);
+}
+
+inline void* rShrinkBlowValue::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rShrinkBlowValue::DTI)->memAlloc(sz, align, ::rShrinkBlowValue::DTI.::MtDTI::getID());
+}
+
+inline void rShrinkBlowValue::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rShrinkBlowValue::DTI)->memFree(p_addr);
+}

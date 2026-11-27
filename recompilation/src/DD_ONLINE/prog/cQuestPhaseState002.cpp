@@ -14,16 +14,8 @@ const MtDTI& cQuestPhaseState002::getDTI() const {
     return cQuestPhaseState002::DTI;
 }
 
-inline MtAllocator* cQuestPhaseState002::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cQuestPhaseState002::DTI);
-}
-
 void* cQuestPhaseState002::operator new(size_t sz, u32 align) {
     return cQuestPhaseState002::getAllocator()->memAlloc(sz, align, cQuestPhaseState002::DTI.getID());
-}
-
-inline void cQuestPhaseState002::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPhaseState002::DTI)->memFree(p_addr);
 }
 
 u32 cQuestPhaseState002::getType() const {

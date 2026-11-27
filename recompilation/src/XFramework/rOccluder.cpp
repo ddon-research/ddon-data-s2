@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rOccluder.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -19,14 +18,6 @@ __attribute__((weak)) void rOccluder::usage() {
 
 const MtDTI& rOccluder::getDTI() const {
     return rOccluder::DTI;
-}
-
-inline void* rOccluder::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOccluder::DTI)->memAlloc(sz, align, rOccluder::DTI.mID);
-}
-
-inline void rOccluder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOccluder::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rOccluder::~rOccluder() {
@@ -107,14 +98,6 @@ MtObject* rOccluder::MyDTI::newInstance() const {
 
 const MtDTI& rOccluder::cQuad::getDTI() const {
     return rOccluder::cQuad::DTI;
-}
-
-inline void* rOccluder::cQuad::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOccluder::cQuad::DTI)->memAlloc(sz, align, rOccluder::cQuad::DTI.mID);
-}
-
-inline void rOccluder::cQuad::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOccluder::cQuad::DTI)->memFree(p_addr);
 }
 
 rOccluder::cQuad::~cQuad() {

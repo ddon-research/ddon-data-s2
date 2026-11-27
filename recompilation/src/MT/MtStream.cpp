@@ -24,10 +24,6 @@ void* MtFileStream::operator new[](size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtFileStream::DTI)->memAlloc(sz, align, MtFileStream::DTI.mID);
 }
 
-inline void MtFileStream::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtFileStream::DTI)->memFree(p_addr);
-}
-
 void MtFileStream::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(MtFileStream::DTI)->memFree(p_addr);
 }
@@ -37,16 +33,14 @@ MtFileStream::MtFileStream() {
 }
 
 MtFileStream::MtFileStream(MtFile& file) {
-    DDON_STUB("MtFileStream::MtFileStream")
-    /* stub */
+    mpFile = &file;
 }
 
 MtFileStream::~MtFileStream() {
 }
 
-__attribute__((weak)) void MtFileStream::open(MtFile& file) {
-    DDON_STUB("MtFileStream::open")
-    /* stub */
+void MtFileStream::open(MtFile& file) {
+    mpFile = &file;
 }
 
 bool MtFileStream::isReadable() {
@@ -191,10 +185,6 @@ const MtDTI& MtMemoryStream::getDTI() const {
 
 void* MtMemoryStream::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtMemoryStream::DTI)->memAlloc(sz, align, MtMemoryStream::DTI.mID);
-}
-
-inline void MtMemoryStream::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtMemoryStream::DTI)->memFree(p_addr);
 }
 
 MtMemoryStream::MtMemoryStream(u32 bufsiz, u32 mode, MtAllocator* pallocator) {

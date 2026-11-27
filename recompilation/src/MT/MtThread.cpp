@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_kernel.h>
 #include <_pthread.h>
 #include <stdlib.h>
 #include "MtThread.h"
@@ -48,24 +49,47 @@ void MtThread::resume() {
     }
 }
 
-__attribute__((weak)) void MtThread::sleep(u32 time) {
-    DDON_STUB("MtThread::sleep")
-    /* stub */
+void MtThread::sleep(u32 time) {
+    sceKernelUsleep(time * 1000u);
 }
 
-__attribute__((weak)) void MtThread::terminate() {
-    DDON_STUB("MtThread::terminate")
-    /* stub */
+void MtThread::terminate() {
+    if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+        abort();
+    }
+    if (mTerminate) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    } else {
+        mTerminate = true;
+        if (mStatus == SUSPENDED) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+            }
+            if (mStatus == SUSPENDED) {
+                if (scePthreadMutexUnlock(&mSuspendSection.mCSection) != 0) {
+                    abort();
+                }
+            }
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        scePthreadJoin(mThreadID, static_cast<void* *>(nullptr));
+        mStatus = TERMINATED;
+    }
 }
 
-__attribute__((weak)) void MtThread::setPriority(s32 prio) {
-    DDON_STUB("MtThread::setPriority")
-    /* stub */
+void MtThread::setPriority(s32 prio) {
+    scePthreadSetprio(mThreadID, prio);
 }
 
-__attribute__((weak)) void MtThread::setProcessor(u32 p) {
-    DDON_STUB("MtThread::setProcessor")
-    /* stub */
+void MtThread::setProcessor(u32 p) {
+    scePthreadSetaffinity(mThreadID, p);
 }
 
 MtThread::STATUS MtThread::getStatus() const {

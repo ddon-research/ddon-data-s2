@@ -25,10 +25,6 @@ void* MtGeomAABB::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomAABB::DTI)->memAlloc(sz, align, MtGeomAABB::DTI.mID);
 }
 
-inline void MtGeomAABB::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomAABB::DTI)->memFree(p_addr);
-}
-
 void MtGeomAABB::load(MtDataReader& fin) {
     mAABB.minpos.x = fin.readF32();
     mAABB.maxpos.x = fin.readF32();
@@ -217,14 +213,26 @@ __attribute__((weak)) MtVector3 MtGeomAABB::getSupportConst(const MtVector3& v) 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 MtGeomAABB::getInternalPos() const {
-    DDON_STUB("MtGeomAABB::getInternalPos")
-    __builtin_unreachable();
+MtVector3 MtGeomAABB::getInternalPos() const {
+    MtVector3 result;
+    const f32 t0 = mAABB.minpos.y;
+    const f32 t1 = mAABB.maxpos.y;
+    const f32 t2 = mAABB.minpos.z;
+    const f32 t3 = mAABB.maxpos.z;
+    result.x = 0.5f * (mAABB.minpos.x + mAABB.maxpos.x);
+    result.y = 0.5f * (t0 + t1);
+    result.z = 0.5f * (t2 + t3);
+    result.pad_ = 0.0f;
+    return result;
 }
 
-__attribute__((weak)) void MtGeomAABB::addPos(const MtVector3& pos) {
-    DDON_STUB("MtGeomAABB::addPos")
-    /* stub */
+void MtGeomAABB::addPos(const MtVector3& pos) {
+    mAABB.minpos.x = pos.x + mAABB.minpos.x;
+    mAABB.minpos.y = pos.y + mAABB.minpos.y;
+    mAABB.minpos.z = pos.z + mAABB.minpos.z;
+    mAABB.maxpos.x = pos.x + mAABB.maxpos.x;
+    mAABB.maxpos.y = pos.y + mAABB.maxpos.y;
+    mAABB.maxpos.z = pos.z + mAABB.maxpos.z;
 }
 
 __attribute__((weak)) void MtGeomAABB::copy(const MtGeometry& input) {

@@ -26,10 +26,6 @@ void* cZoneLayout::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cZoneLayout::DTI)->memAlloc(sz, align, cZoneLayout::DTI.mID);
 }
 
-inline void cZoneLayout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneLayout::DTI)->memFree(p_addr);
-}
-
 cZoneLayout::cZoneLayout(const MtDTI* pGroupManagerDTI) {
     DDON_STUB("cZoneLayout::cZoneLayout")
     /* stub */
@@ -223,10 +219,6 @@ const MtDTI& cZoneLayout::cInGameGroupManager::getDTI() const {
     return cZoneLayout::cInGameGroupManager::DTI;
 }
 
-inline void* cZoneLayout::cInGameGroupManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneLayout::cInGameGroupManager::DTI)->memAlloc(sz, align, cZoneLayout::cInGameGroupManager::DTI.mID);
-}
-
 cZoneLayout::cInGameGroupManager::cInGameGroupManager() {
     mIndex = 0x7FFFFFFF;
     mpResourceGroupManager = nullptr;
@@ -303,10 +295,6 @@ MtObject* cZoneLayout::cInGameGroupManager::MyDTI::newInstance() const {
 
 const MtDTI& cZoneLayout::cDynamicBVHMaster::getDTI() const {
     return cZoneLayout::cDynamicBVHMaster::DTI;
-}
-
-inline void cZoneLayout::cDynamicBVHMaster::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneLayout::cDynamicBVHMaster::DTI)->memFree(p_addr);
 }
 
 cZoneLayout::cDynamicBVHMaster::~cDynamicBVHMaster() {

@@ -337,3 +337,48 @@ inline s32 uStagePartsMdl::getNaviMeshHandle() const {
 inline uSoundOcclusion* uStagePartsMdl::getSoundOcclusion() {
     return this->mpSoundOcclusion;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/rNavigationMesh.h"
+#include "rOccluderExt.h"
+#include "../../XFramework/sAI.h"
+#include "sAIExt.h"
+#include "../../XFramework/sOccluder.h"
+#include "sOccluderExt.h"
+
+inline MtAllocator* uStagePartsCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uStagePartsCtrl::DTI);
+}
+
+inline void uStagePartsCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uStagePartsCtrl::DTI)->memFree(p_addr);
+}
+
+inline void uStagePartsCtrl::uStageCustomCtrlKill() {
+    if (this->mpOccluder == nullptr) {
+        return;
+    }
+    static_cast<sOccluderEx*>(::sOccluder::mpInstance)->::sOccluderEx::partsFinal();
+    if (this->mpOccluder == nullptr) {
+        return;
+    }
+    this->mpOccluder->::cResource::release();
+    this->mpOccluder = nullptr;
+}
+
+inline void uStagePartsMdl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uStagePartsMdl::DTI)->memFree(p_addr);
+}
+
+inline void uStagePartsMdl::releaseNavigationMesh() {
+    static_cast<sAIExt*>(::sAI::mpInstance)->::sAIExt::resetNavigationMesh(static_cast<void*>(this), this->mNavMeshSetHandle);
+    this->mNavMeshSetHandle = -1;
+    if (this->mpNaviMesh == nullptr) {
+        return;
+    }
+    this->mpNaviMesh->::cResource::release();
+    this->mpNaviMesh = nullptr;
+}

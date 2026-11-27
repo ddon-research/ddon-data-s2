@@ -21,10 +21,6 @@ const MtDTI& rGrassWind::getDTI() const {
     return rGrassWind::DTI;
 }
 
-inline void rGrassWind::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGrassWind::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rGrassWind::~rGrassWind() {
         for (u32 t1 = 0u; t1 < mParamSetArray.length(); t1++) {
             MtObject* t0 = mParamSetArray.getBuffer()[t1];

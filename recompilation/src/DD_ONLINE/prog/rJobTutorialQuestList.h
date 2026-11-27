@@ -47,6 +47,7 @@ public:
 public:
     class cQuestId : public MtObject
     {
+        friend class rJobTutorialQuestList;
     public:
         class MyDTI;
     public:
@@ -122,6 +123,7 @@ inline void* rJobTutorialQuestList::cQuestId::operator new(size_t sz, void* p_ad
 
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "nQuest.h"
 
@@ -131,4 +133,24 @@ inline rJobTutorialQuestList::cQuestId::cQuestId() {
 
 inline void* rJobTutorialQuestList::cQuestId::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rJobTutorialQuestList::cQuestId::DTI)->memAlloc(sz, align, rJobTutorialQuestList::cQuestId::DTI.getID());
+}
+
+inline void* rJobTutorialQuestList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rJobTutorialQuestList::DTI)->memAlloc(sz, align, ::rJobTutorialQuestList::DTI.::MtDTI::getID());
+}
+
+inline void rJobTutorialQuestList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rJobTutorialQuestList::DTI)->memFree(p_addr);
+}
+
+inline rJobTutorialQuestList::rJobTutorialQuestList() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void rJobTutorialQuestList::cQuestId::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rJobTutorialQuestList::cQuestId::DTI)->memFree(p_addr);
+}
+
+inline void rJobTutorialQuestList::cQuestId::load(MtDataReader& r) {
+    this->mQuestId = r.readU32();
 }

@@ -124,3 +124,15 @@ inline void* cpPathFinding::operator new(size_t sz, void* p_addr) {
 inline f32 cpPathFinding::getTraceRange() {
     return this->mTraceRange;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpPathFinding::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpPathFinding::DTI);
+}
+
+inline void cpPathFinding::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpPathFinding::DTI)->memFree(p_addr);
+}

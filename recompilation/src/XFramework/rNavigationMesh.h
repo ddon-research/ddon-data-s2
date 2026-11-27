@@ -325,3 +325,27 @@ inline void* rNavigationMesh::nodeInfo::operator new(size_t sz, void* p_addr) {
 inline rNavigationMesh::nodeInfo::nodeInfo() {
     this->mNodeOffset = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rNavigationMesh::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNavigationMesh::DTI)->memAlloc(sz, align, ::rNavigationMesh::DTI.::MtDTI::mID);
+}
+
+inline void rNavigationMesh::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNavigationMesh::DTI)->memFree(p_addr);
+}
+
+inline void rNavigationMesh::nodeData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeData::DTI)->memFree(p_addr);
+}
+
+inline void* rNavigationMesh::nodeInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeInfo::DTI)->memAlloc(sz, align, ::rNavigationMesh::nodeInfo::DTI.::MtDTI::mID);
+}
+
+inline void rNavigationMesh::nodeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNavigationMesh::nodeInfo::DTI)->memFree(p_addr);
+}

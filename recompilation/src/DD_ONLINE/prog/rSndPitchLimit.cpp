@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSndPitchLimit.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cSndPitchLimitData::getDTI() const {
     return cSndPitchLimitData::DTI;
-}
-
-inline void* cSndPitchLimitData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSndPitchLimitData::DTI)->memAlloc(sz, align, cSndPitchLimitData::DTI.getID());
-}
-
-inline void cSndPitchLimitData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSndPitchLimitData::DTI)->memFree(p_addr);
 }
 
 void cSndPitchLimitData::createProperty(MtPropertyList& s) {
@@ -42,14 +32,6 @@ MtObject* cSndPitchLimitData::MyDTI::newInstance() const {
 
 const MtDTI& rSndPitchLimit::getDTI() const {
     return rSndPitchLimit::DTI;
-}
-
-inline void* rSndPitchLimit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSndPitchLimit::DTI)->memAlloc(sz, align, rSndPitchLimit::DTI.getID());
-}
-
-inline void rSndPitchLimit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSndPitchLimit::DTI)->memFree(p_addr);
 }
 
 bool rSndPitchLimit::loadData(MtDataReader& in, cSndPitchLimitData* pData) {

@@ -120,3 +120,29 @@ inline cShlParamJob10CS04::cShlParamJob10CS04() {
 inline void* uShlJob10CS04::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* cShlParamJob10CS04::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamJob10CS04::DTI)->memAlloc(sz, align, ::cShlParamJob10CS04::DTI.::MtDTI::getID());
+}
+
+inline void* uShlJob10CS04::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlJob10CS04::DTI)->memAlloc(sz, align, ::uShlJob10CS04::DTI.::MtDTI::getID());
+}
+
+inline void uShlJob10CS04::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlJob10CS04::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamJob10CS04* uShlJob10CS04::getShlParam() const {
+    return static_cast<const cShlParamJob10CS04*>(this->::uShlBase::mpShlParam2);
+}
+
+inline uShlJob10CS04::uShlJob10CS04() {
+    this->mFlgCreateDieShl = false;
+    this->mDiePos = ::MtVector3::Zero;
+}

@@ -25,10 +25,6 @@ void* uFreeCamera::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uFreeCamera::DTI)->memAlloc(sz, align, uFreeCamera::DTI.mID);
 }
 
-inline void uFreeCamera::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFreeCamera::DTI)->memFree(p_addr);
-}
-
 uFreeCamera::uFreeCamera() {
     mpParent = nullptr;
     mParentNo = -1;
@@ -50,9 +46,18 @@ __attribute__((weak)) void uFreeCamera::move() {
     /* stub */
 }
 
-__attribute__((weak)) void uFreeCamera::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uFreeCamera::applyWorldOffset")
-    /* stub */
+void uFreeCamera::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    if (mpParent == nullptr) {
+        mCameraPos.x = offset.x + mCameraPos.x;
+        mCameraPos.y = offset.y + mCameraPos.y;
+        mCameraPos.z = offset.z + mCameraPos.z;
+    }
+    if (mpTarget != nullptr) {
+        return;
+    }
+    mTargetPos.x = offset.x + mTargetPos.x;
+    mTargetPos.y = offset.y + mTargetPos.y;
+    mTargetPos.z = offset.z + mTargetPos.z;
 }
 
 MtUI* uFreeCamera::createUI(MtProperty& prop) {

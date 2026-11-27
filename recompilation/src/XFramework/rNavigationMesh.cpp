@@ -24,14 +24,6 @@ const MtDTI& rNavigationMesh::getDTI() const {
     return rNavigationMesh::DTI;
 }
 
-inline void* rNavigationMesh::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memAlloc(sz, align, rNavigationMesh::DTI.mID);
-}
-
-inline void rNavigationMesh::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rNavigationMesh::~rNavigationMesh() {
     if (mpPolygonVertex != nullptr) {
         MtMemoryAllocator::getAllocator(rNavigationMesh::DTI)->memFree(mpPolygonVertex);
@@ -363,8 +355,43 @@ void rNavigationMesh::setNodeInfo(rNavigationMesh::nodeInfo& info, u32 i) {
 }
 
 __attribute__((weak)) void rNavigationMesh::setNumberOfNodeInfo(u32 size) {
-    DDON_STUB("rNavigationMesh::setNumberOfNodeInfo")
-    /* stub */
+        if (size != 0) {
+            if (mpNodeInfo != nullptr) {
+                nodeInfo* info = new (16u) nodeInfo[mNumberOfNodeInfo];
+                for (u32 i = 0; i < mNumberOfNodeInfo; i++) {
+                    info[i].mNodeOffset = mpNodeInfo[i].mNodeOffset;
+                    info[i].mAABB.minpos.x = mpNodeInfo[i].mAABB.minpos.x;
+                    info[i].mAABB.minpos.y = mpNodeInfo[i].mAABB.minpos.y;
+                    info[i].mAABB.minpos.z = mpNodeInfo[i].mAABB.minpos.z;
+                    info[i].mAABB.minpos.pad_ = 0.0f;
+                    info[i].mAABB.maxpos.x = mpNodeInfo[i].mAABB.maxpos.x;
+                    info[i].mAABB.maxpos.y = mpNodeInfo[i].mAABB.maxpos.y;
+                    info[i].mAABB.maxpos.z = mpNodeInfo[i].mAABB.maxpos.z;
+                    info[i].mAABB.maxpos.pad_ = 0.0f;
+                }
+                if (mpNodeInfo != nullptr) {
+                    delete[] mpNodeInfo;
+                    mpNodeInfo = nullptr;
+                }
+                mpNodeInfo = new (16u) nodeInfo[size];
+                u32 n = mNumberOfNodeInfo < size ? mNumberOfNodeInfo : size;
+                for (u32 i = 0; i < n; i++) {
+                    mpNodeInfo[i].mNodeOffset = info[i].mNodeOffset;
+                    mpNodeInfo[i].mAABB.minpos.x = info[i].mAABB.minpos.x;
+                    mpNodeInfo[i].mAABB.minpos.y = info[i].mAABB.minpos.y;
+                    mpNodeInfo[i].mAABB.minpos.z = info[i].mAABB.minpos.z;
+                    mpNodeInfo[i].mAABB.minpos.pad_ = 0.0f;
+                    mpNodeInfo[i].mAABB.maxpos.x = info[i].mAABB.maxpos.x;
+                    mpNodeInfo[i].mAABB.maxpos.y = info[i].mAABB.maxpos.y;
+                    mpNodeInfo[i].mAABB.maxpos.z = info[i].mAABB.maxpos.z;
+                    mpNodeInfo[i].mAABB.maxpos.pad_ = 0.0f;
+                }
+                delete[] info;
+            } else {
+                mpNodeInfo = new (16u) nodeInfo[size];
+            }
+        }
+        mNumberOfNodeInfo = size;
 }
 
 inline rNavigationMesh::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -377,10 +404,6 @@ MtObject* rNavigationMesh::MyDTI::newInstance() const {
 
 const MtDTI& rNavigationMesh::nodeData::getDTI() const {
     return rNavigationMesh::nodeData::DTI;
-}
-
-inline void rNavigationMesh::nodeData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNavigationMesh::nodeData::DTI)->memFree(p_addr);
 }
 
 rNavigationMesh::nodeData::~nodeData() {
@@ -448,14 +471,6 @@ const MtDTI& rNavigationMesh::nodeInfo::getDTI() const {
     return rNavigationMesh::nodeInfo::DTI;
 }
 
-inline void* rNavigationMesh::nodeInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNavigationMesh::nodeInfo::DTI)->memAlloc(sz, align, rNavigationMesh::nodeInfo::DTI.mID);
-}
-
-inline void rNavigationMesh::nodeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNavigationMesh::nodeInfo::DTI)->memFree(p_addr);
-}
-
 void rNavigationMesh::nodeInfo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mNodeOffset", &mNodeOffset, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mAABB", &mAABB, 0u, 0u);
@@ -471,5 +486,13 @@ rNavigationMesh::nodeInfo::MyDTI rNavigationMesh::nodeInfo::DTI("rNavigationMesh
 
 MtObject* rNavigationMesh::nodeInfo::MyDTI::newInstance() const {
     return new (16u) rNavigationMesh::nodeInfo;
+}
+
+inline void rNavigationMesh::nodeInfo::operator delete[](void* p_addr) {
+    MtMemoryAllocator::getAllocator(rNavigationMesh::nodeInfo::DTI)->memFree(p_addr);
+}
+
+inline void* rNavigationMesh::nodeInfo::operator new[](size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(rNavigationMesh::nodeInfo::DTI)->memAlloc(sz, align, rNavigationMesh::nodeInfo::DTI.getID());
 }
 

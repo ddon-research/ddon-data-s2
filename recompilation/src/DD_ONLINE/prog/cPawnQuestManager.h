@@ -158,3 +158,23 @@ inline cPawnQuestManager::cPawnQuestInfo::cPawnQuestInfo() {
     this->mParam03 = 0;
     this->mType = 3;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cPawnQuestManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cPawnQuestManager::DTI);
+}
+
+inline void cPawnQuestManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnQuestManager::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnQuestManager::cPawnQuestInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnQuestManager::cPawnQuestInfo::DTI)->memAlloc(sz, align, ::cPawnQuestManager::cPawnQuestInfo::DTI.::MtDTI::getID());
+}
+
+inline void cPawnQuestManager::cPawnQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnQuestManager::cPawnQuestInfo::DTI)->memFree(p_addr);
+}

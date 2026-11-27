@@ -70,3 +70,22 @@ public:
 inline void* rObjCollision::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rObjCollision::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rObjCollision::DTI)->memAlloc(sz, align, ::rObjCollision::DTI.::MtDTI::getID());
+}
+
+inline void rObjCollision::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rObjCollision::DTI)->memFree(p_addr);
+}
+
+inline rObjCollision::rObjCollision() {
+    this->::cResource::setAttribute(16u);
+    this->mpAttackParam = nullptr;
+    this->mpCollNode = nullptr;
+    this->mpCollIndex = nullptr;
+}

@@ -149,3 +149,15 @@ inline void* cpSoftBody::operator new(size_t sz, void* p_addr) {
 inline uSimSoftBody* cpSoftBody::getSimSoftBody() {
     return this->mpSimSoftBody;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpSoftBody::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpSoftBody::DTI);
+}
+
+inline void cpSoftBody::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpSoftBody::DTI)->memFree(p_addr);
+}

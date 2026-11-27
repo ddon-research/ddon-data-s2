@@ -188,3 +188,23 @@ inline cpKeepAtkAdjust::cAtkAdjust::cAtkAdjust() {
     this->mAilmentDamage = 0.0f;
     this->mMgcBowOcdRate = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpKeepAtkAdjust::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpKeepAtkAdjust::DTI);
+}
+
+inline void cpKeepAtkAdjust::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpKeepAtkAdjust::DTI)->memFree(p_addr);
+}
+
+inline void* cpKeepAtkAdjust::cAtkAdjust::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpKeepAtkAdjust::cAtkAdjust::DTI)->memAlloc(sz, align, ::cpKeepAtkAdjust::cAtkAdjust::DTI.::MtDTI::getID());
+}
+
+inline void cpKeepAtkAdjust::cAtkAdjust::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpKeepAtkAdjust::cAtkAdjust::DTI)->memFree(p_addr);
+}

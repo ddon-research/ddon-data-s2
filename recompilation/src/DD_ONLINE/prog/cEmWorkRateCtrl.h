@@ -85,3 +85,15 @@ inline void* cEmWorkRateCtrl::operator new(size_t sz, void* p_addr) {
 inline u32 cEmWorkRateCtrl::getEmWorkRateStatusNo() const {
     return this->mStatusNo;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cEmWorkRateCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmWorkRateCtrl::DTI)->memAlloc(sz, align, ::cEmWorkRateCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cEmWorkRateCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmWorkRateCtrl::DTI)->memFree(p_addr);
+}

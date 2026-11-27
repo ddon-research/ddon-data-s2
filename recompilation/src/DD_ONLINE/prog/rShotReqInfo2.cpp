@@ -19,10 +19,6 @@ const MtDTI& cShotReqInfo2::getDTI() const {
     return cShotReqInfo2::DTI;
 }
 
-inline void cShotReqInfo2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShotReqInfo2::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cShotReqInfo2::createProperty(MtPropertyList& s) {
 }
 
@@ -36,14 +32,6 @@ __attribute__((weak)) MtObject* cShotReqInfo2::MyDTI::newInstance() const {
 
 const MtDTI& rShotReqInfo2::getDTI() const {
     return rShotReqInfo2::DTI;
-}
-
-inline void* rShotReqInfo2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rShotReqInfo2::DTI)->memAlloc(sz, align, rShotReqInfo2::DTI.getID());
-}
-
-inline void rShotReqInfo2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rShotReqInfo2::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rShotReqInfo2::loadData(MtDataReader& in, cShotReqInfo2* pData) {

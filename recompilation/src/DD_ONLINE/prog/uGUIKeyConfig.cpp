@@ -127,10 +127,6 @@ const MtDTI& uGUIKeyConfig::getDTI() const {
     return uGUIKeyConfig::DTI;
 }
 
-inline void uGUIKeyConfig::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIKeyConfig::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIKeyConfig::~uGUIKeyConfig() {
     static_cast<sGUIExt*>(sGUI::getInstance())->mSpecialUIF = static_cast<sGUIExt*>(sGUI::getInstance())->mSpecialUIF & 0xFFFFFFF7u;
 }
@@ -362,9 +358,22 @@ u32 uGUIKeyConfig::evCtrlLayoutMove(cControl::Message* msg) {
     }
 }
 
-__attribute__((weak)) u32 uGUIKeyConfig::evCtrlLayoutClick(cControl::Message* msg) {
-    DDON_STUB("uGUIKeyConfig::evCtrlLayoutClick")
-    return {};
+u32 uGUIKeyConfig::evCtrlLayoutClick(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (static_cast<unsigned int>(msg->reason - 37) <= 1) {
+            setMode(MODE_RIGHT);
+            if (msg->reason != nGUIExt::MOUSE_LCLICK) {
+                setInputEvent(70u);
+            } else {
+                setInputEvent(67u);
+            }
+        } else {
+            setInputEvent(70u);
+        }
+    } else {
+        setInputEvent(70u);
+    }
+    return 0;
 }
 
 u32 uGUIKeyConfig::evCtrlButtonMove(cControl::Message* msg) {
@@ -372,19 +381,71 @@ u32 uGUIKeyConfig::evCtrlButtonMove(cControl::Message* msg) {
     return 0;
 }
 
-__attribute__((weak)) u32 uGUIKeyConfig::evCtrlButtonClick(cControl::Message* msg) {
-    DDON_STUB("uGUIKeyConfig::evCtrlButtonClick")
-    return {};
+u32 uGUIKeyConfig::evCtrlButtonClick(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (static_cast<unsigned int>(msg->reason - 37) <= 1) {
+            const s32 click_vol = msg->click_vol;
+            if (click_vol > -1) {
+                const s32 layout_index = mControlMgr.getCurrentPos(2u);
+                if (click_vol != layout_index) {
+                    mControlMgr.setCurrentPos(2u, click_vol);
+                }
+                setMode(MODE_RIGHT);
+                if (msg->reason != nGUIExt::MOUSE_LCLICK) {
+                    setInputEvent(73u);
+                } else {
+                    setInputEvent(67u);
+                }
+                return 0;
+            } else {
+                setMode(MODE_RIGHT);
+                if (msg->reason != nGUIExt::MOUSE_LCLICK) {
+                    setInputEvent(73u);
+                } else {
+                    setInputEvent(67u);
+                }
+                return 0;
+            }
+        } else {
+            setInputEvent(73u);
+            return 0;
+        }
+    } else {
+        setInputEvent(73u);
+        return 0;
+    }
 }
 
-__attribute__((weak)) bool uGUIKeyConfig::evCtrlScrollListCategory(cControl::Message* msg) {
-    DDON_STUB("uGUIKeyConfig::evCtrlScrollListCategory")
-    return {};
+bool uGUIKeyConfig::evCtrlScrollListCategory(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (static_cast<unsigned int>(msg->reason - 37) <= 1) {
+            setMode(MODE_LEFT);
+        }
+    }
+    return true;
 }
 
-__attribute__((weak)) bool uGUIKeyConfig::evCtrlScrollListKey(cControl::Message* msg) {
-    DDON_STUB("uGUIKeyConfig::evCtrlScrollListKey")
-    return {};
+bool uGUIKeyConfig::evCtrlScrollListKey(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (static_cast<unsigned int>(msg->reason - 37) <= 1) {
+            const s32 click_vol = msg->click_vol;
+            if (click_vol > -1) {
+                const s32 layout_index = mControlMgr.getCurrentPos(2u);
+                if (click_vol != layout_index) {
+                    mControlMgr.setCurrentPos(2u, click_vol);
+                }
+                setMode(MODE_RIGHT);
+                return true;
+            } else {
+                setMode(MODE_RIGHT);
+                return true;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
 }
 
 u32 uGUIKeyConfig::evCtrlScrollListKeyMouseOver(cControl::Message* msg) {
@@ -460,14 +521,6 @@ const MtDTI& uGUIKeyConfig::cCategoryItem::getDTI() const {
     return uGUIKeyConfig::cCategoryItem::DTI;
 }
 
-inline void* uGUIKeyConfig::cCategoryItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIKeyConfig::cCategoryItem::DTI)->memAlloc(sz, align, uGUIKeyConfig::cCategoryItem::DTI.getID());
-}
-
-inline void uGUIKeyConfig::cCategoryItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIKeyConfig::cCategoryItem::DTI)->memFree(p_addr);
-}
-
 void uGUIKeyConfig::cCategoryItem::setup(uGUIKeyConfig& owner, cGUIInstNull* inst_null_list) {
     if (inst_null_list == nullptr) {
         return;
@@ -537,10 +590,6 @@ const MtDTI& uGUIKeyConfig::cCategoryInfo::getDTI() const {
     return uGUIKeyConfig::cCategoryInfo::DTI;
 }
 
-inline void uGUIKeyConfig::cCategoryInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIKeyConfig::cCategoryInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUIKeyConfig::cCategoryInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIKeyConfig::cCategoryInfo::MyDTI uGUIKeyConfig::cCategoryInfo::DTI("uGUIKeyConfig::cCategoryInfo", &::uGUIBase::cScrollListInfoBase::DTI, 96ul, 0u, 0u);
@@ -600,14 +649,6 @@ void uGUIKeyConfig::cList::applyFocusToScrollList(bool isFocus) {
 
 const MtDTI& uGUIKeyConfig::cKeySettingItem::getDTI() const {
     return uGUIKeyConfig::cKeySettingItem::DTI;
-}
-
-inline void* uGUIKeyConfig::cKeySettingItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIKeyConfig::cKeySettingItem::DTI)->memAlloc(sz, align, uGUIKeyConfig::cKeySettingItem::DTI.getID());
-}
-
-inline void uGUIKeyConfig::cKeySettingItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIKeyConfig::cKeySettingItem::DTI)->memFree(p_addr);
 }
 
 void uGUIKeyConfig::cKeySettingItem::setup(uGUIKeyConfig& owner, cGUIInstNull* inst_null) {
@@ -851,10 +892,6 @@ MtObject* uGUIKeyConfig::cKeyItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIKeyConfig::cKeyInfo::getDTI() const {
     return uGUIKeyConfig::cKeyInfo::DTI;
-}
-
-inline void uGUIKeyConfig::cKeyInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIKeyConfig::cKeyInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIKeyConfig::cKeyInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

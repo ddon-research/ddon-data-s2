@@ -22,16 +22,8 @@ const MtDTI& cAcquirement::cNormalSkillData::getDTI() const {
     return cAcquirement::cNormalSkillData::DTI;
 }
 
-inline MtAllocator* cAcquirement::cNormalSkillData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::cAcquirement::cNormalSkillData::DTI);
-}
-
 void* cAcquirement::cNormalSkillData::operator new(size_t sz, u32 align) {
     return ::cAcquirement::cNormalSkillData::getAllocator()->memAlloc(sz, align, ::cAcquirement::cNormalSkillData::DTI.getID());
-}
-
-inline void cAcquirement::cNormalSkillData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cAcquirement::cNormalSkillData::DTI)->memFree(p_addr);
 }
 
 cAcquirement::cNormalSkillData::cNormalSkillData() {

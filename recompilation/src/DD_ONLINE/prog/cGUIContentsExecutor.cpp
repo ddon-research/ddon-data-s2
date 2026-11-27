@@ -52,16 +52,8 @@ const MtDTI& cGUIContentsExecutor::getDTI() const {
     return cGUIContentsExecutor::DTI;
 }
 
-inline MtAllocator* cGUIContentsExecutor::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGUIContentsExecutor::DTI);
-}
-
 void* cGUIContentsExecutor::operator new(size_t sz, u32 align) {
     return cGUIContentsExecutor::getAllocator()->memAlloc(sz, align, cGUIContentsExecutor::DTI.getID());
-}
-
-inline void cGUIContentsExecutor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIContentsExecutor::DTI)->memFree(p_addr);
 }
 
 cGUIContentsExecutor::cGUIContentsExecutor(bool isLeader) {

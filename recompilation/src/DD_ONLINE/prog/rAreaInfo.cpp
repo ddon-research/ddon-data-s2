@@ -20,20 +20,8 @@ const MtDTI& rAreaInfo::getDTI() const {
     return rAreaInfo::DTI;
 }
 
-inline void* rAreaInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaInfo::DTI)->memAlloc(sz, align, rAreaInfo::DTI.getID());
-}
-
-inline void rAreaInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaInfo::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rAreaInfo::getExt() const {
     return "ari";
-}
-
-inline rAreaInfo::rAreaInfo() {
-    setAttribute(22u);
 }
 
 rAreaInfo::~rAreaInfo() {
@@ -110,14 +98,6 @@ MtObject* rAreaInfo::MyDTI::newInstance() const {
 
 const MtDTI& rAreaInfo::cAreaInfo::getDTI() const {
     return rAreaInfo::cAreaInfo::DTI;
-}
-
-void* rAreaInfo::cAreaInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaInfo::cAreaInfo::DTI)->memAlloc(sz, align, rAreaInfo::cAreaInfo::DTI.getID());
-}
-
-inline void rAreaInfo::cAreaInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaInfo::cAreaInfo::DTI)->memFree(p_addr);
 }
 
 rAreaInfo::cAreaInfo::~cAreaInfo() {

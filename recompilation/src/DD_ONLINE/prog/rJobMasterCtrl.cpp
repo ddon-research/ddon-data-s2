@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rJobMasterCtrl.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cJobMasterCtrl::getDTI() const {
     return cJobMasterCtrl::DTI;
-}
-
-inline void* cJobMasterCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cJobMasterCtrl::DTI)->memAlloc(sz, align, cJobMasterCtrl::DTI.getID());
-}
-
-inline void cJobMasterCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cJobMasterCtrl::DTI)->memFree(p_addr);
 }
 
 void cJobMasterCtrl::createProperty(MtPropertyList& s) {
@@ -47,14 +37,6 @@ MtObject* cJobMasterCtrl::MyDTI::newInstance() const {
 
 const MtDTI& rJobMasterCtrl::getDTI() const {
     return rJobMasterCtrl::DTI;
-}
-
-inline void* rJobMasterCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rJobMasterCtrl::DTI)->memAlloc(sz, align, rJobMasterCtrl::DTI.getID());
-}
-
-inline void rJobMasterCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rJobMasterCtrl::DTI)->memFree(p_addr);
 }
 
 rJobMasterCtrl::~rJobMasterCtrl() {

@@ -131,3 +131,19 @@ inline void cHumanEnemyParam::operator delete[](void* p_addr) {
 inline void* cHumanEnemyParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cHumanEnemyParam::DTI)->memAlloc(sz, align, ::cHumanEnemyParam::DTI.::MtDTI::getID());
 }
+
+inline void* cHumanEnemyParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanEnemyParam::DTI)->memAlloc(sz, align, ::cHumanEnemyParam::DTI.::MtDTI::getID());
+}
+
+inline void cHumanEnemyParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanEnemyParam::DTI)->memFree(p_addr);
+}
+
+inline void* rHumanEnemyParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rHumanEnemyParam::DTI)->memAlloc(sz, align, ::rHumanEnemyParam::DTI.::MtDTI::getID());
+}
+
+inline void rHumanEnemyParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rHumanEnemyParam::DTI)->memFree(p_addr);
+}

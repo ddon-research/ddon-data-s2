@@ -177,3 +177,19 @@ inline void cLegCtrl::operator delete[](void* p_addr) {
 inline void* cLegCtrl::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cLegCtrl::DTI)->memAlloc(sz, align, ::cLegCtrl::DTI.::MtDTI::getID());
 }
+
+inline void* cLegCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cLegCtrl::DTI)->memAlloc(sz, align, ::cLegCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cLegCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLegCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* rLegCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLegCtrl::DTI)->memAlloc(sz, align, ::rLegCtrl::DTI.::MtDTI::getID());
+}
+
+inline void rLegCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLegCtrl::DTI)->memFree(p_addr);
+}

@@ -23,16 +23,8 @@ const MtDTI& sRemoteProcedureExt::getDTI() const {
     return sRemoteProcedureExt::DTI;
 }
 
-inline MtAllocator* sRemoteProcedureExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sRemoteProcedureExt::DTI);
-}
-
 void* sRemoteProcedureExt::operator new(size_t sz, u32 align) {
     return sRemoteProcedureExt::getAllocator()->memAlloc(sz, align, sRemoteProcedureExt::DTI.getID());
-}
-
-inline void sRemoteProcedureExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sRemoteProcedureExt::DTI)->memFree(p_addr);
 }
 
 sRemoteProcedureExt::sRemoteProcedureExt() {

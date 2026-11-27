@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "rRigidBody.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
@@ -18,10 +17,6 @@
 
 const MtDTI& rRigidBody::getDTI() const {
     return rRigidBody::DTI;
-}
-
-inline void rRigidBody::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rRigidBody::DTI)->memFree(p_addr);
 }
 
 rRigidBody::rRigidBody() {

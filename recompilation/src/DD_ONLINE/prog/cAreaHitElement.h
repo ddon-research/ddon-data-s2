@@ -466,3 +466,82 @@ inline AHShapeTriangle::AHShapeTriangle() {
     this->mHeight = 100.0f;
     this->mIndex = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void AHShapeBox::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::AHShapeBox::DTI)->memFree(p_addr);
+}
+
+inline void AHShapeBoxRotate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::AHShapeBoxRotate::DTI)->memFree(p_addr);
+}
+
+inline void* AHShapeCone::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::AHShapeCone::DTI)->memAlloc(sz, align, ::AHShapeCone::DTI.::MtDTI::getID());
+}
+
+inline void AHShapeCone::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::AHShapeCone::DTI)->memFree(p_addr);
+}
+
+inline AHShapeCone::AHShapeCone() {
+    this->mCenterPos.x = ::MtVector3::Zero.x;
+    this->mCenterPos.y = ::MtVector3::Zero.y;
+    this->mCenterPos.z = ::MtVector3::Zero.z;
+    this->mCenterPos.pad_ = 0.0f;
+    this->mHeight = 300.0f;
+    this->mTopRadius = 250.0f;
+    this->mBottomRadius = 100.0f;
+}
+
+inline void* AHShapeCylinder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::AHShapeCylinder::DTI)->memAlloc(sz, align, ::AHShapeCylinder::DTI.::MtDTI::getID());
+}
+
+inline void AHShapeCylinder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::AHShapeCylinder::DTI)->memFree(p_addr);
+}
+
+inline AHShapeCylinder::AHShapeCylinder() {
+    this->mCenterPos.x = ::MtVector3::Zero.x;
+    this->mCenterPos.y = ::MtVector3::Zero.y;
+    this->mCenterPos.z = ::MtVector3::Zero.z;
+    this->mCenterPos.pad_ = 0.0f;
+    this->mHeight = 300.0f;
+    this->mRadius = 200.0f;
+}
+
+inline void AHShapePolygon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::AHShapePolygon::DTI)->memFree(p_addr);
+}
+
+inline void AHShapePolygon::PosUnit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::AHShapePolygon::PosUnit::DTI)->memFree(p_addr);
+}
+
+inline void* AHShapeSphere::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::AHShapeSphere::DTI)->memAlloc(sz, align, ::AHShapeSphere::DTI.::MtDTI::getID());
+}
+
+inline void AHShapeSphere::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::AHShapeSphere::DTI)->memFree(p_addr);
+}
+
+inline AHShapeSphere::AHShapeSphere() {
+    this->mCenterPos.x = ::MtVector3::Zero.x;
+    this->mCenterPos.y = ::MtVector3::Zero.y;
+    this->mCenterPos.z = ::MtVector3::Zero.z;
+    this->mCenterPos.pad_ = 0.0f;
+    this->mRadius = 100.0f;
+}
+
+inline void* AHShapeTriangle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::AHShapeTriangle::DTI)->memAlloc(sz, align, ::AHShapeTriangle::DTI.::MtDTI::getID());
+}
+
+inline void AHShapeTriangle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::AHShapeTriangle::DTI)->memFree(p_addr);
+}

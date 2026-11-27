@@ -126,3 +126,11 @@ inline void uAimCheck::setOwner(uHuman* pOwner) {
 inline uAimCheck::AIM_TYPE uAimCheck::getAimType() const {
     return this->mAimType;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uAimCheck::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uAimCheck::DTI)->memFree(p_addr);
+}

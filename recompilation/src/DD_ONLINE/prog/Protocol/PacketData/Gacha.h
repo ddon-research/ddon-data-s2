@@ -265,3 +265,26 @@ inline CDataGachaSettlementInfo::CDataGachaSettlementInfo() {
     this->m_unDrawGroupId = 0;
     this->m_unId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataGachaDrawGroupInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGachaDrawGroupInfo::DTI);
+}
+
+inline MtAllocator* CDataGachaDrawInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGachaDrawInfo::DTI);
+}
+
+inline MtAllocator* CDataGachaInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGachaInfo::DTI);
+}
+
+inline MtAllocator* CDataGachaItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGachaItemInfo::DTI);
+}
+
+inline MtAllocator* CDataGachaSettlementInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGachaSettlementInfo::DTI);
+}

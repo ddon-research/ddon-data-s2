@@ -161,3 +161,33 @@ protected:
 inline void* rMaterial::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+#include "nDrawMaterialConstant.h"
+#include "nDrawMaterialSSS.h"
+#include "nDrawMaterialStd.h"
+#include "nDrawMaterialStdDM.h"
+#include "nDrawMaterialStdEst.h"
+#include "nDrawMaterialStdPN.h"
+
+inline void* rMaterial::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMaterial::DTI)->memAlloc(sz, align, ::rMaterial::DTI.::MtDTI::mID);
+}
+
+inline void rMaterial::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMaterial::DTI)->memFree(p_addr);
+}
+
+inline rMaterial::rMaterial() {
+    this->::cResource::mAttr = 16;
+    this->mpMaterials = nullptr;
+    this->mpHeader = nullptr;
+    ::nDraw::MaterialStd::usage();
+    ::nDraw::MaterialSSS::usage();
+    ::nDraw::MaterialStdEst::usage();
+    ::nDraw::MaterialStdPN::usage();
+    ::nDraw::MaterialStdDM::usage();
+    ::nDraw::MaterialConstant::usage();
+}

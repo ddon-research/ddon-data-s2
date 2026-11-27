@@ -192,3 +192,19 @@ inline u32 rTexture::getDataVersion() {
 inline void* rTextureMemory::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rTexture::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTexture::DTI)->memAlloc(sz, align, ::rTexture::DTI.::MtDTI::mID);
+}
+
+inline void rTexture::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTexture::DTI)->memFree(p_addr);
+}
+
+inline void rTextureMemory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTextureMemory::DTI)->memFree(p_addr);
+}

@@ -28,10 +28,6 @@ void* uCnsJointOffset::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uCnsJointOffset::DTI)->memAlloc(sz, align, uCnsJointOffset::DTI.mID);
 }
 
-inline void uCnsJointOffset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsJointOffset::DTI)->memFree(p_addr);
-}
-
 uCnsJointOffset::uCnsJointOffset() {
     DDON_STUB("uCnsJointOffset::uCnsJointOffset")
     /* stub */

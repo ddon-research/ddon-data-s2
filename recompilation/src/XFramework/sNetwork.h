@@ -37,6 +37,7 @@ namespace nNetwork { class BlockPool; }
 namespace nNetwork { class Context; }
 namespace nNetwork { class Session; }
 namespace nNetwork { class SessionDatabase; }
+namespace nNetwork { class SessionDriver; }
 namespace nNetwork { class Storage; }
 namespace nNetwork { class Transport; }
 namespace nNetwork { class VoiceChat; }
@@ -49,6 +50,9 @@ class sEventManager;
 class sGame;
 class sNetworkExt;
 class sQuestManagerExt;
+class sReward;
+class uGUIClanStatus;
+class uGUIGPShop;
 
 // Declarations
 class sNetwork;
@@ -73,6 +77,7 @@ class sNetwork : public cSystem
     friend class cQuestTask;
     friend class nNetwork::Context;
     friend class nNetwork::Session;
+    friend class nNetwork::SessionDriver;
     friend class nNetwork::VoiceChat;
     friend class nNetwork::nRanking::Object;
     friend class nSessionManager::cNetSessionManager;
@@ -81,6 +86,9 @@ class sNetwork : public cSystem
     friend class sGame;
     friend class sNetworkExt;
     friend class sQuestManagerExt;
+    friend class sReward;
+    friend class uGUIClanStatus;
+    friend class uGUIGPShop;
 public:
     enum
     {
@@ -306,4 +314,12 @@ inline sNetwork* sNetwork::getInstance() {
 
 inline nNetwork::Session* sNetwork::getSession() {
     return this->mpSession[0];
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sNetwork::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sNetwork::DTI)->memFree(p_addr);
 }

@@ -37,10 +37,6 @@ void* uCnsTinyChain::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uCnsTinyChain::DTI)->memAlloc(sz, align, uCnsTinyChain::DTI.mID);
 }
 
-inline void uCnsTinyChain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsTinyChain::DTI)->memFree(p_addr);
-}
-
 uCnsTinyChain::~uCnsTinyChain() {
     DDON_STUB("uCnsTinyChain::~uCnsTinyChain")
     /* stub */
@@ -330,10 +326,6 @@ const MtDTI& uCnsTinyChain::cChainGroup::getDTI() const {
     return uCnsTinyChain::cChainGroup::DTI;
 }
 
-inline void uCnsTinyChain::cChainGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsTinyChain::cChainGroup::DTI)->memFree(p_addr);
-}
-
 uCnsTinyChain::cChainGroup::~cChainGroup() {
 }
 
@@ -501,10 +493,6 @@ const MtDTI& uCnsTinyChain::cChainNode::getDTI() const {
     return uCnsTinyChain::cChainNode::DTI;
 }
 
-inline void uCnsTinyChain::cChainNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsTinyChain::cChainNode::DTI)->memFree(p_addr);
-}
-
 uCnsTinyChain::cChainNode::cChainNode(uCnsTinyChain::cChainGroup* pChainGroup, u32 idx) {
     DDON_STUB("uCnsTinyChain::cChainNode::cChainNode")
     /* stub */
@@ -564,10 +552,7 @@ __attribute__((weak)) void uCnsTinyChain::cChainNode::setAngleLimit(f32 lim) {
     /* stub */
 }
 
-__attribute__((weak)) f32 uCnsTinyChain::cChainNode::getAngleLimit() const {
-    DDON_STUB("uCnsTinyChain::cChainNode::getAngleLimit")
-    return {};
-}
+static auto ddon_emit_0x01b68150 __attribute__((used)) = &uCnsTinyChain::cChainNode::getAngleLimit;
 
 void uCnsTinyChain::cChainNode::setShapeObject(u32 shape) {
     mShapeObject = shape;

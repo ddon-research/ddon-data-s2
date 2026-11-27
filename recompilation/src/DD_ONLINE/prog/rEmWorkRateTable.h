@@ -108,6 +108,10 @@ inline cEmWorkRateTable::cEmWorkRateTable() {
     this->mWorkRateStatus = 2;
 }
 
+inline f32 cEmWorkRateTable::getWorkRate() const {
+    return this->mWorkRate;
+}
+
 inline u32 cEmWorkRateTable::getWorkRateStatus() const {
     return this->mWorkRateStatus;
 }
@@ -126,4 +130,20 @@ inline void cEmWorkRateTable::operator delete[](void* p_addr) {
 
 inline void* cEmWorkRateTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmWorkRateTable::DTI)->memAlloc(sz, align, ::cEmWorkRateTable::DTI.::MtDTI::getID());
+}
+
+inline void* cEmWorkRateTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmWorkRateTable::DTI)->memAlloc(sz, align, ::cEmWorkRateTable::DTI.::MtDTI::getID());
+}
+
+inline void cEmWorkRateTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmWorkRateTable::DTI)->memFree(p_addr);
+}
+
+inline void* rEmWorkRateTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmWorkRateTable::DTI)->memAlloc(sz, align, ::rEmWorkRateTable::DTI.::MtDTI::getID());
+}
+
+inline void rEmWorkRateTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmWorkRateTable::DTI)->memFree(p_addr);
 }

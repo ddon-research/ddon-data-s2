@@ -36,16 +36,8 @@ const MtDTI& uGUIBoughtBox::getDTI() const {
     return uGUIBoughtBox::DTI;
 }
 
-inline MtAllocator* uGUIBoughtBox::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBoughtBox::DTI);
-}
-
 void* uGUIBoughtBox::operator new(size_t sz, u32 align) {
     return uGUIBoughtBox::getAllocator()->memAlloc(sz, align, uGUIBoughtBox::DTI.getID());
-}
-
-inline void uGUIBoughtBox::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBoughtBox::DTI)->memFree(p_addr);
 }
 
 uGUIBoughtBox::~uGUIBoughtBox() {
@@ -102,9 +94,29 @@ sItemManager::cItemBag::ITEM_CATEGORY uGUIBoughtBox::getTab2Category() {
     return sItemManager::cItemBag::ITEM_CATEGORY_ALL_ITEM;
 }
 
-__attribute__((weak)) void uGUIBoughtBox::setFlowId(u32 flowId) {
-    DDON_STUB("uGUIBoughtBox::setFlowId")
-    /* stub */
+void uGUIBoughtBox::setFlowId(u32 flowId) {
+    this->uGUIItemBase01::setFlowId(flowId);
+    if (flowId != 2) {
+        if (flowId == 8) {
+            mIsExeCtrl = false;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2056) = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2048) = 929;
+        } else {
+            if (flowId == 13) {
+                mIsExeCtrl = true;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIBoughtBox::updateItemList);
+            }
+        }
+    } else {
+        if (mIsBoughtBoxListOk) {
+            mIsExeCtrl = true;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2056) = 0;
+            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2048) = 897;
+        } else {
+            mIsExeCtrl = false;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIBoughtBox::updateItemList);
+        }
+    }
 }
 
 u32 uGUIBoughtBox::evCtrlSubWindow(cControl::Message* msg) {

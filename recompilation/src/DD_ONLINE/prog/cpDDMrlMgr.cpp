@@ -18,6 +18,7 @@
 #include "rOutlineParamList.h"
 #include "sEffectExt.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uDDOActorModel.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
 #include "uHuman.h"
@@ -32,16 +33,8 @@ const MtDTI& cpDDMrlMgr::getDTI() const {
     return cpDDMrlMgr::DTI;
 }
 
-inline MtAllocator* cpDDMrlMgr::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpDDMrlMgr::DTI);
-}
-
 void* cpDDMrlMgr::operator new(size_t sz, u32 align) {
     return cpDDMrlMgr::getAllocator()->memAlloc(sz, align, cpDDMrlMgr::DTI.getID());
-}
-
-inline void cpDDMrlMgr::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpDDMrlMgr::DTI)->memFree(p_addr);
 }
 
 cpDDMrlMgr::cpDDMrlMgr() {
@@ -115,9 +108,129 @@ void cpDDMrlMgr::updatePtr() {
     this->cpComponent::updatePtr();
 }
 
-__attribute__((weak)) void cpDDMrlMgr::setOwner(MtObject* pOwner) {
-    DDON_STUB("cpDDMrlMgr::setOwner")
-    /* stub */
+void cpDDMrlMgr::setOwner(MtObject* pOwner) {
+    mOwnerModelKind = 0;
+    mpOwner = pOwner;
+    const MtDTI& t0 = pOwner->getDTI();
+    MT_CTSTR v0_1 = uBaseModel::DTI.mName;
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 != v0_0->mName) {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            mpDDMrlCtrl.mpOwner = static_cast<uBaseModel*>(pOwner);
+            break;
+        }
+    }
+    const MtDTI& t1 = pOwner->getDTI();
+    MT_CTSTR v2_1 = uDDOModel::DTI.mName;
+    for (const MtDTI* v2_0 = &t1;;) {
+        if (v2_1 != v2_0->mName) {
+            if (v2_0->mpParent != nullptr) {
+                v2_0 = v2_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            mOwnerModelKind = mOwnerModelKind | 1u;
+            break;
+        }
+    }
+    const MtDTI& t2 = pOwner->getDTI();
+    MT_CTSTR v4_1 = uPlayer::DTI.mName;
+    for (const MtDTI* v4_0 = &t2;;) {
+        if (v4_1 != v4_0->mName) {
+            if (v4_0->mpParent != nullptr) {
+                v4_0 = v4_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            mOwnerModelKind = mOwnerModelKind | 2u;
+            break;
+        }
+    }
+    const MtDTI& t3 = pOwner->getDTI();
+    MT_CTSTR v6_1 = uEnemy::DTI.mName;
+    for (const MtDTI* v6_0 = &t3;;) {
+        if (v6_1 != v6_0->mName) {
+            if (v6_0->mpParent != nullptr) {
+                v6_0 = v6_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            mOwnerModelKind = mOwnerModelKind | 4u;
+            break;
+        }
+    }
+    const MtDTI& t4 = pOwner->getDTI();
+    MT_CTSTR v8_1 = uHumanEnemy::DTI.mName;
+    for (const MtDTI* v8_0 = &t4;;) {
+        if (v8_1 != v8_0->mName) {
+            if (v8_0->mpParent != nullptr) {
+                v8_0 = v8_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            mOwnerModelKind = mOwnerModelKind | 8u;
+            break;
+        }
+    }
+    const MtDTI& t5 = pOwner->getDTI();
+    MT_CTSTR v10_1 = uDDOActorModel::DTI.mName;
+    for (const MtDTI* v10_0 = &t5;;) {
+        if (v10_1 != v10_0->mName) {
+            if (v10_0->mpParent != nullptr) {
+                v10_0 = v10_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            mOwnerModelKind = mOwnerModelKind | 16u;
+            break;
+        }
+    }
+    const MtDTI& t6 = pOwner->getDTI();
+    MT_CTSTR v12_1 = uHuman::DTI.mName;
+    for (const MtDTI* v12_0 = &t6;;) {
+        if (v12_1 != v12_0->mName) {
+            if (v12_0->mpParent != nullptr) {
+                v12_0 = v12_0->mpParent;
+            } else {
+                break;
+            }
+        } else {
+            mOwnerModelKind = mOwnerModelKind | 32u;
+            break;
+        }
+    }
+    const MtDTI& t7 = pOwner->getDTI();
+    MT_CTSTR v14_1 = uWeapon::DTI.mName;
+    for (const MtDTI* v14_0 = &t7;;) {
+        if (v14_1 == v14_0->mName) {
+            u32 t8 = mOwnerModelKind;
+            mOwnerModelKind = t8 | 64u;
+            mpDDMrlCtrl.mOwnerModelKind = (t8 | mpDDMrlCtrl.mOwnerModelKind) | 64u;
+            return;
+        } else {
+            if (v14_0->mpParent != nullptr) {
+                v14_0 = v14_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mOwnerModelKind == 0) {
+        mOwnerModelKind = 0x80000000;
+        mpDDMrlCtrl.mOwnerModelKind = mpDDMrlCtrl.mOwnerModelKind | 0x80000000u;
+    } else {
+        mpDDMrlCtrl.mOwnerModelKind = mOwnerModelKind | mpDDMrlCtrl.mOwnerModelKind;
+    }
 }
 
 static auto ddon_emit_0x01a58930 __attribute__((used)) = &cpDDMrlMgr::getDDMrlCtrl;
@@ -159,20 +272,6 @@ void cpDDMrlMgr::setCommonStateMrlCtrl() {
             }
         }
     }
-}
-
-inline void cpDDMrlMgr::setDDShadingState() {
-    if (mpOwner == nullptr) {
-        return;
-    }
-    mpDDMrlCtrl.setCommonState();
-    unsigned int i3 = 0;
-    do {
-        if (mpDDMrlCtrlEquip[i3] != nullptr) {
-            mpDDMrlCtrlEquip[i3]->cDDMaterialCtrl::setCommonState();
-        }
-        i3 += 1u;
-    } while (i3 != 16);
 }
 
 __attribute__((weak)) void cpDDMrlMgr::getTargetModelArray(MtTypedArray<uDDOModel>* pTargetArray, bool isAddThis) {

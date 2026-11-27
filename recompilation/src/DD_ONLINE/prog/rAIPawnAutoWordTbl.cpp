@@ -24,10 +24,6 @@ const MtDTI& cAIPawnAutoMotionNode::getDTI() const {
     return cAIPawnAutoMotionNode::DTI;
 }
 
-inline void cAIPawnAutoMotionNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIPawnAutoMotionNode::DTI)->memFree(p_addr);
-}
-
 cAIPawnAutoMotionNode::~cAIPawnAutoMotionNode() {
 }
 
@@ -47,14 +43,6 @@ const MtDTI& cAIPawnAutoWordNode::getDTI() const {
     return cAIPawnAutoWordNode::DTI;
 }
 
-inline void* cAIPawnAutoWordNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIPawnAutoWordNode::DTI)->memAlloc(sz, align, cAIPawnAutoWordNode::DTI.getID());
-}
-
-inline void cAIPawnAutoWordNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIPawnAutoWordNode::DTI)->memFree(p_addr);
-}
-
 cAIPawnAutoWordNode::~cAIPawnAutoWordNode() {
 }
 
@@ -68,19 +56,6 @@ MtObject* cAIPawnAutoWordNode::MyDTI::newInstance() const {
 
 const MtDTI& rAIPawnAutoMotionTbl::getDTI() const {
     return rAIPawnAutoMotionTbl::DTI;
-}
-
-inline void* rAIPawnAutoMotionTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAIPawnAutoMotionTbl::DTI)->memAlloc(sz, align, rAIPawnAutoMotionTbl::DTI.getID());
-}
-
-inline void rAIPawnAutoMotionTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIPawnAutoMotionTbl::DTI)->memFree(p_addr);
-}
-
-inline rAIPawnAutoMotionTbl::rAIPawnAutoMotionTbl() {
-    setAttribute(16u);
-    mArray.mAutoDelete = true;
 }
 
 rAIPawnAutoMotionTbl::~rAIPawnAutoMotionTbl() {
@@ -137,14 +112,6 @@ MtObject* rAIPawnAutoMotionTbl::MyDTI::newInstance() const {
 
 const MtDTI& rAIPawnAutoWordTbl::getDTI() const {
     return rAIPawnAutoWordTbl::DTI;
-}
-
-inline void* rAIPawnAutoWordTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAIPawnAutoWordTbl::DTI)->memAlloc(sz, align, rAIPawnAutoWordTbl::DTI.getID());
-}
-
-inline void rAIPawnAutoWordTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIPawnAutoWordTbl::DTI)->memFree(p_addr);
 }
 
 bool rAIPawnAutoWordTbl::loadData(MtDataReader& r, cAIPawnAutoWordNode* pData) {

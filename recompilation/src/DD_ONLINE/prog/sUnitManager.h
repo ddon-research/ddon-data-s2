@@ -20,6 +20,7 @@ class MtPropertyList;
 class MtUI;
 class MtVector2;
 class cFSMUnit;
+class cQuestTask;
 class cUseComp;
 namespace nLayout { struct stLayoutID; }
 class uBaseModel;
@@ -43,6 +44,7 @@ using u64 = __uint64_t;
 class sUnitManager : public cSystem
 {
     friend class cFSMUnit;
+    friend class cQuestTask;
 public:
     enum
     {
@@ -169,6 +171,10 @@ inline void* sUnitManager::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline u32 sUnitManager::getUnitNum() {
+    return this->mRefArray.::MtArray::length();
+}
+
 inline void* sUnitManager::cLODDistData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -185,4 +191,24 @@ inline f32 sUnitManager::cLODDistData::getLow() {
 
 inline f32 sUnitManager::cLODDistData::getMed() {
     return this->mMed;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void sUnitManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sUnitManager::DTI)->memFree(p_addr);
+}
+
+inline sUnitManager::cLODDistData* sUnitManager::getLodDistData(u32 index) {
+    return static_cast<sUnitManager::cLODDistData*>(this->mLODDistData.::MtArray::mpArray[index]);
+}
+
+inline void* sUnitManager::cLODDistData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sUnitManager::cLODDistData::DTI)->memAlloc(sz, align, ::sUnitManager::cLODDistData::DTI.::MtDTI::getID());
+}
+
+inline void sUnitManager::cLODDistData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sUnitManager::cLODDistData::DTI)->memFree(p_addr);
 }

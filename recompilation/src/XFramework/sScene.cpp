@@ -3,7 +3,6 @@
 #include <_pthread.h>
 #include <stdlib.h>
 #include "sScene.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollision.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtGeometry3D.h"
@@ -46,10 +45,6 @@ uFog::FOG_PARAM* sScene_mFogZeroParam;
 
 const MtDTI& sScene::getDTI() const {
     return sScene::DTI;
-}
-
-inline void sScene::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sScene::DTI)->memFree(p_addr);
 }
 
 sScene::sScene(u32 max_pool) {
@@ -474,14 +469,6 @@ __attribute__((weak)) MtObject* sScene::MyDTI::newInstance() const {
 
 const MtDTI& sScene::TextureInfo::getDTI() const {
     return sScene::TextureInfo::DTI;
-}
-
-inline void* sScene::TextureInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sScene::TextureInfo::DTI)->memAlloc(sz, align, sScene::TextureInfo::DTI.mID);
-}
-
-inline void sScene::TextureInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sScene::TextureInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void sScene::TextureInfo::createProperty(MtPropertyList& s) {

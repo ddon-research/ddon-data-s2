@@ -158,12 +158,41 @@ inline void* cEffectCorrectParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline f32 cEffectCorrectParam::getColorBlend() const {
+    return this->mEfcColorParam.ColorBlend;
+}
+
+inline f32 cEffectCorrectParam::getIntensity() const {
+    return this->mEfcColorParam.Intensity;
+}
+
+inline f32 cEffectCorrectParam::getIntensityBlend() const {
+    return this->mEfcColorParam.IntensityBlend;
+}
+
+inline f32 cEffectCorrectParam::getEnvMapPowerScale() const {
+    return this->mEfcColorParam.EnvMapPowerScale;
+}
+
+inline f32 cEffectCorrectParam::getShadowColorBlend() const {
+    return this->mEfcColorParam.ShadowColorBlend;
+}
+
+inline f32 cEffectCorrectParam::getShadowIntensity() const {
+    return this->mEfcColorParam.ShadowIntensity;
+}
+
+inline f32 cEffectCorrectParam::getShadowIntensityBlend() const {
+    return this->mEfcColorParam.ShadowIntensityBlend;
+}
+
 inline void* rWeatherEffectParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../generated/shared/nDDOIO.h"
 
@@ -193,4 +222,25 @@ inline rWeatherEffectParam::rWeatherEffectParam() {
     for (u32 type = 0u; type < 7u; type++) {
         mpParamList[type].mAutoDelete = true;
     }
+}
+
+inline void cEffectCorrectParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEffectCorrectParam::DTI)->memFree(p_addr);
+}
+
+inline void cEffectCorrectParam::load(MtDataReader& r) {
+    this->mTime = r.readU32();
+    this->mEfcColorParam.Color.rgba = r.readU32();
+    this->mEfcColorParam.ColorBlend = r.readF32();
+    this->mEfcColorParam.Intensity = r.readF32();
+    this->mEfcColorParam.IntensityBlend = r.readF32();
+    this->mEfcColorParam.EnvMapPowerScale = r.readF32();
+    this->mEfcColorParam.ShadowColor.rgba = r.readU32();
+    this->mEfcColorParam.ShadowColorBlend = r.readF32();
+    this->mEfcColorParam.ShadowIntensity = r.readF32();
+    this->mEfcColorParam.ShadowIntensityBlend = r.readF32();
+}
+
+inline void rWeatherEffectParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWeatherEffectParam::DTI)->memFree(p_addr);
 }

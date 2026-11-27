@@ -33,16 +33,8 @@ const MtDTI& sMenu::getDTI() const {
     return sMenu::DTI;
 }
 
-inline MtAllocator* sMenu::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sMenu::DTI);
-}
-
 void* sMenu::operator new(size_t sz, u32 align) {
     return sMenu::getAllocator()->memAlloc(sz, align, sMenu::DTI.getID());
-}
-
-inline void sMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sMenu::DTI)->memFree(p_addr);
 }
 
 sMenu::sMenu() {

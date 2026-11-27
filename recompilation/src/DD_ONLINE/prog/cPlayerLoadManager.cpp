@@ -19,11 +19,13 @@
 #include "cpComponent.h"
 #include "cpEffectProvider.h"
 #include "cpEquip.h"
+#include "cpRootComponent.h"
 #include "nHumanMsg.h"
 #include "nLayout.h"
 #include "../../generated/shared/nWeapon.h"
 #include "rArchiveListArray.h"
 #include "rDDOModelMontage.h"
+#include "rEffectProvider.h"
 #include "rItemList.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "rWeaponResTable.h"
@@ -37,6 +39,7 @@
 #include "sEnemyManager.h"
 #include "sGame.h"
 #include "sItemManager.h"
+#include "sMyRoom.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
 #include "sTalkManager.h"
@@ -99,10 +102,6 @@ extern const MT_CTSTR job_safe_arc_tbl[10] = {
 
 const MtDTI& cPlayerLoadManager::getDTI() const {
     return cPlayerLoadManager::DTI;
-}
-
-inline void cPlayerLoadManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPlayerLoadManager::DTI)->memFree(p_addr);
 }
 
 cPlayerLoadManager::cPlayerLoadManager() {
@@ -196,9 +195,27 @@ void cPlayerLoadManager::setWeaponMotSe(uHuman* pHuman, u32 index, u32 itemId, u
     }
 }
 
-__attribute__((weak)) void cPlayerLoadManager::setWeaponEPV(uHuman* pHuman, u32 index, u32 itemId) {
-    DDON_STUB("cPlayerLoadManager::setWeaponEPV")
-    /* stub */
+void cPlayerLoadManager::setWeaponEPV(uHuman* pHuman, u32 index, u32 itemId) {
+    rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(itemId);
+    if (pParam == nullptr) {
+        return;
+    }
+    u32 wepCategory = pParam->getWepCategory();
+    rEffectProvider* prResource = static_cast<sEffectExt*>(sEffect::getInstance())->getEpvResourceFromWeaponCategory(wepCategory);
+    cpEffectProvider* cpEpv = static_cast<cpEffectProvider*>(pHuman->mComponentMgr.getRootComponent()->find(cpEffectProvider::DTI, true, true));
+    cpEpv->setResource(prResource, static_cast<cpEffectProvider::EPV_TYPE>(static_cast<unsigned long>(index != 1) | 4));
+    if (prResource != nullptr) {
+        prResource->release();
+    }
+    if (wepCategory != 7) {
+        return;
+    }
+    rEffectProvider* prResourceYadutu = static_cast<sEffectExt*>(sEffect::getInstance())->getEpvResourceFromWeaponCategory(10u);
+    cpEpv->setResource(prResourceYadutu, cpEffectProvider::EPV_TYPE_SWEAPON);
+    if (prResourceYadutu == nullptr) {
+        return;
+    }
+    prResourceYadutu->release();
 }
 
 __attribute__((weak)) void cPlayerLoadManager::setProtectorSeType(uHuman* pHuman, u32 sex, u16 armorItemId, u16 wearItemId) {
@@ -355,10 +372,10 @@ void cPlayerLoadManager::loadRequest(uControl* pCtrl, rCharacterEdit* pEdit, u32
         return;
     }
     uControlNpc* pCtrlNpc = static_cast<uControlNpc*>(pCtrl);
-    if (static_cast<uControlNpc*>(pCtrl)->getNpcItem() == 0) {
+    if (pCtrlNpc->getNpcItem() == 0) {
         return;
     }
-    u32 tag_id = uWeapon::getNpcItemArcTag(static_cast<uControlNpc*>(pCtrl)->getNpcItem());
+    u32 tag_id = uWeapon::getNpcItemArcTag(pCtrlNpc->getNpcItem());
     if (tag_id == 0) {
         return;
     }

@@ -30,16 +30,8 @@ const MtDTI& uGUICaplinkImageSelect::getDTI() const {
     return uGUICaplinkImageSelect::DTI;
 }
 
-inline MtAllocator* uGUICaplinkImageSelect::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkImageSelect::DTI);
-}
-
 void* uGUICaplinkImageSelect::operator new(size_t sz, u32 align) {
     return uGUICaplinkImageSelect::getAllocator()->memAlloc(sz, align, uGUICaplinkImageSelect::DTI.getID());
-}
-
-inline void uGUICaplinkImageSelect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkImageSelect::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkImageSelect::~uGUICaplinkImageSelect() {
@@ -120,9 +112,39 @@ void uGUICaplinkImageSelect::updateExit() {
     end();
 }
 
-__attribute__((weak)) void uGUICaplinkImageSelect::setupTab() {
-    DDON_STUB("uGUICaplinkImageSelect::setupTab")
-    /* stub */
+void uGUICaplinkImageSelect::setupTab() {
+    u32 t0 = static_cast<sGUIExt*>(sGUI::getInstance())->mCaplinkIcon.mLength;
+    mMain.mTabNum = static_cast<unsigned int>(((static_cast<unsigned long>(t0) * 0x38E38E39) >> 33) + (t0 != static_cast<unsigned int>(((static_cast<unsigned long>(t0) * 0x38E38E39) >> 33) * 9ul)));
+    mMain.mTab.setVisibleTabMax(static_cast<unsigned int>(((static_cast<unsigned long>(t0) * 0x38E38E39) >> 33) + (t0 != static_cast<unsigned int>(((static_cast<unsigned long>(t0) * 0x38E38E39) >> 33) * 9ul))));
+    if (mMain.mTabNum != 0) {
+        if (mpTabCtrl != nullptr) {
+            mpTabCtrl->resetItemNum(static_cast<s32>(mMain.mTabNum), static_cast<const u32*>(nullptr), 0);
+            mMain.mTab.setupMouseTouchList(static_cast<cControl*>(mpTabCtrl), -1);
+            cHorizontalList* t1 = mpTabCtrl;
+            if (t1 != nullptr) {
+                t1->mCtrlF = t1->mCtrlF & 0xFFFFFFF7u;
+                mMain.mTab.uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(t1->getCurrentPos()), true, true);
+            } else {
+                mMain.mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
+            }
+            setupList();
+        } else {
+            mMain.mTab.setupMouseTouchList(static_cast<cControl*>(nullptr), -1);
+            cHorizontalList* t1 = mpTabCtrl;
+            if (t1 != nullptr) {
+                t1->mCtrlF = t1->mCtrlF & 0xFFFFFFF7u;
+                mMain.mTab.uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(t1->getCurrentPos()), true, true);
+            } else {
+                mMain.mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
+            }
+            setupList();
+        }
+    } else {
+        if (mpTabCtrl != nullptr) {
+            mpTabCtrl->setFocus(false);
+        }
+        setupList();
+    }
 }
 
 __attribute__((weak)) void uGUICaplinkImageSelect::setupList() {

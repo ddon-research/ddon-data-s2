@@ -924,3 +924,75 @@ inline f32 uGUIChat::cLogInfo::getHeight() const {
 inline s32 uGUIChat::cLogInfo::getLogId() const {
     return this->mLogId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIChat::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChat::DTI);
+}
+
+inline void uGUIChat::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIChat::cWindow::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cWindow::DTI)->memAlloc(sz, align, ::uGUIChat::cWindow::DTI.::MtDTI::getID());
+}
+
+inline void uGUIChat::cWindow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::cWindow::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIChat::cPopWndwChSubCmd::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwChSubCmd::DTI)->memAlloc(sz, align, ::uGUIChat::cPopWndwChSubCmd::DTI.::MtDTI::getID());
+}
+
+inline void uGUIChat::cPopWndwChSubCmd::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwChSubCmd::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIChat::cPopWndwAddress::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwAddress::DTI)->memAlloc(sz, align, ::uGUIChat::cPopWndwAddress::DTI.::MtDTI::getID());
+}
+
+inline void uGUIChat::cPopWndwAddress::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwAddress::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIChat::cPopWndwYoN::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwYoN::DTI)->memAlloc(sz, align, ::uGUIChat::cPopWndwYoN::DTI.::MtDTI::getID());
+}
+
+inline void uGUIChat::cPopWndwYoN::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwYoN::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIChat::cPopWndwAddCh::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwAddCh::DTI)->memAlloc(sz, align, ::uGUIChat::cPopWndwAddCh::DTI.::MtDTI::getID());
+}
+
+inline void uGUIChat::cPopWndwAddCh::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::cPopWndwAddCh::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIChat::cCheckList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cCheckList::DTI)->memAlloc(sz, align, ::uGUIChat::cCheckList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIChat::cCheckList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::cCheckList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIChat::cLogItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChat::cLogItem::DTI)->memAlloc(sz, align, ::uGUIChat::cLogItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIChat::cLogItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::cLogItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIChat::cLogInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChat::cLogInfo::DTI)->memFree(p_addr);
+}

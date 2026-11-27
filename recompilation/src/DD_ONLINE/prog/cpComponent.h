@@ -167,3 +167,11 @@ inline void cpComponent::addChild(cpComponent* pNewComp) {
         this->mpChildBottom = pNewComp;
     }
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cpComponent::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpComponent::DTI)->memAlloc(sz, align, ::cpComponent::DTI.::MtDTI::getID());
+}

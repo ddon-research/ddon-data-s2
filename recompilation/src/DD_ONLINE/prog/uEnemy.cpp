@@ -51,8 +51,15 @@
 #include "cpDDMrlMgr.h"
 #include "cpEffectProvider.h"
 #include "cpEffectStatusManager.h"
+#include "cpEmLvUpCtrl.h"
 #include "cpEmMontageCtrl.h"
+#include "cpEmParamCtrl.h"
+#include "cpEnemyEffect.h"
+#include "cpEnemyLocalEst.h"
+#include "cpEnemyLocalShel.h"
+#include "cpEnemyMaterial.h"
 #include "cpEnemyReact.h"
+#include "cpEnemySound.h"
 #include "cpEnemyThink.h"
 #include "cpErosionEnemy.h"
 #include "cpErosionEnemyBase.h"
@@ -68,6 +75,7 @@
 #include "cpLayout.h"
 #include "cpLegCtrl.h"
 #include "cpLockOn.h"
+#include "cpModelConst.h"
 #include "cpMotionHistory.h"
 #include "cpMotionSe.h"
 #include "cpNpc.h"
@@ -77,6 +85,8 @@
 #include "cpPathFinding.h"
 #include "cpReaction.h"
 #include "cpRegionStatusCtrl.h"
+#include "cpReturnTerritory.h"
+#include "cpRootComponent.h"
 #include "cpRotateCtrl.h"
 #include "cpScrCollision.h"
 #include "cpSequenceCtrl.h"
@@ -91,6 +101,7 @@
 #include "cpTinyChain.h"
 #include "cpTransparencyCtrl.h"
 #include "cpVibration.h"
+#include "cpWallExitCtrl.h"
 #include "cpWallMaria.h"
 #include "../../generated/shared/nDDOMath.h"
 #include "nDDOUtility.h"
@@ -151,10 +162,6 @@
 
 const MtDTI& uEnemy::getDTI() const {
     return uEnemy::DTI;
-}
-
-inline void uEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uEnemy::DTI)->memFree(p_addr);
 }
 
 uEnemy::uEnemy() {
@@ -281,9 +288,22 @@ __attribute__((weak)) void uEnemy::registDelegate() {
     /* stub */
 }
 
-__attribute__((weak)) void uEnemy::setTouch(uDDOModel* pReqOwner, bool isTouchSave) {
-    DDON_STUB("uEnemy::setTouch")
-    /* stub */
+void uEnemy::setTouch(uDDOModel* pReqOwner, bool isTouchSave) {
+    this->uDDOModel::setTouch(pReqOwner, isTouchSave);
+    if (pReqOwner == nullptr) {
+        return;
+    }
+    cpComponent* pComp = mComponentMgr.getRootComponent();
+    if (pComp == nullptr) {
+        return;
+    }
+    cpTalk* pCp = static_cast<cpTalk*>(pComp->find(cpTalk::DTI, true, true));
+    if (pCp == nullptr) {
+        return;
+    }
+    unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pCp) + 0);
+    unsigned long t4 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t3) + 144);
+    pCp->setTouch(pReqOwner);
 }
 
 __attribute__((weak)) void uEnemy::updateMatrix() {
@@ -1021,8 +1041,12 @@ __attribute__((weak)) u32 uEnemy::replaceCollisionAttr(u32 attr, const cCollNode
     return {};
 }
 
-__attribute__((weak)) cpEnemyThink* uEnemy::findcpEnemyThink() const {
-    DDON_STUB("uEnemy::findcpEnemyThink")
+cpEnemyThink* uEnemy::findcpEnemyThink() const {
+    if (isEnable()) {
+        if (mComponentMgr.getRootComponent() != nullptr) {
+            return static_cast<cpEnemyThink*>(mComponentMgr.getRootComponent()->find(cpEnemyThink::DTI, true, true));
+        }
+    }
     return nullptr;
 }
 
@@ -1168,14 +1192,38 @@ void uEnemy::setLv(u32 Lv) {
     cContextInterface::setLv(mContextInterface.mpContextInstance, mContextInterface.mpContextCharacter, static_cast<s32>(Lv));
 }
 
-__attribute__((weak)) bool uEnemy::setStatusChangeCnsBoneScale(u32 no, u32 param0, f32 param1, f32 param2, f32 param3, f32 param4) {
-    DDON_STUB("uEnemy::setStatusChangeCnsBoneScale")
-    return {};
+bool uEnemy::setStatusChangeCnsBoneScale(u32 no, u32 param0, f32 param1, f32 param2, f32 param3, f32 param4) {
+    for (unsigned int i0_0 = 0; i0_0 <= 4u; i0_0 = i0_0 + 1u) {
+        if (mCnsBoneScaleCtrl[i0_0].isEnable()) {
+            if (mCnsBoneScaleCtrl[i0_0].mJointNo == param0) {
+                return mCnsBoneScaleCtrl[i0_0].setScaleCtrl(no, static_cast<uModel*>(this), param0, param2, param3, param4, param1, 1000u);
+            }
+        }
+    }
+    for (unsigned int i3_0 = 0; i3_0 <= 4u; i3_0 = i3_0 + 1u) {
+        if (!mCnsBoneScaleCtrl[i3_0].mbEnable) {
+            mCnsBoneScaleCtrl[i3_0].setScaleCtrl(no, static_cast<uModel*>(this), param0, param2, param3, param4, param1, 1000u);
+            return true;
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool uEnemy::setStatusChangeCnsBoneScale(u32 no, u32 jointNo, const MtVector3& initScale, const MtVector3& endScale, f32 frame) {
-    DDON_STUB("uEnemy::setStatusChangeCnsBoneScale")
-    return {};
+bool uEnemy::setStatusChangeCnsBoneScale(u32 no, u32 jointNo, const MtVector3& initScale, const MtVector3& endScale, f32 frame) {
+    for (unsigned int i0_1 = 0; i0_1 <= 4u; i0_1 = i0_1 + 1u) {
+        if (mCnsBoneScaleCtrl[i0_1].isEnable()) {
+            if (mCnsBoneScaleCtrl[i0_1].mJointNo == jointNo) {
+                return mCnsBoneScaleCtrl[i0_1].setScaleCtrl(no, static_cast<uModel*>(this), jointNo, initScale, endScale, frame, 1000u);
+            }
+        }
+    }
+    for (unsigned int i3_0 = 0; i3_0 <= 4u; i3_0 = i3_0 + 1u) {
+        if (!mCnsBoneScaleCtrl[i3_0].mbEnable) {
+            mCnsBoneScaleCtrl[i3_0].setScaleCtrl(no, static_cast<uModel*>(this), jointNo, initScale, endScale, frame, 1000u);
+            return true;
+        }
+    }
+    return false;
 }
 
 void uEnemy::setEmParamFromResToContext(const cCharParamEnemy* pEmParam) {
@@ -1359,8 +1407,28 @@ void uEnemy::makeHitSeInfo_Attack(cDamageSeInfo* pSeInfo) {
 }
 
 __attribute__((weak)) void uEnemy::makeDamageStatusAdj(cHitInfoAfter* pHitInfo) {
-    DDON_STUB("uEnemy::makeDamageStatusAdj")
-    /* stub */
+    if (pHitInfo != nullptr) {
+        if (mpEnemyThink != nullptr) {
+            if (mpEnemyThink->mIsRage) {
+                if (mpEmStatusAdjRes != nullptr) {
+                    if (mpEmStatusAdjRes->getDataNum() != 0) {
+                        const cEmStatusAdj* pAdjData = mpEmStatusAdjRes->getData(0u);
+                        if (pAdjData != nullptr) {
+                            pHitInfo->mHpDamageInfo.addDamageAttackAdj(nObjCollision::HP_DAMAGE_ATTACK_ADJ_STATUS, pAdjData->mDamageAtkAdj);
+                            pHitInfo->mBlowShrinkDmInfo.mShrinkAttackAdj[3] = pAdjData->mShrinkAtkAdj + pHitInfo->mBlowShrinkDmInfo.mShrinkAttackAdj[3];
+                            pHitInfo->mBlowShrinkDmInfo.mBlowAttackAdj[3] = pAdjData->mBlowAtkAdj + pHitInfo->mBlowShrinkDmInfo.mBlowAttackAdj[3];
+                            for (unsigned int i0_3 = 0; i0_3 != 31; i0_3 += 1u) {
+                                cOcdDamageInfo::stDamageData* t0 = pHitInfo->mOcdDamageInfo.getOcdDataFromIndex(i0_3);
+                                if (t0 != nullptr) {
+                                    t0->mOcdAttackAdj[3] = pAdjData->mOcdAtkAdj + t0->mOcdAttackAdj[3];
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 u32 uEnemy::getThinkMode() {
@@ -1436,8 +1504,33 @@ void uEnemy::setLODData() {
 }
 
 __attribute__((weak)) void uEnemy::setDefNPCMotAct(u32 noHokan) {
-    DDON_STUB("uEnemy::setDefNPCMotAct")
-    /* stub */
+    uControl* pCtrl = getCtrl();
+    if (pCtrl == nullptr) {
+        return;
+    }
+    if (!pCtrl->isNpc()) {
+        return;
+    }
+    uControlNpc* pCtrlNpc = static_cast<uControlNpc*>(pCtrl);
+    u8 category = static_cast<u8>(pCtrlNpc->getDefNPCMotCategory());
+    if (category != 3) {
+        return;
+    }
+    s8 defMotNo = *reinterpret_cast<s8*>(reinterpret_cast<char*>(pCtrlNpc) + 0x2aa);
+    if (defMotNo < 0) {
+        return;
+    }
+    cpComponent* pActReqCp = (*reinterpret_cast<cpComponent* const*>(reinterpret_cast<const char*>(&mComponentMgr) + 0x8))->find(cpActionRequest::DTI, true, true);
+    static_cast<cpActionRequest*>(pActReqCp)->mRequestActionReq = 92u;
+    static_cast<cpActionRequest*>(pActReqCp)->mIsArgument = true;
+    static_cast<cpActionRequest*>(pActReqCp)->mUparam0 = category;
+    static_cast<cpActionRequest*>(pActReqCp)->mUparam1 = static_cast<u32>(defMotNo);
+    static_cast<cpActionRequest*>(pActReqCp)->mUparam2 = noHokan;
+    static_cast<cpActionRequest*>(pActReqCp)->mUparam3 = 0u;
+    static_cast<cpActionRequest*>(pActReqCp)->mFparam0 = 0.0f;
+    static_cast<cpActionRequest*>(pActReqCp)->mFparam1 = 0.0f;
+    static_cast<cpActionRequest*>(pActReqCp)->mFparam2 = 0.0f;
+    static_cast<cpActionRequest*>(pActReqCp)->mFparam3 = 0.0f;
 }
 
 __attribute__((weak)) void uEnemy::setTalkMotAct(s16 talkMotNo) {
@@ -1487,23 +1580,6 @@ bool uEnemy::isErosionSuperEnemy() const {
 __attribute__((weak)) bool uEnemy::isErosionInitZero() const {
     DDON_STUB("uEnemy::isErosionInitZero")
     return {};
-}
-
-inline void uEnemy::setupEnchantMode() {
-    if (mpCharParamEnemy == nullptr) {
-        return;
-    }
-    if (mpCharParamEnemy->mpCharParamEnemy == nullptr) {
-        return;
-    }
-    if (!mpCharParamEnemy->mpCharParamEnemy->mIsUseEnchant) {
-        return;
-    }
-    if ((mpCharParamEnemy->mpCharParamEnemy->mEnchantType - 2u) <= 4u) {
-        if (mpDDMrlMgr != nullptr) {
-            mpDDMrlMgr->requestElementEmMode(mpCharParamEnemy->mpCharParamEnemy->mEnchantType);
-        }
-    }
 }
 
 bool uEnemy::isActiveRageShrink() const {

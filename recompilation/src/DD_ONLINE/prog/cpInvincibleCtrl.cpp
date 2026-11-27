@@ -21,16 +21,8 @@ const MtDTI& cpInvincibleCtrl::getDTI() const {
     return cpInvincibleCtrl::DTI;
 }
 
-inline MtAllocator* cpInvincibleCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpInvincibleCtrl::DTI);
-}
-
 void* cpInvincibleCtrl::operator new(size_t sz, u32 align) {
     return cpInvincibleCtrl::getAllocator()->memAlloc(sz, align, cpInvincibleCtrl::DTI.getID());
-}
-
-inline void cpInvincibleCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpInvincibleCtrl::DTI)->memFree(p_addr);
 }
 
 cpInvincibleCtrl::cpInvincibleCtrl() {
@@ -235,14 +227,6 @@ __attribute__((weak)) MtObject* cpInvincibleCtrl::MyDTI::newInstance() const {
 
 const MtDTI& cpInvincibleCtrl::cInvInfo::getDTI() const {
     return cpInvincibleCtrl::cInvInfo::DTI;
-}
-
-inline void* cpInvincibleCtrl::cInvInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpInvincibleCtrl::cInvInfo::DTI)->memAlloc(sz, align, cpInvincibleCtrl::cInvInfo::DTI.getID());
-}
-
-inline void cpInvincibleCtrl::cInvInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpInvincibleCtrl::cInvInfo::DTI)->memFree(p_addr);
 }
 
 inline cpInvincibleCtrl::cInvInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

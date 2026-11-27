@@ -41,16 +41,8 @@ const MtDTI& uGUILoginBonus::getDTI() const {
     return uGUILoginBonus::DTI;
 }
 
-inline MtAllocator* uGUILoginBonus::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUILoginBonus::DTI);
-}
-
 void* uGUILoginBonus::operator new(size_t sz, u32 align) {
     return uGUILoginBonus::getAllocator()->memAlloc(sz, align, uGUILoginBonus::DTI.getID());
-}
-
-inline void uGUILoginBonus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUILoginBonus::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUILoginBonus::~uGUILoginBonus() {
@@ -540,9 +532,38 @@ void uGUILoginBonus::moveInput() {
     mpBtnCtrl->execute();
 }
 
-__attribute__((weak)) void uGUILoginBonus::moveEvent() {
-    DDON_STUB("uGUILoginBonus::moveEvent")
-    /* stub */
+void uGUILoginBonus::moveEvent() {
+    switch (getInputEvent() - 66u) {
+        case 0:
+        {
+            if (mCtrlStat == 1) {
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUILoginBonus::updateExit);
+            }
+            break;
+        }
+        case 4:
+        {
+            evAdjustCursor();
+            break;
+        }
+        case 5:
+        {
+            s32 t0 = mpTabCtrl->getCurrentPos();
+            mTab.uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(t0), true, true);
+            mStat = static_cast<u32>(static_cast<unsigned long>(t0 == 0) | 2);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUILoginBonus::updateInit);
+            break;
+        }
+        case 6:
+        {
+            evEnd();
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 void uGUILoginBonus::evEnd() {

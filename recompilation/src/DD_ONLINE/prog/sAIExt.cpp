@@ -25,16 +25,8 @@ const MtDTI& sAIExt::getDTI() const {
     return sAIExt::DTI;
 }
 
-inline MtAllocator* sAIExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sAIExt::DTI);
-}
-
 void* sAIExt::operator new(size_t sz, u32 align) {
     return sAIExt::getAllocator()->memAlloc(sz, align, sAIExt::DTI.getID());
-}
-
-inline void sAIExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sAIExt::DTI)->memFree(p_addr);
 }
 
 sAIExt::sAIExt() {

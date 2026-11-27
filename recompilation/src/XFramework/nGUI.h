@@ -27,49 +27,6 @@ namespace nGUI { class Draw; }
 class rGUIFont;
 class rTexture;
 
-// Declarations
-namespace nGUI { struct ACTION; }
-namespace nGUI { struct ANIMATION; }
-namespace nGUI { class BlendState; }
-namespace nGUI { struct BufferObject; }
-namespace nGUI { struct CAMERA_SETTING; }
-namespace nGUI { struct FLOW; }
-namespace nGUI { struct FLOW_FUNCTION; }
-namespace nGUI { struct FLOW_INPUT; }
-namespace nGUI { struct FLOW_PROCESS; }
-namespace nGUI { struct FLOW_SWITCH; }
-namespace nGUI { struct FONT; }
-namespace nGUI { struct GENERALRESOURCE; }
-namespace nGUI { struct GUIRESOURCE; }
-namespace nGUI { struct ICON_INFO; }
-namespace nGUI { struct INIT_PARAM; }
-namespace nGUI { struct INPUT_CONDITION; }
-namespace nGUI { struct INSTANCE; }
-namespace nGUI { struct KEY; }
-namespace nGUI { struct MESSAGE; }
-namespace nGUI { struct MTAG; }
-namespace nGUI { struct MessageDrawState; }
-namespace nGUI { struct OBJECT; }
-namespace nGUI { struct OBJ_SEQUENCE; }
-namespace nGUI { struct PARAM; }
-namespace nGUI { struct PARAM_WORK; }
-namespace nGUI { struct PROCESS_WORK; }
-namespace nGUI { struct SEQUENCE; }
-namespace nGUI { struct SWITCH_CONDITION; }
-namespace nGUI { struct SWITCH_OPERATOR; }
-namespace nGUI { class SamplerState; }
-namespace nGUI { struct TEXTURE; }
-namespace nGUI { struct TEXT_STATUS; }
-namespace nGUI { struct VARIABLE; }
-namespace nGUI { struct VERTEX; }
-namespace nGUI { struct PROP_SETTER; }
-namespace nGUI { struct DRAW_LIST; }
-namespace nGUI { struct ANIM_SECTION; }
-namespace nGUI { struct CLASS_INFO; }
-namespace nGUI { class WrapPoint; }
-namespace nGUI { struct FreePolygonPoint; }
-namespace nGUI { class Language; }
-
 namespace nGUI {
     enum ALIGNMENT
     {
@@ -360,6 +317,49 @@ namespace nGUI {
         TEXT_CONDITION_NUM = 6,
     };
 }  // namespace nGUI
+
+// Declarations
+namespace nGUI { struct ACTION; }
+namespace nGUI { struct ANIMATION; }
+namespace nGUI { class BlendState; }
+namespace nGUI { struct BufferObject; }
+namespace nGUI { struct CAMERA_SETTING; }
+namespace nGUI { struct FLOW; }
+namespace nGUI { struct FLOW_FUNCTION; }
+namespace nGUI { struct FLOW_INPUT; }
+namespace nGUI { struct FLOW_PROCESS; }
+namespace nGUI { struct FLOW_SWITCH; }
+namespace nGUI { struct FONT; }
+namespace nGUI { struct GENERALRESOURCE; }
+namespace nGUI { struct GUIRESOURCE; }
+namespace nGUI { struct ICON_INFO; }
+namespace nGUI { struct INIT_PARAM; }
+namespace nGUI { struct INPUT_CONDITION; }
+namespace nGUI { struct INSTANCE; }
+namespace nGUI { struct KEY; }
+namespace nGUI { struct MESSAGE; }
+namespace nGUI { struct MTAG; }
+namespace nGUI { struct MessageDrawState; }
+namespace nGUI { struct OBJECT; }
+namespace nGUI { struct OBJ_SEQUENCE; }
+namespace nGUI { struct PARAM; }
+namespace nGUI { struct PARAM_WORK; }
+namespace nGUI { struct PROCESS_WORK; }
+namespace nGUI { struct SEQUENCE; }
+namespace nGUI { struct SWITCH_CONDITION; }
+namespace nGUI { struct SWITCH_OPERATOR; }
+namespace nGUI { class SamplerState; }
+namespace nGUI { struct TEXTURE; }
+namespace nGUI { struct TEXT_STATUS; }
+namespace nGUI { struct VARIABLE; }
+namespace nGUI { struct VERTEX; }
+namespace nGUI { struct PROP_SETTER; }
+namespace nGUI { struct DRAW_LIST; }
+namespace nGUI { struct ANIM_SECTION; }
+namespace nGUI { struct CLASS_INFO; }
+namespace nGUI { class WrapPoint; }
+namespace nGUI { struct FreePolygonPoint; }
+namespace nGUI { class Language; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -1557,4 +1557,24 @@ inline void* nGUI::SamplerState::operator new(size_t sz, void* p_addr) {
 }
 
 inline nGUI::TEXT_STATUS::TEXT_STATUS() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nGUI::WrapPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nGUI::WrapPoint::DTI)->memFree(p_addr);
+}
+
+inline void nGUI::Language::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nGUI::Language::DTI)->memFree(p_addr);
+}
+
+inline void nGUI::BlendState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nGUI::BlendState::DTI)->memFree(p_addr);
+}
+
+inline void nGUI::SamplerState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nGUI::SamplerState::DTI)->memFree(p_addr);
 }

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCnsIK.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -20,10 +19,6 @@ __attribute__((weak)) void rCnsIK::usage() {
 
 const MtDTI& rCnsIK::getDTI() const {
     return rCnsIK::DTI;
-}
-
-inline void rCnsIK::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCnsIK::DTI)->memFree(p_addr);
 }
 
 rCnsIK::rCnsIK() {
@@ -151,10 +146,6 @@ const MtDTI& rCnsIK::JointInfo::getDTI() const {
     return rCnsIK::JointInfo::DTI;
 }
 
-inline void rCnsIK::JointInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCnsIK::JointInfo::DTI)->memFree(p_addr);
-}
-
 rCnsIK::JointInfo::~JointInfo() {
 }
 
@@ -171,7 +162,7 @@ inline rCnsIK::JointInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t si
 
 rCnsIK::JointInfo::MyDTI rCnsIK::JointInfo::DTI("rCnsIK::JointInfo", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* rCnsIK::JointInfo::MyDTI::newInstance() const {
-    return new (16u) JointInfo;
+MtObject* rCnsIK::JointInfo::MyDTI::newInstance() const {
+    return new (16u) rCnsIK::JointInfo;
 }
 

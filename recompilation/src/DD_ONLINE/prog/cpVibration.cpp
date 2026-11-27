@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
@@ -27,16 +26,8 @@ const MtDTI& cpVibration::getDTI() const {
     return cpVibration::DTI;
 }
 
-inline MtAllocator* cpVibration::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpVibration::DTI);
-}
-
 void* cpVibration::operator new(size_t sz, u32 align) {
     return cpVibration::getAllocator()->memAlloc(sz, align, cpVibration::DTI.getID());
-}
-
-inline void cpVibration::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpVibration::DTI)->memFree(p_addr);
 }
 
 cpVibration::cpVibration() {

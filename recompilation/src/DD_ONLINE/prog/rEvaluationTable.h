@@ -125,3 +125,19 @@ inline void cEvaluationTable::operator delete[](void* p_addr) {
 inline void* cEvaluationTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEvaluationTable::DTI)->memAlloc(sz, align, ::cEvaluationTable::DTI.::MtDTI::getID());
 }
+
+inline void* cEvaluationTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEvaluationTable::DTI)->memAlloc(sz, align, ::cEvaluationTable::DTI.::MtDTI::getID());
+}
+
+inline void cEvaluationTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEvaluationTable::DTI)->memFree(p_addr);
+}
+
+inline void* rEvaluationTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEvaluationTable::DTI)->memAlloc(sz, align, ::rEvaluationTable::DTI.::MtDTI::getID());
+}
+
+inline void rEvaluationTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEvaluationTable::DTI)->memFree(p_addr);
+}

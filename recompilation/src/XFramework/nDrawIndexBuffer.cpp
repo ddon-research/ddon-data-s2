@@ -19,10 +19,6 @@ void* nDraw::IndexBuffer::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::IndexBuffer::DTI)->memAlloc(sz, align, ::nDraw::IndexBuffer::DTI.mID);
 }
 
-inline void nDraw::IndexBuffer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::IndexBuffer::DTI)->memFree(p_addr);
-}
-
 nDraw::IndexBuffer::IndexBuffer(u32 size, nDraw::USAGE_TYPE usage, const void* pinitvalues) : nDraw::Buffer(usage) {
     mBufSize = size;
     mpBuffer = nullptr;

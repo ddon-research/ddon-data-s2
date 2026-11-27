@@ -23,6 +23,10 @@ class uHuman;
 
 // Declarations
 class cHumanActBase;
+class cHumanActEmotionBase;
+class cHumanActEmotionLoop;
+class cHumanActEmotionLoopEnd;
+class cHumanActEmotionLoopEndNoIK;
 class cHumanActSetNpcMotMyRoom;
 class cHumanActSetNpcMotion;
 
@@ -132,6 +136,136 @@ public:
     static MyDTI DTI;
 };
 
+class cHumanActEmotionBase : public cHumanActBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual void init();  // vtable slot 7
+    virtual void move();  // vtable slot 8
+    virtual void final();  // vtable slot 9
+protected:
+    virtual void setEmotionFingerMot();  // vtable slot 18
+protected:
+    f32 mIntervalTime;  // offset: 0x44
+public:
+    static MyDTI DTI;
+};
+
+class cHumanActEmotionLoop : public cHumanActEmotionBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual void init();  // vtable slot 7
+    virtual void move();  // vtable slot 8
+    virtual void final();  // vtable slot 9
+public:
+    static MyDTI DTI;
+};
+
+class cHumanActEmotionLoopEnd : public cHumanActEmotionBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual void init();  // vtable slot 7
+    virtual void move();  // vtable slot 8
+public:
+    static MyDTI DTI;
+};
+
+class cHumanActEmotionLoopEndNoIK : public cHumanActEmotionBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    virtual void init();  // vtable slot 7
+    virtual void move();  // vtable slot 8
+public:
+    static MyDTI DTI;
+};
+
 class cHumanActSetNpcMotMyRoom : public cHumanActBase
 {
 public:
@@ -230,6 +364,30 @@ inline void* cHumanActBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cHumanActBase::cHumanActBase() {
+    this->mpParam = nullptr;
+    this->mpHuman = nullptr;
+    this->mSkillLv = static_cast<nHuman::HM_SKILL_LV>(1);
+    this->mCustomSkillID = static_cast<nHuman::CUSTOM_SKILL_ENUM>(255);
+    this->mIsBeforeActDrawingSword = false;
+}
+
+inline void* cHumanActEmotionBase::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cHumanActEmotionLoop::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cHumanActEmotionLoopEnd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cHumanActEmotionLoopEndNoIK::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* cHumanActSetNpcMotMyRoom::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -244,4 +402,48 @@ inline void* cHumanActSetNpcMotion::operator new(size_t sz, void* p_addr) {
 
 inline s32 cHumanActSetNpcMotion::getMotIndex() const {
     return this->mNPCMotIndex;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cHumanActBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanActBase::DTI)->memAlloc(sz, align, ::cHumanActBase::DTI.::MtDTI::getID());
+}
+
+inline void cHumanActBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanActBase::DTI)->memFree(p_addr);
+}
+
+inline void* cHumanActEmotionBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanActEmotionBase::DTI)->memAlloc(sz, align, ::cHumanActEmotionBase::DTI.::MtDTI::getID());
+}
+
+inline void cHumanActEmotionBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanActEmotionBase::DTI)->memFree(p_addr);
+}
+
+inline void cHumanActEmotionLoop::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanActEmotionLoop::DTI)->memFree(p_addr);
+}
+
+inline void cHumanActEmotionLoopEnd::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanActEmotionLoopEnd::DTI)->memFree(p_addr);
+}
+
+inline void cHumanActEmotionLoopEndNoIK::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanActEmotionLoopEndNoIK::DTI)->memFree(p_addr);
+}
+
+inline void* cHumanActSetNpcMotMyRoom::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanActSetNpcMotMyRoom::DTI)->memAlloc(sz, align, ::cHumanActSetNpcMotMyRoom::DTI.::MtDTI::getID());
+}
+
+inline void cHumanActSetNpcMotMyRoom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanActSetNpcMotMyRoom::DTI)->memFree(p_addr);
+}
+
+inline void cHumanActSetNpcMotion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanActSetNpcMotion::DTI)->memFree(p_addr);
 }

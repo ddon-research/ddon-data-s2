@@ -16,20 +16,6 @@ const MtDTI& rEmoteGroup::getDTI() const {
     return rEmoteGroup::DTI;
 }
 
-inline void* rEmoteGroup::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmoteGroup::DTI)->memAlloc(sz, align, rEmoteGroup::DTI.getID());
-}
-
-inline void rEmoteGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmoteGroup::DTI)->memFree(p_addr);
-}
-
-inline rEmoteGroup::rEmoteGroup() {
-    setAttribute(18u);
-    mpArray = nullptr;
-    mArrayNum = 0;
-}
-
 rEmoteGroup::~rEmoteGroup() {
     unsigned int i3 = 0;
     if (mArrayNum != 0) {
@@ -131,14 +117,6 @@ const MtDTI& rEmoteGroup::InfoBinary::getDTI() const {
     return rEmoteGroup::InfoBinary::DTI;
 }
 
-inline void* rEmoteGroup::InfoBinary::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmoteGroup::InfoBinary::DTI)->memAlloc(sz, align, rEmoteGroup::InfoBinary::DTI.getID());
-}
-
-inline void rEmoteGroup::InfoBinary::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmoteGroup::InfoBinary::DTI)->memFree(p_addr);
-}
-
 rEmoteGroup::InfoBinary::~InfoBinary() {
     for (u32 i = 0; i < mMotListNum; ++i) {
         mpMotList[i].~MotDataBinary();
@@ -178,14 +156,6 @@ MtObject* rEmoteGroup::InfoBinary::MyDTI::newInstance() const {
 
 const MtDTI& rEmoteGroup::InfoBinary::MotDataBinary::getDTI() const {
     return rEmoteGroup::InfoBinary::MotDataBinary::DTI;
-}
-
-inline void* rEmoteGroup::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmoteGroup::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, rEmoteGroup::InfoBinary::MotDataBinary::DTI.getID());
-}
-
-inline void rEmoteGroup::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmoteGroup::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
 }
 
 inline rEmoteGroup::InfoBinary::MotDataBinary::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -140,3 +140,11 @@ inline void* sPlatformUtil::operator new(size_t sz, void* p_addr) {
 inline sPlatformUtil* sPlatformUtil::getInstance() {
     return ::sPlatformUtil::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sPlatformUtil::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sPlatformUtil::DTI)->memFree(p_addr);
+}

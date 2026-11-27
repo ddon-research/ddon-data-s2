@@ -123,3 +123,19 @@ inline void cCollIndex::operator delete[](void* p_addr) {
 inline void* cCollIndex::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCollIndex::DTI)->memAlloc(sz, align, ::cCollIndex::DTI.::MtDTI::getID());
 }
+
+inline void* cCollIndex::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCollIndex::DTI)->memAlloc(sz, align, ::cCollIndex::DTI.::MtDTI::getID());
+}
+
+inline void cCollIndex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCollIndex::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* rCollIndex::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rCollIndex::DTI);
+}
+
+inline void rCollIndex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCollIndex::DTI)->memFree(p_addr);
+}

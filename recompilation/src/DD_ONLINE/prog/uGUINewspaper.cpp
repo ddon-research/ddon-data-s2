@@ -62,16 +62,8 @@ const MtDTI& uGUINewspaper::getDTI() const {
     return uGUINewspaper::DTI;
 }
 
-inline MtAllocator* uGUINewspaper::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUINewspaper::DTI);
-}
-
 void* uGUINewspaper::operator new(size_t sz, u32 align) {
     return uGUINewspaper::getAllocator()->memAlloc(sz, align, uGUINewspaper::DTI.getID());
-}
-
-inline void uGUINewspaper::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUINewspaper::~uGUINewspaper() {
@@ -490,9 +482,14 @@ u32 uGUINewspaper::evCtrlRewardIconCursorUR(cControl::Message* pMsg) {
     }
 }
 
-__attribute__((weak)) u32 uGUINewspaper::evCtrlRewardIconCursorMouseOver(cControl::Message* pMsg) {
-    DDON_STUB("uGUINewspaper::evCtrlRewardIconCursorMouseOver")
-    return {};
+u32 uGUINewspaper::evCtrlRewardIconCursorMouseOver(cControl::Message* pMsg) {
+    if (static_cast<unsigned int>(mMode - 1) <= 1) {
+        if (static_cast<unsigned int>(pMsg->reason - 35) <= 1) {
+            setInputEvent(97u);
+            return 1;
+        }
+    }
+    return 0;
 }
 
 u32 uGUINewspaper::evCtrlRewardIconCursorMouseClick(cControl::Message* pMsg) {
@@ -1787,9 +1784,45 @@ u32 uGUINewspaper::submenuReqRankingReward(MtObject* pDummy, MtObject* pUnit) {
     return 0;
 }
 
-__attribute__((weak)) void uGUINewspaper::requestAreaChange() {
-    DDON_STUB("uGUINewspaper::requestAreaChange")
-    /* stub */
+void uGUINewspaper::requestAreaChange() {
+    if (mAreaScrollbar.getCtrl() == nullptr) {
+        return;
+    }
+    if (mAreaScrollbar.getCtrl()->mCurrentPos > -1) {
+        if (mNowAreaID > -1) {
+            if (static_cast<unsigned int>(mAreaScrollbar.getCtrl()->mCurrentPos) < mAreaScrollbar.mInfoArray.mLength) {
+                if (mAreaScrollbar.mInfoArray.mpArray[mAreaScrollbar.getCtrl()->mCurrentPos] != nullptr) {
+                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mAreaScrollbar.mInfoArray.mpArray[mAreaScrollbar.getCtrl()->mCurrentPos]) + 48)) != 2) {
+                        mSelectAreaQuestNo = -1;
+                        resetQuestInfoPopup();
+                        s32 t0 = mNowAreaID;
+                        if (mQuestList.mpInst != nullptr) {
+                            mQuestList.mpQuestImage->setVisible(false);
+                            setVisibleRewardIcons(mQuestList, false);
+                        }
+                        if (t0 > 0) {
+                            cQuestSvRequest* t1 = cQuestSvRequestManager::pushRequest(cQuestSvReqGetSetQuestInfoList::DTI);
+                            if (t1 != nullptr) {
+                                t1->setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvRequest::PCallbackFunc>(&::uGUINewspaper::areaChangeCallBack));
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t1) + 40) = static_cast<unsigned int>(mNowAreaID);
+                                mStatus = mStatus | 1u;
+                                updateMapCursor();
+                            } else {
+                                end();
+                            }
+                        } else {
+                            cQuestSvRequest* pReq = cQuestSvRequestManager::pushRequest(cQuestSvReqGetRecommendedQuestInfoList::DTI);
+                            if (pReq != nullptr) {
+                                pReq->setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvRequest::PCallbackFunc>(&::uGUINewspaper::discoveredCallBack));
+                            }
+                            mStatus = mStatus | 1u;
+                            updateMapCursor();
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUINewspaper::setAreaSelectList() {
@@ -2162,8 +2195,65 @@ __attribute__((weak)) void uGUINewspaper::setWarpDialog() {
 }
 
 __attribute__((weak)) bool uGUINewspaper::moveWarpDialog() {
-    DDON_STUB("uGUINewspaper::moveWarpDialog")
-    return {};
+    uGUISystemMsg* t0 = mpDialog;
+    if (t0 != nullptr) {
+        if (t0->mResult == RESULT_EXIT) {
+            if (mIsEnableQuestWarp) {
+                if (sQuestManagerExt::getInstance()->isEnableMenu_RimWarp()) {
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarp(false)) {
+                        if (static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarpDecide(false)) {
+                            if (getWarpInfo() != nullptr) {
+                                if (mpDialog->getChoicePos(-1) == 0) {
+                                    if (mDialogMode == 0) {
+                                        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUINewspaper::questwarpRequestServer);
+                                            mServerCommandStatusRsv = 269;
+                                            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUINewspaper::questwarpCallBack);
+                                            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        } else {
+                                            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUINewspaper::questwarpRequestServer);
+                                            mServerCommandStatus = 269;
+                                            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUINewspaper::questwarpCallBack);
+                                            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                            mServerRno = 0;
+                                            mServerResult = 0;
+                                        }
+                                    }
+                                }
+                            } else {
+                                mNoWarpType = 2;
+                                setInputEvent(88u);
+                            }
+                        } else {
+                            mNoWarpType = 0;
+                            setInputEvent(88u);
+                        }
+                    } else {
+                        mNoWarpType = static_cast<sGUIExt*>(sGUI::getInstance())->isBattle();
+                        setInputEvent(88u);
+                    }
+                } else {
+                    mNoWarpType = 0;
+                    setInputEvent(88u);
+                }
+            } else {
+                mNoWarpType = 0;
+                setInputEvent(88u);
+            }
+            if (mpDialog != nullptr) {
+                mpDialog->mEndType = 0;
+                mpDialog->end();
+            }
+            mpDialog = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+            setWindowActive(true);
+        } else {
+            t0->setChoiceEnable(0u, static_cast<sGUIExt*>(sGUI::getInstance())->isEnableRimWarpDecide(false), -1);
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 bool uGUINewspaper::questwarpRequestServer() {
@@ -2240,10 +2330,6 @@ const MtDTI& uGUINewspaper::cCycleContentsNewsInfo::getDTI() const {
     return uGUINewspaper::cCycleContentsNewsInfo::DTI;
 }
 
-inline void* uGUINewspaper::cCycleContentsNewsInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUINewspaper::cCycleContentsNewsInfo::DTI)->memAlloc(sz, align, uGUINewspaper::cCycleContentsNewsInfo::DTI.getID());
-}
-
 uGUINewspaper::cCycleContentsNewsInfo::~cCycleContentsNewsInfo() {
 }
 
@@ -2259,14 +2345,6 @@ const MtDTI& uGUINewspaper::cScrollAreaDispList::getDTI() const {
     return uGUINewspaper::cScrollAreaDispList::DTI;
 }
 
-inline void* uGUINewspaper::cScrollAreaDispList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollAreaDispList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollAreaDispList::DTI.getID());
-}
-
-inline void uGUINewspaper::cScrollAreaDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollAreaDispList::DTI)->memFree(p_addr);
-}
-
 inline uGUINewspaper::cScrollAreaDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUINewspaper::cScrollAreaDispList::MyDTI uGUINewspaper::cScrollAreaDispList::DTI("uGUINewspaper::cScrollAreaDispList", &::uGUIBase::cScrollListItemBase::DTI, 128ul, 0u, 0u);
@@ -2277,14 +2355,6 @@ MtObject* uGUINewspaper::cScrollAreaDispList::MyDTI::newInstance() const {
 
 const MtDTI& uGUINewspaper::cScrollQuestDispList::getDTI() const {
     return uGUINewspaper::cScrollQuestDispList::DTI;
-}
-
-inline void* uGUINewspaper::cScrollQuestDispList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollQuestDispList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollQuestDispList::DTI.getID());
-}
-
-inline void uGUINewspaper::cScrollQuestDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollQuestDispList::DTI)->memFree(p_addr);
 }
 
 inline uGUINewspaper::cScrollQuestDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2299,14 +2369,6 @@ const MtDTI& uGUINewspaper::cScrollRankingDispList::getDTI() const {
     return uGUINewspaper::cScrollRankingDispList::DTI;
 }
 
-inline void* uGUINewspaper::cScrollRankingDispList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRankingDispList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollRankingDispList::DTI.getID());
-}
-
-inline void uGUINewspaper::cScrollRankingDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRankingDispList::DTI)->memFree(p_addr);
-}
-
 inline uGUINewspaper::cScrollRankingDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUINewspaper::cScrollRankingDispList::MyDTI uGUINewspaper::cScrollRankingDispList::DTI("uGUINewspaper::cScrollRankingDispList", &::uGUIBase::cScrollListItemBase::DTI, 160ul, 0u, 0u);
@@ -2319,14 +2381,6 @@ const MtDTI& uGUINewspaper::cScrollRewardSummaryItemList::getDTI() const {
     return uGUINewspaper::cScrollRewardSummaryItemList::DTI;
 }
 
-inline void* uGUINewspaper::cScrollRewardSummaryItemList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardSummaryItemList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollRewardSummaryItemList::DTI.getID());
-}
-
-inline void uGUINewspaper::cScrollRewardSummaryItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardSummaryItemList::DTI)->memFree(p_addr);
-}
-
 inline uGUINewspaper::cScrollRewardSummaryItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUINewspaper::cScrollRewardSummaryItemList::MyDTI uGUINewspaper::cScrollRewardSummaryItemList::DTI("uGUINewspaper::cScrollRewardSummaryItemList", &::uGUIBase::cScrollListItemBase::DTI, 128ul, 0u, 0u);
@@ -2337,14 +2391,6 @@ MtObject* uGUINewspaper::cScrollRewardSummaryItemList::MyDTI::newInstance() cons
 
 const MtDTI& uGUINewspaper::cScrollRewardDetailItemList::getDTI() const {
     return uGUINewspaper::cScrollRewardDetailItemList::DTI;
-}
-
-inline void* uGUINewspaper::cScrollRewardDetailItemList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardDetailItemList::DTI)->memAlloc(sz, align, uGUINewspaper::cScrollRewardDetailItemList::DTI.getID());
-}
-
-inline void uGUINewspaper::cScrollRewardDetailItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardDetailItemList::DTI)->memFree(p_addr);
 }
 
 inline uGUINewspaper::cScrollRewardDetailItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2391,25 +2437,30 @@ const MtDTI& uGUINewspaper::cScrollRankingItemList::getDTI() const {
     return uGUINewspaper::cScrollRankingItemList::DTI;
 }
 
-inline void uGUINewspaper::cScrollRankingItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRankingItemList::DTI)->memFree(p_addr);
-}
-
 inline uGUINewspaper::cScrollRankingItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUINewspaper::cScrollRankingItemList::MyDTI uGUINewspaper::cScrollRankingItemList::DTI("uGUINewspaper::cScrollRankingItemList", &::uGUIBase::cScrollListInfoBase::DTI, 40ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* uGUINewspaper::cScrollRankingItemList::MyDTI::newInstance() const {
-    DDON_STUB("uGUINewspaper::cScrollRankingItemList::MyDTI::newInstance")
-    return nullptr;
+    uGUINewspaper::cScrollRankingItemList* t1 = static_cast<uGUINewspaper::cScrollRankingItemList*>(
+        MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRankingItemList::DTI)->memAlloc(
+            sizeof(uGUINewspaper::cScrollRankingItemList), 16u, uGUINewspaper::cScrollRankingItemList::DTI.getID()));
+    t1->mIsMouseCheck = false;
+    t1->mItemType = 0;
+    t1->mIsVisible = false;
+    t1->mMouseTopPos = 0.0f;
+    t1->mMouseBottomPos = 0.0f;
+    t1->mTopPos = 0.0f;
+    t1->mBottomPos = 0.0f;
+    t1->mpItem = nullptr;
+    t1->mIsCheckScroll = true;
+    t1->mIsDisable = false;
+    new (t1) uGUINewspaper::cScrollRankingItemList(*t1);
+    return t1;
 }
 
 const MtDTI& uGUINewspaper::cScrollRewardDetailInfoList::getDTI() const {
     return uGUINewspaper::cScrollRewardDetailInfoList::DTI;
-}
-
-inline void uGUINewspaper::cScrollRewardDetailInfoList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardDetailInfoList::DTI)->memFree(p_addr);
 }
 
 inline uGUINewspaper::cScrollRewardDetailInfoList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2423,10 +2474,6 @@ __attribute__((weak)) MtObject* uGUINewspaper::cScrollRewardDetailInfoList::MyDT
 
 const MtDTI& uGUINewspaper::cScrollRewardSummaryInfoList::getDTI() const {
     return uGUINewspaper::cScrollRewardSummaryInfoList::DTI;
-}
-
-inline void uGUINewspaper::cScrollRewardSummaryInfoList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINewspaper::cScrollRewardSummaryInfoList::DTI)->memFree(p_addr);
 }
 
 inline uGUINewspaper::cScrollRewardSummaryInfoList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

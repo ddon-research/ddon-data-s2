@@ -327,3 +327,7 @@ inline rSoundStreamRequest::rSoundStreamRequest() {
 inline void* rSoundStreamRequest::memAlloc(u32 size, u32 align) {
     return MtMemoryAllocator::getAllocator(rSoundStreamRequest::DTI)->memAlloc(size, align, rSoundStreamRequest::DTI.mID);
 }
+
+inline void rSoundStreamRequest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundStreamRequest::DTI)->memFree(p_addr);
+}

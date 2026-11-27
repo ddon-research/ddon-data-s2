@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rStageToSpot.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cStageToSpot::getDTI() const {
     return cStageToSpot::DTI;
-}
-
-inline void* cStageToSpot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStageToSpot::DTI)->memAlloc(sz, align, cStageToSpot::DTI.getID());
-}
-
-inline void cStageToSpot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStageToSpot::DTI)->memFree(p_addr);
 }
 
 void cStageToSpot::createProperty(MtPropertyList& s) {
@@ -42,14 +32,6 @@ MtObject* cStageToSpot::MyDTI::newInstance() const {
 
 const MtDTI& rStageToSpot::getDTI() const {
     return rStageToSpot::DTI;
-}
-
-inline void* rStageToSpot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageToSpot::DTI)->memAlloc(sz, align, rStageToSpot::DTI.getID());
-}
-
-inline void rStageToSpot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageToSpot::DTI)->memFree(p_addr);
 }
 
 bool rStageToSpot::loadData(MtDataReader& in, cStageToSpot* pData) {

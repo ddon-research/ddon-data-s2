@@ -982,3 +982,84 @@ inline void uCharacterEditCameraBase::cLimit::set(f32 _max, f32 _min) {
     max = _max;
     min = _min;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cEditParam.h"
+#include "rCharacterEdit.h"
+#include "uGUICharacterEdit.h"
+
+inline void* cEditParamList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEditParamList::DTI)->memAlloc(sz, align, ::cEditParamList::DTI.::MtDTI::getID());
+}
+
+inline void cEditParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEditParamList::DTI)->memFree(p_addr);
+}
+
+inline void cUndoData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cUndoData::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uCharacterEdit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCharacterEdit::DTI);
+}
+
+inline void uCharacterEdit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCharacterEdit::DTI)->memFree(p_addr);
+}
+
+inline void uCharacterEdit::loadTemp() {
+    if (this->::uCharacterEditBase::mpEditRes == nullptr) {
+        return;
+    }
+    if (this->::uCharacterEditBase::mpEditRes->mpEditParam == nullptr) {
+        return;
+    }
+    this->::uCharacterEditBase::mpEditRes->mpEditParam->mVoice = this->::uCharacterEditBase::mTemp.mVoice;
+    this->::uCharacterEditBase::mpEditRes->mpEditParam->mPersonality = this->::uCharacterEditBase::mTemp.mPersonal;
+    this->::uCharacterEditBase::mpEditRes->mpEditParam->mSpeechFreq = this->::uCharacterEditBase::mTemp.mSpeechFreq;
+}
+
+inline void uCharacterEdit::notifyChangeScr_On() {
+    if (this->mpGUIEdit == nullptr) {
+        return;
+    }
+    this->mpGUIEdit->mIsChangeScr = true;
+}
+
+inline void uCharacterEdit::notifyChangeScr_Off() {
+    if (this->mpGUIEdit == nullptr) {
+        return;
+    }
+    this->mpGUIEdit->mIsChangeScr = false;
+}
+
+inline void uCharacterEdit::setParlorEquipData(nCharacterData::stEquipData& data) {
+    this->mPalorParam.mEquipData.::nCharacterData::stEquipData::copyData(data);
+}
+
+inline void uCharacterEditBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCharacterEditBase::DTI)->memFree(p_addr);
+}
+
+inline void uCharacterEditCamera::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCharacterEditCamera::DTI)->memFree(p_addr);
+}
+
+inline void* uCharacterEditCameraBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uCharacterEditCameraBase::DTI)->memAlloc(sz, align, ::uCharacterEditCameraBase::DTI.::MtDTI::getID());
+}
+
+inline void uCharacterEditCameraBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCharacterEditCameraBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uCharacterEditCameraBase::cLimit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCharacterEditCameraBase::cLimit::DTI);
+}
+
+inline void* uCharacterEditCameraBase::cLimit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uCharacterEditCameraBase::cLimit::DTI)->memAlloc(sz, align, ::uCharacterEditCameraBase::cLimit::DTI.::MtDTI::getID());
+}

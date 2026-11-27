@@ -3,7 +3,6 @@
 #include "cpEmMontageCtrl.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cArea.h"
 #include "../../XFramework/cResource.h"
@@ -19,16 +18,8 @@ const MtDTI& cpEmMontageCtrl::getDTI() const {
     return cpEmMontageCtrl::DTI;
 }
 
-inline MtAllocator* cpEmMontageCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpEmMontageCtrl::DTI);
-}
-
 void* cpEmMontageCtrl::operator new(size_t sz, u32 align) {
     return cpEmMontageCtrl::getAllocator()->memAlloc(sz, align, cpEmMontageCtrl::DTI.getID());
-}
-
-inline void cpEmMontageCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpEmMontageCtrl::DTI)->memFree(p_addr);
 }
 
 cpEmMontageCtrl::cpEmMontageCtrl() {

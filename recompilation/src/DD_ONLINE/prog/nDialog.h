@@ -9,9 +9,6 @@
 // Forward declarations
 struct MtNetError;
 
-// Declarations
-namespace nDialog { struct stInfo; }
-
 namespace nDialog {
     enum DLOG_ATTR
     {
@@ -130,6 +127,9 @@ namespace nDialog {
         STATE_NUM = 10,
     };
 }  // namespace nDialog
+
+// Declarations
+namespace nDialog { struct stInfo; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;

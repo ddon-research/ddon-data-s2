@@ -118,3 +118,15 @@ inline void* cDurableInfoBase::operator new(size_t sz, void* p_addr) {
 
 inline cDurableInfoBase::cDurableInfoBase() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cBlowShrinkInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBlowShrinkInfo::DTI)->memAlloc(sz, align, ::cBlowShrinkInfo::DTI.::MtDTI::getID());
+}
+
+inline void cBlowShrinkInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBlowShrinkInfo::DTI)->memFree(p_addr);
+}

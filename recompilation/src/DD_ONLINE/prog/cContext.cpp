@@ -28,10 +28,6 @@ const MtDTI& cContext::getDTI() const {
     return cContext::DTI;
 }
 
-inline void cContext::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContext::DTI)->memFree(p_addr);
-}
-
 cContext::cContext() {
     mpNext = nullptr;
     mpPrev = nullptr;
@@ -58,10 +54,6 @@ MtObject* cContext::MyDTI::newInstance() const {
 
 const MtDTI& cContextCharacter::getDTI() const {
     return cContextCharacter::DTI;
-}
-
-inline void cContextCharacter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContextCharacter::DTI)->memFree(p_addr);
 }
 
 cContextCharacter::cContextCharacter() {
@@ -131,10 +123,6 @@ MtVector3 cContextCharacter::getShlPos(u32 index) const {
     return sWorldOffset::getInstance()->getOffsetNetPos(mShlPos[index]);
 }
 
-const nNetMsgData::stNetPos& cContextCharacter::getShlRealPos(u32 index) const {
-    return mShlPos[index];
-}
-
 __attribute__((weak)) void cContextCharacter::setShlPos(const MtVector3& pos, u32 index) {
     DDON_STUB("cContextCharacter::setShlPos")
     /* stub */
@@ -142,10 +130,6 @@ __attribute__((weak)) void cContextCharacter::setShlPos(const MtVector3& pos, u3
 
 MtVector3 cContextCharacter::getShlTarget(u32 index) const {
     return sWorldOffset::getInstance()->getOffsetNetPos(mShlTarget[index]);
-}
-
-const nNetMsgData::stNetPos& cContextCharacter::getShlTargetRealPos(u32 index) const {
-    return mShlTarget[index];
 }
 
 __attribute__((weak)) void cContextCharacter::setShlTarget(const MtVector3& pos, u32 index) {

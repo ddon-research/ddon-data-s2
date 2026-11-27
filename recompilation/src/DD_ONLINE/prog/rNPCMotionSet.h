@@ -235,3 +235,51 @@ inline rNPCMotionSet::InfoBinary::MotDataBinary::MotDataBinary() {
     this->mPlayMusic = false;
     this->mDisableCancel = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rNPCMotionSet::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::DTI)->memAlloc(sz, align, ::rNPCMotionSet::DTI.::MtDTI::getID());
+}
+
+inline void rNPCMotionSet::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::DTI)->memFree(p_addr);
+}
+
+inline rNPCMotionSet::rNPCMotionSet() {
+    this->::cResource::setAttribute(18u);
+    this->mArrayNum[6] = 0;
+    this->mArrayNum[7] = 0;
+    this->mArrayNum[4] = 0;
+    this->mArrayNum[5] = 0;
+    this->mArrayNum[2] = 0;
+    this->mArrayNum[3] = 0;
+    this->mArrayNum[0] = 0;
+    this->mArrayNum[1] = 0;
+    this->mpArray[7] = nullptr;
+    this->mpArray[6] = nullptr;
+    this->mpArray[5] = nullptr;
+    this->mpArray[4] = nullptr;
+    this->mpArray[3] = nullptr;
+    this->mpArray[2] = nullptr;
+    this->mpArray[1] = nullptr;
+    this->mpArray[0] = nullptr;
+}
+
+inline void* rNPCMotionSet::InfoBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::InfoBinary::DTI)->memAlloc(sz, align, ::rNPCMotionSet::InfoBinary::DTI.::MtDTI::getID());
+}
+
+inline void rNPCMotionSet::InfoBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::InfoBinary::DTI)->memFree(p_addr);
+}
+
+inline void* rNPCMotionSet::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, ::rNPCMotionSet::InfoBinary::MotDataBinary::DTI.::MtDTI::getID());
+}
+
+inline void rNPCMotionSet::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCMotionSet::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
+}

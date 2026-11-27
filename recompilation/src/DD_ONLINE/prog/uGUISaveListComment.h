@@ -177,3 +177,15 @@ inline uGUISaveListComment::EXIT_TYPE uGUISaveListComment::getExitType() const {
 inline const cStorageDataBase::UserHeader& uGUISaveListComment::getUserHeader() const {
     return this->mSaveDataHeader;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUISaveListComment::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUISaveListComment::DTI);
+}
+
+inline void uGUISaveListComment::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUISaveListComment::DTI)->memFree(p_addr);
+}

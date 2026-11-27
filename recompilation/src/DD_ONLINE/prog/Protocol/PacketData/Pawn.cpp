@@ -20,10 +20,6 @@ const MtDTI& CDataFreeRentalPawnList::getDTI() const {
     return CDataFreeRentalPawnList::DTI;
 }
 
-inline MtAllocator* CDataFreeRentalPawnList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataFreeRentalPawnList::DTI);
-}
-
 void* CDataFreeRentalPawnList::operator new(size_t sz, u32 align) {
     return CDataFreeRentalPawnList::getAllocator()->memAlloc(sz, align, CDataFreeRentalPawnList::DTI.getID());
 }
@@ -44,10 +40,6 @@ const MtDTI& CDataLostPawnList::getDTI() const {
     return CDataLostPawnList::DTI;
 }
 
-inline MtAllocator* CDataLostPawnList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataLostPawnList::DTI);
-}
-
 void* CDataLostPawnList::operator new(size_t sz, u32 align) {
     return CDataLostPawnList::getAllocator()->memAlloc(sz, align, CDataLostPawnList::DTI.getID());
 }
@@ -64,16 +56,24 @@ MtObject* CDataLostPawnList::MyDTI::newInstance() const {
     return new (16u) CDataLostPawnList;
 }
 
+const MtDTI& CDataNoraPawnInfo::getDTI() const {
+    return CDataNoraPawnInfo::DTI;
+}
+
+__attribute__((weak)) void CDataNoraPawnInfo::operator delete(void* p_addr) {
+    CDataNoraPawnInfo::getAllocator()->memFree(p_addr);
+}
+
+inline CDataNoraPawnInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataNoraPawnInfo::MyDTI CDataNoraPawnInfo::DTI("CDataNoraPawnInfo", &::CPacketDataBase::DTI, 200ul, 0u, 0u);
+
+MtObject* CDataNoraPawnInfo::MyDTI::newInstance() const {
+    return new (16u) CDataNoraPawnInfo;
+}
+
 const MtDTI& CDataPartnerPawnData::getDTI() const {
     return CDataPartnerPawnData::DTI;
-}
-
-inline MtAllocator* CDataPartnerPawnData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPartnerPawnData::DTI);
-}
-
-inline void* CDataPartnerPawnData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPartnerPawnData::DTI)->memAlloc(sz, align, CDataPartnerPawnData::DTI.getID());
 }
 
 __attribute__((weak)) void CDataPartnerPawnData::operator delete(void* p_addr) {
@@ -90,10 +90,6 @@ MtObject* CDataPartnerPawnData::MyDTI::newInstance() const {
 
 const MtDTI& CDataPartnerPawnReward::getDTI() const {
     return CDataPartnerPawnReward::DTI;
-}
-
-inline MtAllocator* CDataPartnerPawnReward::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPartnerPawnReward::DTI);
 }
 
 void* CDataPartnerPawnReward::operator new(size_t sz, u32 align) {
@@ -116,14 +112,6 @@ const MtDTI& CDataPartnerPawnRewardParam::getDTI() const {
     return CDataPartnerPawnRewardParam::DTI;
 }
 
-inline MtAllocator* CDataPartnerPawnRewardParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPartnerPawnRewardParam::DTI);
-}
-
-inline void* CDataPartnerPawnRewardParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPartnerPawnRewardParam::DTI)->memAlloc(sz, align, CDataPartnerPawnRewardParam::DTI.getID());
-}
-
 __attribute__((weak)) void CDataPartnerPawnRewardParam::operator delete(void* p_addr) {
     CDataPartnerPawnRewardParam::getAllocator()->memFree(p_addr);
 }
@@ -138,10 +126,6 @@ MtObject* CDataPartnerPawnRewardParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataPawnCraftData::getDTI() const {
     return CDataPawnCraftData::DTI;
-}
-
-inline MtAllocator* CDataPawnCraftData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnCraftData::DTI);
 }
 
 __attribute__((weak)) void CDataPawnCraftData::operator delete(void* p_addr) {
@@ -159,10 +143,6 @@ __attribute__((weak)) MtObject* CDataPawnCraftData::MyDTI::newInstance() const {
 
 const MtDTI& CDataPawnCraftSkill::getDTI() const {
     return CDataPawnCraftSkill::DTI;
-}
-
-inline MtAllocator* CDataPawnCraftSkill::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnCraftSkill::DTI);
 }
 
 void* CDataPawnCraftSkill::operator new(size_t sz, u32 align) {
@@ -185,10 +165,6 @@ const MtDTI& CDataPawnFeedback::getDTI() const {
     return CDataPawnFeedback::DTI;
 }
 
-inline MtAllocator* CDataPawnFeedback::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnFeedback::DTI);
-}
-
 void* CDataPawnFeedback::operator new(size_t sz, u32 align) {
     return CDataPawnFeedback::getAllocator()->memAlloc(sz, align, CDataPawnFeedback::DTI.getID());
 }
@@ -209,28 +185,12 @@ const MtDTI& CDataPawnHistory::getDTI() const {
     return CDataPawnHistory::DTI;
 }
 
-inline MtAllocator* CDataPawnHistory::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnHistory::DTI);
-}
-
 void* CDataPawnHistory::operator new(size_t sz, u32 align) {
     return CDataPawnHistory::getAllocator()->memAlloc(sz, align, CDataPawnHistory::DTI.getID());
 }
 
 __attribute__((weak)) void CDataPawnHistory::operator delete(void* p_addr) {
     CDataPawnHistory::getAllocator()->memFree(p_addr);
-}
-
-CDataPawnHistory::CDataPawnHistory() {
-    m_unPawnID = 0;
-    m_unKillEnemyNum = 0;
-    m_ucAdventureCount = 0;
-    m_ucCraftCount = 0;
-    m_ullAdventureTime = 0;
-    m_ullReturnDate = 0;
-    m_DebtorBaseInfo.m_wstrClanName.value = nullptr;
-    m_DebtorBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
-    m_DebtorBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
 }
 
 inline CDataPawnHistory::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -243,10 +203,6 @@ MtObject* CDataPawnHistory::MyDTI::newInstance() const {
 
 const MtDTI& CDataPawnHp::getDTI() const {
     return CDataPawnHp::DTI;
-}
-
-inline MtAllocator* CDataPawnHp::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnHp::DTI);
 }
 
 void* CDataPawnHp::operator new(size_t sz, u32 align) {
@@ -269,10 +225,6 @@ const MtDTI& CDataPawnInfo::getDTI() const {
     return CDataPawnInfo::DTI;
 }
 
-inline MtAllocator* CDataPawnInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnInfo::DTI);
-}
-
 __attribute__((weak)) void CDataPawnInfo::operator delete(void* p_addr) {
     CDataPawnInfo::getAllocator()->memFree(p_addr);
 }
@@ -288,10 +240,6 @@ __attribute__((weak)) MtObject* CDataPawnInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataPawnList::getDTI() const {
     return CDataPawnList::DTI;
-}
-
-inline MtAllocator* CDataPawnList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnList::DTI);
 }
 
 void* CDataPawnList::operator new(size_t sz, u32 align) {
@@ -314,14 +262,6 @@ const MtDTI& CDataPawnListData::getDTI() const {
     return CDataPawnListData::DTI;
 }
 
-inline MtAllocator* CDataPawnListData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnListData::DTI);
-}
-
-inline void* CDataPawnListData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPawnListData::DTI)->memAlloc(sz, align, CDataPawnListData::DTI.getID());
-}
-
 __attribute__((weak)) void CDataPawnListData::operator delete(void* p_addr) {
     CDataPawnListData::getAllocator()->memFree(p_addr);
 }
@@ -336,14 +276,6 @@ MtObject* CDataPawnListData::MyDTI::newInstance() const {
 
 const MtDTI& CDataPawnName::getDTI() const {
     return CDataPawnName::DTI;
-}
-
-inline MtAllocator* CDataPawnName::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnName::DTI);
-}
-
-inline void* CDataPawnName::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPawnName::DTI)->memAlloc(sz, align, CDataPawnName::DTI.getID());
 }
 
 __attribute__((weak)) void CDataPawnName::operator delete(void* p_addr) {
@@ -362,14 +294,6 @@ const MtDTI& CDataPawnProfile::getDTI() const {
     return CDataPawnProfile::DTI;
 }
 
-inline MtAllocator* CDataPawnProfile::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnProfile::DTI);
-}
-
-inline void* CDataPawnProfile::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPawnProfile::DTI)->memAlloc(sz, align, CDataPawnProfile::DTI.getID());
-}
-
 __attribute__((weak)) void CDataPawnProfile::operator delete(void* p_addr) {
     CDataPawnProfile::getAllocator()->memFree(p_addr);
 }
@@ -384,10 +308,6 @@ MtObject* CDataPawnProfile::MyDTI::newInstance() const {
 
 const MtDTI& CDataPawnReaction::getDTI() const {
     return CDataPawnReaction::DTI;
-}
-
-inline MtAllocator* CDataPawnReaction::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnReaction::DTI);
 }
 
 void* CDataPawnReaction::operator new(size_t sz, u32 align) {
@@ -410,14 +330,6 @@ const MtDTI& CDataPawnTotalScore::getDTI() const {
     return CDataPawnTotalScore::DTI;
 }
 
-inline MtAllocator* CDataPawnTotalScore::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnTotalScore::DTI);
-}
-
-inline void* CDataPawnTotalScore::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPawnTotalScore::DTI)->memAlloc(sz, align, CDataPawnTotalScore::DTI.getID());
-}
-
 __attribute__((weak)) void CDataPawnTotalScore::operator delete(void* p_addr) {
     CDataPawnTotalScore::getAllocator()->memFree(p_addr);
 }
@@ -432,10 +344,6 @@ MtObject* CDataPawnTotalScore::MyDTI::newInstance() const {
 
 const MtDTI& CDataRegisterdPawnList::getDTI() const {
     return CDataRegisterdPawnList::DTI;
-}
-
-inline MtAllocator* CDataRegisterdPawnList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataRegisterdPawnList::DTI);
 }
 
 void* CDataRegisterdPawnList::operator new(size_t sz, u32 align) {
@@ -458,10 +366,6 @@ const MtDTI& CDataRentedPawnList::getDTI() const {
     return CDataRentedPawnList::DTI;
 }
 
-inline MtAllocator* CDataRentedPawnList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataRentedPawnList::DTI);
-}
-
 void* CDataRentedPawnList::operator new(size_t sz, u32 align) {
     return CDataRentedPawnList::getAllocator()->memAlloc(sz, align, CDataRentedPawnList::DTI.getID());
 }
@@ -476,5 +380,25 @@ CDataRentedPawnList::MyDTI CDataRentedPawnList::DTI("CDataRentedPawnList", &::CP
 
 MtObject* CDataRentedPawnList::MyDTI::newInstance() const {
     return new (16u) CDataRentedPawnList;
+}
+
+const MtDTI& CDataUnlockPawnTalk::getDTI() const {
+    return CDataUnlockPawnTalk::DTI;
+}
+
+void* CDataUnlockPawnTalk::operator new(size_t sz, u32 align) {
+    return CDataUnlockPawnTalk::getAllocator()->memAlloc(sz, align, CDataUnlockPawnTalk::DTI.getID());
+}
+
+__attribute__((weak)) void CDataUnlockPawnTalk::operator delete(void* p_addr) {
+    CDataUnlockPawnTalk::getAllocator()->memFree(p_addr);
+}
+
+inline CDataUnlockPawnTalk::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataUnlockPawnTalk::MyDTI CDataUnlockPawnTalk::DTI("CDataUnlockPawnTalk", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataUnlockPawnTalk::MyDTI::newInstance() const {
+    return new (16u) CDataUnlockPawnTalk;
 }
 

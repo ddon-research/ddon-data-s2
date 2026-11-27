@@ -3,7 +3,6 @@
 #include "Shop.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -12,10 +11,6 @@
 
 const MtDTI& CDataGoodsParam::getDTI() const {
     return CDataGoodsParam::DTI;
-}
-
-inline MtAllocator* CDataGoodsParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGoodsParam::DTI);
 }
 
 void* CDataGoodsParam::operator new(size_t sz, u32 align) {

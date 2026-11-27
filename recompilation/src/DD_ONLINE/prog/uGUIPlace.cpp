@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUIPlace.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
@@ -26,16 +27,8 @@ const MtDTI& uGUIPlace::getDTI() const {
     return uGUIPlace::DTI;
 }
 
-inline MtAllocator* uGUIPlace::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPlace::DTI);
-}
-
 void* uGUIPlace::operator new(size_t sz, u32 align) {
     return uGUIPlace::getAllocator()->memAlloc(sz, align, uGUIPlace::DTI.getID());
-}
-
-inline void uGUIPlace::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPlace::DTI)->memFree(p_addr);
 }
 
 uGUIPlace::~uGUIPlace() {
@@ -79,14 +72,42 @@ void uGUIPlace::kill() {
     mpGUIRes = nullptr;
 }
 
-__attribute__((weak)) void uGUIPlace::setStageName(s32 stageNo) {
-    DDON_STUB("uGUIPlace::setStageName")
-    /* stub */
+void uGUIPlace::setStageName(s32 stageNo) {
+    MT_CTSTR t0 = cGUIUtility::GetStageName(stageNo);
+    if (t0 != nullptr) {
+        if (t0 != (&mStr.mStr[0])) {
+            size_t t1 = strlen(t0);
+            mStr.mLength = (static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u;
+            if (((static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u) != 0) {
+                memcpy(static_cast<void*>(&mStr.mStr[0]), static_cast<const void*>(t0), static_cast<size_t>((static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u));
+                mStr.mStr[(static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u] = 0;
+            } else {
+                mStr.mStr[0] = 0;
+            }
+        }
+    } else {
+        mStr.mStr[0] = 0;
+        mStr.mLength = 0;
+    }
 }
 
-__attribute__((weak)) void uGUIPlace::setSpotName(u32 spotId) {
-    DDON_STUB("uGUIPlace::setSpotName")
-    /* stub */
+void uGUIPlace::setSpotName(u32 spotId) {
+    MT_CTSTR t0 = cGUIUtility::GetSpotName(static_cast<s32>(spotId));
+    if (t0 != nullptr) {
+        if (t0 != (&mStr.mStr[0])) {
+            size_t t1 = strlen(t0);
+            mStr.mLength = (static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u;
+            if (((static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u) != 0) {
+                memcpy(static_cast<void*>(&mStr.mStr[0]), static_cast<const void*>(t0), static_cast<size_t>((static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u));
+                mStr.mStr[(static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u] = 0;
+            } else {
+                mStr.mStr[0] = 0;
+            }
+        }
+    } else {
+        mStr.mStr[0] = 0;
+        mStr.mLength = 0;
+    }
 }
 
 bool uGUIPlace::isDisp() const {
@@ -206,7 +227,7 @@ __attribute__((weak)) bool uGUIPlace::updateStepDelay() {
     mTimer = getDeltaTime() + mTimer;
     if (mTimer > mDelay) {
         if (mpOBJ_test_message_Message != nullptr) {
-            setObjectMessage(static_cast<cGUIObject*>(mpOBJ_test_message_Message), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 2284))), 0u, false);
+            setObjectMessage(static_cast<cGUIObject*>(mpOBJ_test_message_Message), &mStr.mStr[0], 0u, false);
             cGUIInstAnimation* t0 = mpINST_msg_place;
             if (t0 != nullptr) {
                 t0->setSequenceId(1u);

@@ -25,14 +25,6 @@ const MtDTI& cShlParamSpline::getDTI() const {
     return cShlParamSpline::DTI;
 }
 
-inline void* cShlParamSpline::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamSpline::DTI)->memAlloc(sz, align, cShlParamSpline::DTI.getID());
-}
-
-inline void cShlParamSpline::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamSpline::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamSpline::getShlDTI() const {
     return uShlSpline::DTI;
 }
@@ -106,20 +98,12 @@ const MtDTI& cShlParamSpline::cSplineShlNodeParam::getDTI() const {
     return cShlParamSpline::cSplineShlNodeParam::DTI;
 }
 
-inline MtAllocator* cShlParamSpline::cSplineShlNodeParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cShlParamSpline::cSplineShlNodeParam::DTI);
-}
-
 void* cShlParamSpline::cSplineShlNodeParam::operator new(size_t sz, u32 align) {
     return cShlParamSpline::cSplineShlNodeParam::getAllocator()->memAlloc(sz, align, cShlParamSpline::cSplineShlNodeParam::DTI.getID());
 }
 
 __attribute__((weak)) void cShlParamSpline::cSplineShlNodeParam::operator delete(void* p_addr) {
     cShlParamSpline::cSplineShlNodeParam::getAllocator()->memFree(p_addr);
-}
-
-inline cShlParamSpline::cSplineShlNodeParam::cSplineShlNodeParam() {
-    mOffset = MtVector3::Zero;
 }
 
 cShlParamSpline::cSplineShlNodeParam::~cSplineShlNodeParam() {
@@ -140,10 +124,6 @@ MtObject* cShlParamSpline::cSplineShlNodeParam::MyDTI::newInstance() const {
 
 const MtDTI& uShlSpline::getDTI() const {
     return uShlSpline::DTI;
-}
-
-inline void uShlSpline::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlSpline::DTI)->memFree(p_addr);
 }
 
 uShlSpline::uShlSpline() {
@@ -177,9 +157,11 @@ __attribute__((weak)) void uShlSpline::movePos() {
     /* stub */
 }
 
-__attribute__((weak)) void uShlSpline::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlSpline::applyWorldOffset")
-    /* stub */
+void uShlSpline::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlBase::applyWorldOffset(offset, absolute_offset);
+    mOldPos.x = offset.x + mOldPos.x;
+    mOldPos.y = offset.y + mOldPos.y;
+    mOldPos.z = offset.z + mOldPos.z;
 }
 
 __attribute__((weak)) void uShlSpline::checkScr() {

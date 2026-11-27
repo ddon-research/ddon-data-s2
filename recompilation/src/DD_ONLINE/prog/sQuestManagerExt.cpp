@@ -17,7 +17,9 @@
 #include "Protocol/PacketData/Ranking.h"
 #include "Protocol/UserSession/S2C.h"
 #include "Protocol/PacketData/Warp.h"
+#include "aMenu.h"
 #include "aStage.h"
+#include "cActiveQuestManager.h"
 #include "../../XFramework/cArea.h"
 #include "cAreaHit.h"
 #include "cAreaReleaseManager.h"
@@ -25,6 +27,7 @@
 #include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
+#include "cCycle04QuestManager.h"
 #include "cCycleQuestManagerBase.h"
 #include "cCycleQuestSubCategoryManager.h"
 #include "cEndContentsManager.h"
@@ -35,19 +38,26 @@
 #include "cOmComponent.h"
 #include "cPRTManager.h"
 #include "cPawnQuestManager.h"
+#include "cQuestDeliverManager.h"
 #include "cQuestEventArg.h"
 #include "cQuestFunctionManagerBAse.h"
 #include "cQuestManagerBase.h"
+#include "cQuestMarkerManager.h"
+#include "cQuestMemoryPool.h"
 #include "cQuestPhaseManager.h"
 #include "cQuestPhaseState.h"
 #include "cQuestResourceLoadManager.h"
+#include "cQuestResourceManager.h"
 #include "cQuestSvNotice.h"
 #include "cQuestSvNoticeManager.h"
 #include "cQuestSvRequest.h"
 #include "cQuestSvRequestManager.h"
+#include "cQuestSyncDataManager.h"
 #include "cQuestTask.h"
 #include "cScenario.h"
+#include "cSetQuestManager.h"
 #include "../../XFramework/cSystem.h"
+#include "cTutorialQuestManager.h"
 #include "../../XFramework/cUnit.h"
 #include "cpLayout.h"
 #include "cpNpc.h"
@@ -94,16 +104,8 @@ const MtDTI& sQuestManagerExt::getDTI() const {
     return sQuestManagerExt::DTI;
 }
 
-inline MtAllocator* sQuestManagerExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::DTI);
-}
-
 void* sQuestManagerExt::operator new(size_t sz, u32 align) {
     return sQuestManagerExt::getAllocator()->memAlloc(sz, align, sQuestManagerExt::DTI.getID());
-}
-
-inline void sQuestManagerExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool sQuestManagerExt::isReqDeliverItem() const {
@@ -136,9 +138,29 @@ __attribute__((weak)) void sQuestManagerExt::deliverItem(const nQuest::SCHEDULE_
     /* stub */
 }
 
-__attribute__((weak)) void sQuestManagerExt::updateDeliveredInfo(nQuest::SCHEDULE_ID scheduleId, u32 charcterId, const MtTypedArray<CDataDeliveredItem>& deliveredList) {
-    DDON_STUB("sQuestManagerExt::updateDeliveredInfo")
-    /* stub */
+void sQuestManagerExt::updateDeliveredInfo(nQuest::SCHEDULE_ID scheduleId, u32 charcterId, const MtTypedArray<CDataDeliveredItem>& deliveredList) {
+    u32 v0_2 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_2;
+    if (v0_2 == 0) {
+        v2_2 = nullptr;
+    } else {
+        MtObject* * v0_3 = mFunctionInfo.mpArray;
+        for (unsigned int i0_1 = 0;;) {
+            if (v0_3[i0_1] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i0_1]) + 8)) == 8) {
+                    v2_2 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_3[i0_1])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_1 + 1u) < v0_2) {
+                i0_1 = i0_1 + 1u;
+            } else {
+                v2_2 = nullptr;
+                break;
+            }
+        }
+    }
+    static_cast<cQuestDeliverManager*>(v2_2)->updateDeliveredInfo(scheduleId, charcterId, deliveredList);
 }
 
 __attribute__((weak)) nQuest::SCHEDULE_ID sQuestManagerExt::getEventBoardQuestAcceptedScheduleId() const {
@@ -1111,19 +1133,6 @@ u32 sQuestManagerExt::getKilledEnemyNum(u32 stageNo, u32 enemyId) {
     return 0;
 }
 
-inline void sQuestManagerExt::resetParam() {
-    unsigned int i1 = 0;
-    if (mKilledEnemy.mLength != 0) {
-        do {
-            if (mKilledEnemy.mpArray[i1] != nullptr) {
-                delete mKilledEnemy.mpArray[i1];
-            }
-            i1 += 1u;
-        } while (i1 < mKilledEnemy.mLength);
-    }
-    mKilledEnemy.mLength = 0;
-}
-
 __attribute__((weak)) void sQuestManagerExt::callQuestAnnounce(const cQuestTask* pTask, s32 announceType, s32 purposeNo, bool isDiscovered, s32 num) {
     DDON_STUB("sQuestManagerExt::callQuestAnnounce")
     /* stub */
@@ -1269,9 +1278,55 @@ __attribute__((weak)) void sQuestManagerExt::initStage() {
 __attribute__((weak)) void sQuestManagerExt::initLobby() {
 }
 
-__attribute__((weak)) void sQuestManagerExt::initGame() {
-    DDON_STUB("sQuestManagerExt::initGame")
-    /* stub */
+void sQuestManagerExt::initGame() {
+    mNowSetQuestDistId = 0;
+    u32 v0_0 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_0 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_1 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    static_cast<cQuestResourceManager*>(v2_4)->initGame();
+    if (mSystemLogQueue.mLength != 0) {
+        u32 v3_0 = mSystemLogQueue.mLength;
+        unsigned int i3_3 = 0;
+        u32 v4_0;
+        for (;;) {
+            if (mSystemLogQueue.mpArray[i3_3] == nullptr) {
+                v4_0 = v3_0;
+            } else {
+                delete mSystemLogQueue.mpArray[i3_3];
+                v4_0 = mSystemLogQueue.mLength;
+            }
+            if ((i3_3 + 1u) < v4_0) {
+                v3_0 = v4_0;
+                i3_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mSystemLogQueue.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSystemLogQueue.mpArray));
+    }
+    mSystemLogQueue.mpArray = nullptr;
+    mSystemLogQueue.mBufsiz = 0;
+    mSystemLogQueue.mLength = 0;
 }
 
 __attribute__((weak)) void sQuestManagerExt::finalGame() {
@@ -1686,9 +1741,53 @@ __attribute__((weak)) nQuest::QUEST_TYPE sQuestManagerExt::getCycleContentsQuest
     return {};
 }
 
-__attribute__((weak)) void sQuestManagerExt::setEntryCycleContentCategory(u32 NpcId) {
-    DDON_STUB("sQuestManagerExt::setEntryCycleContentCategory")
-    /* stub */
+void sQuestManagerExt::setEntryCycleContentCategory(u32 NpcId) {
+    mEntryNpcId = NpcId;
+    u32 v0_0 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_0 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_1 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    mEntryContentCategory = static_cast<cQuestResourceManager*>(v2_4)->getCycleContentsCategory(NpcId);
+    u32 v3_0 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v6_4;
+    if (v3_0 == 0) {
+        v6_4 = nullptr;
+    } else {
+        MtObject* * v3_1 = mFunctionInfo.mpArray;
+        for (unsigned int i3_2 = 0;;) {
+            if (v3_1[i3_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1[i3_2]) + 8)) == 4) {
+                    v6_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v3_1[i3_2])->getFunctionManager();
+                    mEntryContentSubCategory = static_cast<cQuestResourceManager*>(v6_4)->getCycleContentsSubCategory(NpcId);
+                    return;
+                }
+            }
+            if ((i3_2 + 1u) < v3_0) {
+                i3_2 = i3_2 + 1u;
+            } else {
+                break;
+            }
+        }
+        v6_4 = nullptr;
+    }
+    mEntryContentSubCategory = static_cast<cQuestResourceManager*>(v6_4)->getCycleContentsSubCategory(NpcId);
 }
 
 void sQuestManagerExt::clearEntryCycleContentCategory() {
@@ -1711,9 +1810,75 @@ __attribute__((weak)) void sQuestManagerExt::setCycleContentEntryNpcId(nQuest::S
     /* stub */
 }
 
-__attribute__((weak)) void sQuestManagerExt::setCycleContentEntryNpcId(nQuest::CYCLE_CONTENTS_CATEGORY category, nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) {
-    DDON_STUB("sQuestManagerExt::setCycleContentEntryNpcId")
-    /* stub */
+void sQuestManagerExt::setCycleContentEntryNpcId(nQuest::CYCLE_CONTENTS_CATEGORY category, nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) {
+    u32 v0_3 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_3;
+    if (v0_3 == 0) {
+        v2_3 = nullptr;
+    } else {
+        MtObject* * v0_1 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 4) {
+                    v2_3 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_1[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_3) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_3 = nullptr;
+                break;
+            }
+        }
+    }
+    u32 npcId = static_cast<cQuestResourceManager*>(v2_3)->getCycleContentsGatherNpcId(static_cast<u32>(category), static_cast<u32>(subCategory));
+    mEntryNpcId = npcId;
+    u32 v3_0 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v5_5;
+    if (v3_0 == 0) {
+        v5_5 = nullptr;
+    } else {
+        MtObject* * v3_1 = mFunctionInfo.mpArray;
+        for (unsigned int i3_2 = 0;;) {
+            if (v3_1[i3_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_1[i3_2]) + 8)) == 4) {
+                    v5_5 = static_cast<sQuestManagerExt::cFunctionInfo*>(v3_1[i3_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i3_2 + 1u) < v3_0) {
+                i3_2 = i3_2 + 1u;
+            } else {
+                v5_5 = nullptr;
+                break;
+            }
+        }
+    }
+    mEntryContentCategory = static_cast<cQuestResourceManager*>(v5_5)->getCycleContentsCategory(npcId);
+    u32 v6_0 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v9_5;
+    if (v6_0 == 0) {
+        v9_5 = nullptr;
+    } else {
+        MtObject* * v6_1 = mFunctionInfo.mpArray;
+        for (unsigned int i6_2 = 0;;) {
+            if (v6_1[i6_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v6_1[i6_2]) + 8)) == 4) {
+                    v9_5 = static_cast<sQuestManagerExt::cFunctionInfo*>(v6_1[i6_2])->getFunctionManager();
+                    mEntryContentSubCategory = static_cast<cQuestResourceManager*>(v9_5)->getCycleContentsSubCategory(npcId);
+                    return;
+                }
+            }
+            if ((i6_2 + 1u) < v6_0) {
+                i6_2 = i6_2 + 1u;
+            } else {
+                break;
+            }
+        }
+        v9_5 = nullptr;
+    }
+    mEntryContentSubCategory = static_cast<cQuestResourceManager*>(v9_5)->getCycleContentsSubCategory(npcId);
 }
 
 cCycleQuestManagerBase* sQuestManagerExt::getCycleContentsMgr(nQuest::CYCLE_CONTENTS_CATEGORY category, nQuest::CYCLE_CONTENTS_SUB_CATEGORY subCategory) const {
@@ -2088,9 +2253,30 @@ __attribute__((weak)) cCycleQuestManagerBase* sQuestManagerExt::getCycleContents
     return static_cast<cCycleQuestManagerBase*>(v12_0);
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isActiveQuest(nQuest::SCHEDULE_ID scheduleId, u32* pIdx, s32 dispType) const {
-    DDON_STUB("sQuestManagerExt::isActiveQuest")
-    return {};
+bool sQuestManagerExt::isActiveQuest(nQuest::SCHEDULE_ID scheduleId, u32* pIdx, s32 dispType) const {
+    u32 v0_2 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_2;
+    if (v0_2 == 0) {
+        v2_2 = nullptr;
+    } else {
+        MtObject* * v0_3 = mFunctionInfo.mpArray;
+        for (unsigned int i0_1 = 0;;) {
+            if (v0_3[i0_1] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3[i0_1]) + 8)) == 3) {
+                    v2_2 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_3[i0_1])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_1 + 1u) < v0_2) {
+                i0_1 = i0_1 + 1u;
+            } else {
+                v2_2 = nullptr;
+                break;
+            }
+        }
+    }
+    bool t0 = static_cast<cActiveQuestManager*>(v2_2)->isActiveQuest(scheduleId, pIdx, dispType);
+    return t0;
 }
 
 __attribute__((weak)) u32 sQuestManagerExt::getActiveQuestDispType() const {
@@ -2113,14 +2299,98 @@ __attribute__((weak)) void sQuestManagerExt::setActiveQuest(nQuest::SCHEDULE_ID 
     /* stub */
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isEnableRequestActiveQuest() {
-    DDON_STUB("sQuestManagerExt::isEnableRequestActiveQuest")
-    return {};
+bool sQuestManagerExt::isEnableRequestActiveQuest() {
+    u32 v0_1 = mFunctionInfo.mLength;
+    bool v8_0;
+    if (v0_1 != 0) {
+        MtObject* * v0_2 = mFunctionInfo.mpArray;
+        unsigned int i0_0 = 0;
+        unsigned int i2_0;
+        cQuestFunctionManagerBase* v5_4;
+        for (;;) {
+            if (v0_2[i0_0] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[i0_0]) + 8)) == 3) {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2[i0_0]) + 16)) == 0) {
+                        v8_0 = false;
+                    } else {
+                        i2_0 = 0;
+                        for (;;) {
+                            if (v0_2[i2_0] != nullptr) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[i2_0]) + 8)) == 3) {
+                                    v5_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_2[i2_0])->getFunctionManager();
+                                    break;
+                                }
+                            }
+                            if ((i2_0 + 1u) < v0_1) {
+                                i2_0 = i2_0 + 1u;
+                            } else {
+                                v5_4 = nullptr;
+                                break;
+                            }
+                        }
+                        v8_0 = static_cast<cActiveQuestManager*>(v5_4)->isEnableRequest();
+                    }
+                    break;
+                }
+            }
+            if ((i0_0 + 1u) < v0_1) {
+                i0_0 = i0_0 + 1u;
+            } else {
+                v8_0 = false;
+                break;
+            }
+        }
+    } else {
+        v8_0 = false;
+    }
+    return v8_0;
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isEnableRequestAutoActiveQuest() {
-    DDON_STUB("sQuestManagerExt::isEnableRequestAutoActiveQuest")
-    return {};
+bool sQuestManagerExt::isEnableRequestAutoActiveQuest() {
+    u32 v0_1 = mFunctionInfo.mLength;
+    bool v8_0;
+    if (v0_1 != 0) {
+        MtObject* * v0_2 = mFunctionInfo.mpArray;
+        unsigned int i0_0 = 0;
+        unsigned int i2_0;
+        cQuestFunctionManagerBase* v5_4;
+        for (;;) {
+            if (v0_2[i0_0] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[i0_0]) + 8)) == 3) {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2[i0_0]) + 16)) == 0) {
+                        v8_0 = false;
+                    } else {
+                        i2_0 = 0;
+                        for (;;) {
+                            if (v0_2[i2_0] != nullptr) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_2[i2_0]) + 8)) == 3) {
+                                    v5_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_2[i2_0])->getFunctionManager();
+                                    break;
+                                }
+                            }
+                            if ((i2_0 + 1u) < v0_1) {
+                                i2_0 = i2_0 + 1u;
+                            } else {
+                                v5_4 = nullptr;
+                                break;
+                            }
+                        }
+                        v8_0 = static_cast<cActiveQuestManager*>(v5_4)->isEnableRequestNum();
+                    }
+                    break;
+                }
+            }
+            if ((i0_0 + 1u) < v0_1) {
+                i0_0 = i0_0 + 1u;
+            } else {
+                v8_0 = false;
+                break;
+            }
+        }
+    } else {
+        v8_0 = false;
+    }
+    return v8_0;
 }
 
 __attribute__((weak)) void sQuestManagerExt::recvNoticeActiveQuest(u32 characterId, const PriorityQuestVec& priorityQuestList) {
@@ -2138,9 +2408,29 @@ __attribute__((weak)) void sQuestManagerExt::reqGetActiveQuest() {
     /* stub */
 }
 
-__attribute__((weak)) void sQuestManagerExt::cancelActiveQuest(nQuest::SCHEDULE_ID scheduleId) {
-    DDON_STUB("sQuestManagerExt::cancelActiveQuest")
-    /* stub */
+void sQuestManagerExt::cancelActiveQuest(nQuest::SCHEDULE_ID scheduleId) {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 3) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    static_cast<cActiveQuestManager*>(v2_4)->cancelActiveQuest(scheduleId);
 }
 
 u32 sQuestManagerExt::getEndContentsPurposeNum() const {
@@ -2531,9 +2821,62 @@ bool sQuestManagerExt::isOrderedSoloMainQuest() {
     return false;
 }
 
-__attribute__((weak)) void sQuestManagerExt::requestGetQuestCompleteList(nQuest::SV_QUEST_TYPE questType) {
-    DDON_STUB("sQuestManagerExt::requestGetQuestCompleteList")
-    /* stub */
+void sQuestManagerExt::requestGetQuestCompleteList(nQuest::SV_QUEST_TYPE questType) {
+    if (questType == nQuest::SV_QUEST_TYPE_MAIN) {
+        mIsGetQuestClearList = false;
+    }
+    cArea* pArea = sArea::getInstance()->mpArea[1];
+    const MtDTI& t0 = pArea->getDTI();
+    MT_CTSTR v0_1 = aMenu::DTI.mName;
+    const MtDTI* v0_0 = &t0;
+    const MtDTI* v1_0;
+    MT_CTSTR v1_1;
+    for (;;) {
+        if (v0_1 != v0_0->mName) {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                cQuestSvRequest* t3 = cQuestSvRequestManager::pushRequest(cQuestSvReqGetQuestCompleteList::DTI);
+                if (t3 != nullptr) {
+                    t3->setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvRequest::PCallbackFunc>(&::sQuestManagerExt::callbackGetQuestCompleteList));
+                }
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 40) = static_cast<unsigned int>(questType);
+                return;
+            }
+        } else {
+            if (pArea == nullptr) {
+                cQuestSvRequest* t3 = cQuestSvRequestManager::pushRequest(cQuestSvReqGetQuestCompleteList::DTI);
+                if (t3 != nullptr) {
+                    t3->setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvRequest::PCallbackFunc>(&::sQuestManagerExt::callbackGetQuestCompleteList));
+                }
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 40) = static_cast<unsigned int>(questType);
+                return;
+            } else {
+                const MtDTI& t2 = pArea->getDTI();
+                v1_1 = aMenu::DTI.mName;
+                v1_0 = &t2;
+                break;
+            }
+        }
+    }
+    for (;;) {
+        if (v1_1 == v1_0->mName) {
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getQuestCompleteList(static_cast<u32>(questType));
+            mHasRequestedGetCompleteListFromaMenu = true;
+            return;
+        } else {
+            if (v1_0->mpParent != nullptr) {
+                v1_0 = v1_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+    cQuestSvRequest* t3 = cQuestSvRequestManager::pushRequest(cQuestSvReqGetQuestCompleteList::DTI);
+    if (t3 != nullptr) {
+        t3->setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvRequest::PCallbackFunc>(&::sQuestManagerExt::callbackGetQuestCompleteList));
+    }
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t3) + 40) = static_cast<unsigned int>(questType);
 }
 
 __attribute__((weak)) void sQuestManagerExt::callbackGetQuestCompleteList(u32 errorCode) {
@@ -2583,14 +2926,56 @@ __attribute__((weak)) void sQuestManagerExt::completeCycleContentsRewardList() {
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestName(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getQuestName")
-    return {};
+MT_CTSTR sQuestManagerExt::getQuestName(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    MT_CTSTR t0 = static_cast<cQuestResourceManager*>(v2_4)->getQuestName(questId);
+    return t0;
 }
 
-__attribute__((weak)) MT_CTSTR sQuestManagerExt::getRewardBoxQuestName(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getRewardBoxQuestName")
-    return {};
+MT_CTSTR sQuestManagerExt::getRewardBoxQuestName(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    MT_CTSTR t0 = static_cast<cQuestResourceManager*>(v2_4)->getRewardBoxQuestName(questId);
+    return t0;
 }
 
 __attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestNameMyMainQuest() const {
@@ -2598,9 +2983,30 @@ __attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestNameMyMainQuest() const
     return {};
 }
 
-__attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestDetail(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getQuestDetail")
-    return {};
+MT_CTSTR sQuestManagerExt::getQuestDetail(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    MT_CTSTR t0 = static_cast<cQuestResourceManager*>(v2_4)->getOrderMsg(questId);
+    return t0;
 }
 
 __attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestPartyPurposeMsg(nQuest::QUEST_ID questId) const {
@@ -2613,19 +3019,82 @@ __attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestPurposeMsg(nQuest::QUES
     return {};
 }
 
-__attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestFindInfo(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getQuestFindInfo")
-    return {};
+MT_CTSTR sQuestManagerExt::getQuestFindInfo(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    MT_CTSTR t0 = static_cast<cQuestResourceManager*>(v2_4)->getFindInfoMsg(questId);
+    return t0;
 }
 
-__attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestFindInfoDetail(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getQuestFindInfoDetail")
-    return {};
+MT_CTSTR sQuestManagerExt::getQuestFindInfoDetail(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    MT_CTSTR t0 = static_cast<cQuestResourceManager*>(v2_4)->getFindInfoDetailMsg(questId);
+    return t0;
 }
 
-__attribute__((weak)) MT_CTSTR sQuestManagerExt::getQuestContentsDetail(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getQuestContentsDetail")
-    return {};
+MT_CTSTR sQuestManagerExt::getQuestContentsDetail(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    MT_CTSTR t0 = static_cast<cQuestResourceManager*>(v2_4)->getContentsDetailMsg(questId);
+    return t0;
 }
 
 __attribute__((weak)) u32 sQuestManagerExt::getQuestBaseLevel(nQuest::SCHEDULE_ID scheduleId) const {
@@ -2633,24 +3102,108 @@ __attribute__((weak)) u32 sQuestManagerExt::getQuestBaseLevel(nQuest::SCHEDULE_I
     return {};
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isFinishedLoadingQuestResource(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::isFinishedLoadingQuestResource")
-    return {};
+bool sQuestManagerExt::isFinishedLoadingQuestResource(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    bool t0 = static_cast<cQuestResourceManager*>(v2_4)->isFinishedLoading(questId);
+    return t0;
 }
 
-__attribute__((weak)) bool sQuestManagerExt::isFinishedLoadingQuestResourceRewardBox(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::isFinishedLoadingQuestResourceRewardBox")
-    return {};
+bool sQuestManagerExt::isFinishedLoadingQuestResourceRewardBox(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    bool t0 = static_cast<cQuestResourceManager*>(v2_4)->isFinishedLoadingRewardBox(questId);
+    return t0;
 }
 
-__attribute__((weak)) cTalkMsgData* sQuestManagerExt::getQuestMessageData(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getQuestMessageData")
-    return nullptr;
+cTalkMsgData* sQuestManagerExt::getQuestMessageData(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    cTalkMsgData* t0 = static_cast<cQuestResourceManager*>(v2_4)->getMessageData(questId);
+    return t0;
 }
 
-__attribute__((weak)) cTalkMsgData* sQuestManagerExt::getQuestExmineData(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getQuestExmineData")
-    return nullptr;
+cTalkMsgData* sQuestManagerExt::getQuestExmineData(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    cTalkMsgData* t0 = static_cast<cQuestResourceManager*>(v2_4)->getExmineData(questId);
+    return t0;
 }
 
 __attribute__((weak)) u32 sQuestManagerExt::getQuestArea(nQuest::SCHEDULE_ID scheduleId) const {
@@ -2678,19 +3231,86 @@ __attribute__((weak)) void sQuestManagerExt::setReleaseContentResouce(u32 catego
     /* stub */
 }
 
-__attribute__((weak)) void sQuestManagerExt::loadQuestResource(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::loadQuestResource")
-    /* stub */
+void sQuestManagerExt::loadQuestResource(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    static_cast<cQuestResourceManager*>(v2_4)->requestLoadResource(questId);
 }
 
-__attribute__((weak)) void sQuestManagerExt::loadQuestResourceRewardBox(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::loadQuestResourceRewardBox")
-    /* stub */
+void sQuestManagerExt::loadQuestResourceRewardBox(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    static_cast<cQuestResourceManager*>(v2_4)->requestLoadResourceRewardBox(questId);
 }
 
-__attribute__((weak)) void sQuestManagerExt::releaseRewardBox() {
-    DDON_STUB("sQuestManagerExt::releaseRewardBox")
-    /* stub */
+void sQuestManagerExt::releaseRewardBox() {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v3_4;
+    if (v0_1 == 0) {
+        v3_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v3_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    static_cast<cQuestResourceManager*>(v3_4)->releaseRewardBox();
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearRewardBoxListPacket();
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCycleContentsRewardListPacket();
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCycleContentsRewardItemPacket();
+                    return;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                break;
+            }
+        }
+        v3_4 = nullptr;
+    }
+    static_cast<cQuestResourceManager*>(v3_4)->releaseRewardBox();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearRewardBoxListPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCycleContentsRewardListPacket();
+    static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearCycleContentsRewardItemPacket();
 }
 
 bool sQuestManagerExt::isQuestFlag(u32 flagNo) const {
@@ -3420,9 +4040,33 @@ __attribute__((weak)) bool sQuestManagerExt::getSetQuestList() {
     return {};
 }
 
-__attribute__((weak)) void sQuestManagerExt::forceGetSetQuestList() {
-    DDON_STUB("sQuestManagerExt::forceGetSetQuestList")
-    /* stub */
+void sQuestManagerExt::forceGetSetQuestList() {
+    u32 v0_0 = sQuestManagerExt::getInstance()->mManagerInfo.mLength;
+    cQuestManagerBase* v2_4;
+    if (v0_0 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_1 = sQuestManagerExt::getInstance()->mManagerInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[i0_2]) + 8)) == 1) {
+                    v2_4 = static_cast<sQuestManagerExt::cManagerInfo*>(v0_1[i0_2])->getQuestManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    static_cast<cSetQuestManager*>(v2_4)->cSetQuestManager::getQuestList(mNowSetQuestDistId);
+    cQuestSvRequest* t0 = cQuestSvRequestManager::pushRequest(cQuestSvReqGetAreaBonusList::DTI);
+    if (t0 != nullptr) {
+        t0->setFromClass(static_cast<MtObject*>(this)).setCallbackFunc(static_cast<cQuestSvRequest::PCallbackFunc>(&::sQuestManagerExt::callbackGetAreaBonusList));
+    }
 }
 
 const nQuest::cGUINewspaperSetQuestInfoList& sQuestManagerExt::getSetQuestInfoListRef() const {
@@ -3433,9 +4077,30 @@ const nQuest::GUINewspaperRecommededQuestInfoArray& sQuestManagerExt::getRecomme
     return mRecommendedQuestInfoList;
 }
 
-__attribute__((weak)) u32 sQuestManagerExt::getQuestSeq(nQuest::QUEST_ID questId) const {
-    DDON_STUB("sQuestManagerExt::getQuestSeq")
-    return {};
+u32 sQuestManagerExt::getQuestSeq(nQuest::QUEST_ID questId) const {
+    u32 v0_1 = mFunctionInfo.mLength;
+    cQuestFunctionManagerBase* v2_4;
+    if (v0_1 == 0) {
+        v2_4 = nullptr;
+    } else {
+        MtObject* * v0_0 = mFunctionInfo.mpArray;
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_0[i0_2] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0[i0_2]) + 8)) == 4) {
+                    v2_4 = static_cast<sQuestManagerExt::cFunctionInfo*>(v0_0[i0_2])->getFunctionManager();
+                    break;
+                }
+            }
+            if ((i0_2 + 1u) < v0_1) {
+                i0_2 = i0_2 + 1u;
+            } else {
+                v2_4 = nullptr;
+                break;
+            }
+        }
+    }
+    u32 t0 = static_cast<cQuestResourceManager*>(v2_4)->getQuestSequence(questId);
+    return t0;
 }
 
 __attribute__((weak)) cQuestTask* sQuestManagerExt::addHelperTask(const CQuestOrderList* pOrder) {
@@ -3891,18 +4556,18 @@ __attribute__((weak)) void sQuestManagerExt::setAreaReleaseByRankUp(u32 data) {
 }
 
 u32 sQuestManagerExt::getAreaReleaseNumByRankUp() const {
-    unsigned long v0_0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 368);
-    unsigned long v1_1;
+    MtObject* * p0_0 = mFunctionInfo.mpArray;
+    MtObject* v1_1;
     for (;;) {
-        v1_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_0) + 0);
-        if (v1_1 != 0) {
+        v1_1 = *p0_0;
+        if (v1_1 != nullptr) {
             if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_1) + 8)) == 9) {
                 break;
             }
         }
-        v0_0 += 8ul;
+        p0_0 += 1;
     }
-    return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_1) + 16)) + 56);
+    return static_cast<cAreaReleaseManager*>(static_cast<sQuestManagerExt::cFunctionInfo*>(v1_1)->getFunctionManager())->getAreaReleaseNumByRankUp();
 }
 
 __attribute__((weak)) void sQuestManagerExt::setAreaRelease(u16 id) {
@@ -4617,14 +5282,6 @@ const MtDTI& sQuestManagerExt::cKilledEnemy::getDTI() const {
     return sQuestManagerExt::cKilledEnemy::DTI;
 }
 
-inline void* sQuestManagerExt::cKilledEnemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cKilledEnemy::DTI)->memAlloc(sz, align, sQuestManagerExt::cKilledEnemy::DTI.getID());
-}
-
-inline void sQuestManagerExt::cKilledEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cKilledEnemy::DTI)->memFree(p_addr);
-}
-
 sQuestManagerExt::cKilledEnemy::~cKilledEnemy() {
 }
 
@@ -4638,14 +5295,6 @@ MtObject* sQuestManagerExt::cKilledEnemy::MyDTI::newInstance() const {
 
 const MtDTI& sQuestManagerExt::cManagerInfo::getDTI() const {
     return sQuestManagerExt::cManagerInfo::DTI;
-}
-
-inline void* sQuestManagerExt::cManagerInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cManagerInfo::DTI)->memAlloc(sz, align, sQuestManagerExt::cManagerInfo::DTI.getID());
-}
-
-inline void sQuestManagerExt::cManagerInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cManagerInfo::DTI)->memFree(p_addr);
 }
 
 sQuestManagerExt::cManagerInfo::~cManagerInfo() {
@@ -4671,16 +5320,8 @@ const MtDTI& sQuestManagerExt::cTouchOmInfo::getDTI() const {
     return sQuestManagerExt::cTouchOmInfo::DTI;
 }
 
-inline MtAllocator* sQuestManagerExt::cTouchOmInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cTouchOmInfo::DTI);
-}
-
 void* sQuestManagerExt::cTouchOmInfo::operator new(size_t sz, u32 align) {
     return sQuestManagerExt::cTouchOmInfo::getAllocator()->memAlloc(sz, align, sQuestManagerExt::cTouchOmInfo::DTI.getID());
-}
-
-inline void sQuestManagerExt::cTouchOmInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cTouchOmInfo::DTI)->memFree(p_addr);
 }
 
 const nLayout::stLayoutID& sQuestManagerExt::cTouchOmInfo::getLayoutId() const {
@@ -4719,14 +5360,6 @@ const MtDTI& sQuestManagerExt::cFunctionInfo::getDTI() const {
     return sQuestManagerExt::cFunctionInfo::DTI;
 }
 
-inline void* sQuestManagerExt::cFunctionInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cFunctionInfo::DTI)->memAlloc(sz, align, sQuestManagerExt::cFunctionInfo::DTI.getID());
-}
-
-inline void sQuestManagerExt::cFunctionInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cFunctionInfo::DTI)->memFree(p_addr);
-}
-
 sQuestManagerExt::cFunctionInfo::~cFunctionInfo() {
     if (mpFuncMgr == nullptr) {
         return;
@@ -4748,14 +5381,6 @@ MtObject* sQuestManagerExt::cFunctionInfo::MyDTI::newInstance() const {
 
 const MtDTI& sQuestManagerExt::cSystemLogNode::getDTI() const {
     return sQuestManagerExt::cSystemLogNode::DTI;
-}
-
-inline void* sQuestManagerExt::cSystemLogNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cSystemLogNode::DTI)->memAlloc(sz, align, sQuestManagerExt::cSystemLogNode::DTI.getID());
-}
-
-inline void sQuestManagerExt::cSystemLogNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cSystemLogNode::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void sQuestManagerExt::cSystemLogNode::update() {
@@ -4783,14 +5408,6 @@ const MtDTI& sQuestManagerExt::cClearedQuestInfo::getDTI() const {
     return sQuestManagerExt::cClearedQuestInfo::DTI;
 }
 
-inline void* sQuestManagerExt::cClearedQuestInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cClearedQuestInfo::DTI)->memAlloc(sz, align, sQuestManagerExt::cClearedQuestInfo::DTI.getID());
-}
-
-inline void sQuestManagerExt::cClearedQuestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cClearedQuestInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void sQuestManagerExt::cClearedQuestInfo::callbackFinish() {
     DDON_STUB("sQuestManagerExt::cClearedQuestInfo::callbackFinish")
     /* stub */
@@ -4816,14 +5433,6 @@ const MtDTI& sQuestManagerExt::cTimer::getDTI() const {
     return sQuestManagerExt::cTimer::DTI;
 }
 
-inline void* sQuestManagerExt::cTimer::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cTimer::DTI)->memAlloc(sz, align, sQuestManagerExt::cTimer::DTI.getID());
-}
-
-inline void sQuestManagerExt::cTimer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cTimer::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void sQuestManagerExt::cTimer::update() {
     DDON_STUB("sQuestManagerExt::cTimer::update")
     /* stub */
@@ -4832,10 +5441,6 @@ __attribute__((weak)) void sQuestManagerExt::cTimer::update() {
 __attribute__((weak)) void sQuestManagerExt::cTimer::addCallbackElapsedTime(u32 time, MtObject* pClass, void(MtObject::*pCallback)()) {
     DDON_STUB("sQuestManagerExt::cTimer::addCallbackElapsedTime")
     /* stub */
-}
-
-inline void sQuestManagerExt::cTimer::stopTimer() {
-    mStopTime = static_cast<sNetworkExt*>(sNetwork::mpInstance)->mWorldServerTime.mTime;
 }
 
 sQuestManagerExt::cTimer::~cTimer() {
@@ -4910,14 +5515,6 @@ const MtDTI& sQuestManagerExt::cUnreleasedArea::getDTI() const {
     return sQuestManagerExt::cUnreleasedArea::DTI;
 }
 
-inline void* sQuestManagerExt::cUnreleasedArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sQuestManagerExt::cUnreleasedArea::DTI)->memAlloc(sz, align, sQuestManagerExt::cUnreleasedArea::DTI.getID());
-}
-
-inline void sQuestManagerExt::cUnreleasedArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cUnreleasedArea::DTI)->memFree(p_addr);
-}
-
 sQuestManagerExt::cUnreleasedArea::~cUnreleasedArea() {
 }
 
@@ -4934,10 +5531,6 @@ MtObject* sQuestManagerExt::cUnreleasedArea::MyDTI::newInstance() const {
 
 const MtDTI& sQuestManagerExt::cSayInfo::getDTI() const {
     return sQuestManagerExt::cSayInfo::DTI;
-}
-
-inline void sQuestManagerExt::cSayInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sQuestManagerExt::cSayInfo::DTI)->memFree(p_addr);
 }
 
 sQuestManagerExt::cSayInfo::~cSayInfo() {

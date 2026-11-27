@@ -11,6 +11,7 @@
 #include "Protocol/PacketData/Character.h"
 #include "Protocol/PacketData/CharacterCommon.h"
 #include "Protocol/PacketData/CharacterEdit.h"
+#include "Protocol/PacketData/CharacterItem.h"
 #include "Protocol/PacketData/CharacterParam.h"
 #include "../../generated/shared/ChatMsgType.h"
 #include "Protocol/PacketData/Cheat.h"
@@ -52,12 +53,14 @@
 #include "Protocol/PacketData/Pawn.h"
 #include "Protocol/PacketData/Quest.h"
 #include "Protocol/PacketData/QuickParty.h"
+#include "Protocol/PacketData/RaidBoss.h"
 #include "Protocol/UserSession/S2C.h"
 #include "Protocol/PacketData/Search.h"
 #include "Protocol/PacketData/Server.h"
 #include "Protocol/PacketData/ServerSetting.h"
 #include "Protocol/PacketData/Skill.h"
 #include "Protocol/PacketData/Stage.h"
+#include "Protocol/PacketData/Warp.h"
 #include "Protocol/PacketData/Weather.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
@@ -65,6 +68,7 @@
 #include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cContextPlayerInfo.h"
+#include "cCycle04QuestManager.h"
 #include "cCycleQuestManagerBase.h"
 #include "cEditParam.h"
 #include "cEndContentsManager.h"
@@ -117,6 +121,7 @@
 #include "sBazaarManager.h"
 #include "sBrowser.h"
 #include "sChat.h"
+#include "sClanKyoten.h"
 #include "sContextManager.h"
 #include "sControlManager.h"
 #include "sCraftManager.h"
@@ -138,6 +143,7 @@
 #include "sQuestManagerExt.h"
 #include "../../XFramework/sRemoteProcedure.h"
 #include "sRemoteProcedureExt.h"
+#include "sReward.h"
 #include "sScreenShot.h"
 #include "sSetManager.h"
 #include "sWorldOffset.h"
@@ -167,14 +173,6 @@ const MtDTI& cCompleteQuest::getDTI() const {
     return cCompleteQuest::DTI;
 }
 
-inline void* cCompleteQuest::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCompleteQuest::DTI)->memAlloc(sz, align, cCompleteQuest::DTI.getID());
-}
-
-inline void cCompleteQuest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCompleteQuest::DTI)->memFree(p_addr);
-}
-
 inline cCompleteQuest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCompleteQuest::MyDTI cCompleteQuest::DTI("cCompleteQuest", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -185,14 +183,6 @@ MtObject* cCompleteQuest::MyDTI::newInstance() const {
 
 const MtDTI& cEditSalonInfo::getDTI() const {
     return cEditSalonInfo::DTI;
-}
-
-inline void* cEditSalonInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEditSalonInfo::DTI)->memAlloc(sz, align, cEditSalonInfo::DTI.getID());
-}
-
-inline void cEditSalonInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEditSalonInfo::DTI)->memFree(p_addr);
 }
 
 inline cEditSalonInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -207,16 +197,8 @@ const MtDTI& cNetGameServer::getDTI() const {
     return cNetGameServer::DTI;
 }
 
-inline MtAllocator* cNetGameServer::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cNetGameServer::DTI);
-}
-
 void* cNetGameServer::operator new(size_t sz, u32 align) {
     return cNetGameServer::getAllocator()->memAlloc(sz, align, cNetGameServer::DTI.getID());
-}
-
-inline void cNetGameServer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNetGameServer::DTI)->memFree(p_addr);
 }
 
 cNetGameServer::cNetGameServer() {
@@ -2390,19 +2372,6 @@ __attribute__((weak)) bool cNetGameServer::consumeStorageItem(StorageItemUIDList
     return {};
 }
 
-void cNetGameServer::clearConsumeStorageItemList() {
-    unsigned int i1 = 0;
-    if (mReqStorageItemList.mLength != 0) {
-        do {
-            if (mReqStorageItemList.mpArray[i1] != nullptr) {
-                delete mReqStorageItemList.mpArray[i1];
-            }
-            i1 += 1u;
-        } while (i1 < mReqStorageItemList.mLength);
-    }
-    mReqStorageItemList.mLength = 0;
-}
-
 __attribute__((weak)) bool cNetGameServer::exchangeSlotItem() {
     DDON_STUB("cNetGameServer::exchangeSlotItem")
     return {};
@@ -3525,8 +3494,11 @@ bool cNetGameServer::getBoxGachaReset(u32 id) {
 }
 
 __attribute__((weak)) void cNetGameServer::clearBoxGachaResetPacket() {
-    DDON_STUB("cNetGameServer::clearBoxGachaResetPacket")
-    /* stub */
+    if (mpConnection->mpGetBoxGachaResetPacket != nullptr) {
+        delete mpConnection->mpGetBoxGachaResetPacket;
+        mpConnection->mpGetBoxGachaResetPacket = nullptr;
+    }
+    mpConnection->mpGetBoxGachaResetPacket = new (16u) nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES;
 }
 
 __attribute__((weak)) void cNetGameServer::clearBoxGachaDrawInfoPacket() {
@@ -6987,19 +6959,6 @@ bool cNetGameServer::updateClanSetting(bool isNtc) {
     return false;
 }
 
-inline void cNetGameServer::clearClanDirectInvitedList() {
-    unsigned int i1 = 0;
-    if (mClanDirectInvitedList.mLength != 0) {
-        do {
-            if (mClanDirectInvitedList.mpArray[i1] != nullptr) {
-                delete mClanDirectInvitedList.mpArray[i1];
-            }
-            i1 += 1u;
-        } while (i1 < mClanDirectInvitedList.mLength);
-    }
-    mClanDirectInvitedList.mLength = 0;
-}
-
 __attribute__((weak)) bool cNetGameServer::addClanDirectInvitedInfo(const CClanScoutEntryInviteInfo& src) {
     DDON_STUB("cNetGameServer::addClanDirectInvitedInfo")
     return {};
@@ -8134,16 +8093,6 @@ void cNetGameServer::clearGetAttachmentList() {
     mUnGetAttachmentList.m_LegendPawnList.mpArray = nullptr;
     mUnGetAttachmentList.m_LegendPawnList.mBufsiz = 0;
     mUnGetAttachmentList.m_LegendPawnList.mLength = 0;
-}
-
-inline void cNetGameServer::countMailUpdateTimer() {
-    if (mEnableUpdateSysMailTimer > 0.0f) {
-        mEnableUpdateSysMailTimer = mEnableUpdateSysMailTimer - (sMain::mpInstance)->mDeltaTime;
-    }
-}
-
-inline void cNetGameServer::resetMailUpdateTimer() {
-    mEnableUpdateSysMailTimer = (sMain::mpInstance)->mFps * static_cast<float>(static_cast<sNetworkExt*>(sNetwork::mpInstance)->mpGameServer->mpConnection->mpGetGameSettingPacket->m_GameSetting.m_unMailCacheExpireTime);
 }
 
 __attribute__((weak)) bool cNetGameServer::isEnableMailUpdate() {
@@ -10499,7 +10448,7 @@ void cNetGameServer::OnPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE(nUserSession
     if (partyNum != 0) {
         cNetGameServer* v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
         for (unsigned int i0_3 = 0;;) {
-            cContextInstHm* t1 = sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_0->mPartyMemberInfoVec.getBuffer()[static_cast<int>(i0_3)]) + 116)));
+            cContextInstHm* t1 = sContextManager::getInstance()->getContextPartyPlayerFromMemberIndex(static_cast<s32>(static_cast<cPartyMemberInfo*>(v0_0->mPartyMemberInfoVec.getBuffer()[static_cast<int>(i0_3)])->m_nMemberIndex));
             if (cContextInterface::isPawnOwner(t1)) {
                 cContextPlayerInfo* t2 = cContextInterface::getContextPlayerInfo(t1);
                 if (t2 != nullptr) {
@@ -10529,16 +10478,6 @@ __attribute__((weak)) void cNetGameServer::OnPacket_S2C_JOIN_PARTY_PAWN_NOTICE(n
 __attribute__((weak)) void cNetGameServer::OnPacket_S2C_PAWN_LOST_RES(nUserSession::CPacket_S2C_PAWN_LOST_RES& packet) {
     DDON_STUB("cNetGameServer::OnPacket_S2C_PAWN_LOST_RES")
     /* stub */
-}
-
-inline void cNetGameServer::OnPacket_S2C_QUEST_PROGRESS_RES(nUserSession::CPacket_S2C_QUEST_PROGRESS_RES& packet) {
-    mRecvProgressQuestScheduleId = packet.m_unQuestScheduleId;
-    if (packet.m_nResult != 0) {
-        mStatus[145] = sNetworkExt::NET_STAT_ERROR;
-    } else {
-        mStatus[145] = sNetworkExt::NET_STAT_SUCCESS;
-        mpQuestProcessStateList = &mpConnection->mpQuestProgressPacket->m_QuestProcessStateList;
-    }
 }
 
 void cNetGameServer::OnPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES(nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES& packet) {
@@ -10625,7 +10564,7 @@ void cNetGameServer::OnPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES(nUserSessi
                 if (packet.m_EquipJobItemList.mpArray[i0_3] == nullptr) {
                     v1_0 = v0_0;
                 } else {
-                    eq_data.setArrowEquip(static_cast<nCharacterData::ARROW_EQUIP>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(packet.m_EquipJobItemList.mpArray[i0_3]) + 12)), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(packet.m_EquipJobItemList.mpArray[i0_3]) + 8));
+                    eq_data.setArrowEquip(static_cast<nCharacterData::ARROW_EQUIP>(static_cast<CDataEquipJobItem*>(packet.m_EquipJobItemList.mpArray[i0_3])->m_ucEquipSlotNo), static_cast<CDataEquipJobItem*>(packet.m_EquipJobItemList.mpArray[i0_3])->m_unJobItemID);
                     v1_0 = packet.m_EquipJobItemList.mLength;
                 }
                 if ((i0_3 + 1u) < v1_0) {
@@ -10683,7 +10622,7 @@ void cNetGameServer::OnPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES(nUserSession::C
                     if (packet.m_EquipJobItemList.mpArray[i0_3] == nullptr) {
                         v1_0 = v0_0;
                     } else {
-                        v0_11.setArrowEquip(static_cast<nCharacterData::ARROW_EQUIP>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(packet.m_EquipJobItemList.mpArray[i0_3]) + 12)), *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(packet.m_EquipJobItemList.mpArray[i0_3]) + 8));
+                        v0_11.setArrowEquip(static_cast<nCharacterData::ARROW_EQUIP>(static_cast<CDataEquipJobItem*>(packet.m_EquipJobItemList.mpArray[i0_3])->m_ucEquipSlotNo), static_cast<CDataEquipJobItem*>(packet.m_EquipJobItemList.mpArray[i0_3])->m_unJobItemID);
                         v1_0 = packet.m_EquipJobItemList.mLength;
                     }
                     if ((i0_3 + 1u) < v1_0) {
@@ -11050,14 +10989,6 @@ const MtDTI& cNetGameServer::cCtrlFlow::getDTI() const {
     return cNetGameServer::cCtrlFlow::DTI;
 }
 
-inline void* cNetGameServer::cCtrlFlow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cNetGameServer::cCtrlFlow::DTI)->memAlloc(sz, align, cNetGameServer::cCtrlFlow::DTI.getID());
-}
-
-inline void cNetGameServer::cCtrlFlow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNetGameServer::cCtrlFlow::DTI)->memFree(p_addr);
-}
-
 inline cNetGameServer::cCtrlFlow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cNetGameServer::cCtrlFlow::MyDTI cNetGameServer::cCtrlFlow::DTI("cNetGameServer::cCtrlFlow", &::MtObject::DTI, 40ul, 0u, 0u);
@@ -11068,10 +10999,6 @@ MtObject* cNetGameServer::cCtrlFlow::MyDTI::newInstance() const {
 
 const MtDTI& cNetGameServer::cChatLog::getDTI() const {
     return cNetGameServer::cChatLog::DTI;
-}
-
-inline void* cNetGameServer::cChatLog::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cNetGameServer::cChatLog::DTI)->memAlloc(sz, align, cNetGameServer::cChatLog::DTI.getID());
 }
 
 inline cNetGameServer::cChatLog::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -11086,10 +11013,6 @@ const MtDTI& cPartyMemberInfo::getDTI() const {
     return cPartyMemberInfo::DTI;
 }
 
-inline void cPartyMemberInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPartyMemberInfo::DTI)->memFree(p_addr);
-}
-
 inline cPartyMemberInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cPartyMemberInfo::MyDTI cPartyMemberInfo::DTI("cPartyMemberInfo", &::MtObject::DTI, 136ul, 0u, 0u);
@@ -11101,10 +11024,6 @@ __attribute__((weak)) MtObject* cPartyMemberInfo::MyDTI::newInstance() const {
 
 const MtDTI& cPawnListParam::getDTI() const {
     return cPawnListParam::DTI;
-}
-
-inline void* cPawnListParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnListParam::DTI)->memAlloc(sz, align, cPawnListParam::DTI.getID());
 }
 
 cPawnListParam::~cPawnListParam() {
@@ -11148,14 +11067,6 @@ const MtDTI& cPawnVoiceData::getDTI() const {
     return cPawnVoiceData::DTI;
 }
 
-inline void* cPawnVoiceData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnVoiceData::DTI)->memAlloc(sz, align, cPawnVoiceData::DTI.getID());
-}
-
-inline void cPawnVoiceData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnVoiceData::DTI)->memFree(p_addr);
-}
-
 inline cPawnVoiceData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cPawnVoiceData::MyDTI cPawnVoiceData::DTI("cPawnVoiceData", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -11166,10 +11077,6 @@ MtObject* cPawnVoiceData::MyDTI::newInstance() const {
 
 const MtDTI& cSeedGameSvConnection::getDTI() const {
     return cSeedGameSvConnection::DTI;
-}
-
-inline void cSeedGameSvConnection::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSeedGameSvConnection::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cSeedGameSvConnection::init() {
@@ -14870,8 +14777,71 @@ __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_GET_DISPEL_ITEM_L
 }
 
 __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_EXCHANGE_DISPEL_ITEM_RES(CPacket* pPacket) {
-    DDON_STUB("cSeedGameSvConnection::OnPacket_S2C_EXCHANGE_DISPEL_ITEM_RES")
-    return {};
+    if (mpExchangeDispelItem != nullptr) {
+        delete mpExchangeDispelItem;
+        mpExchangeDispelItem = nullptr;
+    }
+    
+    nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES& packet = *new (16u) nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES;
+    auto* t2 = reinterpret_cast<unsigned char*>(&packet);
+    auto& t3 = *reinterpret_cast<u16*>(t2 + 0x8);
+    auto& t4 = *reinterpret_cast<s32*>(t2 + 0xc);
+    auto& t5 = *reinterpret_cast<MtTypedArray<CDataDispelResultInfo>*>(t2 + 0x10);
+    auto& t6 = *reinterpret_cast<bool*>(t2 + 0x30);
+    new (static_cast<void*>(&t5)) MtTypedArray<CDataDispelResultInfo>;
+    t6 = false;
+    mpExchangeDispelItem = &packet;
+    s32 tmpErr;
+    
+    if (nPacket::Read(*pPacket, t3)) {
+        do {
+            u16 t12;
+            if (nPacket::Read(*pPacket, t4) && nPacket::Read(*pPacket, t5)) {
+                t6 = true;
+                t12 = t3;
+                if (t12 == 0) {
+                    tmpErr = t4;
+                    break;
+                }
+            } else {
+                t12 = t3;
+                if (t12 == 0) {
+                    if (mpExchangeDispelItem != nullptr) {
+                        delete mpExchangeDispelItem;
+                        mpExchangeDispelItem = nullptr;
+                    }
+                    return 0;
+                }
+            }
+            tmpErr = t12;
+        } while (false);
+        cNetGameServer* t1 = mpManager;
+        auto* t7 = reinterpret_cast<unsigned char*>(t1);
+        auto* t8 = reinterpret_cast<nError::ERROR_CODE*>(t7 + 0x8d4);
+        auto* t9 = reinterpret_cast<sNetworkExt::NET_STAT*>(t7 + 0x8);
+        auto* t10 = reinterpret_cast<bool*>(t7 + 0x1a70);
+        auto* t11 = reinterpret_cast<bool*>(t7 + 0x1ca3);
+        t8[cNetGameServer::COM_EXCHANGE_DISPEL_ITEM] = static_cast<nError::ERROR_CODE>(tmpErr);
+        if (tmpErr == 0) {
+            t9[cNetGameServer::COM_EXCHANGE_DISPEL_ITEM] = sNetworkExt::NET_STAT_SUCCESS;
+        } else {
+            t9[cNetGameServer::COM_EXCHANGE_DISPEL_ITEM] = sNetworkExt::NET_STAT_ERROR;
+            if (!t10[cNetGameServer::COM_EXCHANGE_DISPEL_ITEM]) {
+                if (t11[cNetGameServer::COM_EXCHANGE_DISPEL_ITEM]) {
+                    t11[cNetGameServer::COM_EXCHANGE_DISPEL_ITEM] = false;
+                } else {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->requestNetworkErrorDialog(tmpErr);
+                }
+            }
+        }
+        t11[cNetGameServer::COM_EXCHANGE_DISPEL_ITEM] = false;
+        return 1;
+    }
+    if (mpExchangeDispelItem != nullptr) {
+        delete mpExchangeDispelItem;
+        mpExchangeDispelItem = nullptr;
+    }
+    return 0;
 }
 
 __attribute__((weak)) BOOL cSeedGameSvConnection::OnPacket_S2C_NETCAFE_ERROR_NTC(CPacket* pPacket) {

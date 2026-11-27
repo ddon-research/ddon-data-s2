@@ -24,10 +24,6 @@ const MtDTI& uGUIsMenuBase::getDTI() const {
     return uGUIsMenuBase::DTI;
 }
 
-inline void uGUIsMenuBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIsMenuBase::DTI)->memFree(p_addr);
-}
-
 uGUIsMenuBase::~uGUIsMenuBase() {
 }
 
@@ -100,9 +96,14 @@ void uGUIsMenuBase::move() {
     }
 }
 
-__attribute__((weak)) void uGUIsMenuBase::setAllFocusOffForReferenceUI() {
-    DDON_STUB("uGUIsMenuBase::setAllFocusOffForReferenceUI")
-    /* stub */
+void uGUIsMenuBase::setAllFocusOffForReferenceUI() {
+    u32 i = 0;
+    if (mRefrenceUIArray.mLength != 0) {
+        do {
+            static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i)])->setFocus(false);
+            i += 1u;
+        } while (i < mRefrenceUIArray.mLength);
+    }
 }
 
 void uGUIsMenuBase::setPointerPosReq(const MtVector2& pos) {
@@ -128,10 +129,6 @@ MtObject* uGUIsMenuBase::MyDTI::newInstance() const {
 
 const MtDTI& uGUIsMenuBase::cPulldown::getDTI() const {
     return uGUIsMenuBase::cPulldown::DTI;
-}
-
-inline MtAllocator* uGUIsMenuBase::cPulldown::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIsMenuBase::cPulldown::DTI);
 }
 
 void* uGUIsMenuBase::cPulldown::operator new(size_t sz, u32 align) {

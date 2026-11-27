@@ -7,12 +7,6 @@
 class CDataStageLayoutID;
 class MtDTI;
 
-// Declarations
-namespace nLayout { struct stLayoutID; }
-namespace nLayout { struct stReserveID; }
-namespace nLayout { struct stSplitID; }
-namespace nLayout { struct stUniqueID; }
-
 namespace nLayout {
     enum GROUP_CLASS
     {
@@ -47,6 +41,12 @@ namespace nLayout {
         U_QUEST = 7,
     };
 }  // namespace nLayout
+
+// Declarations
+namespace nLayout { struct stLayoutID; }
+namespace nLayout { struct stReserveID; }
+namespace nLayout { struct stSplitID; }
+namespace nLayout { struct stUniqueID; }
 
 // Type aliases from DWARF
 using s32 = int;

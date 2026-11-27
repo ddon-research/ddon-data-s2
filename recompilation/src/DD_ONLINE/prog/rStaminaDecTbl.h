@@ -232,3 +232,36 @@ inline bool cStaminaDecList::exportBinary(MtDataWriter& writer) {
     }
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cStaminaDecList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStaminaDecList::DTI)->memAlloc(sz, align, ::cStaminaDecList::DTI.::MtDTI::getID());
+}
+
+inline void cStaminaDecList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStaminaDecList::DTI)->memFree(p_addr);
+}
+
+inline void* cStaminaDecParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStaminaDecParam::DTI)->memAlloc(sz, align, ::cStaminaDecParam::DTI.::MtDTI::getID());
+}
+
+inline void cStaminaDecParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStaminaDecParam::DTI)->memFree(p_addr);
+}
+
+inline void* rStaminaDecTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStaminaDecTbl::DTI)->memAlloc(sz, align, ::rStaminaDecTbl::DTI.::MtDTI::getID());
+}
+
+inline void rStaminaDecTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStaminaDecTbl::DTI)->memFree(p_addr);
+}
+
+inline rStaminaDecTbl::rStaminaDecTbl() {
+    this->::cResource::setAttribute(18u);
+    this->mDecTbl.::MtArray::mAutoDelete = true;
+}

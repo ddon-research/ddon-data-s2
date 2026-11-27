@@ -19,10 +19,6 @@ const MtDTI& uCnsGroup::getDTI() const {
     return uCnsGroup::DTI;
 }
 
-inline void uCnsGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsGroup::DTI)->memFree(p_addr);
-}
-
 uCnsGroup::uCnsGroup() {
     DDON_STUB("uCnsGroup::uCnsGroup")
     /* stub */
@@ -234,10 +230,6 @@ const MtDTI& uCnsGroup::cGroup::getDTI() const {
     return uCnsGroup::cGroup::DTI;
 }
 
-inline void uCnsGroup::cGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsGroup::cGroup::DTI)->memFree(p_addr);
-}
-
 uCnsGroup::cGroup::cGroup(uCnsGroup* pCnsGroup, u32 idx) {
     DDON_STUB("uCnsGroup::cGroup::cGroup")
     /* stub */
@@ -363,10 +355,6 @@ const MtDTI& uCnsGroup::cNode::getDTI() const {
     return uCnsGroup::cNode::DTI;
 }
 
-inline void uCnsGroup::cNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsGroup::cNode::DTI)->memFree(p_addr);
-}
-
 uCnsGroup::cNode::cNode() {
     mJointNo = 255;
 }
@@ -393,10 +381,6 @@ __attribute__((weak)) MtObject* uCnsGroup::cNode::MyDTI::newInstance() const {
 
 const MtDTI& uCnsGroup::cCnsChild::getDTI() const {
     return uCnsGroup::cCnsChild::DTI;
-}
-
-inline void uCnsGroup::cCnsChild::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsGroup::cCnsChild::DTI)->memFree(p_addr);
 }
 
 void uCnsGroup::cCnsChild::adjust(uModel::Joint* pjnt, uModel* pmod) {

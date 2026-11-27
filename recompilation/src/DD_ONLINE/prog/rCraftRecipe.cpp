@@ -15,21 +15,6 @@ const MtDTI& rCraftRecipe::getDTI() const {
     return rCraftRecipe::DTI;
 }
 
-inline void* rCraftRecipe::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCraftRecipe::DTI)->memAlloc(sz, align, rCraftRecipe::DTI.getID());
-}
-
-inline void rCraftRecipe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCraftRecipe::DTI)->memFree(p_addr);
-}
-
-inline rCraftRecipe::rCraftRecipe() {
-    setAttribute(22u);
-    this->cResource::clear();
-    mpArrayData = nullptr;
-    mArrayDataNum = 0;
-}
-
 rCraftRecipe::~rCraftRecipe() {
 }
 
@@ -45,16 +30,8 @@ const MtDTI& rCraftRecipe::cCraftRecipe::getDTI() const {
     return rCraftRecipe::cCraftRecipe::DTI;
 }
 
-inline MtAllocator* rCraftRecipe::cCraftRecipe::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rCraftRecipe::cCraftRecipe::DTI);
-}
-
 void* rCraftRecipe::cCraftRecipe::operator new(size_t sz, u32 align) {
     return rCraftRecipe::cCraftRecipe::getAllocator()->memAlloc(sz, align, rCraftRecipe::cCraftRecipe::DTI.getID());
-}
-
-inline void rCraftRecipe::cCraftRecipe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCraftRecipe::cCraftRecipe::DTI)->memFree(p_addr);
 }
 
 rCraftRecipe::cCraftRecipe::cCraftRecipe() {
@@ -142,16 +119,8 @@ const MtDTI& rCraftRecipe::cMaterialData::getDTI() const {
     return rCraftRecipe::cMaterialData::DTI;
 }
 
-inline MtAllocator* rCraftRecipe::cMaterialData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rCraftRecipe::cMaterialData::DTI);
-}
-
 void* rCraftRecipe::cMaterialData::operator new(size_t sz, u32 align) {
     return rCraftRecipe::cMaterialData::getAllocator()->memAlloc(sz, align, rCraftRecipe::cMaterialData::DTI.getID());
-}
-
-inline void rCraftRecipe::cMaterialData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCraftRecipe::cMaterialData::DTI)->memFree(p_addr);
 }
 
 rCraftRecipe::cMaterialData::cMaterialData() {

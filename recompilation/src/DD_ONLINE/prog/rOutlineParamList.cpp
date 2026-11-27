@@ -22,9 +22,19 @@
 #define DDON_STUB(name)
 #endif
 
-__attribute__((weak)) void cOutlineCtrl::request(sEffectExt::OUTLINE type) {
-    DDON_STUB("cOutlineCtrl::request")
-    /* stub */
+void cOutlineCtrl::request(sEffectExt::OUTLINE type) {
+    if (type <= 39) {
+        const cOutlineParam* pNew = static_cast<sEffectExt*>(sEffect::getInstance())->getOutlineParam(type);
+        if (pNew != nullptr) {
+            if (mpRequestParam != nullptr) {
+                if (pNew->mPriority >= mpRequestParam->mPriority) {
+                    mpRequestParam = pNew;
+                }
+            } else {
+                mpRequestParam = pNew;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cOutlineCtrl::update(cpDDMrlMgr* pOwnerMrlMgr) {
@@ -34,10 +44,6 @@ __attribute__((weak)) void cOutlineCtrl::update(cpDDMrlMgr* pOwnerMrlMgr) {
 
 const MtDTI& cOutlineParam::getDTI() const {
     return cOutlineParam::DTI;
-}
-
-inline void cOutlineParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOutlineParam::DTI)->memFree(p_addr);
 }
 
 cOutlineParam::~cOutlineParam() {
@@ -74,19 +80,6 @@ __attribute__((weak)) MtObject* cOutlineParam::MyDTI::newInstance() const {
 
 const MtDTI& rOutlineParamList::getDTI() const {
     return rOutlineParamList::DTI;
-}
-
-inline void* rOutlineParamList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOutlineParamList::DTI)->memAlloc(sz, align, rOutlineParamList::DTI.getID());
-}
-
-inline void rOutlineParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOutlineParamList::DTI)->memFree(p_addr);
-}
-
-inline rOutlineParamList::rOutlineParamList() {
-    setAttribute(18u);
-    mParamList.mAutoDelete = true;
 }
 
 rOutlineParamList::~rOutlineParamList() {

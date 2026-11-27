@@ -32,6 +32,7 @@
 #include "cpOcdCtrl.h"
 #include "cpOmComponent.h"
 #include "cpOmGather.h"
+#include "cpRootComponent.h"
 #include "cpShlShotCtrl.h"
 #include "cpTalk.h"
 #include "cpTransparencyCtrl.h"
@@ -84,30 +85,15 @@ const MtDTI& uOmModel::getDTI() const {
     return uOmModel::DTI;
 }
 
-inline void* uOmModel::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uOmModel::DTI)->memAlloc(sz, align, uOmModel::DTI.getID());
-}
-
-inline void uOmModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uOmModel::DTI)->memFree(p_addr);
-}
-
-inline uOmModel::uOmModel() {
-    this->uDDOModel::mUnitId = this->uDDOModel::mUnitId | 256u;
-    mOmComp.mOmType = 1;
-    mHitPos.x = MtVector3::Zero.x;
-    mHitPos.y = MtVector3::Zero.y;
-    mHitPos.z = MtVector3::Zero.z;
-    mpCpOmLadder = nullptr;
-    mRnoHead = 0;
-    mHitPos.pad_ = 0.0f;
-    mpuAtkPL = nullptr;
-    mShlTimer = 0.0f;
-}
-
 uOmModel::~uOmModel() {
-    DDON_STUB("uOmModel::~uOmModel")
-    /* stub */
+    if (mComponentMgr.getRootComponent() == nullptr) {
+        return;
+    }
+    cpComponent* t0 = mComponentMgr.getRootComponent()->find(cpOmNav::DTI, true, true);
+    if (t0 == nullptr) {
+        return;
+    }
+    static_cast<cpOmBase*>(t0)->setLinkNav(true);
 }
 
 __attribute__((weak)) void uOmModel::setup() {
@@ -238,9 +224,53 @@ void uOmModel::callbackCheck(cHitInfo* pHitInfo) {
     this->uDDOModel::callbackCheck(pHitInfo);
 }
 
-__attribute__((weak)) void uOmModel::callbackChecked(cHitInfo* pHitInfo) {
-    DDON_STUB("uOmModel::callbackChecked")
-    /* stub */
+void uOmModel::callbackChecked(cHitInfo* pHitInfo) {
+    this->uDDOModel::callbackChecked(pHitInfo);
+    cOmControl* pctrl = mOmComp.mpOmControl;
+    if (pctrl == nullptr) {
+        return;
+    }
+    if (static_cast<unsigned int>(pctrl->mOmID - 522610) <= 2) {
+        uDDOModel* t0 = pHitInfo->mpAtkModel;
+        if (t0 != nullptr) {
+            if ((t0->mUnitId & 72u) != 0) {
+                if (t0->isMaster()) {
+                    if (mComponentMgr.getRootComponent() != nullptr) {
+                        cpOmSpa* pc = static_cast<cpOmSpa*>(mComponentMgr.getRootComponent()->find(cpOmSpa::DTI, true, true));
+                        if (pc != nullptr) {
+                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 13724) = 1;
+                            if (!pc->mbDone) {
+                                pc->mbDone = true;
+                            }
+                            if (pctrl->mOmID != 522612) {
+                                if (pctrl->mOmID == 522611) {
+                                    if (t0->getOcdCtrlPtr()->isOcdActive(19u)) {
+                                        t0->getOcdCtrlPtr()->resetActiveTimer(19u);
+                                    } else {
+                                        t0->catchAbnormalCondition(19u, nObjCondition::OCD_REASON_NONE, -1.0f, false);
+                                    }
+                                } else {
+                                    if (pctrl->mOmID == 522610) {
+                                        t0->healHp(2ul, true, 0u);
+                                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 13726)) == 0) {
+                                            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 13728) = 0x41F00000;
+                                        }
+                                        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 13725) = 1;
+                                    }
+                                }
+                            } else {
+                                if (t0->getOcdCtrlPtr()->isOcdActive(18u)) {
+                                    t0->getOcdCtrlPtr()->resetActiveTimer(18u);
+                                } else {
+                                    t0->catchAbnormalCondition(18u, nObjCondition::OCD_REASON_NONE, -1.0f, false);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void uOmModel::makeHitSeInfo_Attack(cDamageSeInfo* pSeInfo) {
@@ -300,9 +330,15 @@ void uOmModel::makeOcdAttackInfoShl(cHitInfoAfter* pHitInfo) {
     }
 }
 
-__attribute__((weak)) void uOmModel::setObjCollisionLayerOn(u32 no, bool on) {
-    DDON_STUB("uOmModel::setObjCollisionLayerOn")
-    /* stub */
+void uOmModel::setObjCollisionLayerOn(u32 no, bool on) {
+    if (getObjCollisionPtr() == nullptr) {
+        cpComponent* t0 = mComponentMgr.getRootComponent()->find(cpObjCollisionBase::DTI, true, true);
+        if (t0 != nullptr) {
+            static_cast<cpObjCollisionBase*>(t0)->setLayerOn(no, on);
+        }
+    } else {
+        getObjCollisionPtr()->setLayerOn(no, on);
+    }
 }
 
 void uOmModel::notifyDeleteShell(s32 work) {
@@ -324,9 +360,22 @@ __attribute__((weak)) void uOmModel::requestReleaseTouch(uDDOModel* pRelease, nD
     /* stub */
 }
 
-__attribute__((weak)) uDDOModel* uOmModel::getCatchUnit() {
-    DDON_STUB("uOmModel::getCatchUnit")
-    return nullptr;
+uDDOModel* uOmModel::getCatchUnit() {
+    if (mComponentMgr.getRootComponent() != nullptr) {
+        cpCatchCtrl* pc = static_cast<cpCatchCtrl*>(mComponentMgr.getRootComponent()->find(cpCatchCtrl::DTI, true, true));
+        if (pc != nullptr) {
+            u32 uid = pc->mCaughtInfo.getCatchUid();
+            uBaseModel* t0 = sPlayerManager::getInstance()->getLayoutUnit(uid);
+            if (t0 != nullptr) {
+                mOmComp.mpuCatchOld = static_cast<uDDOModel*>(t0);
+            }
+            return mOmComp.mpuCatchOld;
+        } else {
+            return mOmComp.mpuCatchOld;
+        }
+    } else {
+        return mOmComp.mpuCatchOld;
+    }
 }
 
 __attribute__((weak)) cGatherItemList* uOmModel::getGatherItemList() {
@@ -385,10 +434,6 @@ MtObject* uOmModel::MyDTI::newInstance() const {
 
 const MtDTI& uOmShell::getDTI() const {
     return uOmShell::DTI;
-}
-
-inline void uOmShell::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uOmShell::DTI)->memFree(p_addr);
 }
 
 uOmShell::~uOmShell() {
@@ -458,14 +503,6 @@ const MtDTI& uOmSimple::getDTI() const {
     return uOmSimple::DTI;
 }
 
-inline void* uOmSimple::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uOmSimple::DTI)->memAlloc(sz, align, uOmSimple::DTI.getID());
-}
-
-inline void uOmSimple::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uOmSimple::DTI)->memFree(p_addr);
-}
-
 uOmSimple::~uOmSimple() {
     mpCtrl = nullptr;
 }
@@ -496,9 +533,16 @@ void uOmSimple::applyWorldOffset(const MtVector3& offset, const MtVector3& absol
     this->uDDOModel::applyWorldOffset(offset, absolute_offset);
 }
 
-__attribute__((weak)) void uOmSimple::reqKill() {
-    DDON_STUB("uOmSimple::reqKill")
-    /* stub */
+void uOmSimple::reqKill() {
+    mbReqKill = true;
+    if (mComponentMgr.getRootComponent() == nullptr) {
+        return;
+    }
+    cpTransparencyCtrl* pc = static_cast<cpTransparencyCtrl*>(mComponentMgr.getRootComponent()->find(cpTransparencyCtrl::DTI, true, true));
+    if (pc == nullptr) {
+        return;
+    }
+    pc->startChangeTrp(1.0f, 0.0f, 15.0f);
 }
 
 inline uOmSimple::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -91,16 +91,8 @@ const MtDTI& uGUIPopTopSel::getDTI() const {
     return uGUIPopTopSel::DTI;
 }
 
-inline MtAllocator* uGUIPopTopSel::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopTopSel::DTI);
-}
-
 void* uGUIPopTopSel::operator new(size_t sz, u32 align) {
     return uGUIPopTopSel::getAllocator()->memAlloc(sz, align, uGUIPopTopSel::DTI.getID());
-}
-
-inline void uGUIPopTopSel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopTopSel::DTI)->memFree(p_addr);
 }
 
 u32 uGUIPopTopSel::GetClanMode() {
@@ -213,10 +205,6 @@ void uGUIPopTopSel::setBazaarIcon(u32 index, u8 type) {
             }
         }
     }
-}
-
-inline void uGUIPopTopSel::clearSelector() {
-    mSelector.mMsgList.clearStr();
 }
 
 void uGUIPopTopSel::playEntryFlashAnm() {

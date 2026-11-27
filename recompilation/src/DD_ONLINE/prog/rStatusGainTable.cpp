@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rStatusGainTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cStatusGain::getDTI() const {
     return cStatusGain::DTI;
-}
-
-inline void* cStatusGain::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStatusGain::DTI)->memAlloc(sz, align, cStatusGain::DTI.getID());
-}
-
-inline void cStatusGain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStatusGain::DTI)->memFree(p_addr);
 }
 
 void cStatusGain::createProperty(MtPropertyList& s) {
@@ -40,14 +30,6 @@ MtObject* cStatusGain::MyDTI::newInstance() const {
 
 const MtDTI& rStatusGainTable::getDTI() const {
     return rStatusGainTable::DTI;
-}
-
-inline void* rStatusGainTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStatusGainTable::DTI)->memAlloc(sz, align, rStatusGainTable::DTI.getID());
-}
-
-inline void rStatusGainTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStatusGainTable::DTI)->memFree(p_addr);
 }
 
 bool rStatusGainTable::loadData(MtDataReader& in, cStatusGain* pData) {

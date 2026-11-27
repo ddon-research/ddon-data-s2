@@ -19,9 +19,6 @@ class uCharacterEdit;
 class uGUISaveListComment;
 class uGUISystemMsg;
 
-// Declarations
-class uEditSaveLoadFlow;
-
 namespace nEditSaveLoadFlow {
     enum SAVE_LOAD_MODE
     {
@@ -39,6 +36,9 @@ namespace nEditSaveLoadFlow {
         SET_EDIT_PARAM = 1,
     };
 }  // namespace nEditSaveLoadFlow
+
+// Declarations
+class uEditSaveLoadFlow;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -156,4 +156,16 @@ private:
 
 inline void* uEditSaveLoadFlow::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uEditSaveLoadFlow::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uEditSaveLoadFlow::DTI);
+}
+
+inline void uEditSaveLoadFlow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uEditSaveLoadFlow::DTI)->memFree(p_addr);
 }

@@ -156,3 +156,31 @@ inline u32 rSoundAreaInfo::getBtlBgmNo() {
 inline u32 rSoundAreaInfo::getBtlBgmOutroNo() {
     return this->mBtlBgmOutroNo;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void rSoundAreaInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundAreaInfo::DTI)->memFree(p_addr);
+}
+
+inline rZone* rSoundAreaInfo::getSndZoneOcclusion() {
+    return this->mpSndZoneRes[0].mpPtr;
+}
+
+inline rZone* rSoundAreaInfo::getSndZoneGenerator() {
+    return this->mpSndZoneRes[1].mpPtr;
+}
+
+inline rZone* rSoundAreaInfo::getSndZoneTrigger() {
+    return this->mpSndZoneRes[2].mpPtr;
+}
+
+inline rSoundRequest* rSoundAreaInfo::getSndAmbientRes() {
+    return this->mpAmbientRes.mpPtr;
+}
+
+inline rSoundStreamRequest* rSoundAreaInfo::getSndCycleBgmRes() {
+    return this->mpCycleBgmSTQRes.mpPtr;
+}

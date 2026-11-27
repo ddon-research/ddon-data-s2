@@ -79,7 +79,7 @@ __attribute__((weak)) void nFurnitureMenuFlow::cFurnitureGroupListItems::release
 u32 nFurnitureMenuFlow::cFurnitureGroupListItems::getGroupId(u32 itemIndex) const {
     if (itemIndex < getItemNum()) {
         if (mItems.mpArray[itemIndex] != nullptr) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mItems.mpArray[itemIndex]) + 8);
+            return mItems[itemIndex]->mGroupId;
         }
     }
     return 0xFFFFFFFF;
@@ -102,7 +102,7 @@ __attribute__((weak)) MT_CTSTR nFurnitureMenuFlow::cFurnitureGroupListItems::get
 bool nFurnitureMenuFlow::cFurnitureGroupListItems::isItemDisable(u32 itemIndex) const {
     if (itemIndex < getItemNum()) {
         if (mItems.mpArray[itemIndex] != nullptr) {
-            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mItems.mpArray[itemIndex]) + 16)) != 0;
+            return mItems[itemIndex]->mIsDisable;
         }
     }
     return false;
@@ -121,14 +121,6 @@ bool nFurnitureMenuFlow::cFurnitureGroupListItems::PredicateItem(const nFurnitur
 
 const MtDTI& nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::getDTI() const {
     return nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI;
-}
-
-inline void* nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI)->memAlloc(sz, align, ::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI.getID());
-}
-
-inline void nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI)->memFree(p_addr);
 }
 
 nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::~cItem() {
@@ -257,14 +249,6 @@ const MtDTI& nFurnitureMenuFlow::cFurnitureListItems::cItem::getDTI() const {
     return nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI;
 }
 
-inline void* nFurnitureMenuFlow::cFurnitureListItems::cItem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI)->memAlloc(sz, align, ::nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI.getID());
-}
-
-inline void nFurnitureMenuFlow::cFurnitureListItems::cItem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI)->memFree(p_addr);
-}
-
 nFurnitureMenuFlow::cFurnitureListItems::cItem::~cItem() {
 }
 
@@ -282,10 +266,6 @@ MtObject* nFurnitureMenuFlow::cFurnitureListItems::cItem::MyDTI::newInstance() c
 
 const MtDTI& nFurnitureMenuFlow::cFurnitureListItems::cInfo::getDTI() const {
     return nFurnitureMenuFlow::cFurnitureListItems::cInfo::DTI;
-}
-
-inline void nFurnitureMenuFlow::cFurnitureListItems::cInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureListItems::cInfo::DTI)->memFree(p_addr);
 }
 
 nFurnitureMenuFlow::cFurnitureListItems::cInfo::~cInfo() {

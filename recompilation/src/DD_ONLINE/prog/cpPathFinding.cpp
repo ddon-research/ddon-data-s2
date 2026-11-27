@@ -34,16 +34,8 @@ const MtDTI& cpPathFinding::getDTI() const {
     return cpPathFinding::DTI;
 }
 
-inline MtAllocator* cpPathFinding::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpPathFinding::DTI);
-}
-
 void* cpPathFinding::operator new(size_t sz, u32 align) {
     return cpPathFinding::getAllocator()->memAlloc(sz, align, cpPathFinding::DTI.getID());
-}
-
-inline void cpPathFinding::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpPathFinding::DTI)->memFree(p_addr);
 }
 
 cpPathFinding::cpPathFinding() {

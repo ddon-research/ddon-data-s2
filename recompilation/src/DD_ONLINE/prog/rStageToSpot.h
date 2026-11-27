@@ -121,3 +121,19 @@ inline void cStageToSpot::operator delete[](void* p_addr) {
 inline void* cStageToSpot::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cStageToSpot::DTI)->memAlloc(sz, align, ::cStageToSpot::DTI.::MtDTI::getID());
 }
+
+inline void* cStageToSpot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStageToSpot::DTI)->memAlloc(sz, align, ::cStageToSpot::DTI.::MtDTI::getID());
+}
+
+inline void cStageToSpot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStageToSpot::DTI)->memFree(p_addr);
+}
+
+inline void* rStageToSpot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageToSpot::DTI)->memAlloc(sz, align, ::rStageToSpot::DTI.::MtDTI::getID());
+}
+
+inline void rStageToSpot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageToSpot::DTI)->memFree(p_addr);
+}

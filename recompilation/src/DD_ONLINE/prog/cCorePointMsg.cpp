@@ -3,7 +3,6 @@
 #include "cCorePointMsg.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -11,10 +10,6 @@
 
 const MtDTI& cCorePointMsg::getDTI() const {
     return cCorePointMsg::DTI;
-}
-
-inline MtAllocator* cCorePointMsg::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCorePointMsg::DTI);
 }
 
 void* cCorePointMsg::operator new(size_t sz, u32 align) {

@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rRenderTargetTexture.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtFilePath.h"
 #include "../MT/MtFunctionReplacement.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "nDrawTexture.h"
 #include "rTexture.h"
@@ -19,14 +17,6 @@
 
 const MtDTI& rRenderTargetTexture::getDTI() const {
     return rRenderTargetTexture::DTI;
-}
-
-inline void* rRenderTargetTexture::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rRenderTargetTexture::DTI)->memAlloc(sz, align, rRenderTargetTexture::DTI.mID);
-}
-
-inline void rRenderTargetTexture::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rRenderTargetTexture::DTI)->memFree(p_addr);
 }
 
 void rRenderTargetTexture::clear() {

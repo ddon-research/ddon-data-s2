@@ -16,6 +16,7 @@
 #include "cpKeyCommand.h"
 #include "cpMotionSe.h"
 #include "cpObjCollision.h"
+#include "cpRootComponent.h"
 #include "cpShlShotCtrl.h"
 #include "nCharacterData.h"
 #include "rAdjustParam.h"
@@ -25,6 +26,7 @@
 #include "rMagicChantParam.h"
 #include "rObjCollision.h"
 #include "rShlParamList.h"
+#include "../../XFramework/rSoundRequest.h"
 #include "rStaminaDecTbl.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sCamera.h"
@@ -42,14 +44,6 @@
 
 const MtDTI& cpJobBase::getDTI() const {
     return cpJobBase::DTI;
-}
-
-inline void* cpJobBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJobBase::DTI)->memAlloc(sz, align, cpJobBase::DTI.getID());
-}
-
-inline void cpJobBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJobBase::DTI)->memFree(p_addr);
 }
 
 cpJobBase::~cpJobBase() {
@@ -172,9 +166,17 @@ void cpJobBase::setEpvData(MT_CTSTR tag, MT_CTSTR id) {
     pRes->release();
 }
 
-__attribute__((weak)) void cpJobBase::setJobSe(MT_CTSTR tag, MT_CTSTR id) {
-    DDON_STUB("cpJobBase::setJobSe")
-    /* stub */
+void cpJobBase::setJobSe(MT_CTSTR tag, MT_CTSTR id) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(tag, id, 1u, false);
+    if (pRes == nullptr) {
+        return;
+    }
+    cpMotionSe* pCpMotSe = static_cast<cpMotionSe*>(mpHuman->mComponentMgr.getRootComponent()->find(cpMotionSe::DTI, true, true));
+    if (pCpMotSe == nullptr) {
+        return;
+    }
+    pCpMotSe->setRequest(static_cast<rSoundRequest*>(pRes), 3u);
+    pRes->release();
 }
 
 void cpJobBase::setStaminaParam(MT_CTSTR tag, MT_CTSTR id) {

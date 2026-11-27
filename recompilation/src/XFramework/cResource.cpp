@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cResource.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtFile.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -17,10 +15,6 @@
 
 const MtDTI& cResource::getDTI() const {
     return cResource::DTI;
-}
-
-inline void cResource::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cResource::DTI)->memFree(p_addr);
 }
 
 static auto ddon_emit_0x01b5bad0 __attribute__((used)) = &cResource::getQuality;

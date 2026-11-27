@@ -127,3 +127,19 @@ inline void cNpcIsUseJobParamEx::operator delete[](void* p_addr) {
 inline void* cNpcIsUseJobParamEx::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, ::cNpcIsUseJobParamEx::DTI.::MtDTI::getID());
 }
+
+inline void* cNpcIsUseJobParamEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, ::cNpcIsUseJobParamEx::DTI.::MtDTI::getID());
+}
+
+inline void cNpcIsUseJobParamEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcIsUseJobParamEx::DTI)->memFree(p_addr);
+}
+
+inline void* rNpcIsUseJobParamEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, ::rNpcIsUseJobParamEx::DTI.::MtDTI::getID());
+}
+
+inline void rNpcIsUseJobParamEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcIsUseJobParamEx::DTI)->memFree(p_addr);
+}

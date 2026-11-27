@@ -208,18 +208,34 @@ class cPlDeadFlow;
 namespace nMenu { struct MENU_PARTS; }
 class sInputManager;
 class uGUIAreaMaster;
+class uGUIArisenCard;
 class uGUICharacterEditPopCard;
+class uGUIClanEditInputName;
+class uGUIClanEditInputNickname;
 class uGUIClanScoutEntry;
 class uGUIClanSearch;
+class uGUIClanStatus;
 class uGUICommunityList;
 class uGUIEntryBoard;
 class uGUIEntryBoardInfo;
+class uGUIEntryBoardRecruit;
+class uGUIFreeGroupChat;
 class uGUIGameMenu;
+class uGUIMail;
+class uGUIMailDetail;
 class uGUIMissionInfo;
 class uGUINewspaper;
 class uGUIOption;
+class uGUIPartyList;
+class uGUIPawnReview;
+class uGUIPopPartyList;
+class uGUIPopPawnList;
+class uGUIPopProfile;
 class uGUIPopTopSel;
+class uGUIQuickPartyCancel;
 class uGUIRetry;
+class uGUIRimStone;
+class uGUIServerSelectBase;
 
 // Declarations
 class sMenu;
@@ -235,22 +251,39 @@ class sMenu : public cSystem
 {
     friend class cMenuClanInfoDisp;
     friend class cMenuReadyCheck;
+    friend class cMenuRentalPawnList;
     friend class cNetGameServer;
     friend class cPlDeadFlow;
     friend class sInputManager;
     friend class uGUIAreaMaster;
+    friend class uGUIArisenCard;
     friend class uGUICharacterEditPopCard;
+    friend class uGUIClanEditInputName;
+    friend class uGUIClanEditInputNickname;
     friend class uGUIClanScoutEntry;
     friend class uGUIClanSearch;
+    friend class uGUIClanStatus;
     friend class uGUICommunityList;
     friend class uGUIEntryBoard;
     friend class uGUIEntryBoardInfo;
+    friend class uGUIEntryBoardRecruit;
+    friend class uGUIFreeGroupChat;
     friend class uGUIGameMenu;
+    friend class uGUIMail;
+    friend class uGUIMailDetail;
     friend class uGUIMissionInfo;
     friend class uGUINewspaper;
     friend class uGUIOption;
+    friend class uGUIPartyList;
+    friend class uGUIPawnReview;
+    friend class uGUIPopPartyList;
+    friend class uGUIPopPawnList;
+    friend class uGUIPopProfile;
     friend class uGUIPopTopSel;
+    friend class uGUIQuickPartyCancel;
     friend class uGUIRetry;
+    friend class uGUIRimStone;
+    friend class uGUIServerSelectBase;
 public:
     class MyDTI;
 public:
@@ -1019,4 +1052,16 @@ inline cMenuKeyConfigRenameCategory* sMenu::getMenuKeyConfigRenameCategory() {
 
 inline cMenuKeyConfigCopyCategory* sMenu::getMenuKeyConfigCopyCategory() {
     return &this->mMenuKeyConfigCopyCategory;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sMenu::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sMenu::DTI);
+}
+
+inline void sMenu::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sMenu::DTI)->memFree(p_addr);
 }

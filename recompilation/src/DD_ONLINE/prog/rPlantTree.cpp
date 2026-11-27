@@ -20,20 +20,6 @@ const MtDTI& rPlantTree::getDTI() const {
     return rPlantTree::DTI;
 }
 
-inline void* rPlantTree::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPlantTree::DTI)->memAlloc(sz, align, rPlantTree::DTI.getID());
-}
-
-inline void rPlantTree::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPlantTree::DTI)->memFree(p_addr);
-}
-
-inline rPlantTree::rPlantTree() {
-    setAttribute(18u);
-    mpArray = nullptr;
-    mArrayNum = 0;
-}
-
 rPlantTree::~rPlantTree() {
     unsigned int i3 = 0;
     if (mArrayNum != 0) {
@@ -138,14 +124,6 @@ const MtDTI& rPlantTree::Tree::getDTI() const {
     return rPlantTree::Tree::DTI;
 }
 
-inline void* rPlantTree::Tree::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPlantTree::Tree::DTI)->memAlloc(sz, align, rPlantTree::Tree::DTI.getID());
-}
-
-inline void rPlantTree::Tree::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPlantTree::Tree::DTI)->memFree(p_addr);
-}
-
 rPlantTree::Tree::~Tree() {
     for (u32 i = 0; i < mPointListNum; ++i) {
         mpPointList[i].~Point();
@@ -172,29 +150,6 @@ MtObject* rPlantTree::Tree::MyDTI::newInstance() const {
 
 const MtDTI& rPlantTree::Tree::Point::getDTI() const {
     return rPlantTree::Tree::Point::DTI;
-}
-
-inline void* rPlantTree::Tree::Point::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPlantTree::Tree::Point::DTI)->memAlloc(sz, align, rPlantTree::Tree::Point::DTI.getID());
-}
-
-inline void rPlantTree::Tree::Point::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPlantTree::Tree::Point::DTI)->memFree(p_addr);
-}
-
-inline rPlantTree::Tree::Point::Point() {
-    mPosition.x = MtVector3::Zero.x;
-    mPosition.y = MtVector3::Zero.y;
-    mPosition.z = MtVector3::Zero.z;
-    mPosition.pad_ = 0.0f;
-    mAngle.x = MtVector3::Zero.x;
-    mAngle.y = MtVector3::Zero.y;
-    mAngle.z = MtVector3::Zero.z;
-    mAngle.pad_ = 0.0f;
-    mScale.x = MtVector3::One.x;
-    mScale.y = MtVector3::One.y;
-    mScale.z = MtVector3::One.z;
-    mScale.pad_ = 0.0f;
 }
 
 void rPlantTree::Tree::Point::createProperty(MtPropertyList& s) {

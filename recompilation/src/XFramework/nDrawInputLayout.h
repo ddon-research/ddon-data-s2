@@ -12,10 +12,6 @@ struct D3D11_INPUT_ELEMENT_DESC;
 class MtAllocator;
 class MtDTI;
 class MtObject;
-namespace nDraw { struct INPUT_ELEMENT; }
-
-// Declarations
-namespace nDraw { class InputLayout; }
 
 namespace nDraw {
     enum INPUT_ELEMENT_FORMAT
@@ -39,6 +35,10 @@ namespace nDraw {
     };
 }  // namespace nDraw
 
+// Declarations
+namespace nDraw { struct INPUT_ELEMENT; }
+namespace nDraw { class InputLayout; }
+
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
@@ -48,6 +48,21 @@ namespace nDraw { using GPUINPUT_ELEMENT = D3D11_INPUT_ELEMENT_DESC; }
 using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
+
+namespace nDraw {
+    struct INPUT_ELEMENT
+    {
+    public:
+        MT_CTSTR sname;  // offset: 0x0
+        u32 sindex : 6;  // offset: 0x8
+        u32 format : 5;  // offset: 0x8
+        u32 count : 7;  // offset: 0x8
+        u32 start : 4;  // offset: 0x8
+        u32 offset : 9;  // offset: 0x8
+        u32 instance : 1;  // offset: 0x8
+        u32 padding1;  // offset: 0xc
+    };
+}  // namespace nDraw
 
 namespace nDraw {
     class InputLayout : public nDraw::Resource

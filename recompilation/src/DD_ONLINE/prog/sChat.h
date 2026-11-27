@@ -315,3 +315,15 @@ inline s32 sChat::getChatArea() {
 inline void sChat::setChatView() {
     this->mTimer = 360.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sChat::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sChat::DTI);
+}
+
+inline void sChat::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sChat::DTI)->memFree(p_addr);
+}

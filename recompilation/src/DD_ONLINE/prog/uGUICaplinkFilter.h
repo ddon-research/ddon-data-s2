@@ -268,6 +268,34 @@ inline void* uGUICaplinkFilter::cListItem::operator new(size_t sz, void* p_addr)
     return p_addr;
 }
 
+inline uGUICaplinkFilter::cListItem::cListItem() : mpObjMsg(static_cast<cGUIObjMessage*>(nullptr)) {
+    this->::uGUIBase::cScrollListItemBase::mItemType = 0;
+}
+
 inline void* uGUICaplinkFilter::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkFilter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::DTI);
+}
+
+inline void uGUICaplinkFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICaplinkFilter::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::cListItem::DTI)->memAlloc(sz, align, ::uGUICaplinkFilter::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkFilter::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkFilter::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFilter::cListInfo::DTI)->memFree(p_addr);
 }

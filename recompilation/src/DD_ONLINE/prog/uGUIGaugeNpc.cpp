@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUIGaugeNpc.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -23,6 +24,7 @@
 #include "cGUIUtility.h"
 #include "cOmComponent.h"
 #include "../../XFramework/cResource.h"
+#include "cState.h"
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
 #include "cpComponent.h"
@@ -49,6 +51,7 @@
 #include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
 #include "../../XFramework/sRender.h"
+#include "sReward.h"
 #include "uControl.h"
 #include "uControlNpc.h"
 #include "../../XFramework/uCoord.h"
@@ -67,16 +70,8 @@ const MtDTI& uGUIGaugeNpc::getDTI() const {
     return uGUIGaugeNpc::DTI;
 }
 
-inline MtAllocator* uGUIGaugeNpc::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGaugeNpc::DTI);
-}
-
 void* uGUIGaugeNpc::operator new(size_t sz, u32 align) {
     return uGUIGaugeNpc::getAllocator()->memAlloc(sz, align, uGUIGaugeNpc::DTI.getID());
-}
-
-inline void uGUIGaugeNpc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeNpc::DTI)->memFree(p_addr);
 }
 
 uGUIGaugeNpc::uGUIGaugeNpc() {
@@ -102,9 +97,10 @@ void uGUIGaugeNpc::draw(cDraw* pDraw) {
     }
 }
 
-__attribute__((weak)) void uGUIGaugeNpc::setMode(uGUIGaugeNpcBase::MODE mode) {
-    DDON_STUB("uGUIGaugeNpc::setMode")
-    /* stub */
+void uGUIGaugeNpc::setMode(uGUIGaugeNpcBase::MODE mode) {
+    if (static_cast<unsigned int>(mode - 1) <= 5) {
+        mMode = mode;
+    }
 }
 
 void uGUIGaugeNpc::resetMode(uGUIGaugeNpcBase::MODE mode) {
@@ -112,14 +108,40 @@ void uGUIGaugeNpc::resetMode(uGUIGaugeNpcBase::MODE mode) {
     mMode = mode;
 }
 
-__attribute__((weak)) void uGUIGaugeNpc::setObjectName(MT_CTSTR name) {
-    DDON_STUB("uGUIGaugeNpc::setObjectName")
-    /* stub */
+void uGUIGaugeNpc::setObjectName(MT_CTSTR name) {
+    if (name != nullptr) {
+        if (name != (&mObjectName.mStr[0])) {
+            size_t t0 = strlen(name);
+            mObjectName.mLength = (static_cast<int>(t0) <= 127) ? static_cast<unsigned int>(t0) : 127u;
+            if (((static_cast<int>(t0) <= 127) ? static_cast<unsigned int>(t0) : 127u) != 0) {
+                memcpy(static_cast<void*>(&mObjectName.mStr[0]), static_cast<const void*>(name), static_cast<size_t>((static_cast<int>(t0) <= 127) ? static_cast<unsigned int>(t0) : 127u));
+                mObjectName.mStr[(static_cast<int>(t0) <= 127) ? static_cast<unsigned int>(t0) : 127u] = 0;
+            } else {
+                mObjectName.mStr[0] = 0;
+            }
+        }
+    } else {
+        mObjectName.mStr[0] = 0;
+        mObjectName.mLength = 0;
+    }
 }
 
-__attribute__((weak)) void uGUIGaugeNpc::setTitleName(MT_CTSTR name) {
-    DDON_STUB("uGUIGaugeNpc::setTitleName")
-    /* stub */
+void uGUIGaugeNpc::setTitleName(MT_CTSTR name) {
+    if (name != nullptr) {
+        if (name != (&mTitleName.mStr[0])) {
+            size_t t0 = strlen(name);
+            mTitleName.mLength = (static_cast<int>(t0) <= 127) ? static_cast<unsigned int>(t0) : 127u;
+            if (((static_cast<int>(t0) <= 127) ? static_cast<unsigned int>(t0) : 127u) != 0) {
+                memcpy(static_cast<void*>(&mTitleName.mStr[0]), static_cast<const void*>(name), static_cast<size_t>((static_cast<int>(t0) <= 127) ? static_cast<unsigned int>(t0) : 127u));
+                mTitleName.mStr[(static_cast<int>(t0) <= 127) ? static_cast<unsigned int>(t0) : 127u] = 0;
+            } else {
+                mTitleName.mStr[0] = 0;
+            }
+        }
+    } else {
+        mTitleName.mStr[0] = 0;
+        mTitleName.mLength = 0;
+    }
 }
 
 void uGUIGaugeNpc::updateInit() {
@@ -158,75 +180,115 @@ __attribute__((weak)) void uGUIGaugeNpc::updateOmInfo() {
     /* stub */
 }
 
-inline void uGUIGaugeNpc::updateTargetIcon() {
-    if ((sPlayerManager::mpInstance)->mpMyPlayer != nullptr) {
-        if ((sPlayerManager::mpInstance)->mpMyPlayer->::uDDOModel::mpTouchTarget == nullptr) {
-            if (!(sPlayerManager::mpInstance)->mpMyPlayer->mIsTargetIconOff) {
-                if ((sPlayerManager::mpInstance)->mpMyPlayer->::uHuman::mpTouchSelectTarget != mpUnit) {
-                    if (mIsDrawTargetIcon) {
-                        mIsDrawTargetIcon = false;
-                    }
-                } else {
-                    if (!mIsDrawTargetIcon) {
-                        mIsDrawTargetIcon = true;
-                    }
-                }
-            } else {
-                if (mpUnit != nullptr) {
-                    if (mIsDrawTargetIcon) {
-                        mIsDrawTargetIcon = false;
-                    }
-                } else {
-                    if (!mIsDrawTargetIcon) {
-                        mIsDrawTargetIcon = true;
-                    }
-                }
-            }
-        } else {
-            if (mpUnit != nullptr) {
-                if (mIsDrawTargetIcon) {
-                    mIsDrawTargetIcon = false;
-                }
-            } else {
-                if (!mIsDrawTargetIcon) {
-                    mIsDrawTargetIcon = true;
-                }
-            }
-        }
-    } else {
-        if (mpUnit != nullptr) {
-            if (mIsDrawTargetIcon) {
-                mIsDrawTargetIcon = false;
-            }
-        } else {
-            if (!mIsDrawTargetIcon) {
-                mIsDrawTargetIcon = true;
-            }
-        }
-    }
-    if (mpINST_target == nullptr) {
-        return;
-    }
-    mpINST_target->setVisible(false);
-    if (mpINST_target == nullptr) {
-        return;
-    }
-    mpINST_target->setExecute(false);
-}
-
 __attribute__((weak)) void uGUIGaugeNpc::updateOmWarpNames() {
     DDON_STUB("uGUIGaugeNpc::updateOmWarpNames")
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGaugeNpc::setOmWarpName(u32 warpIndex) {
-    DDON_STUB("uGUIGaugeNpc::setOmWarpName")
-    /* stub */
+void uGUIGaugeNpc::setOmWarpName(u32 warpIndex) {
+    if (mOmWarpNum != 0) {
+        if (warpIndex < mOmWarpNum) {
+            MtString::STRING* t0 = mOmWarpNames.elems[(warpIndex <= 2u) ? warpIndex : 0u].value;
+            if ((&mTitleName.mStr[0]) != mOmWarpNames.elems[(warpIndex <= 2u) ? warpIndex : 0u].ptr()) {
+                size_t t1 = strlen(mOmWarpNames.elems[(warpIndex <= 2u) ? warpIndex : 0u].ptr());
+                mTitleName.mLength = (static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u;
+                if (((static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u) == 0) {
+                    mTitleName.mStr[0] = 0;
+                } else {
+                    memcpy(static_cast<void*>(&mTitleName.mStr[0]), static_cast<const void*>(mOmWarpNames.elems[(warpIndex <= 2u) ? warpIndex : 0u].ptr()), static_cast<size_t>((static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u));
+                    mTitleName.mStr[(static_cast<int>(t1) <= 127) ? static_cast<unsigned int>(t1) : 127u] = 0;
+                }
+            }
+        } else {
+            MtString::STRING* t2 = mOmWarpNames.elems[0].value;
+            if ((&mTitleName.mStr[0]) != mOmWarpNames.elems[0].ptr()) {
+                size_t t3 = strlen(mOmWarpNames.elems[0].ptr());
+                mTitleName.mLength = (static_cast<int>(t3) <= 127) ? static_cast<unsigned int>(t3) : 127u;
+                if (((static_cast<int>(t3) <= 127) ? static_cast<unsigned int>(t3) : 127u) != 0) {
+                    memcpy(static_cast<void*>(&mTitleName.mStr[0]), static_cast<const void*>(mOmWarpNames.elems[0].ptr()), static_cast<size_t>((static_cast<int>(t3) <= 127) ? static_cast<unsigned int>(t3) : 127u));
+                    mTitleName.mStr[(static_cast<int>(t3) <= 127) ? static_cast<unsigned int>(t3) : 127u] = 0;
+                } else {
+                    mTitleName.mStr[0] = 0;
+                }
+            }
+        }
+    } else {
+        if ("" != (&mTitleName.mStr[0])) {
+            mTitleName.mLength = 0;
+            mTitleName.mStr[0] = 0;
+        }
+    }
 }
 
-__attribute__((weak)) void uGUIGaugeNpc::setNameColor() {
-    DDON_STUB("uGUIGaugeNpc::setNameColor")
-    /* stub */
+void uGUIGaugeNpc::setNameColor() {
+    switch (static_cast<unsigned int>(mMode - 1)) {
+        case 0:
+        {
+            if (mData.mpOBJ_fix_gaugepc_ColorAdjust != nullptr) {
+                mData.mpOBJ_fix_gaugepc_ColorAdjust->mAmbientColor.rgba = mNameAmbientColor.rgba;
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_fix_gaugepc_m_name), mNameColor);
+            } else {
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_fix_gaugepc_m_name), mNameColor);
+            }
+            break;
+        }
+        case 1:
+        {
+            if (mData.mpOBJ_fix_gaugepc_ColorAdjust != nullptr) {
+                mData.mpOBJ_fix_gaugepc_ColorAdjust->mAmbientColor.rgba = mNameAmbientColor.rgba;
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_fix_gaugepc_m_name), mNameColor);
+            } else {
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_fix_gaugepc_m_name), mNameColor);
+            }
+            break;
+        }
+        case 2:
+        {
+            if (mpINST_msg_name != nullptr) {
+                mpINST_msg_name->mAmbientColor.rgba = mNameAmbientColor.rgba;
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_name_m_name), mNameColor);
+            } else {
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_name_m_name), mNameColor);
+            }
+            break;
+        }
+        case 3:
+        {
+            if (mpINST_msg_name != nullptr) {
+                mpINST_msg_name->mAmbientColor.rgba = mNameAmbientColor.rgba;
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_name_m_name), mNameColor);
+                if (mpINST_msg_npcname != nullptr) {
+                    mpINST_msg_npcname->mAmbientColor.rgba = mNameAmbientColor.rgba;
+                    setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_npcname_m_npcname), mNameColor);
+                } else {
+                    setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_npcname_m_npcname), mNameColor);
+                }
+            } else {
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_name_m_name), mNameColor);
+                if (mpINST_msg_npcname != nullptr) {
+                    mpINST_msg_npcname->mAmbientColor.rgba = mNameAmbientColor.rgba;
+                    setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_npcname_m_npcname), mNameColor);
+                } else {
+                    setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_npcname_m_npcname), mNameColor);
+                }
+            }
+            break;
+        }
+        case 4:
+        {
+            if (mpINST_msg_npcname != nullptr) {
+                mpINST_msg_npcname->mAmbientColor.rgba = mNameAmbientColor.rgba;
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_npcname_m_npcname), mNameColor);
+            } else {
+                setMessageColor(static_cast<cGUIObject*>(mData.mpOBJ_msg_npcname_m_npcname), mNameColor);
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 bool uGUIGaugeNpc::isVisibleAreaMasterIcon(u32 npcId) {
@@ -291,9 +353,8 @@ nGUIExt::OCD_ICON_CATEGORY uGUIGaugeNpc::IOcdIcon::getOcdIconCategory(u32 paramI
     }
 }
 
-__attribute__((weak)) nGUIExt::OcdIconParam& uGUIGaugeNpc::IOcdIcon::refOcdIconParam(u32 paramIndex) {
-    DDON_STUB("uGUIGaugeNpc::IOcdIcon::refOcdIconParam")
-    __builtin_unreachable();
+nGUIExt::OcdIconParam& uGUIGaugeNpc::IOcdIcon::refOcdIconParam(u32 paramIndex) {
+    return mOwner.mStatusInfos.elems[(paramIndex <= 1u) ? paramIndex : 0u].mParam;
 }
 
 bool uGUIGaugeNpc::IOcdIcon::isOcdActive(u32 ocdId) const {
@@ -311,10 +372,6 @@ __attribute__((weak)) void uGUIGaugeNpc::IOcdIcon::setOcdIcon(u32 iconIndex, u32
 
 const MtDTI& uGUIGaugeNpcBase::getDTI() const {
     return uGUIGaugeNpcBase::DTI;
-}
-
-inline void uGUIGaugeNpcBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeNpcBase::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) uGUIGaugeNpcBase::MODE uGUIGaugeNpcBase::GetMode(uDDOModel* unit) {
@@ -436,16 +493,8 @@ const MtDTI& uGUITouchTargetSelector::getDTI() const {
     return uGUITouchTargetSelector::DTI;
 }
 
-inline MtAllocator* uGUITouchTargetSelector::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUITouchTargetSelector::DTI);
-}
-
 void* uGUITouchTargetSelector::operator new(size_t sz, u32 align) {
     return uGUITouchTargetSelector::getAllocator()->memAlloc(sz, align, uGUITouchTargetSelector::DTI.getID());
-}
-
-inline void uGUITouchTargetSelector::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUITouchTargetSelector::DTI)->memFree(p_addr);
 }
 
 uGUITouchTargetSelector::uGUITouchTargetSelector() {

@@ -4,7 +4,6 @@
 #include "Enemy.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
@@ -15,10 +14,6 @@
 
 const MtDTI& CDataNamedEnemyParamClient::getDTI() const {
     return CDataNamedEnemyParamClient::DTI;
-}
-
-inline MtAllocator* CDataNamedEnemyParamClient::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataNamedEnemyParamClient::DTI);
 }
 
 void* CDataNamedEnemyParamClient::operator new(size_t sz, u32 align) {
@@ -39,10 +34,6 @@ MtObject* CDataNamedEnemyParamClient::MyDTI::newInstance() const {
 
 const MtDTI& CDataTraningRoomEnemyHeader::getDTI() const {
     return CDataTraningRoomEnemyHeader::DTI;
-}
-
-inline MtAllocator* CDataTraningRoomEnemyHeader::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataTraningRoomEnemyHeader::DTI);
 }
 
 void* CDataTraningRoomEnemyHeader::operator new(size_t sz, u32 align) {

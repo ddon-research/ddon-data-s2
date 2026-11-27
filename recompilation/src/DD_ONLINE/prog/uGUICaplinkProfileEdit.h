@@ -486,3 +486,43 @@ inline uGUICaplinkProfileEdit::cBtnContent::cBtnContent() {
 inline void* uGUICaplinkProfileEdit::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkProfileEdit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::DTI);
+}
+
+inline void uGUICaplinkProfileEdit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICaplinkProfileEdit::cContentItemBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cContentItemBase::DTI)->memAlloc(sz, align, ::uGUICaplinkProfileEdit::cContentItemBase::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkProfileEdit::cContentItemBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cContentItemBase::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICaplinkProfileEdit::cPulldownContent::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cPulldownContent::DTI)->memAlloc(sz, align, ::uGUICaplinkProfileEdit::cPulldownContent::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkProfileEdit::cPulldownContent::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cPulldownContent::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICaplinkProfileEdit::cBtnContent::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cBtnContent::DTI)->memAlloc(sz, align, ::uGUICaplinkProfileEdit::cBtnContent::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkProfileEdit::cBtnContent::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cBtnContent::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkProfileEdit::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfileEdit::cListInfo::DTI)->memFree(p_addr);
+}

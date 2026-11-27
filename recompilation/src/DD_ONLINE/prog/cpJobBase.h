@@ -133,3 +133,15 @@ inline void* cpJobBase::operator new(size_t sz, void* p_addr) {
 inline cpJobBase::cpJobBase() {
     this->mpHuman = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cpJobBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJobBase::DTI)->memAlloc(sz, align, ::cpJobBase::DTI.::MtDTI::getID());
+}
+
+inline void cpJobBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJobBase::DTI)->memFree(p_addr);
+}

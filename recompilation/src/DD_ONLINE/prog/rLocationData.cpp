@@ -20,20 +20,6 @@ const MtDTI& rLocationData::getDTI() const {
     return rLocationData::DTI;
 }
 
-inline void* rLocationData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLocationData::DTI)->memAlloc(sz, align, rLocationData::DTI.getID());
-}
-
-inline void rLocationData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLocationData::DTI)->memFree(p_addr);
-}
-
-inline rLocationData::rLocationData() {
-    setAttribute(22u);
-    mpArray = nullptr;
-    mArrayNum = 0;
-}
-
 rLocationData::~rLocationData() {
     unsigned int i3 = 0;
     if (mArrayNum != 0) {
@@ -93,29 +79,6 @@ MtObject* rLocationData::MyDTI::newInstance() const {
 
 const MtDTI& rLocationData::Data::getDTI() const {
     return rLocationData::Data::DTI;
-}
-
-inline void* rLocationData::Data::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLocationData::Data::DTI)->memAlloc(sz, align, rLocationData::Data::DTI.getID());
-}
-
-inline void rLocationData::Data::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLocationData::Data::DTI)->memFree(p_addr);
-}
-
-inline rLocationData::Data::Data() {
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mRadius = 100.0f;
-    mAngle = 0.0f;
-    mRange = 360.0f;
-    mVersion = 0;
-    mSafeZone = false;
-    mMessageNo = 0;
-    mType = 0;
-    mWarpPointId = 0;
 }
 
 void rLocationData::Data::createProperty(MtPropertyList& s) {

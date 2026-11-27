@@ -5,14 +5,17 @@
 
 // Dependencies
 #include "../../../../MT/MtDTI.h"
+#include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
 
 // Forward declarations
 class MtAllocator;
 class MtDTI;
 class MtObject;
+class MtString;
 
 // Declarations
+class CDataCommonString;
 class CDataCommonU32;
 class CDataCommonU8;
 class CDataQuestId;
@@ -24,6 +27,38 @@ using _Sizet = long unsigned int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+class CDataCommonString : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataCommonString();
+    explicit CDataCommonString(const char*);
+public:
+    MtString m_wstrValue;  // offset: 0x8
+    static MyDTI DTI;
+};
 
 class CDataCommonU32 : public CPacketDataBase
 {
@@ -121,6 +156,13 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataCommonString::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataCommonString::CDataCommonString() {
+}
+
 inline void* CDataCommonU32::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -143,4 +185,23 @@ inline void* CDataQuestId::operator new(size_t sz, void* p_addr) {
 
 inline CDataQuestId::CDataQuestId() {
     this->m_unQuestId = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataCommonString::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCommonString::DTI);
+}
+
+inline MtAllocator* CDataCommonU32::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCommonU32::DTI);
+}
+
+inline MtAllocator* CDataCommonU8::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCommonU8::DTI);
+}
+
+inline MtAllocator* CDataQuestId::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuestId::DTI);
 }

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cWallHitInfo.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -11,14 +9,6 @@
 
 const MtDTI& cWallHitInfo::getDTI() const {
     return cWallHitInfo::DTI;
-}
-
-inline void* cWallHitInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWallHitInfo::DTI)->memAlloc(sz, align, cWallHitInfo::DTI.getID());
-}
-
-inline void cWallHitInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWallHitInfo::DTI)->memFree(p_addr);
 }
 
 cWallHitInfo::cWallHitInfo() {

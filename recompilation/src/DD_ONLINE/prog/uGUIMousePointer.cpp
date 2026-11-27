@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive2D.h"
 #include "../../XFramework/cGUIInstance.h"
@@ -28,16 +27,8 @@ const MtDTI& uGUIMousePointer::getDTI() const {
     return uGUIMousePointer::DTI;
 }
 
-inline MtAllocator* uGUIMousePointer::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMousePointer::DTI);
-}
-
 void* uGUIMousePointer::operator new(size_t sz, u32 align) {
     return uGUIMousePointer::getAllocator()->memAlloc(sz, align, uGUIMousePointer::DTI.getID());
-}
-
-inline void uGUIMousePointer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMousePointer::DTI)->memFree(p_addr);
 }
 
 uGUIMousePointer::uGUIMousePointer() : uGUIBase(0u, false) {

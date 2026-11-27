@@ -145,3 +145,23 @@ inline rOccluder::rOccluder() {
 inline void* rOccluder::cQuad::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rOccluder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOccluder::DTI)->memAlloc(sz, align, ::rOccluder::DTI.::MtDTI::mID);
+}
+
+inline void rOccluder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOccluder::DTI)->memFree(p_addr);
+}
+
+inline void* rOccluder::cQuad::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOccluder::cQuad::DTI)->memAlloc(sz, align, ::rOccluder::cQuad::DTI.::MtDTI::mID);
+}
+
+inline void rOccluder::cQuad::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOccluder::cQuad::DTI)->memFree(p_addr);
+}

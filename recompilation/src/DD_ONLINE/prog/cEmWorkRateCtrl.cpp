@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cEmWorkRateCtrl.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -19,14 +17,6 @@
 
 const MtDTI& cEmWorkRateCtrl::getDTI() const {
     return cEmWorkRateCtrl::DTI;
-}
-
-inline void* cEmWorkRateCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmWorkRateCtrl::DTI)->memAlloc(sz, align, cEmWorkRateCtrl::DTI.getID());
-}
-
-inline void cEmWorkRateCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmWorkRateCtrl::DTI)->memFree(p_addr);
 }
 
 cEmWorkRateCtrl::cEmWorkRateCtrl() {
@@ -54,9 +44,58 @@ void cEmWorkRateCtrl::setOwner(uEnemy* pEnemy) {
     mpEnemy = pEnemy;
 }
 
-__attribute__((weak)) void cEmWorkRateCtrl::changeWorkRateNo(u32 statusNo, nStatusEnemy::WORKRATE_CHANGE_TYPE changeType) {
-    DDON_STUB("cEmWorkRateCtrl::changeWorkRateNo")
-    /* stub */
+void cEmWorkRateCtrl::changeWorkRateNo(u32 statusNo, nStatusEnemy::WORKRATE_CHANGE_TYPE changeType) {
+    if (mStatusNo == statusNo) {
+        return;
+    }
+    if (mpEnemy == nullptr) {
+        return;
+    }
+    if (mpEmWorkRateTableRes == nullptr) {
+        return;
+    }
+    if (mpEnemy->mGuardComponent.mpHpDamageCtrl == nullptr) {
+        return;
+    }
+    if (statusNo < mpEmWorkRateTableRes->getDataNum()) {
+        const cEmWorkRateTable* pWorkRateData = mpEmWorkRateTableRes->getData(statusNo);
+        if (pWorkRateData != nullptr) {
+            if (changeType != nStatusEnemy::WORKRATE_CHANGE_TYPE_SETUP) {
+                if (static_cast<unsigned int>(changeType - 1) <= 2) {
+                    nStatusEnemy::WORKRATE_STATUS_TYPE statusType = static_cast<nStatusEnemy::WORKRATE_STATUS_TYPE>(pWorkRateData->getWorkRateStatus());
+                    if (statusType != nStatusEnemy::WORKRATE_STATUS_INVALID) {
+                        mStatusNo = statusNo;
+                        mStatusType = statusType;
+                        cpWorkRate* pCpWorkRate = mpEnemy->getWorkRatePtr();
+                        if (pCpWorkRate != nullptr) {
+                            if (mpEmWorkRateTableRes != nullptr) {
+                                if (statusNo < mpEmWorkRateTableRes->getDataNum()) {
+                                    cEmWorkRateTable* pResDataWRate = mpEmWorkRateTableRes->getData(statusNo);
+                                    if (pResDataWRate != nullptr) {
+                                        pCpWorkRate->setSpeed(pResDataWRate->getWorkRate(), cpWorkRate::STATUS_CHEANGE);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            } else {
+                mStatusNo = statusNo;
+                mStatusType = nStatusEnemy::WORKRATE_STATUS_SETUP;
+                cpWorkRate* pCpWorkRate = mpEnemy->getWorkRatePtr();
+                if (pCpWorkRate != nullptr) {
+                    if (mpEmWorkRateTableRes != nullptr) {
+                        if (statusNo < mpEmWorkRateTableRes->getDataNum()) {
+                            cEmWorkRateTable* pResDataWRate = mpEmWorkRateTableRes->getData(statusNo);
+                            if (pResDataWRate != nullptr) {
+                                pCpWorkRate->setSpeed(pResDataWRate->getWorkRate(), cpWorkRate::STATUS_CHEANGE);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cEmWorkRateCtrl::setEmWorkRateRes(rEmWorkRateTable* pRes) {

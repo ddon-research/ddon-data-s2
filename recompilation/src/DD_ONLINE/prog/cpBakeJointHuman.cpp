@@ -3,11 +3,11 @@
 #include "cpBakeJointHuman.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "cComponentManager.h"
+#include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
@@ -21,6 +21,8 @@
 #include "sArchiveManager.h"
 #include "sBakingJointOrder.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uDDOActorModel.h"
+#include "uDDOActorModelPl.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "../../XFramework/uModel.h"
@@ -32,16 +34,8 @@ const MtDTI& cpBakeJointHuman::getDTI() const {
     return cpBakeJointHuman::DTI;
 }
 
-inline MtAllocator* cpBakeJointHuman::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpBakeJointHuman::DTI);
-}
-
 void* cpBakeJointHuman::operator new(size_t sz, u32 align) {
     return cpBakeJointHuman::getAllocator()->memAlloc(sz, align, cpBakeJointHuman::DTI.getID());
-}
-
-inline void cpBakeJointHuman::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpBakeJointHuman::DTI)->memFree(p_addr);
 }
 
 cpBakeJointHuman::cpBakeJointHuman() {

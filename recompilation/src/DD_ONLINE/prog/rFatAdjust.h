@@ -118,3 +118,31 @@ inline void cFatAdjust::operator delete[](void* p_addr) {
 inline void* cFatAdjust::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cFatAdjust::DTI)->memAlloc(sz, align, ::cFatAdjust::DTI.::MtDTI::getID());
 }
+
+inline void* cFatAdjust::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFatAdjust::DTI)->memAlloc(sz, align, ::cFatAdjust::DTI.::MtDTI::getID());
+}
+
+inline void cFatAdjust::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFatAdjust::DTI)->memFree(p_addr);
+}
+
+inline cFatAdjust::cFatAdjust() {
+    this->mThreshold = 0.5f;
+    this->mRot.x = ::MtVector3::Zero.x;
+    this->mRot.y = ::MtVector3::Zero.y;
+    this->mRot.z = ::MtVector3::Zero.z;
+    this->mRot.pad_ = 0.0f;
+    this->mTrans.x = ::MtVector3::Zero.x;
+    this->mTrans.y = ::MtVector3::Zero.y;
+    this->mTrans.z = ::MtVector3::Zero.z;
+    this->mTrans.pad_ = 0.0f;
+}
+
+inline void* rFatAdjust::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFatAdjust::DTI)->memAlloc(sz, align, ::rFatAdjust::DTI.::MtDTI::getID());
+}
+
+inline void rFatAdjust::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFatAdjust::DTI)->memFree(p_addr);
+}

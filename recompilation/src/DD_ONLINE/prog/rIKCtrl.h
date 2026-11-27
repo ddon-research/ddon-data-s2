@@ -146,3 +146,19 @@ inline void cIKCtrl::operator delete[](void* p_addr) {
 inline void* cIKCtrl::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cIKCtrl::DTI)->memAlloc(sz, align, ::cIKCtrl::DTI.::MtDTI::getID());
 }
+
+inline void* cIKCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cIKCtrl::DTI)->memAlloc(sz, align, ::cIKCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cIKCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cIKCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* rIKCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rIKCtrl::DTI)->memAlloc(sz, align, ::rIKCtrl::DTI.::MtDTI::getID());
+}
+
+inline void rIKCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rIKCtrl::DTI)->memFree(p_addr);
+}

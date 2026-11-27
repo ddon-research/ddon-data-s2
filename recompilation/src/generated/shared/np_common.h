@@ -6,16 +6,6 @@
 // Forward declarations
 struct SceNpAgeRestriction;
 
-// Declarations
-struct SceNpAuthorizationCode;
-struct SceNpClientId;
-struct SceNpContentRestriction;
-struct SceNpInvitationId;
-struct SceNpParentalControlInfo;
-struct SceNpSessionId;
-struct SceNpTitleId;
-struct SceNpTitleSecret;
-
 enum SceNpGamePresenceStatus
 {
     SCE_NP_GAME_PRESENCE_STATUS_OFFLINE = 0,
@@ -28,6 +18,16 @@ enum SceNpState
     SCE_NP_STATE_SIGNED_OUT = 1,
     SCE_NP_STATE_SIGNED_IN = 2,
 };
+
+// Declarations
+struct SceNpAuthorizationCode;
+struct SceNpClientId;
+struct SceNpContentRestriction;
+struct SceNpInvitationId;
+struct SceNpParentalControlInfo;
+struct SceNpSessionId;
+struct SceNpTitleId;
+struct SceNpTitleSecret;
 
 // Type aliases from DWARF
 using _Sizet = long unsigned int;

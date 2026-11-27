@@ -159,3 +159,15 @@ public:
 inline void* uGUIGaugeSorcery::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIGaugeSorcery::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeSorcery::DTI);
+}
+
+inline void uGUIGaugeSorcery::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGaugeSorcery::DTI)->memFree(p_addr);
+}

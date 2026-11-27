@@ -21,14 +21,6 @@ const MtDTI& rFieldAreaMarkerInfo::getDTI() const {
     return rFieldAreaMarkerInfo::DTI;
 }
 
-inline void* rFieldAreaMarkerInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::DTI)->memAlloc(sz, align, rFieldAreaMarkerInfo::DTI.getID());
-}
-
-inline void rFieldAreaMarkerInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rFieldAreaMarkerInfo::getFileResId(u32 type) {
     static const MT_CTSTR suffix[4] = {
         "RES_ID_NPC",
@@ -49,11 +41,6 @@ const rFieldAreaMarkerInfo::MarkerInfoArray& rFieldAreaMarkerInfo::getMarkerInfo
 
 MT_CTSTR rFieldAreaMarkerInfo::getExt() const {
     return "fmi";
-}
-
-inline rFieldAreaMarkerInfo::rFieldAreaMarkerInfo() {
-    mFieldAreaId = 0;
-    setAttribute(22u);
 }
 
 rFieldAreaMarkerInfo::~rFieldAreaMarkerInfo() {
@@ -118,14 +105,6 @@ MtObject* rFieldAreaMarkerInfo::MyDTI::newInstance() const {
 
 const MtDTI& rFieldAreaMarkerInfo::cMarkerInfo::getDTI() const {
     return rFieldAreaMarkerInfo::cMarkerInfo::DTI;
-}
-
-void* rFieldAreaMarkerInfo::cMarkerInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::cMarkerInfo::DTI)->memAlloc(sz, align, rFieldAreaMarkerInfo::cMarkerInfo::DTI.getID());
-}
-
-inline void rFieldAreaMarkerInfo::cMarkerInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldAreaMarkerInfo::cMarkerInfo::DTI)->memFree(p_addr);
 }
 
 rFieldAreaMarkerInfo::cMarkerInfo::~cMarkerInfo() {

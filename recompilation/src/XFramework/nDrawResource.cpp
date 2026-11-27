@@ -2,10 +2,8 @@
 #include <new>
 #include <sce_atomic.h>
 #include "nDrawResource.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -16,10 +14,6 @@
 
 const MtDTI& nDraw::Resource::getDTI() const {
     return nDraw::Resource::DTI;
-}
-
-inline void nDraw::Resource::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::Resource::DTI)->memFree(p_addr);
 }
 
 nDraw::Resource::Resource() {

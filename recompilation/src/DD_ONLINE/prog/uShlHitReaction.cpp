@@ -65,14 +65,6 @@ const MtDTI& cShlParamHitReactionSpline::getDTI() const {
     return cShlParamHitReactionSpline::DTI;
 }
 
-inline void* cShlParamHitReactionSpline::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamHitReactionSpline::DTI)->memAlloc(sz, align, cShlParamHitReactionSpline::DTI.getID());
-}
-
-inline void cShlParamHitReactionSpline::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamHitReactionSpline::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamHitReactionSpline::getShlDTI() const {
     return uShlHitReactionSpline::DTI;
 }
@@ -100,10 +92,6 @@ MtObject* cShlParamHitReactionSpline::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamHitReactionStick::getDTI() const {
     return cShlParamHitReactionStick::DTI;
-}
-
-inline void* cShlParamHitReactionStick::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamHitReactionStick::DTI)->memAlloc(sz, align, cShlParamHitReactionStick::DTI.getID());
 }
 
 inline void cShlParamHitReactionStick::operator delete(void* p_addr) {
@@ -143,14 +131,6 @@ const MtDTI& uShlHitReactionConditionStick::getDTI() const {
     return uShlHitReactionConditionStick::DTI;
 }
 
-inline void uShlHitReactionConditionStick::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlHitReactionConditionStick::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamHitReactionConditionStick* uShlHitReactionConditionStick::getShlParam() const {
-    return static_cast<const cShlParamHitReactionConditionStick*>(mpShlParam2);
-}
-
 uShlHitReactionConditionStick::~uShlHitReactionConditionStick() {
 }
 
@@ -180,14 +160,6 @@ __attribute__((weak)) MtObject* uShlHitReactionConditionStick::MyDTI::newInstanc
 
 const MtDTI& uShlHitReactionSpline::getDTI() const {
     return uShlHitReactionSpline::DTI;
-}
-
-inline void uShlHitReactionSpline::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlHitReactionSpline::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamHitReactionSpline* uShlHitReactionSpline::getShlParam() const {
-    return static_cast<const cShlParamHitReactionSpline*>(mpShlParam2);
 }
 
 uShlHitReactionSpline::~uShlHitReactionSpline() {
@@ -223,14 +195,6 @@ __attribute__((weak)) MtObject* uShlHitReactionSpline::MyDTI::newInstance() cons
 
 const MtDTI& uShlHitReactionStick::getDTI() const {
     return uShlHitReactionStick::DTI;
-}
-
-inline void uShlHitReactionStick::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlHitReactionStick::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamHitReactionStick* uShlHitReactionStick::getShlParam() const {
-    return static_cast<const cShlParamHitReactionStick*>(mpShlParam2);
 }
 
 uShlHitReactionStick::~uShlHitReactionStick() {

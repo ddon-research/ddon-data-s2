@@ -187,3 +187,37 @@ inline sOccluderEx::Area::Area() {
 inline void* sOccluderEx::Shape::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sOccluderEx::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sOccluderEx::DTI);
+}
+
+inline void sOccluderEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sOccluderEx::DTI)->memFree(p_addr);
+}
+
+inline void* sOccluderEx::Area::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sOccluderEx::Area::DTI)->memAlloc(sz, align, ::sOccluderEx::Area::DTI.::MtDTI::getID());
+}
+
+inline void sOccluderEx::Area::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sOccluderEx::Area::DTI)->memFree(p_addr);
+}
+
+inline void* sOccluderEx::Shape::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sOccluderEx::Shape::DTI)->memAlloc(sz, align, ::sOccluderEx::Shape::DTI.::MtDTI::getID());
+}
+
+inline void sOccluderEx::Shape::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sOccluderEx::Shape::DTI)->memFree(p_addr);
+}
+
+inline sOccluderEx::Shape::Shape() {
+    this->mbEnable = true;
+    this->mType = static_cast<nZone::ShapeInfoBase::SHAPE_TYPE>(3);
+    this->mpZShape = static_cast<nZone::ShapeInfoBase*>(new (16u) ::nZone::ShapeInfoOBB);
+}

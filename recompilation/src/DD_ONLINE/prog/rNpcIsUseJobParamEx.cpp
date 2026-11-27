@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rNpcIsUseJobParamEx.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cNpcIsUseJobParamEx::getDTI() const {
     return cNpcIsUseJobParamEx::DTI;
-}
-
-inline void* cNpcIsUseJobParamEx::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, cNpcIsUseJobParamEx::DTI.getID());
-}
-
-inline void cNpcIsUseJobParamEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNpcIsUseJobParamEx::DTI)->memFree(p_addr);
 }
 
 void cNpcIsUseJobParamEx::createProperty(MtPropertyList& s) {
@@ -42,14 +32,6 @@ MtObject* cNpcIsUseJobParamEx::MyDTI::newInstance() const {
 
 const MtDTI& rNpcIsUseJobParamEx::getDTI() const {
     return rNpcIsUseJobParamEx::DTI;
-}
-
-inline void* rNpcIsUseJobParamEx::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNpcIsUseJobParamEx::DTI)->memAlloc(sz, align, rNpcIsUseJobParamEx::DTI.getID());
-}
-
-inline void rNpcIsUseJobParamEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcIsUseJobParamEx::DTI)->memFree(p_addr);
 }
 
 bool rNpcIsUseJobParamEx::loadData(MtDataReader& in, cNpcIsUseJobParamEx* pData) {

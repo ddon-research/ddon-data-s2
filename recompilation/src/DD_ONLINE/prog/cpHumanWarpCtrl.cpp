@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cDelegate.h"
 #include "cpActionRequest.h"
@@ -27,16 +26,8 @@ const MtDTI& cpHumanWarpCtrl::getDTI() const {
     return cpHumanWarpCtrl::DTI;
 }
 
-inline MtAllocator* cpHumanWarpCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpHumanWarpCtrl::DTI);
-}
-
 void* cpHumanWarpCtrl::operator new(size_t sz, u32 align) {
     return cpHumanWarpCtrl::getAllocator()->memAlloc(sz, align, cpHumanWarpCtrl::DTI.getID());
-}
-
-inline void cpHumanWarpCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpHumanWarpCtrl::DTI)->memFree(p_addr);
 }
 
 cpHumanWarpCtrl::cpHumanWarpCtrl() {

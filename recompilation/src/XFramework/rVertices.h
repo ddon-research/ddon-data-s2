@@ -114,3 +114,15 @@ inline u32 rVertices::getVertexNum() const {
 inline u32 rVertices::getResourceSize() const {
     return this->mParamBuffSize + 128u;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rVertices::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rVertices::DTI)->memAlloc(sz, align, ::rVertices::DTI.::MtDTI::mID);
+}
+
+inline void rVertices::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rVertices::DTI)->memFree(p_addr);
+}

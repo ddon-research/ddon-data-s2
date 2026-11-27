@@ -158,3 +158,19 @@ inline void cShakeCtrl::operator delete[](void* p_addr) {
 inline void* cShakeCtrl::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cShakeCtrl::DTI)->memAlloc(sz, align, ::cShakeCtrl::DTI.::MtDTI::getID());
 }
+
+inline void* cShakeCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShakeCtrl::DTI)->memAlloc(sz, align, ::cShakeCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cShakeCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShakeCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* rShakeCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rShakeCtrl::DTI)->memAlloc(sz, align, ::rShakeCtrl::DTI.::MtDTI::getID());
+}
+
+inline void rShakeCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rShakeCtrl::DTI)->memFree(p_addr);
+}

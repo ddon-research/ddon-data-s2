@@ -236,3 +236,27 @@ inline void cRage::operator delete[](void* p_addr) {
 inline void* cRage::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cRage::DTI)->memAlloc(sz, align, ::cRage::DTI.::MtDTI::getID());
 }
+
+inline void* cRage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cRage::DTI)->memAlloc(sz, align, ::cRage::DTI.::MtDTI::getID());
+}
+
+inline void cRage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cRage::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cpEnemyThink::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpEnemyThink::DTI);
+}
+
+inline void cpEnemyThink::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpEnemyThink::DTI)->memFree(p_addr);
+}
+
+inline void* rRageTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rRageTable::DTI)->memAlloc(sz, align, ::rRageTable::DTI.::MtDTI::getID());
+}
+
+inline void rRageTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rRageTable::DTI)->memFree(p_addr);
+}

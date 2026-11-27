@@ -165,10 +165,40 @@ inline void* sTutorialGuide::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline u32 sTutorialGuide::getDispGuideNo() {
+    return this->mDispGuideNo;
+}
+
 inline sTutorialGuide* sTutorialGuide::getInstance() {
     return ::sTutorialGuide::mpInstance;
 }
 
 inline void* sTutorialGuide::cOpenGuideNo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/rGUIMessage.h"
+
+inline MtAllocator* sTutorialGuide::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sTutorialGuide::DTI);
+}
+
+inline void sTutorialGuide::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sTutorialGuide::DTI)->memFree(p_addr);
+}
+
+inline void sTutorialGuide::releaseGuideData() {
+    if (this->mpTutorialDetail == nullptr) {
+        return;
+    }
+    this->mpTutorialDetail->::cResource::release();
+    this->mpTutorialDetail = nullptr;
+}
+
+inline void sTutorialGuide::cOpenGuideNo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sTutorialGuide::cOpenGuideNo::DTI)->memFree(p_addr);
 }

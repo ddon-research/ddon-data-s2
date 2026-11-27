@@ -120,3 +120,15 @@ inline void cpVibration::setOwnerModel(uBaseModel* pModel) {
 inline void cpVibration::setSeqVibReqType(u8 Type) {
     this->mSeqVibReqType = 1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpVibration::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpVibration::DTI);
+}
+
+inline void cpVibration::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpVibration::DTI)->memFree(p_addr);
+}

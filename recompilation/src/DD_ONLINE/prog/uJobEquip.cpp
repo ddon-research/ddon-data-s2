@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uJobEquip.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& uJobEquip::getDTI() const {
     return uJobEquip::DTI;
-}
-
-inline void* uJobEquip::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uJobEquip::DTI)->memAlloc(sz, align, uJobEquip::DTI.getID());
-}
-
-inline void uJobEquip::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uJobEquip::DTI)->memFree(p_addr);
 }
 
 uJobEquip::~uJobEquip() {

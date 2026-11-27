@@ -25,14 +25,6 @@ const MtDTI& cSoundLayoutInfo::getDTI() const {
     return cSoundLayoutInfo::DTI;
 }
 
-inline void* cSoundLayoutInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSoundLayoutInfo::DTI)->memAlloc(sz, align, cSoundLayoutInfo::DTI.getID());
-}
-
-inline void cSoundLayoutInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundLayoutInfo::DTI)->memFree(p_addr);
-}
-
 cSoundLayoutInfo::cSoundLayoutInfo() {
     mZoneHit = 0;
 }
@@ -76,14 +68,6 @@ const MtDTI& cSoundZoneListener::getDTI() const {
     return cSoundZoneListener::DTI;
 }
 
-inline void* cSoundZoneListener::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSoundZoneListener::DTI)->memAlloc(sz, align, cSoundZoneListener::DTI.getID());
-}
-
-inline void cSoundZoneListener::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundZoneListener::DTI)->memFree(p_addr);
-}
-
 cSoundZoneListener::cSoundZoneListener() {
     mMyPos = MtVector3::Zero;
 }
@@ -120,14 +104,6 @@ const MtDTI& nSoundZoneBase::cSoundZoneContents::getDTI() const {
     return nSoundZoneBase::cSoundZoneContents::DTI;
 }
 
-inline void* nSoundZoneBase::cSoundZoneContents::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nSoundZoneBase::cSoundZoneContents::DTI)->memAlloc(sz, align, ::nSoundZoneBase::cSoundZoneContents::DTI.getID());
-}
-
-inline void nSoundZoneBase::cSoundZoneContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundZoneBase::cSoundZoneContents::DTI)->memFree(p_addr);
-}
-
 nSoundZoneBase::cSoundZoneContents::cSoundZoneContents() {
 }
 
@@ -144,10 +120,6 @@ MtObject* nSoundZoneBase::cSoundZoneContents::MyDTI::newInstance() const {
 
 const MtDTI& uSoundZoneBase::getDTI() const {
     return uSoundZoneBase::DTI;
-}
-
-inline void uSoundZoneBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundZoneBase::DTI)->memFree(p_addr);
 }
 
 uSoundZoneBase::uSoundZoneBase() {
@@ -392,14 +364,6 @@ __attribute__((weak)) MtObject* uSoundZoneBase::MyDTI::newInstance() const {
 
 const MtDTI& uSoundZoneBase::cGroupManager::getDTI() const {
     return uSoundZoneBase::cGroupManager::DTI;
-}
-
-inline void* uSoundZoneBase::cGroupManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uSoundZoneBase::cGroupManager::DTI)->memAlloc(sz, align, uSoundZoneBase::cGroupManager::DTI.getID());
-}
-
-inline void uSoundZoneBase::cGroupManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundZoneBase::cGroupManager::DTI)->memFree(p_addr);
 }
 
 uSoundZoneBase::cGroupManager::cGroupManager() {

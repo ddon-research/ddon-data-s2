@@ -104,3 +104,11 @@ inline MtObject* cFSMCore::getOwner() const {
 inline void cFSMCore::setOwner(MtObject* pOwner) {
     this->mpOwner = pOwner;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cFSMCore::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMCore::DTI)->memFree(p_addr);
+}

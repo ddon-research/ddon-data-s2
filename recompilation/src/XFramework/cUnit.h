@@ -16,6 +16,7 @@ class MtSphere;
 class MtUI;
 class MtVector3;
 class aStage;
+class cCamImpBase;
 class cContextPlayerInfo;
 class cDamageMsg;
 class cDraw;
@@ -37,6 +38,7 @@ class sGUIExt;
 class sSoundExt;
 class sUnit;
 class sUnitManager;
+class uActorModel;
 class uArmor;
 class uBaseEffect;
 class uBaseModel;
@@ -56,14 +58,19 @@ class uEnemy;
 class uFade;
 class uFilter;
 class uFullbodyIKHuman2;
+class uFullbodyIKHumanDDO;
 class uGUI;
+class uGUIArisenCard;
 class uGUIBase;
+class uGUIBazaar;
 class uGUICharacterEdit;
+class uGUIPawnReview;
 class uGUIPopRmcQuestInfo;
 class uGUIRankUp;
 class uGUISkill;
 class uGUISkillLvUp;
 class uGrassWindDirection;
+class uGrassWindPoint;
 class uHuman;
 class uHumanEnemy;
 class uLight;
@@ -86,8 +93,10 @@ class uSimSoftBody;
 class uSky;
 class uSkyCloudModel;
 class uSoundGenerator;
+class uStageJointMdl;
 class uStageMyRoom;
 class uStagePartsCtrl;
+class uStagePartsMdl;
 class uStageRevivalPawn;
 class uWeapon;
 
@@ -108,6 +117,7 @@ using u64 = __uint64_t;
 class cUnit : public MtObject
 {
     friend class aStage;
+    friend class cCamImpBase;
     friend class cContextPlayerInfo;
     friend class cDamageMsg;
     friend class cParticle;
@@ -128,6 +138,7 @@ class cUnit : public MtObject
     friend class sSoundExt;
     friend class sUnit;
     friend class sUnitManager;
+    friend class uActorModel;
     friend class uArmor;
     friend class uBaseEffect;
     friend class uBaseModel;
@@ -147,14 +158,19 @@ class cUnit : public MtObject
     friend class uFade;
     friend class uFilter;
     friend class uFullbodyIKHuman2;
+    friend class uFullbodyIKHumanDDO;
     friend class uGUI;
+    friend class uGUIArisenCard;
     friend class uGUIBase;
+    friend class uGUIBazaar;
     friend class uGUICharacterEdit;
+    friend class uGUIPawnReview;
     friend class uGUIPopRmcQuestInfo;
     friend class uGUIRankUp;
     friend class uGUISkill;
     friend class uGUISkillLvUp;
     friend class uGrassWindDirection;
+    friend class uGrassWindPoint;
     friend class uHuman;
     friend class uHumanEnemy;
     friend class uLight;
@@ -177,8 +193,10 @@ class cUnit : public MtObject
     friend class uSky;
     friend class uSkyCloudModel;
     friend class uSoundGenerator;
+    friend class uStageJointMdl;
     friend class uStageMyRoom;
     friend class uStagePartsCtrl;
+    friend class uStagePartsMdl;
     friend class uStageRevivalPawn;
     friend class uWeapon;
 public:
@@ -469,4 +487,12 @@ inline cUnit::cHardwareDispCtrl::cHardwareDispCtrl() {
 
 inline void* cUnit::cHardwareDispCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cUnit::cHardwareDispCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cUnit::cHardwareDispCtrl::DTI)->memFree(p_addr);
 }

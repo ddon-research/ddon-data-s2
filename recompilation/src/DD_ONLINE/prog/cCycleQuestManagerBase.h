@@ -345,3 +345,25 @@ inline u32 cCycleQuestManagerBase::getExtraPointListNum() const {
 inline void* cCycleQuestManagerBase::cDieEmInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "sFlag.h"
+#include "sQuestManagerExt.h"
+
+inline void cCycleQuestManagerBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCycleQuestManagerBase::DTI)->memFree(p_addr);
+}
+
+inline void cCycleQuestManagerBase::routineFinalize() {
+    (::sFlag::mpInstance)->::sFlag::setFlag(4u, 2u, false, true, false);
+    (::sQuestManagerExt::mpInstance)->::sQuestManagerExt::finishCycleContentsTimer();
+    (::sQuestManagerExt::mpInstance)->::sQuestManagerExt::resetHasCycleContentsPlayEndNotice();
+    this->mR0 = 0;
+    this->mR1 = 0;
+}
+
+inline void cCycleQuestManagerBase::cDieEmInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCycleQuestManagerBase::cDieEmInfo::DTI)->memFree(p_addr);
+}

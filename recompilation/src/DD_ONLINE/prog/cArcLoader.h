@@ -191,3 +191,10 @@ public:
 inline void* cArcLoaderBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cArcLoaderBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cArcLoaderBase::DTI);
+}

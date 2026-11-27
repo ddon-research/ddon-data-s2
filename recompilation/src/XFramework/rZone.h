@@ -603,3 +603,19 @@ inline void rZone::cMemoryHeader::cGroupInfo::importGroupInfo(rZone& owner, u32 
         }
     }
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rZone::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rZone::DTI)->memFree(p_addr);
+}
+
+inline void* rZone::cGroupManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rZone::cGroupManager::DTI)->memAlloc(sz, align, ::rZone::cGroupManager::DTI.::MtDTI::mID);
+}
+
+inline void rZone::cGroupManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rZone::cGroupManager::DTI)->memFree(p_addr);
+}

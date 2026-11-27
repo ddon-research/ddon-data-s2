@@ -1,25 +1,63 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cQuestSvNotice.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "Protocol/UserSession/S2C.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
+const MtDTI& cQuestSvNotCycle04Phase::getDTI() const {
+    return cQuestSvNotCycle04Phase::DTI;
+}
+
+void* cQuestSvNotCycle04Phase::getNoticePacket() const {
+    return static_cast<void*>(mpPacket);
+}
+
+cQuestSvNotCycle04Phase::~cQuestSvNotCycle04Phase() {
+    if (mpPacket == nullptr) {
+        return;
+    }
+    delete mpPacket;
+    mpPacket = nullptr;
+}
+
+inline cQuestSvNotCycle04Phase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cQuestSvNotCycle04Phase::MyDTI cQuestSvNotCycle04Phase::DTI("cQuestSvNotCycle04Phase", &::cQuestSvNotice::DTI, 16ul, 0u, 0u);
+
+MtObject* cQuestSvNotCycle04Phase::MyDTI::newInstance() const {
+    return new (16u) cQuestSvNotCycle04Phase;
+}
+
+const MtDTI& cQuestSvNotDecideDeliveryItem::getDTI() const {
+    return cQuestSvNotDecideDeliveryItem::DTI;
+}
+
+void* cQuestSvNotDecideDeliveryItem::getNoticePacket() const {
+    return static_cast<void*>(mpPacket);
+}
+
+cQuestSvNotDecideDeliveryItem::~cQuestSvNotDecideDeliveryItem() {
+    if (mpPacket == nullptr) {
+        return;
+    }
+    delete mpPacket;
+    mpPacket = nullptr;
+}
+
+inline cQuestSvNotDecideDeliveryItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cQuestSvNotDecideDeliveryItem::MyDTI cQuestSvNotDecideDeliveryItem::DTI("cQuestSvNotDecideDeliveryItem", &::cQuestSvNotice::DTI, 16ul, 0u, 0u);
+
+MtObject* cQuestSvNotDecideDeliveryItem::MyDTI::newInstance() const {
+    return new (16u) cQuestSvNotDecideDeliveryItem;
+}
+
 const MtDTI& cQuestSvNotQuestPhase::getDTI() const {
     return cQuestSvNotQuestPhase::DTI;
-}
-
-inline void* cQuestSvNotQuestPhase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestSvNotQuestPhase::DTI)->memAlloc(sz, align, cQuestSvNotQuestPhase::DTI.getID());
-}
-
-inline void cQuestSvNotQuestPhase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestSvNotQuestPhase::DTI)->memFree(p_addr);
 }
 
 void* cQuestSvNotQuestPhase::getNoticePacket() const {
@@ -58,14 +96,6 @@ MtObject* cQuestSvNotice::MyDTI::newInstance() const {
 
 const MtDTI& cQuestSvNoticeCallback::getDTI() const {
     return cQuestSvNoticeCallback::DTI;
-}
-
-inline void* cQuestSvNoticeCallback::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestSvNoticeCallback::DTI)->memAlloc(sz, align, cQuestSvNoticeCallback::DTI.getID());
-}
-
-inline void cQuestSvNoticeCallback::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestSvNoticeCallback::DTI)->memFree(p_addr);
 }
 
 const MtDTI& cQuestSvNoticeCallback::getNoticeClassDTI() const {

@@ -77,3 +77,10 @@ inline void* cGUIKeepString::operator new(size_t sz, void* p_addr) {
 inline u32 cGUIKeepString::getArg() {
     return this->mArg;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cGUIKeepString::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGUIKeepString::DTI);
+}

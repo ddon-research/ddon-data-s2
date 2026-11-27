@@ -16,12 +16,6 @@ class MtArray;
 class MtDTI;
 class MtPropertyList;
 
-// Declarations
-namespace nHumanBow { class cBowActParam; }
-
-namespace nHumanBow { class cShootCtrlParam; }
-namespace nHumanBow { struct stNetData; }
-
 namespace nHumanBow {
     enum BOW_ACT_KIND
     {
@@ -40,6 +34,12 @@ namespace nHumanBow {
         MGC_BOW_CHARGE_JUST = 3,
     };
 }  // namespace nHumanBow
+
+// Declarations
+namespace nHumanBow { class cBowActParam; }
+
+namespace nHumanBow { class cShootCtrlParam; }
+namespace nHumanBow { struct stNetData; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -439,4 +439,16 @@ inline nHumanBow::cShootCtrlParam::cShootCtrlParam() {
     this->degRndY = 0.0f;
     this->degX = 0.0f;
     this->degY = 0.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* nHumanBow::cBowActParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nHumanBow::cBowActParam::DTI)->memAlloc(sz, align, ::nHumanBow::cBowActParam::DTI.::MtDTI::getID());
+}
+
+inline void nHumanBow::cBowActParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nHumanBow::cBowActParam::DTI)->memFree(p_addr);
 }

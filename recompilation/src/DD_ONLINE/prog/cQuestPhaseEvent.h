@@ -144,3 +144,23 @@ inline cQuestPhaseEvent::cParam::cParam() {
     this->mIdx = 0;
     this->mValue = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cQuestPhaseEvent::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseEvent::DTI);
+}
+
+inline void cQuestPhaseEvent::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPhaseEvent::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestPhaseEvent::cParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseEvent::cParam::DTI)->memAlloc(sz, align, ::cQuestPhaseEvent::cParam::DTI.::MtDTI::getID());
+}
+
+inline void cQuestPhaseEvent::cParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPhaseEvent::cParam::DTI)->memFree(p_addr);
+}

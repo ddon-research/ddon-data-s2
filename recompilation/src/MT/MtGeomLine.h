@@ -120,3 +120,11 @@ public:
 inline void* MtGeomLine::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void MtGeomLine::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtGeomLine::DTI)->memFree(p_addr);
+}

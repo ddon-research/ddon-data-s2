@@ -2,7 +2,7 @@
 #include <new>
 #include <string.h>
 #include "MtXmlReader.h"
-#include "MtCharset.h"
+#include "MtCharSet.h"
 #include "MtMemory.h"
 #include "MtString.h"
 #ifndef DDON_STUB

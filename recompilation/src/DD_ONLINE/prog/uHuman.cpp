@@ -12,6 +12,7 @@
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
 #include "aStage.h"
+#include "cAction.h"
 #include "../../XFramework/cArea.h"
 #include "cBlowShrinkDmInfo.h"
 #include "cComponentManager.h"
@@ -37,6 +38,7 @@
 #include "cOcdBase.h"
 #include "cOcdCustomReqInfo.h"
 #include "cOcdDamageInfo.h"
+#include "cOcdGoodStatusHuman.h"
 #include "cOcdInfo.h"
 #include "cParentRegionStatus.h"
 #include "cPcTouchAction.h"
@@ -45,6 +47,7 @@
 #include "../../XFramework/cResource.h"
 #include "cShlNotifyInfo.h"
 #include "cStaminaCtrl.h"
+#include "cState.h"
 #include "../../XFramework/cSystem.h"
 #include "../../XFramework/cUnit.h"
 #include "cUnitDieInfo.h"
@@ -96,6 +99,7 @@
 #include "cpOmComponent.h"
 #include "cpPathFinding.h"
 #include "cpPawnThink.h"
+#include "cpRootComponent.h"
 #include "cpRotateCtrl.h"
 #include "cpSafePos.h"
 #include "cpScrCollision.h"
@@ -108,6 +112,7 @@
 #include "cpStateManager.h"
 #include "cpTransparencyCtrl.h"
 #include "cpVibration.h"
+#include "cpWaypoint.h"
 #include "cpWorkRate.h"
 #include "cpjob10.h"
 #include "ctl_storageArray.h"
@@ -171,6 +176,7 @@
 #include "sInputManager.h"
 #include "sItemManager.h"
 #include "../../XFramework/sMain.h"
+#include "sMyRoom.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sObjCollision.h"
@@ -278,10 +284,6 @@ const MtDTI& uHuman::getDTI() const {
     return uHuman::DTI;
 }
 
-inline void uHuman::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uHuman::DTI)->memFree(p_addr);
-}
-
 uHuman::uHuman() {
     DDON_STUB("uHuman::uHuman")
     /* stub */
@@ -297,9 +299,57 @@ __attribute__((weak)) void uHuman::createComponent() {
     /* stub */
 }
 
-__attribute__((weak)) void uHuman::setupComponentPtr() {
-    DDON_STUB("uHuman::setupComponentPtr")
-    /* stub */
+void uHuman::setupComponentPtr() {
+    this->uCharacter::setupComponentPtr();
+    mpChantCommand = static_cast<cpChantCommand*>(mComponentMgr.getRootComponent()->find(cpChantCommand::DTI, true, true));
+    mpJob01 = static_cast<cpJob01*>(mComponentMgr.getRootComponent()->find(cpJob01::DTI, true, true));
+    mpJob02 = static_cast<cpJob02*>(mComponentMgr.getRootComponent()->find(cpJob02::DTI, true, true));
+    mpJob03 = static_cast<cpJob03*>(mComponentMgr.getRootComponent()->find(cpJob03::DTI, true, true));
+    mpJob04 = static_cast<cpJob04*>(mComponentMgr.getRootComponent()->find(cpJob04::DTI, true, true));
+    mpJob05 = static_cast<cpJob05*>(mComponentMgr.getRootComponent()->find(cpJob05::DTI, true, true));
+    mpJob06 = static_cast<cpJob06*>(mComponentMgr.getRootComponent()->find(cpJob06::DTI, true, true));
+    mpJob08 = static_cast<cpJob08*>(mComponentMgr.getRootComponent()->find(cpJob08::DTI, true, true));
+    mpJob07 = static_cast<cpJob07*>(mComponentMgr.getRootComponent()->find(cpJob07::DTI, true, true));
+    mpJob09 = static_cast<cpJob09*>(mComponentMgr.getRootComponent()->find(cpJob09::DTI, true, true));
+    mpJob10 = static_cast<cpJob10*>(mComponentMgr.getRootComponent()->find(cpJob10::DTI, true, true));
+    mpKeyCommand = static_cast<cpKeyCommand*>(mComponentMgr.getRootComponent()->find(cpKeyCommand::DTI, true, true));
+    mpCharacterEdit = static_cast<cpCharacterEdit*>(mComponentMgr.getRootComponent()->find(cpCharacterEdit::DTI, true, true));
+    mpMotionFilter = static_cast<cpMotionFilter*>(mComponentMgr.getRootComponent()->find(cpMotionFilter::DTI, true, true));
+    mpHmHeadCtrl = static_cast<cpHmHeadCtrl*>(mComponentMgr.getRootComponent()->find(cpHmHeadCtrl::DTI, true, true));
+    mpBakeJoint = static_cast<cpBakeJointHuman*>(mComponentMgr.getRootComponent()->find(cpBakeJoint::DTI, true, true));
+    mpTransparencyCtrl = static_cast<cpTransparencyCtrl*>(mComponentMgr.getRootComponent()->find(cpTransparencyCtrl::DTI, true, true));
+    mpItemThrow = static_cast<cpItemThrow*>(mComponentMgr.getRootComponent()->find(cpItemThrow::DTI, true, true));
+    cpJob01* t0 = mpJob01;
+    u32 t1 = nHuman::getJobArrayIndex(nHuman::JOB_ID_TOP);
+    mJobCompArray.elems[(t1 <= 9u) ? t1 : 0u] = static_cast<cpJobBase*>(t0);
+    cpJob02* t2 = mpJob02;
+    u32 t3 = nHuman::getJobArrayIndex(nHuman::JOB_ID_02);
+    mJobCompArray.elems[(t3 <= 9u) ? t3 : 0u] = static_cast<cpJobBase*>(t2);
+    cpJob03* t4 = mpJob03;
+    u32 t5 = nHuman::getJobArrayIndex(nHuman::JOB_ID_03);
+    mJobCompArray.elems[(t5 <= 9u) ? t5 : 0u] = static_cast<cpJobBase*>(t4);
+    cpJob04* t6 = mpJob04;
+    u32 t7 = nHuman::getJobArrayIndex(nHuman::JOB_ID_04);
+    mJobCompArray.elems[(t7 <= 9u) ? t7 : 0u] = static_cast<cpJobBase*>(t6);
+    cpJob05* t8 = mpJob05;
+    u32 t9 = nHuman::getJobArrayIndex(nHuman::JOB_ID_05);
+    mJobCompArray.elems[(t9 <= 9u) ? t9 : 0u] = static_cast<cpJobBase*>(t8);
+    cpJob06* t10 = mpJob06;
+    u32 t11 = nHuman::getJobArrayIndex(nHuman::JOB_ID_06);
+    mJobCompArray.elems[(t11 <= 9u) ? t11 : 0u] = static_cast<cpJobBase*>(t10);
+    cpJob08* t12 = mpJob08;
+    u32 t13 = nHuman::getJobArrayIndex(nHuman::JOB_ID_08);
+    mJobCompArray.elems[(t13 <= 9u) ? t13 : 0u] = static_cast<cpJobBase*>(t12);
+    cpJob07* t14 = mpJob07;
+    u32 t15 = nHuman::getJobArrayIndex(nHuman::JOB_ID_07);
+    mJobCompArray.elems[(t15 <= 9u) ? t15 : 0u] = static_cast<cpJobBase*>(t14);
+    cpJob09* t16 = mpJob09;
+    u32 t17 = nHuman::getJobArrayIndex(nHuman::JOB_ID_09);
+    mJobCompArray.elems[(t17 <= 9u) ? t17 : 0u] = static_cast<cpJobBase*>(t16);
+    cpJob10* t18 = mpJob10;
+    u32 t19 = nHuman::getJobArrayIndex(nHuman::JOB_ID_10);
+    mJobCompArray.elems[(t19 <= 9u) ? t19 : 0u] = static_cast<cpJobBase*>(t18);
+    mpHumanWarpCtrl = static_cast<cpHumanWarpCtrl*>(mComponentMgr.getRootComponent()->find(cpHumanWarpCtrl::DTI, true, true));
 }
 
 __attribute__((weak)) void uHuman::setup() {
@@ -1728,9 +1778,28 @@ bool uHuman::isNowEmotionLoop() {
     return true;
 }
 
-__attribute__((weak)) bool uHuman::isContinuousCallEmotion(u32 ReqActNo) {
-    DDON_STUB("uHuman::isContinuousCallEmotion")
-    return {};
+bool uHuman::isContinuousCallEmotion(u32 ReqActNo) {
+    if (getActMgrPtr() != nullptr) {
+        u32 nowActNo = getActMgrPtr()->getActionNo();
+        const MtDTI& t0 = getActMgrPtr()->getAction()->getDTI();
+        MT_CTSTR v0_1 = cHumanActEmotionLoop::DTI.mName;
+        for (const MtDTI* v0_0 = &t0;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent == nullptr) {
+                    return ReqActNo != nowActNo;
+                } else {
+                    v0_0 = v0_0->mpParent;
+                }
+            } else {
+                if (nowActNo != (ReqActNo + 1u)) {
+                    return ReqActNo != nowActNo;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 bool uHuman::checkGuardCharge() {
@@ -1750,29 +1819,69 @@ __attribute__((weak)) bool uHuman::isLimitedHealingCircle(nKeyCommand::stGeneric
     return {};
 }
 
-__attribute__((weak)) bool uHuman::isLimitedAttackCircle(nKeyCommand::stGenericParam& param) {
-    DDON_STUB("uHuman::isLimitedAttackCircle")
-    return {};
+bool uHuman::isLimitedAttackCircle(nKeyCommand::stGenericParam& param) {
+    if ((getActMgrPtr()->getActionNo() - 4096u) > 2u) {
+        for (unsigned int i0_1 = 0; i0_1 <= 15u; i0_1 = i0_1 + 1u) {
+            if (mLimitActCtrl.mLimitActList.elems[i0_1].mIsLimited) {
+                if (mLimitActCtrl.mLimitActList.elems[i0_1].mActID == 4096) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool uHuman::isLimitedDefenceCircle(nKeyCommand::stGenericParam& param) {
-    DDON_STUB("uHuman::isLimitedDefenceCircle")
-    return {};
+bool uHuman::isLimitedDefenceCircle(nKeyCommand::stGenericParam& param) {
+    if ((getActMgrPtr()->getActionNo() - 4101u) > 2u) {
+        for (unsigned int i0_1 = 0; i0_1 <= 15u; i0_1 = i0_1 + 1u) {
+            if (mLimitActCtrl.mLimitActList.elems[i0_1].mIsLimited) {
+                if (mLimitActCtrl.mLimitActList.elems[i0_1].mActID == 4101) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool uHuman::isLimitedGuardBit(nKeyCommand::stGenericParam& param) {
-    DDON_STUB("uHuman::isLimitedGuardBit")
-    return {};
+bool uHuman::isLimitedGuardBit(nKeyCommand::stGenericParam& param) {
+    if ((getActMgrPtr()->getActionNo() - 4118u) > 2u) {
+        for (unsigned int i0_1 = 0; i0_1 <= 15u; i0_1 = i0_1 + 1u) {
+            if (mLimitActCtrl.mLimitActList.elems[i0_1].mIsLimited) {
+                if (mLimitActCtrl.mLimitActList.elems[i0_1].mActID == 4118) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool uHuman::isLimitedSoulFull(nKeyCommand::stGenericParam& param) {
-    DDON_STUB("uHuman::isLimitedSoulFull")
-    return {};
+bool uHuman::isLimitedSoulFull(nKeyCommand::stGenericParam& param) {
+    if ((getActMgrPtr()->getActionNo() - 4123u) > 2u) {
+        for (unsigned int i0_1 = 0; i0_1 <= 15u; i0_1 = i0_1 + 1u) {
+            if (mLimitActCtrl.mLimitActList.elems[i0_1].mIsLimited) {
+                if (mLimitActCtrl.mLimitActList.elems[i0_1].mActID == 4123) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool uHuman::isLimitedIronCircle(nKeyCommand::stGenericParam& param) {
-    DDON_STUB("uHuman::isLimitedIronCircle")
-    return {};
+bool uHuman::isLimitedIronCircle(nKeyCommand::stGenericParam& param) {
+    if ((getActMgrPtr()->getActionNo() - 4128u) > 2u) {
+        for (unsigned int i0_1 = 0; i0_1 <= 15u; i0_1 = i0_1 + 1u) {
+            if (mLimitActCtrl.mLimitActList.elems[i0_1].mIsLimited) {
+                if (mLimitActCtrl.mLimitActList.elems[i0_1].mActID == 4128) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool uHuman::isLimitedSaintCircle(nKeyCommand::stGenericParam& param) {
@@ -1780,14 +1889,30 @@ __attribute__((weak)) bool uHuman::isLimitedSaintCircle(nKeyCommand::stGenericPa
     return {};
 }
 
-__attribute__((weak)) bool uHuman::isLimitedSolaceCircle(nKeyCommand::stGenericParam& param) {
-    DDON_STUB("uHuman::isLimitedSolaceCircle")
-    return {};
+bool uHuman::isLimitedSolaceCircle(nKeyCommand::stGenericParam& param) {
+    if ((getActMgrPtr()->getActionNo() - 4143u) > 2u) {
+        for (unsigned int i0_1 = 0; i0_1 <= 15u; i0_1 = i0_1 + 1u) {
+            if (mLimitActCtrl.mLimitActList.elems[i0_1].mIsLimited) {
+                if (mLimitActCtrl.mLimitActList.elems[i0_1].mActID == 4143) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool uHuman::isLimitedBlastOption(nKeyCommand::stGenericParam& param) {
-    DDON_STUB("uHuman::isLimitedBlastOption")
-    return {};
+bool uHuman::isLimitedBlastOption(nKeyCommand::stGenericParam& param) {
+    if ((getActMgrPtr()->getActionNo() - 4148u) > 2u) {
+        for (unsigned int i0_1 = 0; i0_1 <= 15u; i0_1 = i0_1 + 1u) {
+            if (mLimitActCtrl.mLimitActList.elems[i0_1].mIsLimited) {
+                if (mLimitActCtrl.mLimitActList.elems[i0_1].mActID == 4148) {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
 }
 
 bool uHuman::isCantBoostSpirit(nKeyCommand::stGenericParam& param) {
@@ -2127,9 +2252,19 @@ __attribute__((weak)) void uHuman::LimitAutoRun() {
     /* stub */
 }
 
-__attribute__((weak)) void uHuman::unLimitAutoRun() {
-    DDON_STUB("uHuman::unLimitAutoRun")
-    /* stub */
+void uHuman::unLimitAutoRun() {
+    for (unsigned int i0_0 = 0; i0_0 != 16; i0_0 = i0_0 + 1u) {
+        if (mLimitActCtrl.mLimitActList.elems[i0_0].mActID == 5) {
+            mLimitActCtrl.mLimitActList.elems[i0_0].mIsLimited = false;
+            mLimitActCtrl.mLimitActList.elems[i0_0].mActID = -1;
+        }
+    }
+    for (unsigned int i3_0 = 0; i3_0 != 16; i3_0 = i3_0 + 1u) {
+        if (mLimitActCtrl.mLimitActList.elems[i3_0].mActID == 6) {
+            mLimitActCtrl.mLimitActList.elems[i3_0].mIsLimited = false;
+            mLimitActCtrl.mLimitActList.elems[i3_0].mActID = -1;
+        }
+    }
 }
 
 void uHuman::setupStraightAutoRun() {
@@ -2553,8 +2688,37 @@ __attribute__((weak)) void uHuman::createArmorUnit(const cContextInstHm* pContex
 }
 
 __attribute__((weak)) void uHuman::createGunUnit(const cContextInstHm* pContext) {
-    DDON_STUB("uHuman::createGunUnit")
-    /* stub */
+    u32 slot = nCharacterData::EQUIP_SLOT_WEP_MAIN;
+    if ((this->uDDOModel::mUnitId & 0x48u) != 0) {
+        if (cContextInterface::getContextEquip(const_cast<cContextInstHm*>(pContext)).isEquipChange(nCharacterData::EQUIP_TYPE_VISUAL, slot, true)) {
+            return;
+        }
+    }
+    const cEquipData equipData = cContextInterface::getContextEquipConst(pContext);
+    const cItemParam* pItemParam = equipData.getEquipParam(static_cast<u8>(slot), nCharacterData::EQUIP_TYPE_VISUAL, true);
+    u16 itemNo = static_cast<u16>(pItemParam->getItemNo());
+    rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(itemNo);
+    if (pParam != nullptr) {
+        nWeapon::WEAPON_CATEGORY wepCategory = static_cast<nWeapon::WEAPON_CATEGORY>(pParam->getWepCategory());
+        if (wepCategory == static_cast<nWeapon::WEAPON_CATEGORY>(8)) {
+            u8 t1;
+            t1 = *reinterpret_cast<const u8*>(reinterpret_cast<const char*>(pItemParam) + 0x67);
+            s8 colorPatern;
+            if (t1 >= rItemList::rParam::CRAFT_COLOR_RED) {
+                colorPatern = static_cast<s8>(t1 + 7);
+            } else {
+                colorPatern = pParam->getMaterialColNo();
+            }
+            cPlayerLoadManager::createWeaponEx(
+                this,
+                slot,
+                wepCategory,
+                cPlayerLoadManager::getWeaponArcTagEx(itemNo, cContextInterface::getSex(pContext)),
+                pParam->getModelParts(),
+                colorPatern
+            );
+        }
+    }
 }
 
 __attribute__((weak)) void uHuman::updateWaterEff() {
@@ -2658,13 +2822,6 @@ void uHuman::deleteMagicChantParam() {
     }
     mprMagicChantParam->release();
     mprMagicChantParam = nullptr;
-}
-
-void uHuman::setClimbJointOffset(const MtVector3& offset) {
-    mClimbJointOffset.x = offset.x;
-    mClimbJointOffset.y = offset.y;
-    mClimbJointOffset.z = offset.z;
-    mClimbJointOffset.pad_ = 0.0f;
 }
 
 __attribute__((weak)) uDDOModel* uHuman::getClimbEnemy() const {
@@ -3769,9 +3926,15 @@ void uHuman::resetContext() {
     cContextInterface::setFJobWork1(mContextInterface.mpContextInstance, 0.0f);
 }
 
-__attribute__((weak)) bool uHuman::isLimitedAction(s32 actID) {
-    DDON_STUB("uHuman::isLimitedAction")
-    return {};
+bool uHuman::isLimitedAction(s32 actID) {
+    for (unsigned int i0_1 = 0; i0_1 <= 15u; i0_1 = i0_1 + 1u) {
+        if (mLimitActCtrl.mLimitActList.elems[i0_1].mIsLimited) {
+            if (mLimitActCtrl.mLimitActList.elems[i0_1].mActID == actID) {
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 void uHuman::initInstantDeath() {
@@ -3932,9 +4095,12 @@ void uHuman::offItemMode() {
     mpItemThrow->offItemMode();
 }
 
-__attribute__((weak)) uModel* uHuman::getItemModel() const {
-    DDON_STUB("uHuman::getItemModel")
-    return nullptr;
+uModel* uHuman::getItemModel() const {
+    if (mpItemThrow != nullptr) {
+        return mpItemThrow->getItemModel();
+    } else {
+        return nullptr;
+    }
 }
 
 MT_CTSTR uHuman::getNowThrowItemUId() const {
@@ -4052,32 +4218,6 @@ __attribute__((weak)) void uHuman::setSafePosDie() {
 __attribute__((weak)) void uHuman::setSafePosDown() {
     DDON_STUB("uHuman::setSafePosDown")
     /* stub */
-}
-
-inline void uHuman::setSafePosFootWork() {
-    resetPos(getSafePos());
-    if (mpTransparencyCtrl != nullptr) {
-        mpTransparencyCtrl->startChangeTrp(0.0f, 1.0f, 15.0f);
-    }
-    if (mGuardComponent.mpActionRequest != nullptr) {
-        mGuardComponent.mpActionRequest->mDamageAction = 1;
-        mGuardComponent.mpActionRequest->mDamageActionReq = 1;
-    }
-    mInsuranceTimer = 0.0f;
-    if (!isMaster()) {
-        return;
-    }
-    if ((this->uDDOModel::mUnitId & 1024u) != 0) {
-        return;
-    }
-    countUpSafePosWarpLoop();
-}
-
-inline void uHuman::checkItemMode() {
-    if (mpItemThrow == nullptr) {
-        return;
-    }
-    mpItemThrow->checkItemMode();
 }
 
 __attribute__((weak)) void uHuman::checkDeadConsistency() {
@@ -4283,9 +4423,16 @@ __attribute__((weak)) void uHuman::setTouch(uDDOModel* pUnit, bool isTouchSave) 
     /* stub */
 }
 
-__attribute__((weak)) void uHuman::setPawnTalkTouch(uDDOModel* pReqOwner) {
-    DDON_STUB("uHuman::setPawnTalkTouch")
-    /* stub */
+void uHuman::setPawnTalkTouch(uDDOModel* pReqOwner) {
+    if (pReqOwner == nullptr) {
+        return;
+    }
+    pReqOwner->mpTouchTarget = static_cast<uDDOModel*>(this);
+    size_t t0 = mTouchedArray.mBufferPt;
+    if (static_cast<unsigned int>(t0) <= 7) {
+        mTouchedArray.mBufferPt = t0 + 1ul;
+        mTouchedArray.mBuffer[t0] = pReqOwner;
+    }
 }
 
 f32 uHuman::getCliffPivotOffsetY() {
@@ -4874,17 +5021,137 @@ const MtDTI& uHuman::cEnemyClimbInfo::getDTI() const {
     return uHuman::cEnemyClimbInfo::DTI;
 }
 
-inline MtAllocator* uHuman::cEnemyClimbInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uHuman::cEnemyClimbInfo::DTI);
-}
-
 __attribute__((weak)) void uHuman::cEnemyClimbInfo::operator delete(void* p_addr) {
     uHuman::cEnemyClimbInfo::getAllocator()->memFree(p_addr);
 }
 
 __attribute__((weak)) void uHuman::cEnemyClimbInfo::init() {
-    DDON_STUB("uHuman::cEnemyClimbInfo::init")
-    /* stub */
+    mShape = 0;
+    mIsValid = false;
+    mIsMultiAlign = false;
+    mChainBusy = false;
+    mIsClimbActive = false;
+    mIsStop[0] = false;
+    mIsStop[1] = false;
+    mIsStop[2] = false;
+    mIsStop[3] = false;
+    const f32 t0 = MtVector3::Zero.y;
+    const f32 t1 = MtVector3::Zero.z;
+    mCap.p0.x = MtVector3::Zero.x;
+    mCap.p0.y = t0;
+    mCap.p0.z = t1;
+    mCap.p0.pad_ = 0.0f;
+    mCap.p1.x = 0.0f;
+    mCap.p1.y = 100.0f;
+    mCap.p1.z = 0.0f;
+    mCap.p1.pad_ = 0.0f;
+    mCap.r = 100.0f;
+    mOffset0 = MtVector3::Zero;
+    mOffset1 = MtVector3::Zero;
+    mpModel = nullptr;
+    mJoint0 = -1;
+    mJoint1 = -1;
+    mStableLMat.m[0].x = MtMatrix::Identity.m[0].x;
+    mStableLMat.m[0].y = MtMatrix::Identity.m[0].y;
+    mStableLMat.m[0].z = MtMatrix::Identity.m[0].z;
+    mStableLMat.m[0].w = MtMatrix::Identity.m[0].w;
+    mStableLMat.m[1].x = MtMatrix::Identity.m[1].x;
+    mStableLMat.m[1].y = MtMatrix::Identity.m[1].y;
+    mStableLMat.m[1].z = MtMatrix::Identity.m[1].z;
+    mStableLMat.m[1].w = MtMatrix::Identity.m[1].w;
+    mStableLMat.m[2].x = MtMatrix::Identity.m[2].x;
+    mStableLMat.m[2].y = MtMatrix::Identity.m[2].y;
+    mStableLMat.m[2].z = MtMatrix::Identity.m[2].z;
+    mStableLMat.m[2].w = MtMatrix::Identity.m[2].w;
+    mStableLMat.m[3].x = MtMatrix::Identity.m[3].x;
+    mStableLMat.m[3].y = MtMatrix::Identity.m[3].y;
+    mStableLMat.m[3].z = MtMatrix::Identity.m[3].z;
+    mStableLMat.m[3].w = MtMatrix::Identity.m[3].w;
+    mStableWMat.m[0].x = MtMatrix::Identity.m[0].x;
+    mStableWMat.m[0].y = MtMatrix::Identity.m[0].y;
+    mStableWMat.m[0].z = MtMatrix::Identity.m[0].z;
+    mStableWMat.m[0].w = MtMatrix::Identity.m[0].w;
+    mStableWMat.m[1].x = MtMatrix::Identity.m[1].x;
+    mStableWMat.m[1].y = MtMatrix::Identity.m[1].y;
+    mStableWMat.m[1].z = MtMatrix::Identity.m[1].z;
+    mStableWMat.m[1].w = MtMatrix::Identity.m[1].w;
+    mStableWMat.m[2].x = MtMatrix::Identity.m[2].x;
+    mStableWMat.m[2].y = MtMatrix::Identity.m[2].y;
+    mStableWMat.m[2].z = MtMatrix::Identity.m[2].z;
+    mStableWMat.m[2].w = MtMatrix::Identity.m[2].w;
+    mStableWMat.m[3].x = MtMatrix::Identity.m[3].x;
+    mStableWMat.m[3].y = MtMatrix::Identity.m[3].y;
+    mStableWMat.m[3].z = MtMatrix::Identity.m[3].z;
+    mStableWMat.m[3].w = MtMatrix::Identity.m[3].w;
+    mStableCapLDir = MtVector3::Zero;
+    mOrgCapMat.m[0].x = MtMatrix::Identity.m[0].x;
+    mOrgCapMat.m[0].y = MtMatrix::Identity.m[0].y;
+    mOrgCapMat.m[0].z = MtMatrix::Identity.m[0].z;
+    mOrgCapMat.m[0].w = MtMatrix::Identity.m[0].w;
+    mOrgCapMat.m[1].x = MtMatrix::Identity.m[1].x;
+    mOrgCapMat.m[1].y = MtMatrix::Identity.m[1].y;
+    mOrgCapMat.m[1].z = MtMatrix::Identity.m[1].z;
+    mOrgCapMat.m[1].w = MtMatrix::Identity.m[1].w;
+    mOrgCapMat.m[2].x = MtMatrix::Identity.m[2].x;
+    mOrgCapMat.m[2].y = MtMatrix::Identity.m[2].y;
+    mOrgCapMat.m[2].z = MtMatrix::Identity.m[2].z;
+    mOrgCapMat.m[2].w = MtMatrix::Identity.m[2].w;
+    mOrgCapMat.m[3].x = MtMatrix::Identity.m[3].x;
+    mOrgCapMat.m[3].y = MtMatrix::Identity.m[3].y;
+    mOrgCapMat.m[3].z = MtMatrix::Identity.m[3].z;
+    mOrgCapMat.m[3].w = MtMatrix::Identity.m[3].w;
+    mCurrentCapMat.m[0].x = MtMatrix::Identity.m[0].x;
+    mCurrentCapMat.m[0].y = MtMatrix::Identity.m[0].y;
+    mCurrentCapMat.m[0].z = MtMatrix::Identity.m[0].z;
+    mCurrentCapMat.m[0].w = MtMatrix::Identity.m[0].w;
+    mCurrentCapMat.m[1].x = MtMatrix::Identity.m[1].x;
+    mCurrentCapMat.m[1].y = MtMatrix::Identity.m[1].y;
+    mCurrentCapMat.m[1].z = MtMatrix::Identity.m[1].z;
+    mCurrentCapMat.m[1].w = MtMatrix::Identity.m[1].w;
+    mCurrentCapMat.m[2].x = MtMatrix::Identity.m[2].x;
+    mCurrentCapMat.m[2].y = MtMatrix::Identity.m[2].y;
+    mCurrentCapMat.m[2].z = MtMatrix::Identity.m[2].z;
+    mCurrentCapMat.m[2].w = MtMatrix::Identity.m[2].w;
+    mCurrentCapMat.m[3].x = MtMatrix::Identity.m[3].x;
+    mCurrentCapMat.m[3].y = MtMatrix::Identity.m[3].y;
+    mCurrentCapMat.m[3].z = MtMatrix::Identity.m[3].z;
+    mCurrentCapMat.m[3].w = MtMatrix::Identity.m[3].w;
+    mTgtPos = MtVector3::Zero;
+    mTgtQuat.x = MtQuaternion::Identity.x;
+    mTgtQuat.y = MtQuaternion::Identity.y;
+    mTgtQuat.z = MtQuaternion::Identity.z;
+    mTgtQuat.w = MtQuaternion::Identity.w;
+    mBlend = 0.0f;
+    mAutoMove = false;
+    mCantAutoMove = false;
+    mMoveVec = MtVector3::Zero;
+    mStandSVel = MtVector3::Zero;
+    mStandSVelOld.x = MtVector3::Zero.x;
+    mStandSVelOld.y = MtVector3::Zero.y;
+    mStandSVelOld.z = MtVector3::Zero.z;
+    mStandSVelOld.pad_ = 0.0f;
+    mStandSTimer = 0.0f;
+    mCapsuleChanged = 0;
+    mChainPlaneNormal = MtVector3::Zero;
+    mChainPlanePos = MtVector3::Zero;
+    mChainRootPos = MtVector3::Zero;
+    mChainWaistPos = MtVector3::Zero;
+    mChainRFootPos = MtVector3::Zero;
+    mChainLFootPos = MtVector3::Zero;
+    mChainWaistVel = MtVector3::Zero;
+    mChainRFootVel = MtVector3::Zero;
+    mChainLFootVel.x = MtVector3::Zero.x;
+    mChainLFootVel.y = MtVector3::Zero.y;
+    mChainLFootVel.z = MtVector3::Zero.z;
+    mGeomRadius = 0.0f;
+    mFlgUseFit = false;
+    mGroupNo = 0;
+    mNodeNo = 0;
+    mNodeAttr = 0;
+    mChainLLegLen = 0.0f;
+    mSeqIndexNo = 0;
+    mChainLFootVel.pad_ = 0.0f;
+    mChainRLegLen = 0.0f;
 }
 
 void uHuman::cEnemyClimbInfo::copyCapsule(const MtCapsule* cap) {
@@ -4935,14 +5202,6 @@ const MtDTI& uHuman::cHealSeCaller::getDTI() const {
     return uHuman::cHealSeCaller::DTI;
 }
 
-inline void* uHuman::cHealSeCaller::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uHuman::cHealSeCaller::DTI)->memAlloc(sz, align, uHuman::cHealSeCaller::DTI.getID());
-}
-
-inline void uHuman::cHealSeCaller::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uHuman::cHealSeCaller::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uHuman::cHealSeCaller::createProperty(MtPropertyList& proplist) {
 }
 
@@ -4956,14 +5215,6 @@ MtObject* uHuman::cHealSeCaller::MyDTI::newInstance() const {
 
 const MtDTI& uHuman::cLimitActCtrl::getDTI() const {
     return uHuman::cLimitActCtrl::DTI;
-}
-
-inline void* uHuman::cLimitActCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uHuman::cLimitActCtrl::DTI)->memAlloc(sz, align, uHuman::cLimitActCtrl::DTI.getID());
-}
-
-inline void uHuman::cLimitActCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uHuman::cLimitActCtrl::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uHuman::cLimitActCtrl::createProperty(MtPropertyList& proplist) {
@@ -4995,14 +5246,6 @@ MtObject* uHuman::cLimitActCtrl::MyDTI::newInstance() const {
 
 const MtDTI& uHuman::cBlendMotionCtrl::getDTI() const {
     return uHuman::cBlendMotionCtrl::DTI;
-}
-
-inline void* uHuman::cBlendMotionCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uHuman::cBlendMotionCtrl::DTI)->memAlloc(sz, align, uHuman::cBlendMotionCtrl::DTI.getID());
-}
-
-inline void uHuman::cBlendMotionCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uHuman::cBlendMotionCtrl::DTI)->memFree(p_addr);
 }
 
 uHuman::cBlendMotionCtrl::~cBlendMotionCtrl() {

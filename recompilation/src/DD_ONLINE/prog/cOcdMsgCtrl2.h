@@ -95,3 +95,11 @@ inline void cOcdMsgCtrl2::clearReceiveFlag() {
     this->mIsReceiveMsg = false;
     this->mInitFlag = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cOcdMsgCtrl2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdMsgCtrl2::DTI)->memFree(p_addr);
+}

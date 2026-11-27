@@ -29,6 +29,7 @@
 #include "sGUIExt.h"
 #include "sGame.h"
 #include "sInputManager.h"
+#include "sInputText.h"
 #include "../../XFramework/sKeyboard.h"
 #include "sKeyboardInterface.h"
 #include "../../XFramework/sMain.h"
@@ -100,16 +101,8 @@ const MtDTI& uGUIChat::getDTI() const {
     return uGUIChat::DTI;
 }
 
-inline MtAllocator* uGUIChat::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIChat::DTI);
-}
-
 void* uGUIChat::operator new(size_t sz, u32 align) {
     return uGUIChat::getAllocator()->memAlloc(sz, align, uGUIChat::DTI.getID());
-}
-
-inline void uGUIChat::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUIChat::showLogItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
@@ -248,9 +241,37 @@ __attribute__((weak)) void uGUIChat::moveEvent() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIChat::updateInit() {
-    DDON_STUB("uGUIChat::updateInit")
-    /* stub */
+void uGUIChat::updateInit() {
+    mBootUpReq = true;
+    if (mpCtrl != nullptr) {
+        mpCtrl->setFocus(true);
+    }
+    s32 v0_1 = static_cast<sGUIExt*>(sGUI::getInstance())->getChatArea();
+    unsigned int i0_0 = 0;
+    const unsigned int* p0_2 = tblAddress;
+    unsigned int v1_3;
+    for (;;) {
+        if ((*p0_2) != static_cast<unsigned int>(v0_1)) {
+            if ((i0_0 + 1u) <= 6u) {
+                i0_0 += 1u;
+                p0_2 += 1;
+            } else {
+                v1_3 = 0;
+                break;
+            }
+        } else {
+            v1_3 = i0_0;
+            break;
+        }
+    }
+    if (mpCtrlAddress != nullptr) {
+        mpCtrlAddress->setCurrentPos(static_cast<s32>(v1_3), false);
+    }
+    mAddressOld = v1_3;
+    mUpdF = mUpdF | 16u;
+    updateFilter();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateHide);
+    setButtonGuide(true);
 }
 
 __attribute__((weak)) void uGUIChat::updateHide() {
@@ -291,9 +312,44 @@ void uGUIChat::updateWait() {
     }
 }
 
-__attribute__((weak)) void uGUIChat::updateWaitMenu() {
-    DDON_STUB("uGUIChat::updateWaitMenu")
-    /* stub */
+void uGUIChat::updateWaitMenu() {
+    mBtnGuide.uGUIBase::cReferenceUIBtnGuide::update();
+    if (mIsReqTellState) {
+        if (mpCtrlMenu != nullptr) {
+            mpCtrlMenu->setCurrentPos(2, false);
+        }
+        s32 v0_1 = static_cast<sGUIExt*>(sGUI::getInstance())->getChatArea();
+        unsigned int i0_0 = 0;
+        const unsigned int* p0_2 = tblAddress;
+        unsigned int v1_3;
+        for (;;) {
+            if ((*p0_2) != static_cast<unsigned int>(v0_1)) {
+                if ((i0_0 + 1u) <= 6u) {
+                    i0_0 += 1u;
+                    p0_2 += 1;
+                } else {
+                    v1_3 = 0;
+                    break;
+                }
+            } else {
+                v1_3 = i0_0;
+                break;
+            }
+        }
+        if (mpCtrlAddress != nullptr) {
+            mpCtrlAddress->setCurrentPos(static_cast<s32>(v1_3), false);
+        }
+        mAddressOld = v1_3;
+        mIsReqTellState = false;
+    } else {
+        execDirectChat();
+    }
+    updateDisp();
+    if (mpCtrlMenu != nullptr) {
+        setMenuPointerPos(mpCtrlMenu->getCurrentPos());
+    } else {
+        setMenuPointerPos(0);
+    }
 }
 
 __attribute__((weak)) void uGUIChat::updateWaitInput() {
@@ -803,8 +859,35 @@ __attribute__((weak)) void uGUIChat::setButtonGuide(bool bReset) {
 }
 
 __attribute__((weak)) bool uGUIChat::startInput(bool bPad, bool bSendMsgAtInputEnd) {
-    DDON_STUB("uGUIChat::startInput")
-    return {};
+    if (!sChat::getInstance()->checkChatOk()) {
+        return false;
+    }
+    if (sKeyboardInterface::getInstance()->isBusy()) {
+        return false;
+    }
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->isActiveNumBox()) {
+        return false;
+    }
+    sChat::getInstance()->setKeyboardSetting(reinterpret_cast<const char*>(&mInputString) + 4);
+    const bool is_open = bPad
+        ? sKeyboardInterface::getInstance()->requestOpenPad(0u, &mInputTextKeyboardHook)
+        : sKeyboardInterface::getInstance()->requestOpen(0u, &mInputTextKeyboardHook);
+    if (!is_open) {
+        return false;
+    }
+    const f32 mask_width = (mpObjPolygonSMask != nullptr ? mpObjPolygonSMask->getSize() : MtFloat2::Zero).x;
+    const s32 input_mode_icon_width = static_cast<s32>(mask_width - static_cast<f32>(getVariableInitParamS32FromId(29u)));
+    static_cast<sGUIExt*>(sGUI::getInstance())->setInputTextProperty(
+        mpObjMsgSendMsg,
+        mPos,
+        getScaleForDefaultResolution(1.0f),
+        static_cast<f32>(input_mode_icon_width),
+        mpObjPolygonSMask
+    );
+    mIsSendMsgAtInputEnd = bSendMsgAtInputEnd;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIChat::updateWaitInput);
+    setButtonGuide(true);
+    return true;
 }
 
 __attribute__((weak)) void uGUIChat::evFilterDecide() {
@@ -829,14 +912,6 @@ const MtDTI& uGUIChat::cWindow::getDTI() const {
     return uGUIChat::cWindow::DTI;
 }
 
-inline void* uGUIChat::cWindow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIChat::cWindow::DTI)->memAlloc(sz, align, uGUIChat::cWindow::DTI.getID());
-}
-
-inline void uGUIChat::cWindow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::cWindow::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uGUIChat::cWindow::setup(uGUIChat* pParentGUI) {
     DDON_STUB("uGUIChat::cWindow::setup")
     /* stub */
@@ -857,14 +932,6 @@ MtObject* uGUIChat::cWindow::MyDTI::newInstance() const {
 
 const MtDTI& uGUIChat::cPopWndwChSubCmd::getDTI() const {
     return uGUIChat::cPopWndwChSubCmd::DTI;
-}
-
-inline void* uGUIChat::cPopWndwChSubCmd::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwChSubCmd::DTI)->memAlloc(sz, align, uGUIChat::cPopWndwChSubCmd::DTI.getID());
-}
-
-inline void uGUIChat::cPopWndwChSubCmd::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwChSubCmd::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUIChat::cPopWndwChSubCmd::setup() {
@@ -917,14 +984,6 @@ const MtDTI& uGUIChat::cPopWndwAddress::getDTI() const {
     return uGUIChat::cPopWndwAddress::DTI;
 }
 
-inline void* uGUIChat::cPopWndwAddress::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwAddress::DTI)->memAlloc(sz, align, uGUIChat::cPopWndwAddress::DTI.getID());
-}
-
-inline void uGUIChat::cPopWndwAddress::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwAddress::DTI)->memFree(p_addr);
-}
-
 inline uGUIChat::cPopWndwAddress::cPopWndwAddress() {
     mCursorWidth = 0.0f;
     memset(static_cast<void*>(&mpParentGUI), 0, 304ul);
@@ -947,14 +1006,6 @@ const MtDTI& uGUIChat::cPopWndwYoN::getDTI() const {
     return uGUIChat::cPopWndwYoN::DTI;
 }
 
-inline void* uGUIChat::cPopWndwYoN::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwYoN::DTI)->memAlloc(sz, align, uGUIChat::cPopWndwYoN::DTI.getID());
-}
-
-inline void uGUIChat::cPopWndwYoN::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwYoN::DTI)->memFree(p_addr);
-}
-
 inline uGUIChat::cPopWndwYoN::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIChat::cPopWndwYoN::MyDTI uGUIChat::cPopWndwYoN::DTI("uGUIChat::cPopWndwYoN", &::MtObject::DTI, 824ul, 0u, 0u);
@@ -965,14 +1016,6 @@ MtObject* uGUIChat::cPopWndwYoN::MyDTI::newInstance() const {
 
 const MtDTI& uGUIChat::cPopWndwAddCh::getDTI() const {
     return uGUIChat::cPopWndwAddCh::DTI;
-}
-
-inline void* uGUIChat::cPopWndwAddCh::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwAddCh::DTI)->memAlloc(sz, align, uGUIChat::cPopWndwAddCh::DTI.getID());
-}
-
-inline void uGUIChat::cPopWndwAddCh::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::cPopWndwAddCh::DTI)->memFree(p_addr);
 }
 
 uGUIChat::cPopWndwAddCh::~cPopWndwAddCh() {
@@ -988,14 +1031,6 @@ MtObject* uGUIChat::cPopWndwAddCh::MyDTI::newInstance() const {
 
 const MtDTI& uGUIChat::cCheckList::getDTI() const {
     return uGUIChat::cCheckList::DTI;
-}
-
-inline void* uGUIChat::cCheckList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIChat::cCheckList::DTI)->memAlloc(sz, align, uGUIChat::cCheckList::DTI.getID());
-}
-
-inline void uGUIChat::cCheckList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::cCheckList::DTI)->memFree(p_addr);
 }
 
 uGUIChat::cCheckList::~cCheckList() {
@@ -1023,14 +1058,6 @@ MtObject* uGUIChat::cCheckList::MyDTI::newInstance() const {
 
 const MtDTI& uGUIChat::cLogItem::getDTI() const {
     return uGUIChat::cLogItem::DTI;
-}
-
-inline void* uGUIChat::cLogItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIChat::cLogItem::DTI)->memAlloc(sz, align, uGUIChat::cLogItem::DTI.getID());
-}
-
-inline void uGUIChat::cLogItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::cLogItem::DTI)->memFree(p_addr);
 }
 
 void uGUIChat::cLogItem::setup(uGUIChat& owner, cGUIInstNull* inst_null_log_item) {
@@ -1075,10 +1102,6 @@ MtObject* uGUIChat::cLogItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIChat::cLogInfo::getDTI() const {
     return uGUIChat::cLogInfo::DTI;
-}
-
-inline void uGUIChat::cLogInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChat::cLogInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIChat::cLogInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

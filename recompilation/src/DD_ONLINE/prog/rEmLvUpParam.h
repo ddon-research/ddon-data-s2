@@ -134,3 +134,19 @@ inline void cEmLvUpParam::operator delete[](void* p_addr) {
 inline void* cEmLvUpParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmLvUpParam::DTI)->memAlloc(sz, align, ::cEmLvUpParam::DTI.::MtDTI::getID());
 }
+
+inline MtAllocator* cEmLvUpParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cEmLvUpParam::DTI);
+}
+
+inline void cEmLvUpParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmLvUpParam::DTI)->memFree(p_addr);
+}
+
+inline void* rEmLvUpParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmLvUpParam::DTI)->memAlloc(sz, align, ::rEmLvUpParam::DTI.::MtDTI::getID());
+}
+
+inline void rEmLvUpParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmLvUpParam::DTI)->memFree(p_addr);
+}

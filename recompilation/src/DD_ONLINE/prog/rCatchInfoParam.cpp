@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCatchInfoParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -17,14 +15,6 @@
 
 const MtDTI& cCatchInfoParam::getDTI() const {
     return cCatchInfoParam::DTI;
-}
-
-inline void* cCatchInfoParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCatchInfoParam::DTI)->memAlloc(sz, align, cCatchInfoParam::DTI.getID());
-}
-
-inline void cCatchInfoParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCatchInfoParam::DTI)->memFree(p_addr);
 }
 
 void cCatchInfoParam::createProperty(MtPropertyList& s) {
@@ -50,14 +40,6 @@ MtObject* cCatchInfoParam::MyDTI::newInstance() const {
 
 const MtDTI& rCatchInfoParam::getDTI() const {
     return rCatchInfoParam::DTI;
-}
-
-inline void* rCatchInfoParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCatchInfoParam::DTI)->memAlloc(sz, align, rCatchInfoParam::DTI.getID());
-}
-
-inline void rCatchInfoParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCatchInfoParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rCatchInfoParam::loadData(MtDataReader& in, cCatchInfoParam* pData) {

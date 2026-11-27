@@ -219,6 +219,7 @@ inline void* rPawnAIAction::operator new(size_t sz, void* p_addr) {
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
 
 inline void cPawnAIAction::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cPawnAIAction::DTI)->memFree(p_addr);
@@ -226,4 +227,28 @@ inline void cPawnAIAction::operator delete[](void* p_addr) {
 
 inline void* cPawnAIAction::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPawnAIAction::DTI)->memAlloc(sz, align, ::cPawnAIAction::DTI.::MtDTI::getID());
+}
+
+inline void* cPawnAIActInter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnAIActInter::DTI)->memAlloc(sz, align, ::cPawnAIActInter::DTI.::MtDTI::getID());
+}
+
+inline void cPawnAIActInter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnAIActInter::DTI)->memFree(p_addr);
+}
+
+inline void cPawnAIAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnAIAction::DTI)->memFree(p_addr);
+}
+
+inline void* rPawnAIAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPawnAIAction::DTI)->memAlloc(sz, align, ::rPawnAIAction::DTI.::MtDTI::getID());
+}
+
+inline void rPawnAIAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPawnAIAction::DTI)->memFree(p_addr);
+}
+
+inline rPawnAIAction::rPawnAIAction() {
+    this->::cResource::setAttribute(16u);
 }

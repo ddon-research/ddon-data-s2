@@ -250,3 +250,32 @@ inline uShlMgcArrow::uShlMgcArrow() {
     this->mIsNextCreate = false;
     this->mMgcChargeLv = static_cast<nHumanBow::MGC_BOW_CHARGE_LV>(0);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* uShlJob08CS13::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlJob08CS13::DTI)->memAlloc(sz, align, ::uShlJob08CS13::DTI.::MtDTI::getID());
+}
+
+inline void uShlJob08CS13::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlJob08CS13::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamJob08CS13* uShlJob08CS13::getShlParam() const {
+    return static_cast<const cShlParamJob08CS13*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void* uShlMgcArrow::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlMgcArrow::DTI)->memAlloc(sz, align, ::uShlMgcArrow::DTI.::MtDTI::getID());
+}
+
+inline void uShlMgcArrow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlMgcArrow::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamMgcArrow* uShlMgcArrow::getShlParam() const {
+    return static_cast<const cShlParamMgcArrow*>(this->::uShlBase::mpShlParam2);
+}

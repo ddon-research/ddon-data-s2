@@ -140,3 +140,53 @@ inline bool rMapSpotData::Data::load(MtDataReader& r) {
     mFloorCheck = r.readU8();
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rMapSpotData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMapSpotData::DTI)->memAlloc(sz, align, ::rMapSpotData::DTI.::MtDTI::getID());
+}
+
+inline void rMapSpotData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMapSpotData::DTI)->memFree(p_addr);
+}
+
+inline rMapSpotData::rMapSpotData() {
+    this->::cResource::setAttribute(22u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void rMapSpotData::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayNum != 0) {
+        do {
+            this->mpArray[i0].~Data();
+            i0 += 1u;
+        } while (i0 < this->mArrayNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rMapSpotData::DTI)->memFree(static_cast<void*>(this->mpArray));
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void* rMapSpotData::Data::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMapSpotData::Data::DTI)->memAlloc(sz, align, ::rMapSpotData::Data::DTI.::MtDTI::getID());
+}
+
+inline void rMapSpotData::Data::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMapSpotData::Data::DTI)->memFree(p_addr);
+}
+
+inline rMapSpotData::Data::Data() {
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mMessId = 0;
+    this->mFloorNo = -9999;
+    this->mGroupNo = -9999;
+    this->mFloorCheck = true;
+}

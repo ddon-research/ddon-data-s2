@@ -12,8 +12,28 @@
 class MtAllocator;
 class MtDTI;
 class MtObject;
+namespace nCaplink { class ContentAchievementGetReqCtx; }
+namespace nCaplink { class ContentAchievementListGetReqCtx; }
+namespace nCaplink { class ContentAchievementRelationGetReqCtx; }
+class sCaplinkManager;
 class uGUICaplinkProfile;
 class uGUICaplinkTalk;
+
+namespace nCaplink {
+    enum PlatformID
+    {
+        Undefined = 0,
+        Windows = 1,
+        Android = 2,
+        IOS = 3,
+        Xbox360 = 4,
+        PS3 = 5,
+        WiiU = 6,
+        Vita = 7,
+        PS4 = 8,
+        XboxOne = 9,
+    };
+}  // namespace nCaplink
 
 // Declarations
 namespace nCaplink { class cAchievementExtendedInfo; }
@@ -38,22 +58,6 @@ namespace nCaplink { class cUserContentInfo; }
 namespace nCaplink { class cUserProfile; }
 namespace nCaplink { class cWebsocketServerInfo; }
 
-namespace nCaplink {
-    enum PlatformID
-    {
-        Undefined = 0,
-        Windows = 1,
-        Android = 2,
-        IOS = 3,
-        Xbox360 = 4,
-        PS3 = 5,
-        WiiU = 6,
-        Vita = 7,
-        PS4 = 8,
-        XboxOne = 9,
-    };
-}  // namespace nCaplink
-
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
@@ -66,6 +70,7 @@ using u32 = unsigned int;
 namespace nCaplink {
     class cAchievementExtendedInfo : public ::MtObject
     {
+        friend class nCaplink::ContentAchievementGetReqCtx;
     public:
         class MyDTI;
     public:
@@ -105,6 +110,7 @@ namespace nCaplink {
 namespace nCaplink {
     class cAchievementListInfo : public ::MtObject
     {
+        friend class nCaplink::ContentAchievementListGetReqCtx;
     public:
         class MyDTI;
     public:
@@ -177,6 +183,7 @@ namespace nCaplink {
 namespace nCaplink {
     class cAchievementRewardInfo : public ::MtObject
     {
+        friend class nCaplink::ContentAchievementRelationGetReqCtx;
     public:
         class MyDTI;
     public:
@@ -755,6 +762,7 @@ namespace nCaplink {
 namespace nCaplink {
     class cUserBaseInfo : public ::MtObject
     {
+        friend class ::sCaplinkManager;
         friend class ::uGUICaplinkProfile;
         friend class ::uGUICaplinkTalk;
     public:
@@ -954,6 +962,7 @@ namespace nCaplink {
 namespace nCaplink {
     class cAchievementRelationInfo : public ::MtObject
     {
+        friend class nCaplink::ContentAchievementRelationGetReqCtx;
     public:
         class MyDTI;
     public:
@@ -1367,4 +1376,44 @@ inline s32 nCaplink::cWebsocketServerInfo::getLoadaverage() const {
 
 inline s32 nCaplink::cWebsocketServerInfo::getConnections() const {
     return this->mConnections;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nCaplink::cContentTagInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cContentTagInfo::DTI)->memFree(p_addr);
+}
+
+inline void nCaplink::cFreeTagInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cFreeTagInfo::DTI)->memFree(p_addr);
+}
+
+inline void nCaplink::cFriendEntryInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cFriendEntryInfo::DTI)->memFree(p_addr);
+}
+
+inline void nCaplink::cFriendInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cFriendInfo::DTI)->memFree(p_addr);
+}
+
+inline void nCaplink::cIgnoreUserInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cIgnoreUserInfo::DTI)->memFree(p_addr);
+}
+
+inline void nCaplink::cNotifyAppInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cNotifyAppInfo::DTI)->memFree(p_addr);
+}
+
+inline void nCaplink::cResourceInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cResourceInfo::DTI)->memFree(p_addr);
+}
+
+inline void nCaplink::cUserContentInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cUserContentInfo::DTI)->memFree(p_addr);
+}
+
+inline void nCaplink::cWebsocketServerInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::cWebsocketServerInfo::DTI)->memFree(p_addr);
 }

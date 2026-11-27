@@ -181,3 +181,27 @@ inline rTutorialQuestGroup::cGroup::cQuestId::cQuestId() {
 inline void* rTutorialQuestGroup::cGroup::cQuestId::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rTutorialQuestGroup::cGroup::cQuestId::DTI)->memAlloc(sz, align, rTutorialQuestGroup::cGroup::cQuestId::DTI.getID());
 }
+
+inline void* rTutorialQuestGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::DTI)->memAlloc(sz, align, ::rTutorialQuestGroup::DTI.::MtDTI::getID());
+}
+
+inline void rTutorialQuestGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::DTI)->memFree(p_addr);
+}
+
+inline rTutorialQuestGroup::rTutorialQuestGroup() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rTutorialQuestGroup::cGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::cGroup::DTI)->memAlloc(sz, align, ::rTutorialQuestGroup::cGroup::DTI.::MtDTI::getID());
+}
+
+inline void rTutorialQuestGroup::cGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::cGroup::DTI)->memFree(p_addr);
+}
+
+inline void rTutorialQuestGroup::cGroup::cQuestId::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTutorialQuestGroup::cGroup::cQuestId::DTI)->memFree(p_addr);
+}

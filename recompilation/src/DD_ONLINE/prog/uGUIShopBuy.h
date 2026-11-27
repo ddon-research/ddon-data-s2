@@ -222,3 +222,19 @@ inline void* uGUIShopBuy::operator new(size_t sz, void* p_addr) {
 inline void uGUIShopBuy::setCallUnit(cUnit* pUnit) {
     this->mpCallUnit = pUnit;
 }
+
+inline u32 uGUIShopBuy::getSellNumMax() {
+    return this->mSellHaveMax;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIShopBuy::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIShopBuy::DTI);
+}
+
+inline void uGUIShopBuy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIShopBuy::DTI)->memFree(p_addr);
+}

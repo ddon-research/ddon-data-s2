@@ -161,3 +161,15 @@ inline void sAIPawnSys::clearPawnOrder() {
     this->mpPawnOwnerTargetOld = nullptr;
     this->mpPawnOwnerTarget = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sAIPawnSys::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sAIPawnSys::DTI);
+}
+
+inline void sAIPawnSys::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sAIPawnSys::DTI)->memFree(p_addr);
+}

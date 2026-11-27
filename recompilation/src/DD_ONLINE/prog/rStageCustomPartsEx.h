@@ -386,76 +386,6 @@ protected:
     static const u8 DATA_VERSION = 5;
 };
 
-inline void* rStageCustomPartsEx::operator new(size_t sz, void* p_addr) {
-    return p_addr;
-}
-
-inline rStageCustomPartsEx::rStageCustomPartsEx() {
-    this->mChangeFrame = 60.0f;
-    this->mpArrayColorFog = nullptr;
-    this->mArrayColorFogNum = 0;
-    this->mpArrayHemiSphLight = nullptr;
-    this->mArrayHemiSphLightNum = 0;
-    this->mpArrayInfiLight = nullptr;
-    this->mArrayInfiLightNum = 0;
-    this->mpArrayPattern = nullptr;
-    this->mArrayPatternNum = 0;
-}
-
-inline f32 rStageCustomPartsEx::getChangeFrame() const {
-    return this->mChangeFrame;
-}
-
-inline void* rStageCustomPartsEx::Pattern::operator new(size_t sz, void* p_addr) {
-    return p_addr;
-}
-
-inline rStageCustomPartsEx::Pattern::Pattern() {
-    this->mColorFogNo = -1;
-    this->mHemiSphLightNo = -1;
-    this->mInfiLightNo = -1;
-}
-
-inline void* rStageCustomPartsEx::ColorFog::operator new(size_t sz, void* p_addr) {
-    return p_addr;
-}
-
-inline void* rStageCustomPartsEx::HemiSphLight::operator new(size_t sz, void* p_addr) {
-    return p_addr;
-}
-
-inline void* rStageCustomPartsEx::InfiLight::operator new(size_t sz, void* p_addr) {
-    return p_addr;
-}
-
-inline void* rStageCustomPartsEx::AreaParam::operator new(size_t sz, void* p_addr) {
-    return p_addr;
-}
-
-inline rStageCustomPartsEx::AreaParam::AreaParam() {
-    this->mUseAllFilter = true;
-    this->mFilterNo = 0;
-    this->mPatternNo = -1;
-    this->mAreaHitShapeList.::MtArray::mAutoDelete = true;
-}
-
-inline void* rStageCustomPartsEx::InfoEx::operator new(size_t sz, void* p_addr) {
-    return p_addr;
-}
-
-inline rStageCustomPartsEx::InfoEx::InfoEx() {
-    this->mAddVersion = 256;
-    this->mAreaParamList.::MtArray::mAutoDelete = true;
-}
-
-inline void* rStageCustomPartsEx::FilterEx::operator new(size_t sz, void* p_addr) {
-    return p_addr;
-}
-
-inline rStageCustomPartsEx::FilterEx::FilterEx() {
-    this->mAddVersion = 512;
-}
-
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../generated/shared/nDDOIO.h"
 
@@ -554,4 +484,148 @@ inline void rStageCustomPartsEx::InfoEx::clear() {
 inline bool rStageCustomPartsEx::FilterEx::save(MtDataWriter& w) {
     rStageCustomParts::Filter::save(w);
     return true;
+}
+
+inline void* rStageCustomPartsEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rStageCustomPartsEx::rStageCustomPartsEx() {
+    this->mChangeFrame = 60.0f;
+    this->mpArrayColorFog = nullptr;
+    this->mArrayColorFogNum = 0;
+    this->mpArrayHemiSphLight = nullptr;
+    this->mArrayHemiSphLightNum = 0;
+    this->mpArrayInfiLight = nullptr;
+    this->mArrayInfiLightNum = 0;
+    this->mpArrayPattern = nullptr;
+    this->mArrayPatternNum = 0;
+}
+
+inline f32 rStageCustomPartsEx::getChangeFrame() const {
+    return this->mChangeFrame;
+}
+
+inline void* rStageCustomPartsEx::Pattern::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rStageCustomPartsEx::Pattern::Pattern() {
+    this->mColorFogNo = -1;
+    this->mHemiSphLightNo = -1;
+    this->mInfiLightNo = -1;
+}
+
+inline void* rStageCustomPartsEx::ColorFog::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageCustomPartsEx::HemiSphLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageCustomPartsEx::InfiLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* rStageCustomPartsEx::AreaParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rStageCustomPartsEx::AreaParam::AreaParam() {
+    this->mUseAllFilter = true;
+    this->mFilterNo = 0;
+    this->mPatternNo = -1;
+    this->mAreaHitShapeList.::MtArray::mAutoDelete = true;
+}
+
+inline void* rStageCustomPartsEx::InfoEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rStageCustomPartsEx::InfoEx::InfoEx() {
+    this->mAddVersion = 256;
+    this->mAreaParamList.::MtArray::mAutoDelete = true;
+}
+
+inline void* rStageCustomPartsEx::FilterEx::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline rStageCustomPartsEx::FilterEx::FilterEx() {
+    this->mAddVersion = 512;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rStageCustomPartsEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::DTI.::MtDTI::getID());
+}
+
+inline void rStageCustomPartsEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::DTI)->memFree(p_addr);
+}
+
+inline void* rStageCustomPartsEx::Pattern::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::Pattern::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::Pattern::DTI.::MtDTI::getID());
+}
+
+inline void* rStageCustomPartsEx::HemiSphLight::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::HemiSphLight::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::HemiSphLight::DTI.::MtDTI::getID());
+}
+
+inline rStageCustomPartsEx::HemiSphLight::HemiSphLight() {
+    this->mLightColor.x = ::MtVector3::One.x;
+    this->mLightColor.y = ::MtVector3::One.y;
+    this->mLightColor.z = ::MtVector3::One.z;
+    this->mLightColor.pad_ = 0.0f;
+    this->mRevColor.x = ::MtVector3::Zero.x;
+    this->mRevColor.y = ::MtVector3::Zero.y;
+    this->mRevColor.z = ::MtVector3::Zero.z;
+    this->mRevColor.pad_ = 0.0f;
+    this->mNightColor.x = ::MtVector3::One.x;
+    this->mNightColor.y = ::MtVector3::One.y;
+    this->mNightColor.z = ::MtVector3::One.z;
+    this->mNightColor.pad_ = 0.0f;
+    this->mNightRevColor.x = ::MtVector3::Zero.x;
+    this->mNightRevColor.y = ::MtVector3::Zero.y;
+    this->mNightRevColor.z = ::MtVector3::Zero.z;
+    this->mNightRevColor.pad_ = 0.0f;
+}
+
+inline void* rStageCustomPartsEx::InfiLight::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::InfiLight::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::InfiLight::DTI.::MtDTI::getID());
+}
+
+inline rStageCustomPartsEx::InfiLight::InfiLight() {
+    this->mLightColor.x = ::MtVector3::One.x;
+    this->mLightColor.y = ::MtVector3::One.y;
+    this->mLightColor.z = ::MtVector3::One.z;
+    this->mLightColor.pad_ = 0.0f;
+    this->mNightColor.x = ::MtVector3::One.x;
+    this->mNightColor.y = ::MtVector3::One.y;
+    this->mNightColor.z = ::MtVector3::One.z;
+    this->mNightColor.pad_ = 0.0f;
+}
+
+inline void* rStageCustomPartsEx::AreaParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::AreaParam::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::AreaParam::DTI.::MtDTI::getID());
+}
+
+inline void rStageCustomPartsEx::AreaParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::AreaParam::DTI)->memFree(p_addr);
+}
+
+inline void* rStageCustomPartsEx::InfoEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::InfoEx::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::InfoEx::DTI.::MtDTI::getID());
+}
+
+inline void rStageCustomPartsEx::InfoEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::InfoEx::DTI)->memFree(p_addr);
+}
+
+inline void* rStageCustomPartsEx::FilterEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustomPartsEx::FilterEx::DTI)->memAlloc(sz, align, ::rStageCustomPartsEx::FilterEx::DTI.::MtDTI::getID());
 }

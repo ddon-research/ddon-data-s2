@@ -21,11 +21,6 @@ namespace nNetwork { class Coder; }
 namespace nNetwork { class Decoder; }
 class uControl;
 
-// Declarations
-namespace nNetMsg { class cCoder; }
-namespace nNetMsg { class cDecoder; }
-namespace nNetMsg { class cNetMsgBase; }
-
 namespace nNetMsg {
     enum MSG_ADR
     {
@@ -58,6 +53,11 @@ namespace nNetMsg {
         MSG_PRIO_DEFAULT = -1,
     };
 }  // namespace nNetMsg
+
+// Declarations
+namespace nNetMsg { class cCoder; }
+namespace nNetMsg { class cDecoder; }
+namespace nNetMsg { class cNetMsgBase; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -295,4 +295,28 @@ inline nNetMsg::cDecoder& nNetMsg::cNetMsgBase::getDecoder() {
 
 inline void nNetMsg::cNetMsgBase::setAdr(nNetMsg::MSG_ADR adr) {
     this->mAdr = adr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* nNetMsg::cCoder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetMsg::cCoder::DTI)->memAlloc(sz, align, ::nNetMsg::cCoder::DTI.::MtDTI::getID());
+}
+
+inline void nNetMsg::cCoder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetMsg::cCoder::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nNetMsg::cDecoder::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nNetMsg::cDecoder::DTI);
+}
+
+inline void nNetMsg::cDecoder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetMsg::cDecoder::DTI)->memFree(p_addr);
+}
+
+inline void nNetMsg::cNetMsgBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetMsg::cNetMsgBase::DTI)->memFree(p_addr);
 }

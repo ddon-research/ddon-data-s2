@@ -240,3 +240,15 @@ inline u32 uSoundMotionSe::getRequestNum() {
 inline u32 uSoundMotionSe::getAttributeRequestNum() {
     return 26;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uSoundMotionSe::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uSoundMotionSe::DTI);
+}
+
+inline void uSoundMotionSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundMotionSe::DTI)->memFree(p_addr);
+}

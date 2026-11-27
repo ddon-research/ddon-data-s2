@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cLeverGacha.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -27,14 +25,6 @@
 
 const MtDTI& cLeverGacha::getDTI() const {
     return cLeverGacha::DTI;
-}
-
-inline void* cLeverGacha::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cLeverGacha::DTI)->memAlloc(sz, align, cLeverGacha::DTI.getID());
-}
-
-inline void cLeverGacha::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLeverGacha::DTI)->memFree(p_addr);
 }
 
 cLeverGacha::cLeverGacha() {

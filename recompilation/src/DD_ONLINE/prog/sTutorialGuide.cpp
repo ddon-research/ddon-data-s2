@@ -31,16 +31,8 @@ const MtDTI& sTutorialGuide::getDTI() const {
     return sTutorialGuide::DTI;
 }
 
-inline MtAllocator* sTutorialGuide::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sTutorialGuide::DTI);
-}
-
 void* sTutorialGuide::operator new(size_t sz, u32 align) {
     return sTutorialGuide::getAllocator()->memAlloc(sz, align, sTutorialGuide::DTI.getID());
-}
-
-inline void sTutorialGuide::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sTutorialGuide::DTI)->memFree(p_addr);
 }
 
 const MtTypedArray<sTutorialGuide::cOpenGuideNo>& sTutorialGuide::getOpenGuideList() const {
@@ -114,14 +106,6 @@ void sTutorialGuide::createGuideData(u32 GuideNo) {
     mpTutorialDetail = pMsg;
     pMsg->addRef();
     pMsg->release();
-}
-
-void sTutorialGuide::releaseGuideData() {
-    if (mpTutorialDetail == nullptr) {
-        return;
-    }
-    mpTutorialDetail->release();
-    mpTutorialDetail = nullptr;
 }
 
 sTutorialGuide::cOpenGuideNo* sTutorialGuide::getOpenGuideData(u32 GuideNo) {
@@ -205,9 +189,8 @@ __attribute__((weak)) u32 sTutorialGuide::getLatestTutorialGuideNum() {
     return {};
 }
 
-__attribute__((weak)) u32 sTutorialGuide::getLatestTutorialGuide(u32 index) {
-    DDON_STUB("sTutorialGuide::getLatestTutorialGuide")
-    return {};
+u32 sTutorialGuide::getLatestTutorialGuide(u32 index) {
+    return sGame::getInstance()->mCharData.mCharData.mTutorialGuide.mLatestTutorial[index];
 }
 
 __attribute__((weak)) void sTutorialGuide::addOpenGuideNo(u32 openGuideNo) {
@@ -323,10 +306,6 @@ const MtDTI& sTutorialGuide::cOpenGuideNo::getDTI() const {
     return sTutorialGuide::cOpenGuideNo::DTI;
 }
 
-inline void sTutorialGuide::cOpenGuideNo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sTutorialGuide::cOpenGuideNo::DTI)->memFree(p_addr);
-}
-
 sTutorialGuide::cOpenGuideNo::~cOpenGuideNo() {
     if (mpMessage != nullptr) {
         mpMessage->release();
@@ -361,7 +340,7 @@ __attribute__((weak)) void sTutorialGuide::cOpenGuideNo::move() {
 u32 sTutorialGuide::cOpenGuideNo::getImageId(u32 PageIdx) {
     if (mpDialogMsg != nullptr) {
         if (PageIdx < mpDialogMsg->mPageInfo.mLength) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpDialogMsg->mPageInfo.getBuffer()[static_cast<int>(PageIdx)]) + 12);
+            return static_cast<rTutorialDialogMessage::cDialogPage*>(mpDialogMsg->mPageInfo.getBuffer()[static_cast<int>(PageIdx)])->mImageId;
         }
     }
     return 0;

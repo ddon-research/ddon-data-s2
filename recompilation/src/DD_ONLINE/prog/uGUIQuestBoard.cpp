@@ -42,10 +42,6 @@ const MtDTI& uGUIQuestBoard::getDTI() const {
     return uGUIQuestBoard::DTI;
 }
 
-inline void uGUIQuestBoard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestBoard::DTI)->memFree(p_addr);
-}
-
 uGUIQuestBoard::~uGUIQuestBoard() {
     if (mpGUIQuestInfo == nullptr) {
         return;
@@ -199,14 +195,6 @@ __attribute__((weak)) void uGUIQuestBoard::setupDetail() {
 __attribute__((weak)) void uGUIQuestBoard::adjustListCursor() {
     DDON_STUB("uGUIQuestBoard::adjustListCursor")
     /* stub */
-}
-
-inline void uGUIQuestBoard::adjustTab() {
-    if (mpTabCtrl != nullptr) {
-        mMain.mTab.uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(mpTabCtrl->mCurrentPos), true, true);
-    } else {
-        mMain.mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
-    }
 }
 
 void uGUIQuestBoard::setupInfo() {
@@ -385,9 +373,135 @@ u32 uGUIQuestBoard::evCtrlMouseClick(cControl::Message* msg) {
     }
 }
 
-__attribute__((weak)) bool uGUIQuestBoard::evCtrlScrl(cControl::Message* msg) {
-    DDON_STUB("uGUIQuestBoard::evCtrlScrl")
-    return {};
+bool uGUIQuestBoard::evCtrlScrl(cControl::Message* msg) {
+    if (msg != nullptr) {
+        cControl* t0 = msg->pSender;
+        if (t0 != nullptr) {
+            nGUIExt::MSG_REASON t1 = msg->reason;
+            if (static_cast<unsigned int>(t1 - 37) <= 1) {
+                bool t2 = mIsFocusGpComplete;
+                if (t2) {
+                    bool t3 = mIsGpComplete;
+                    if (t3) {
+                        cGUIInstAnimation* t4 = mList.mCursor.mpInstance;
+                        if (t4 != nullptr) {
+                            t4->setVisible(true);
+                            mIsFocusGpComplete = false;
+                            mMain.mButton.uGUIBase::cReferenceUIButton::setFocus(false);
+                            mList.mListCtrl.setEnableKey(true);
+                            cControl* t8 = mpDecideCtrl;
+                            if (t8 != nullptr) {
+                                unsigned char t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t8) + 3132);
+                                t8->mCtrlF = t8->mCtrlF & 0xFFFFFFF7u;
+                                cControl* t10 = mpGpCompleteCtrl;
+                                if (t10 != nullptr) {
+                                    unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 3132);
+                                    t10->mCtrlF = t10->mCtrlF | 8u;
+                                }
+                            } else {
+                                cControl* t10 = mpGpCompleteCtrl;
+                                if (t10 != nullptr) {
+                                    unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 3132);
+                                    t10->mCtrlF = t10->mCtrlF | 8u;
+                                }
+                            }
+                            msg->changeSE = 1;
+                            setInputEvent(69u);
+                            return false;
+                        } else {
+                            mIsFocusGpComplete = false;
+                            mMain.mButton.uGUIBase::cReferenceUIButton::setFocus(false);
+                            mList.mListCtrl.setEnableKey(true);
+                            cControl* t8 = mpDecideCtrl;
+                            if (t8 != nullptr) {
+                                unsigned char t9 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t8) + 3132);
+                                t8->mCtrlF = t8->mCtrlF & 0xFFFFFFF7u;
+                                cControl* t10 = mpGpCompleteCtrl;
+                                if (t10 != nullptr) {
+                                    unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 3132);
+                                    t10->mCtrlF = t10->mCtrlF | 8u;
+                                }
+                            } else {
+                                cControl* t10 = mpGpCompleteCtrl;
+                                if (t10 != nullptr) {
+                                    unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 3132);
+                                    t10->mCtrlF = t10->mCtrlF | 8u;
+                                }
+                            }
+                            msg->changeSE = 1;
+                            setInputEvent(69u);
+                            return false;
+                        }
+                    } else {
+                        msg->changeSE = 1;
+                        setInputEvent(69u);
+                        return false;
+                    }
+                } else {
+                    s32 t12 = t0->getCurrentPos();
+                    s32 t13 = t0->getOldPos();
+                    u32 t14 = mFlowId;
+                    if (t14 == 2) {
+                        if (t1 == nGUIExt::MOUSE_LCLICK) {
+                            if (t12 == t13) {
+                                u32 t15 = mList.mListCtrl.mListPos;
+                                u32 t16 = mList.mListCtrl.mInfoArray.mLength;
+                                if (t15 < t16) {
+                                    MtObject* * t17 = mList.mListCtrl.mInfoArray.mpArray;
+                                    MtObject* t18 = t17[static_cast<int>(t15)];
+                                    if (t18 != nullptr) {
+                                        unsigned long t19 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t18) + 40);
+                                        if (t19 != 0) {
+                                            msg->changeSE = 4;
+                                            setInputEvent(66u);
+                                        } else {
+                                            msg->changeSE = 20;
+                                            setInputEvent(2u);
+                                        }
+                                        return false;
+                                    } else {
+                                        msg->changeSE = 20;
+                                        setInputEvent(2u);
+                                        return false;
+                                    }
+                                } else {
+                                    msg->changeSE = 20;
+                                    setInputEvent(2u);
+                                    return false;
+                                }
+                            } else {
+                                msg->changeSE = 1;
+                                setInputEvent(69u);
+                                return false;
+                            }
+                        } else {
+                            msg->changeSE = 1;
+                            setInputEvent(69u);
+                            return false;
+                        }
+                    } else {
+                        uGUIQuestInfo* t20 = mpGUIQuestInfo;
+                        if (t20 != nullptr) {
+                            t20->cancelInfo();
+                        }
+                        mList.mListCtrl.setListPos(false);
+                        if (t12 != t13) {
+                            setFlowId(2u);
+                        }
+                        msg->changeSE = 1;
+                        setInputEvent(69u);
+                        return false;
+                    }
+                }
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
 }
 
 u32 uGUIQuestBoard::evCtrlGpCompleteDecide(cControl::Message* msg) {
@@ -427,10 +541,6 @@ __attribute__((weak)) MtObject* uGUIQuestBoard::MyDTI::newInstance() const {
 
 const MtDTI& uGUIQuestBoard::cListInfo::getDTI() const {
     return uGUIQuestBoard::cListInfo::DTI;
-}
-
-inline void uGUIQuestBoard::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestBoard::cListInfo::DTI)->memFree(p_addr);
 }
 
 uGUIQuestBoard::cListInfo::~cListInfo() {

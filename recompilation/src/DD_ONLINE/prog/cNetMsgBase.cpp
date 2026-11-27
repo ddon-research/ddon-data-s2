@@ -3,7 +3,6 @@
 #include "cNetMsgBase.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInstance.h"
 #include "cContextInterface.h"
@@ -17,14 +16,6 @@
 
 const MtDTI& nNetMsg::cCoder::getDTI() const {
     return nNetMsg::cCoder::DTI;
-}
-
-inline void* nNetMsg::cCoder::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetMsg::cCoder::DTI)->memAlloc(sz, align, ::nNetMsg::cCoder::DTI.getID());
-}
-
-inline void nNetMsg::cCoder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetMsg::cCoder::DTI)->memFree(p_addr);
 }
 
 nNetMsg::cCoder::~cCoder() {
@@ -47,16 +38,8 @@ const MtDTI& nNetMsg::cDecoder::getDTI() const {
     return nNetMsg::cDecoder::DTI;
 }
 
-inline MtAllocator* nNetMsg::cDecoder::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nNetMsg::cDecoder::DTI);
-}
-
 void* nNetMsg::cDecoder::operator new(size_t sz, u32 align) {
     return ::nNetMsg::cDecoder::getAllocator()->memAlloc(sz, align, ::nNetMsg::cDecoder::DTI.getID());
-}
-
-inline void nNetMsg::cDecoder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetMsg::cDecoder::DTI)->memFree(p_addr);
 }
 
 nNetMsg::cDecoder::~cDecoder() {
@@ -74,10 +57,6 @@ MtObject* nNetMsg::cDecoder::MyDTI::newInstance() const {
 
 const MtDTI& nNetMsg::cNetMsgBase::getDTI() const {
     return nNetMsg::cNetMsgBase::DTI;
-}
-
-inline void nNetMsg::cNetMsgBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetMsg::cNetMsgBase::DTI)->memFree(p_addr);
 }
 
 nNetMsg::cNetMsgBase::cNetMsgBase() {

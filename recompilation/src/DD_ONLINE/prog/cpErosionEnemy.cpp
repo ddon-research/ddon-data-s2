@@ -52,14 +52,6 @@ const MtDTI& cTentacleInfo::getDTI() const {
     return cTentacleInfo::DTI;
 }
 
-inline void* cTentacleInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cTentacleInfo::DTI)->memAlloc(sz, align, cTentacleInfo::DTI.getID());
-}
-
-inline void cTentacleInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cTentacleInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cTentacleInfo::update() {
     DDON_STUB("cTentacleInfo::update")
     /* stub */
@@ -97,16 +89,8 @@ const MtDTI& cpErosionEnemy::getDTI() const {
     return cpErosionEnemy::DTI;
 }
 
-inline MtAllocator* cpErosionEnemy::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpErosionEnemy::DTI);
-}
-
 void* cpErosionEnemy::operator new(size_t sz, u32 align) {
     return cpErosionEnemy::getAllocator()->memAlloc(sz, align, cpErosionEnemy::DTI.getID());
-}
-
-inline void cpErosionEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpErosionEnemy::DTI)->memFree(p_addr);
 }
 
 cpErosionEnemy::cpErosionEnemy() {
@@ -170,9 +154,51 @@ void cpErosionEnemy::before() {
     }
 }
 
-__attribute__((weak)) void cpErosionEnemy::update() {
-    DDON_STUB("cpErosionEnemy::update")
-    /* stub */
+void cpErosionEnemy::update() {
+    this->cpErosionEnemyBase::update();
+    if (!mErosionRegionArray.elems[0].isInvalid()) {
+        mErosionRegionArray.elems[0].updateErosionRegion();
+    }
+    if (!mErosionRegionArray.elems[1].isInvalid()) {
+        mErosionRegionArray.elems[1].updateErosionRegion();
+    }
+    if (!mErosionRegionArray.elems[2].isInvalid()) {
+        mErosionRegionArray.elems[2].updateErosionRegion();
+    }
+    if (!mErosionRegionArray.elems[3].isInvalid()) {
+        mErosionRegionArray.elems[3].updateErosionRegion();
+    }
+    switch (static_cast<unsigned int>(getErosionCurrentLevel() - 1)) {
+        case 0:
+        {
+            reqOnSyncFlag(0x200000ul);
+            updateErosionRegenerateTimer();
+            break;
+        }
+        case 1:
+        {
+            reqOnSyncFlag(0x400000ul);
+            updateErosionRegenerateTimer();
+            break;
+        }
+        case 2:
+        {
+            reqOnSyncFlag(0x800000ul);
+            updateErosionRegenerateTimer();
+            break;
+        }
+        case 3:
+        {
+            reqOnSyncFlag(0x1000000ul);
+            updateErosionRegenerateTimer();
+            break;
+        }
+        default:
+        {
+            updateErosionRegenerateTimer();
+            break;
+        }
+    }
 }
 
 void cpErosionEnemy::updatePtr() {
@@ -277,15 +303,7 @@ f32 cpErosionEnemy::getErosionCancelTime() const {
     return mErosionCancelTime;
 }
 
-inline void cpErosionEnemy::releaseErosionRegionRes() {
-    if (mpErosionRegionRes == nullptr) {
-        return;
-    }
-    mpErosionRegionRes->release();
-    mpErosionRegionRes = nullptr;
-}
-
-void cpErosionEnemy::updateErosionRegenerateTimer() {
+__attribute__((weak)) void cpErosionEnemy::updateErosionRegenerateTimer() {
     if (mpEnemy->getThinkMode() != 1) {
         return;
     }
@@ -325,20 +343,6 @@ __attribute__((weak)) void cpErosionEnemy::changeErosionLevelCollision(nErosionE
     /* stub */
 }
 
-inline void cpErosionEnemy::killErosionCheckNode() {
-    if (mpErosionCheckNode != nullptr) {
-        mpEnemy->mGuardComponent.mpObjCollision->killNode(mpErosionCheckNode);
-    }
-    mpErosionCheckNode = nullptr;
-}
-
-inline void cpErosionEnemy::setupRandomErosionTimer() {
-    if (mErosionTimerState == nErosionEnemy::EROSION_TIMER_STATE_MAX) {
-        return;
-    }
-    mErosionRegenerateTimer = mErosionRandomCtrl.makeRandomErosionTime(mErosionRegenerateTimer, mpEnemy);
-}
-
 __attribute__((weak)) f32 cpErosionEnemy::calcErosionTimerRate() const {
     DDON_STUB("cpErosionEnemy::calcErosionTimerRate")
     return {};
@@ -362,16 +366,8 @@ const MtDTI& cpErosionSuperEnemy::getDTI() const {
     return cpErosionSuperEnemy::DTI;
 }
 
-inline MtAllocator* cpErosionSuperEnemy::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpErosionSuperEnemy::DTI);
-}
-
 void* cpErosionSuperEnemy::operator new(size_t sz, u32 align) {
     return cpErosionSuperEnemy::getAllocator()->memAlloc(sz, align, cpErosionSuperEnemy::DTI.getID());
-}
-
-inline void cpErosionSuperEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpErosionSuperEnemy::DTI)->memFree(p_addr);
 }
 
 cpErosionSuperEnemy::cpErosionSuperEnemy() {
@@ -478,9 +474,22 @@ void cpErosionSuperEnemy::requestTentacleNoticeSe(s32 joint) {
     static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(getErosionSuperSoundRes(), 110u, static_cast<MtObject*>(mpEnemy), static_cast<const uCoord*>(mpEnemy), joint);
 }
 
-__attribute__((weak)) bool cpErosionSuperEnemy::isAllTentacleOff() {
-    DDON_STUB("cpErosionSuperEnemy::isAllTentacleOff")
-    return {};
+bool cpErosionSuperEnemy::isAllTentacleOff() {
+    unsigned int i0_1 = 0;
+    bool b1_0;
+    for (;;) {
+        if (mTentacleInfoArray.elems[i0_1].mTentacleState == 3) {
+            return false;
+        } else {
+            if ((i0_1 + 1u) <= 3u) {
+                i0_1 += 1u;
+            } else {
+                b1_0 = true;
+                break;
+            }
+        }
+    }
+    return b1_0;
 }
 
 void cpErosionSuperEnemy::updateTentacle() {
@@ -721,34 +730,6 @@ void cpErosionSuperEnemy::updateCameraEffect() {
             }
         }
     }
-}
-
-inline void cpErosionSuperEnemy::activeCameraEffect() {
-    if (mEfcCameraAdded) {
-        return;
-    }
-    if (mpEnemy == nullptr) {
-        return;
-    }
-    if ((mpEnemy->uDDOModel::mUnitId & 2u) == 0) {
-        return;
-    }
-    static_cast<sEffectExt*>(sEffect::mpInstance)->addOnceRequestEffectTypeSuperErosionCamData(&mEfcCameraHandleArray, static_cast<uEnemy*>(mpEnemy));
-    mEfcCameraAdded = true;
-}
-
-inline void cpErosionSuperEnemy::disactiveCameraEffect() {
-    if (!mEfcCameraAdded) {
-        return;
-    }
-    if (mpEnemy == nullptr) {
-        return;
-    }
-    if ((mpEnemy->uDDOModel::mUnitId & 2u) == 0) {
-        return;
-    }
-    static_cast<sEffectExt*>(sEffect::mpInstance)->relOnceRequestEffectTypeSuperErosionCamData(&mEfcCameraHandleArray, static_cast<uEnemy*>(mpEnemy));
-    mEfcCameraAdded = false;
 }
 
 inline cpErosionSuperEnemy::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

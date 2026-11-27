@@ -21,14 +21,6 @@ const MtDTI& nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI.getID());
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::getAllocator()->memFree(p_addr);
 }
@@ -69,14 +61,6 @@ const MtDTI& nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::getDTI() cons
     return nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI.getID());
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::getAllocator()->memFree(p_addr);
 }
@@ -91,14 +75,6 @@ MtObject* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::MyDTI::newInstan
 
 const MtDTI& nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI;
-}
-
-inline MtAllocator* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI.getID());
 }
 
 __attribute__((weak)) void nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::operator delete(void* p_addr) {
@@ -117,14 +93,6 @@ const MtDTI& nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::getDTI() co
     return nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI.getID());
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::getAllocator()->memFree(p_addr);
 }
@@ -139,14 +107,6 @@ MtObject* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::MyDTI::newInst
 
 const MtDTI& nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI;
-}
-
-inline MtAllocator* nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI.getID());
 }
 
 __attribute__((weak)) void nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::operator delete(void* p_addr) {
@@ -165,14 +125,6 @@ const MtDTI& nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::getDTI() cons
     return nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI.getID());
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::getAllocator()->memFree(p_addr);
 }
@@ -189,14 +141,6 @@ const MtDTI& nLoginSession::CPacket_L2C_EJECTION_NTC::getDTI() const {
     return nLoginSession::CPacket_L2C_EJECTION_NTC::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_EJECTION_NTC::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_EJECTION_NTC::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI.getID());
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_EJECTION_NTC::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_EJECTION_NTC::getAllocator()->memFree(p_addr);
 }
@@ -211,10 +155,6 @@ MtObject* nLoginSession::CPacket_L2C_EJECTION_NTC::MyDTI::newInstance() const {
 
 const MtDTI& nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::DTI;
-}
-
-inline MtAllocator* nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::DTI);
 }
 
 void* nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::operator new(size_t sz, u32 align) {
@@ -237,10 +177,6 @@ const MtDTI& nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::getDTI() con
     return nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::DTI);
-}
-
 void* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::operator new(size_t sz, u32 align) {
     return ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::getAllocator()->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::DTI.getID());
 }
@@ -261,14 +197,6 @@ const MtDTI& nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::getDTI() con
     return nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI.getID());
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::getAllocator()->memFree(p_addr);
 }
@@ -283,10 +211,6 @@ MtObject* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::MyDTI::newInsta
 
 const MtDTI& nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::DTI;
-}
-
-inline MtAllocator* nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::DTI);
 }
 
 void* nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::operator new(size_t sz, u32 align) {
@@ -309,10 +233,6 @@ const MtDTI& nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::getDTI() const
     return nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::DTI);
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::getAllocator()->memFree(p_addr);
 }
@@ -328,10 +248,6 @@ __attribute__((weak)) MtObject* nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_
 
 const MtDTI& nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::DTI;
-}
-
-inline MtAllocator* nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::DTI);
 }
 
 void* nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::operator new(size_t sz, u32 align) {
@@ -353,14 +269,6 @@ __attribute__((weak)) MtObject* nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES
 
 const MtDTI& nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI;
-}
-
-inline void* nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI.getID());
-}
-
-inline void nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI)->memFree(p_addr);
 }
 
 s32 nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::ReadPacket(CPacket* pPacket) {
@@ -393,14 +301,6 @@ const MtDTI& nLoginSession::CPacket_L2C_LOGIN_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_LOGIN_RES::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_LOGIN_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_LOGIN_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGIN_RES::DTI.getID());
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGIN_RES::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_LOGIN_RES::getAllocator()->memFree(p_addr);
 }
@@ -415,14 +315,6 @@ MtObject* nLoginSession::CPacket_L2C_LOGIN_RES::MyDTI::newInstance() const {
 
 const MtDTI& nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::getDTI() const {
     return nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI;
-}
-
-inline MtAllocator* nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI.getID());
 }
 
 __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::operator delete(void* p_addr) {
@@ -441,14 +333,6 @@ const MtDTI& nLoginSession::CPacket_L2C_LOGOUT_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_LOGOUT_RES::DTI;
 }
 
-inline MtAllocator* nLoginSession::CPacket_L2C_LOGOUT_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_LOGOUT_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI.getID());
-}
-
 __attribute__((weak)) void nLoginSession::CPacket_L2C_LOGOUT_RES::operator delete(void* p_addr) {
     ::nLoginSession::CPacket_L2C_LOGOUT_RES::getAllocator()->memFree(p_addr);
 }
@@ -463,10 +347,6 @@ MtObject* nLoginSession::CPacket_L2C_LOGOUT_RES::MyDTI::newInstance() const {
 
 const MtDTI& nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::getDTI() const {
     return nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::DTI;
-}
-
-inline MtAllocator* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::DTI);
 }
 
 void* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::operator new(size_t sz, u32 align) {
@@ -487,14 +367,6 @@ MtObject* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::MyDTI::newInstance
 
 const MtDTI& nLoginSession::CPacket_L2C_PING_RES::getDTI() const {
     return nLoginSession::CPacket_L2C_PING_RES::DTI;
-}
-
-inline MtAllocator* nLoginSession::CPacket_L2C_PING_RES::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_PING_RES::DTI);
-}
-
-inline void* nLoginSession::CPacket_L2C_PING_RES::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_PING_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_PING_RES::DTI.getID());
 }
 
 __attribute__((weak)) void nLoginSession::CPacket_L2C_PING_RES::operator delete(void* p_addr) {

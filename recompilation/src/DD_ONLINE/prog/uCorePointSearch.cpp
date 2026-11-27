@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cComponentManager.h"
 #include "cDelegate.h"
@@ -24,14 +23,6 @@
 
 const MtDTI& uCorePointSearch::getDTI() const {
     return uCorePointSearch::DTI;
-}
-
-inline void* uCorePointSearch::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uCorePointSearch::DTI)->memAlloc(sz, align, uCorePointSearch::DTI.getID());
-}
-
-inline void uCorePointSearch::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCorePointSearch::DTI)->memFree(p_addr);
 }
 
 uCorePointSearch::~uCorePointSearch() {
@@ -121,30 +112,8 @@ const MtDTI& uCorePointSearch::cCoreSearchInfo::getDTI() const {
     return uCorePointSearch::cCoreSearchInfo::DTI;
 }
 
-inline MtAllocator* uCorePointSearch::cCoreSearchInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCorePointSearch::cCoreSearchInfo::DTI);
-}
-
-inline void* uCorePointSearch::cCoreSearchInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uCorePointSearch::cCoreSearchInfo::DTI)->memAlloc(sz, align, uCorePointSearch::cCoreSearchInfo::DTI.getID());
-}
-
 __attribute__((weak)) void uCorePointSearch::cCoreSearchInfo::operator delete(void* p_addr) {
     uCorePointSearch::cCoreSearchInfo::getAllocator()->memFree(p_addr);
-}
-
-uCorePointSearch::cCoreSearchInfo::cCoreSearchInfo() {
-    mprColRes = nullptr;
-    mIndex = 1;
-    mRadius = 0.0f;
-    mOffset0.x = MtVector3::Zero.x;
-    mOffset0.y = MtVector3::Zero.y;
-    mOffset0.z = MtVector3::Zero.z;
-    mOffset0.pad_ = 0.0f;
-    mOffset1.x = MtVector3::Zero.x;
-    mOffset1.y = MtVector3::Zero.y;
-    mOffset1.z = MtVector3::Zero.z;
-    mOffset1.pad_ = 0.0f;
 }
 
 uCorePointSearch::cCoreSearchInfo::~cCoreSearchInfo() {

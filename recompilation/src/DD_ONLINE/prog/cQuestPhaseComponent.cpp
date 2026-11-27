@@ -13,10 +13,6 @@ const MtDTI& cQuestPhaseComponent::getDTI() const {
     return cQuestPhaseComponent::DTI;
 }
 
-inline void cQuestPhaseComponent::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPhaseComponent::DTI)->memFree(p_addr);
-}
-
 inline cQuestPhaseComponent::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cQuestPhaseComponent::MyDTI cQuestPhaseComponent::DTI("cQuestPhaseComponent", &::MtObject::DTI, 8ul, 0u, 0u);
@@ -28,14 +24,6 @@ __attribute__((weak)) MtObject* cQuestPhaseComponent::MyDTI::newInstance() const
 
 const MtDTI& cQuestPhaseCpDivide::getDTI() const {
     return cQuestPhaseCpDivide::DTI;
-}
-
-inline void* cQuestPhaseCpDivide::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::DTI)->memAlloc(sz, align, cQuestPhaseCpDivide::DTI.getID());
-}
-
-inline void cQuestPhaseCpDivide::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::DTI)->memFree(p_addr);
 }
 
 void cQuestPhaseCpDivide::getDivideStage(u32& stageNo, u32& startPosNo) const {
@@ -352,14 +340,6 @@ MtObject* cQuestPhaseCpDivide::MyDTI::newInstance() const {
 
 const MtDTI& cQuestPhaseCpDivide::cPlayerState::getDTI() const {
     return cQuestPhaseCpDivide::cPlayerState::DTI;
-}
-
-inline void* cQuestPhaseCpDivide::cPlayerState::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::cPlayerState::DTI)->memAlloc(sz, align, cQuestPhaseCpDivide::cPlayerState::DTI.getID());
-}
-
-inline void cQuestPhaseCpDivide::cPlayerState::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPhaseCpDivide::cPlayerState::DTI)->memFree(p_addr);
 }
 
 inline cQuestPhaseCpDivide::cPlayerState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -7,12 +7,6 @@
 class cContextCharacter;
 class cpHpDamageCtrl;
 
-// Declarations
-namespace nObjCondition { struct stHolyAbsorpReqInfo; }
-namespace nObjCondition { struct stHolyAbsorpReqMsg; }
-namespace nObjCondition { struct stOcdActiveInfo; }
-namespace nObjCondition { struct stOcdActiveMsg; }
-
 namespace nObjCondition {
     enum OCD_BAD_TYPE
     {
@@ -51,6 +45,12 @@ namespace nObjCondition {
         OCD_BAD_TYPE_END = 4128,
     };
 }  // namespace nObjCondition
+
+// Declarations
+namespace nObjCondition { struct stHolyAbsorpReqInfo; }
+namespace nObjCondition { struct stHolyAbsorpReqMsg; }
+namespace nObjCondition { struct stOcdActiveInfo; }
+namespace nObjCondition { struct stOcdActiveMsg; }
 
 // Type aliases from DWARF
 using u16 = unsigned short;

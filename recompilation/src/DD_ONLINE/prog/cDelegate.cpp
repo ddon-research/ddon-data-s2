@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/sCollision.h"
 #include "../../XFramework/uModel.h"
@@ -14,14 +13,6 @@
 
 const MtDTI& cDelegateBase::getDTI() const {
     return cDelegateBase::DTI;
-}
-
-inline MtAllocator* cDelegateBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cDelegateBase::DTI);
-}
-
-inline void* cDelegateBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDelegateBase::DTI)->memAlloc(sz, align, cDelegateBase::DTI.getID());
 }
 
 __attribute__((weak)) void cDelegateBase::operator delete(void* p_addr) {
@@ -38,14 +29,6 @@ MtObject* cDelegateBase::MyDTI::newInstance() const {
 
 const MtDTI& cDelegateBase::cNode::getDTI() const {
     return cDelegateBase::cNode::DTI;
-}
-
-inline MtAllocator* cDelegateBase::cNode::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cDelegateBase::cNode::DTI);
-}
-
-inline void* cDelegateBase::cNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDelegateBase::cNode::DTI)->memAlloc(sz, align, cDelegateBase::cNode::DTI.getID());
 }
 
 void* cDelegateBase::cNode::operator new[](size_t sz, u32 align) {

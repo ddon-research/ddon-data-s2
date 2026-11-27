@@ -15,6 +15,7 @@ class MtObject;
 // Declarations
 class CDataAreaWarpPoint;
 class CDataFavoriteWarpPoint;
+class CDataJumpLocation;
 class CDataWarpPoint;
 
 // Type aliases from DWARF
@@ -92,6 +93,39 @@ public:
     static MyDTI DTI;
 };
 
+class CDataJumpLocation : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataJumpLocation();
+    explicit CDataJumpLocation(u32, u32);
+public:
+    u32 m_ulStageId;  // offset: 0x8
+    u32 m_unStartPos;  // offset: 0xc
+    static MyDTI DTI;
+};
+
 class CDataWarpPoint : public CPacketDataBase
 {
 public:
@@ -145,6 +179,15 @@ inline CDataFavoriteWarpPoint::CDataFavoriteWarpPoint() {
     this->m_unPrice = 0;
 }
 
+inline void* CDataJumpLocation::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataJumpLocation::CDataJumpLocation() {
+    this->m_ulStageId = 0;
+    this->m_unStartPos = 0;
+}
+
 inline void* CDataWarpPoint::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -152,4 +195,28 @@ inline void* CDataWarpPoint::operator new(size_t sz, void* p_addr) {
 inline CDataWarpPoint::CDataWarpPoint() {
     this->m_ulID = 0;
     this->m_ulRimPrice = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataAreaWarpPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAreaWarpPoint::DTI);
+}
+
+inline MtAllocator* CDataFavoriteWarpPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataFavoriteWarpPoint::DTI);
+}
+
+inline MtAllocator* CDataJumpLocation::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJumpLocation::DTI);
+}
+
+inline void* CDataJumpLocation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataJumpLocation::DTI)->memAlloc(sz, align, ::CDataJumpLocation::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataWarpPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataWarpPoint::DTI);
 }

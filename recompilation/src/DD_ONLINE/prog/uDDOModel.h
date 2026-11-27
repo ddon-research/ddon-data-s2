@@ -29,6 +29,7 @@ class MtPropertyList;
 class MtQuaternion;
 class MtVector3;
 class aStage;
+class cAction;
 class cAsyncArc;
 class cAttackParam;
 class cBlowShrinkDmInfo;
@@ -40,6 +41,7 @@ class cContextInterface;
 class cDamageMsg;
 class cDamageSeInfo;
 class cDraw;
+class cEmWorkRateCtrl;
 class cGUIUtility;
 class cGeneralPoint;
 class cGeneralPointIterator;
@@ -49,6 +51,7 @@ class cHitGeom;
 class cHitInfo;
 class cHitInfoAfter;
 class cHitNode;
+class cOcdElementCover;
 class cOcdInfo;
 class cParentRegionStatus;
 class cPawnActInterDamage;
@@ -70,6 +73,7 @@ class cpCorePointCtrl;
 class cpDDMrlMgr;
 class cpEffectProvider;
 class cpEffectStatusManager;
+class cpEmParamCtrl;
 class cpEnemyThink;
 class cpEquip;
 class cpErosionEnemy;
@@ -98,6 +102,7 @@ class cpNpc;
 class cpObjCollisionBase;
 class cpOcdCtrl;
 class cpOmBase;
+class cpOmSpa;
 class cpPartsCtrl;
 class cpPathFinding;
 class cpPawnThink;
@@ -159,7 +164,10 @@ using u16 = unsigned short;
 class uDDOModel : public uModel
 {
     friend class aStage;
+    friend class cAction;
+    friend class cEmWorkRateCtrl;
     friend class cGUIUtility;
+    friend class cOcdElementCover;
     friend class cParentRegionStatus;
     friend class cPawnActInterDamage;
     friend class cPawnActInterReload;
@@ -167,6 +175,7 @@ class uDDOModel : public uModel
     friend class cPawnActInterSearchMaskPoint;
     friend class cpCatchCtrl;
     friend class cpCorePointCtrl;
+    friend class cpEmParamCtrl;
     friend class cpEnemyThink;
     friend class cpErosionEnemy;
     friend class cpErosionEnemySmall;
@@ -184,6 +193,7 @@ class uDDOModel : public uModel
     friend class cpObjCollisionBase;
     friend class cpOcdCtrl;
     friend class cpOmBase;
+    friend class cpOmSpa;
     friend class cpPawnThink;
     friend class cpSlave;
     friend class cpStatusChange;
@@ -1128,4 +1138,16 @@ inline nDDOModel::TOUCH_TYPE uDDOModel::getTouchType() const {
 
 inline void uDDOModel::setTouchTarget(uDDOModel* pTag) {
     this->mpTouchTarget = pTag;
+}
+
+inline u32 uDDOModel::getTouchedTargetNum() const {
+    return static_cast<unsigned int>(this->mTouchedArray.mBufferPt);
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uDDOModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uDDOModel::DTI)->memFree(p_addr);
 }

@@ -55,10 +55,6 @@ const MtDTI& cpShlKeyFrame::getDTI() const {
     return cpShlKeyFrame::DTI;
 }
 
-inline void cpShlKeyFrame::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlKeyFrame::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cpShlKeyFrame::initSub() {
     DDON_STUB("cpShlKeyFrame::initSub")
     /* stub */
@@ -73,8 +69,7 @@ inline cpShlKeyFrame::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 cpShlKeyFrame::MyDTI cpShlKeyFrame::DTI("cpShlKeyFrame", &::cpShlBase::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cpShlKeyFrame::MyDTI::newInstance() const {
-    DDON_STUB("cpShlKeyFrame::MyDTI::newInstance")
-    return nullptr;
+MtObject* cpShlKeyFrame::MyDTI::newInstance() const {
+    return new (16u) cpShlKeyFrame;
 }
 

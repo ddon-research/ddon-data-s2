@@ -50,6 +50,7 @@
 #include "cpLayout.h"
 #include "cpLockOn.h"
 #include "cpLockOnTargetManager.h"
+#include "cpModelConst.h"
 #include "cpMotionHistory.h"
 #include "cpMotionSe.h"
 #include "cpNpc.h"
@@ -60,6 +61,7 @@
 #include "cpPawnThink.h"
 #include "cpPivotCtrl.h"
 #include "cpRegionStatusCtrl.h"
+#include "cpRootComponent.h"
 #include "cpRotateCtrl.h"
 #include "cpSafePos.h"
 #include "cpScrCollision.h"
@@ -70,6 +72,7 @@
 #include "cpStateManager.h"
 #include "cpStatusChange.h"
 #include "cpTalk.h"
+#include "cpWallExitCtrl.h"
 #include "cpWorkRate.h"
 #include "ctl_storageArray.h"
 #include "../../generated/shared/nAction.h"
@@ -116,10 +119,6 @@
 
 const MtDTI& uDDOModel::getDTI() const {
     return uDDOModel::DTI;
-}
-
-inline void uDDOModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uDDOModel::DTI)->memFree(p_addr);
 }
 
 uDDOModel::uDDOModel() {
@@ -243,9 +242,50 @@ __attribute__((weak)) void uDDOModel::createComponent() {
     /* stub */
 }
 
-__attribute__((weak)) void uDDOModel::setupComponentPtr() {
-    DDON_STUB("uDDOModel::setupComponentPtr")
-    /* stub */
+void uDDOModel::setupComponentPtr() {
+    mGuardComponent.mpWorkRate = static_cast<cpWorkRate*>(mComponentMgr.getRootComponent()->find(cpWorkRate::DTI, true, true));
+    mGuardComponent.mpObjCollision = static_cast<cpObjCollisionBase*>(mComponentMgr.getRootComponent()->find(cpObjCollisionBase::DTI, true, true));
+    mGuardComponent.mpScrCollision = static_cast<cpScrCollision*>(mComponentMgr.getRootComponent()->find(cpScrCollision::DTI, true, true));
+    mGuardComponent.mpActMgr = static_cast<cpActionManager*>(mComponentMgr.getRootComponent()->find(cpActionManager::DTI, true, true));
+    mGuardComponent.mpInput = static_cast<cpInput*>(mComponentMgr.getRootComponent()->find(cpInput::DTI, true, true));
+    mGuardComponent.mpActionSelect = static_cast<cpActionSelect*>(mComponentMgr.getRootComponent()->find(cpActionSelect::DTI, true, true));
+    mGuardComponent.mpActionRequest = static_cast<cpActionRequest*>(mComponentMgr.getRootComponent()->find(cpActionRequest::DTI, true, true));
+    mGuardComponent.mpSequenceCtrl = static_cast<cpSequenceCtrl*>(mComponentMgr.getRootComponent()->find(cpSequenceCtrl::DTI, true, true));
+    mGuardComponent.mpHpDamageCtrl = static_cast<cpHpDamageCtrl*>(mComponentMgr.getRootComponent()->find(cpHpDamageCtrl::DTI, true, true));
+    mGuardComponent.mpCatchCtrl = static_cast<cpCatchCtrl*>(mComponentMgr.getRootComponent()->find(cpCatchCtrl::DTI, true, true));
+    mGuardComponent.mpStateAction = static_cast<cpStateManager*>(mComponentMgr.getRootComponent()->find("StateAction", true));
+    mGuardComponent.mpStateLive = static_cast<cpStateManager*>(mComponentMgr.getRootComponent()->find("StateLive", true));
+    mGuardComponent.mpLockOn = static_cast<cpLockOn*>(mComponentMgr.getRootComponent()->find(cpLockOn::DTI, true, true));
+    mpPivotCtrl = static_cast<cpPivotCtrl*>(mComponentMgr.getRootComponent()->find(cpPivotCtrl::DTI, true, true));
+    mpEquip = static_cast<cpEquip*>(mComponentMgr.getRootComponent()->find(cpEquip::DTI, true, true));
+    mpMotionHistory = static_cast<cpMotionHistory*>(mComponentMgr.getRootComponent()->find(cpMotionHistory::DTI, true, true));
+    mpRotateCtrl = static_cast<cpRotateCtrl*>(mComponentMgr.getRootComponent()->find(cpRotateCtrl::DTI, true, true));
+    mGuardComponent.mpChargeCtrl = static_cast<cpChargeCtrl*>(mComponentMgr.getRootComponent()->find(cpChargeCtrl::DTI, true, true));
+    mpDDMrlMgr = static_cast<cpDDMrlMgr*>(mComponentMgr.getRootComponent()->find(cpDDMrlMgr::DTI, true, true));
+    mGuardComponent.mpShlShotCtrl = static_cast<cpShlShotCtrl*>(mComponentMgr.getRootComponent()->find(cpShlShotCtrl::DTI, true, true));
+    mpPartsCtrl = static_cast<cpPartsCtrl*>(mComponentMgr.getRootComponent()->find(cpPartsCtrl::DTI, true, true));
+    mGuardComponent.mpRegionStatusCtrl = static_cast<cpRegionStatusCtrl*>(mComponentMgr.getRootComponent()->find(cpRegionStatusCtrl::DTI, true, true));
+    mGuardComponent.mpStatusChange = static_cast<cpStatusChange*>(mComponentMgr.getRootComponent()->find(cpStatusChange::DTI, true, true));
+    mGuardComponent.mpLayout = static_cast<cpLayout*>(mComponentMgr.getRootComponent()->find(cpLayout::DTI, true, true));
+    mpEffectProvider = static_cast<cpEffectProvider*>(mComponentMgr.getRootComponent()->find(cpEffectProvider::DTI, true, true));
+    mGuardComponent.mpSlave = static_cast<cpSlave*>(mComponentMgr.getRootComponent()->find(cpSlave::DTI, true, true));
+    mpSafePos = static_cast<cpSafePos*>(mComponentMgr.getRootComponent()->find(cpSafePos::DTI, true, true));
+    mpHugeble = static_cast<cpHugeble*>(mComponentMgr.getRootComponent()->find(cpHugeble::DTI, true, true));
+    mpCheckWallCliff = static_cast<cpCheckWallCliff*>(mComponentMgr.getRootComponent()->find(cpCheckWallCliff::DTI, true, true));
+    mGuardComponent.mpLockOnTargetMgr = static_cast<cpLockOnTargetManager*>(mComponentMgr.getRootComponent()->find(cpLockOnTargetManager::DTI, true, true));
+    mGuardComponent.mpKeepAtkAdjust = static_cast<cpKeepAtkAdjust*>(mComponentMgr.getRootComponent()->find(cpKeepAtkAdjust::DTI, true, true));
+    mpMotionSe = static_cast<cpMotionSe*>(mComponentMgr.getRootComponent()->find(cpMotionSe::DTI, true, true));
+    mGuardComponent.mpPathFinding = static_cast<cpPathFinding*>(mComponentMgr.getRootComponent()->find(cpPathFinding::DTI, true, true));
+    mGuardComponent.mpPawnThink = static_cast<cpPawnThink*>(mComponentMgr.getRootComponent()->find(cpPawnThink::DTI, true, true));
+    mGuardComponent.mpAISensor = static_cast<cpAISensor*>(mComponentMgr.getRootComponent()->find(cpAISensor::DTI, true, true));
+    mpEffectStatusManager = static_cast<cpEffectStatusManager*>(mComponentMgr.getRootComponent()->find(cpEffectStatusManager::DTI, true, true));
+    mGuardComponent.mpInvincibleCtrl = static_cast<cpInvincibleCtrl*>(mComponentMgr.getRootComponent()->find(cpInvincibleCtrl::DTI, true, true));
+    mpSoftBody = static_cast<cpSoftBody*>(mComponentMgr.getRootComponent()->find(cpSoftBody::DTI, true, true));
+    mGuardComponent.mpOcdCtrl = static_cast<cpOcdCtrl*>(mComponentMgr.getRootComponent()->find(cpOcdCtrl::DTI, true, true));
+    mpModelConst = static_cast<cpModelConst*>(mComponentMgr.getRootComponent()->find(cpModelConst::DTI, true, true));
+    mpTalk = static_cast<cpTalk*>(mComponentMgr.getRootComponent()->find(cpTalk::DTI, true, true));
+    mpNpc = static_cast<cpNpc*>(mComponentMgr.getRootComponent()->find(cpNpc::DTI, true, true));
+    mpWallExitCtrl = static_cast<cpWallExitCtrl*>(mComponentMgr.getRootComponent()->find(cpWallExitCtrl::DTI, true, true));
 }
 
 __attribute__((weak)) void uDDOModel::registDelegate() {
@@ -418,9 +458,93 @@ __attribute__((weak)) void uDDOModel::changeDrawModelFlag(u32 flag, bool isOn) {
     /* stub */
 }
 
-__attribute__((weak)) void uDDOModel::updatePtr() {
-    DDON_STUB("uDDOModel::updatePtr")
-    /* stub */
+void uDDOModel::updatePtr() {
+    mComponentMgr.updatePtr();
+    if (mpTarget != nullptr) {
+        if (!mpTarget->isEnable()) {
+            mpTarget = nullptr;
+        }
+    }
+    if (mpTouchTarget != nullptr) {
+        if (!mpTouchTarget->isEnable()) {
+            mpTouchTarget = nullptr;
+        }
+    }
+    if (static_cast<unsigned int>(mTouchedArray.mBufferPt) != 0) {
+        size_t v2_0 = mTouchedArray.mBufferPt;
+        unsigned int i2_2 = 0;
+        unsigned int v3_1;
+        size_t v4_0;
+        size_t v5_0;
+        for (;;) {
+            if (mTouchedArray.mBuffer[i2_2] != nullptr) {
+                v5_0 = v2_0;
+            } else {
+                if ((i2_2 + 1u) >= static_cast<unsigned int>(v2_0)) {
+                    v4_0 = v2_0;
+                } else {
+                    v3_1 = i2_2;
+                    for (;;) {
+                        mTouchedArray.mBuffer[v3_1] = mTouchedArray.mBuffer[v3_1 + 1u];
+                        if ((v3_1 + 2u) < static_cast<unsigned int>(mTouchedArray.mBufferPt)) {
+                            v3_1 += 1u;
+                        } else {
+                            v4_0 = mTouchedArray.mBufferPt;
+                            break;
+                        }
+                    }
+                }
+                mTouchedArray.mBufferPt = v4_0 - 1ul;
+                v5_0 = v4_0 - 1ul;
+            }
+            if ((i2_2 + 1u) < static_cast<unsigned int>(v5_0)) {
+                v2_0 = v5_0;
+                i2_2 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mTouchRelReqArray.elems[0].mpRelease != nullptr) {
+        if ((mTouchRelReqArray.elems[0].mpRelease->mBeFlag - 1u) > 1u) {
+            mTouchRelReqArray.elems[0].mpRelease = nullptr;
+        }
+    }
+    if (mTouchRelReqArray.elems[1].mpRelease != nullptr) {
+        if ((mTouchRelReqArray.elems[1].mpRelease->mBeFlag - 1u) > 1u) {
+            mTouchRelReqArray.elems[1].mpRelease = nullptr;
+        }
+    }
+    if (mTouchRelReqArray.elems[2].mpRelease != nullptr) {
+        if ((mTouchRelReqArray.elems[2].mpRelease->mBeFlag - 1u) > 1u) {
+            mTouchRelReqArray.elems[2].mpRelease = nullptr;
+        }
+    }
+    if (mTouchRelReqArray.elems[3].mpRelease != nullptr) {
+        if ((mTouchRelReqArray.elems[3].mpRelease->mBeFlag - 1u) > 1u) {
+            mTouchRelReqArray.elems[3].mpRelease = nullptr;
+        }
+    }
+    if (mTouchRelReqArray.elems[4].mpRelease != nullptr) {
+        if ((mTouchRelReqArray.elems[4].mpRelease->mBeFlag - 1u) > 1u) {
+            mTouchRelReqArray.elems[4].mpRelease = nullptr;
+        }
+    }
+    if (mTouchRelReqArray.elems[5].mpRelease != nullptr) {
+        if ((mTouchRelReqArray.elems[5].mpRelease->mBeFlag - 1u) > 1u) {
+            mTouchRelReqArray.elems[5].mpRelease = nullptr;
+        }
+    }
+    if (mTouchRelReqArray.elems[6].mpRelease != nullptr) {
+        if ((mTouchRelReqArray.elems[6].mpRelease->mBeFlag - 1u) > 1u) {
+            mTouchRelReqArray.elems[6].mpRelease = nullptr;
+        }
+    }
+    if (mTouchRelReqArray.elems[7].mpRelease != nullptr) {
+        if ((mTouchRelReqArray.elems[7].mpRelease->mBeFlag - 1u) > 1u) {
+            mTouchRelReqArray.elems[7].mpRelease = nullptr;
+        }
+    }
 }
 
 void uDDOModel::updateEfcHandle() {
@@ -445,9 +569,8 @@ void uDDOModel::setMotionFrame(u32 type, f32 frame) {
     mMotion[type].mPrevFrame = mMotion[type].mFrame;
 }
 
-__attribute__((weak)) f32 uDDOModel::getMotionFrame(u32 type) const {
-    DDON_STUB("uDDOModel::getMotionFrame")
-    return {};
+f32 uDDOModel::getMotionFrame(u32 type) const {
+    return mMotion[type].getFrame();
 }
 
 u32 uDDOModel::getMotionNo(u32 type) const {
@@ -1334,9 +1457,19 @@ __attribute__((weak)) void uDDOModel::releaseTouchTarget(uDDOModel* pRelease, nD
     /* stub */
 }
 
-__attribute__((weak)) void uDDOModel::setTouch(uDDOModel* pReqOwner, bool isTouchSave) {
-    DDON_STUB("uDDOModel::setTouch")
-    /* stub */
+void uDDOModel::setTouch(uDDOModel* pReqOwner, bool isTouchSave) {
+    if (pReqOwner == nullptr) {
+        return;
+    }
+    if (!isTouchSave) {
+        return;
+    }
+    pReqOwner->mpTouchTarget = this;
+    size_t t0 = mTouchedArray.mBufferPt;
+    if (static_cast<unsigned int>(t0) <= 7) {
+        mTouchedArray.mBufferPt = t0 + 1ul;
+        mTouchedArray.mBuffer[t0] = pReqOwner;
+    }
 }
 
 __attribute__((weak)) void uDDOModel::requestReleaseTouch(uDDOModel* pRelease, nDDOModel::TOUCH_RELEASE_TYPE type) {
@@ -1360,9 +1493,9 @@ u32 uDDOModel::getScrFilter() {
     } else {
         if ((this->mUnitId & 32u) != 0) {
             uShlBase* pShl = static_cast<uShlBase*>(this);
-            if (static_cast<uShlBase*>(this)->getOwner() != nullptr) {
-                if (static_cast<uShlBase*>(this)->getOwner()->getScrCollisionPtr() != nullptr) {
-                    return static_cast<uShlBase*>(this)->getOwner()->getScrCollisionPtr()->getFilter();
+            if (pShl->getOwner() != nullptr) {
+                if (pShl->getOwner()->getScrCollisionPtr() != nullptr) {
+                    return pShl->getOwner()->getScrCollisionPtr()->getFilter();
                 }
             }
             return 0x20000000;
@@ -1554,9 +1687,11 @@ void uDDOModel::setSplitId(const nLayout::stSplitID& splitID) {
     getLayoutPtr()->mSplitId.mSplitID = splitID.mSplitID;
 }
 
-__attribute__((weak)) void uDDOModel::setGroupParam(const cGroupParam* param) {
-    DDON_STUB("uDDOModel::setGroupParam")
-    /* stub */
+void uDDOModel::setGroupParam(const cGroupParam* param) {
+    if (getLayoutPtr() == nullptr) {
+        return;
+    }
+    getLayoutPtr()->mpGroupParam = param;
 }
 
 const cGroupParam* uDDOModel::getGroupParam() const {

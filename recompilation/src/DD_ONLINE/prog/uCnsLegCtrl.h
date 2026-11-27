@@ -88,3 +88,15 @@ public:
 inline void* uCnsLegCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uCnsLegCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCnsLegCtrl::DTI);
+}
+
+inline void uCnsLegCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsLegCtrl::DTI)->memFree(p_addr);
+}

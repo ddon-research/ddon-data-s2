@@ -20,10 +20,6 @@ const MtDTI& cComponentManager::getDTI() const {
     return cComponentManager::DTI;
 }
 
-inline void cComponentManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cComponentManager::DTI)->memFree(p_addr);
-}
-
 cComponentManager::cComponentManager() {
     DDON_STUB("cComponentManager::cComponentManager")
     /* stub */

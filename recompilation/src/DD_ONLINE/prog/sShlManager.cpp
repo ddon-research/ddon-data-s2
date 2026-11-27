@@ -35,16 +35,8 @@ const MtDTI& sShlManager::getDTI() const {
     return sShlManager::DTI;
 }
 
-inline MtAllocator* sShlManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sShlManager::DTI);
-}
-
 void* sShlManager::operator new(size_t sz, u32 align) {
     return sShlManager::getAllocator()->memAlloc(sz, align, sShlManager::DTI.getID());
-}
-
-inline void sShlManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShlManager::DTI)->memFree(p_addr);
 }
 
 sShlManager::sShlManager() {
@@ -154,14 +146,6 @@ const MtDTI& sShlManager::cShlLimitCtrl::getDTI() const {
     return sShlManager::cShlLimitCtrl::DTI;
 }
 
-inline void* sShlManager::cShlLimitCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sShlManager::cShlLimitCtrl::DTI)->memAlloc(sz, align, sShlManager::cShlLimitCtrl::DTI.getID());
-}
-
-inline void sShlManager::cShlLimitCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShlManager::cShlLimitCtrl::DTI)->memFree(p_addr);
-}
-
 sShlManager::cShlLimitCtrl::~cShlLimitCtrl() {
     DDON_STUB("sShlManager::cShlLimitCtrl::~cShlLimitCtrl")
     /* stub */
@@ -177,14 +161,6 @@ MtObject* sShlManager::cShlLimitCtrl::MyDTI::newInstance() const {
 
 const MtDTI& sShlManager::cShlLimitCnt::getDTI() const {
     return sShlManager::cShlLimitCnt::DTI;
-}
-
-inline void* sShlManager::cShlLimitCnt::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sShlManager::cShlLimitCnt::DTI)->memAlloc(sz, align, sShlManager::cShlLimitCnt::DTI.getID());
-}
-
-inline void sShlManager::cShlLimitCnt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShlManager::cShlLimitCnt::DTI)->memFree(p_addr);
 }
 
 sShlManager::cShlLimitCnt::~cShlLimitCnt() {

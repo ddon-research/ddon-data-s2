@@ -127,3 +127,19 @@ inline void cGUIDogmaOrbRes::operator delete[](void* p_addr) {
 inline void* cGUIDogmaOrbRes::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cGUIDogmaOrbRes::DTI)->memAlloc(sz, align, ::cGUIDogmaOrbRes::DTI.::MtDTI::getID());
 }
+
+inline void* cGUIDogmaOrbRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGUIDogmaOrbRes::DTI)->memAlloc(sz, align, ::cGUIDogmaOrbRes::DTI.::MtDTI::getID());
+}
+
+inline void cGUIDogmaOrbRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIDogmaOrbRes::DTI)->memFree(p_addr);
+}
+
+inline void* rGUIDogmaOrb::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rGUIDogmaOrb::DTI)->memAlloc(sz, align, ::rGUIDogmaOrb::DTI.::MtDTI::getID());
+}
+
+inline void rGUIDogmaOrb::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGUIDogmaOrb::DTI)->memFree(p_addr);
+}

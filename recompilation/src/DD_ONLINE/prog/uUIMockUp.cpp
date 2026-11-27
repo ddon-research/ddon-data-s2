@@ -53,16 +53,8 @@ const MtDTI& uUIMockUp::getDTI() const {
     return uUIMockUp::DTI;
 }
 
-inline MtAllocator* uUIMockUp::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uUIMockUp::DTI);
-}
-
 void* uUIMockUp::operator new(size_t sz, u32 align) {
     return uUIMockUp::getAllocator()->memAlloc(sz, align, uUIMockUp::DTI.getID());
-}
-
-inline void uUIMockUp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uUIMockUp::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uUIMockUp::~uUIMockUp() {
@@ -91,8 +83,24 @@ __attribute__((weak)) void uUIMockUp::move() {
 }
 
 __attribute__((weak)) void uUIMockUp::kill() {
-    DDON_STUB("uUIMockUp::kill")
-    /* stub */
+    mCS.lock();
+    delList();
+    if (mIsCreatedModel && mRefCount != 0 && --mRefCount == 0) {
+        if (mpLight != nullptr) {
+            reinterpret_cast<cUnit*>(mpLight)->kill();
+            mpLight = nullptr;
+        }
+        if (mpModel != nullptr) {
+            mpModel->kill();
+            mpModel = nullptr;
+        }
+    }
+    mCS.unlock();
+    
+    u32& t1 = reinterpret_cast<u32*>(this)[0x10 / sizeof(u32)];
+    if ((t1 & (UATTR_FIX << 10)) == 0 && ((t1 & 7u) - BEFLAG_PRE_MOVE) <= 1u) {
+        t1 = (t1 & ~7u) | BEFLAG_PRE_DELETE;
+    }
 }
 
 __attribute__((weak)) void uUIMockUp::updatePtr() {
@@ -205,8 +213,15 @@ __attribute__((weak)) void uUIMockUp::setDisp(bool isDisp) {
 }
 
 __attribute__((weak)) void uUIMockUp::setMannequinEquip(u32 itemId, s32 color, cItemParam* pParam) {
-    DDON_STUB("uUIMockUp::setMannequinEquip")
-    /* stub */
+    // workaround
+    mCS.lock();
+    setupActive();
+    if (mpModel && mIsActive) {
+        mpModel->setMannequinEquip(itemId, color, pParam);
+        mModelInfo.setMannequineItem(itemId, color, pParam);
+    }
+    mLocalInfo.setMannequineItem(itemId, color, pParam);
+    mCS.unlock();
 }
 
 void uUIMockUp::setMannequinEquip(const cContextInstHm* pContext, u32 itemId, s32 color, cItemParam* pParam) {
@@ -328,8 +343,41 @@ __attribute__((weak)) void uUIMockUp::setupModelContext(const cContextInstHm* pC
 }
 
 __attribute__((weak)) void uUIMockUp::setupCostume(u32 item_id) {
-    DDON_STUB("uUIMockUp::setupCostume")
-    /* stub */
+    rItemList::rItemParam* pParam = sItemManager::getInstance()->getItemParam(item_id);
+    if (pParam == nullptr) {
+        return;
+    }
+    const u8 slot = static_cast<u8>(cEquipData::convEquipCateToSlotType(static_cast<nCharacterData::EQUIP_CATEGORY>(pParam->getEquipCategory())));
+    switch (slot) {
+    case nCharacterData::EQUIP_SLOT_ARMOR_BODY:
+        if (pParam->isCostume()) {
+            removeEquip(nCharacterData::EQUIP_SLOT_ARMOR_HELM);
+            removeEquip(nCharacterData::EQUIP_SLOT_WEAR_BODY);
+            removeEquip(nCharacterData::EQUIP_SLOT_ARMOR_ARM);
+            removeEquip(nCharacterData::EQUIP_SLOT_ARMOR_LEG);
+            removeEquip(nCharacterData::EQUIP_SLOT_WEAR_LEG);
+            removeEquip(nCharacterData::EQUIP_SLOT_ACCESSORY);
+        }
+        break;
+    case nCharacterData::EQUIP_SLOT_ARMOR_HELM:
+    case nCharacterData::EQUIP_SLOT_WEAR_BODY:
+    case nCharacterData::EQUIP_SLOT_ARMOR_ARM:
+    case nCharacterData::EQUIP_SLOT_ARMOR_LEG:
+    case nCharacterData::EQUIP_SLOT_WEAR_LEG:
+    case nCharacterData::EQUIP_SLOT_ACCESSORY: {
+        const u32 index = cEquipData::convEquipCateToIndex(nCharacterData::EQUIP_SLOT_ARMOR_BODY);
+        item_id = mLocalInfo.mItemData[index].mId;
+        pParam = sItemManager::getInstance()->getItemParam(item_id);
+        if (pParam != nullptr &&
+            static_cast<u8>(cEquipData::convEquipCateToSlotType(static_cast<nCharacterData::EQUIP_CATEGORY>(pParam->getEquipCategory()))) == nCharacterData::EQUIP_SLOT_ARMOR_BODY &&
+            pParam->isCostume()) {
+            removeEquip(nCharacterData::EQUIP_SLOT_ARMOR_BODY);
+        }
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 __attribute__((weak)) void uUIMockUp::updateVertices() {

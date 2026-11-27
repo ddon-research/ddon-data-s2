@@ -5,7 +5,6 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtString.h"
@@ -60,16 +59,8 @@ const MtDTI& cLayoutSetEnemy::getDTI() const {
     return cLayoutSetEnemy::DTI;
 }
 
-inline MtAllocator* cLayoutSetEnemy::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cLayoutSetEnemy::DTI);
-}
-
 void* cLayoutSetEnemy::operator new(size_t sz, u32 align) {
     return cLayoutSetEnemy::getAllocator()->memAlloc(sz, align, cLayoutSetEnemy::DTI.getID());
-}
-
-inline void cLayoutSetEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLayoutSetEnemy::DTI)->memFree(p_addr);
 }
 
 cLayoutSetEnemy::cLayoutSetEnemy() {

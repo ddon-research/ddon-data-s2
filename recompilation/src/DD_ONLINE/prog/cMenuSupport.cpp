@@ -27,16 +27,8 @@ const MtDTI& cMenuDialogFlow::getDTI() const {
     return cMenuDialogFlow::DTI;
 }
 
-inline MtAllocator* cMenuDialogFlow::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cMenuDialogFlow::DTI);
-}
-
 void* cMenuDialogFlow::operator new(size_t sz, u32 align) {
     return cMenuDialogFlow::getAllocator()->memAlloc(sz, align, cMenuDialogFlow::DTI.getID());
-}
-
-inline void cMenuDialogFlow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuDialogFlow::DTI)->memFree(p_addr);
 }
 
 cMenuDialogFlow::cMenuDialogFlow() {
@@ -177,14 +169,6 @@ const MtDTI& cMenuSupport::getDTI() const {
     return cMenuSupport::DTI;
 }
 
-inline void* cMenuSupport::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuSupport::DTI)->memAlloc(sz, align, cMenuSupport::DTI.getID());
-}
-
-inline void cMenuSupport::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSupport::DTI)->memFree(p_addr);
-}
-
 inline cMenuSupport::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuSupport::MyDTI cMenuSupport::DTI("cMenuSupport", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -197,16 +181,8 @@ const MtDTI& cMenuSupportList::getDTI() const {
     return cMenuSupportList::DTI;
 }
 
-inline MtAllocator* cMenuSupportList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cMenuSupportList::DTI);
-}
-
 void* cMenuSupportList::operator new(size_t sz, u32 align) {
     return cMenuSupportList::getAllocator()->memAlloc(sz, align, cMenuSupportList::DTI.getID());
-}
-
-inline void cMenuSupportList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSupportList::DTI)->memFree(p_addr);
 }
 
 cMenuSupportList::cMenuSupportList() {
@@ -508,16 +484,8 @@ const MtDTI& cMenuSupportMenu::getDTI() const {
     return cMenuSupportMenu::DTI;
 }
 
-inline MtAllocator* cMenuSupportMenu::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI);
-}
-
 void* cMenuSupportMenu::operator new(size_t sz, u32 align) {
     return cMenuSupportMenu::getAllocator()->memAlloc(sz, align, cMenuSupportMenu::DTI.getID());
-}
-
-inline void cMenuSupportMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSupportMenu::DTI)->memFree(p_addr);
 }
 
 cMenuSupportMenu::cMenuSupportMenu() {
@@ -552,9 +520,25 @@ __attribute__((weak)) void cMenuSupportMenu::initialize(u32 menuMax) {
     /* stub */
 }
 
-__attribute__((weak)) void cMenuSupportMenu::updateMenu() {
-    DDON_STUB("cMenuSupportMenu::updateMenu")
-    /* stub */
+void cMenuSupportMenu::updateMenu() {
+    if (mpParentMenu == nullptr) {
+        return;
+    }
+    if (mpMenuParts == nullptr) {
+        return;
+    }
+    if (mpMenuList == nullptr) {
+        return;
+    }
+    if (mMenuNum == 0) {
+        return;
+    }
+    unsigned int i7 = 1;
+    do {
+        mpMenuParts[i7 - 1u] = sMenu::mDefMenuParts;
+        mpParentMenu->checkMenuPartsParam(this, &mpMenuParts[i7 - 1u], mpMenuList[i7 - 1u]);
+        i7 += 1u;
+    } while ((i7 - 1u) < mMenuNum);
 }
 
 void cMenuSupportMenu::moveMenu(s32 cursorOrderId) {

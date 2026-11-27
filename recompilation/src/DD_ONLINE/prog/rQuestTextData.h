@@ -115,3 +115,33 @@ inline rQuestTextData::cTextData::cTextData() {
     this->mType = 0;
     this->mMsgGmdIdx = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rQuestTextData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rQuestTextData::DTI)->memAlloc(sz, align, ::rQuestTextData::DTI.::MtDTI::getID());
+}
+
+inline void rQuestTextData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rQuestTextData::DTI)->memFree(p_addr);
+}
+
+inline rQuestTextData::rQuestTextData() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rQuestTextData::cTextData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rQuestTextData::cTextData::DTI)->memAlloc(sz, align, ::rQuestTextData::cTextData::DTI.::MtDTI::getID());
+}
+
+inline void rQuestTextData::cTextData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rQuestTextData::cTextData::DTI)->memFree(p_addr);
+}
+
+inline void rQuestTextData::cTextData::load(MtDataReader& r) {
+    this->mType = r.readU32();
+    this->mMsgGmdIdx = r.readU32();
+}

@@ -1,7 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include <string.h>
-#include "MtCharset.h"
+#include "MtCharSet.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -107,9 +107,19 @@ bool MtCharset::cMultiByteSolver::isDividable() const {
     return mEndIndex == 0;
 }
 
-__attribute__((weak)) bool MtCharset::cMultiByteSolver::isLeadByte() const {
-    DDON_STUB("MtCharset::cMultiByteSolver::isLeadByte")
-    return {};
+bool MtCharset::cMultiByteSolver::isLeadByte() const {
+    if (mEncoding != MtCharset::ET_ASCII) {
+        if (static_cast<unsigned int>(mEncoding - 2) <= 2) {
+            if (mByteLength != 0) {
+                if (mEndIndex == (mByteLength - 1u)) {
+                    return mCurrentByte == mLeadByte;
+                }
+            }
+        }
+        return false;
+    } else {
+        return mCurrentByte == mLeadByte;
+    }
 }
 
 u32 MtCharset::cMultiByteSolver::getRemainBytes() const {

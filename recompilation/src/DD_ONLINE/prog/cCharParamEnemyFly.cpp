@@ -3,7 +3,6 @@
 #include "cCharParamEnemyFly.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,16 +15,8 @@ const MtDTI& cCharParamEnemyFly::getDTI() const {
     return cCharParamEnemyFly::DTI;
 }
 
-inline MtAllocator* cCharParamEnemyFly::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCharParamEnemyFly::DTI);
-}
-
 void* cCharParamEnemyFly::operator new(size_t sz, u32 align) {
     return cCharParamEnemyFly::getAllocator()->memAlloc(sz, align, cCharParamEnemyFly::DTI.getID());
-}
-
-inline void cCharParamEnemyFly::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharParamEnemyFly::DTI)->memFree(p_addr);
 }
 
 cCharParamEnemyFly::cCharParamEnemyFly() {

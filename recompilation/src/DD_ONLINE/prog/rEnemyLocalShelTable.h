@@ -122,3 +122,19 @@ inline void cEnemyLocalShelTable::operator delete[](void* p_addr) {
 inline void* cEnemyLocalShelTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEnemyLocalShelTable::DTI)->memAlloc(sz, align, ::cEnemyLocalShelTable::DTI.::MtDTI::getID());
 }
+
+inline void* cEnemyLocalShelTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyLocalShelTable::DTI)->memAlloc(sz, align, ::cEnemyLocalShelTable::DTI.::MtDTI::getID());
+}
+
+inline void cEnemyLocalShelTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyLocalShelTable::DTI)->memFree(p_addr);
+}
+
+inline void* rEnemyLocalShelTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEnemyLocalShelTable::DTI)->memAlloc(sz, align, ::rEnemyLocalShelTable::DTI.::MtDTI::getID());
+}
+
+inline void rEnemyLocalShelTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEnemyLocalShelTable::DTI)->memFree(p_addr);
+}

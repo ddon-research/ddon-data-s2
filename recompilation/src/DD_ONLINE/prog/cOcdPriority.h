@@ -91,3 +91,19 @@ inline bool cOcdPriorityParam::isMultiNumLimit() const {
 inline u32 cOcdPriorityParam::getMultiApplyNum() const {
     return this->mMultiApplyNum;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cOcdPriorityParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cOcdPriorityParam::DTI);
+}
+
+inline void* cOcdPriorityParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdPriorityParam::DTI)->memAlloc(sz, align, ::cOcdPriorityParam::DTI.::MtDTI::getID());
+}
+
+inline void cOcdPriorityParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdPriorityParam::DTI)->memFree(p_addr);
+}

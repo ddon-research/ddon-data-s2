@@ -121,3 +121,19 @@ inline void cQuestHistoryData::operator delete[](void* p_addr) {
 inline void* cQuestHistoryData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cQuestHistoryData::DTI)->memAlloc(sz, align, ::cQuestHistoryData::DTI.::MtDTI::getID());
 }
+
+inline void* cQuestHistoryData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestHistoryData::DTI)->memAlloc(sz, align, ::cQuestHistoryData::DTI.::MtDTI::getID());
+}
+
+inline void cQuestHistoryData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestHistoryData::DTI)->memFree(p_addr);
+}
+
+inline void* rQuestHistoryData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rQuestHistoryData::DTI)->memAlloc(sz, align, ::rQuestHistoryData::DTI.::MtDTI::getID());
+}
+
+inline void rQuestHistoryData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rQuestHistoryData::DTI)->memFree(p_addr);
+}

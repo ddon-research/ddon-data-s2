@@ -236,3 +236,19 @@ inline void nNetwork::VoiceChat::Talker::loopback() {
     this->mLoopback = true;
     this->mTask = this->mTask | 2u;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::VoiceChat::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::DTI)->memFree(p_addr);
+}
+
+inline void* nNetwork::VoiceChat::Talker::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::Talker::DTI)->memAlloc(sz, align, ::nNetwork::VoiceChat::Talker::DTI.::MtDTI::mID);
+}
+
+inline void nNetwork::VoiceChat::Talker::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::Talker::DTI)->memFree(p_addr);
+}

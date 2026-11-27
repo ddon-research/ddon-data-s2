@@ -21,10 +21,6 @@ void* MtGeomLineSegment4::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomLineSegment4::DTI)->memAlloc(sz, align, MtGeomLineSegment4::DTI.mID);
 }
 
-inline void MtGeomLineSegment4::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomLineSegment4::DTI)->memFree(p_addr);
-}
-
 void MtGeomLineSegment4::load(MtDataReader& fin) {
     mLineSegment4.p0_4.x.v.x = fin.readF32();
     mLineSegment4.p1_4.x.v.x = fin.readF32();

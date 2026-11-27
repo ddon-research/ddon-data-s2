@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rBitTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cBitTable::getDTI() const {
     return cBitTable::DTI;
-}
-
-inline void* cBitTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cBitTable::DTI)->memAlloc(sz, align, cBitTable::DTI.getID());
-}
-
-inline void cBitTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBitTable::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cBitTable::createProperty(MtPropertyList& s) {
@@ -36,14 +26,6 @@ MtObject* cBitTable::MyDTI::newInstance() const {
 
 const MtDTI& rBitTable::getDTI() const {
     return rBitTable::DTI;
-}
-
-inline void* rBitTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rBitTable::DTI)->memAlloc(sz, align, rBitTable::DTI.getID());
-}
-
-inline void rBitTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rBitTable::DTI)->memFree(p_addr);
 }
 
 bool rBitTable::loadData(MtDataReader& in, cBitTable* pData) {

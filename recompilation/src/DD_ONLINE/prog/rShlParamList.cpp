@@ -20,14 +20,6 @@ const MtDTI& cShlGroupParam::getDTI() const {
     return cShlGroupParam::DTI;
 }
 
-inline void* cShlGroupParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlGroupParam::DTI)->memAlloc(sz, align, cShlGroupParam::DTI.getID());
-}
-
-inline void cShlGroupParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlGroupParam::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) cShlGroupParam::~cShlGroupParam() {
     mShlList.deleteAll(true);
 }
@@ -64,14 +56,6 @@ MtObject* cShlGroupParam::MyDTI::newInstance() const {
 
 const MtDTI& rShlParamList::getDTI() const {
     return rShlParamList::DTI;
-}
-
-inline void* rShlParamList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rShlParamList::DTI)->memAlloc(sz, align, rShlParamList::DTI.getID());
-}
-
-inline void rShlParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rShlParamList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rShlParamList::~rShlParamList() {

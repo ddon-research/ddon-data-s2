@@ -18,6 +18,8 @@ class MtVector3;
 class cEfcHandle;
 class cHitInfo;
 class cHitInfoAfter;
+class cJob10ExecuteBoost;
+class cJob10NormalAttackBase;
 class uDDOModel;
 class uHuman;
 
@@ -37,6 +39,8 @@ using u8 = unsigned char;
 
 class cpJob10 : public cpJobBase
 {
+    friend class cJob10ExecuteBoost;
+    friend class cJob10NormalAttackBase;
 public:
     enum BOOST_MODE
     {
@@ -510,4 +514,48 @@ inline void* cpJob10::cSpiritManager::cSpiritStateBoost::operator new(size_t sz,
 
 inline cpJob10::cSpiritManager::cSpiritStateBoost::cSpiritStateBoost() {
     this->mBoostMode = 2;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob10::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob10::DTI);
+}
+
+inline void cpJob10::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob10::DTI)->memFree(p_addr);
+}
+
+inline void* cpJob10::cSpiritManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJob10::cSpiritManager::DTI)->memAlloc(sz, align, ::cpJob10::cSpiritManager::DTI.::MtDTI::getID());
+}
+
+inline void cpJob10::cSpiritManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob10::cSpiritManager::DTI)->memFree(p_addr);
+}
+
+inline void* cpJob10::cSpiritManager::cSpiritStateNormal::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJob10::cSpiritManager::cSpiritStateNormal::DTI)->memAlloc(sz, align, ::cpJob10::cSpiritManager::cSpiritStateNormal::DTI.::MtDTI::getID());
+}
+
+inline void cpJob10::cSpiritManager::cSpiritStateNormal::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob10::cSpiritManager::cSpiritStateNormal::DTI)->memFree(p_addr);
+}
+
+inline void* cpJob10::cSpiritManager::cSpiritState::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJob10::cSpiritManager::cSpiritState::DTI)->memAlloc(sz, align, ::cpJob10::cSpiritManager::cSpiritState::DTI.::MtDTI::getID());
+}
+
+inline void cpJob10::cSpiritManager::cSpiritState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob10::cSpiritManager::cSpiritState::DTI)->memFree(p_addr);
+}
+
+inline void* cpJob10::cSpiritManager::cSpiritStateBoost::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJob10::cSpiritManager::cSpiritStateBoost::DTI)->memAlloc(sz, align, ::cpJob10::cSpiritManager::cSpiritStateBoost::DTI.::MtDTI::getID());
+}
+
+inline void cpJob10::cSpiritManager::cSpiritStateBoost::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob10::cSpiritManager::cSpiritStateBoost::DTI)->memFree(p_addr);
 }

@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlShiftCircleBit.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -25,10 +23,6 @@
 
 const MtDTI& cShlParamShiftCircleBit::getDTI() const {
     return cShlParamShiftCircleBit::DTI;
-}
-
-inline void* cShlParamShiftCircleBit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamShiftCircleBit::DTI)->memAlloc(sz, align, cShlParamShiftCircleBit::DTI.getID());
 }
 
 inline void cShlParamShiftCircleBit::operator delete(void* p_addr) {
@@ -64,14 +58,6 @@ MtObject* cShlParamShiftCircleBit::MyDTI::newInstance() const {
 
 const MtDTI& uShlShiftCircleBit::getDTI() const {
     return uShlShiftCircleBit::DTI;
-}
-
-inline void* uShlShiftCircleBit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlShiftCircleBit::DTI)->memAlloc(sz, align, uShlShiftCircleBit::DTI.getID());
-}
-
-inline void uShlShiftCircleBit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlShiftCircleBit::DTI)->memFree(p_addr);
 }
 
 void uShlShiftCircleBit::setup() {

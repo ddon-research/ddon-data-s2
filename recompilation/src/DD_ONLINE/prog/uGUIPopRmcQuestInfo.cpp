@@ -33,16 +33,8 @@ const MtDTI& uGUIPopRmcQuestInfo::getDTI() const {
     return uGUIPopRmcQuestInfo::DTI;
 }
 
-inline MtAllocator* uGUIPopRmcQuestInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopRmcQuestInfo::DTI);
-}
-
 void* uGUIPopRmcQuestInfo::operator new(size_t sz, u32 align) {
     return uGUIPopRmcQuestInfo::getAllocator()->memAlloc(sz, align, uGUIPopRmcQuestInfo::DTI.getID());
-}
-
-inline void uGUIPopRmcQuestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopRmcQuestInfo::DTI)->memFree(p_addr);
 }
 
 uGUIPopRmcQuestInfo::~uGUIPopRmcQuestInfo() {

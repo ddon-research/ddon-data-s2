@@ -403,3 +403,19 @@ inline void* uGUIPopFilter::cData::operator new(size_t sz, void* p_addr) {
 inline void* uGUIPopFilter::cListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopFilter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopFilter::DTI);
+}
+
+inline void uGUIPopFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopFilter::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopFilter::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopFilter::cListItem::DTI)->memFree(p_addr);
+}

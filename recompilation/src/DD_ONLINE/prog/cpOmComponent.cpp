@@ -145,14 +145,118 @@ __attribute__((weak)) bool cpOmBase::isUIOpen() {
     return {};
 }
 
-__attribute__((weak)) bool cpOmBase::reqDialog(s32 dialogType, MT_CTSTR mainMsg, s32 defPos, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4) {
-    DDON_STUB("cpOmBase::reqDialog")
-    return {};
+bool cpOmBase::reqDialog(s32 dialogType, MT_CTSTR mainMsg, s32 defPos, MT_CTSTR choice1, MT_CTSTR choice2, MT_CTSTR choice3, MT_CTSTR choice4) {
+    uGUIBase* t0 = static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(static_cast<const MtDTI*>(&uGUISystemMsg::DTI));
+    bool b2_0;
+    if ((mpGUISingleton = t0) != nullptr) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu != mpGUISingleton) {
+            b2_0 = false;
+        } else {
+            const MtDTI& t1 = t0->getDTI();
+            MT_CTSTR v0_1 = uGUISystemMsg::DTI.mName;
+            for (const MtDTI* v0_0 = &t1;;) {
+                if (v0_1 != v0_0->mName) {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    static_cast<uGUISystemMsg*>(mpGUISingleton)->setText(mainMsg, -1);
+                    if (choice1 != nullptr) {
+                        static_cast<uGUISystemMsg*>(mpGUISingleton)->addChoiceInfo(choice1, 0u, nHuman::JOB_ID_NONE, -1, true);
+                        if (choice2 != nullptr) {
+                            static_cast<uGUISystemMsg*>(mpGUISingleton)->addChoiceInfo(choice2, 0u, nHuman::JOB_ID_NONE, -1, true);
+                            if (choice3 != nullptr) {
+                                static_cast<uGUISystemMsg*>(mpGUISingleton)->addChoiceInfo(choice3, 0u, nHuman::JOB_ID_NONE, -1, true);
+                                if (choice4 != nullptr) {
+                                    static_cast<uGUISystemMsg*>(mpGUISingleton)->addChoiceInfo(choice4, 0u, nHuman::JOB_ID_NONE, -1, true);
+                                    static_cast<uGUISystemMsg*>(mpGUISingleton)->setDefaultChoicePos(defPos, -1);
+                                    static_cast<uGUISystemMsg*>(mpGUISingleton)->setCancelChoicePos(3, -1);
+                                } else {
+                                    static_cast<uGUISystemMsg*>(mpGUISingleton)->setDefaultChoicePos(defPos, -1);
+                                    static_cast<uGUISystemMsg*>(mpGUISingleton)->setCancelChoicePos(2, -1);
+                                }
+                            } else {
+                                static_cast<uGUISystemMsg*>(mpGUISingleton)->setDefaultChoicePos(defPos, -1);
+                                static_cast<uGUISystemMsg*>(mpGUISingleton)->setCancelChoicePos(1, -1);
+                            }
+                        } else {
+                            static_cast<uGUISystemMsg*>(mpGUISingleton)->setDefaultChoicePos(defPos, -1);
+                            static_cast<uGUISystemMsg*>(mpGUISingleton)->setCancelChoicePos(0, -1);
+                        }
+                    } else {
+                        static_cast<uGUISystemMsg*>(mpGUISingleton)->setDefaultChoicePos(defPos, -1);
+                    }
+                    b2_0 = true;
+                    return b2_0;
+                }
+            }
+            b2_0 = false;
+        }
+    } else {
+        b2_0 = false;
+    }
+    return b2_0;
 }
 
-__attribute__((weak)) bool cpOmBase::reqDialogEx(MT_CTSTR title, s32 defPos, MT_CTSTR* pselect, u32 selectNum) {
-    DDON_STUB("cpOmBase::reqDialogEx")
-    return {};
+bool cpOmBase::reqDialogEx(MT_CTSTR title, s32 defPos, MT_CTSTR* pselect, u32 selectNum) {
+    bool b4_0;
+    if (pselect == nullptr) {
+        b4_0 = false;
+    } else {
+        if (selectNum == 0) {
+            b4_0 = false;
+        } else {
+            uGUIBase* t0 = static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(static_cast<const MtDTI*>(&uGUISystemMsg::DTI));
+            if ((mpGUISingleton = t0) != nullptr) {
+                if (static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu != mpGUISingleton) {
+                    b4_0 = false;
+                } else {
+                    const MtDTI& t1 = t0->getDTI();
+                    MT_CTSTR v0_1 = uGUISystemMsg::DTI.mName;
+                    const MtDTI* v0_0 = &t1;
+                    MT_CTSTR* p2_3;
+                    uGUIBase* v2_5;
+                    u32 cnt;
+                    uGUIBase* v3_5;
+                    for (;;) {
+                        if (v0_1 != v0_0->mName) {
+                            if (v0_0->mpParent != nullptr) {
+                                v0_0 = v0_0->mpParent;
+                            } else {
+                                b4_0 = false;
+                                break;
+                            }
+                        } else {
+                            p2_3 = pselect;
+                            v2_5 = mpGUISingleton;
+                            cnt = selectNum;
+                            for (;;) {
+                                static_cast<uGUISystemMsg*>(v2_5)->addChoiceInfo(*p2_3, 0u, nHuman::JOB_ID_NONE, -1, true);
+                                v3_5 = mpGUISingleton;
+                                if ((cnt - 1u) != 0) {
+                                    p2_3 += 1;
+                                    v2_5 = v3_5;
+                                    cnt += 0xFFFFFFFFu;
+                                } else {
+                                    break;
+                                }
+                            }
+                            static_cast<uGUISystemMsg*>(v3_5)->setText(title, -1);
+                            static_cast<uGUISystemMsg*>(mpGUISingleton)->setDefaultChoicePos(defPos, -1);
+                            static_cast<uGUISystemMsg*>(mpGUISingleton)->setCancelChoicePos(-1, -1);
+                            b4_0 = true;
+                            break;
+                        }
+                    }
+                }
+            } else {
+                b4_0 = false;
+            }
+        }
+    }
+    return b4_0;
 }
 
 __attribute__((weak)) bool cpOmBase::reqText(u32 textType, u32 textNo, u32 questNo) {
@@ -191,9 +295,51 @@ bool cpOmBase::isEndGUISingleton() {
     return true;
 }
 
-__attribute__((weak)) void cpOmBase::reqTextDialog(cTalkMsgData* pMsgData) {
-    DDON_STUB("cpOmBase::reqTextDialog")
-    /* stub */
+void cpOmBase::reqTextDialog(cTalkMsgData* pMsgData) {
+    if (pMsgData != nullptr) {
+        uGUIBase* t0 = static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(static_cast<const MtDTI*>(&uGUISystemMsg::DTI));
+        if ((mpGUISingleton = t0) != nullptr) {
+            if (static_cast<sGUIExt*>(sGUI::getInstance())->mpSingletonMenu == mpGUISingleton) {
+                const MtDTI& t1 = t0->getDTI();
+                MT_CTSTR v0_1 = uGUISystemMsg::DTI.mName;
+                const MtDTI* v0_0 = &t1;
+                unsigned int i2_3;
+                for (;;) {
+                    if (v0_1 != v0_0->mName) {
+                        if (v0_0->mpParent != nullptr) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            return;
+                        }
+                    } else {
+                        if (pMsgData->getDispPageNum() != 0) {
+                            i2_3 = 0;
+                            for (;;) {
+                                if (pMsgData->getMessage() != nullptr) {
+                                    uGUIBase* t2 = mpGUISingleton;
+                                    MT_CTSTR t3 = pMsgData->getMessage();
+                                    if (i2_3 != 0) {
+                                        static_cast<uGUISystemMsg*>(t2)->addPageInfo(t3);
+                                    } else {
+                                        static_cast<uGUISystemMsg*>(t2)->setText(t3, -1);
+                                    }
+                                }
+                                pMsgData->addDispPageNo();
+                                if ((i2_3 + 1u) < pMsgData->getDispPageNum()) {
+                                    i2_3 += 1u;
+                                } else {
+                                    goto loop_4e1e0d_end;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+                loop_4e1e0d_end:;
+                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpGUISingleton) + 7584) = 0;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpOmBase::initAction(uOmModel* puom) {
@@ -258,16 +404,8 @@ const MtDTI& cpOmLadder::getDTI() const {
     return cpOmLadder::DTI;
 }
 
-inline MtAllocator* cpOmLadder::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpOmLadder::DTI);
-}
-
 void* cpOmLadder::operator new(size_t sz, u32 align) {
     return cpOmLadder::getAllocator()->memAlloc(sz, align, cpOmLadder::DTI.getID());
-}
-
-inline void cpOmLadder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpOmLadder::DTI)->memFree(p_addr);
 }
 
 cpOmLadder::cpOmLadder() {
@@ -328,6 +466,117 @@ cpOmLadder::MyDTI cpOmLadder::DTI("cpOmLadder", &::cpComponent::DTI, 216ul, 0u, 
 
 MtObject* cpOmLadder::MyDTI::newInstance() const {
     return new (16u) cpOmLadder;
+}
+
+const MtDTI& cpOmNav::getDTI() const {
+    return cpOmNav::DTI;
+}
+
+void* cpOmNav::operator new(size_t sz, u32 align) {
+    return cpOmNav::getAllocator()->memAlloc(sz, align, cpOmNav::DTI.getID());
+}
+
+cpOmNav::cpOmNav() {
+    DDON_STUB("cpOmNav::cpOmNav")
+    /* stub */
+}
+
+cpOmNav::~cpOmNav() {
+}
+
+void cpOmNav::move() {
+    if (mpModel != nullptr) {
+        cOmControl* t0 = mpModel->getOmCtrl();
+        if (t0 != nullptr) {
+            setLinkNavExt(mbLinkNav, false, false);
+            if (t0->mLot.mAreaMasterNo != 0) {
+                mbAreaMaster = sQuestManagerExt::getInstance()->isAreaRelease(static_cast<unsigned short>(t0->mLot.mAreaMasterNo));
+            }
+        }
+        if (mRno == 0) {
+            mRno = 1;
+            setLinkNavExt(false, false, false);
+        }
+    } else {
+        if (mRno == 0) {
+            mRno = 1;
+            setLinkNavExt(false, false, false);
+        }
+    }
+}
+
+inline cpOmNav::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cpOmNav::MyDTI cpOmNav::DTI("cpOmNav", &::cpOmBase::DTI, 256ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cpOmNav::MyDTI::newInstance() const {
+    DDON_STUB("cpOmNav::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cpOmSpa::getDTI() const {
+    return cpOmSpa::DTI;
+}
+
+void* cpOmSpa::operator new(size_t sz, u32 align) {
+    return cpOmSpa::getAllocator()->memAlloc(sz, align, cpOmSpa::DTI.getID());
+}
+
+cpOmSpa::cpOmSpa() {
+    DDON_STUB("cpOmSpa::cpOmSpa")
+    /* stub */
+}
+
+cpOmSpa::~cpOmSpa() {
+}
+
+void cpOmSpa::move() {
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (mRno != 0) {
+        return;
+    }
+    mRno = 1;
+}
+
+void cpOmSpa::setTouch(uDDOModel* pUnit) {
+    if (pUnit == nullptr) {
+        return;
+    }
+    if ((pUnit->mUnitId & 8u) == 0) {
+        return;
+    }
+    mpTouchUnit = pUnit;
+    mbLoopAct = false;
+    u32 t0 = pUnit->getActMgrPtr()->getActionNo();
+    if ((t0 - 196u) > 30u) {
+        if (t0 > 10u) {
+            if (t0 == 74) {
+                pUnit->getActionRequestPtr()->mTouchAction = 208;
+                pUnit->getActionRequestPtr()->mTouchActionReq = 208;
+            }
+        } else {
+            pUnit->getActionRequestPtr()->mTouchAction = 208;
+            pUnit->getActionRequestPtr()->mTouchActionReq = 208;
+        }
+    } else {
+        pUnit->getActionRequestPtr()->mTouchAction = 208;
+        pUnit->getActionRequestPtr()->mTouchActionReq = 208;
+    }
+}
+
+void cpOmSpa::finishTouch(nDDOModel::TOUCH_RELEASE_TYPE type) {
+    mpTouchUnit = nullptr;
+}
+
+inline cpOmSpa::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cpOmSpa::MyDTI cpOmSpa::DTI("cpOmSpa", &::cpOmBase::DTI, 256ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cpOmSpa::MyDTI::newInstance() const {
+    DDON_STUB("cpOmSpa::MyDTI::newInstance")
+    return nullptr;
 }
 
 template MtTypedArray<nQuest::cGUIDeliveryData>::~MtTypedArray();

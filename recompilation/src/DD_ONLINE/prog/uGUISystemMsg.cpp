@@ -32,16 +32,8 @@ const MtDTI& uGUISystemMsg::getDTI() const {
     return uGUISystemMsg::DTI;
 }
 
-inline MtAllocator* uGUISystemMsg::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUISystemMsg::DTI);
-}
-
 void* uGUISystemMsg::operator new(size_t sz, u32 align) {
     return uGUISystemMsg::getAllocator()->memAlloc(sz, align, uGUISystemMsg::DTI.getID());
-}
-
-inline void uGUISystemMsg::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUISystemMsg::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUISystemMsg::~uGUISystemMsg() {
@@ -305,7 +297,7 @@ bool uGUISystemMsg::evCtrlScrollList(cControl::Message* msg) {
         if (msg->reason == nGUIExt::MOUSE_LCLICK) {
             if (static_cast<unsigned int>(msg->current) < mScrollList.mInfoArray.mLength) {
                 if (mScrollList.mInfoArray.mpArray[msg->current] != nullptr) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mScrollList.mInfoArray.mpArray[msg->current]) + 36)) != 0) {
+                    if (static_cast<cScrollListInfoBase*>(mScrollList.mInfoArray.mpArray[msg->current])->mIsDisable) {
                         msg->changeSE = 20;
                         setInputEvent(13u);
                         if (msg->pData != nullptr) {
@@ -354,10 +346,6 @@ __attribute__((weak)) MtObject* uGUISystemMsg::MyDTI::newInstance() const {
 
 const MtDTI& uGUISystemMsg::cPageInfo::getDTI() const {
     return uGUISystemMsg::cPageInfo::DTI;
-}
-
-inline void uGUISystemMsg::cPageInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUISystemMsg::cPageInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUISystemMsg::cPageInfo::~cPageInfo() {

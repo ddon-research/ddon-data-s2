@@ -3,7 +3,6 @@
 #include "QuickParty.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -12,14 +11,6 @@
 
 const MtDTI& CDataQuickPartyMatching::getDTI() const {
     return CDataQuickPartyMatching::DTI;
-}
-
-inline MtAllocator* CDataQuickPartyMatching::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataQuickPartyMatching::DTI);
-}
-
-inline void* CDataQuickPartyMatching::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataQuickPartyMatching::DTI)->memAlloc(sz, align, CDataQuickPartyMatching::DTI.getID());
 }
 
 __attribute__((weak)) void CDataQuickPartyMatching::operator delete(void* p_addr) {

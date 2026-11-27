@@ -550,6 +550,10 @@ inline f32 sOmManager::getDiffuseTime() const {
     return this->mDiffuseTime;
 }
 
+inline f32 sOmManager::getDiffuseIntensityMax() const {
+    return this->mDiffuseIntensityMax;
+}
+
 inline f32 sOmManager::getDiffuseIntensityMin() const {
     return this->mDiffuseIntensityMin;
 }
@@ -591,4 +595,90 @@ inline void* sOmManager::cClanEmblemTextureCtrl::operator new(size_t sz, void* p
 inline sOmManager::cClanEmblemTextureCtrl::cClanEmblemTextureCtrl() {
     this->mpScreenSpace = nullptr;
     this->mpRenderTargetTexture = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/sMain.h"
+#include "sPlayerManager.h"
+
+inline MtAllocator* sOmManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sOmManager::DTI);
+}
+
+inline void sOmManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sOmManager::DTI)->memFree(p_addr);
+}
+
+inline void sOmManager::moveBell() {
+    if ((::sPlayerManager::mpInstance)->mpMyPlayer == nullptr) {
+        return;
+    }
+    if (this->mBellTimer > 0.0f) {
+        this->mBellTimer = this->mBellTimer - (::sMain::mpInstance)->mDeltaTime;
+    } else {
+        this->mbBell = true;
+    }
+}
+
+inline void sOmManager::initAQC() {
+    this->mbEnableUnitKill = true;
+    this->mLoadLength = 100.0f;
+    this->mbAQCtrl = false;
+    this->mAQCKillLength = 0.0f;
+    this->mAQCScale = 1.0f;
+    this->mbSaveAQCScale = false;
+    this->mSaveAQCScale = 1.0f;
+    this->mbBaseArea = false;
+    this->mAQCLODScale = 1.0f;
+    this->mOMDispLimitLength = 40.0f;
+    this->mOMDispLength = 40.0f;
+    this->mGrassDispLength = 40.0f;
+    this->mInsDispLimitLength = 100.0f;
+    this->mInsDispLength = 200.0f;
+    this->mCameraFrame = 0;
+    this->mCameraYawDiff = 0.0f;
+    this->mCameraYawDiffMin = 1.0f;
+    this->mCameraYawDiffMax = 0.9975f;
+    this->mCameraYawPer = 0.0f;
+    this->mCameraYaw[0].x = ::MtVector3::Zero.x;
+    this->mCameraYaw[0].y = ::MtVector3::Zero.y;
+    this->mCameraYaw[0].z = ::MtVector3::Zero.z;
+    this->mCameraYaw[0].pad_ = 0.0f;
+    this->mCameraYaw[1].x = ::MtVector3::Zero.x;
+    this->mCameraYaw[1].y = ::MtVector3::Zero.y;
+    this->mCameraYaw[1].z = ::MtVector3::Zero.z;
+    this->mCameraYaw[1].pad_ = 0.0f;
+    this->mInsLODDist[0] = 1000.0f;
+    this->mInsLODDist[1] = 8500.0f;
+    this->mInsLODDist[2] = 30000.0f;
+    this->mInsLODDistPan[0] = 1000.0f;
+    this->mInsLODDistPan[1] = 8500.0f;
+    this->mInsLODDistPan[2] = 30000.0f;
+}
+
+inline void sOmManager::cOmArcLoader::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sOmManager::cOmArcLoader::DTI)->memFree(p_addr);
+}
+
+inline void sOmManager::cOmArcLoader::releaseArc() {
+    this->mArc.::cArcLoaderBase::releaseArc();
+    this->mRnoArc = 0;
+}
+
+inline void* sOmManager::cWarpData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sOmManager::cWarpData::DTI)->memAlloc(sz, align, ::sOmManager::cWarpData::DTI.::MtDTI::getID());
+}
+
+inline void sOmManager::cWarpData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sOmManager::cWarpData::DTI)->memFree(p_addr);
+}
+
+inline void* sOmManager::cClanEmblemTextureCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sOmManager::cClanEmblemTextureCtrl::DTI)->memAlloc(sz, align, ::sOmManager::cClanEmblemTextureCtrl::DTI.::MtDTI::getID());
+}
+
+inline void sOmManager::cClanEmblemTextureCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sOmManager::cClanEmblemTextureCtrl::DTI)->memFree(p_addr);
 }

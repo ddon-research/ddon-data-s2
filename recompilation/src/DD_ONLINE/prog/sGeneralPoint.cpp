@@ -42,16 +42,8 @@ const MtDTI& sGeneralPoint::getDTI() const {
     return sGeneralPoint::DTI;
 }
 
-inline MtAllocator* sGeneralPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sGeneralPoint::DTI);
-}
-
 void* sGeneralPoint::operator new(size_t sz, u32 align) {
     return sGeneralPoint::getAllocator()->memAlloc(sz, align, sGeneralPoint::DTI.getID());
-}
-
-inline void sGeneralPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGeneralPoint::DTI)->memFree(p_addr);
 }
 
 sGeneralPoint::sGeneralPoint() {

@@ -35,16 +35,8 @@ const MtDTI& sEnemyManager::getDTI() const {
     return sEnemyManager::DTI;
 }
 
-inline MtAllocator* sEnemyManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sEnemyManager::DTI);
-}
-
 void* sEnemyManager::operator new(size_t sz, u32 align) {
     return sEnemyManager::getAllocator()->memAlloc(sz, align, sEnemyManager::DTI.getID());
-}
-
-inline void sEnemyManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEnemyManager::DTI)->memFree(p_addr);
 }
 
 sEnemyManager::sEnemyManager() {

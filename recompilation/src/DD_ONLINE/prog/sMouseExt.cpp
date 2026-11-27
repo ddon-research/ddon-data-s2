@@ -3,7 +3,6 @@
 #include "sMouseExt.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/sMouse.h"
 #ifndef DDON_STUB
@@ -14,16 +13,8 @@ const MtDTI& sMouseExt::getDTI() const {
     return sMouseExt::DTI;
 }
 
-inline MtAllocator* sMouseExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sMouseExt::DTI);
-}
-
 void* sMouseExt::operator new(size_t sz, u32 align) {
     return sMouseExt::getAllocator()->memAlloc(sz, align, sMouseExt::DTI.getID());
-}
-
-inline void sMouseExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sMouseExt::DTI)->memFree(p_addr);
 }
 
 sMouseExt::sMouseExt() {

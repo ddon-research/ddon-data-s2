@@ -27,16 +27,8 @@ const MtDTI& cpAIPawnEmChecker::getDTI() const {
     return cpAIPawnEmChecker::DTI;
 }
 
-inline MtAllocator* cpAIPawnEmChecker::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpAIPawnEmChecker::DTI);
-}
-
 void* cpAIPawnEmChecker::operator new(size_t sz, u32 align) {
     return cpAIPawnEmChecker::getAllocator()->memAlloc(sz, align, cpAIPawnEmChecker::DTI.getID());
-}
-
-inline void cpAIPawnEmChecker::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpAIPawnEmChecker::DTI)->memFree(p_addr);
 }
 
 cpAIPawnEmChecker::cpAIPawnEmChecker() {
@@ -127,14 +119,6 @@ void cpAIPawnEmChecker::getActiveAIPawnEmPrmNode(MtTypedArray<cAIPawnEmNode>& ds
             }
         }
     }
-}
-
-inline rAIPawnEmParam* cpAIPawnEmChecker::getAIPawnEmParam() {
-    return mpEmParam.mpPtr;
-}
-
-inline const rAIPawnEmParam* cpAIPawnEmChecker::getAIPawnEmParam() const {
-    return mpEmParam.mpPtr;
 }
 
 __attribute__((weak)) bool cpAIPawnEmChecker::isWeakAttr(u32 attr) const {

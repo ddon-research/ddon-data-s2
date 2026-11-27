@@ -138,3 +138,19 @@ inline cStageCtrl::Area::Area() {
     this->mDepth = -1;
     this->mGroupNo = -1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cStageCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStageCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cStageCtrl::Area::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStageCtrl::Area::DTI)->memAlloc(sz, align, ::cStageCtrl::Area::DTI.::MtDTI::getID());
+}
+
+inline void cStageCtrl::Area::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStageCtrl::Area::DTI)->memFree(p_addr);
+}

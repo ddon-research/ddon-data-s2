@@ -3,7 +3,6 @@
 #include "cpActionRequest.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cDelegate.h"
 #include "../../XFramework/cUnit.h"
@@ -18,16 +17,8 @@ const MtDTI& cpActionRequest::getDTI() const {
     return cpActionRequest::DTI;
 }
 
-inline MtAllocator* cpActionRequest::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpActionRequest::DTI);
-}
-
 void* cpActionRequest::operator new(size_t sz, u32 align) {
     return cpActionRequest::getAllocator()->memAlloc(sz, align, cpActionRequest::DTI.getID());
-}
-
-inline void cpActionRequest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpActionRequest::DTI)->memFree(p_addr);
 }
 
 cpActionRequest::cpActionRequest() {

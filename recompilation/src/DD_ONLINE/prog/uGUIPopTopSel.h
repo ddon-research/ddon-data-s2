@@ -540,3 +540,29 @@ inline void uGUIPopTopSel::eventChkout() {
 inline void uGUIPopTopSel::eventTopbtn() {
     this->mSelectResult = 4;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopTopSel::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopTopSel::DTI);
+}
+
+inline void uGUIPopTopSel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopTopSel::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopTopSel::clearSelector() {
+    this->mSelector.mMsgList.::uGUIBase::cValueList::clearStr();
+}
+
+inline void uGUIPopTopSel::clearMouseTouchList() {
+    if (this->mpListCtrl != nullptr) {
+        this->mpListCtrl->::cControl::clearMouseTouchList();
+    }
+    if (this->mpSelectorCtrl == nullptr) {
+        return;
+    }
+    this->mpSelectorCtrl->::cControl::clearMouseTouchList();
+}

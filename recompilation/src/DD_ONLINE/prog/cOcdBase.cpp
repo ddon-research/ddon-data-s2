@@ -19,6 +19,7 @@
 #include "cOcdParamRes.h"
 #include "cOcdPriority.h"
 #include "../../XFramework/cUnit.h"
+#include "cpEmParamCtrl.h"
 #include "cpOcdCtrl.h"
 #include "../../generated/shared/nAbility.h"
 #include "nDDOUtility.h"
@@ -45,10 +46,6 @@
 
 const MtDTI& cOcdBase::getDTI() const {
     return cOcdBase::DTI;
-}
-
-inline void cOcdBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdBase::DTI)->memFree(p_addr);
 }
 
 cOcdBase::cOcdBase() {
@@ -437,9 +434,10 @@ __attribute__((weak)) s32 cOcdBase::getCenterJointNo() const {
     return {};
 }
 
-__attribute__((weak)) void cOcdBase::addOcdBadNonDamageList(nObjCondition::OCD_BAD_TYPE type) {
-    DDON_STUB("cOcdBase::addOcdBadNonDamageList")
-    /* stub */
+void cOcdBase::addOcdBadNonDamageList(nObjCondition::OCD_BAD_TYPE type) {
+    if (static_cast<unsigned int>(type - 4097) <= 30) {
+        mOcdBadNonDamageList.elems[static_cast<unsigned int>(type - 4097)] = true;
+    }
 }
 
 __attribute__((weak)) MtObject* cOcdBase::MyDTI::newInstance() const {
@@ -449,14 +447,6 @@ __attribute__((weak)) MtObject* cOcdBase::MyDTI::newInstance() const {
 
 const MtDTI& cOcdImmuneParam::getDTI() const {
     return cOcdImmuneParam::DTI;
-}
-
-inline void* cOcdImmuneParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdImmuneParam::DTI)->memAlloc(sz, align, cOcdImmuneParam::DTI.getID());
-}
-
-inline void cOcdImmuneParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdImmuneParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cOcdImmuneParam::createProperty(MtPropertyList& s) {
@@ -477,17 +467,36 @@ const MtDTI& cOcdStatusParam::getDTI() const {
     return cOcdStatusParam::DTI;
 }
 
-inline void* cOcdStatusParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdStatusParam::DTI)->memAlloc(sz, align, cOcdStatusParam::DTI.getID());
-}
-
-inline void cOcdStatusParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdStatusParam::DTI)->memFree(p_addr);
-}
-
-__attribute__((weak)) void cOcdStatusParam::setParamFromRes(const cOcdStatusParamRes* pStatusRes) {
-    DDON_STUB("cOcdStatusParam::setParamFromRes")
-    /* stub */
+void cOcdStatusParam::setParamFromRes(const cOcdStatusParamRes* pStatusRes) {
+    if (pStatusRes == nullptr) {
+        return;
+    }
+    mIsEffective = pStatusRes->isEffective();
+    f32 t0 = pStatusRes->getEndurance();
+    mEndurance = t0;
+    mEnduranceCheatCheck = mEndurance;
+    f32 t1 = pStatusRes->getEndurance();
+    mEnduranceMax = t1;
+    mEnduranceMaxCheatCheck = mEnduranceMax;
+    mIsTimeRecover = pStatusRes->isTimeRecover();
+    f32 t2 = pStatusRes->getActiveTime();
+    f32 t3 = sMain::getInstance()->getFps();
+    mActiveTime = t3 * t2;
+    mActiveTimeCheatCheck = mActiveTime;
+    mActiveTimeMax = mActiveTimeCheatCheck;
+    mActiveTimeMaxCheatCheck = mActiveTimeMax;
+    const f32 t4 = pStatusRes->mCureWaitTime;
+    mCureWaitTime = t3 * t4;
+    mCureWaitTimeMax = mCureWaitTime;
+    f32 t5 = pStatusRes->getCureValue();
+    mCureValue = t5;
+    mCureValueCheatCheck = mCureValue;
+    f32 t6 = pStatusRes->getFreeParam0();
+    mFreeParam0 = t6;
+    mFreeParam0CheatCheck = mFreeParam0;
+    f32 t7 = pStatusRes->getFreeParam1();
+    mFreeParam1 = t7;
+    mFreeParam1CheatCheck = mFreeParam1;
 }
 
 void cOcdStatusParam::resetActiveTime() {

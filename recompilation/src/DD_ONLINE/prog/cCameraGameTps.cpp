@@ -39,10 +39,6 @@ const MtDTI& cCamExParamTps::getDTI() const {
     return cCamExParamTps::DTI;
 }
 
-inline MtAllocator* cCamExParamTps::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamExParamTps::DTI);
-}
-
 void* cCamExParamTps::operator new(size_t sz, u32 align) {
     return cCamExParamTps::getAllocator()->memAlloc(sz, align, cCamExParamTps::DTI.getID());
 }
@@ -91,10 +87,6 @@ __attribute__((weak)) MtObject* cCamExParamTps::MyDTI::newInstance() const {
 
 const MtDTI& cCamExParamTps2::getDTI() const {
     return cCamExParamTps2::DTI;
-}
-
-inline MtAllocator* cCamExParamTps2::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamExParamTps2::DTI);
 }
 
 void* cCamExParamTps2::operator new(size_t sz, u32 align) {
@@ -151,10 +143,6 @@ const MtDTI& cCamImpTps::getDTI() const {
     return cCamImpTps::DTI;
 }
 
-inline void cCamImpTps::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpTps::DTI)->memFree(p_addr);
-}
-
 cCamImpTps::~cCamImpTps() {
 }
 
@@ -203,8 +191,7 @@ cCamImpTps::MyDTI cCamImpTps::DTI("cCamImpTps", &::cCamImpBase::DTI, 264ul, 0u, 
 
 alignas(4) unsigned char cCamImpTps_maxSpeedCurveX_bytes[64] __asm__("_ZN10cCamImpTps14maxSpeedCurveXE") = {0x00, 0x00, 0x00, 0x00, 0x44, 0x6f, 0x89, 0x3e, 0xa6, 0x64, 0x25, 0x3f, 0x89, 0x0b, 0x5c, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xd2, 0x3a, 0x5a, 0x3e, 0x55, 0x32, 0x04, 0x3f, 0x2a, 0x8d, 0x54, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f, 0x00, 0x00, 0x80, 0x3f};
 
-__attribute__((weak)) MtObject* cCamImpTps::MyDTI::newInstance() const {
-    DDON_STUB("cCamImpTps::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCamImpTps::MyDTI::newInstance() const {
+    return new (16u) cCamImpTps;
 }
 

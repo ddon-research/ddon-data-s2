@@ -33,6 +33,7 @@ class rModel;
 class rSoundRequest;
 class rSoundStreamRequest;
 class rTexture;
+class uCharacterEdit;
 class uCharacterEditBase;
 class uCnsEdit;
 class uCnsScaleFix;
@@ -56,6 +57,7 @@ using u8 = unsigned char;
 
 class cpCharacterEdit : public cpComponent
 {
+    friend class uCharacterEdit;
     friend class uCharacterEditBase;
     friend class uMockUpModel;
 public:
@@ -687,4 +689,16 @@ inline void cpCharacterEdit::setSleep(bool sleep) {
 
 inline bool cpCharacterEdit::isNeedUpdateMatrixRetry() const {
     return this->mIsmNeedUpdateMatrixRetry;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpCharacterEdit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpCharacterEdit::DTI);
+}
+
+inline void cpCharacterEdit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpCharacterEdit::DTI)->memFree(p_addr);
 }

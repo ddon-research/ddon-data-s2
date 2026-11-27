@@ -16,10 +16,6 @@ const MtDTI& CDataUIListCommand::getDTI() const {
     return CDataUIListCommand::DTI;
 }
 
-inline MtAllocator* CDataUIListCommand::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataUIListCommand::DTI);
-}
-
 void* CDataUIListCommand::operator new(size_t sz, u32 align) {
     return CDataUIListCommand::getAllocator()->memAlloc(sz, align, CDataUIListCommand::DTI.getID());
 }
@@ -38,10 +34,6 @@ MtObject* CDataUIListCommand::MyDTI::newInstance() const {
 
 const MtDTI& CDataUIListElement::getDTI() const {
     return CDataUIListElement::DTI;
-}
-
-inline MtAllocator* CDataUIListElement::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataUIListElement::DTI);
 }
 
 void* CDataUIListElement::operator new(size_t sz, u32 align) {
@@ -63,10 +55,6 @@ __attribute__((weak)) MtObject* CDataUIListElement::MyDTI::newInstance() const {
 
 const MtDTI& CDataUIListElementChild::getDTI() const {
     return CDataUIListElementChild::DTI;
-}
-
-inline MtAllocator* CDataUIListElementChild::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataUIListElementChild::DTI);
 }
 
 void* CDataUIListElementChild::operator new(size_t sz, u32 align) {

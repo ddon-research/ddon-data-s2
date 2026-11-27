@@ -629,6 +629,10 @@ inline void* uGUIKeyConfig::cCategoryInfo::operator new(size_t sz, void* p_addr)
     return p_addr;
 }
 
+inline MT_CTSTR uGUIKeyConfig::cCategoryInfo::getName() const {
+    return &this->mName.mStr[0];
+}
+
 inline void* uGUIKeyConfig::cKeySettingItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -659,4 +663,36 @@ inline void* uGUIKeyConfig::cKeyInfo::operator new(size_t sz, void* p_addr) {
 
 inline void* uGUIKeyConfig::cKeySettingInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIKeyConfig::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIKeyConfig::cCategoryItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cCategoryItem::DTI)->memAlloc(sz, align, ::uGUIKeyConfig::cCategoryItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIKeyConfig::cCategoryItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cCategoryItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIKeyConfig::cCategoryInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cCategoryInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIKeyConfig::cKeySettingItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cKeySettingItem::DTI)->memAlloc(sz, align, ::uGUIKeyConfig::cKeySettingItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIKeyConfig::cKeySettingItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cKeySettingItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIKeyConfig::cKeyInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIKeyConfig::cKeyInfo::DTI)->memFree(p_addr);
 }

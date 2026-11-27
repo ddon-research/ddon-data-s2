@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -36,16 +35,8 @@ const MtDTI& uGUIGaugeExp::getDTI() const {
     return uGUIGaugeExp::DTI;
 }
 
-inline MtAllocator* uGUIGaugeExp::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGaugeExp::DTI);
-}
-
 void* uGUIGaugeExp::operator new(size_t sz, u32 align) {
     return uGUIGaugeExp::getAllocator()->memAlloc(sz, align, uGUIGaugeExp::DTI.getID());
-}
-
-inline void uGUIGaugeExp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeExp::DTI)->memFree(p_addr);
 }
 
 uGUIGaugeExp::uGUIGaugeExp() : uGUIBase(0u, false) {
@@ -228,14 +219,6 @@ MtObject* uGUIGaugeExp::MyDTI::newInstance() const {
 
 const MtDTI& uGUIGaugeExp::cGaugeInfo::getDTI() const {
     return uGUIGaugeExp::cGaugeInfo::DTI;
-}
-
-inline void* uGUIGaugeExp::cGaugeInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIGaugeExp::cGaugeInfo::DTI)->memAlloc(sz, align, uGUIGaugeExp::cGaugeInfo::DTI.getID());
-}
-
-inline void uGUIGaugeExp::cGaugeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeExp::cGaugeInfo::DTI)->memFree(p_addr);
 }
 
 void uGUIGaugeExp::cGaugeInfo::createProperty(MtPropertyList& s) {

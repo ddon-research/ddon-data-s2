@@ -24,14 +24,6 @@ const MtDTI& cAIFSMCluster::getDTI() const {
     return cAIFSMCluster::DTI;
 }
 
-inline void* cAIFSMCluster::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSMCluster::DTI)->memAlloc(sz, align, cAIFSMCluster::DTI.mID);
-}
-
-inline void cAIFSMCluster::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMCluster::DTI)->memFree(p_addr);
-}
-
 cAIFSMCluster::~cAIFSMCluster() {
     if (mpNodeList != nullptr) {
         if (mNodeNum != 0) {
@@ -182,14 +174,6 @@ const MtDTI& cAIFSMLink::getDTI() const {
     return cAIFSMLink::DTI;
 }
 
-inline void* cAIFSMLink::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSMLink::DTI)->memAlloc(sz, align, cAIFSMLink::DTI.mID);
-}
-
-inline void cAIFSMLink::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMLink::DTI)->memFree(p_addr);
-}
-
 void cAIFSMLink::createProperty(MtPropertyList& s) {
     this->cAIResource::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mDestinationNodeId", &mDestinationNodeId, 0u, 0u);
@@ -213,14 +197,6 @@ MtObject* cAIFSMLink::MyDTI::newInstance() const {
 
 const MtDTI& cAIFSMNode::getDTI() const {
     return cAIFSMNode::DTI;
-}
-
-inline void* cAIFSMNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memAlloc(sz, align, cAIFSMNode::DTI.mID);
-}
-
-inline void cAIFSMNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMNode::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cAIFSMNode::~cAIFSMNode() {
@@ -477,10 +453,6 @@ const MtDTI& cAIFSMNodeProcess::getDTI() const {
     return cAIFSMNodeProcess::DTI;
 }
 
-inline void cAIFSMNodeProcess::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMNodeProcess::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) cAIFSMNodeProcess::~cAIFSMNodeProcess() {
     delete mpParameter;
     mpParameter = nullptr;
@@ -532,14 +504,6 @@ __attribute__((weak)) MtObject* cAIFSMNodeProcess::MyDTI::newInstance() const {
 
 const MtDTI& rAIFSM::getDTI() const {
     return rAIFSM::DTI;
-}
-
-inline void* rAIFSM::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAIFSM::DTI)->memAlloc(sz, align, rAIFSM::DTI.mID);
-}
-
-inline void rAIFSM::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIFSM::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rAIFSM::~rAIFSM() {

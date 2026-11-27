@@ -107,3 +107,15 @@ public:
 inline void* uGUIPopSkillInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopSkillInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopSkillInfo::DTI);
+}
+
+inline void uGUIPopSkillInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopSkillInfo::DTI)->memFree(p_addr);
+}

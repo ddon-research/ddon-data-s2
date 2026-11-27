@@ -122,3 +122,15 @@ inline void cTalkMsgData::setDispPageNo(u32 PageNo) {
 inline u32 cTalkMsgData::getDispPageNo() {
     return this->mDispPageNo;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cTalkMsgData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cTalkMsgData::DTI);
+}
+
+inline void cTalkMsgData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cTalkMsgData::DTI)->memFree(p_addr);
+}

@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uFog.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
 #include "../MT/MtProperty.h"
@@ -26,10 +24,6 @@ __attribute__((weak)) void uFog::usage() {
 
 const MtDTI& uFog::getDTI() const {
     return uFog::DTI;
-}
-
-inline void uFog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFog::DTI)->memFree(p_addr);
 }
 
 uFog::uFog() {

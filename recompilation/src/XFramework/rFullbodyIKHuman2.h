@@ -152,3 +152,29 @@ inline u32 rFullbodyIKHuman2::getAssignedJointNum() {
 inline void* rFullbodyIKHuman2::JointAssign::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rFullbodyIKHuman2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFullbodyIKHuman2::DTI)->memFree(p_addr);
+}
+
+inline void* rFullbodyIKHuman2::JointAssign::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFullbodyIKHuman2::JointAssign::DTI)->memAlloc(sz, align, ::rFullbodyIKHuman2::JointAssign::DTI.::MtDTI::mID);
+}
+
+inline void rFullbodyIKHuman2::JointAssign::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFullbodyIKHuman2::JointAssign::DTI)->memFree(p_addr);
+}
+
+inline rFullbodyIKHuman2::JointAssign::JointAssign() {
+    this->mFBIKJntNo = 255;
+    this->mTargetJntNo = 255;
+    this->mRotate = false;
+    this->mEffOffset.x = ::MtVector3::Zero.x;
+    this->mEffOffset.y = ::MtVector3::Zero.y;
+    this->mEffOffset.z = ::MtVector3::Zero.z;
+    this->mEffOffset.pad_ = 0.0f;
+}

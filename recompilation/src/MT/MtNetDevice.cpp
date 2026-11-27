@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <stdlib.h>
 #include "MtNetDevice.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
@@ -9,6 +11,16 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+__attribute__((weak)) s32 MtNetBase64Url::encode(const void* pIn, u32 cIn, void* pOut, u32 cOut) {
+    DDON_STUB("MtNetBase64Url::encode")
+    return {};
+}
+
+__attribute__((weak)) s32 MtNetBase64Url::decode(const void* pIn, u32 cIn, void* pOut, u32 cOut) {
+    DDON_STUB("MtNetBase64Url::decode")
+    return {};
+}
 
 u16 MtNetByteOrder::netToHost16(u16 net_u16) {
     return __builtin_bswap16(static_cast<unsigned short>(net_u16));
@@ -53,10 +65,6 @@ void* MtNetServiceError::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtNetServiceError::DTI)->memAlloc(sz, align, MtNetServiceError::DTI.mID);
 }
 
-inline void MtNetServiceError::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtNetServiceError::DTI)->memFree(p_addr);
-}
-
 MtNetServiceError::MtNetServiceError() {
     DDON_STUB("MtNetServiceError::MtNetServiceError")
     /* stub */
@@ -75,9 +83,96 @@ bool MtNetServiceError::isExist() {
     return mInfo[0].mLevel != 0;
 }
 
-__attribute__((weak)) s32 MtNetServiceError::get(MtNetError* err, s32* index) {
-    DDON_STUB("MtNetServiceError::get")
-    return {};
+s32 MtNetServiceError::get(MtNetError* err, s32* index) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        s32 t1 = mInfo[0].mLevel;
+        if (t1 != 0) {
+            mInfo[0].mIsGot = true;
+            if (err != nullptr) {
+                *err = mInfo[0].mError;
+                s32 t2 = mInfo[0].mLevel;
+                if (index != nullptr) {
+                    *index = mInfo[0].mIndex;
+                }
+                if (mIsThreadSafe) {
+                    mLockCount = mLockCount - 1;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return t2;
+            } else {
+                if (index != nullptr) {
+                    *index = mInfo[0].mIndex;
+                    if (mIsThreadSafe) {
+                        mLockCount = mLockCount - 1;
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
+                        }
+                    }
+                } else {
+                    if (mIsThreadSafe) {
+                        mLockCount = t0;
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
+                        }
+                    }
+                }
+                return t1;
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = t0;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            return 0;
+        }
+    } else {
+        s32 t1 = mInfo[0].mLevel;
+        if (t1 != 0) {
+            mInfo[0].mIsGot = true;
+            if (err != nullptr) {
+                *err = mInfo[0].mError;
+                s32 t2 = mInfo[0].mLevel;
+                if (index != nullptr) {
+                    *index = mInfo[0].mIndex;
+                }
+                if (mIsThreadSafe) {
+                    mLockCount = mLockCount - 1;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return t2;
+            } else {
+                if (index != nullptr) {
+                    *index = mInfo[0].mIndex;
+                }
+                if (mIsThreadSafe) {
+                    mLockCount = mLockCount - 1;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return t1;
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = mLockCount - 1;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            return 0;
+        }
+    }
 }
 
 __attribute__((weak)) void MtNetServiceError::clear() {
@@ -85,14 +180,32 @@ __attribute__((weak)) void MtNetServiceError::clear() {
     /* stub */
 }
 
-__attribute__((weak)) void MtNetServiceError::addTarget(const void* obj) {
-    DDON_STUB("MtNetServiceError::addTarget")
-    /* stub */
+void MtNetServiceError::addTarget(const void* obj) {
+    s32 idx = 0;
+    Target* p1 = &mTarget[0];
+    do {
+        if (p1->mpObject == nullptr) {
+            p1->mpObject = obj;
+            mTarget[idx].mIndex = -1;
+            return;
+        }
+        idx += 1;
+        p1 += static_cast<int>(1);
+    } while (idx <= 15);
 }
 
-__attribute__((weak)) void MtNetServiceError::removeTarget(const void* obj) {
-    DDON_STUB("MtNetServiceError::removeTarget")
-    /* stub */
+void MtNetServiceError::removeTarget(const void* obj) {
+    s32 idx = 0;
+    Target* p1 = &mTarget[0];
+    do {
+        if (obj == p1->mpObject) {
+            p1->mpObject = nullptr;
+            mTarget[idx].mIndex = -1;
+            return;
+        }
+        idx += 1;
+        p1 += static_cast<int>(1);
+    } while (idx <= 15);
 }
 
 inline MtNetServiceError::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

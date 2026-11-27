@@ -20,9 +20,17 @@ class cGUIInstance;
 class cGUIObject;
 namespace nInputTextKeyboardHook { struct Keycode; }
 class uGUIAreaMaster;
+class uGUIArisenCardPop;
+class uGUIArisenCardPopPawn;
 class uGUIBase;
+class uGUIBazaarItemSearch;
+class uGUIBazaarPopBuy;
+class uGUIBazaarPopItemList;
+class uGUIBazaarPopPriceSetting;
 class uGUICaplinkChat;
+class uGUICaplinkFilter;
 class uGUICaplinkFriendList;
+class uGUICaplinkImageSelect;
 class uGUICaplinkMessage;
 class uGUICaplinkProfile;
 class uGUICaplinkProfileEdit;
@@ -38,10 +46,12 @@ class uGUICraft;
 class uGUIDialogTextBox;
 class uGUIEntryBoard;
 class uGUIEntryBoardInfo;
+class uGUIEntryBoardRecruit;
 class uGUIGPConfirm;
 class uGUIGiveAndTake;
 class uGUIJobSelect;
 class uGUILoginBonus;
+class uGUIMailDetail;
 class uGUIMap;
 class uGUIMissionInfo;
 class uGUINewspaper;
@@ -49,8 +59,12 @@ class uGUIOption;
 class uGUIPSStore;
 class uGUIPhotoAlbum;
 class uGUIPopFilter;
+class uGUIPopPawnPoint;
 class uGUIQuestBoard;
+class uGUIQuestList;
+class uGUIRimStone;
 class uGUIRimWarp;
+class uGUIServerSelectBase;
 class uGUIShopBuy;
 class uGUISkill;
 
@@ -71,9 +85,17 @@ class cControl : public MtObject
 {
     friend class cGUIControlMgr;
     friend class uGUIAreaMaster;
+    friend class uGUIArisenCardPop;
+    friend class uGUIArisenCardPopPawn;
     friend class uGUIBase;
+    friend class uGUIBazaarItemSearch;
+    friend class uGUIBazaarPopBuy;
+    friend class uGUIBazaarPopItemList;
+    friend class uGUIBazaarPopPriceSetting;
     friend class uGUICaplinkChat;
+    friend class uGUICaplinkFilter;
     friend class uGUICaplinkFriendList;
+    friend class uGUICaplinkImageSelect;
     friend class uGUICaplinkMessage;
     friend class uGUICaplinkProfile;
     friend class uGUICaplinkProfileEdit;
@@ -89,10 +111,12 @@ class cControl : public MtObject
     friend class uGUIDialogTextBox;
     friend class uGUIEntryBoard;
     friend class uGUIEntryBoardInfo;
+    friend class uGUIEntryBoardRecruit;
     friend class uGUIGPConfirm;
     friend class uGUIGiveAndTake;
     friend class uGUIJobSelect;
     friend class uGUILoginBonus;
+    friend class uGUIMailDetail;
     friend class uGUIMap;
     friend class uGUIMissionInfo;
     friend class uGUINewspaper;
@@ -100,8 +124,12 @@ class cControl : public MtObject
     friend class uGUIPSStore;
     friend class uGUIPhotoAlbum;
     friend class uGUIPopFilter;
+    friend class uGUIPopPawnPoint;
     friend class uGUIQuestBoard;
+    friend class uGUIQuestList;
+    friend class uGUIRimStone;
     friend class uGUIRimWarp;
+    friend class uGUIServerSelectBase;
     friend class uGUIShopBuy;
     friend class uGUISkill;
 public:
@@ -498,6 +526,14 @@ inline uGUIBase* cControl::getParent() const {
     return this->mpParentGUI;
 }
 
+inline bool cControl::isTopLimit() {
+    return this->mCurrentPos != 0;
+}
+
+inline u32 cControl::getCurrentTag() const {
+    return this->mCurrentPos;
+}
+
 inline s32 cControl::getOldPos() const {
     return this->mOldPos;
 }
@@ -532,4 +568,20 @@ inline cControl::cMouseExecution::cMouseTouchInfo::cMouseTouchInfo() {
     this->mClickVol = -1;
     this->mpData = nullptr;
     this->mLimitedReasonFlags = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cControl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cControl::DTI);
+}
+
+inline void cControl::cMouseExecution::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cControl::cMouseExecution::DTI)->memFree(p_addr);
+}
+
+inline void cControl::cMouseExecution::cMouseTouchInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cControl::cMouseExecution::cMouseTouchInfo::DTI)->memFree(p_addr);
 }

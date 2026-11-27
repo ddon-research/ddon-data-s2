@@ -157,3 +157,11 @@ inline nNetMsg::MSG_PRIO nNetBase::cNetBase::getPrio() {
 inline u32 nNetBase::cNetBase::getCharacterId() {
     return this->mCharacterId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void nNetBase::cNetBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetBase::cNetBase::DTI)->memFree(p_addr);
+}

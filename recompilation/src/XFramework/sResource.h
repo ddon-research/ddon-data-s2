@@ -536,6 +536,12 @@ inline void* sResource::TypeInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline sResource::TypeInfo::TypeInfo() {
+    this->mAttr = 0;
+    this->mpDTI = nullptr;
+    this->mExt = nullptr;
+}
+
 inline void* sResource::RemoteInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -561,4 +567,32 @@ inline u32 sResource::getRGrassDataReaderBufferSizeByte() const {
 
 inline u32 sResource::getRTextureDataReaderBufferSizeByte() const {
     return this->mRTextureDataReaderBufferSizeKB << 10;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sResource::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sResource::DTI)->memFree(p_addr);
+}
+
+inline void* sResource::TypeInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sResource::TypeInfo::DTI)->memAlloc(sz, align, ::sResource::TypeInfo::DTI.::MtDTI::mID);
+}
+
+inline void sResource::TypeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sResource::TypeInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sResource::RemoteInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sResource::RemoteInfo::DTI)->memAlloc(sz, align, ::sResource::RemoteInfo::DTI.::MtDTI::mID);
+}
+
+inline void sResource::RemoteInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sResource::RemoteInfo::DTI)->memFree(p_addr);
+}
+
+inline void sResource::DecompressStream::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sResource::DecompressStream::DTI)->memFree(p_addr);
 }

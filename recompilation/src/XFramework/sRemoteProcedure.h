@@ -224,3 +224,19 @@ inline void* sRemoteProcedure::cTemporaryRemoteCall::operator new(size_t sz, voi
 inline sRemoteProcedure::cTemporaryRemoteCall::cTemporaryRemoteCall() {
     this->mpObject = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sRemoteProcedure::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sRemoteProcedure::DTI)->memFree(p_addr);
+}
+
+inline void* sRemoteProcedure::cTemporaryRemoteCall::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sRemoteProcedure::cTemporaryRemoteCall::DTI)->memAlloc(sz, align, ::sRemoteProcedure::cTemporaryRemoteCall::DTI.::MtDTI::mID);
+}
+
+inline void sRemoteProcedure::cTemporaryRemoteCall::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sRemoteProcedure::cTemporaryRemoteCall::DTI)->memFree(p_addr);
+}

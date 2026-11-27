@@ -87,7 +87,9 @@ inline void* rTbl2Base::operator new(size_t sz, void* p_addr) {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 template <typename T>
 T* rTbl2<T>::getData(u32 idx) {
@@ -181,4 +183,12 @@ void rTbl2<T>::deleteData() {
         this->mpData = nullptr;
     }
     this->mDataNum = 0;
+}
+
+inline MtAllocator* rTbl2Base::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rTbl2Base::DTI);
+}
+
+inline void* rTbl2Base::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTbl2Base::DTI)->memAlloc(sz, align, ::rTbl2Base::DTI.::MtDTI::getID());
 }

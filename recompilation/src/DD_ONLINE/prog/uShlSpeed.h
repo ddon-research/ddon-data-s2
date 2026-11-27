@@ -267,3 +267,15 @@ inline void uShlSpeed::setSpeedMax(f32 value) {
 inline void uShlSpeed::addExtendSpeedMax(f32 speed) {
     this->mExtendSpeedMax = this->mExtendSpeedMax + speed;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamSpeed::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamSpeed::DTI)->memAlloc(sz, align, ::cShlParamSpeed::DTI.::MtDTI::getID());
+}
+
+inline void uShlSpeed::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlSpeed::DTI)->memFree(p_addr);
+}

@@ -108,3 +108,15 @@ inline cpJob01::cpJob01() {
 inline void cpJob01::setGuardModeNoCancelTimer(f32 time) {
     this->mGuardModeNoCancelTimer = time;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob01::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob01::DTI);
+}
+
+inline void cpJob01::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob01::DTI)->memFree(p_addr);
+}

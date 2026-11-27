@@ -374,3 +374,39 @@ inline f32 rStageInfo::getDayNightFogChgFrame() const {
 inline s32 rStageInfo::getSkyInfiniteLightGroupType() const {
     return this->mSkyInfiniteLightGroupType;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void rStageInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageInfo::DTI)->memFree(p_addr);
+}
+
+inline rScheduler* rStageInfo::getEffectSchdl() {
+    return this->mprEffectSchdl.mpPtr;
+}
+
+inline rScheduler* rStageInfo::getLanternSchdl() {
+    return this->mprLanternSchdl.mpPtr;
+}
+
+inline rWeatherStageInfo* rStageInfo::getWeatherStageInfo() {
+    return this->mpWeatherStageInfo.mpPtr;
+}
+
+inline rWeatherParamInfoTbl* rStageInfo::getWeatherParamInfoTbl() {
+    return this->mpWeatherParamInfoTbl.mpPtr;
+}
+
+inline rWeatherParamEfcInfo* rStageInfo::getWeatherParamEfcInfo() {
+    return this->mpWeatherParamEfcInfo.mpPtr;
+}
+
+inline rWeatherEffectParam* rStageInfo::getWep() {
+    return this->mpWep.mpPtr;
+}
+
+inline rZone* rStageInfo::getZoneStatus() {
+    return this->mpZoneStatus.mpPtr;
+}

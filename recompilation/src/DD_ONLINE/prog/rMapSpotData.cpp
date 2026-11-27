@@ -23,20 +23,6 @@ const MtDTI& rMapSpotData::getDTI() const {
     return rMapSpotData::DTI;
 }
 
-inline void* rMapSpotData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMapSpotData::DTI)->memAlloc(sz, align, rMapSpotData::DTI.getID());
-}
-
-inline void rMapSpotData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMapSpotData::DTI)->memFree(p_addr);
-}
-
-inline rMapSpotData::rMapSpotData() {
-    setAttribute(22u);
-    mpArray = nullptr;
-    mArrayNum = 0;
-}
-
 rMapSpotData::~rMapSpotData() {
     unsigned int i3 = 0;
     if (mArrayNum != 0) {
@@ -101,25 +87,6 @@ MtObject* rMapSpotData::MyDTI::newInstance() const {
 
 const MtDTI& rMapSpotData::Data::getDTI() const {
     return rMapSpotData::Data::DTI;
-}
-
-inline void* rMapSpotData::Data::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMapSpotData::Data::DTI)->memAlloc(sz, align, rMapSpotData::Data::DTI.getID());
-}
-
-inline void rMapSpotData::Data::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMapSpotData::Data::DTI)->memFree(p_addr);
-}
-
-inline rMapSpotData::Data::Data() {
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mMessId = 0;
-    mFloorNo = -9999;
-    mGroupNo = -9999;
-    mFloorCheck = true;
 }
 
 void rMapSpotData::Data::createProperty(MtPropertyList& s) {

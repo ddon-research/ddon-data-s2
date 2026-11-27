@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rFurnitureItem.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cFurnitureGroup::getDTI() const {
     return cFurnitureGroup::DTI;
-}
-
-inline void* cFurnitureGroup::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFurnitureGroup::DTI)->memAlloc(sz, align, cFurnitureGroup::DTI.getID());
-}
-
-inline void cFurnitureGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFurnitureGroup::DTI)->memFree(p_addr);
 }
 
 void cFurnitureGroup::createProperty(MtPropertyList& s) {
@@ -48,14 +38,6 @@ const MtDTI& cFurnitureItem::getDTI() const {
     return cFurnitureItem::DTI;
 }
 
-inline void* cFurnitureItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFurnitureItem::DTI)->memAlloc(sz, align, cFurnitureItem::DTI.getID());
-}
-
-inline void cFurnitureItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFurnitureItem::DTI)->memFree(p_addr);
-}
-
 void cFurnitureItem::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mItemId", &mItemId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mLayoutId", &mLayoutId, 0u, 0u);
@@ -76,14 +58,6 @@ MtObject* cFurnitureItem::MyDTI::newInstance() const {
 
 const MtDTI& cFurnitureLayout::getDTI() const {
     return cFurnitureLayout::DTI;
-}
-
-inline void* cFurnitureLayout::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFurnitureLayout::DTI)->memAlloc(sz, align, cFurnitureLayout::DTI.getID());
-}
-
-inline void cFurnitureLayout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFurnitureLayout::DTI)->memFree(p_addr);
 }
 
 void cFurnitureLayout::createProperty(MtPropertyList& s) {
@@ -108,14 +82,6 @@ MtObject* cFurnitureLayout::MyDTI::newInstance() const {
 
 const MtDTI& rFurnitureGroup::getDTI() const {
     return rFurnitureGroup::DTI;
-}
-
-inline void* rFurnitureGroup::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFurnitureGroup::DTI)->memAlloc(sz, align, rFurnitureGroup::DTI.getID());
-}
-
-inline void rFurnitureGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFurnitureGroup::DTI)->memFree(p_addr);
 }
 
 bool rFurnitureGroup::loadData(MtDataReader& r, cFurnitureGroup* pData) {
@@ -146,14 +112,6 @@ const MtDTI& rFurnitureItem::getDTI() const {
     return rFurnitureItem::DTI;
 }
 
-inline void* rFurnitureItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFurnitureItem::DTI)->memAlloc(sz, align, rFurnitureItem::DTI.getID());
-}
-
-inline void rFurnitureItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFurnitureItem::DTI)->memFree(p_addr);
-}
-
 bool rFurnitureItem::loadData(MtDataReader& r, cFurnitureItem* pData) {
     nDDOIO::readData(r, pData->mItemId);
     nDDOIO::readData(r, pData->mLayoutId);
@@ -179,14 +137,6 @@ MtObject* rFurnitureItem::MyDTI::newInstance() const {
 
 const MtDTI& rFurnitureLayout::getDTI() const {
     return rFurnitureLayout::DTI;
-}
-
-inline void* rFurnitureLayout::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFurnitureLayout::DTI)->memAlloc(sz, align, rFurnitureLayout::DTI.getID());
-}
-
-inline void rFurnitureLayout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFurnitureLayout::DTI)->memFree(p_addr);
 }
 
 bool rFurnitureLayout::loadData(MtDataReader& r, cFurnitureLayout* pData) {

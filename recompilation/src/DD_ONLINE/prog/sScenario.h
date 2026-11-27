@@ -173,3 +173,19 @@ inline void* sScenario::operator new(size_t sz, void* p_addr) {
 inline sScenario* sScenario::getInstance() {
     return ::sScenario::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* SCE_AH_LIST::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::SCE_AH_LIST::DTI)->memAlloc(sz, align, ::SCE_AH_LIST::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* sScenario::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sScenario::DTI);
+}
+
+inline void sScenario::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sScenario::DTI)->memFree(p_addr);
+}

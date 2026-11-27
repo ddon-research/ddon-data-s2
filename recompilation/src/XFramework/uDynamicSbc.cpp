@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uDynamicSbc.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -24,10 +23,6 @@
 
 const MtDTI& uDynamicSbc::getDTI() const {
     return uDynamicSbc::DTI;
-}
-
-inline void uDynamicSbc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uDynamicSbc::DTI)->memFree(p_addr);
 }
 
 uDynamicSbc::~uDynamicSbc() {

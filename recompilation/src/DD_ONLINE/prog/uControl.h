@@ -17,6 +17,7 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class MtVector3;
+class cAction;
 class cContextCharacter;
 class cContextInstance;
 class cContextInterface;
@@ -31,6 +32,7 @@ namespace nNetBase { class cNetBase; }
 namespace nNetMsgData { struct stNetPos; }
 class rArchive;
 class sControlManager;
+class sNpcManager;
 class sSetManager;
 class uCharacter;
 class uControlEnemy;
@@ -56,10 +58,12 @@ using u8 = unsigned char;
 
 class uControl : public cUnit
 {
+    friend class cAction;
     friend class cPlayerLoadManager;
     friend class cQuestPersonalData;
     friend class cpLayout;
     friend class sControlManager;
+    friend class sNpcManager;
     friend class sSetManager;
     friend class uCharacter;
     friend class uControlEnemy;
@@ -338,6 +342,10 @@ inline s32 uControl::getSetNo() const {
     return this->mLayout.mSetNo;
 }
 
+inline void uControl::setGroupParam(const cGroupParam* pParam) {
+    this->mLayout.mpGroupParam = pParam;
+}
+
 inline const cGroupParam* uControl::getGroupParam() const {
     return this->mLayout.mpGroupParam;
 }
@@ -356,4 +364,19 @@ inline void uControl::setDisableDispTimer(f32 Timer) {
 
 inline void uControl::setForceDispTimer(f32 Timer) {
     this->mForceDispTimer = Timer;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cNetBase.h"
+
+inline void uControl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uControl::DTI)->memFree(p_addr);
+}
+
+inline void uControl::sendSaveNetMessage() {
+    this->mpNetRpc->sendNetAction(static_cast<nNetMsgData::nCtrl::NET_MSG_ID>(2), static_cast<nNetMsg::MSG_PRIO>(0), static_cast<nNetMsg::MSG_ADR>(2), 0u);
+    this->mSendActIntervalTimer = 30.0f;
+    this->mIsSaveSendAct = false;
 }

@@ -1,10 +1,14 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <stdlib.h>
+#include <string.h>
 #include "MtNetAchievement.h"
 #include "MtNetCore.h"
 #include "MtNetMediator.h"
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
+#include "MtSynchronize.h"
 #include "MtThread.h"
 #include "../generated/shared/np_trophy.h"
 #ifndef DDON_STUB
@@ -25,14 +29,42 @@ void MtNetAchievement::createProperty(MtPropertyList& s) {
     this->MtNetObject::createProperty(s);
 }
 
-__attribute__((weak)) void MtNetAchievement::addListener(MtNetAchievement::Listener* listener) {
-    DDON_STUB("MtNetAchievement::addListener")
-    /* stub */
+void MtNetAchievement::addListener(MtNetAchievement::Listener* listener) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        mpListener = listener;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        mpListener = listener;
+    }
 }
 
-__attribute__((weak)) void MtNetAchievement::removeListener(MtNetAchievement::Listener* listener) {
-    DDON_STUB("MtNetAchievement::removeListener")
-    /* stub */
+void MtNetAchievement::removeListener(MtNetAchievement::Listener* listener) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        mpListener = nullptr;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        mpListener = nullptr;
+    }
 }
 
 void MtNetAchievement::move() {
@@ -239,8 +271,75 @@ __attribute__((weak)) void MtNetAchievement::startFailRequest(MtNetRequest* req)
 }
 
 __attribute__((weak)) s32 MtNetAchievement::moveInit(MtNetRequest* req) {
-    DDON_STUB("MtNetAchievement::moveInit")
-    return {};
+    mUserInfoTbl[0].isValid = false;
+    mUserInfoTbl[0].isRemove = false;
+    mUserInfoTbl[0].isRequest = false;
+    mUserInfoTbl[0].sceUserId = -1;
+    mUserInfoTbl[0].state = TrophyState_None;
+    mUserInfoTbl[0].npContext = -1;
+    memset(static_cast<void*>(&mUserInfoTbl[0].unlockNum), 0, 676ul);
+    mUserInfoTbl[1].isValid = false;
+    mUserInfoTbl[1].isRemove = false;
+    mUserInfoTbl[1].isRequest = false;
+    mUserInfoTbl[1].sceUserId = -1;
+    mUserInfoTbl[1].state = TrophyState_None;
+    mUserInfoTbl[1].npContext = -1;
+    memset(static_cast<void*>(&mUserInfoTbl[1].unlockNum), 0, 676ul);
+    mUserInfoTbl[2].isValid = false;
+    mUserInfoTbl[2].isRemove = false;
+    mUserInfoTbl[2].isRequest = false;
+    mUserInfoTbl[2].sceUserId = -1;
+    mUserInfoTbl[2].state = TrophyState_None;
+    mUserInfoTbl[2].npContext = -1;
+    memset(static_cast<void*>(&mUserInfoTbl[2].unlockNum), 0, 676ul);
+    mUserInfoTbl[3].isValid = false;
+    mUserInfoTbl[3].isRemove = false;
+    mUserInfoTbl[3].isRequest = false;
+    mUserInfoTbl[3].sceUserId = -1;
+    mUserInfoTbl[3].state = TrophyState_None;
+    mUserInfoTbl[3].npContext = -1;
+    memset(static_cast<void*>(&mUserInfoTbl[3].unlockNum), 0, 676ul);
+    if (req->isNeedAnswer()) {
+        if (mIsThreadSafe) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+            }
+            s32 t0 = mLockCount;
+            mLockCount = t0 + 1;
+            Listener* t1 = mpListener;
+            if (t1 != nullptr) {
+                t1->onAnsInitSucceed(req->getSequence(), 0ul);
+                if (mIsThreadSafe) {
+                    mLockCount = mLockCount - 1;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+            } else {
+                if (mIsThreadSafe) {
+                    mLockCount = t0;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+            }
+            return 1;
+        } else {
+            Listener* t1 = mpListener;
+            if (t1 != nullptr) {
+                t1->onAnsInitSucceed(req->getSequence(), 0ul);
+            }
+            if (mIsThreadSafe) {
+                mLockCount = mLockCount - 1;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            return 1;
+        }
+    } else {
+        return 1;
+    }
 }
 
 __attribute__((weak)) s32 MtNetAchievement::moveStart(MtNetRequest* req) {

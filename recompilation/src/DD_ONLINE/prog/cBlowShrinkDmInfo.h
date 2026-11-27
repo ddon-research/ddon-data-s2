@@ -15,6 +15,7 @@ class cAttackParam;
 class cDmJobAdjParam;
 class cDmJobPawnAdjParam;
 class cDmLvPawnAdjParam;
+class cpHpDamageCtrl;
 class cpJob07;
 class uDDOModel;
 class uEnemy;
@@ -32,6 +33,7 @@ using u32 = unsigned int;
 
 class cBlowShrinkDmInfo : public MtObject
 {
+    friend class cpHpDamageCtrl;
     friend class cpJob07;
     friend class uEnemy;
 public:
@@ -142,4 +144,16 @@ inline cBlowShrinkDmInfo::cBlowShrinkDmInfo() {
 
 inline nObjCollision::FORCE_REACTION_TYPE cBlowShrinkDmInfo::getForceDownType() const {
     return this->mForceDownType;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cBlowShrinkDmInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cBlowShrinkDmInfo::DTI);
+}
+
+inline void cBlowShrinkDmInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBlowShrinkDmInfo::DTI)->memFree(p_addr);
 }

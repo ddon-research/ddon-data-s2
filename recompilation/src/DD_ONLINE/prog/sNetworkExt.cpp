@@ -37,6 +37,7 @@
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
 #include "sCaplinkManager.h"
+#include "sDDOMain.h"
 #include "sDialogBase.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
@@ -53,16 +54,8 @@ const MtDTI& sNetworkExt::getDTI() const {
     return sNetworkExt::DTI;
 }
 
-inline MtAllocator* sNetworkExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sNetworkExt::DTI);
-}
-
 void* sNetworkExt::operator new(size_t sz, u32 align) {
     return sNetworkExt::getAllocator()->memAlloc(sz, align, sNetworkExt::DTI.getID());
-}
-
-inline void sNetworkExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sNetworkExt::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) sNetworkExt::~sNetworkExt() {
@@ -134,10 +127,6 @@ void sNetworkExt::final() {
     shutdownSession();
 }
 
-inline void sNetworkExt::shutdownCore() {
-    shutdownContext(static_cast<u32>(mUserIndex), 0);
-}
-
 void sNetworkExt::requestAward(s32 id) {
     if (mAchievementReady) {
         if (id <= 63) {
@@ -182,9 +171,38 @@ __attribute__((weak)) bool sNetworkExt::isNotifySync(u32& flag, s32 memberIndex)
 __attribute__((weak)) void sNetworkExt::clrNotifySyncJoinMember(s32 memberIndex) {
 }
 
-__attribute__((weak)) bool sNetworkExt::signOutCheck() {
-    DDON_STUB("sNetworkExt::signOutCheck")
-    return {};
+bool sNetworkExt::signOutCheck() {
+    if (!mIsSignOut) {
+        const u32 user_index = getUserIndex();
+        if (isSignInChange(user_index, 0)) {
+            s32 level = getSignInLevel(user_index, 0);
+            s32 oldLevel = mOldSignInLevel;
+            mOldSignInLevel = level;
+            if (oldLevel != 0) {
+                if (!((oldLevel == 1) && (level == 1))) {
+                    if (!(level != 1)) {
+                        mIsSignOut = true;
+                        static_cast<sNetworkExt*>(sNetwork::getInstance())->getLoginServer()->disconnect(true);
+                        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->logout();
+                        } else {
+                            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGameSvConnectStatus() == NET_STAT_REQ) {
+                                static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->disconnect(true);
+                            }
+                        }
+                        return true;
+                    }
+                }
+            } else {
+                static_cast<sDDOMain*>(sMain::getInstance())->isFromLauncher();
+            }
+            return false;
+        } else {
+            return false;
+        }
+    } else {
+        return true;
+    }
 }
 
 __attribute__((weak)) bool sNetworkExt::errorCheck() {
@@ -759,15 +777,6 @@ __attribute__((weak)) void sNetworkExt::updateEntryBoardAliveTimer() {
     /* stub */
 }
 
-inline void sNetworkExt::updateLeaveOnTheWayTimer() {
-    if (!static_cast<sNetworkExt*>(sNetwork::mpInstance)->mLeaveOnTheWayBusy) {
-        return;
-    }
-    if (mLeaveOnTheWayTimer > 0.0f) {
-        mLeaveOnTheWayTimer = mLeaveOnTheWayTimer - (sMain::mpInstance)->mDeltaTime;
-    }
-}
-
 __attribute__((weak)) bool sNetworkExt::reqTitleUpdateCheck() {
     DDON_STUB("sNetworkExt::reqTitleUpdateCheck")
     return {};
@@ -785,10 +794,6 @@ sNetworkExt::MyDTI sNetworkExt::DTI("sNetworkExt", &::sNetwork::DTI, 6256ul, 0u,
 __attribute__((weak)) MtObject* sNetworkExt::MyDTI::newInstance() const {
     DDON_STUB("sNetworkExt::MyDTI::newInstance")
     return nullptr;
-}
-
-inline void sNetworkExt::cAchievementListener::setParent(sNetworkExt* p) {
-    p->mAchievementListener.mpParent = p;
 }
 
 void sNetworkExt::cAchievementListener::onInitComplete(u64 option, MtNetError* err) {

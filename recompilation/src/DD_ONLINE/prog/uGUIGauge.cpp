@@ -18,6 +18,7 @@
 #include "../../XFramework/cGUIVariable.h"
 #include "cOcdParamRes.h"
 #include "../../XFramework/cResource.h"
+#include "cState.h"
 #include "../../XFramework/cUnit.h"
 #include "cpJob03.h"
 #include "cpJob05.h"
@@ -120,16 +121,8 @@ const MtDTI& uGUIGauge::getDTI() const {
     return uGUIGauge::DTI;
 }
 
-inline MtAllocator* uGUIGauge::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGauge::DTI);
-}
-
 void* uGUIGauge::operator new(size_t sz, u32 align) {
     return uGUIGauge::getAllocator()->memAlloc(sz, align, uGUIGauge::DTI.getID());
-}
-
-inline void uGUIGauge::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGauge::DTI)->memFree(p_addr);
 }
 
 uGUIGauge::~uGUIGauge() {
@@ -362,10 +355,6 @@ __attribute__((weak)) MtObject* uGUIGauge::MyDTI::newInstance() const {
 
 const MtDTI& uGUIGauge::cGaugeInfo::getDTI() const {
     return uGUIGauge::cGaugeInfo::DTI;
-}
-
-inline void uGUIGauge::cGaugeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGauge::cGaugeInfo::DTI)->memFree(p_addr);
 }
 
 void uGUIGauge::cGaugeInfo::createProperty(MtPropertyList& s) {

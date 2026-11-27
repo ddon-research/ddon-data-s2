@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCharacterEditMuscle.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cCharacterEditMuscle::getDTI() const {
     return cCharacterEditMuscle::DTI;
-}
-
-inline void* cCharacterEditMuscle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCharacterEditMuscle::DTI)->memAlloc(sz, align, cCharacterEditMuscle::DTI.getID());
-}
-
-inline void cCharacterEditMuscle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharacterEditMuscle::DTI)->memFree(p_addr);
 }
 
 void cCharacterEditMuscle::createProperty(MtPropertyList& s) {
@@ -42,14 +32,6 @@ MtObject* cCharacterEditMuscle::MyDTI::newInstance() const {
 
 const MtDTI& rCharacterEditMuscle::getDTI() const {
     return rCharacterEditMuscle::DTI;
-}
-
-inline void* rCharacterEditMuscle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCharacterEditMuscle::DTI)->memAlloc(sz, align, rCharacterEditMuscle::DTI.getID());
-}
-
-inline void rCharacterEditMuscle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCharacterEditMuscle::DTI)->memFree(p_addr);
 }
 
 bool rCharacterEditMuscle::loadData(MtDataReader& in, cCharacterEditMuscle* pData) {

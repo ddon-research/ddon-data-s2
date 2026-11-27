@@ -64,6 +64,7 @@
 #include "sWeatherManager.h"
 #include "../../XFramework/uBaseModel.h"
 #include "uControl.h"
+#include "uDDOActorModelPl.h"
 #include "uDDOModel.h"
 #include "uGUIEventSkip.h"
 #include "uGUISystemMsg.h"
@@ -79,16 +80,8 @@ const MtDTI& sEventManager::getDTI() const {
     return sEventManager::DTI;
 }
 
-inline MtAllocator* sEventManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sEventManager::DTI);
-}
-
 void* sEventManager::operator new(size_t sz, u32 align) {
     return sEventManager::getAllocator()->memAlloc(sz, align, sEventManager::DTI.getID());
-}
-
-inline void sEventManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEventManager::DTI)->memFree(p_addr);
 }
 
 sEventManager::sEventManager() {
@@ -589,10 +582,6 @@ __attribute__((weak)) MtObject* sEventManager::MyDTI::newInstance() const {
 
 const MtDTI& sEventManager::cNpcId::getDTI() const {
     return sEventManager::cNpcId::DTI;
-}
-
-inline MtAllocator* sEventManager::cNpcId::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sEventManager::cNpcId::DTI);
 }
 
 void* sEventManager::cNpcId::operator new(size_t sz, u32 align) {

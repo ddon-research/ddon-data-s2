@@ -15,7 +15,6 @@
 #include "Protocol/UserSession/S2C.h"
 #include "cControl.h"
 #include "cGUIControlMgr.h"
-#include "cGUIExtNetMgr.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
@@ -47,16 +46,8 @@ const MtDTI& uGUIGPShop::getDTI() const {
     return uGUIGPShop::DTI;
 }
 
-inline MtAllocator* uGUIGPShop::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGPShop::DTI);
-}
-
 void* uGUIGPShop::operator new(size_t sz, u32 align) {
     return uGUIGPShop::getAllocator()->memAlloc(sz, align, uGUIGPShop::DTI.getID());
-}
-
-inline void uGUIGPShop::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::DTI)->memFree(p_addr);
 }
 
 void uGUIGPShop::setStartType(uGUIGPShop::SHOPMENU_TYPE Type) {
@@ -133,9 +124,38 @@ void uGUIGPShop::updatePtr() {
     mpDialog = nullptr;
 }
 
-__attribute__((weak)) void uGUIGPShop::setup() {
-    DDON_STUB("uGUIGPShop::setup")
-    /* stub */
+void uGUIGPShop::setup() {
+    this->uGUIBase::setup();
+    if (!mIsEndLoadResource) {
+        return;
+    }
+    setPriority(static_cast<sGUIExt*>(sGUI::getInstance())->issuePriority(11u), true);
+    setPlay(true);
+    mShopControl.setup(static_cast<uGUIBase*>(this));
+    mStatusControl.setup(static_cast<uGUIBase*>(this));
+    initCommon();
+    initShopCommon();
+    initShop();
+    initCharge();
+    initStatusCommon();
+    initUsed();
+    initNoUse();
+    initHistory();
+    setupStatusMenu();
+    setType(mType);
+    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::initRequestServer);
+        mServerCommandStatusRsv = 204;
+        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack);
+        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+    } else {
+        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::initRequestServer);
+        mServerCommandStatus = 204;
+        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack);
+        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        mServerRno = 0;
+        mServerResult = 0;
+    }
 }
 
 void uGUIGPShop::kill() {
@@ -320,7 +340,7 @@ __attribute__((weak)) void uGUIGPShop::updateChangePage() {
     /* stub */
 }
 
-void uGUIGPShop::initCommon() {
+__attribute__((weak)) void uGUIGPShop::initCommon() {
     cGUIInstance* t0 = getInstance(311u, false);
     mpTitleEng = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 2u));
     mpTitleJp = static_cast<cGUIObjMessage*>(getObjectFromId(t0, 3u));
@@ -437,24 +457,110 @@ __attribute__((weak)) void uGUIGPShop::initHistory() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGPShop::initCallBack() {
-    DDON_STUB("uGUIGPShop::initCallBack")
-    /* stub */
+void uGUIGPShop::initCallBack() {
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isCOGLogin()) {
+        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::capRequestServer);
+            mServerCommandStatusRsv = 207;
+            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack2);
+            mpServerFailedFuncRsv = static_cast<ServerFailedCallBack>(&::uGUIGPShop::funcErrorGetCAPCallBack);
+        } else {
+            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::capRequestServer);
+            mServerCommandStatus = 207;
+            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack2);
+            mpServerFailedFunc = static_cast<ServerFailedCallBack>(&::uGUIGPShop::funcErrorGetCAPCallBack);
+            mServerRno = 0;
+            mServerResult = 0;
+        }
+    } else {
+        mIsGetCAPSuccess = false;
+        mCAPNum = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRecvGetCAP();
+        updateCAP();
+        mChargeScrollbar.setupAllItem();
+        updateChargeCursor(false);
+        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::menuRequestServer);
+            mServerCommandStatusRsv = 222;
+            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack3);
+            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        } else {
+            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::menuRequestServer);
+            mServerCommandStatus = 222;
+            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack3);
+            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            mServerRno = 0;
+            mServerResult = 0;
+        }
+    }
 }
 
-__attribute__((weak)) void uGUIGPShop::initCallBack2() {
-    DDON_STUB("uGUIGPShop::initCallBack2")
-    /* stub */
+void uGUIGPShop::initCallBack2() {
+    mCAPNum = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRecvGetCAP();
+    updateCAP();
+    mChargeScrollbar.setupAllItem();
+    updateChargeCursor(false);
+    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::menuRequestServer);
+        mServerCommandStatusRsv = 222;
+        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack3);
+        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+    } else {
+        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::menuRequestServer);
+        mServerCommandStatus = 222;
+        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack3);
+        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        mServerRno = 0;
+        mServerResult = 0;
+    }
 }
 
-__attribute__((weak)) void uGUIGPShop::initCallBack3() {
-    DDON_STUB("uGUIGPShop::initCallBack3")
-    /* stub */
+void uGUIGPShop::initCallBack3() {
+    setupShopMenu();
+    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::nouseRequestServer);
+        mServerCommandStatusRsv = 217;
+        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack4);
+        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+    } else {
+        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::nouseRequestServer);
+        mServerCommandStatus = 217;
+        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack4);
+        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        mServerRno = 0;
+        mServerResult = 0;
+    }
 }
 
-__attribute__((weak)) void uGUIGPShop::initCallBack4() {
-    DDON_STUB("uGUIGPShop::initCallBack4")
-    /* stub */
+void uGUIGPShop::initCallBack4() {
+    mIsNoUseRequest = true;
+    setupStatusNoUse();
+    mStatusControl.setCurrentPos(4u, 0);
+    mNoUseCursorX = 0;
+    if (mType == 3) {
+        if (mpNoList != nullptr) {
+            mpNoList->setVisible(mNoUseListNum == 0);
+        }
+    }
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->mNetMgr.mData.ReceiveGetCogId) {
+        if (mpCOGId != nullptr) {
+            setObjectMessage(static_cast<cGUIObject*>(mpCOGId), "", 0u, false);
+        }
+        startType();
+    } else {
+        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::cogidRequestServer);
+            mServerCommandStatusRsv = 210;
+            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack5);
+            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        } else {
+            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::cogidRequestServer);
+            mServerCommandStatus = 210;
+            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack5);
+            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            mServerRno = 0;
+            mServerResult = 0;
+        }
+    }
 }
 
 void uGUIGPShop::initCallBack5() {
@@ -503,9 +609,33 @@ void uGUIGPShop::usedCallBack() {
     mpNoListUsed->setVisible(mUsedListNum <= 1);
 }
 
-__attribute__((weak)) void uGUIGPShop::legendpawnCallBack() {
-    DDON_STUB("uGUIGPShop::legendpawnCallBack")
-    /* stub */
+void uGUIGPShop::legendpawnCallBack() {
+    mIsLegendPawnRequest = true;
+    if (mIsUsedRequest) {
+        mIsUsedRequest = true;
+        setupStatusUsed();
+        mStatusControl.setCurrentPos(3u, 0);
+        mUsedCursorX = 1;
+        if (mType == 2) {
+            if (mpNoListUsed != nullptr) {
+                mpNoListUsed->setVisible(mUsedListNum <= 1);
+            }
+        }
+    } else {
+        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::usedRequestServer);
+            mServerCommandStatusRsv = 219;
+            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::usedCallBack);
+            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        } else {
+            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::usedRequestServer);
+            mServerCommandStatus = 219;
+            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::usedCallBack);
+            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            mServerRno = 0;
+            mServerResult = 0;
+        }
+    }
 }
 
 void uGUIGPShop::nouseCallBack() {
@@ -879,7 +1009,7 @@ u32 uGUIGPShop::evCtrlStatusMenuCancel(cControl::Message* pMsg) {
     return 1;
 }
 
-u32 uGUIGPShop::evCtrlStatusMenuDecide(cControl::Message* pMsg) {
+__attribute__((weak)) u32 uGUIGPShop::evCtrlStatusMenuDecide(cControl::Message* pMsg) {
     if (mStatusControl.getCurrentPos(0u) == 1) {
         if (mIsGPDialogOpen) {
             setInputEvent(66u);
@@ -915,9 +1045,28 @@ u32 uGUIGPShop::evCtrlStatusMenuCursorUD(cControl::Message* pMsg) {
     return 1;
 }
 
-__attribute__((weak)) u32 uGUIGPShop::evCtrlStatusMenuMouseClick(cControl::Message* pMsg) {
-    DDON_STUB("uGUIGPShop::evCtrlStatusMenuMouseClick")
-    return {};
+u32 uGUIGPShop::evCtrlStatusMenuMouseClick(cControl::Message* pMsg) {
+    if (pMsg != nullptr) {
+        if (pMsg->click_vol != 0) {
+            s32 t0 = pMsg->mouse_hit_id;
+            if (t0 == mStatusControl.getOldPos(1u)) {
+                evCtrlStatusMenuDecide(static_cast<cControl::Message*>(nullptr));
+            } else {
+                setInputEvent(91u);
+            }
+            return 1;
+        } else {
+            mStatusControl.setCurrentPos(0u, 1);
+            if (mIsGPDialogOpen) {
+                setInputEvent(66u);
+            } else {
+                setInputEvent(68u);
+            }
+            return 1;
+        }
+    } else {
+        return 0;
+    }
 }
 
 u32 uGUIGPShop::evCtrlStatusMenuChangeShop(cControl::Message* pMsg) {
@@ -1226,7 +1375,7 @@ void uGUIGPShop::updateScrollShopListHide(uGUIBase::cScrollListItemBase* pDispIt
     pdisp->mIndex = -1;
 }
 
-void uGUIGPShop::setType(u32 Type) {
+__attribute__((weak)) void uGUIGPShop::setType(u32 Type) {
     mType = Type;
     switch (Type) {
         case 0:
@@ -1376,19 +1525,6 @@ __attribute__((weak)) void uGUIGPShop::setKeyStatus(u32 Mode) {
     }
 }
 
-inline void uGUIGPShop::setMenuCursorSequence(cGUIInstAnimation* pInst) {
-    if (mShopMenuCursor.mpInstance != nullptr) {
-        mShopMenuCursor.mpInstance->setVisible(false);
-    }
-    if (mStatusMenuCursor.mpInstance != nullptr) {
-        mStatusMenuCursor.mpInstance->setVisible(false);
-    }
-    if (pInst == nullptr) {
-        return;
-    }
-    pInst->setSequenceId(5u);
-}
-
 __attribute__((weak)) void uGUIGPShop::setDetail(bool IsDisp) {
     DDON_STUB("uGUIGPShop::setDetail")
     /* stub */
@@ -1446,12 +1582,6 @@ __attribute__((weak)) void uGUIGPShop::setButtonSequenceCore(cGUIInstAnimation* 
     }
 }
 
-inline void uGUIGPShop::toShopPage() {
-    mIsPageChange = true;
-    mType = 0;
-    mShopControl.setCurrentPos(0u, 1);
-}
-
 __attribute__((weak)) void uGUIGPShop::setBuyItemDialog() {
     DDON_STUB("uGUIGPShop::setBuyItemDialog")
     /* stub */
@@ -1482,9 +1612,38 @@ __attribute__((weak)) void uGUIGPShop::lineupCallBackForBuy() {
     /* stub */
 }
 
-__attribute__((weak)) bool uGUIGPShop::moveDialogGS() {
-    DDON_STUB("uGUIGPShop::moveDialogGS")
-    return {};
+bool uGUIGPShop::moveDialogGS() {
+    if (mpGPConfirm != nullptr) {
+        if (mpGPConfirm->mResult == RESULT_EXIT) {
+            if (mpGPConfirm->isPushOK()) {
+                if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                    mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::buyGoldStoneRequestServer);
+                    mServerCommandStatusRsv = 209;
+                    mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::buyGSCallBack);
+                    mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                } else {
+                    mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::buyGoldStoneRequestServer);
+                    mServerCommandStatus = 209;
+                    mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::buyGSCallBack);
+                    mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                    mServerRno = 0;
+                    mServerResult = 0;
+                }
+            }
+            mpGPConfirm->mEndType = 0;
+            mpGPConfirm->end();
+            mpGPConfirm = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+            if (mIsBrowserExec) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->setBrowserActive(false);
+            }
+            mIsBrowserExec = false;
+            mGuide.setVisible(true);
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void uGUIGPShop::buyGSCallBack() {
@@ -1492,9 +1651,40 @@ __attribute__((weak)) void uGUIGPShop::buyGSCallBack() {
     /* stub */
 }
 
-__attribute__((weak)) bool uGUIGPShop::moveDialogUse() {
-    DDON_STUB("uGUIGPShop::moveDialogUse")
-    return {};
+bool uGUIGPShop::moveDialogUse() {
+    if (mpDialog != nullptr) {
+        if (mpDialog->mResult == RESULT_EXIT) {
+            if (mpDialog->getChoicePos(-1) == 0) {
+                if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                    mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::useRequestServer);
+                    mServerCommandStatusRsv = 218;
+                    mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::useCallBack);
+                    mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                } else {
+                    mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::useRequestServer);
+                    mServerCommandStatus = 218;
+                    mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::useCallBack);
+                    mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                    mServerRno = 0;
+                    mServerResult = 0;
+                }
+            }
+            if (mpDialog != nullptr) {
+                mpDialog->mEndType = 0;
+                mpDialog->end();
+            }
+            mpDialog = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+            if (mIsBrowserExec) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->setBrowserActive(false);
+            }
+            mIsBrowserExec = false;
+            mGuide.setVisible(true);
+        }
+        return true;
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void uGUIGPShop::useCallBack() {
@@ -1537,7 +1727,7 @@ bool uGUIGPShop::lineupRequestServer() {
     s32 t1 = mShopControl.getCurrentPos(2u);
     nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES* t2 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPShopMenuListPacket();
     if (static_cast<unsigned int>(t1) < t2->m_Items.mLength) {
-        return t0->getGPShopLineup(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t2->m_Items.mpArray[t1]) + 8));
+        return t0->getGPShopLineup(static_cast<CDataGPShopDisplayType*>(t2->m_Items.getBuffer()[t1])->m_unID);
     } else {
         return t0->getGPShopLineup(0u);
     }
@@ -1563,9 +1753,14 @@ bool uGUIGPShop::historyRequestServer() {
     return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPBuyHistory();
 }
 
-__attribute__((weak)) bool uGUIGPShop::buyGoldStoneRequestServer() {
-    DDON_STUB("uGUIGPShop::buyGoldStoneRequestServer")
-    return {};
+bool uGUIGPShop::buyGoldStoneRequestServer() {
+    nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES* plist = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetCAPToGPChangeListPacket();
+    if (plist != nullptr) {
+        cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+        return t0->changeCAPToGP(static_cast<CDataCAPtoGPChangeElement*>(plist->m_List.getBuffer()[mShopControl.getCurrentPos(7u)])->m_unID);
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool uGUIGPShop::buyRequestServer() {
@@ -1573,9 +1768,14 @@ __attribute__((weak)) bool uGUIGPShop::buyRequestServer() {
     return {};
 }
 
-__attribute__((weak)) bool uGUIGPShop::useRequestServer() {
-    DDON_STUB("uGUIGPShop::useRequestServer")
-    return {};
+bool uGUIGPShop::useRequestServer() {
+    nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES* ppacket = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGPShopCourseAvailableListPacket();
+    if (ppacket != nullptr) {
+        cNetGameServer* t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer();
+        return t0->getGPUseAvailableItem(static_cast<CDataGPCourseAvailable*>(ppacket->m_Items.mpArray[static_cast<unsigned int>(mStatusControl.getCurrentPos(4u))])->m_unID);
+    } else {
+        return false;
+    }
 }
 
 bool uGUIGPShop::use2RequestServer() {
@@ -1822,20 +2022,29 @@ __attribute__((weak)) void uGUIGPShop::setAlreadyBuyDialog() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGPShop::funcErrorGetCAPCallBack(nError::ERROR_CODE Error) {
-    DDON_STUB("uGUIGPShop::funcErrorGetCAPCallBack")
-    /* stub */
+void uGUIGPShop::funcErrorGetCAPCallBack(nError::ERROR_CODE Error) {
+    mIsGetCAPSuccess = false;
+    mCAPNum = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getRecvGetCAP();
+    updateCAP();
+    mChargeScrollbar.setupAllItem();
+    updateChargeCursor(false);
+    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShop::menuRequestServer);
+        mServerCommandStatusRsv = 222;
+        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack3);
+        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+    } else {
+        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShop::menuRequestServer);
+        mServerCommandStatus = 222;
+        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShop::initCallBack3);
+        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        mServerRno = 0;
+        mServerResult = 0;
+    }
 }
 
 void uGUIGPShop::funcErrorGetCAPCallBackAfterBrowser(nError::ERROR_CODE Error) {
     mIsGetCAPSuccess = false;
-}
-
-inline void uGUIGPShop::updateIndicator() {
-    if (mpServerRequestFunc == static_cast<uGUIBase::ServerRequestFunc>(0)) {
-        return;
-    }
-    static_cast<sGUIExt*>(sGUI::mpInstance)->reqDispCommIndicator();
 }
 
 __attribute__((weak)) MtObject* uGUIGPShop::MyDTI::newInstance() const {
@@ -1845,10 +2054,6 @@ __attribute__((weak)) MtObject* uGUIGPShop::MyDTI::newInstance() const {
 
 const MtDTI& uGUIGPShop::cScrollShopDispList::getDTI() const {
     return uGUIGPShop::cScrollShopDispList::DTI;
-}
-
-inline void uGUIGPShop::cScrollShopDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollShopDispList::DTI)->memFree(p_addr);
 }
 
 inline uGUIGPShop::cScrollShopDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1864,10 +2069,6 @@ const MtDTI& uGUIGPShop::cScrollChargeDispList::getDTI() const {
     return uGUIGPShop::cScrollChargeDispList::DTI;
 }
 
-inline void uGUIGPShop::cScrollChargeDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollChargeDispList::DTI)->memFree(p_addr);
-}
-
 inline uGUIGPShop::cScrollChargeDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIGPShop::cScrollChargeDispList::MyDTI uGUIGPShop::cScrollChargeDispList::DTI("uGUIGPShop::cScrollChargeDispList", &::uGUIBase::cScrollListItemBase::DTI, 216ul, 0u, 0u);
@@ -1879,14 +2080,6 @@ __attribute__((weak)) MtObject* uGUIGPShop::cScrollChargeDispList::MyDTI::newIns
 
 const MtDTI& uGUIGPShop::cScrollTicketDispList::getDTI() const {
     return uGUIGPShop::cScrollTicketDispList::DTI;
-}
-
-inline void* uGUIGPShop::cScrollTicketDispList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollTicketDispList::DTI)->memAlloc(sz, align, uGUIGPShop::cScrollTicketDispList::DTI.getID());
-}
-
-inline void uGUIGPShop::cScrollTicketDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollTicketDispList::DTI)->memFree(p_addr);
 }
 
 inline uGUIGPShop::cScrollTicketDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1909,10 +2102,6 @@ const MtDTI& uGUIGPShop::cScrollStatusDispList::getDTI() const {
     return uGUIGPShop::cScrollStatusDispList::DTI;
 }
 
-inline void uGUIGPShop::cScrollStatusDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollStatusDispList::DTI)->memFree(p_addr);
-}
-
 inline uGUIGPShop::cScrollStatusDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIGPShop::cScrollStatusDispList::MyDTI uGUIGPShop::cScrollStatusDispList::DTI("uGUIGPShop::cScrollStatusDispList", &::uGUIGPShop::cScrollStatusDispBase::DTI, 232ul, 0u, 0u);
@@ -1924,14 +2113,6 @@ __attribute__((weak)) MtObject* uGUIGPShop::cScrollStatusDispList::MyDTI::newIns
 
 const MtDTI& uGUIGPShop::cScrollHistoryDispList::getDTI() const {
     return uGUIGPShop::cScrollHistoryDispList::DTI;
-}
-
-inline void* uGUIGPShop::cScrollHistoryDispList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollHistoryDispList::DTI)->memAlloc(sz, align, uGUIGPShop::cScrollHistoryDispList::DTI.getID());
-}
-
-inline void uGUIGPShop::cScrollHistoryDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollHistoryDispList::DTI)->memFree(p_addr);
 }
 
 inline uGUIGPShop::cScrollHistoryDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1946,25 +2127,16 @@ const MtDTI& uGUIGPShop::cScrollCOGDispList::getDTI() const {
     return uGUIGPShop::cScrollCOGDispList::DTI;
 }
 
-inline void uGUIGPShop::cScrollCOGDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollCOGDispList::DTI)->memFree(p_addr);
-}
-
 inline uGUIGPShop::cScrollCOGDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIGPShop::cScrollCOGDispList::MyDTI uGUIGPShop::cScrollCOGDispList::DTI("uGUIGPShop::cScrollCOGDispList", &::uGUIBase::cScrollListItemBase::DTI, 520ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIGPShop::cScrollCOGDispList::MyDTI::newInstance() const {
-    DDON_STUB("uGUIGPShop::cScrollCOGDispList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIGPShop::cScrollCOGDispList::MyDTI::newInstance() const {
+    return new (16u) uGUIGPShop::cScrollCOGDispList;
 }
 
 const MtDTI& uGUIGPShop::cScrollShopItemList::getDTI() const {
     return uGUIGPShop::cScrollShopItemList::DTI;
-}
-
-inline void uGUIGPShop::cScrollShopItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollShopItemList::DTI)->memFree(p_addr);
 }
 
 inline uGUIGPShop::cScrollShopItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1980,10 +2152,6 @@ const MtDTI& uGUIGPShop::cScrollChargeItemList::getDTI() const {
     return uGUIGPShop::cScrollChargeItemList::DTI;
 }
 
-inline void uGUIGPShop::cScrollChargeItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollChargeItemList::DTI)->memFree(p_addr);
-}
-
 inline uGUIGPShop::cScrollChargeItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIGPShop::cScrollChargeItemList::MyDTI uGUIGPShop::cScrollChargeItemList::DTI("uGUIGPShop::cScrollChargeItemList", &::uGUIBase::cScrollListInfoBase::DTI, 40ul, 0u, 0u);
@@ -1997,10 +2165,6 @@ const MtDTI& uGUIGPShop::cScrollTicketItemList::getDTI() const {
     return uGUIGPShop::cScrollTicketItemList::DTI;
 }
 
-inline void uGUIGPShop::cScrollTicketItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollTicketItemList::DTI)->memFree(p_addr);
-}
-
 inline uGUIGPShop::cScrollTicketItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIGPShop::cScrollTicketItemList::MyDTI uGUIGPShop::cScrollTicketItemList::DTI("uGUIGPShop::cScrollTicketItemList", &::uGUIBase::cScrollListInfoBase::DTI, 40ul, 0u, 0u);
@@ -2012,10 +2176,6 @@ __attribute__((weak)) MtObject* uGUIGPShop::cScrollTicketItemList::MyDTI::newIns
 
 const MtDTI& uGUIGPShop::cScrollStatusItemList::getDTI() const {
     return uGUIGPShop::cScrollStatusItemList::DTI;
-}
-
-inline void uGUIGPShop::cScrollStatusItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollStatusItemList::DTI)->memFree(p_addr);
 }
 
 void uGUIGPShop::cScrollStatusItemList::addMouseTouchList(cControl* pCtrl, s32 Pos) {
@@ -2042,10 +2202,6 @@ const MtDTI& uGUIGPShop::cScrollHistoryItemList::getDTI() const {
     return uGUIGPShop::cScrollHistoryItemList::DTI;
 }
 
-inline void uGUIGPShop::cScrollHistoryItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollHistoryItemList::DTI)->memFree(p_addr);
-}
-
 inline uGUIGPShop::cScrollHistoryItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIGPShop::cScrollHistoryItemList::MyDTI uGUIGPShop::cScrollHistoryItemList::DTI("uGUIGPShop::cScrollHistoryItemList", &::uGUIBase::cScrollListInfoBase::DTI, 40ul, 0u, 0u);
@@ -2057,10 +2213,6 @@ __attribute__((weak)) MtObject* uGUIGPShop::cScrollHistoryItemList::MyDTI::newIn
 
 const MtDTI& uGUIGPShop::cScrollCOGItemList::getDTI() const {
     return uGUIGPShop::cScrollCOGItemList::DTI;
-}
-
-inline void uGUIGPShop::cScrollCOGItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShop::cScrollCOGItemList::DTI)->memFree(p_addr);
 }
 
 inline uGUIGPShop::cScrollCOGItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

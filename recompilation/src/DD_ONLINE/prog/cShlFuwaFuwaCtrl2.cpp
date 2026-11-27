@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cShlFuwaFuwaCtrl2.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -20,14 +18,6 @@
 
 const MtDTI& cShlFuwaFuwaCtrl2::getDTI() const {
     return cShlFuwaFuwaCtrl2::DTI;
-}
-
-inline void* cShlFuwaFuwaCtrl2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlFuwaFuwaCtrl2::DTI)->memAlloc(sz, align, cShlFuwaFuwaCtrl2::DTI.getID());
-}
-
-inline void cShlFuwaFuwaCtrl2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlFuwaFuwaCtrl2::DTI)->memFree(p_addr);
 }
 
 cShlFuwaFuwaCtrl2::cShlFuwaFuwaCtrl2() {
@@ -74,14 +64,6 @@ const MtDTI& cShlFuwaFuwaInfo2::getDTI() const {
     return cShlFuwaFuwaInfo2::DTI;
 }
 
-inline void* cShlFuwaFuwaInfo2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlFuwaFuwaInfo2::DTI)->memAlloc(sz, align, cShlFuwaFuwaInfo2::DTI.getID());
-}
-
-inline void cShlFuwaFuwaInfo2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlFuwaFuwaInfo2::DTI)->memFree(p_addr);
-}
-
 cShlFuwaFuwaInfo2::cShlFuwaFuwaInfo2() {
     mInterFrame = 0.0f;
     mFuwaFuwaOption = 0;
@@ -103,9 +85,13 @@ void cShlFuwaFuwaInfo2::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\343\201\265\343\202\217\343\201\265\343\202\217\343\202\252\343\203\227\343\202\267\343\203\247\343\203\263", &mFuwaFuwaOption, 0u, 0u);
 }
 
-__attribute__((weak)) void cShlFuwaFuwaInfo2::copy(const cShlFuwaFuwaInfo2& srcInfo) {
-    DDON_STUB("cShlFuwaFuwaInfo2::copy")
-    /* stub */
+void cShlFuwaFuwaInfo2::copy(const cShlFuwaFuwaInfo2& srcInfo) {
+    mPeriod = srcInfo.mPeriod;
+    mScale = srcInfo.mScale;
+    mRandom = srcInfo.mRandom;
+    mTime = srcInfo.mTime;
+    mInterFrame = srcInfo.mInterFrame;
+    mFuwaFuwaOption = srcInfo.mFuwaFuwaOption;
 }
 
 inline cShlFuwaFuwaInfo2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

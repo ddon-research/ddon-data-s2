@@ -1,12 +1,10 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cSetInfoEnemy.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -26,16 +24,8 @@ const MtDTI& cSetInfoEnemy::getDTI() const {
     return cSetInfoEnemy::DTI;
 }
 
-inline void* cSetInfoEnemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSetInfoEnemy::DTI)->memAlloc(sz, align, cSetInfoEnemy::DTI.getID());
-}
-
 void* cSetInfoEnemy::operator new(size_t sz, void* p_addr) {
     return p_addr;
-}
-
-inline void cSetInfoEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSetInfoEnemy::DTI)->memFree(p_addr);
 }
 
 cSetInfoEnemy::cSetInfoEnemy() {

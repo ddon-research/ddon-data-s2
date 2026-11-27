@@ -660,3 +660,23 @@ inline void uEffectExt::setOthersTransparencyPercentage(f32 set) {
 inline f32 uEffectExt::getOthersTransparencyPercentage() {
     return this->mOthersTransparencyPercentage;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uEffectExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI);
+}
+
+inline void uEffectExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI)->memFree(p_addr);
+}
+
+inline void uEffectExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
+    ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI)->memFree(padr);
+}
+
+inline void uEffectExt::CORRECT_WIND_PARAM::ZONE_WIND_PARAM::operator delete[](void* padr) {
+    ::MtMemoryAllocator::getAllocator(::uEffectExt::DTI)->memFree(padr);
+}

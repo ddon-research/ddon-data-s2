@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rJumpParamTbl.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -20,10 +18,6 @@ extern template __attribute__((noinline)) void rTbl2<cJumpParam>::allocData(unsi
 
 const MtDTI& cJumpParam::getDTI() const {
     return cJumpParam::DTI;
-}
-
-inline void* cJumpParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cJumpParam::DTI)->memAlloc(sz, align, cJumpParam::DTI.getID());
 }
 
 cJumpParam::cJumpParam() {
@@ -60,10 +54,6 @@ MtObject* cJumpParam::MyDTI::newInstance() const {
 
 const MtDTI& rJumpParamTbl::getDTI() const {
     return rJumpParamTbl::DTI;
-}
-
-inline void* rJumpParamTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rJumpParamTbl::DTI)->memAlloc(sz, align, rJumpParamTbl::DTI.getID());
 }
 
 bool rJumpParamTbl::loadData(MtDataReader& in, cJumpParam* pData) {

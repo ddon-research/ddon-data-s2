@@ -154,3 +154,15 @@ public:
 inline void* uGUIPopRmcQuestInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopRmcQuestInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopRmcQuestInfo::DTI);
+}
+
+inline void uGUIPopRmcQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopRmcQuestInfo::DTI)->memFree(p_addr);
+}

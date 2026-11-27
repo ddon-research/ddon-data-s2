@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cErosionRegion.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cUnit.h"
 #include "cpErosionEnemy.h"
@@ -29,14 +27,6 @@
 
 const MtDTI& cErosionRegion::getDTI() const {
     return cErosionRegion::DTI;
-}
-
-inline void* cErosionRegion::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cErosionRegion::DTI)->memAlloc(sz, align, cErosionRegion::DTI.getID());
-}
-
-inline void cErosionRegion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cErosionRegion::DTI)->memFree(p_addr);
 }
 
 cErosionRegion::cErosionRegion() {

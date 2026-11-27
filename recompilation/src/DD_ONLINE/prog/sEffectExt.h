@@ -1112,6 +1112,8 @@ inline sEffectExt::cEfcCameraQuakeDataSmall::cEfcCameraQuakeDataSmall() {
 // Included after the classes: the generic bodies below need these complete.
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/rTexture.h"
 
 inline void cVfxLightInfluence::operator delete[](void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cVfxLightInfluence::DTI)->memFree(p_addr);
@@ -1119,4 +1121,89 @@ inline void cVfxLightInfluence::operator delete[](void* p_addr) {
 
 inline void* cVfxLightInfluence::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cVfxLightInfluence::DTI)->memAlloc(sz, align, ::cVfxLightInfluence::DTI.::MtDTI::getID());
+}
+
+inline void* cVfxLightInfluence::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cVfxLightInfluence::DTI)->memAlloc(sz, align, ::cVfxLightInfluence::DTI.::MtDTI::getID());
+}
+
+inline void cVfxLightInfluence::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cVfxLightInfluence::DTI)->memFree(p_addr);
+}
+
+inline void* rVfxLightInfluence::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rVfxLightInfluence::DTI)->memAlloc(sz, align, ::rVfxLightInfluence::DTI.::MtDTI::getID());
+}
+
+inline void rVfxLightInfluence::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rVfxLightInfluence::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sEffectExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sEffectExt::DTI);
+}
+
+inline void sEffectExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffectExt::DTI)->memFree(p_addr);
+}
+
+inline void sEffectExt::releaseCommonELI() {
+    if (this->mpCommonELI == nullptr) {
+        return;
+    }
+    this->mpCommonELI->::cResource::release();
+    this->mpCommonELI = nullptr;
+}
+
+inline void sEffectExt::cStatusAilmentsTexture::setSpecularMap(rTexture* tex) {
+    this->mpSpecularMap = tex;
+    tex->::cResource::addRef();
+}
+
+inline void sEffectExt::cZoneEpvStack::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffectExt::cZoneEpvStack::DTI)->memFree(p_addr);
+}
+
+inline void* sEffectExt::cZoneEffectUnitLayout::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sEffectExt::cZoneEffectUnitLayout::DTI)->memAlloc(sz, align, ::sEffectExt::cZoneEffectUnitLayout::DTI.::MtDTI::getID());
+}
+
+inline void sEffectExt::cZoneEffectUnitLayout::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffectExt::cZoneEffectUnitLayout::DTI)->memFree(p_addr);
+}
+
+inline void sEffectExt::cZoneEffectUnit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffectExt::cZoneEffectUnit::DTI)->memFree(p_addr);
+}
+
+inline void* sEffectExt::cEfcCameraQuakeData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeData::DTI)->memAlloc(sz, align, ::sEffectExt::cEfcCameraQuakeData::DTI.::MtDTI::getID());
+}
+
+inline void sEffectExt::cEfcCameraQuakeData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeData::DTI)->memFree(p_addr);
+}
+
+inline void* sEffectExt::cEfcCameraQuakeDataLarge::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataLarge::DTI)->memAlloc(sz, align, ::sEffectExt::cEfcCameraQuakeDataLarge::DTI.::MtDTI::getID());
+}
+
+inline void sEffectExt::cEfcCameraQuakeDataLarge::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataLarge::DTI)->memFree(p_addr);
+}
+
+inline void* sEffectExt::cEfcCameraQuakeDataMiddle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataMiddle::DTI)->memAlloc(sz, align, ::sEffectExt::cEfcCameraQuakeDataMiddle::DTI.::MtDTI::getID());
+}
+
+inline void sEffectExt::cEfcCameraQuakeDataMiddle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataMiddle::DTI)->memFree(p_addr);
+}
+
+inline void* sEffectExt::cEfcCameraQuakeDataSmall::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataSmall::DTI)->memAlloc(sz, align, ::sEffectExt::cEfcCameraQuakeDataSmall::DTI.::MtDTI::getID());
+}
+
+inline void sEffectExt::cEfcCameraQuakeDataSmall::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffectExt::cEfcCameraQuakeDataSmall::DTI)->memFree(p_addr);
 }

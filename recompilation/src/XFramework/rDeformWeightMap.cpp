@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "rDeformWeightMap.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
@@ -22,14 +21,6 @@ __attribute__((weak)) void rDeformWeightMap::usage() {
 
 const MtDTI& rDeformWeightMap::getDTI() const {
     return rDeformWeightMap::DTI;
-}
-
-inline void* rDeformWeightMap::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDeformWeightMap::DTI)->memAlloc(sz, align, rDeformWeightMap::DTI.mID);
-}
-
-inline void rDeformWeightMap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDeformWeightMap::DTI)->memFree(p_addr);
 }
 
 void rDeformWeightMap::createProperty(MtPropertyList& s) {

@@ -20,9 +20,6 @@ class cJointInfo;
 class rJointInfo;
 class uDDOModel;
 
-// Declarations
-class cpLockOn;
-
 namespace nLockOnTarget {
     enum LOCKON_ALL_CTRL
     {
@@ -40,6 +37,9 @@ namespace nLockOnTarget {
         STATE_BREAK = 1,
     };
 }  // namespace nLockOnTarget
+
+// Declarations
+class cpLockOn;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -181,4 +181,24 @@ inline void* cpLockOn::cLockOnTarget::operator new(size_t sz, void* p_addr) {
 
 inline void cpLockOn::cLockOnTarget::setLockOnTargetState(nLockOnTarget::LOCKON_TARGET_STATE state) {
     this->mLockOnState = state;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpLockOn::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpLockOn::DTI);
+}
+
+inline void cpLockOn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpLockOn::DTI)->memFree(p_addr);
+}
+
+inline void* cpLockOn::cLockOnTarget::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpLockOn::cLockOnTarget::DTI)->memAlloc(sz, align, ::cpLockOn::cLockOnTarget::DTI.::MtDTI::getID());
+}
+
+inline void cpLockOn::cLockOnTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpLockOn::cLockOnTarget::DTI)->memFree(p_addr);
 }

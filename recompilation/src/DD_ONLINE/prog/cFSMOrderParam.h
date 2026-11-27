@@ -1352,8 +1352,18 @@ inline void* cFSMOrderParamAreaHit::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamAreaHit::cFSMOrderParamAreaHit() {
+    this->mAct = 1;
+    this->mTaskType = 0;
+    this->mSceNo = 0;
+}
+
 inline void* cFSMOrderParamBGMCommon::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamBGMCommon::cFSMOrderParamBGMCommon() {
+    this->mRequestNo = 0;
 }
 
 inline void* cFSMOrderParamBGMRequest::operator new(size_t sz, void* p_addr) {
@@ -1364,16 +1374,37 @@ inline u32 cFSMOrderParamBGMRequest::getRequestEditType() const {
     return this->mBgmRequestEditType;
 }
 
+inline cFSMOrderParamBGMRequest::cFSMOrderParamBGMRequest() {
+    this->mBgmRequestType = 0;
+    this->mBgmRequestNo = 0;
+    this->mBgmRequestEditType = 0;
+}
+
 inline void* cFSMOrderParamBGMStop::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamBGMStop::cFSMOrderParamBGMStop() {
 }
 
 inline void* cFSMOrderParamCallAnnounce::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamCallAnnounce::cFSMOrderParamCallAnnounce() {
+    this->mType = 1;
+    this->mQuestId = 0;
+    this->mMsgNo = 0;
+}
+
 inline void* cFSMOrderParamCallEvent::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamCallEvent::cFSMOrderParamCallEvent() {
+    this->mStageNo = 0;
+    this->mEventNo = 0;
+    this->mNpcArray.::MtArray::mAutoDelete = true;
 }
 
 inline void* cFSMOrderParamCallEvent::cNpcId::operator new(size_t sz, void* p_addr) {
@@ -1388,32 +1419,86 @@ inline void* cFSMOrderParamCamera::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamCamera::cFSMOrderParamCamera() {
+    this->mCamId = 0;
+    this->mCamType = 0;
+    this->mActType = 0;
+    this->mCamRes = 0;
+    this->mCantActPl = false;
+    this->mIsFsmEvent = true;
+    this->mStartPosNo = 0;
+    this->mPlStopTime = 0.0f;
+    this->mSetPosType = 0;
+    this->mIsSelfDisplayed = false;
+    this->mIsEnemyAndNpcDisplayed = false;
+    this->mIsMessageCleared = false;
+    this->mIsSelfStopped = false;
+}
+
 inline void* cFSMOrderParamChangeBattleThink::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamChangeBattleThink::cFSMOrderParamChangeBattleThink() {
+    this->mGroup = -1;
+    this->mId = -1;
+    this->mBattleThink = 0;
 }
 
 inline void* cFSMOrderParamCheckLayout::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamCheckLayout::cFSMOrderParamCheckLayout() {
+    this->mActType = 0;
+    this->mStageNo = 100;
+    this->mLotNo = 0;
+}
+
 inline void* cFSMOrderParamCtrlSubSdl::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamCtrlSubSdl::cFSMOrderParamCtrlSubSdl() {
+    this->mCtrl = 0;
+    this->mSdlNo = 0;
+    this->mIsLoop = false;
 }
 
 inline void* cFSMOrderParamFlagCommon::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamFlagCommon::cFSMOrderParamFlagCommon() {
+    this->mFlagNo = 0;
+}
+
 inline void* cFSMOrderParamFlagQuest::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamFlagQuest::cFSMOrderParamFlagQuest() {
+    this->mQuestNo = 0;
+    this->mFlagNo = 0;
 }
 
 inline void* cFSMOrderParamIsMyQuestFlag::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamIsMyQuestFlag::cFSMOrderParamIsMyQuestFlag() {
+    this->mArrayIdx = 0;
+    this->mQuestId = 0;
+    this->mFlagNo = 0;
+}
+
 inline void* cFSMOrderParamJumpArea::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamJumpArea::cFSMOrderParamJumpArea() {
+    this->mJumpStageNo = 0;
+    this->mJumpStagePosNo = 0;
 }
 
 inline void* cFSMOrderParamJumpPos::operator new(size_t sz, void* p_addr) {
@@ -1422,6 +1507,11 @@ inline void* cFSMOrderParamJumpPos::operator new(size_t sz, void* p_addr) {
 
 inline void* cFSMOrderParamQuestInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamQuestInfo::cFSMOrderParamQuestInfo() {
+    this->mQuestType = 0;
+    this->mQuestId = 0;
 }
 
 inline void* cFSMOrderParamSetCallSe::operator new(size_t sz, void* p_addr) {
@@ -1440,6 +1530,12 @@ inline void* cFSMOrderParamSetEnemy::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamSetEnemy::cFSMOrderParamSetEnemy() {
+    this->mGroupId = 257;
+    this->mLayoutId = 0;
+    this->mSetEnemyInfo.::MtArray::mAutoDelete = true;
+}
+
 inline void* cFSMOrderParamSetEnemy::cSetEmInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -1448,20 +1544,48 @@ inline void* cFSMOrderParamSetFade::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamSetFade::cFSMOrderParamSetFade() {
+    this->mFadeType = 0;
+    this->mFadeTime = 1.0f;
+}
+
 inline void* cFSMOrderParamSetLayout::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamSetLayout::cFSMOrderParamSetLayout() {
+    this->mActType = 0;
+    this->mStageNo = 0;
+    this->mFlagNo = 0;
 }
 
 inline void* cFSMOrderParamSetLocationName::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamSetLocationName::cFSMOrderParamSetLocationName() {
+    this->mStageNo = 0;
+}
+
 inline void* cFSMOrderParamSetOpenDoor::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cFSMOrderParamSetOpenDoor::cFSMOrderParamSetOpenDoor() {
+    this->mIsQuestSet = false;
+    this->mQuestId = 0;
+    this->mGroupNo = 0;
+    this->mSetNo = 0;
+}
+
 inline void* cFSMOrderParamSetVib::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamSetVib::cFSMOrderParamSetVib() {
+    this->mVib = 0;
+    this->mNum = 1;
+    this->mWaitSec = 0.0f;
 }
 
 inline void* cFSMOrderParamStartQuake::operator new(size_t sz, void* p_addr) {
@@ -1470,4 +1594,327 @@ inline void* cFSMOrderParamStartQuake::operator new(size_t sz, void* p_addr) {
 
 inline void* cFSMOrderParamStopQuake::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cFSMOrderParamStopQuake::cFSMOrderParamStopQuake() {
+    this->mIsForceStop = false;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cFSMOrderParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParam::DTI)->memAlloc(sz, align, ::cFSMOrderParam::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParam::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamAreaHit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamAreaHit::DTI)->memAlloc(sz, align, ::cFSMOrderParamAreaHit::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamAreaHit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamAreaHit::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamBGMCommon::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamBGMCommon::DTI)->memAlloc(sz, align, ::cFSMOrderParamBGMCommon::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamBGMCommon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamBGMCommon::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamBGMRequest::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamBGMRequest::DTI)->memAlloc(sz, align, ::cFSMOrderParamBGMRequest::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamBGMRequest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamBGMRequest::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamBGMStop::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamBGMStop::DTI)->memAlloc(sz, align, ::cFSMOrderParamBGMStop::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamBGMStop::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamBGMStop::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamCallAnnounce::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCallAnnounce::DTI)->memAlloc(sz, align, ::cFSMOrderParamCallAnnounce::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamCallAnnounce::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCallAnnounce::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamCallEvent::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCallEvent::DTI)->memAlloc(sz, align, ::cFSMOrderParamCallEvent::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamCallEvent::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCallEvent::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamCallEvent::cNpcId::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCallEvent::cNpcId::DTI)->memAlloc(sz, align, ::cFSMOrderParamCallEvent::cNpcId::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamCallEvent::cNpcId::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCallEvent::cNpcId::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamCamera::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCamera::DTI)->memAlloc(sz, align, ::cFSMOrderParamCamera::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamCamera::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCamera::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamChangeBattleThink::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamChangeBattleThink::DTI)->memAlloc(sz, align, ::cFSMOrderParamChangeBattleThink::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamChangeBattleThink::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamChangeBattleThink::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamCheckLayout::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCheckLayout::DTI)->memAlloc(sz, align, ::cFSMOrderParamCheckLayout::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamCheckLayout::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCheckLayout::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamCtrlSubSdl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCtrlSubSdl::DTI)->memAlloc(sz, align, ::cFSMOrderParamCtrlSubSdl::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamCtrlSubSdl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamCtrlSubSdl::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamFlagCommon::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamFlagCommon::DTI)->memAlloc(sz, align, ::cFSMOrderParamFlagCommon::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamFlagCommon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamFlagCommon::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamFlagQuest::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamFlagQuest::DTI)->memAlloc(sz, align, ::cFSMOrderParamFlagQuest::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamFlagQuest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamFlagQuest::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamIsMyQuestFlag::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamIsMyQuestFlag::DTI)->memAlloc(sz, align, ::cFSMOrderParamIsMyQuestFlag::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamIsMyQuestFlag::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamIsMyQuestFlag::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamJumpArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamJumpArea::DTI)->memAlloc(sz, align, ::cFSMOrderParamJumpArea::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamJumpArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamJumpArea::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamJumpPos::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamJumpPos::DTI)->memAlloc(sz, align, ::cFSMOrderParamJumpPos::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamJumpPos::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamJumpPos::DTI)->memFree(p_addr);
+}
+
+inline cFSMOrderParamJumpPos::cFSMOrderParamJumpPos() {
+    this->mJumpType = 1;
+    this->mJumpStagePosNo = 0;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mFadeOutTime = 15.0f;
+    this->mFadeInTime = 15.0f;
+}
+
+inline void* cFSMOrderParamQuestInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamQuestInfo::DTI)->memAlloc(sz, align, ::cFSMOrderParamQuestInfo::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamQuestInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamSetCallSe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetCallSe::DTI)->memAlloc(sz, align, ::cFSMOrderParamSetCallSe::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamSetCallSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetCallSe::DTI)->memFree(p_addr);
+}
+
+inline cFSMOrderParamSetCallSe::cFSMOrderParamSetCallSe() {
+    this->mSeId = 0;
+    this->mTarget = 0;
+    this->mGroup = -1;
+    this->mId = -1;
+    this->mJointNo = -1;
+    this->mDelayFrame = 0;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+}
+
+inline MtAllocator* cFSMOrderParamSetDispUnit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetDispUnit::DTI);
+}
+
+inline void cFSMOrderParamSetDispUnit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetDispUnit::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamSetEffect::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetEffect::DTI)->memAlloc(sz, align, ::cFSMOrderParamSetEffect::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamSetEffect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetEffect::DTI)->memFree(p_addr);
+}
+
+inline cFSMOrderParamSetEffect::cFSMOrderParamSetEffect() {
+    this->mEfcId = 0;
+    this->mTarget = 0;
+    this->mGroup = -1;
+    this->mId = -1;
+    this->mHaveItem = false;
+    this->mOmId = 0;
+    this->mAct = 0;
+    this->mType = 0;
+    this->mIndex = 0;
+    this->mElement = 0;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mAng.x = ::MtVector3::Zero.x;
+    this->mAng.y = ::MtVector3::Zero.y;
+    this->mAng.z = ::MtVector3::Zero.z;
+    this->mAng.pad_ = 0.0f;
+    this->mScl.x = ::MtVector3::One.x;
+    this->mScl.y = ::MtVector3::One.y;
+    this->mScl.z = ::MtVector3::One.z;
+    this->mScl.pad_ = 0.0f;
+}
+
+inline void* cFSMOrderParamSetEnemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetEnemy::DTI)->memAlloc(sz, align, ::cFSMOrderParamSetEnemy::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamSetEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetEnemy::DTI)->memFree(p_addr);
+}
+
+inline void cFSMOrderParamSetEnemy::cSetEmInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetEnemy::cSetEmInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamSetFade::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetFade::DTI)->memAlloc(sz, align, ::cFSMOrderParamSetFade::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamSetFade::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetFade::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamSetLayout::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetLayout::DTI)->memAlloc(sz, align, ::cFSMOrderParamSetLayout::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamSetLayout::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetLayout::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamSetLocationName::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetLocationName::DTI)->memAlloc(sz, align, ::cFSMOrderParamSetLocationName::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamSetLocationName::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetLocationName::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamSetOpenDoor::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetOpenDoor::DTI)->memAlloc(sz, align, ::cFSMOrderParamSetOpenDoor::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamSetOpenDoor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetOpenDoor::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamSetVib::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetVib::DTI)->memAlloc(sz, align, ::cFSMOrderParamSetVib::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamSetVib::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamSetVib::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMOrderParamStartQuake::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamStartQuake::DTI)->memAlloc(sz, align, ::cFSMOrderParamStartQuake::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamStartQuake::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamStartQuake::DTI)->memFree(p_addr);
+}
+
+inline cFSMOrderParamStartQuake::cFSMOrderParamStartQuake() {
+    this->mMainTime = 0.0f;
+    this->mTailTime = 0.0f;
+    this->mTargetId = 0;
+    this->mHeadTime = 0.0f;
+    this->mTargetType = 0;
+    this->mTargetGroup = 0;
+    this->mMagnitude.x = ::MtVector3::Zero.x;
+    this->mMagnitude.y = ::MtVector3::Zero.y;
+    this->mMagnitude.z = ::MtVector3::Zero.z;
+    this->mMagnitude.pad_ = 0.0f;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mIsAsync = false;
+    this->mBalance = 0.0f;
+    this->mPeriod = 0.0f;
+    this->mRoll = 0.0f;
+    this->mSpread = 0.0f;
+    this->mDamping = 0.0f;
+    this->mPos.pad_ = 0.0f;
+    this->mRadius = 0.0f;
+    this->mCamera1QuakeTime = 0.1f;
+    this->mTarget1QuakeTime = 0.1f;
+    this->mRoll1QuakeTime = 0.1f;
+    this->mRandDrop = 0.5f;
+    this->mHeadCurve = 1;
+    this->mTailCurve = 1;
+}
+
+inline void* cFSMOrderParamStopQuake::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMOrderParamStopQuake::DTI)->memAlloc(sz, align, ::cFSMOrderParamStopQuake::DTI.::MtDTI::getID());
+}
+
+inline void cFSMOrderParamStopQuake::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMOrderParamStopQuake::DTI)->memFree(p_addr);
 }

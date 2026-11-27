@@ -23,21 +23,6 @@ const MtDTI& rFieldMapData::getDTI() const {
     return rFieldMapData::DTI;
 }
 
-inline void* rFieldMapData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFieldMapData::DTI)->memAlloc(sz, align, rFieldMapData::DTI.getID());
-}
-
-inline void rFieldMapData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldMapData::DTI)->memFree(p_addr);
-}
-
-inline rFieldMapData::rFieldMapData() {
-    setAttribute(18u);
-    this->cResource::clear();
-    mpArrayData = nullptr;
-    mArrayDataNum = 0;
-}
-
 rFieldMapData::~rFieldMapData() {
     unsigned int i3 = 0;
     if (mArrayDataNum != 0) {
@@ -105,10 +90,6 @@ MtObject* rFieldMapData::MyDTI::newInstance() const {
 
 const MtDTI& rFieldMapData::Data::getDTI() const {
     return rFieldMapData::Data::DTI;
-}
-
-inline void rFieldMapData::Data::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldMapData::Data::DTI)->memFree(p_addr);
 }
 
 void rFieldMapData::Data::createProperty(MtPropertyList& s) {

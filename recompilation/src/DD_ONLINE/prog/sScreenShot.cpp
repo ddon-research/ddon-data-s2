@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_kernel.h>
 #include "sScreenShot.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
@@ -639,16 +640,8 @@ const MtDTI& sScreenShot::getDTI() const {
     return sScreenShot::DTI;
 }
 
-inline MtAllocator* sScreenShot::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sScreenShot::DTI);
-}
-
 void* sScreenShot::operator new(size_t sz, u32 align) {
     return sScreenShot::getAllocator()->memAlloc(sz, align, sScreenShot::DTI.getID());
-}
-
-inline void sScreenShot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sScreenShot::DTI)->memFree(p_addr);
 }
 
 sScreenShot::sScreenShot() {
@@ -776,8 +769,52 @@ __attribute__((weak)) bool sScreenShot::analyzeMessage(MtString& dst, MtString k
 }
 
 __attribute__((weak)) void sScreenShot::releaseUpload() {
-    DDON_STUB("sScreenShot::releaseUpload")
-    /* stub */
+    cHttpClient* v2_4;
+    if (mpHttpClient == nullptr) {
+        return;
+    } else {
+        if (!mpHttpClient->isDone()) {
+            v2_4 = mpHttpClient;
+        } else {
+            cHttpClient* v0_4 = mpHttpClient;
+            cHttpClient* v1_4;
+            for (;;) {
+                v0_4->move();
+                sceKernelUsleep(10000u);
+                v1_4 = mpHttpClient;
+                if (v1_4->mState != 0) {
+                    v0_4 = v1_4;
+                } else {
+                    break;
+                }
+            }
+            if (v1_4 != nullptr) {
+                v2_4 = v1_4;
+            } else {
+                if (mpContentData != nullptr) {
+                    MtMemoryAllocator::getAllocator(sScreenShot::DTI)->memFree(static_cast<void*>(mpContentData));
+                    mpContentData = nullptr;
+                }
+                if (mJpegInfo.mpDataBuf != nullptr) {
+                    MtMemoryAllocator::getAllocator(sScreenShot::DTI)->memFree(static_cast<void*>(mJpegInfo.mpDataBuf));
+                    mJpegInfo.mpDataBuf = nullptr;
+                    mJpegInfo.mDataSize = 0;
+                }
+                return;
+            }
+        }
+    }
+    delete v2_4;
+    mpHttpClient = nullptr;
+    if (mpContentData != nullptr) {
+        MtMemoryAllocator::getAllocator(sScreenShot::DTI)->memFree(static_cast<void*>(mpContentData));
+        mpContentData = nullptr;
+    }
+    if (mJpegInfo.mpDataBuf != nullptr) {
+        MtMemoryAllocator::getAllocator(sScreenShot::DTI)->memFree(static_cast<void*>(mJpegInfo.mpDataBuf));
+        mJpegInfo.mpDataBuf = nullptr;
+        mJpegInfo.mDataSize = 0;
+    }
 }
 
 u32 sScreenShot::uploadScreenShot() {

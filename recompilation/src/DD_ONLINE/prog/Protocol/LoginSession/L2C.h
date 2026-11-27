@@ -1134,3 +1134,135 @@ inline nLoginSession::CPacket_L2C_PING_RES::CPacket_L2C_PING_RES() {
     this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CLIENT_CHALLENGE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_CREATE_CHARACTER_DATA_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DECIDE_CANCEL_CHARACTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DECIDE_CHARACTER_ID_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_DELETE_CHARACTER_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_EJECTION_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_EJECTION_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_EJECTION_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_CHARACTER_LIST_RES::DTI);
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_NTC::DTI);
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GET_ERROR_MESSAGE_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_GAME_SERVER_LIST_RES::DTI);
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_GAME_SESSION_KEY_RES::DTI);
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GET_LOGIN_SETTING_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline void nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_LOGIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_LOGIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGIN_WAIT_NUM_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_LOGOUT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_LOGOUT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_LOGOUT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_NEXT_CONNECT_SERVER_NTC::DTI);
+}
+
+inline MtAllocator* nLoginSession::CPacket_L2C_PING_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_PING_RES::DTI);
+}
+
+inline void* nLoginSession::CPacket_L2C_PING_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLoginSession::CPacket_L2C_PING_RES::DTI)->memAlloc(sz, align, ::nLoginSession::CPacket_L2C_PING_RES::DTI.::MtDTI::getID());
+}

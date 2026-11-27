@@ -3,7 +3,6 @@
 #include "rRegionBreakInfo.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +12,6 @@
 
 const MtDTI& cRegionBreakInfo::getDTI() const {
     return cRegionBreakInfo::DTI;
-}
-
-inline void* cRegionBreakInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cRegionBreakInfo::DTI)->memAlloc(sz, align, cRegionBreakInfo::DTI.getID());
-}
-
-inline void cRegionBreakInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cRegionBreakInfo::DTI)->memFree(p_addr);
 }
 
 inline cRegionBreakInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -35,16 +26,8 @@ const MtDTI& rRegionBreakInfo::getDTI() const {
     return rRegionBreakInfo::DTI;
 }
 
-inline MtAllocator* rRegionBreakInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rRegionBreakInfo::DTI);
-}
-
 void* rRegionBreakInfo::operator new(size_t sz, u32 align) {
     return rRegionBreakInfo::getAllocator()->memAlloc(sz, align, rRegionBreakInfo::DTI.getID());
-}
-
-inline void rRegionBreakInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rRegionBreakInfo::DTI)->memFree(p_addr);
 }
 
 bool rRegionBreakInfo::loadData(MtDataReader& r, cRegionBreakInfo* pData) {

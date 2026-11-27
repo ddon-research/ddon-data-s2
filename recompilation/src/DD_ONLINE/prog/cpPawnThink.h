@@ -63,9 +63,6 @@ class uDDOModel;
 class uHuman;
 class uHumanEnemy;
 
-// Declarations
-class cpPawnThink;
-
 enum REQ_ACTINTER_PRIO
 {
     REQ_ACTINTER_PRIO_NONE = 0,
@@ -74,6 +71,9 @@ enum REQ_ACTINTER_PRIO
     REQ_ACTINTER_PRIO_PRIO_THINK_HI = 3,
     REQ_ACTINTER_PRIO_NUM = 4,
 };
+
+// Declarations
+class cpPawnThink;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -606,4 +606,16 @@ inline void cpPawnThink::initEscapeThinkInfo() {
 inline void cpPawnThink::resetEscapeInfo() {
     this->mSheatheTimer = 0.0f;
     this->mEnemyInRangeTimer = 0.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpPawnThink::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpPawnThink::DTI);
+}
+
+inline void cpPawnThink::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpPawnThink::DTI)->memFree(p_addr);
 }

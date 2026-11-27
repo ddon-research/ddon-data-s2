@@ -41,14 +41,6 @@ const MtDTI& cRage::getDTI() const {
     return cRage::DTI;
 }
 
-inline void* cRage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cRage::DTI)->memAlloc(sz, align, cRage::DTI.getID());
-}
-
-inline void cRage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cRage::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool cRage::checkRageStatus(uDDOModel* pModel) {
     DDON_STUB("cRage::checkRageStatus")
     return {};
@@ -66,16 +58,8 @@ const MtDTI& cpEnemyThink::getDTI() const {
     return cpEnemyThink::DTI;
 }
 
-inline MtAllocator* cpEnemyThink::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpEnemyThink::DTI);
-}
-
 void* cpEnemyThink::operator new(size_t sz, u32 align) {
     return cpEnemyThink::getAllocator()->memAlloc(sz, align, cpEnemyThink::DTI.getID());
-}
-
-inline void cpEnemyThink::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpEnemyThink::DTI)->memFree(p_addr);
 }
 
 cpEnemyThink::cpEnemyThink() {
@@ -203,14 +187,6 @@ MtObject* cpEnemyThink::MyDTI::newInstance() const {
 
 const MtDTI& rRageTable::getDTI() const {
     return rRageTable::DTI;
-}
-
-inline void* rRageTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rRageTable::DTI)->memAlloc(sz, align, rRageTable::DTI.getID());
-}
-
-inline void rRageTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rRageTable::DTI)->memFree(p_addr);
 }
 
 bool rRageTable::loadData(MtDataReader& in, cRage* pData) {

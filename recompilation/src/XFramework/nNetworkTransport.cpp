@@ -14,6 +14,7 @@
 #include "nNetworkCoder.h"
 #include "nNetworkConnect.h"
 #include "nNetworkDatabase.h"
+#include "nNetworkPacket.h"
 #include "nNetworkProtocol.h"
 #include "nNetworkQueue.h"
 #include "nNetworkRoute.h"
@@ -38,10 +39,6 @@ const MtDTI& nNetwork::Transport::getDTI() const {
 
 void* nNetwork::Transport::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::DTI)->memAlloc(sz, align, ::nNetwork::Transport::DTI.mID);
-}
-
-inline void nNetwork::Transport::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::DTI)->memFree(p_addr);
 }
 
 void nNetwork::Transport::createProperty(MtPropertyList& s) {
@@ -182,10 +179,6 @@ __attribute__((weak)) MtObject* nNetwork::Transport::MyDTI::newInstance() const 
 
 const MtDTI& nNetwork::Transport::ForwardQueue::getDTI() const {
     return nNetwork::Transport::ForwardQueue::DTI;
-}
-
-inline void nNetwork::Transport::ForwardQueue::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::ForwardQueue::DTI)->memFree(p_addr);
 }
 
 void nNetwork::Transport::ForwardQueue::createProperty(MtPropertyList& s) {

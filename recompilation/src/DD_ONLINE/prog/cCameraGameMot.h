@@ -189,6 +189,33 @@ inline void* cCamImpMot::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCamImpMot::cCamImpMot() : mpParamMot(static_cast<const cCamExParamMot*>(nullptr)) {
+    this->mAdjVecTar.z = 0.0f;
+    this->mAdjVecTar.pad_ = 0.0f;
+    this->mAdjVecTar.x = 0.0f;
+    this->mAdjVecTar.y = 0.0f;
+    this->mAdjVecCam.z = 0.0f;
+    this->mAdjVecCam.pad_ = 0.0f;
+    this->mAdjVecCam.x = 0.0f;
+    this->mAdjVecCam.y = 0.0f;
+}
+
 inline void* cCamImpMotTar::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCamExParamMot::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamMot::DTI);
+}
+
+inline void cCamImpMot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpMot::DTI)->memFree(p_addr);
+}
+
+inline void cCamImpMotTar::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpMotTar::DTI)->memFree(p_addr);
 }

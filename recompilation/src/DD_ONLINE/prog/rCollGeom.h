@@ -167,3 +167,15 @@ inline void* cCollGeom::operator new(size_t sz, u32 align) {
 inline void* cCollGeom::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCollGeom::DTI)->memAlloc(sz, align, ::cCollGeom::DTI.::MtDTI::getID());
 }
+
+inline void cCollGeom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCollGeom::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* rCollGeom::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rCollGeom::DTI);
+}
+
+inline void rCollGeom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCollGeom::DTI)->memFree(p_addr);
+}

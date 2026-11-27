@@ -13,6 +13,7 @@
 #include "../MT/MtSynchronize.h"
 #include "nNetworkCallback.h"
 #include "nNetworkDatabase.h"
+#include "nNetworkMember.h"
 #include "nNetworkSession.h"
 #include "sNetwork.h"
 #ifndef DDON_STUB
@@ -35,10 +36,6 @@ const MtDTI& nNetwork::VoiceChat::getDTI() const {
 
 void* nNetwork::VoiceChat::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::DTI)->memAlloc(sz, align, ::nNetwork::VoiceChat::DTI.mID);
-}
-
-inline void nNetwork::VoiceChat::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::DTI)->memFree(p_addr);
 }
 
 void nNetwork::VoiceChat::createProperty(MtPropertyList& s) {
@@ -302,9 +299,67 @@ __attribute__((weak)) void nNetwork::VoiceChat::process(s32 src_index, const voi
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::VoiceChat::putVoiceData(u8* pbuf, u32 len, s32 dst, bool rel) {
-    DDON_STUB("nNetwork::VoiceChat::putVoiceData")
-    /* stub */
+void nNetwork::VoiceChat::putVoiceData(u8* pbuf, u32 len, s32 dst, bool rel) {
+    if ((::sNetwork::mpInstance)->mpSession[mSessionIndex] == nullptr) {
+        return;
+    }
+    const nNetwork::SessionDatabase* pdb = (::sNetwork::mpInstance)->mpSession[mSessionIndex]->mpDatabase;
+    if (pdb == nullptr) {
+        return;
+    }
+    if (mRoute) {
+        if (static_cast<unsigned int>(dst) <= 15) {
+            if (pdb->isValid(dst)) {
+                if (mRoute) {
+                    if (rel) {
+                        (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), pdb->mMemberList[dst].mRouteIndex, mProtocol | 112u, 4u);
+                    } else {
+                        (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), pdb->mMemberList[dst].mRouteIndex, (mProtocol | mPriority) | 96u, 4u);
+                    }
+                } else {
+                    if (rel) {
+                        (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), pdb->mMemberList[dst].mRouteIndex, mProtocol | 80u, 4u);
+                    } else {
+                        (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), pdb->mMemberList[dst].mRouteIndex, (mProtocol | mPriority) | 64u, 4u);
+                    }
+                }
+            }
+        }
+    } else {
+        if (dst <= 63) {
+            if ((pdb->mMemberList[dst].mConfiguration & 16u) == 0) {
+                if (mRestrict) {
+                    if ((pdb->mMemberList[dst].mConfiguration & 64u) == 0) {
+                        if (rel) {
+                            (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), dst, mProtocol | 80u, 4u);
+                        } else {
+                            (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), dst, (mProtocol | mPriority) | 64u, 4u);
+                        }
+                    }
+                } else {
+                    if (rel) {
+                        (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), dst, mProtocol | 80u, 4u);
+                    } else {
+                        (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), dst, (mProtocol | mPriority) | 64u, 4u);
+                    }
+                }
+            }
+        } else {
+            if (mRestrict) {
+                if (rel) {
+                    (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), dst | 196672, mProtocol | 80u, 4u);
+                } else {
+                    (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), dst | 196672, (mProtocol | mPriority) | 64u, 4u);
+                }
+            } else {
+                if (rel) {
+                    (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), dst | 65600, mProtocol | 80u, 4u);
+                } else {
+                    (::sNetwork::mpInstance)->mpSession[mSessionIndex]->::nNetwork::Session::put(static_cast<const void*>(pbuf), static_cast<s32>(len), dst | 65600, (mProtocol | mPriority) | 64u, 4u);
+                }
+            }
+        }
+    }
 }
 
 inline nNetwork::VoiceChat::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -318,14 +373,6 @@ __attribute__((weak)) MtObject* nNetwork::VoiceChat::MyDTI::newInstance() const 
 
 const MtDTI& nNetwork::VoiceChat::Talker::getDTI() const {
     return nNetwork::VoiceChat::Talker::DTI;
-}
-
-inline void* nNetwork::VoiceChat::Talker::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::Talker::DTI)->memAlloc(sz, align, ::nNetwork::VoiceChat::Talker::DTI.mID);
-}
-
-inline void nNetwork::VoiceChat::Talker::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::VoiceChat::Talker::DTI)->memFree(p_addr);
 }
 
 void nNetwork::VoiceChat::Talker::createProperty(MtPropertyList& s) {

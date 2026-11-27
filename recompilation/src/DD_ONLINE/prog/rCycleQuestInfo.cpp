@@ -20,20 +20,8 @@ const MtDTI& rCycleQuestInfo::getDTI() const {
     return rCycleQuestInfo::DTI;
 }
 
-inline void* rCycleQuestInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCycleQuestInfo::DTI)->memAlloc(sz, align, rCycleQuestInfo::DTI.getID());
-}
-
-inline void rCycleQuestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCycleQuestInfo::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rCycleQuestInfo::getExt() const {
     return "cqi";
-}
-
-inline rCycleQuestInfo::rCycleQuestInfo() {
-    setAttribute(22u);
 }
 
 rCycleQuestInfo::~rCycleQuestInfo() {
@@ -105,10 +93,6 @@ MtObject* rCycleQuestInfo::MyDTI::newInstance() const {
 
 const MtDTI& rCycleQuestInfo::cCycleQuestInfo::getDTI() const {
     return rCycleQuestInfo::cCycleQuestInfo::DTI;
-}
-
-inline void rCycleQuestInfo::cCycleQuestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCycleQuestInfo::cCycleQuestInfo::DTI)->memFree(p_addr);
 }
 
 rCycleQuestInfo::cCycleQuestInfo::~cCycleQuestInfo() {
@@ -188,14 +172,6 @@ MtObject* rCycleQuestInfo::cCycleQuestInfo::MyDTI::newInstance() const {
 
 const MtDTI& rCycleQuestInfo::cCycleQuestSituationInfo::getDTI() const {
     return rCycleQuestInfo::cCycleQuestSituationInfo::DTI;
-}
-
-void* rCycleQuestInfo::cCycleQuestSituationInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCycleQuestInfo::cCycleQuestSituationInfo::DTI)->memAlloc(sz, align, rCycleQuestInfo::cCycleQuestSituationInfo::DTI.getID());
-}
-
-inline void rCycleQuestInfo::cCycleQuestSituationInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCycleQuestInfo::cCycleQuestSituationInfo::DTI)->memFree(p_addr);
 }
 
 rCycleQuestInfo::cCycleQuestSituationInfo::~cCycleQuestSituationInfo() {

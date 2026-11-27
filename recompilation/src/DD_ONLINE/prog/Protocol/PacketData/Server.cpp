@@ -3,7 +3,6 @@
 #include "Server.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
@@ -13,10 +12,6 @@
 
 const MtDTI& CDataGameServerListInfo::getDTI() const {
     return CDataGameServerListInfo::DTI;
-}
-
-inline MtAllocator* CDataGameServerListInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGameServerListInfo::DTI);
 }
 
 void* CDataGameServerListInfo::operator new(size_t sz, u32 align) {
@@ -39,14 +34,6 @@ const MtDTI& CDataGameTime::getDTI() const {
     return CDataGameTime::DTI;
 }
 
-inline MtAllocator* CDataGameTime::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGameTime::DTI);
-}
-
-inline void* CDataGameTime::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataGameTime::DTI)->memAlloc(sz, align, CDataGameTime::DTI.getID());
-}
-
 __attribute__((weak)) void CDataGameTime::operator delete(void* p_addr) {
     CDataGameTime::getAllocator()->memFree(p_addr);
 }
@@ -61,10 +48,6 @@ MtObject* CDataGameTime::MyDTI::newInstance() const {
 
 const MtDTI& CDataURLInfo::getDTI() const {
     return CDataURLInfo::DTI;
-}
-
-inline MtAllocator* CDataURLInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataURLInfo::DTI);
 }
 
 void* CDataURLInfo::operator new(size_t sz, u32 align) {
@@ -87,10 +70,6 @@ const MtDTI& CDataWeatherForecast::getDTI() const {
     return CDataWeatherForecast::DTI;
 }
 
-inline MtAllocator* CDataWeatherForecast::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataWeatherForecast::DTI);
-}
-
 void* CDataWeatherForecast::operator new(size_t sz, u32 align) {
     return CDataWeatherForecast::getAllocator()->memAlloc(sz, align, CDataWeatherForecast::DTI.getID());
 }
@@ -109,14 +88,6 @@ MtObject* CDataWeatherForecast::MyDTI::newInstance() const {
 
 const MtDTI& CDataWorldInfo::getDTI() const {
     return CDataWorldInfo::DTI;
-}
-
-inline MtAllocator* CDataWorldInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataWorldInfo::DTI);
-}
-
-inline void* CDataWorldInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataWorldInfo::DTI)->memAlloc(sz, align, CDataWorldInfo::DTI.getID());
 }
 
 __attribute__((weak)) void CDataWorldInfo::operator delete(void* p_addr) {

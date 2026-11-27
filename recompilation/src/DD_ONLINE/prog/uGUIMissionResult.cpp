@@ -41,16 +41,8 @@ const MtDTI& uGUIMissionResult::getDTI() const {
     return uGUIMissionResult::DTI;
 }
 
-inline MtAllocator* uGUIMissionResult::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMissionResult::DTI);
-}
-
 void* uGUIMissionResult::operator new(size_t sz, u32 align) {
     return uGUIMissionResult::getAllocator()->memAlloc(sz, align, uGUIMissionResult::DTI.getID());
-}
-
-inline void uGUIMissionResult::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMissionResult::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMissionResult::~uGUIMissionResult() {
@@ -410,9 +402,104 @@ __attribute__((weak)) void uGUIMissionResult::initResultController() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIMissionResult::setRewardTab() {
-    DDON_STUB("uGUIMissionResult::setRewardTab")
-    /* stub */
+void uGUIMissionResult::setRewardTab() {
+    mTab.uGUIBase::cReferenceUITab::setFocus(0u, true, true);
+    setPlayingFlow(getFlow(3u), true);
+    setCommon();
+    mpVLCmnCtrl->resetItemNum(3, static_cast<const u32*>(nullptr), 0);
+    mpVLCmnCtrl->setCurrentPos(0, false);
+    if (mpHLReward != nullptr) {
+        mpHLReward->setCurrentPos(0, false);
+    }
+    setControl();
+    mScrollList.setFocus(true);
+    if (mResultData.mIsDestTarget) {
+        if (mResultScrollItem[1].mpInstBase != nullptr) {
+            mResultScrollItem[1].mpInstBase->setVisible(true);
+        }
+    }
+    if (mScore.mpInst != nullptr) {
+        mScore.mpInst->setSequenceId(0xF4241u);
+    }
+    u32 itemNum = mResultData.mRewardList.mLength;
+    cReferenceUIIconItem* p0_3 = &mRewardIcon[0];
+    for (unsigned int i0_11 = 0; i0_11 != 8; p0_3 += 1, i0_11 = i0_11 + 1u) {
+        if (i0_11 < itemNum) {
+            rItemList::rItemParam* t1 = sItemManager::getInstance()->getItemParam(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mResultData.mRewardList.getBuffer()[i0_11]) + 8));
+            if (t1 != nullptr) {
+                p0_3->setIconFromParam(t1);
+                p0_3->setNum(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mResultData.mRewardList.getBuffer()[i0_11]) + 12));
+                if (p0_3->mpInstances.elems[1] != nullptr) {
+                    p0_3->mpInstances.elems[1]->cGUIInstance::setVisible(true);
+                }
+                if (p0_3->mpInstances.elems[0] != nullptr) {
+                    p0_3->mpInstances.elems[0]->cGUIInstance::setVisible(true);
+                }
+                if (p0_3->mpInstances.elems[2] != nullptr) {
+                    p0_3->mpInstances.elems[2]->cGUIInstance::setVisible(true);
+                }
+                p0_3->setVisible(true);
+                p0_3->setExecuteTree(true, 3u);
+            } else {
+                p0_3->setEmpty();
+                p0_3->setVisible(false);
+                p0_3->setExecuteTree(false, 3u);
+            }
+        } else {
+            p0_3->setEmpty();
+            p0_3->setVisible(false);
+            p0_3->setExecuteTree(false, 3u);
+        }
+    }
+    cReferenceUIIconItem* p2_3 = &mRewardDestIcon[0];
+    itemNum = mResultData.mDestRewardList.mLength;
+    for (unsigned int i2_11 = 0; i2_11 != 8; p2_3 += 1, i2_11 = i2_11 + 1u) {
+        if (i2_11 < itemNum) {
+            rItemList::rItemParam* t8 = sItemManager::getInstance()->getItemParam(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mResultData.mDestRewardList.getBuffer()[i2_11]) + 8));
+            if (t8 != nullptr) {
+                p2_3->setIconFromParam(t8);
+                p2_3->setNum(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mResultData.mDestRewardList.getBuffer()[i2_11]) + 12));
+                if (p2_3->mpInstances.elems[1] != nullptr) {
+                    p2_3->mpInstances.elems[1]->cGUIInstance::setVisible(true);
+                }
+                if (p2_3->mpInstances.elems[0] != nullptr) {
+                    p2_3->mpInstances.elems[0]->cGUIInstance::setVisible(true);
+                }
+                if (p2_3->mpInstances.elems[2] != nullptr) {
+                    p2_3->mpInstances.elems[2]->cGUIInstance::setVisible(true);
+                }
+                p2_3->setVisible(true);
+                p2_3->setExecuteTree(true, 3u);
+            } else {
+                p2_3->setEmpty();
+                p2_3->setVisible(false);
+                p2_3->setExecuteTree(false, 3u);
+            }
+        } else {
+            p2_3->setEmpty();
+            p2_3->setVisible(false);
+            p2_3->setExecuteTree(false, 3u);
+        }
+    }
+    const u32 enableEffectNum = mChargeEffectEnableList.mLength;
+    if (enableEffectNum != 0) {
+        for (unsigned int i4_3 = 0;;) {
+            MtObject* t15 = mChargeEffectEnableList.getBuffer()[static_cast<int>(i4_3)];
+            mResultData.mIsCharge = true;
+            mCharge.addData(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t15) + 12), 96u, static_cast<MT_CTSTR>(nullptr));
+            if (enableEffectNum != (i4_3 + 1u)) {
+                i4_3 += 1u;
+            } else {
+                break;
+            }
+        }
+        if (mCharge.mpInstance != nullptr) {
+            mCharge.mpInstance->setVisible(true);
+        }
+    }
+    mCloseButton.execute();
+    updateDisp();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIMissionResult::updateRewardWait);
 }
 
 void uGUIMissionResult::setScoreTab() {
@@ -464,14 +551,6 @@ const MtDTI& uGUIMissionResult::cChargeEffectInfo::getDTI() const {
     return uGUIMissionResult::cChargeEffectInfo::DTI;
 }
 
-inline void* uGUIMissionResult::cChargeEffectInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMissionResult::cChargeEffectInfo::DTI)->memAlloc(sz, align, uGUIMissionResult::cChargeEffectInfo::DTI.getID());
-}
-
-inline void uGUIMissionResult::cChargeEffectInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMissionResult::cChargeEffectInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUIMissionResult::cChargeEffectInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIMissionResult::cChargeEffectInfo::MyDTI uGUIMissionResult::cChargeEffectInfo::DTI("uGUIMissionResult::cChargeEffectInfo", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -487,14 +566,6 @@ uGUIMissionResult::stResultData::stResultData() {
 
 const MtDTI& uGUIMissionResult::cPointList::getDTI() const {
     return uGUIMissionResult::cPointList::DTI;
-}
-
-inline void* uGUIMissionResult::cPointList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMissionResult::cPointList::DTI)->memAlloc(sz, align, uGUIMissionResult::cPointList::DTI.getID());
-}
-
-inline void uGUIMissionResult::cPointList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMissionResult::cPointList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMissionResult::cPointList::~cPointList() {
@@ -514,14 +585,6 @@ const MtDTI& uGUIMissionResult::cItemList::getDTI() const {
     return uGUIMissionResult::cItemList::DTI;
 }
 
-inline void* uGUIMissionResult::cItemList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMissionResult::cItemList::DTI)->memAlloc(sz, align, uGUIMissionResult::cItemList::DTI.getID());
-}
-
-inline void uGUIMissionResult::cItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMissionResult::cItemList::DTI)->memFree(p_addr);
-}
-
 inline uGUIMissionResult::cItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIMissionResult::cItemList::MyDTI uGUIMissionResult::cItemList::DTI("uGUIMissionResult::cItemList", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -534,14 +597,6 @@ const MtDTI& uGUIMissionResult::cResultScrollItem::getDTI() const {
     return uGUIMissionResult::cResultScrollItem::DTI;
 }
 
-inline void* uGUIMissionResult::cResultScrollItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMissionResult::cResultScrollItem::DTI)->memAlloc(sz, align, uGUIMissionResult::cResultScrollItem::DTI.getID());
-}
-
-inline void uGUIMissionResult::cResultScrollItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMissionResult::cResultScrollItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIMissionResult::cResultScrollItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIMissionResult::cResultScrollItem::MyDTI uGUIMissionResult::cResultScrollItem::DTI("uGUIMissionResult::cResultScrollItem", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
@@ -552,10 +607,6 @@ MtObject* uGUIMissionResult::cResultScrollItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIMissionResult::cResultScrollInfo::getDTI() const {
     return uGUIMissionResult::cResultScrollInfo::DTI;
-}
-
-inline void uGUIMissionResult::cResultScrollInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMissionResult::cResultScrollInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIMissionResult::cResultScrollInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

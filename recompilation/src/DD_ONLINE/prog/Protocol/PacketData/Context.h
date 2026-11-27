@@ -5,39 +5,54 @@
 
 // Dependencies
 #include "CharacterCommon.h"
+#include "CharacterEdit.h"
 #include "Common.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtString.h"
+#include "Pawn.h"
 #include "../../cPacket.h"
 
 // Forward declarations
 class CDataCommonU32;
 class CDataContextAcquirementData;
 class CDataContextNormalSkillData;
+class CDataEditInfo;
+class CDataPawnReaction;
 class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtString;
 
 // Declarations
+class CDataAllContextPlayer;
 class CDataContextBase;
 class CDataContextCrestData;
 class CDataContextEquipData;
 class CDataContextEquipJobItemData;
 class CDataContextJobData;
+class CDataContextPawnInfo;
 class CDataContextPlayerInfo;
+class CDataContextResist;
 class CDataContextSetAdditional;
 class CDataContextSetBase;
 class CDataContextSetInfo;
+class CDataLobbyContextPlayer;
 class CDataNetPos;
 class CDataOcdActive;
 class CDataOcdImmuneLv;
+class CDataPartyContextPawn;
+class CDataPartyContextPlayer;
 class CDataVector3;
 
 // Type aliases from DWARF
+using CContextBase = CDataContextBase;
+using CContextPawnInfo = CDataContextPawnInfo;
+using CContextPlayerInfo = CDataContextPlayerInfo;
+using CContextResist = CDataContextResist;
 using CContextSetAdditional = CDataContextSetAdditional;
 using CContextSetBase = CDataContextSetBase;
+using CEditInfo = CDataEditInfo;
 using CNetPos = CDataNetPos;
 using CVector3 = CDataVector3;
 using MT_CHAR = char;
@@ -186,6 +201,99 @@ public:
     u16 m_usLv;  // offset: 0xa
     u64 m_ullExp;  // offset: 0x10
     u64 m_ullJobPoint;  // offset: 0x18
+    static MyDTI DTI;
+};
+
+class CDataContextPawnInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataContextPawnInfo();
+    explicit CDataContextPawnInfo(const MtTypedArray<CDataPawnReaction>&);
+public:
+    MtTypedArray<CDataPawnReaction> m_PawnReactionList;  // offset: 0x8
+    static MyDTI DTI;
+};
+
+class CDataContextResist : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataContextResist();
+    explicit CDataContextResist(u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8, u8);
+public:
+    u8 m_ucFireResist;  // offset: 0x8
+    u8 m_ucIceResist;  // offset: 0x9
+    u8 m_ucThunderResist;  // offset: 0xa
+    u8 m_ucHolyResist;  // offset: 0xb
+    u8 m_ucDarkResist;  // offset: 0xc
+    u8 m_ucSpreadResist;  // offset: 0xd
+    u8 m_ucFreezeResist;  // offset: 0xe
+    u8 m_ucShockResist;  // offset: 0xf
+    u8 m_ucAbsorbResist;  // offset: 0x10
+    u8 m_ucDarkElmResist;  // offset: 0x11
+    u8 m_ucPoisonResist;  // offset: 0x12
+    u8 m_ucSlowResist;  // offset: 0x13
+    u8 m_ucSleepResist;  // offset: 0x14
+    u8 m_ucStunResist;  // offset: 0x15
+    u8 m_ucWetResist;  // offset: 0x16
+    u8 m_ucOilResist;  // offset: 0x17
+    u8 m_ucSealResist;  // offset: 0x18
+    u8 m_ucCurseResist;  // offset: 0x19
+    u8 m_ucSoftResist;  // offset: 0x1a
+    u8 m_ucStoneResist;  // offset: 0x1b
+    u8 m_ucGoldResist;  // offset: 0x1c
+    u8 m_ucFireReduceResist;  // offset: 0x1d
+    u8 m_ucIceReduceResist;  // offset: 0x1e
+    u8 m_ucThunderReduceResist;  // offset: 0x1f
+    u8 m_ucHolyReduceResist;  // offset: 0x20
+    u8 m_ucDarkReduceResist;  // offset: 0x21
+    u8 m_ucAtkDownResist;  // offset: 0x22
+    u8 m_ucDefDownResist;  // offset: 0x23
+    u8 m_ucMAtkDownResist;  // offset: 0x24
+    u8 m_ucMDefDownResist;  // offset: 0x25
     static MyDTI DTI;
 };
 
@@ -601,6 +709,150 @@ public:
     static MyDTI DTI;
 };
 
+class CDataLobbyContextPlayer : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataLobbyContextPlayer();
+    explicit CDataLobbyContextPlayer(const CContextBase&, const CContextPlayerInfo&, const CEditInfo&);
+public:
+    CContextBase m_Base;  // offset: 0x8
+    CContextPlayerInfo m_PlayerInfo;  // offset: 0x130
+    CEditInfo m_EditInfo;  // offset: 0x298
+    static MyDTI DTI;
+};
+
+class CDataPartyContextPawn : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataPartyContextPawn();
+    explicit CDataPartyContextPawn(const CContextBase&, const CContextPlayerInfo&, const CContextPawnInfo&, const CContextResist&, const CEditInfo&);
+public:
+    CContextBase m_Base;  // offset: 0x8
+    CContextPlayerInfo m_PlayerInfo;  // offset: 0x130
+    CContextPawnInfo m_PawnInfo;  // offset: 0x298
+    CContextResist m_ResistInfo;  // offset: 0x2c0
+    CEditInfo m_EditInfo;  // offset: 0x2e8
+    static MyDTI DTI;
+};
+
+class CDataPartyContextPlayer : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataPartyContextPlayer();
+    explicit CDataPartyContextPlayer(const CContextBase&, const CContextPlayerInfo&, const CContextResist&, const CEditInfo&);
+public:
+    CContextBase m_Base;  // offset: 0x8
+    CContextPlayerInfo m_PlayerInfo;  // offset: 0x130
+    CContextResist m_ResistInfo;  // offset: 0x298
+    CEditInfo m_EditInfo;  // offset: 0x2c0
+    static MyDTI DTI;
+};
+
+class CDataAllContextPlayer : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataAllContextPlayer();
+    explicit CDataAllContextPlayer(const CContextBase&, const CContextPlayerInfo&, const CContextResist&, const CEditInfo&);
+public:
+    CContextBase m_Base;  // offset: 0x8
+    CContextPlayerInfo m_PlayerInfo;  // offset: 0x130
+    CContextResist m_ResistInfo;  // offset: 0x298
+    CEditInfo m_EditInfo;  // offset: 0x2c0
+    static MyDTI DTI;
+};
+
+inline void* CDataAllContextPlayer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* CDataContextBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -637,8 +889,52 @@ inline CDataContextJobData::CDataContextJobData() {
     this->m_ullExp = 0;
 }
 
+inline void* CDataContextPawnInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataContextPawnInfo::CDataContextPawnInfo() {
+}
+
 inline void* CDataContextPlayerInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* CDataContextResist::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataContextResist::CDataContextResist() {
+    this->m_ucMAtkDownResist = 0;
+    this->m_ucMDefDownResist = 0;
+    this->m_ucHolyReduceResist = 0;
+    this->m_ucDarkReduceResist = 0;
+    this->m_ucAtkDownResist = 0;
+    this->m_ucDefDownResist = 0;
+    this->m_ucSealResist = 0;
+    this->m_ucCurseResist = 0;
+    this->m_ucSoftResist = 0;
+    this->m_ucStoneResist = 0;
+    this->m_ucGoldResist = 0;
+    this->m_ucFireReduceResist = 0;
+    this->m_ucIceReduceResist = 0;
+    this->m_ucThunderReduceResist = 0;
+    this->m_ucAbsorbResist = 0;
+    this->m_ucDarkElmResist = 0;
+    this->m_ucPoisonResist = 0;
+    this->m_ucSlowResist = 0;
+    this->m_ucSleepResist = 0;
+    this->m_ucStunResist = 0;
+    this->m_ucWetResist = 0;
+    this->m_ucOilResist = 0;
+    this->m_ucFireResist = 0;
+    this->m_ucIceResist = 0;
+    this->m_ucThunderResist = 0;
+    this->m_ucHolyResist = 0;
+    this->m_ucDarkResist = 0;
+    this->m_ucSpreadResist = 0;
+    this->m_ucFreezeResist = 0;
+    this->m_ucShockResist = 0;
 }
 
 inline void* CDataContextSetAdditional::operator new(size_t sz, void* p_addr) {
@@ -658,6 +954,10 @@ inline CDataContextSetBase::CDataContextSetBase() {
 }
 
 inline void* CDataContextSetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataLobbyContextPlayer::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
@@ -689,6 +989,14 @@ inline CDataOcdImmuneLv::CDataOcdImmuneLv() {
     this->m_ucImmuneLv = 0;
 }
 
+inline void* CDataPartyContextPawn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataPartyContextPlayer::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* CDataVector3::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -697,4 +1005,104 @@ inline CDataVector3::CDataVector3() {
     this->m_fx = 0.0f;
     this->m_fy = 0.0f;
     this->m_fz = 0.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataAllContextPlayer::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAllContextPlayer::DTI);
+}
+
+inline MtAllocator* CDataContextBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextBase::DTI);
+}
+
+inline MtAllocator* CDataContextCrestData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextCrestData::DTI);
+}
+
+inline MtAllocator* CDataContextEquipData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextEquipData::DTI);
+}
+
+inline MtAllocator* CDataContextEquipJobItemData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextEquipJobItemData::DTI);
+}
+
+inline MtAllocator* CDataContextJobData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextJobData::DTI);
+}
+
+inline MtAllocator* CDataContextPawnInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextPawnInfo::DTI);
+}
+
+inline void* CDataContextPawnInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextPawnInfo::DTI)->memAlloc(sz, align, ::CDataContextPawnInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataContextPlayerInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextPlayerInfo::DTI);
+}
+
+inline MtAllocator* CDataContextResist::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextResist::DTI);
+}
+
+inline void* CDataContextResist::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextResist::DTI)->memAlloc(sz, align, ::CDataContextResist::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataContextSetAdditional::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextSetAdditional::DTI);
+}
+
+inline MtAllocator* CDataContextSetBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextSetBase::DTI);
+}
+
+inline void* CDataContextSetBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextSetBase::DTI)->memAlloc(sz, align, ::CDataContextSetBase::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataContextSetInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextSetInfo::DTI);
+}
+
+inline MtAllocator* CDataLobbyContextPlayer::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLobbyContextPlayer::DTI);
+}
+
+inline MtAllocator* CDataNetPos::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataNetPos::DTI);
+}
+
+inline void* CDataNetPos::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataNetPos::DTI)->memAlloc(sz, align, ::CDataNetPos::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataOcdActive::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOcdActive::DTI);
+}
+
+inline MtAllocator* CDataOcdImmuneLv::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOcdImmuneLv::DTI);
+}
+
+inline MtAllocator* CDataPartyContextPawn::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartyContextPawn::DTI);
+}
+
+inline MtAllocator* CDataPartyContextPlayer::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartyContextPlayer::DTI);
+}
+
+inline MtAllocator* CDataVector3::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataVector3::DTI);
+}
+
+inline void* CDataVector3::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataVector3::DTI)->memAlloc(sz, align, ::CDataVector3::DTI.::MtDTI::getID());
 }

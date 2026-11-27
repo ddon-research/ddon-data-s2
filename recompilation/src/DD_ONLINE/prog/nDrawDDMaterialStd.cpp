@@ -24,10 +24,6 @@ const MtDTI& nDraw::DDMrlStdEstObj::getDTI() const {
     return nDraw::DDMrlStdEstObj::DTI;
 }
 
-inline void nDraw::DDMrlStdEstObj::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::DDMrlStdEstObj::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void nDraw::DDMrlStdEstObj::update(f32 dt) {
     DDON_STUB("nDraw::DDMrlStdEstObj::update")
     /* stub */

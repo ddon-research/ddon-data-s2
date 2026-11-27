@@ -697,6 +697,9 @@ inline void* uGUIQuestList::cListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIQuestList::cListItem::cListItem() : mpInstAnimIconClear(static_cast<cGUIInstAnimation*>(nullptr)), mpObjTexBonus(static_cast<cGUIObjTexture*>(nullptr)), mpObjMsgLvVal(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgLv(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgTitle(static_cast<cGUIObjMessage*>(nullptr)) {
+}
+
 inline uGUIQuestList::stRecommend::stRecommend() {
 }
 
@@ -709,4 +712,49 @@ inline void* uGUIQuestList::cListInfo::operator new(size_t sz, void* p_addr) {
 
 inline void* uGUIQuestList::cDetailInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uGUIPopDetail01.h"
+
+inline MtAllocator* uGUIQuestList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIQuestList::DTI);
+}
+
+inline void uGUIQuestList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIQuestList::setupDetail() {
+    this->mList.mToggle.::uGUIBase::cReferenceUIToggleBtn::setFocus(false);
+}
+
+inline void uGUIQuestList::setupReward() {
+    this->mList.mToggle.::uGUIBase::cReferenceUIToggleBtn::setFocus(false);
+}
+
+inline void uGUIQuestList::hideDetail() {
+    if (this->mpPopDetail != nullptr) {
+        this->mpPopDetail->::uGUIPopDetail01::setItemParam(static_cast<cItemParam*>(nullptr), static_cast<rItemList::rItemParam*>(nullptr), static_cast<nCharacterData::EQUIP_SLOT_TYPE>(0));
+    }
+    this->mDrawItemId = 0;
+    this->mSelectItemId = 0;
+}
+
+inline void* uGUIQuestList::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIQuestList::cListItem::DTI)->memAlloc(sz, align, ::uGUIQuestList::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIQuestList::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestList::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIQuestList::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestList::cListInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIQuestList::cDetailInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestList::cDetailInfo::DTI)->memFree(p_addr);
 }

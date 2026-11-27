@@ -30,16 +30,8 @@ const MtDTI& sEnvMapManager::getDTI() const {
     return sEnvMapManager::DTI;
 }
 
-inline MtAllocator* sEnvMapManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sEnvMapManager::DTI);
-}
-
 void* sEnvMapManager::operator new(size_t sz, u32 align) {
     return sEnvMapManager::getAllocator()->memAlloc(sz, align, sEnvMapManager::DTI.getID());
-}
-
-inline void sEnvMapManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEnvMapManager::DTI)->memFree(p_addr);
 }
 
 sEnvMapManager::sEnvMapManager() {
@@ -75,10 +67,6 @@ __attribute__((weak)) MtObject* sEnvMapManager::MyDTI::newInstance() const {
 
 const MtDTI& sEnvMapManager::cManageEnvMapBase::getDTI() const {
     return sEnvMapManager::cManageEnvMapBase::DTI;
-}
-
-inline void sEnvMapManager::cManageEnvMapBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEnvMapManager::cManageEnvMapBase::DTI)->memFree(p_addr);
 }
 
 sEnvMapManager::cManageEnvMapBase::~cManageEnvMapBase() {
@@ -138,10 +126,6 @@ MtObject* sEnvMapManager::cManageEnvMapBase::MyDTI::newInstance() const {
 
 const MtDTI& sEnvMapManager::cManageEnvMapField::getDTI() const {
     return sEnvMapManager::cManageEnvMapField::DTI;
-}
-
-inline void sEnvMapManager::cManageEnvMapField::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEnvMapManager::cManageEnvMapField::DTI)->memFree(p_addr);
 }
 
 sEnvMapManager::cManageEnvMapField::~cManageEnvMapField() {

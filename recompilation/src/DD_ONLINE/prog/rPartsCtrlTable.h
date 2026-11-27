@@ -142,3 +142,19 @@ inline void cPartsCtrlTable::operator delete[](void* p_addr) {
 inline void* cPartsCtrlTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPartsCtrlTable::DTI)->memAlloc(sz, align, ::cPartsCtrlTable::DTI.::MtDTI::getID());
 }
+
+inline void* cPartsCtrlTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPartsCtrlTable::DTI)->memAlloc(sz, align, ::cPartsCtrlTable::DTI.::MtDTI::getID());
+}
+
+inline void cPartsCtrlTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPartsCtrlTable::DTI)->memFree(p_addr);
+}
+
+inline void* rPartsCtrlTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPartsCtrlTable::DTI)->memAlloc(sz, align, ::rPartsCtrlTable::DTI.::MtDTI::getID());
+}
+
+inline void rPartsCtrlTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPartsCtrlTable::DTI)->memFree(p_addr);
+}

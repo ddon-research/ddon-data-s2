@@ -30,10 +30,6 @@ void* nDraw::Animation::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::Animation::DTI)->memAlloc(sz, align, ::nDraw::Animation::DTI.mID);
 }
 
-inline void nDraw::Animation::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::Animation::DTI)->memFree(p_addr);
-}
-
 inline u32 nDraw::Animation::getAnimationNum() const {
     return this->mpList->animation_num;
 }
@@ -217,10 +213,6 @@ __attribute__((weak)) MtObject* nDraw::Animation::MyDTI::newInstance() const {
 
 const MtDTI& nDraw::CBuffer::getDTI() const {
     return nDraw::CBuffer::DTI;
-}
-
-inline void nDraw::CBuffer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::CBuffer::DTI)->memFree(p_addr);
 }
 
 nDraw::CBuffer::~CBuffer() {
@@ -722,7 +714,7 @@ inline nDraw::Material::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 nDraw::Material::MyDTI nDraw::Material::DTI("nDraw::Material", &::nDraw::Resource::DTI, 208ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* nDraw::Material::MyDTI::newInstance() const {
-    DDON_STUB("nDraw::Material::MyDTI::newInstance")
-    return nullptr;
+    // workaround
+    return new (::MtMemoryAllocator::getAllocator(::nDraw::Material::DTI)->memAlloc(sizeof(::nDraw::Material), 16u, ::nDraw::Material::DTI.getID())) ::nDraw::Material(0);
 }
 

@@ -33,16 +33,8 @@ const MtDTI& sLockOnManager::getDTI() const {
     return sLockOnManager::DTI;
 }
 
-inline MtAllocator* sLockOnManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sLockOnManager::DTI);
-}
-
 void* sLockOnManager::operator new(size_t sz, u32 align) {
     return sLockOnManager::getAllocator()->memAlloc(sz, align, sLockOnManager::DTI.getID());
-}
-
-inline void sLockOnManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sLockOnManager::DTI)->memFree(p_addr);
 }
 
 sLockOnManager::sLockOnManager() {

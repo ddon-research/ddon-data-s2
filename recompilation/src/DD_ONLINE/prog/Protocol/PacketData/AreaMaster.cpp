@@ -16,10 +16,6 @@ const MtDTI& CDataAreaBaseInfo::getDTI() const {
     return CDataAreaBaseInfo::DTI;
 }
 
-inline MtAllocator* CDataAreaBaseInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAreaBaseInfo::DTI);
-}
-
 void* CDataAreaBaseInfo::operator new(size_t sz, u32 align) {
     return CDataAreaBaseInfo::getAllocator()->memAlloc(sz, align, CDataAreaBaseInfo::DTI.getID());
 }
@@ -38,10 +34,6 @@ MtObject* CDataAreaBaseInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataAreaQuestHint::getDTI() const {
     return CDataAreaQuestHint::DTI;
-}
-
-inline MtAllocator* CDataAreaQuestHint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAreaQuestHint::DTI);
 }
 
 void* CDataAreaQuestHint::operator new(size_t sz, u32 align) {
@@ -64,10 +56,6 @@ const MtDTI& CDataAreaRank::getDTI() const {
     return CDataAreaRank::DTI;
 }
 
-inline MtAllocator* CDataAreaRank::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAreaRank::DTI);
-}
-
 void* CDataAreaRank::operator new(size_t sz, u32 align) {
     return CDataAreaRank::getAllocator()->memAlloc(sz, align, CDataAreaRank::DTI.getID());
 }
@@ -86,10 +74,6 @@ MtObject* CDataAreaRank::MyDTI::newInstance() const {
 
 const MtDTI& CDataAreaRankUpQuestInfo::getDTI() const {
     return CDataAreaRankUpQuestInfo::DTI;
-}
-
-inline MtAllocator* CDataAreaRankUpQuestInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAreaRankUpQuestInfo::DTI);
 }
 
 void* CDataAreaRankUpQuestInfo::operator new(size_t sz, u32 align) {
@@ -112,10 +96,6 @@ const MtDTI& CDataAreaSpotSet::getDTI() const {
     return CDataAreaSpotSet::DTI;
 }
 
-inline MtAllocator* CDataAreaSpotSet::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAreaSpotSet::DTI);
-}
-
 void* CDataAreaSpotSet::operator new(size_t sz, u32 align) {
     return CDataAreaSpotSet::getAllocator()->memAlloc(sz, align, CDataAreaSpotSet::DTI.getID());
 }
@@ -134,10 +114,6 @@ MtObject* CDataAreaSpotSet::MyDTI::newInstance() const {
 
 const MtDTI& CDataBorderSupplyItem::getDTI() const {
     return CDataBorderSupplyItem::DTI;
-}
-
-inline MtAllocator* CDataBorderSupplyItem::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataBorderSupplyItem::DTI);
 }
 
 void* CDataBorderSupplyItem::operator new(size_t sz, u32 align) {
@@ -160,10 +136,6 @@ const MtDTI& CDataReleaseAreaInfoSet::getDTI() const {
     return CDataReleaseAreaInfoSet::DTI;
 }
 
-inline MtAllocator* CDataReleaseAreaInfoSet::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataReleaseAreaInfoSet::DTI);
-}
-
 void* CDataReleaseAreaInfoSet::operator new(size_t sz, u32 align) {
     return CDataReleaseAreaInfoSet::getAllocator()->memAlloc(sz, align, CDataReleaseAreaInfoSet::DTI.getID());
 }
@@ -182,10 +154,6 @@ MtObject* CDataReleaseAreaInfoSet::MyDTI::newInstance() const {
 
 const MtDTI& CDataRewardItemInfo::getDTI() const {
     return CDataRewardItemInfo::DTI;
-}
-
-inline MtAllocator* CDataRewardItemInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataRewardItemInfo::DTI);
 }
 
 void* CDataRewardItemInfo::operator new(size_t sz, u32 align) {
@@ -208,10 +176,6 @@ const MtDTI& CDataSelectItemInfo::getDTI() const {
     return CDataSelectItemInfo::DTI;
 }
 
-inline MtAllocator* CDataSelectItemInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSelectItemInfo::DTI);
-}
-
 void* CDataSelectItemInfo::operator new(size_t sz, u32 align) {
     return CDataSelectItemInfo::getAllocator()->memAlloc(sz, align, CDataSelectItemInfo::DTI.getID());
 }
@@ -232,10 +196,6 @@ const MtDTI& CDataSpotEnemyInfo::getDTI() const {
     return CDataSpotEnemyInfo::DTI;
 }
 
-inline MtAllocator* CDataSpotEnemyInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSpotEnemyInfo::DTI);
-}
-
 void* CDataSpotEnemyInfo::operator new(size_t sz, u32 align) {
     return CDataSpotEnemyInfo::getAllocator()->memAlloc(sz, align, CDataSpotEnemyInfo::DTI.getID());
 }
@@ -254,10 +214,6 @@ MtObject* CDataSpotEnemyInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataSpotInfo::getDTI() const {
     return CDataSpotInfo::DTI;
-}
-
-inline MtAllocator* CDataSpotInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSpotInfo::DTI);
 }
 
 void* CDataSpotInfo::operator new(size_t sz, u32 align) {
@@ -281,10 +237,6 @@ const MtDTI& CDataSpotItemInfo::getDTI() const {
     return CDataSpotItemInfo::DTI;
 }
 
-inline MtAllocator* CDataSpotItemInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSpotItemInfo::DTI);
-}
-
 void* CDataSpotItemInfo::operator new(size_t sz, u32 align) {
     return CDataSpotItemInfo::getAllocator()->memAlloc(sz, align, CDataSpotItemInfo::DTI.getID());
 }
@@ -303,10 +255,6 @@ MtObject* CDataSpotItemInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataSupplyItem::getDTI() const {
     return CDataSupplyItem::DTI;
-}
-
-inline MtAllocator* CDataSupplyItem::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSupplyItem::DTI);
 }
 
 void* CDataSupplyItem::operator new(size_t sz, u32 align) {

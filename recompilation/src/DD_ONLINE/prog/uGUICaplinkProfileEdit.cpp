@@ -38,16 +38,8 @@ const MtDTI& uGUICaplinkProfileEdit::getDTI() const {
     return uGUICaplinkProfileEdit::DTI;
 }
 
-inline MtAllocator* uGUICaplinkProfileEdit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::DTI);
-}
-
 void* uGUICaplinkProfileEdit::operator new(size_t sz, u32 align) {
     return uGUICaplinkProfileEdit::getAllocator()->memAlloc(sz, align, uGUICaplinkProfileEdit::DTI.getID());
-}
-
-inline void uGUICaplinkProfileEdit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkProfileEdit::~uGUICaplinkProfileEdit() {
@@ -714,14 +706,6 @@ const MtDTI& uGUICaplinkProfileEdit::cContentItemBase::getDTI() const {
     return uGUICaplinkProfileEdit::cContentItemBase::DTI;
 }
 
-inline void* uGUICaplinkProfileEdit::cContentItemBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cContentItemBase::DTI)->memAlloc(sz, align, uGUICaplinkProfileEdit::cContentItemBase::DTI.getID());
-}
-
-inline void uGUICaplinkProfileEdit::cContentItemBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cContentItemBase::DTI)->memFree(p_addr);
-}
-
 inline uGUICaplinkProfileEdit::cContentItemBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkProfileEdit::cContentItemBase::MyDTI uGUICaplinkProfileEdit::cContentItemBase::DTI("uGUICaplinkProfileEdit::cContentItemBase", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
@@ -732,14 +716,6 @@ MtObject* uGUICaplinkProfileEdit::cContentItemBase::MyDTI::newInstance() const {
 
 const MtDTI& uGUICaplinkProfileEdit::cPulldownContent::getDTI() const {
     return uGUICaplinkProfileEdit::cPulldownContent::DTI;
-}
-
-inline void* uGUICaplinkProfileEdit::cPulldownContent::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cPulldownContent::DTI)->memAlloc(sz, align, uGUICaplinkProfileEdit::cPulldownContent::DTI.getID());
-}
-
-inline void uGUICaplinkProfileEdit::cPulldownContent::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cPulldownContent::DTI)->memFree(p_addr);
 }
 
 uGUICaplinkProfileEdit::cPulldownContent::~cPulldownContent() {
@@ -757,14 +733,6 @@ const MtDTI& uGUICaplinkProfileEdit::cBtnContent::getDTI() const {
     return uGUICaplinkProfileEdit::cBtnContent::DTI;
 }
 
-inline void* uGUICaplinkProfileEdit::cBtnContent::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cBtnContent::DTI)->memAlloc(sz, align, uGUICaplinkProfileEdit::cBtnContent::DTI.getID());
-}
-
-inline void uGUICaplinkProfileEdit::cBtnContent::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cBtnContent::DTI)->memFree(p_addr);
-}
-
 inline uGUICaplinkProfileEdit::cBtnContent::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkProfileEdit::cBtnContent::MyDTI uGUICaplinkProfileEdit::cBtnContent::DTI("uGUICaplinkProfileEdit::cBtnContent", &::uGUICaplinkProfileEdit::cContentItemBase::DTI, 512ul, 0u, 0u);
@@ -775,10 +743,6 @@ MtObject* uGUICaplinkProfileEdit::cBtnContent::MyDTI::newInstance() const {
 
 const MtDTI& uGUICaplinkProfileEdit::cListInfo::getDTI() const {
     return uGUICaplinkProfileEdit::cListInfo::DTI;
-}
-
-inline void uGUICaplinkProfileEdit::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkProfileEdit::cListInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUICaplinkProfileEdit::cListInfo::addMouseTouchList(cControl* pCtrl, s32 pos) {

@@ -1,12 +1,10 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cSetInfoCoord.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -22,10 +20,6 @@
 
 const MtDTI& cSetInfoCoord::getDTI() const {
     return cSetInfoCoord::DTI;
-}
-
-inline void* cSetInfoCoord::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSetInfoCoord::DTI)->memAlloc(sz, align, cSetInfoCoord::DTI.getID());
 }
 
 cSetInfoCoord::cSetInfoCoord() {

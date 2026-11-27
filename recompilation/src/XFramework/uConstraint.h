@@ -212,3 +212,15 @@ inline u32 uConstraint::getPri() const {
 inline void* uConstraint::cConstraint::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uConstraint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uConstraint::DTI)->memFree(p_addr);
+}
+
+inline void uConstraint::cConstraint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uConstraint::cConstraint::DTI)->memFree(p_addr);
+}

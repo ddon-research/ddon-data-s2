@@ -3,7 +3,6 @@
 #include "Weather.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -12,14 +11,6 @@
 
 const MtDTI& CDataGameTimeBaseInfo::getDTI() const {
     return CDataGameTimeBaseInfo::DTI;
-}
-
-inline MtAllocator* CDataGameTimeBaseInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGameTimeBaseInfo::DTI);
-}
-
-inline void* CDataGameTimeBaseInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataGameTimeBaseInfo::DTI)->memAlloc(sz, align, CDataGameTimeBaseInfo::DTI.getID());
 }
 
 __attribute__((weak)) void CDataGameTimeBaseInfo::operator delete(void* p_addr) {
@@ -36,10 +27,6 @@ MtObject* CDataGameTimeBaseInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataMoonSchedule::getDTI() const {
     return CDataMoonSchedule::DTI;
-}
-
-inline MtAllocator* CDataMoonSchedule::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMoonSchedule::DTI);
 }
 
 void* CDataMoonSchedule::operator new(size_t sz, u32 align) {
@@ -62,10 +49,6 @@ const MtDTI& CDataWeatherLoop::getDTI() const {
     return CDataWeatherLoop::DTI;
 }
 
-inline MtAllocator* CDataWeatherLoop::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataWeatherLoop::DTI);
-}
-
 void* CDataWeatherLoop::operator new(size_t sz, u32 align) {
     return CDataWeatherLoop::getAllocator()->memAlloc(sz, align, CDataWeatherLoop::DTI.getID());
 }
@@ -84,10 +67,6 @@ MtObject* CDataWeatherLoop::MyDTI::newInstance() const {
 
 const MtDTI& CDataWeatherSchedule::getDTI() const {
     return CDataWeatherSchedule::DTI;
-}
-
-inline MtAllocator* CDataWeatherSchedule::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataWeatherSchedule::DTI);
 }
 
 void* CDataWeatherSchedule::operator new(size_t sz, u32 align) {

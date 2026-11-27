@@ -16,23 +16,6 @@ const MtDTI& rEquipPartsInfo::getDTI() const {
     return rEquipPartsInfo::DTI;
 }
 
-inline MtAllocator* rEquipPartsInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rEquipPartsInfo::DTI);
-}
-
-inline void* rEquipPartsInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEquipPartsInfo::DTI)->memAlloc(sz, align, rEquipPartsInfo::DTI.getID());
-}
-
-inline void rEquipPartsInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEquipPartsInfo::DTI)->memFree(p_addr);
-}
-
-inline rEquipPartsInfo::rEquipPartsInfo() {
-    setAttribute(16u);
-    mpHeader = nullptr;
-}
-
 rEquipPartsInfo::~rEquipPartsInfo() {
     MtMemoryAllocator::getAllocator(rEquipPartsInfo::DTI)->memFree(static_cast<void*>(mpHeader));
     mpHeader = nullptr;

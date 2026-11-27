@@ -5,7 +5,6 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -16,10 +15,6 @@
 
 const MtDTI& cMagicChantParam::getDTI() const {
     return cMagicChantParam::DTI;
-}
-
-inline void cMagicChantParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMagicChantParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMagicChantParam::createProperty(MtPropertyList& s) {
@@ -35,14 +30,6 @@ __attribute__((weak)) MtObject* cMagicChantParam::MyDTI::newInstance() const {
 
 const MtDTI& rMagicChantParam::getDTI() const {
     return rMagicChantParam::DTI;
-}
-
-inline void* rMagicChantParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMagicChantParam::DTI)->memAlloc(sz, align, rMagicChantParam::DTI.getID());
-}
-
-inline void rMagicChantParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMagicChantParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rMagicChantParam::loadData(MtDataReader& in, cMagicChantParam* pData) {

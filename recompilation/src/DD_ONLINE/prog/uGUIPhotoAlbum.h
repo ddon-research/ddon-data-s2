@@ -274,3 +274,15 @@ inline void uGUIPhotoAlbum::changeCategoryEnable() {
     this->mCateList.mEnable[0] = true;
     this->mCateList.mEnable[1] = this->mbSetupPhoto;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPhotoAlbum::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPhotoAlbum::DTI);
+}
+
+inline void uGUIPhotoAlbum::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPhotoAlbum::DTI)->memFree(p_addr);
+}

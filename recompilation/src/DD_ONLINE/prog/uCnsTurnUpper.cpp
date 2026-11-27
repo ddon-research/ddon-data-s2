@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uCnsTurnUpper.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -18,14 +16,6 @@
 
 const MtDTI& uCnsTurnUpper::getDTI() const {
     return uCnsTurnUpper::DTI;
-}
-
-inline void* uCnsTurnUpper::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uCnsTurnUpper::DTI)->memAlloc(sz, align, uCnsTurnUpper::DTI.getID());
-}
-
-inline void uCnsTurnUpper::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsTurnUpper::DTI)->memFree(p_addr);
 }
 
 uCnsTurnUpper::uCnsTurnUpper() {

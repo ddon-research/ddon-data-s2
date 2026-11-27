@@ -19,19 +19,6 @@ const MtDTI& rBowActParamList::getDTI() const {
     return rBowActParamList::DTI;
 }
 
-inline void* rBowActParamList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rBowActParamList::DTI)->memAlloc(sz, align, rBowActParamList::DTI.getID());
-}
-
-inline void rBowActParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rBowActParamList::DTI)->memFree(p_addr);
-}
-
-inline rBowActParamList::rBowActParamList() {
-    setAttribute(18u);
-    mParamList.mAutoDelete = true;
-}
-
 rBowActParamList::~rBowActParamList() {
     if (mParamList.mLength != 0) {
         u32 v0_0 = mParamList.mLength;

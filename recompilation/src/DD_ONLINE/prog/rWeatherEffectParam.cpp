@@ -21,10 +21,6 @@ const MtDTI& cEffectCorrectParam::getDTI() const {
     return cEffectCorrectParam::DTI;
 }
 
-inline void cEffectCorrectParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEffectCorrectParam::DTI)->memFree(p_addr);
-}
-
 cEffectCorrectParam::cEffectCorrectParam() {
     mTime = 0;
     mEfcColorParam.Color.rgba = MtColor::White.rgba;
@@ -39,19 +35,6 @@ cEffectCorrectParam::cEffectCorrectParam() {
 }
 
 cEffectCorrectParam::~cEffectCorrectParam() {
-}
-
-void cEffectCorrectParam::load(MtDataReader& r) {
-    mTime = r.readU32();
-    mEfcColorParam.Color.rgba = r.readU32();
-    mEfcColorParam.ColorBlend = r.readF32();
-    mEfcColorParam.Intensity = r.readF32();
-    mEfcColorParam.IntensityBlend = r.readF32();
-    mEfcColorParam.EnvMapPowerScale = r.readF32();
-    mEfcColorParam.ShadowColor.rgba = r.readU32();
-    mEfcColorParam.ShadowColorBlend = r.readF32();
-    mEfcColorParam.ShadowIntensity = r.readF32();
-    mEfcColorParam.ShadowIntensityBlend = r.readF32();
 }
 
 void cEffectCorrectParam::lerpEffectColorParam(stEffectColorParam* pDst, const stEffectColorParam& a, const stEffectColorParam& b, f32 rate) {
@@ -76,10 +59,6 @@ MtObject* cEffectCorrectParam::MyDTI::newInstance() const {
 
 const MtDTI& rWeatherEffectParam::getDTI() const {
     return rWeatherEffectParam::DTI;
-}
-
-inline void rWeatherEffectParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWeatherEffectParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rWeatherEffectParam::~rWeatherEffectParam() {

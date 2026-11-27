@@ -32,16 +32,8 @@ const MtDTI& uGUISaveListComment::getDTI() const {
     return uGUISaveListComment::DTI;
 }
 
-inline MtAllocator* uGUISaveListComment::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUISaveListComment::DTI);
-}
-
 void* uGUISaveListComment::operator new(size_t sz, u32 align) {
     return uGUISaveListComment::getAllocator()->memAlloc(sz, align, uGUISaveListComment::DTI.getID());
-}
-
-inline void uGUISaveListComment::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUISaveListComment::DTI)->memFree(p_addr);
 }
 
 uGUISaveListComment::~uGUISaveListComment() {

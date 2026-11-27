@@ -260,3 +260,23 @@ inline void* uCnsGroup::cNode::operator new(size_t sz, void* p_addr) {
 inline void* uCnsGroup::cCnsChild::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uCnsGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsGroup::DTI)->memFree(p_addr);
+}
+
+inline void uCnsGroup::cGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsGroup::cGroup::DTI)->memFree(p_addr);
+}
+
+inline void uCnsGroup::cNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsGroup::cNode::DTI)->memFree(p_addr);
+}
+
+inline void uCnsGroup::cCnsChild::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsGroup::cCnsChild::DTI)->memFree(p_addr);
+}

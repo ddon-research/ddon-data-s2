@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rNpcMeetingPlace.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cNpcMeetingPlace::getDTI() const {
     return cNpcMeetingPlace::DTI;
-}
-
-inline void* cNpcMeetingPlace::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cNpcMeetingPlace::DTI)->memAlloc(sz, align, cNpcMeetingPlace::DTI.getID());
-}
-
-inline void cNpcMeetingPlace::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNpcMeetingPlace::DTI)->memFree(p_addr);
 }
 
 void cNpcMeetingPlace::createProperty(MtPropertyList& s) {
@@ -41,14 +31,6 @@ MtObject* cNpcMeetingPlace::MyDTI::newInstance() const {
 
 const MtDTI& rNpcMeetingPlace::getDTI() const {
     return rNpcMeetingPlace::DTI;
-}
-
-inline void* rNpcMeetingPlace::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNpcMeetingPlace::DTI)->memAlloc(sz, align, rNpcMeetingPlace::DTI.getID());
-}
-
-inline void rNpcMeetingPlace::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcMeetingPlace::DTI)->memFree(p_addr);
 }
 
 bool rNpcMeetingPlace::loadData(MtDataReader& in, cNpcMeetingPlace* pData) {

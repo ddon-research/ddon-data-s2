@@ -88,3 +88,15 @@ inline void cLeverGacha::commandReset(s32 param) {
     this->mCnt = 0.0f;
     this->mOldAngleType = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cLeverGacha::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cLeverGacha::DTI)->memAlloc(sz, align, ::cLeverGacha::DTI.::MtDTI::getID());
+}
+
+inline void cLeverGacha::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLeverGacha::DTI)->memFree(p_addr);
+}

@@ -40,10 +40,6 @@ void* uScrollCollisionGeometry::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uScrollCollisionGeometry::DTI)->memAlloc(sz, align, uScrollCollisionGeometry::DTI.mID);
 }
 
-inline void uScrollCollisionGeometry::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uScrollCollisionGeometry::DTI)->memFree(p_addr);
-}
-
 uScrollCollisionGeometry::uScrollCollisionGeometry() {
     DDON_STUB("uScrollCollisionGeometry::uScrollCollisionGeometry")
     /* stub */
@@ -153,9 +149,26 @@ void uScrollCollisionGeometry::setEnableStopSetControl(bool FlgStopSetControl) {
     mFlgStopSetControl = FlgStopSetControl;
 }
 
-__attribute__((weak)) void uScrollCollisionGeometry::setScrMoveMatrix(const MtMatrix& MoveMatrix, bool FlgStopSet) {
-    DDON_STUB("uScrollCollisionGeometry::setScrMoveMatrix")
-    /* stub */
+void uScrollCollisionGeometry::setScrMoveMatrix(const MtMatrix& MoveMatrix, bool FlgStopSet) {
+    mFlgReserveMatrixSet = true;
+    mFlgUpdateOnce = true;
+    mReserveMatrix.m[0].x = MoveMatrix.m[0].x;
+    mReserveMatrix.m[0].y = MoveMatrix.m[0].y;
+    mReserveMatrix.m[0].z = MoveMatrix.m[0].z;
+    mReserveMatrix.m[0].w = MoveMatrix.m[0].w;
+    mReserveMatrix.m[1].x = MoveMatrix.m[1].x;
+    mReserveMatrix.m[1].y = MoveMatrix.m[1].y;
+    mReserveMatrix.m[1].z = MoveMatrix.m[1].z;
+    mReserveMatrix.m[1].w = MoveMatrix.m[1].w;
+    mReserveMatrix.m[2].x = MoveMatrix.m[2].x;
+    mReserveMatrix.m[2].y = MoveMatrix.m[2].y;
+    mReserveMatrix.m[2].z = MoveMatrix.m[2].z;
+    mReserveMatrix.m[2].w = MoveMatrix.m[2].w;
+    mReserveMatrix.m[3].x = MoveMatrix.m[3].x;
+    mReserveMatrix.m[3].y = MoveMatrix.m[3].y;
+    mReserveMatrix.m[3].z = MoveMatrix.m[3].z;
+    mReserveMatrix.m[3].w = MoveMatrix.m[3].w;
+    mFlgReserveResetSet = FlgStopSet;
 }
 
 __attribute__((weak)) void uScrollCollisionGeometry::setScrMoveMatrixForUI(const MtMatrix& MoveMatrix) {

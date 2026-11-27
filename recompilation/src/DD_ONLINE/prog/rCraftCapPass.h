@@ -143,3 +143,19 @@ inline void cCraftCapPassData::operator delete[](void* p_addr) {
 inline void* cCraftCapPassData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCraftCapPassData::DTI)->memAlloc(sz, align, ::cCraftCapPassData::DTI.::MtDTI::getID());
 }
+
+inline void* cCraftCapPassData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftCapPassData::DTI)->memAlloc(sz, align, ::cCraftCapPassData::DTI.::MtDTI::getID());
+}
+
+inline void cCraftCapPassData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftCapPassData::DTI)->memFree(p_addr);
+}
+
+inline void* rCraftCapPass::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCraftCapPass::DTI)->memAlloc(sz, align, ::rCraftCapPass::DTI.::MtDTI::getID());
+}
+
+inline void rCraftCapPass::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCraftCapPass::DTI)->memFree(p_addr);
+}

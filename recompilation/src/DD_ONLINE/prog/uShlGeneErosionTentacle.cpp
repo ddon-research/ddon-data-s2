@@ -23,14 +23,6 @@ const MtDTI& cShlParamGeneErosionTentacle::getDTI() const {
     return cShlParamGeneErosionTentacle::DTI;
 }
 
-inline void* cShlParamGeneErosionTentacle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamGeneErosionTentacle::DTI)->memAlloc(sz, align, cShlParamGeneErosionTentacle::DTI.getID());
-}
-
-inline void cShlParamGeneErosionTentacle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamGeneErosionTentacle::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamGeneErosionTentacle::getShlDTI() const {
     return uShlGeneErosionTentacle::DTI;
 }
@@ -106,14 +98,6 @@ const MtDTI& cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::g
     return cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::DTI;
 }
 
-inline void* cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::DTI)->memAlloc(sz, align, cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::DTI.getID());
-}
-
-inline void cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::DTI)->memFree(p_addr);
-}
-
 void cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "shlNo", &shlNo, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "shlPawnNoticeNo", &shlPawnNoticeNo, 0u, 0u);
@@ -131,14 +115,6 @@ MtObject* cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::MyDT
 
 const MtDTI& uShlGeneErosionTentacle::getDTI() const {
     return uShlGeneErosionTentacle::DTI;
-}
-
-inline void* uShlGeneErosionTentacle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlGeneErosionTentacle::DTI)->memAlloc(sz, align, uShlGeneErosionTentacle::DTI.getID());
-}
-
-inline void uShlGeneErosionTentacle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlGeneErosionTentacle::DTI)->memFree(p_addr);
 }
 
 uShlGeneErosionTentacle::~uShlGeneErosionTentacle() {

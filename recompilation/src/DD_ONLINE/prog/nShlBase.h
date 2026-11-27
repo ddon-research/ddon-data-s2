@@ -12,10 +12,8 @@
 class MtAllocator;
 class MtDTI;
 class MtVector3;
-
-// Declarations
-namespace nShlBase { class cShlFuwaMove; }
-namespace nShlBase { class cShlStickContextInfo; }
+class uShlAlchemyObj;
+class uShlSpeed;
 
 namespace nShlBase {
     enum LIMIT_FOLLOW
@@ -207,6 +205,10 @@ namespace nShlBase {
     };
 }  // namespace nShlBase
 
+// Declarations
+namespace nShlBase { class cShlFuwaMove; }
+namespace nShlBase { class cShlStickContextInfo; }
+
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
@@ -219,6 +221,8 @@ using u8 = unsigned char;
 namespace nShlBase {
     class cShlFuwaMove
     {
+        friend class ::uShlAlchemyObj;
+        friend class ::uShlSpeed;
     public:
         cShlFuwaMove();
         virtual ~cShlFuwaMove();
@@ -284,4 +288,28 @@ namespace nShlBase {
 
 inline void* nShlBase::cShlStickContextInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* nShlBase::cShlStickContextInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nShlBase::cShlStickContextInfo::DTI);
+}
+
+inline nShlBase::cShlStickContextInfo::cShlStickContextInfo() {
+    this->mIsStickCreateControl = false;
+    this->mStickShlIndex = 0;
+    this->mStickJointNo = 0;
+    this->mStickShlGroup = 0;
+    this->mStickShlUniqueId = 0;
+    this->mStickUniqueId = 0;
+    this->mStickJointOffset.x = ::MtVector3::Zero.x;
+    this->mStickJointOffset.y = ::MtVector3::Zero.y;
+    this->mStickJointOffset.z = ::MtVector3::Zero.z;
+    this->mStickDirection.pad_ = 0.0f;
+    this->mStickDirection.y = 0.0f;
+    this->mStickDirection.z = 0.0f;
+    this->mStickJointOffset.pad_ = 0.0f;
+    this->mStickDirection.x = 0.0f;
 }

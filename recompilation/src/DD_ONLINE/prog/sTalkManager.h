@@ -21,6 +21,7 @@ class MtUI;
 class cTalkMsgData;
 class cTalkState;
 class cpTalk;
+class cpTalkPawn;
 namespace nCharacterData { struct stCharacterName; }
 namespace nQuest { class QUEST_ID; }
 namespace nQuest { class SCHEDULE_ID; }
@@ -51,6 +52,7 @@ using u8 = unsigned char;
 
 class sTalkManager : public cSystem
 {
+    friend class cpTalkPawn;
 public:
     enum
     {
@@ -307,6 +309,10 @@ inline u32 sTalkManager::getEventMsgGrpNo() const {
     return this->mEventMsgGrpNo;
 }
 
+inline bool sTalkManager::isChangeClanManager() {
+    return this->mIsChangeClanManager;
+}
+
 inline void sTalkManager::moveFSMEventMsg_DispEnd() {
     this->mTalkType = 0;
     this->mRno0 = 0;
@@ -325,4 +331,24 @@ inline sTalkManager::cTellQueueNode::cTellQueueNode() {
     this->mWaitTime = 0.0f;
     this->mMsgType = 0;
     this->mGroupSerialNo = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sTalkManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sTalkManager::DTI);
+}
+
+inline void sTalkManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sTalkManager::DTI)->memFree(p_addr);
+}
+
+inline void* sTalkManager::cTellQueueNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sTalkManager::cTellQueueNode::DTI)->memAlloc(sz, align, ::sTalkManager::cTellQueueNode::DTI.::MtDTI::getID());
+}
+
+inline void sTalkManager::cTellQueueNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sTalkManager::cTellQueueNode::DTI)->memFree(p_addr);
 }

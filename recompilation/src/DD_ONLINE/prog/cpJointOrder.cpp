@@ -3,7 +3,6 @@
 #include "cpJointOrder.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "cpComponent.h"
@@ -17,16 +16,8 @@ const MtDTI& cpJointOrder::getDTI() const {
     return cpJointOrder::DTI;
 }
 
-inline MtAllocator* cpJointOrder::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJointOrder::DTI);
-}
-
 void* cpJointOrder::operator new(size_t sz, u32 align) {
     return cpJointOrder::getAllocator()->memAlloc(sz, align, cpJointOrder::DTI.getID());
-}
-
-inline void cpJointOrder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJointOrder::DTI)->memFree(p_addr);
 }
 
 cpJointOrder::cpJointOrder() {

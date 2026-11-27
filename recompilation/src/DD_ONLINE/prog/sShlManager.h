@@ -237,3 +237,31 @@ inline sShlManager::cShlLimitCnt::cShlLimitCnt() {
     this->mpOwner = nullptr;
     this->mShlCnt = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sShlManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sShlManager::DTI);
+}
+
+inline void sShlManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShlManager::DTI)->memFree(p_addr);
+}
+
+inline void* sShlManager::cShlLimitCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sShlManager::cShlLimitCtrl::DTI)->memAlloc(sz, align, ::sShlManager::cShlLimitCtrl::DTI.::MtDTI::getID());
+}
+
+inline void sShlManager::cShlLimitCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShlManager::cShlLimitCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* sShlManager::cShlLimitCnt::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sShlManager::cShlLimitCnt::DTI)->memAlloc(sz, align, ::sShlManager::cShlLimitCnt::DTI.::MtDTI::getID());
+}
+
+inline void sShlManager::cShlLimitCnt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShlManager::cShlLimitCnt::DTI)->memFree(p_addr);
+}

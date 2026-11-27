@@ -68,3 +68,15 @@ inline void* nDraw::MaterialStdDM::operator new(size_t sz, void* p_addr) {
 inline nDraw::MaterialStdDM::MaterialStdDM() {
     this->::nDraw::Material::mTechnique = 0xE73FAB2E;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* nDraw::MaterialStdDM::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nDraw::MaterialStdDM::DTI)->memAlloc(sz, align, ::nDraw::MaterialStdDM::DTI.::MtDTI::mID);
+}
+
+inline void nDraw::MaterialStdDM::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::MaterialStdDM::DTI)->memFree(p_addr);
+}

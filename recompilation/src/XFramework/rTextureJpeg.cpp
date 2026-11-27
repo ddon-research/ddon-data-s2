@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rTextureJpeg.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtMemory.h"
@@ -17,10 +16,6 @@
 
 const MtDTI& rTextureJpeg::getDTI() const {
     return rTextureJpeg::DTI;
-}
-
-inline void rTextureJpeg::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTextureJpeg::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) rTextureJpeg* rTextureJpeg::createTextureJpeg(void* pJpegBuff, u32 buffSize, JOBHANDLE& jobHandle) {

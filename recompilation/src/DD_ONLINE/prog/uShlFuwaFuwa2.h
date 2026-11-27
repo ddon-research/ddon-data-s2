@@ -119,3 +119,24 @@ inline void* uShlFuwaFuwa2::operator new(size_t sz, void* p_addr) {
 inline uShlFuwaFuwa2::uShlFuwaFuwa2() {
     this->mFuwaFuwaSeqNo = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void cShlParamFuwaFuwa2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamFuwaFuwa2::DTI)->memFree(p_addr);
+}
+
+inline void* uShlFuwaFuwa2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlFuwaFuwa2::DTI)->memAlloc(sz, align, ::uShlFuwaFuwa2::DTI.::MtDTI::getID());
+}
+
+inline void uShlFuwaFuwa2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlFuwaFuwa2::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamFuwaFuwa2* uShlFuwaFuwa2::getShlParam() const {
+    return static_cast<const cShlParamFuwaFuwa2*>(this->::uShlBase::mpShlParam2);
+}

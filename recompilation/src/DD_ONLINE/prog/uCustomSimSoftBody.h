@@ -103,3 +103,23 @@ inline void* uCustomSimSoftBody::operator new(size_t sz, void* p_addr) {
 inline void uCustomSimSoftBody::setBakeModel(cBakeModelEx* target) {
     this->mpBakeModel = target;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uCustomSimSoftBody::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCustomSimSoftBody::DTI);
+}
+
+inline void uCustomSimSoftBody::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCustomSimSoftBody::DTI)->memFree(p_addr);
+}
+
+inline uCustomSimSoftBody::uCustomSimSoftBody() {
+    this->mBakeRebuildComplete = false;
+    this->mIsPause = false;
+    this->mIsDeleteComplete = false;
+    this->mpBakeModel = nullptr;
+    this->::uSimSoftBody::enableResetRestart();
+}

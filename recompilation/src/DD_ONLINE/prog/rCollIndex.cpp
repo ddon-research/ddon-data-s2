@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +15,6 @@
 
 const MtDTI& cCollIndex::getDTI() const {
     return cCollIndex::DTI;
-}
-
-inline void* cCollIndex::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCollIndex::DTI)->memAlloc(sz, align, cCollIndex::DTI.getID());
-}
-
-inline void cCollIndex::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCollIndex::DTI)->memFree(p_addr);
 }
 
 void cCollIndex::createProperty(MtPropertyList& s) {
@@ -45,16 +36,8 @@ const MtDTI& rCollIndex::getDTI() const {
     return rCollIndex::DTI;
 }
 
-inline MtAllocator* rCollIndex::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rCollIndex::DTI);
-}
-
 void* rCollIndex::operator new(size_t sz, u32 align) {
     return rCollIndex::getAllocator()->memAlloc(sz, align, rCollIndex::DTI.getID());
-}
-
-inline void rCollIndex::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCollIndex::DTI)->memFree(p_addr);
 }
 
 bool rCollIndex::loadData(MtDataReader& in, cCollIndex* pData) {

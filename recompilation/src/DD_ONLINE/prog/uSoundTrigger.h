@@ -33,23 +33,6 @@ class uCoord;
 class uModel;
 class uSoundSequenceSe;
 
-// Declarations
-class cSoundTriggerLayoutInfo;
-class cSoundTriggerListener;
-namespace nSoundTrigger { class cBaseContents; }
-namespace nSoundTrigger { class cCategory; }
-namespace nSoundTrigger { class cCurveSetContents; }
-namespace nSoundTrigger { class cDirectionalSetContents; }
-namespace nSoundTrigger { class cEQContents; }
-namespace nSoundTrigger { class cFreeWorkContents; }
-namespace nSoundTrigger { class cPlaySeqSeContents; }
-namespace nSoundTrigger { class cReverbContents; }
-namespace nSoundTrigger { class cSeContents; }
-namespace nSoundTrigger { class cStopSeqSeContents; }
-namespace nSoundTrigger { class cStreamContents; }
-namespace nSoundTrigger { class cSubMixerContents; }
-class uSoundTrigger;
-
 namespace nSoundTrigger {
     enum ARRAY_TYPE
     {
@@ -67,6 +50,23 @@ namespace nSoundTrigger {
         PANEL_TYPE_B = 2,
     };
 }  // namespace nSoundTrigger
+
+// Declarations
+class cSoundTriggerLayoutInfo;
+class cSoundTriggerListener;
+namespace nSoundTrigger { class cBaseContents; }
+namespace nSoundTrigger { class cCategory; }
+namespace nSoundTrigger { class cCurveSetContents; }
+namespace nSoundTrigger { class cDirectionalSetContents; }
+namespace nSoundTrigger { class cEQContents; }
+namespace nSoundTrigger { class cFreeWorkContents; }
+namespace nSoundTrigger { class cPlaySeqSeContents; }
+namespace nSoundTrigger { class cReverbContents; }
+namespace nSoundTrigger { class cSeContents; }
+namespace nSoundTrigger { class cStopSeqSeContents; }
+namespace nSoundTrigger { class cStreamContents; }
+namespace nSoundTrigger { class cSubMixerContents; }
+class uSoundTrigger;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -903,4 +903,113 @@ inline void* uSoundTrigger::cTriggerGroupManager::operator new(size_t sz, void* 
 
 inline uSoundTrigger::cTriggerGroupManager::cTriggerGroupManager() {
     this->mHitCount = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cSoundTriggerLayoutInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundTriggerLayoutInfo::DTI)->memAlloc(sz, align, ::cSoundTriggerLayoutInfo::DTI.::MtDTI::getID());
+}
+
+inline void cSoundTriggerLayoutInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundTriggerLayoutInfo::DTI)->memFree(p_addr);
+}
+
+inline cSoundTriggerLayoutInfo::cSoundTriggerLayoutInfo() {
+    this->mPanelType = 0;
+    this->mpUSequenceSe[1] = nullptr;
+    this->mpUSequenceSe[0] = nullptr;
+    this->mPanelNormal[0].x = ::MtVector3::Zero.x;
+    this->mPanelNormal[0].y = ::MtVector3::Zero.y;
+    this->mPanelNormal[0].z = ::MtVector3::Zero.z;
+    this->mPanelNormal[0].pad_ = 0.0f;
+    this->mPanelNormal[1].x = ::MtVector3::Zero.x;
+    this->mPanelNormal[1].y = ::MtVector3::Zero.y;
+    this->mPanelNormal[1].z = ::MtVector3::Zero.z;
+    this->mPanelNormal[1].pad_ = 0.0f;
+    this->mContentsIndex[10] = -1;
+    this->mContentsIndex[8] = -1;
+    this->mContentsIndex[9] = -1;
+    this->mContentsIndex[6] = -1;
+    this->mContentsIndex[7] = -1;
+    this->mContentsIndex[4] = -1;
+    this->mContentsIndex[5] = -1;
+    this->mContentsIndex[2] = -1;
+    this->mContentsIndex[3] = -1;
+    this->mContentsIndex[0] = -1;
+    this->mContentsIndex[1] = -1;
+}
+
+inline void* cSoundTriggerListener::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundTriggerListener::DTI)->memAlloc(sz, align, ::cSoundTriggerListener::DTI.::MtDTI::getID());
+}
+
+inline void cSoundTriggerListener::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundTriggerListener::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cBaseContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cBaseContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cCategory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cCategory::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cCurveSetContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cCurveSetContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cDirectionalSetContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cDirectionalSetContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cEQContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cEQContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cFreeWorkContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cFreeWorkContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cPlaySeqSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cPlaySeqSeContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cReverbContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cReverbContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cSeContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cStopSeqSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cStopSeqSeContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cStreamContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cStreamContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundTrigger::cSubMixerContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cSubMixerContents::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uSoundTrigger::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uSoundTrigger::DTI);
+}
+
+inline void uSoundTrigger::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundTrigger::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundTrigger::cTriggerGroupManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundTrigger::cTriggerGroupManager::DTI)->memAlloc(sz, align, ::uSoundTrigger::cTriggerGroupManager::DTI.::MtDTI::getID());
+}
+
+inline void uSoundTrigger::cTriggerGroupManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundTrigger::cTriggerGroupManager::DTI)->memFree(p_addr);
 }

@@ -32,16 +32,8 @@ const MtDTI& uGUIPopFilter::getDTI() const {
     return uGUIPopFilter::DTI;
 }
 
-inline MtAllocator* uGUIPopFilter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopFilter::DTI);
-}
-
 void* uGUIPopFilter::operator new(size_t sz, u32 align) {
     return uGUIPopFilter::getAllocator()->memAlloc(sz, align, uGUIPopFilter::DTI.getID());
-}
-
-inline void uGUIPopFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopFilter::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIPopFilter::~uGUIPopFilter() {
@@ -223,11 +215,11 @@ bool uGUIPopFilter::addReferenceMaxMin(s32 defmax, s32 defmin, s32 max, s32 min,
         u32 t0 = mData.mLength;
         if (addReference(REF_NUMBOX, defmax, -1, style, strmaxid, max, min, ATTR_MAX)) {
             u32 t1 = mData.mLength;
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(t1 - 1u)]) + 56) = t0 - 1u;
+            static_cast<cData*>(mData.getBuffer()[static_cast<int>(t1 - 1u)])->mExtindex = t0 - 1u;
             *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(t0 - 1u)]) + 56) = t1 - 1u;
             return true;
         } else {
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(t0 - 1u)]) + 74) = 0;
+            static_cast<cData*>(mData.getBuffer()[static_cast<int>(t0 - 1u)])->mVisible = false;
             return false;
         }
     } else {
@@ -245,8 +237,8 @@ bool uGUIPopFilter::addCheckBox(MT_CTSTR name, s32 def, MT_CTSTR title, uGUIPopF
 
 void uGUIPopFilter::setCheckBoxTitle(u32 idx, s32 titleid, s32 val) {
     if (mData.mLength >= idx) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 40)) == 1) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 104) = static_cast<unsigned int>(titleid);
+        if (static_cast<cData*>(mData.getBuffer()[static_cast<int>(idx)])->mType == REF_CHECKBOX) {
+            static_cast<cData*>(mData.getBuffer()[static_cast<int>(idx)])->mTitleId = titleid;
             *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 108) = static_cast<unsigned int>(val);
             mRefresh = true;
         }
@@ -259,7 +251,7 @@ bool uGUIPopFilter::addNumBox(s32 def, s32 max, s32 min, MT_CTSTR name, MT_CTSTR
 
 bool uGUIPopFilter::addPullDown(s32 def, MT_CTSTR title, s32 listsize, uGUIPopFilter::TITLE_PRE style) {
     if (addReference(REF_PULLDOWN, def, title, style, 0, 0, "", ATTR_NONE)) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(mData.mLength - 1u)]) + 120) = static_cast<unsigned int>(listsize);
+        static_cast<cData*>(mData.getBuffer()[static_cast<int>(mData.mLength - 1u)])->mPullDownSize = listsize;
         return true;
     } else {
         return false;
@@ -278,14 +270,14 @@ __attribute__((weak)) void uGUIPopFilter::addPullDownList(u32 idx, s32 id) {
 
 void uGUIPopFilter::setReferenceEnable(u32 idx, bool enable) {
     if (idx < mData.mLength) {
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 73) = static_cast<unsigned char>(enable);
+        static_cast<cData*>(mData.getBuffer()[static_cast<int>(idx)])->mEnable = enable;
         mRefresh = true;
     }
 }
 
 void uGUIPopFilter::setGrayOut(u32 idx, bool flag) {
     if (idx < mData.mLength) {
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mData.getBuffer()[static_cast<int>(idx)]) + 75) = static_cast<unsigned char>(flag);
+        static_cast<cData*>(mData.getBuffer()[static_cast<int>(idx)])->mGrayOut = flag;
         mRefresh = true;
     }
 }
@@ -319,9 +311,155 @@ void uGUIPopFilter::setBtnDefautPos(u32 pos) {
     }
 }
 
-__attribute__((weak)) void uGUIPopFilter::updateInit() {
-    DDON_STUB("uGUIPopFilter::updateInit")
-    /* stub */
+void uGUIPopFilter::updateInit() {
+    cHorizontalList* t0 = mpHCtrl;
+    if (t0 != nullptr) {
+        s32 t1 = t0->getCurrentPos();
+        if (t1 == 1) {
+            (&mBtn[0])->setFocus(false);
+            unsigned long t3 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 3184);
+            unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 3184)) + 120);
+            (&mBtn[1])->setFocus(true);
+            createList();
+            updateWait();
+            mBtnCtrl = false;
+            cHorizontalList* t10 = mpHCtrl;
+            if (t10 != nullptr) {
+                unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 3132);
+                t10->mCtrlF = t10->mCtrlF & 0xFFFFFFF7u;
+                mList.mListCtrl.setEnableKey(false);
+                mList.mListCtrl.clearCursorFocus();
+                uGUIBase* t14 = mList.mListCtrl.mpOwner;
+                if (t14 != nullptr) {
+                    u32 t15 = t14->getBasePointerPriority();
+                    mList.mListCtrl.mIsAutoDispPointer = false;
+                    mList.mListCtrl.mPointerPrio = t15;
+                } else {
+                    mList.mListCtrl.mIsAutoDispPointer = false;
+                    mList.mListCtrl.mPointerPrio = 10;
+                }
+            } else {
+                mList.mListCtrl.setEnableKey(false);
+                mList.mListCtrl.clearCursorFocus();
+                uGUIBase* t14 = mList.mListCtrl.mpOwner;
+                if (t14 != nullptr) {
+                    u32 t15 = t14->getBasePointerPriority();
+                    mList.mListCtrl.mIsAutoDispPointer = false;
+                    mList.mListCtrl.mPointerPrio = t15;
+                } else {
+                    mList.mListCtrl.mIsAutoDispPointer = false;
+                    mList.mListCtrl.mPointerPrio = 10;
+                }
+            }
+        } else {
+            if (t1 == 0) {
+                (&mBtn[0])->setFocus(true);
+                unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 3184);
+                unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 3184)) + 120);
+                (&mBtn[1])->setFocus(false);
+                createList();
+                updateWait();
+                mBtnCtrl = false;
+                cHorizontalList* t10 = mpHCtrl;
+                if (t10 != nullptr) {
+                    unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 3132);
+                    t10->mCtrlF = t10->mCtrlF & 0xFFFFFFF7u;
+                    mList.mListCtrl.setEnableKey(false);
+                    mList.mListCtrl.clearCursorFocus();
+                    uGUIBase* t14 = mList.mListCtrl.mpOwner;
+                    if (t14 != nullptr) {
+                        u32 t15 = t14->getBasePointerPriority();
+                        mList.mListCtrl.mIsAutoDispPointer = false;
+                        mList.mListCtrl.mPointerPrio = t15;
+                    } else {
+                        mList.mListCtrl.mIsAutoDispPointer = false;
+                        mList.mListCtrl.mPointerPrio = 10;
+                    }
+                } else {
+                    mList.mListCtrl.setEnableKey(false);
+                    mList.mListCtrl.clearCursorFocus();
+                    uGUIBase* t14 = mList.mListCtrl.mpOwner;
+                    if (t14 != nullptr) {
+                        u32 t15 = t14->getBasePointerPriority();
+                        mList.mListCtrl.mIsAutoDispPointer = false;
+                        mList.mListCtrl.mPointerPrio = t15;
+                    } else {
+                        mList.mListCtrl.mIsAutoDispPointer = false;
+                        mList.mListCtrl.mPointerPrio = 10;
+                    }
+                }
+            } else {
+                createList();
+                updateWait();
+                mBtnCtrl = false;
+                cHorizontalList* t10 = mpHCtrl;
+                if (t10 != nullptr) {
+                    unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 3132);
+                    t10->mCtrlF = t10->mCtrlF & 0xFFFFFFF7u;
+                    mList.mListCtrl.setEnableKey(false);
+                    mList.mListCtrl.clearCursorFocus();
+                    uGUIBase* t14 = mList.mListCtrl.mpOwner;
+                    if (t14 != nullptr) {
+                        u32 t15 = t14->getBasePointerPriority();
+                        mList.mListCtrl.mIsAutoDispPointer = false;
+                        mList.mListCtrl.mPointerPrio = t15;
+                    } else {
+                        mList.mListCtrl.mIsAutoDispPointer = false;
+                        mList.mListCtrl.mPointerPrio = 10;
+                    }
+                } else {
+                    mList.mListCtrl.setEnableKey(false);
+                    mList.mListCtrl.clearCursorFocus();
+                    uGUIBase* t14 = mList.mListCtrl.mpOwner;
+                    if (t14 != nullptr) {
+                        u32 t15 = t14->getBasePointerPriority();
+                        mList.mListCtrl.mIsAutoDispPointer = false;
+                        mList.mListCtrl.mPointerPrio = t15;
+                    } else {
+                        mList.mListCtrl.mIsAutoDispPointer = false;
+                        mList.mListCtrl.mPointerPrio = 10;
+                    }
+                }
+            }
+        }
+    } else {
+        (&mBtn[0])->setFocus(true);
+        unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 3184);
+        unsigned long t7 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 3184)) + 120);
+        (&mBtn[1])->setFocus(false);
+        createList();
+        updateWait();
+        mBtnCtrl = false;
+        cHorizontalList* t10 = mpHCtrl;
+        if (t10 != nullptr) {
+            unsigned char t11 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t10) + 3132);
+            t10->mCtrlF = t10->mCtrlF & 0xFFFFFFF7u;
+            mList.mListCtrl.setEnableKey(false);
+            mList.mListCtrl.clearCursorFocus();
+            uGUIBase* t14 = mList.mListCtrl.mpOwner;
+            if (t14 != nullptr) {
+                u32 t15 = t14->getBasePointerPriority();
+                mList.mListCtrl.mIsAutoDispPointer = false;
+                mList.mListCtrl.mPointerPrio = t15;
+            } else {
+                mList.mListCtrl.mIsAutoDispPointer = false;
+                mList.mListCtrl.mPointerPrio = 10;
+            }
+        } else {
+            mList.mListCtrl.setEnableKey(false);
+            mList.mListCtrl.clearCursorFocus();
+            uGUIBase* t14 = mList.mListCtrl.mpOwner;
+            if (t14 != nullptr) {
+                u32 t15 = t14->getBasePointerPriority();
+                mList.mListCtrl.mIsAutoDispPointer = false;
+                mList.mListCtrl.mPointerPrio = t15;
+            } else {
+                mList.mListCtrl.mIsAutoDispPointer = false;
+                mList.mListCtrl.mPointerPrio = 10;
+            }
+        }
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopFilter::updateWait);
 }
 
 __attribute__((weak)) void uGUIPopFilter::updateWait() {
@@ -388,7 +526,7 @@ void uGUIPopFilter::moveInput() {
             num = mPullDown.mLength;
             for (;;) {
                 static_cast<uGUIBase::cReferenceUIPullDown*>(mPullDown.getBuffer()[static_cast<int>(i4_3)])->execute();
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mPullDown.getBuffer()[static_cast<int>(i4_3)]) + 1440)) == 0) {
+                if (static_cast<cReferenceUIPullDown*>(mPullDown.getBuffer()[static_cast<int>(i4_3)])->mState == uGUIBase::cReferenceUIPullDown::STATE_NONE) {
                     if ((i4_3 + 1u) < num) {
                         i4_3 += 1u;
                     } else {
@@ -534,10 +672,6 @@ uGUIPopFilter::stList::stList() {
 
 const MtDTI& uGUIPopFilter::cListItem::getDTI() const {
     return uGUIPopFilter::cListItem::DTI;
-}
-
-inline void uGUIPopFilter::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopFilter::cListItem::DTI)->memFree(p_addr);
 }
 
 uGUIPopFilter::cListItem::cListItem() {

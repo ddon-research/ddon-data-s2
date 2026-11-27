@@ -273,3 +273,27 @@ inline nFurnitureMenuFlow::cFurnitureListItems::cItem::cItem() {
 inline void* nFurnitureMenuFlow::cFurnitureListItems::cInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI)->memAlloc(sz, align, ::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI.::MtDTI::getID());
+}
+
+inline void nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureGroupListItems::cItem::DTI)->memFree(p_addr);
+}
+
+inline void* nFurnitureMenuFlow::cFurnitureListItems::cItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI)->memAlloc(sz, align, ::nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI.::MtDTI::getID());
+}
+
+inline void nFurnitureMenuFlow::cFurnitureListItems::cItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureListItems::cItem::DTI)->memFree(p_addr);
+}
+
+inline void nFurnitureMenuFlow::cFurnitureListItems::cInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nFurnitureMenuFlow::cFurnitureListItems::cInfo::DTI)->memFree(p_addr);
+}

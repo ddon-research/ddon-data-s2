@@ -227,3 +227,27 @@ inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new(size_t sz, v
 inline bool rSoundAttributeSe::cSoundAttributeSeData::getUseFindIntersect() {
     return this->mUseFindIntersect;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rSoundAttributeSe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::DTI)->memAlloc(sz, align, ::rSoundAttributeSe::DTI.::MtDTI::getID());
+}
+
+inline void rSoundAttributeSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::DTI)->memFree(p_addr);
+}
+
+inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::cSoundAttributeSeData::DTI)->memAlloc(sz, align, ::rSoundAttributeSe::cSoundAttributeSeData::DTI.::MtDTI::getID());
+}
+
+inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
+}
+
+inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
+}

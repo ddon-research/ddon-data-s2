@@ -78,14 +78,6 @@ const MtDTI& cZCEFLControl::getDTI() const {
     return cZCEFLControl::DTI;
 }
 
-inline void* cZCEFLControl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZCEFLControl::DTI)->memAlloc(sz, align, cZCEFLControl::DTI.getID());
-}
-
-inline void cZCEFLControl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEFLControl::DTI)->memFree(p_addr);
-}
-
 cZCEFLControl::~cZCEFLControl() {
     if (mSetList.mLength != 0) {
         u32 v0_0 = mSetList.mLength;
@@ -166,16 +158,8 @@ const MtDTI& cZCEFLControl::cResourceSet::getDTI() const {
     return cZCEFLControl::cResourceSet::DTI;
 }
 
-inline MtAllocator* cZCEFLControl::cResourceSet::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cZCEFLControl::cResourceSet::DTI);
-}
-
 void* cZCEFLControl::cResourceSet::operator new(size_t sz, u32 align) {
     return cZCEFLControl::cResourceSet::getAllocator()->memAlloc(sz, align, cZCEFLControl::cResourceSet::DTI.getID());
-}
-
-inline void cZCEFLControl::cResourceSet::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEFLControl::cResourceSet::DTI)->memFree(p_addr);
 }
 
 cZCEFLControl::cResourceSet::cResourceSet() {
@@ -204,10 +188,6 @@ MtObject* cZCEFLControl::cResourceSet::MyDTI::newInstance() const {
 
 const MtDTI& cZCEffectColorControl::getDTI() const {
     return cZCEffectColorControl::DTI;
-}
-
-inline void cZCEffectColorControl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEffectColorControl::DTI)->memFree(p_addr);
 }
 
 void cZCEffectColorControl::createProperty(MtPropertyList& s) {
@@ -256,10 +236,6 @@ const MtDTI& cZCEffectColorControlBase::getDTI() const {
     return cZCEffectColorControlBase::DTI;
 }
 
-inline void cZCEffectColorControlBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEffectColorControlBase::DTI)->memFree(p_addr);
-}
-
 inline cZCEffectColorControlBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cZCEffectColorControlBase::MyDTI cZCEffectColorControlBase::DTI("cZCEffectColorControlBase", &::cZCEffectColorControl::DTI, 72ul, 0u, 0u);
@@ -270,10 +246,6 @@ __attribute__((weak)) MtObject* cZCEffectColorControlBase::MyDTI::newInstance() 
 
 const MtDTI& cZCEffectColorControlColorOff::getDTI() const {
     return cZCEffectColorControlColorOff::DTI;
-}
-
-inline void cZCEffectColorControlColorOff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEffectColorControlColorOff::DTI)->memFree(p_addr);
 }
 
 inline cZCEffectColorControlColorOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -288,10 +260,6 @@ const MtDTI& cZCEffectColorControlDayOff::getDTI() const {
     return cZCEffectColorControlDayOff::DTI;
 }
 
-inline void cZCEffectColorControlDayOff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEffectColorControlDayOff::DTI)->memFree(p_addr);
-}
-
 inline cZCEffectColorControlDayOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cZCEffectColorControlDayOff::MyDTI cZCEffectColorControlDayOff::DTI("cZCEffectColorControlDayOff", &::cZCEffectColorControl::DTI, 72ul, 0u, 0u);
@@ -302,10 +270,6 @@ __attribute__((weak)) MtObject* cZCEffectColorControlDayOff::MyDTI::newInstance(
 
 const MtDTI& cZCEffectColorControlDisregard::getDTI() const {
     return cZCEffectColorControlDisregard::DTI;
-}
-
-inline void cZCEffectColorControlDisregard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEffectColorControlDisregard::DTI)->memFree(p_addr);
 }
 
 inline cZCEffectColorControlDisregard::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -320,10 +284,6 @@ const MtDTI& cZCEffectColorControlNightOff::getDTI() const {
     return cZCEffectColorControlNightOff::DTI;
 }
 
-inline void cZCEffectColorControlNightOff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEffectColorControlNightOff::DTI)->memFree(p_addr);
-}
-
 inline cZCEffectColorControlNightOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cZCEffectColorControlNightOff::MyDTI cZCEffectColorControlNightOff::DTI("cZCEffectColorControlNightOff", &::cZCEffectColorControl::DTI, 72ul, 0u, 0u);
@@ -336,10 +296,6 @@ const MtDTI& cZCEffectColorControlWater::getDTI() const {
     return cZCEffectColorControlWater::DTI;
 }
 
-inline void cZCEffectColorControlWater::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEffectColorControlWater::DTI)->memFree(p_addr);
-}
-
 inline cZCEffectColorControlWater::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cZCEffectColorControlWater::MyDTI cZCEffectColorControlWater::DTI("cZCEffectColorControlWater", &::cZCEffectColorControl::DTI, 72ul, 0u, 0u);
@@ -350,14 +306,6 @@ __attribute__((weak)) MtObject* cZCEffectColorControlWater::MyDTI::newInstance()
 
 const MtDTI& cZCEffectControl::getDTI() const {
     return cZCEffectControl::DTI;
-}
-
-inline void* cZCEffectControl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZCEffectControl::DTI)->memAlloc(sz, align, cZCEffectControl::DTI.getID());
-}
-
-inline void cZCEffectControl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZCEffectControl::DTI)->memFree(p_addr);
 }
 
 inline cZCEffectControl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

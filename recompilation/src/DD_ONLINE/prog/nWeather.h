@@ -97,3 +97,23 @@ inline void* cWeatherObjectSys::operator new(size_t sz, void* p_addr) {
 
 inline cWeatherObjectSys::cWeatherObjectSys() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cWeatherObjectRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherObjectRes::DTI)->memAlloc(sz, align, ::cWeatherObjectRes::DTI.::MtDTI::getID());
+}
+
+inline void cWeatherObjectRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherObjectRes::DTI)->memFree(p_addr);
+}
+
+inline void* cWeatherObjectSys::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherObjectSys::DTI)->memAlloc(sz, align, ::cWeatherObjectSys::DTI.::MtDTI::getID());
+}
+
+inline void cWeatherObjectSys::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherObjectSys::DTI)->memFree(p_addr);
+}

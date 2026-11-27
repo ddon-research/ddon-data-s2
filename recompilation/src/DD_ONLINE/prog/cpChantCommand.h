@@ -197,3 +197,15 @@ inline s32 cpChantCommand::getNowPointNo() {
 inline s32 cpChantCommand::getNowWordNo() {
     return this->mNowWord;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpChantCommand::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpChantCommand::DTI);
+}
+
+inline void cpChantCommand::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpChantCommand::DTI)->memFree(p_addr);
+}

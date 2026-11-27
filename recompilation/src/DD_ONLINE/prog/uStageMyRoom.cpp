@@ -39,6 +39,7 @@
 #include "sNetworkExt.h"
 #include "sOmManager.h"
 #include "sPlayerManager.h"
+#include "sReward.h"
 #include "../../XFramework/sUnit.h"
 #include "sUnitManager.h"
 #include "uAnimal.h"
@@ -57,16 +58,8 @@ const MtDTI& uStageMyRoom::getDTI() const {
     return uStageMyRoom::DTI;
 }
 
-inline MtAllocator* uStageMyRoom::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uStageMyRoom::DTI);
-}
-
 void* uStageMyRoom::operator new(size_t sz, u32 align) {
     return uStageMyRoom::getAllocator()->memAlloc(sz, align, uStageMyRoom::DTI.getID());
-}
-
-inline void uStageMyRoom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uStageMyRoom::DTI)->memFree(p_addr);
 }
 
 uStageMyRoom::uStageMyRoom() {
@@ -229,7 +222,7 @@ __attribute__((weak)) bool uStageMyRoom::setMyRoomOption(const CMyRoomOption& op
 
 u32 uStageMyRoom::getMyRoomBgmListByIndex(u32 index) {
     if (index < mBgmAcquirementNoList.mLength) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mBgmAcquirementNoList.mpArray[index]) + 8);
+        return static_cast<CDataCommonU32*>(mBgmAcquirementNoList.mpArray[index])->m_unvalue;
     } else {
         return 0;
     }
@@ -297,8 +290,71 @@ __attribute__((weak)) void uStageMyRoom::initAnimal() {
 }
 
 __attribute__((weak)) void uStageMyRoom::clearAnimal() {
-    DDON_STUB("uStageMyRoom::clearAnimal")
-    /* stub */
+    if (mAnimalList.mLength == 0) {
+        if (mAnimalList.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAnimalList.mpArray));
+        }
+        mAnimalList.mpArray = nullptr;
+        mAnimalList.mBufsiz = 0;
+        mAnimalList.mLength = 0;
+        mPatternId = 5;
+        return;
+    } else {
+        u32 v0_0 = mAnimalList.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mAnimalList.getBuffer()[static_cast<int>(i0_3)] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                static_cast<uAnimal*>(mAnimalList.getBuffer()[static_cast<int>(i0_3)])->kill();
+                mAnimalList.getBuffer()[static_cast<int>(i0_3)] = nullptr;
+                v1_0 = mAnimalList.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+        if (v1_0 == 0) {
+            if (mAnimalList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAnimalList.mpArray));
+            }
+            mAnimalList.mpArray = nullptr;
+            mAnimalList.mBufsiz = 0;
+            mAnimalList.mLength = 0;
+            mPatternId = 5;
+            return;
+        } else {
+            u32 v3_0 = v1_0;
+            unsigned int i3_3 = 0;
+            u32 v4_0;
+            for (;;) {
+                if (mAnimalList.mpArray[i3_3] == nullptr) {
+                    v4_0 = v3_0;
+                } else {
+                    delete mAnimalList.mpArray[i3_3];
+                    v4_0 = mAnimalList.mLength;
+                }
+                if ((i3_3 + 1u) < v4_0) {
+                    v3_0 = v4_0;
+                    i3_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+            if (mAnimalList.mpArray != nullptr) {
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAnimalList.mpArray));
+            }
+            mAnimalList.mpArray = nullptr;
+            mAnimalList.mBufsiz = 0;
+            mAnimalList.mLength = 0;
+            mPatternId = 5;
+            return;
+        }
+    }
 }
 
 __attribute__((weak)) void uStageMyRoom::createAnimalPtn(u32 pattern_id) {

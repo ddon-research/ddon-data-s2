@@ -158,3 +158,44 @@ inline rOmKey::cItem::cItem() {
     this->mItemIndex = -1;
     this->mColor = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rOmKey::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOmKey::DTI)->memAlloc(sz, align, ::rOmKey::DTI.::MtDTI::getID());
+}
+
+inline void rOmKey::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOmKey::DTI)->memFree(p_addr);
+}
+
+inline rOmKey::rOmKey() {
+    this->::cResource::setAttribute(22u);
+    this->mOmKey.::MtArray::mAutoDelete = true;
+    this->mItem.::MtArray::mAutoDelete = true;
+}
+
+inline void* rOmKey::cOmKey::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOmKey::cOmKey::DTI)->memAlloc(sz, align, ::rOmKey::cOmKey::DTI.::MtDTI::getID());
+}
+
+inline void rOmKey::cOmKey::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOmKey::cOmKey::DTI)->memFree(p_addr);
+}
+
+inline rOmKey::cOmKey::cOmKey() {
+    this->mOmID = -1;
+    this->mKeyType = 0;
+    this->mPos = ::MtVector3::Zero;
+    this->mbHorizontal = false;
+}
+
+inline void* rOmKey::cItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOmKey::cItem::DTI)->memAlloc(sz, align, ::rOmKey::cItem::DTI.::MtDTI::getID());
+}
+
+inline void rOmKey::cItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOmKey::cItem::DTI)->memFree(p_addr);
+}

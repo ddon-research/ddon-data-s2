@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlArrow.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtProperty.h"
@@ -44,10 +42,6 @@
 
 const MtDTI& cShlParamArrow::getDTI() const {
     return cShlParamArrow::DTI;
-}
-
-inline void* cShlParamArrow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamArrow::DTI)->memAlloc(sz, align, cShlParamArrow::DTI.getID());
 }
 
 inline void cShlParamArrow::operator delete(void* p_addr) {
@@ -98,10 +92,6 @@ const MtDTI& cShlParamArrowInc::getDTI() const {
     return cShlParamArrowInc::DTI;
 }
 
-inline void* cShlParamArrowInc::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamArrowInc::DTI)->memAlloc(sz, align, cShlParamArrowInc::DTI.getID());
-}
-
 MtDTI& cShlParamArrowInc::getShlDTI() const {
     return uShlArrowInc::DTI;
 }
@@ -127,14 +117,6 @@ MtObject* cShlParamArrowInc::MyDTI::newInstance() const {
 
 const MtDTI& uShlArrow::getDTI() const {
     return uShlArrow::DTI;
-}
-
-inline void* uShlArrow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlArrow::DTI)->memAlloc(sz, align, uShlArrow::DTI.getID());
-}
-
-inline void uShlArrow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlArrow::DTI)->memFree(p_addr);
 }
 
 const cShlParamArrow* uShlArrow::getShlParam() const {
@@ -392,14 +374,6 @@ MtObject* uShlArrow::MyDTI::newInstance() const {
 
 const MtDTI& uShlArrowInc::getDTI() const {
     return uShlArrowInc::DTI;
-}
-
-inline void* uShlArrowInc::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlArrowInc::DTI)->memAlloc(sz, align, uShlArrowInc::DTI.getID());
-}
-
-inline void uShlArrowInc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlArrowInc::DTI)->memFree(p_addr);
 }
 
 uShlArrowInc::~uShlArrowInc() {

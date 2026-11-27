@@ -83,3 +83,15 @@ public:
 inline void* cEditChargeInfoUpdator::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cEditChargeInfoUpdator::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEditChargeInfoUpdator::DTI)->memAlloc(sz, align, ::cEditChargeInfoUpdator::DTI.::MtDTI::getID());
+}
+
+inline void cEditChargeInfoUpdator::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEditChargeInfoUpdator::DTI)->memFree(p_addr);
+}

@@ -31,10 +31,6 @@ const MtDTI& cShlParamJob06CS12::getDTI() const {
     return cShlParamJob06CS12::DTI;
 }
 
-inline void* cShlParamJob06CS12::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamJob06CS12::DTI)->memAlloc(sz, align, cShlParamJob06CS12::DTI.getID());
-}
-
 inline void cShlParamJob06CS12::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamJob06CS12::DTI)->memFree(p_addr);
 }
@@ -87,10 +83,6 @@ MtObject* cShlParamJob06CS12::MyDTI::newInstance() const {
 
 const MtDTI& uShlJob06CS12::getDTI() const {
     return uShlJob06CS12::DTI;
-}
-
-inline void uShlJob06CS12::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlJob06CS12::DTI)->memFree(p_addr);
 }
 
 uShlJob06CS12::~uShlJob06CS12() {

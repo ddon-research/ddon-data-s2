@@ -4,11 +4,14 @@
 #include <cstddef>
 
 // Dependencies
+#include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cSystem.h"
 #include "rTable.h"
+#include "uSkyLight.h"
 
 // Forward declarations
 class MtAllocator;
@@ -23,10 +26,15 @@ class MtStream;
 class MtString;
 class MtUI;
 class MtVector3;
+class cStateTransitionFromGameInfo;
+class uCharacterEditBase;
+class uDDOModel;
+class uPointLightExt;
 
 // Declarations
 class cActorLight;
 class rActorLight;
+class sLightExt;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -122,6 +130,67 @@ public:
     static MyDTI DTI;
 };
 
+class sLightExt : public cSystem
+{
+    friend class uCharacterEditBase;
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    sLightExt();
+    virtual ~sLightExt();
+    virtual void reset();  // vtable slot 6
+    void setup();
+    void final();
+    virtual void move();  // vtable slot 7
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    static sLightExt* getInstance();
+    void setTargetModel(uDDOModel* target);
+    uDDOModel* getTargetModel();
+    void stageInit(s32 bind_type);
+    void stageFinal();
+    f32 getZoneFadeRate() const;
+    void requestStateTransSpritDragon();
+    void forceStateTransEndSpritDragon();
+    void addStateTransSpritDragon(cStateTransitionFromGameInfo* pAdd);
+    void relStateTransSpritDragon(cStateTransitionFromGameInfo* pRel);
+public:
+    bool mbEnableActorLight2;  // offset: 0x11
+    bool mbDispSunDir;  // offset: 0x12
+    uPointLightExt* mpuActorLight;  // offset: 0x18
+    rActorLight* mprActorLight;  // offset: 0x20
+    uDDOModel* mpuTargetModel;  // offset: 0x28
+    bool mbIsEditRoom;  // offset: 0x30
+protected:
+    s32 mRno;  // offset: 0x34
+    f32 mZoneFadeFrame;  // offset: 0x38
+private:
+    MtTypedArray<cStateTransitionFromGameInfo> mStateTransSpritDragonArray;  // offset: 0x40
+public:
+    static MyDTI DTI;
+protected:
+    static sLightExt* mpInstance;
+};
+
 inline void* cActorLight::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -199,4 +268,41 @@ inline bool rActorLight::saveData(MtDataWriter& out) {
         }
     }
     return true;
+}
+
+inline void* sLightExt::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline sLightExt* sLightExt::getInstance() {
+    return ::sLightExt::mpInstance;
+}
+
+inline uDDOModel* sLightExt::getTargetModel() {
+    return this->mpuTargetModel;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+
+inline void* rActorLight::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rActorLight::DTI)->memAlloc(sz, align, ::rActorLight::DTI.::MtDTI::getID());
+}
+
+inline void rActorLight::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rActorLight::DTI)->memFree(p_addr);
+}
+
+inline rActorLight::rActorLight() {
+    this->::cResource::setAttribute(16u);
+}
+
+inline MtAllocator* sLightExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sLightExt::DTI);
+}
+
+inline void sLightExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sLightExt::DTI)->memFree(p_addr);
 }

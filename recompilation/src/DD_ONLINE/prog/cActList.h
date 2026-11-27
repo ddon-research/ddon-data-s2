@@ -111,6 +111,14 @@ public:
 inline cActNetParam::cActNetParam() {
 }
 
+inline u32 cActParam::getUParam0() const {
+    return this->mParam0;
+}
+
+inline u32 cActParam::getMotNo0() const {
+    return this->mParam0;
+}
+
 inline u32 cActParam::getDmDetailType() const {
     return static_cast<unsigned int>(static_cast<long>(this->mParam4));
 }

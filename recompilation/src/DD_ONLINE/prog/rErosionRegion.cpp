@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rErosionRegion.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "../../generated/shared/nErosionEnemyBase.h"
@@ -21,14 +19,6 @@ const MtDTI& cErosionInfoRes::getDTI() const {
     return cErosionInfoRes::DTI;
 }
 
-inline void* cErosionInfoRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cErosionInfoRes::DTI)->memAlloc(sz, align, cErosionInfoRes::DTI.getID());
-}
-
-inline void cErosionInfoRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cErosionInfoRes::DTI)->memFree(p_addr);
-}
-
 inline cErosionInfoRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cErosionInfoRes::MyDTI cErosionInfoRes::DTI("cErosionInfoRes", &::MtObject::DTI, 48ul, 0u, 0u);
@@ -39,14 +29,6 @@ MtObject* cErosionInfoRes::MyDTI::newInstance() const {
 
 const MtDTI& cErosionRegionRes::getDTI() const {
     return cErosionRegionRes::DTI;
-}
-
-inline void* cErosionRegionRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cErosionRegionRes::DTI)->memAlloc(sz, align, cErosionRegionRes::DTI.getID());
-}
-
-inline void cErosionRegionRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cErosionRegionRes::DTI)->memFree(p_addr);
 }
 
 void cErosionRegionRes::copyParam(const cErosionRegionRes& data) {
@@ -94,14 +76,6 @@ const MtDTI& cErosionSmallInfoRes::getDTI() const {
     return cErosionSmallInfoRes::DTI;
 }
 
-inline void* cErosionSmallInfoRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cErosionSmallInfoRes::DTI)->memAlloc(sz, align, cErosionSmallInfoRes::DTI.getID());
-}
-
-inline void cErosionSmallInfoRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cErosionSmallInfoRes::DTI)->memFree(p_addr);
-}
-
 inline cErosionSmallInfoRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cErosionSmallInfoRes::MyDTI cErosionSmallInfoRes::DTI("cErosionSmallInfoRes", &::MtObject::DTI, 32ul, 0u, 0u);
@@ -112,14 +86,6 @@ MtObject* cErosionSmallInfoRes::MyDTI::newInstance() const {
 
 const MtDTI& cErosionSuperInfoRes::getDTI() const {
     return cErosionSuperInfoRes::DTI;
-}
-
-inline void* cErosionSuperInfoRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cErosionSuperInfoRes::DTI)->memAlloc(sz, align, cErosionSuperInfoRes::DTI.getID());
-}
-
-inline void cErosionSuperInfoRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cErosionSuperInfoRes::DTI)->memFree(p_addr);
 }
 
 void cErosionSuperInfoRes::copyParam(const cErosionSuperInfoRes& data) {
@@ -146,14 +112,6 @@ MtObject* cErosionSuperInfoRes::MyDTI::newInstance() const {
 
 const MtDTI& rErosionInfoRes::getDTI() const {
     return rErosionInfoRes::DTI;
-}
-
-inline void* rErosionInfoRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rErosionInfoRes::DTI)->memAlloc(sz, align, rErosionInfoRes::DTI.getID());
-}
-
-inline void rErosionInfoRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rErosionInfoRes::DTI)->memFree(p_addr);
 }
 
 bool rErosionInfoRes::loadData(MtDataReader& r, cErosionInfoRes* pData) {
@@ -186,14 +144,6 @@ MtObject* rErosionInfoRes::MyDTI::newInstance() const {
 
 const MtDTI& rErosionRegion::getDTI() const {
     return rErosionRegion::DTI;
-}
-
-inline void* rErosionRegion::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rErosionRegion::DTI)->memAlloc(sz, align, rErosionRegion::DTI.getID());
-}
-
-inline void rErosionRegion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rErosionRegion::DTI)->memFree(p_addr);
 }
 
 bool rErosionRegion::loadData(MtDataReader& r, cErosionRegionRes* pData) {
@@ -233,14 +183,6 @@ const MtDTI& rErosionSmallInfoRes::getDTI() const {
     return rErosionSmallInfoRes::DTI;
 }
 
-inline void* rErosionSmallInfoRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rErosionSmallInfoRes::DTI)->memAlloc(sz, align, rErosionSmallInfoRes::DTI.getID());
-}
-
-inline void rErosionSmallInfoRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rErosionSmallInfoRes::DTI)->memFree(p_addr);
-}
-
 bool rErosionSmallInfoRes::loadData(MtDataReader& r, cErosionSmallInfoRes* pData) {
     nDDOIO::readData(r, pData->mCancelTimer);
     nDDOIO::readData(r, pData->mCancelWaitTimer);
@@ -268,14 +210,6 @@ MtObject* rErosionSmallInfoRes::MyDTI::newInstance() const {
 
 const MtDTI& rErosionSuperInfoRes::getDTI() const {
     return rErosionSuperInfoRes::DTI;
-}
-
-inline void* rErosionSuperInfoRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rErosionSuperInfoRes::DTI)->memAlloc(sz, align, rErosionSuperInfoRes::DTI.getID());
-}
-
-inline void rErosionSuperInfoRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rErosionSuperInfoRes::DTI)->memFree(p_addr);
 }
 
 bool rErosionSuperInfoRes::loadData(MtDataReader& r, cErosionSuperInfoRes* pData) {

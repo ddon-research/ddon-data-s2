@@ -70,3 +70,15 @@ public:
     bool mReturnPoint2nd;  // offset: 0x54
     static MyDTI DTI;
 };
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cSetInfoEnemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoEnemy::DTI)->memAlloc(sz, align, ::cSetInfoEnemy::DTI.::MtDTI::getID());
+}
+
+inline void cSetInfoEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSetInfoEnemy::DTI)->memFree(p_addr);
+}

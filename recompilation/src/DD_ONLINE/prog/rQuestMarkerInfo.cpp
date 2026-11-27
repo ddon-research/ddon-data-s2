@@ -21,22 +21,8 @@ const MtDTI& rQuestMarkerInfo::getDTI() const {
     return rQuestMarkerInfo::DTI;
 }
 
-inline void* rQuestMarkerInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rQuestMarkerInfo::DTI)->memAlloc(sz, align, rQuestMarkerInfo::DTI.getID());
-}
-
-inline void rQuestMarkerInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rQuestMarkerInfo::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rQuestMarkerInfo::getExt() const {
     return "qmi";
-}
-
-inline rQuestMarkerInfo::rQuestMarkerInfo() {
-    mStageNo = 0;
-    setAttribute(22u);
-    mInfoList.mAutoDelete = true;
 }
 
 rQuestMarkerInfo::~rQuestMarkerInfo() {
@@ -107,23 +93,6 @@ MtObject* rQuestMarkerInfo::MyDTI::newInstance() const {
 
 const MtDTI& rQuestMarkerInfo::cInfo::getDTI() const {
     return rQuestMarkerInfo::cInfo::DTI;
-}
-
-void* rQuestMarkerInfo::cInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rQuestMarkerInfo::cInfo::DTI)->memAlloc(sz, align, rQuestMarkerInfo::cInfo::DTI.getID());
-}
-
-inline void rQuestMarkerInfo::cInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rQuestMarkerInfo::cInfo::DTI)->memFree(p_addr);
-}
-
-rQuestMarkerInfo::cInfo::cInfo() {
-    mGroupNo = 0;
-    mUniqueId = 0;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
 }
 
 rQuestMarkerInfo::cInfo::~cInfo() {

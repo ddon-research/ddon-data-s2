@@ -137,3 +137,11 @@ inline uModel* uArmor::getOwner() {
 inline rModel* uArmor::getModelRes() {
     return this->mpModelRes;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uArmor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uArmor::DTI)->memFree(p_addr);
+}

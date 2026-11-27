@@ -194,3 +194,15 @@ inline rCollisionHeightField::rCollisionHeightField() {
     this->mMagic = 0;
     this->mVersion = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rCollisionHeightField::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCollisionHeightField::DTI)->memAlloc(sz, align, ::rCollisionHeightField::DTI.::MtDTI::mID);
+}
+
+inline void rCollisionHeightField::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCollisionHeightField::DTI)->memFree(p_addr);
+}

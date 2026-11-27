@@ -192,6 +192,10 @@ inline void* cOcdInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cOcdInfo::setDtiPtr(const MtDTI* NewValue) {
+    this->mpDTI_Guard = NewValue;
+}
+
 inline nObjCondition::OCD_MODE cOcdInfo::getOcdModePrivate() const {
     return this->mOcdMode;
 }
@@ -230,4 +234,16 @@ inline u32 cOcdInfo::getOcdReqResultCheatCheckPrivate() const {
 
 inline void cOcdInfo::setOcdReqResultCheatCheckPrivate(u32 NewValue) {
     this->mOcdReqResultCheatCheck = NewValue;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cOcdInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cOcdInfo::DTI);
+}
+
+inline void cOcdInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdInfo::DTI)->memFree(p_addr);
 }

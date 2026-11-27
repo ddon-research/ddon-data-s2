@@ -106,3 +106,15 @@ inline bool uFade::isFadeIn() {
 inline bool uFade::isFadeOut() {
     return this->mFadeType > 1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uFade::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uFade::DTI);
+}
+
+inline void uFade::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uFade::DTI)->memFree(p_addr);
+}

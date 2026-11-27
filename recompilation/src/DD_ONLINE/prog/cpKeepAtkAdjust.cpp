@@ -15,16 +15,8 @@ const MtDTI& cpKeepAtkAdjust::getDTI() const {
     return cpKeepAtkAdjust::DTI;
 }
 
-inline MtAllocator* cpKeepAtkAdjust::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpKeepAtkAdjust::DTI);
-}
-
 void* cpKeepAtkAdjust::operator new(size_t sz, u32 align) {
     return cpKeepAtkAdjust::getAllocator()->memAlloc(sz, align, cpKeepAtkAdjust::DTI.getID());
-}
-
-inline void cpKeepAtkAdjust::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpKeepAtkAdjust::DTI)->memFree(p_addr);
 }
 
 cpKeepAtkAdjust::cpKeepAtkAdjust() {
@@ -176,14 +168,6 @@ __attribute__((weak)) MtObject* cpKeepAtkAdjust::MyDTI::newInstance() const {
 
 const MtDTI& cpKeepAtkAdjust::cAtkAdjust::getDTI() const {
     return cpKeepAtkAdjust::cAtkAdjust::DTI;
-}
-
-inline void* cpKeepAtkAdjust::cAtkAdjust::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpKeepAtkAdjust::cAtkAdjust::DTI)->memAlloc(sz, align, cpKeepAtkAdjust::cAtkAdjust::DTI.getID());
-}
-
-inline void cpKeepAtkAdjust::cAtkAdjust::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpKeepAtkAdjust::cAtkAdjust::DTI)->memFree(p_addr);
 }
 
 inline cpKeepAtkAdjust::cAtkAdjust::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

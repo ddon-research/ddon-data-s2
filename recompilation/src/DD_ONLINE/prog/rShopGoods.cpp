@@ -10,7 +10,6 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
-#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTable.h"
 #ifndef DDON_STUB
@@ -21,16 +20,8 @@ const MtDTI& cShopGoods::getDTI() const {
     return cShopGoods::DTI;
 }
 
-inline MtAllocator* cShopGoods::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cShopGoods::DTI);
-}
-
 void* cShopGoods::operator new(size_t sz, u32 align) {
     return cShopGoods::getAllocator()->memAlloc(sz, align, cShopGoods::DTI.getID());
-}
-
-inline void cShopGoods::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShopGoods::DTI)->memFree(p_addr);
 }
 
 void cShopGoods::createProperty(MtPropertyList& s) {
@@ -60,14 +51,6 @@ __attribute__((weak)) MtObject* cShopGoods::MyDTI::newInstance() const {
 
 const MtDTI& cShopGoods::rDate::getDTI() const {
     return cShopGoods::rDate::DTI;
-}
-
-inline void* cShopGoods::rDate::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShopGoods::rDate::DTI)->memAlloc(sz, align, cShopGoods::rDate::DTI.getID());
-}
-
-inline void cShopGoods::rDate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShopGoods::rDate::DTI)->memFree(p_addr);
 }
 
 void cShopGoods::rDate::createProperty(MtPropertyList& s) {
@@ -126,18 +109,6 @@ MtObject* cShopGoods::rDate::MyDTI::newInstance() const {
 
 const MtDTI& rShopGoods::getDTI() const {
     return rShopGoods::DTI;
-}
-
-inline void* rShopGoods::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rShopGoods::DTI)->memAlloc(sz, align, rShopGoods::DTI.getID());
-}
-
-inline void rShopGoods::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rShopGoods::DTI)->memFree(p_addr);
-}
-
-inline rShopGoods::rShopGoods() {
-    setAttribute(16u);
 }
 
 const MtDTI& rShopGoods::getDataDTI() {

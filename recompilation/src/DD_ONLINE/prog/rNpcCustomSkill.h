@@ -147,3 +147,19 @@ inline void cNpcCustomSkill::operator delete[](void* p_addr) {
 inline void* cNpcCustomSkill::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cNpcCustomSkill::DTI)->memAlloc(sz, align, ::cNpcCustomSkill::DTI.::MtDTI::getID());
 }
+
+inline void* cNpcCustomSkill::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcCustomSkill::DTI)->memAlloc(sz, align, ::cNpcCustomSkill::DTI.::MtDTI::getID());
+}
+
+inline void cNpcCustomSkill::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcCustomSkill::DTI)->memFree(p_addr);
+}
+
+inline void* rNpcCustomSkill::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNpcCustomSkill::DTI)->memAlloc(sz, align, ::rNpcCustomSkill::DTI.::MtDTI::getID());
+}
+
+inline void rNpcCustomSkill::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcCustomSkill::DTI)->memFree(p_addr);
+}

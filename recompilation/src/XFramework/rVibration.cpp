@@ -24,14 +24,6 @@ const MtDTI& rVibration::getDTI() const {
     return rVibration::DTI;
 }
 
-inline void* rVibration::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rVibration::DTI)->memAlloc(sz, align, rVibration::DTI.mID);
-}
-
-inline void rVibration::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rVibration::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rVibration::getExt() const {
     return "vib";
 }

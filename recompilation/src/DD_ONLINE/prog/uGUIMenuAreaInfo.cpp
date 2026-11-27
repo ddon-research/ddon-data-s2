@@ -41,16 +41,8 @@ const MtDTI& uGUIMenuAreaInfo::getDTI() const {
     return uGUIMenuAreaInfo::DTI;
 }
 
-inline MtAllocator* uGUIMenuAreaInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::DTI);
-}
-
 void* uGUIMenuAreaInfo::operator new(size_t sz, u32 align) {
     return uGUIMenuAreaInfo::getAllocator()->memAlloc(sz, align, uGUIMenuAreaInfo::DTI.getID());
-}
-
-inline void uGUIMenuAreaInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMenuAreaInfo::~uGUIMenuAreaInfo() {
@@ -192,8 +184,65 @@ __attribute__((weak)) void uGUIMenuAreaInfo::setupAreaMaster(u32 mode) {
 }
 
 __attribute__((weak)) void uGUIMenuAreaInfo::updateAreaMaster() {
-    DDON_STUB("uGUIMenuAreaInfo::updateAreaMaster")
-    /* stub */
+    if (mpGUIAreaMaster != nullptr) {
+        if (mpGUIAreaMaster->mResult == RESULT_EXIT) {
+            mpGUIAreaMaster->mEndType = 0;
+            mpGUIAreaMaster->end();
+            mpGUIAreaMaster = nullptr;
+            static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+            if (mFlowId == 6) {
+                mRequestFlag = mRequestFlag | 1u;
+                mFlowIdNext = 2;
+                setFlowId(1u);
+                if ((mRequestFlag & 1u) != 0) {
+                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIMenuAreaInfo::requestAreaBaseInfoList);
+                        mServerCommandStatusRsv = 373;
+                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIMenuAreaInfo::callbackAreaBaseInfoList);
+                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                    } else {
+                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIMenuAreaInfo::requestAreaBaseInfoList);
+                        mServerCommandStatus = 373;
+                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIMenuAreaInfo::callbackAreaBaseInfoList);
+                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                        mServerRno = 0;
+                        mServerResult = 0;
+                    }
+                } else {
+                    setFlowId(mFlowIdNext);
+                }
+            } else {
+                setFlowId(2u);
+            }
+        }
+    } else {
+        mpGUIAreaMaster = nullptr;
+        static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(static_cast<uGUIBase*>(this));
+        if (mFlowId == 6) {
+            mRequestFlag = mRequestFlag | 1u;
+            mFlowIdNext = 2;
+            setFlowId(1u);
+            if ((mRequestFlag & 1u) != 0) {
+                if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                    mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIMenuAreaInfo::requestAreaBaseInfoList);
+                    mServerCommandStatusRsv = 373;
+                    mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIMenuAreaInfo::callbackAreaBaseInfoList);
+                    mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                } else {
+                    mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIMenuAreaInfo::requestAreaBaseInfoList);
+                    mServerCommandStatus = 373;
+                    mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIMenuAreaInfo::callbackAreaBaseInfoList);
+                    mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                    mServerRno = 0;
+                    mServerResult = 0;
+                }
+            } else {
+                setFlowId(mFlowIdNext);
+            }
+        } else {
+            setFlowId(2u);
+        }
+    }
 }
 
 bool uGUIMenuAreaInfo::requestAreaBaseInfoList() {
@@ -290,29 +339,16 @@ const MtDTI& uGUIMenuAreaInfo::cListItem::getDTI() const {
     return uGUIMenuAreaInfo::cListItem::DTI;
 }
 
-inline void uGUIMenuAreaInfo::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIMenuAreaInfo::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIMenuAreaInfo::cListItem::MyDTI uGUIMenuAreaInfo::cListItem::DTI("uGUIMenuAreaInfo::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 232ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIMenuAreaInfo::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIMenuAreaInfo::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIMenuAreaInfo::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIMenuAreaInfo::cListItem;
 }
 
 const MtDTI& uGUIMenuAreaInfo::cHeaderItem::getDTI() const {
     return uGUIMenuAreaInfo::cHeaderItem::DTI;
-}
-
-inline void* uGUIMenuAreaInfo::cHeaderItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cHeaderItem::DTI)->memAlloc(sz, align, uGUIMenuAreaInfo::cHeaderItem::DTI.getID());
-}
-
-inline void uGUIMenuAreaInfo::cHeaderItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cHeaderItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIMenuAreaInfo::cHeaderItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -327,10 +363,6 @@ const MtDTI& uGUIMenuAreaInfo::cListInfo::getDTI() const {
     return uGUIMenuAreaInfo::cListInfo::DTI;
 }
 
-inline void uGUIMenuAreaInfo::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cListInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUIMenuAreaInfo::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIMenuAreaInfo::cListInfo::MyDTI uGUIMenuAreaInfo::cListInfo::DTI("uGUIMenuAreaInfo::cListInfo", &::uGUIBase::cScrollListInfoBase::DTI, 80ul, 0u, 0u);
@@ -342,10 +374,6 @@ __attribute__((weak)) MtObject* uGUIMenuAreaInfo::cListInfo::MyDTI::newInstance(
 
 const MtDTI& uGUIMenuAreaInfo::cHeaderInfo::getDTI() const {
     return uGUIMenuAreaInfo::cHeaderInfo::DTI;
-}
-
-inline void uGUIMenuAreaInfo::cHeaderInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuAreaInfo::cHeaderInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIMenuAreaInfo::cHeaderInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

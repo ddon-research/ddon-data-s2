@@ -29,10 +29,6 @@ void* uScheduler::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uScheduler::DTI)->memAlloc(sz, align, uScheduler::DTI.mID);
 }
 
-inline void uScheduler::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uScheduler::DTI)->memFree(p_addr);
-}
-
 uScheduler::uScheduler() {
     mpScheduler = nullptr;
     mPause = true;

@@ -3,7 +3,6 @@
 #include "uGUIShakeStick.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
@@ -27,16 +26,8 @@ const MtDTI& uGUIShakeStick::getDTI() const {
     return uGUIShakeStick::DTI;
 }
 
-inline MtAllocator* uGUIShakeStick::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIShakeStick::DTI);
-}
-
 void* uGUIShakeStick::operator new(size_t sz, u32 align) {
     return uGUIShakeStick::getAllocator()->memAlloc(sz, align, uGUIShakeStick::DTI.getID());
-}
-
-inline void uGUIShakeStick::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIShakeStick::DTI)->memFree(p_addr);
 }
 
 uGUIShakeStick::uGUIShakeStick() : uGUIBase(0u, false) {

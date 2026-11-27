@@ -3,7 +3,6 @@
 #include "cpNpc.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -20,16 +19,8 @@ const MtDTI& cpNpc::getDTI() const {
     return cpNpc::DTI;
 }
 
-inline MtAllocator* cpNpc::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpNpc::DTI);
-}
-
 void* cpNpc::operator new(size_t sz, u32 align) {
     return cpNpc::getAllocator()->memAlloc(sz, align, cpNpc::DTI.getID());
-}
-
-inline void cpNpc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpNpc::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cpNpc::move() {

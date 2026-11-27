@@ -27,16 +27,8 @@ const MtDTI& uGUICaplinkMailNotice::getDTI() const {
     return uGUICaplinkMailNotice::DTI;
 }
 
-inline MtAllocator* uGUICaplinkMailNotice::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkMailNotice::DTI);
-}
-
 void* uGUICaplinkMailNotice::operator new(size_t sz, u32 align) {
     return uGUICaplinkMailNotice::getAllocator()->memAlloc(sz, align, uGUICaplinkMailNotice::DTI.getID());
-}
-
-inline void uGUICaplinkMailNotice::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkMailNotice::DTI)->memFree(p_addr);
 }
 
 uGUICaplinkMailNotice::~uGUICaplinkMailNotice() {

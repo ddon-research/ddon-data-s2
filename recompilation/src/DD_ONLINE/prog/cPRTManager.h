@@ -239,3 +239,22 @@ inline void cPRTManager::resetReady() {
     this->mIsReady = false;
     this->mIsReadyOK = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+
+inline MtAllocator* cPRTManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cPRTManager::DTI);
+}
+
+inline void cPRTManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPRTManager::DTI)->memFree(p_addr);
+}
+
+inline void cPRTManager::resetReadyBitAll() {
+    static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::clrNotifySyncAll(this->mReadyBit);
+    static_cast<sNetworkExt*>(::sNetwork::mpInstance)->::sNetworkExt::clrNotifySyncAll(this->mReadyOKBit);
+}

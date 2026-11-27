@@ -211,3 +211,19 @@ inline u8 cItemParam::getEquipCharType() const {
 inline const rItemList::rItemParam* cItemParam::getItemParamConst() const {
     return this->mpItemResParam;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCraftParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftParam::DTI)->memAlloc(sz, align, ::cCraftParam::DTI.::MtDTI::getID());
+}
+
+inline void cCraftParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftParam::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cItemParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cItemParam::DTI);
+}

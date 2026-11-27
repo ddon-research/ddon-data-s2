@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUICaplinkChat.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -24,6 +25,7 @@
 #include "sCaplinkManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sInputText.h"
 #include "../../XFramework/sKeyboard.h"
 #include "sKeyboardInterface.h"
 #include "../../XFramework/sUnit.h"
@@ -39,10 +41,6 @@
 
 const MtDTI& uGUICaplinkChat::getDTI() const {
     return uGUICaplinkChat::DTI;
-}
-
-inline MtAllocator* uGUICaplinkChat::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkChat::DTI);
 }
 
 void* uGUICaplinkChat::operator new(size_t sz, u32 align) {
@@ -98,9 +96,23 @@ void uGUICaplinkChat::draw(cDraw* pDraw) {
     this->uGUIBase::draw(pDraw);
 }
 
-__attribute__((weak)) void uGUICaplinkChat::setData(s32 idType, MT_CTSTR id) {
-    DDON_STUB("uGUICaplinkChat::setData")
-    /* stub */
+void uGUICaplinkChat::setData(s32 idType, MT_CTSTR id) {
+    mIdType = idType;
+    if (id != nullptr) {
+        if (id != (&mId.mStr[0])) {
+            size_t t0 = strlen(id);
+            mId.mLength = (static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u;
+            if (((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u) != 0) {
+                memcpy(static_cast<void*>(&mId.mStr[0]), static_cast<const void*>(id), static_cast<size_t>((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u));
+                mId.mStr[(static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u] = 0;
+            } else {
+                mId.mStr[0] = 0;
+            }
+        }
+    } else {
+        mId.mStr[0] = 0;
+        mId.mLength = 0;
+    }
 }
 
 __attribute__((weak)) void uGUICaplinkChat::setFlowId(u32 flow_id, bool isInit) {
@@ -344,14 +356,6 @@ const MtDTI& uGUICaplinkChat::cDateItem::getDTI() const {
     return uGUICaplinkChat::cDateItem::DTI;
 }
 
-inline void* uGUICaplinkChat::cDateItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkChat::cDateItem::DTI)->memAlloc(sz, align, uGUICaplinkChat::cDateItem::DTI.getID());
-}
-
-inline void uGUICaplinkChat::cDateItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkChat::cDateItem::DTI)->memFree(p_addr);
-}
-
 inline uGUICaplinkChat::cDateItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkChat::cDateItem::MyDTI uGUICaplinkChat::cDateItem::DTI("uGUICaplinkChat::cDateItem", &::uGUIBase::cScrollListItemBase::DTI, 96ul, 0u, 0u);
@@ -362,14 +366,6 @@ MtObject* uGUICaplinkChat::cDateItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUICaplinkChat::cSystemItem::getDTI() const {
     return uGUICaplinkChat::cSystemItem::DTI;
-}
-
-inline void* uGUICaplinkChat::cSystemItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkChat::cSystemItem::DTI)->memAlloc(sz, align, uGUICaplinkChat::cSystemItem::DTI.getID());
-}
-
-inline void uGUICaplinkChat::cSystemItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkChat::cSystemItem::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkChat::cSystemItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -384,10 +380,6 @@ const MtDTI& uGUICaplinkChat::cMessageItem::getDTI() const {
     return uGUICaplinkChat::cMessageItem::DTI;
 }
 
-inline void uGUICaplinkChat::cMessageItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkChat::cMessageItem::DTI)->memFree(p_addr);
-}
-
 inline uGUICaplinkChat::cMessageItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkChat::cMessageItem::MyDTI uGUICaplinkChat::cMessageItem::DTI("uGUICaplinkChat::cMessageItem", &::uGUIBase::cScrollListItemBase::DTI, 224ul, 0u, 0u);
@@ -399,10 +391,6 @@ __attribute__((weak)) MtObject* uGUICaplinkChat::cMessageItem::MyDTI::newInstanc
 
 const MtDTI& uGUICaplinkChat::cDateInfo::getDTI() const {
     return uGUICaplinkChat::cDateInfo::DTI;
-}
-
-inline void uGUICaplinkChat::cDateInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkChat::cDateInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkChat::cDateInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

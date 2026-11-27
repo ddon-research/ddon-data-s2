@@ -29,10 +29,6 @@ void* cBVHCollision::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void cBVHCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBVHCollision::DTI)->memFree(p_addr);
-}
-
 cBVHCollision::cBVHCollision() {
     memset(&mHeader, 0, sizeof(mHeader));
     mpRootNodeBinary = nullptr;
@@ -219,10 +215,6 @@ __attribute__((weak)) MtCollisionUtil::MtVectorU4 cBVHCollision::NodeQuad::isInt
 
 const MtDTI& cBVHCollision::cWorkBuildOnlineFast::getDTI() const {
     return cBVHCollision::cWorkBuildOnlineFast::DTI;
-}
-
-inline void* cBVHCollision::cWorkBuildOnlineFast::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cBVHCollision::cWorkBuildOnlineFast::DTI)->memAlloc(sz, align, cBVHCollision::cWorkBuildOnlineFast::DTI.mID);
 }
 
 inline cBVHCollision::cWorkBuildOnlineFast::cWorkBuildOnlineFast() {

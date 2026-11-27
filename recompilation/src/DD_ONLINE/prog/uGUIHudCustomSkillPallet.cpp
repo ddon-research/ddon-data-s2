@@ -3,7 +3,6 @@
 #include "uGUIHudCustomSkillPallet.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "cGUIUtility.h"
@@ -21,16 +20,8 @@ const MtDTI& uGUIHudCustomSkillPallet::getDTI() const {
     return uGUIHudCustomSkillPallet::DTI;
 }
 
-inline MtAllocator* uGUIHudCustomSkillPallet::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIHudCustomSkillPallet::DTI);
-}
-
 void* uGUIHudCustomSkillPallet::operator new(size_t sz, u32 align) {
     return uGUIHudCustomSkillPallet::getAllocator()->memAlloc(sz, align, uGUIHudCustomSkillPallet::DTI.getID());
-}
-
-inline void uGUIHudCustomSkillPallet::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIHudCustomSkillPallet::DTI)->memFree(p_addr);
 }
 
 uGUIHudCustomSkillPallet::uGUIHudCustomSkillPallet() : mINST_msg_skillsets() {

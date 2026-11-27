@@ -462,6 +462,10 @@ inline rAIFSM::rAIFSM() {
     this->mpRootCluster = nullptr;
 }
 
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
 inline cAIFSMNodeProcess::cAIFSMNodeProcess(MT_CTSTR pname) {
     mpParameter = nullptr;
     mpUpdateProcess = nullptr;
@@ -472,4 +476,40 @@ inline cAIFSMNodeProcess::cAIFSMNodeProcess(MT_CTSTR pname) {
     mpImportProcess = nullptr;
     mContainerName = pname;
     mCategoryName = "cAIFSMProcessContainer";
+}
+
+inline void* cAIFSMCluster::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSMCluster::DTI)->memAlloc(sz, align, ::cAIFSMCluster::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSMCluster::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMCluster::DTI)->memFree(p_addr);
+}
+
+inline void* cAIFSMLink::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSMLink::DTI)->memAlloc(sz, align, ::cAIFSMLink::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSMLink::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMLink::DTI)->memFree(p_addr);
+}
+
+inline void* cAIFSMNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIFSMNode::DTI)->memAlloc(sz, align, ::cAIFSMNode::DTI.::MtDTI::mID);
+}
+
+inline void cAIFSMNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMNode::DTI)->memFree(p_addr);
+}
+
+inline void cAIFSMNodeProcess::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIFSMNodeProcess::DTI)->memFree(p_addr);
+}
+
+inline void* rAIFSM::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAIFSM::DTI)->memAlloc(sz, align, ::rAIFSM::DTI.::MtDTI::mID);
+}
+
+inline void rAIFSM::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIFSM::DTI)->memFree(p_addr);
 }

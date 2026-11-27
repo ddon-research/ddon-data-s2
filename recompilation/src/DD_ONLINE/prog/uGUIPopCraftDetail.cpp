@@ -36,16 +36,8 @@ const MtDTI& uGUIPopCraftDetail::getDTI() const {
     return uGUIPopCraftDetail::DTI;
 }
 
-inline MtAllocator* uGUIPopCraftDetail::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopCraftDetail::DTI);
-}
-
 void* uGUIPopCraftDetail::operator new(size_t sz, u32 align) {
     return uGUIPopCraftDetail::getAllocator()->memAlloc(sz, align, uGUIPopCraftDetail::DTI.getID());
-}
-
-inline void uGUIPopCraftDetail::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopCraftDetail::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIPopCraftDetail::~uGUIPopCraftDetail() {
@@ -114,10 +106,6 @@ __attribute__((weak)) void uGUIPopCraftDetail::setupCrestInfo(cItemParam* pParam
 __attribute__((weak)) void uGUIPopCraftDetail::setupColorInfo(cItemParam* pParam) {
     DDON_STUB("uGUIPopCraftDetail::setupColorInfo")
     /* stub */
-}
-
-void uGUIPopCraftDetail::setPageNum(u32 page_num) {
-    mPage.mPageDot.setDispPageNum(page_num);
 }
 
 void uGUIPopCraftDetail::updateInit() {

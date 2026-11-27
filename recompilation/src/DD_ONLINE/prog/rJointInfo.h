@@ -125,3 +125,27 @@ inline void cJointInfo::operator delete[](void* p_addr) {
 inline void* cJointInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cJointInfo::DTI)->memAlloc(sz, align, ::cJointInfo::DTI.::MtDTI::getID());
 }
+
+inline void* cJointInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cJointInfo::DTI)->memAlloc(sz, align, ::cJointInfo::DTI.::MtDTI::getID());
+}
+
+inline void cJointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cJointInfo::DTI)->memFree(p_addr);
+}
+
+inline cJointInfo::cJointInfo() {
+    this->mJntNo = 255;
+    this->mAttr = 0;
+    this->mRadius = 0.0f;
+    this->mOfsPos = ::MtVector3::Zero;
+    this->mJointInfoID = 0;
+}
+
+inline void* rJointInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rJointInfo::DTI)->memAlloc(sz, align, ::rJointInfo::DTI.::MtDTI::getID());
+}
+
+inline void rJointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rJointInfo::DTI)->memFree(p_addr);
+}

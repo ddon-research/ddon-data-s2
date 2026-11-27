@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cNetBase.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtStream.h"
 #include "cNetGameServer.h"
@@ -24,10 +22,6 @@
 
 const MtDTI& nNetBase::cNetBase::getDTI() const {
     return nNetBase::cNetBase::DTI;
-}
-
-inline void nNetBase::cNetBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetBase::cNetBase::DTI)->memFree(p_addr);
 }
 
 nNetBase::cNetBase::cNetBase() {
@@ -119,9 +113,36 @@ __attribute__((weak)) bool nNetBase::cNetBase::sendLocal(RPC_ID receiver_id, nNe
     return {};
 }
 
-__attribute__((weak)) nNetBase::cNetBase* nNetBase::cNetBase::createNetRpc(u32 rpcType) {
-    DDON_STUB("nNetBase::cNetBase::createNetRpc")
-    return nullptr;
+nNetBase::cNetBase* nNetBase::cNetBase::createNetRpc(u32 rpcType) {
+    const MtDTI* t0 = ::MtDTI::from(rpcType * 0x1000000u);
+    MtObject* v2_0;
+    if (t0 == nullptr) {
+        v2_0 = nullptr;
+    } else {
+        MtObject* v0_2 = t0->newInstance();
+        if (v0_2 == nullptr) {
+            v2_0 = nullptr;
+        } else {
+            const MtDTI& t2 = v0_2->getDTI();
+            MT_CTSTR v0_1 = ::nNetBase::cNetBase::DTI.mName;
+            if (v0_1 != t2.mName) {
+                for (const MtDTI* v0_0 = &t2;;) {
+                    if (v0_0->mpParent == nullptr) {
+                        v2_0 = nullptr;
+                        return static_cast<nNetBase::cNetBase*>(v2_0);
+                    } else {
+                        if (v0_1 != v0_0->mpParent->mName) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            v2_0 = v0_2;
+        }
+    }
+    return static_cast<nNetBase::cNetBase*>(v2_0);
 }
 
 uControl* nNetBase::cNetBase::getOwner() const {

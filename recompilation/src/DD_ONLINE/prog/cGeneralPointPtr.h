@@ -7,6 +7,7 @@
 class cGeneralPoint;
 class cpJob06;
 class cpKeyCommand;
+class cpLockOnTargetManager;
 class sGeneralPoint;
 
 // Declarations
@@ -22,6 +23,7 @@ class cGeneralPointPtr
 {
     friend class cpJob06;
     friend class cpKeyCommand;
+    friend class cpLockOnTargetManager;
     friend class sGeneralPoint;
 public:
     cGeneralPointPtr();
@@ -50,6 +52,7 @@ protected:
 template <typename T>
 class cGpPtr : protected cGeneralPointPtr
 {
+    friend class cpLockOnTargetManager;
 public:
     T* operator=(T* p);
     T* get();

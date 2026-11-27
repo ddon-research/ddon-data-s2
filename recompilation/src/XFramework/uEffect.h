@@ -424,3 +424,11 @@ inline u32 uEffect::getJointNum() const {
 inline u32 uEffect::getJointMoveNum() const {
     return this->mJointMoveNum;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uEffect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uEffect::DTI)->memFree(p_addr);
+}

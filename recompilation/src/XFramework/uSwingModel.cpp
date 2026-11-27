@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uSwingModel.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -21,10 +20,6 @@ const MtDTI& uSwingModel::getDTI() const {
     return uSwingModel::DTI;
 }
 
-inline void uSwingModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSwingModel::DTI)->memFree(p_addr);
-}
-
 void uSwingModel::createProperty(MtPropertyList& s) {
     this->uBaseModel::createProperty(s);
     mSwing.cSwingModel::createProperty(s);
@@ -37,10 +32,6 @@ MtUI* uSwingModel::createUI(MtProperty& prop) {
 __attribute__((weak)) void uSwingModel::draw(cDraw* pdraw) {
     DDON_STUB("uSwingModel::draw")
     /* stub */
-}
-
-void uSwingModel::setSwing(rSwingModel* p_resource) {
-    mSwing.setSwing(p_resource);
 }
 
 void uSwingModel::setDepthBiasTexture(rTexture* p_texture) {

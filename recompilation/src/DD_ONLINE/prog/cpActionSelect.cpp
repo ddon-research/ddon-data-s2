@@ -23,16 +23,8 @@ const MtDTI& cpActionSelect::getDTI() const {
     return cpActionSelect::DTI;
 }
 
-inline MtAllocator* cpActionSelect::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpActionSelect::DTI);
-}
-
 void* cpActionSelect::operator new(size_t sz, u32 align) {
     return cpActionSelect::getAllocator()->memAlloc(sz, align, cpActionSelect::DTI.getID());
-}
-
-inline void cpActionSelect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpActionSelect::DTI)->memFree(p_addr);
 }
 
 cpActionSelect::cpActionSelect() {

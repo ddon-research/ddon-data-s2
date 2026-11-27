@@ -153,3 +153,18 @@ inline void* CDataUIListElementChild::operator new(size_t sz, void* p_addr) {
 inline CDataUIListElementChild::CDataUIListElementChild() {
     this->m_unArgNum1 = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataUIListCommand::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUIListCommand::DTI);
+}
+
+inline MtAllocator* CDataUIListElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUIListElement::DTI);
+}
+
+inline MtAllocator* CDataUIListElementChild::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUIListElementChild::DTI);
+}

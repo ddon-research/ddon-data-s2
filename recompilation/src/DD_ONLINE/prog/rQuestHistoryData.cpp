@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rQuestHistoryData.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cUIObject.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -16,14 +14,6 @@ const MtDTI& cQuestHistoryData::getDTI() const {
     return cQuestHistoryData::DTI;
 }
 
-inline void* cQuestHistoryData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestHistoryData::DTI)->memAlloc(sz, align, cQuestHistoryData::DTI.getID());
-}
-
-inline void cQuestHistoryData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestHistoryData::DTI)->memFree(p_addr);
-}
-
 inline cQuestHistoryData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cQuestHistoryData::MyDTI cQuestHistoryData::DTI("cQuestHistoryData", &::cUIResource::DTI, 16ul, 0u, 0u);
@@ -34,14 +24,6 @@ MtObject* cQuestHistoryData::MyDTI::newInstance() const {
 
 const MtDTI& rQuestHistoryData::getDTI() const {
     return rQuestHistoryData::DTI;
-}
-
-inline void* rQuestHistoryData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rQuestHistoryData::DTI)->memAlloc(sz, align, rQuestHistoryData::DTI.getID());
-}
-
-inline void rQuestHistoryData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rQuestHistoryData::DTI)->memFree(p_addr);
 }
 
 bool rQuestHistoryData::loadData(MtDataReader& r, cQuestHistoryData* pData) {

@@ -132,3 +132,23 @@ inline void* cScenarioArg_AreaJump::operator new(size_t sz, void* p_addr) {
 inline void* cScenarioArg_BootFSM::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cScenarioArg_AreaJump::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cScenarioArg_AreaJump::DTI);
+}
+
+inline void cScenarioArg_AreaJump::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cScenarioArg_AreaJump::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cScenarioArg_BootFSM::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cScenarioArg_BootFSM::DTI);
+}
+
+inline void cScenarioArg_BootFSM::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cScenarioArg_BootFSM::DTI)->memFree(p_addr);
+}

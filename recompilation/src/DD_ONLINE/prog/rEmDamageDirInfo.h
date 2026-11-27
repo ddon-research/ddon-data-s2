@@ -133,3 +133,19 @@ inline void cEmDamageDirInfo::operator delete[](void* p_addr) {
 inline void* cEmDamageDirInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmDamageDirInfo::DTI)->memAlloc(sz, align, ::cEmDamageDirInfo::DTI.::MtDTI::getID());
 }
+
+inline void* cEmDamageDirInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmDamageDirInfo::DTI)->memAlloc(sz, align, ::cEmDamageDirInfo::DTI.::MtDTI::getID());
+}
+
+inline void cEmDamageDirInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmDamageDirInfo::DTI)->memFree(p_addr);
+}
+
+inline void* rEmDamageDirInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmDamageDirInfo::DTI)->memAlloc(sz, align, ::rEmDamageDirInfo::DTI.::MtDTI::getID());
+}
+
+inline void rEmDamageDirInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmDamageDirInfo::DTI)->memFree(p_addr);
+}

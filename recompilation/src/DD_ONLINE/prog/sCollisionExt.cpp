@@ -17,16 +17,8 @@ const MtDTI& sCollisionExt::getDTI() const {
     return sCollisionExt::DTI;
 }
 
-inline MtAllocator* sCollisionExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sCollisionExt::DTI);
-}
-
 void* sCollisionExt::operator new(size_t sz, u32 align) {
     return sCollisionExt::getAllocator()->memAlloc(sz, align, sCollisionExt::DTI.getID());
-}
-
-inline void sCollisionExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollisionExt::DTI)->memFree(p_addr);
 }
 
 sCollisionExt::sCollisionExt(sCollision::cSystemInitializeParam* pInitializeParam) : sCollision(true, pInitializeParam) {

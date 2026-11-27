@@ -299,3 +299,15 @@ inline void* sAIPawnTalkMgr::cAIPawnTalkInfo::operator new(size_t sz, void* p_ad
 inline void* sAIPawnTalkMgr::cAIPawnTalkWaitNode::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sAIPawnTalkMgr::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sAIPawnTalkMgr::DTI);
+}
+
+inline void sAIPawnTalkMgr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sAIPawnTalkMgr::DTI)->memFree(p_addr);
+}

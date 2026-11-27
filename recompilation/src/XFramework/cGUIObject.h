@@ -54,6 +54,9 @@ class uGUI;
 class uGUIAnnounce;
 class uGUIBase;
 class uGUIBrowserBG;
+class uGUIClanEditBase;
+class uGUIClanStatusBase;
+class uGUIGaugeNpc;
 class uGUIInputText;
 class uGUIKeyConfig;
 class uGUIMyRoomPopup;
@@ -92,6 +95,7 @@ class cGUIObject : public MtObject
     friend class cGUIObjMessage;
     friend class cGUIObjRoot;
     friend class cGUIObjTexture;
+    friend class uGUIBase;
     friend class uGUIBrowserBG;
 public:
     class MyDTI;
@@ -333,6 +337,7 @@ public:
 class cGUIObjColorAdjust : public cGUIObject
 {
     friend class uGUIAnnounce;
+    friend class uGUIGaugeNpc;
 public:
     class MyDTI;
 public:
@@ -383,6 +388,10 @@ public:
 
 class cGUIObjMessage : public cGUIObj2D
 {
+    friend class uGUIBase;
+    friend class uGUIClanEditBase;
+    friend class uGUIClanStatusBase;
+    friend class uGUIInputText;
     friend class uGUIKeyConfig;
     friend class uGUIMyRoomPopup;
     friend class uGUIQuestActive;
@@ -1138,6 +1147,18 @@ inline f32 cGUIObj2D::getPositionZ() const {
     return this->mPosition.z;
 }
 
+inline f32 cGUIObj2D::getRotationX() const {
+    return this->mRotation.x * 57.295776f;
+}
+
+inline f32 cGUIObj2D::getRotationY() const {
+    return this->mRotation.y * 57.295776f;
+}
+
+inline f32 cGUIObj2D::getRotationZ() const {
+    return this->mRotation.z * 57.295776f;
+}
+
 inline u32 cGUIObj2D::getControlPoint() const {
     return this->mControlPoint;
 }
@@ -1342,4 +1363,40 @@ inline u32 cGUIObject::getLoopStartFrame() const {
 
 inline cGUIObject* cGUIObject::getNext() const {
     return this->mpNext;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cGUIObj2D::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIObj2D::DTI)->memFree(p_addr);
+}
+
+inline void cGUIObjColorAdjust::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIObjColorAdjust::DTI)->memFree(p_addr);
+}
+
+inline void cGUIObjMessage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIObjMessage::DTI)->memFree(p_addr);
+}
+
+inline void cGUIObjNull::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIObjNull::DTI)->memFree(p_addr);
+}
+
+inline void cGUIObjScissorMask::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIObjScissorMask::DTI)->memFree(p_addr);
+}
+
+inline void cGUIObjText::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIObjText::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cGUIObject::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGUIObject::DTI);
+}
+
+inline void cGUIObject::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIObject::DTI)->memFree(p_addr);
 }

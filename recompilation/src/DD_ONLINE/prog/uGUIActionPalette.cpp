@@ -22,6 +22,7 @@
 #include "cpJob09.h"
 #include "cpKeyCommand.h"
 #include "cpOcdCtrl.h"
+#include "cpOmComponent.h"
 #include "cpStateManager.h"
 #include "nCharacterData.h"
 #include "nDDOUtility.h"
@@ -56,16 +57,8 @@ const MtDTI& uGUIActionPalette::getDTI() const {
     return uGUIActionPalette::DTI;
 }
 
-inline MtAllocator* uGUIActionPalette::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIActionPalette::DTI);
-}
-
 void* uGUIActionPalette::operator new(size_t sz, u32 align) {
     return uGUIActionPalette::getAllocator()->memAlloc(sz, align, uGUIActionPalette::DTI.getID());
-}
-
-inline void uGUIActionPalette::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIActionPalette::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIActionPalette::~uGUIActionPalette() {

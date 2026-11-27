@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nNetworkMember.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetBuffer.h"
@@ -90,10 +89,6 @@ nNetwork::Member::~Member() {
 
 const MtDTI& nNetwork::Member::getDTI() const {
     return nNetwork::Member::DTI;
-}
-
-inline void nNetwork::Member::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Member::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void nNetwork::Member::createProperty(MtPropertyList& s) {

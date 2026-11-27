@@ -292,3 +292,35 @@ inline CDataPlayPointData::CDataPlayPointData() {
     this->m_ucExpMode = 0;
     this->m_unPlayPoint = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataCharacterInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterInfo::DTI);
+}
+
+inline MtAllocator* CDataJobExpMode::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJobExpMode::DTI);
+}
+
+inline void CDataJobExpMode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::CDataJobExpMode::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* CDataJobPlayPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJobPlayPoint::DTI);
+}
+
+inline MtAllocator* CDataJobValueShopItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJobValueShopItem::DTI);
+}
+
+inline MtAllocator* CDataPlayPointData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPlayPointData::DTI);
+}
+
+inline void* CDataPlayPointData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPlayPointData::DTI)->memAlloc(sz, align, ::CDataPlayPointData::DTI.::MtDTI::getID());
+}

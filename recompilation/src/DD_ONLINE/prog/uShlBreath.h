@@ -171,3 +171,23 @@ inline uShlBreath::uShlBreath() {
     this->mpHitSlowEfcHandle = nullptr;
     this->mFirstCollisionEntry = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamBreath::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamBreath::DTI)->memAlloc(sz, align, ::cShlParamBreath::DTI.::MtDTI::getID());
+}
+
+inline void* uShlBreath::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlBreath::DTI)->memAlloc(sz, align, ::uShlBreath::DTI.::MtDTI::getID());
+}
+
+inline void uShlBreath::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlBreath::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamBreath* uShlBreath::getShlParam() const {
+    return static_cast<const cShlParamBreath*>(this->::uShlBase::mpShlParam2);
+}

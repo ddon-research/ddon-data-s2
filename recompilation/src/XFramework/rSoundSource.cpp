@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "rSoundSource.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtFile.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -19,10 +18,6 @@
 
 const MtDTI& rSoundSource::getDTI() const {
     return rSoundSource::DTI;
-}
-
-inline void rSoundSource::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSource::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rSoundSource::rSoundSource() {
@@ -257,9 +252,5 @@ MtObject* rSoundSource::MyDTI::newInstance() const {
 }
 
 rSoundSource::SoundFile::~SoundFile() {
-}
-
-inline void rSoundSource::SoundFile::operator delete(void* ptr) {
-    MtMemoryAllocator::getAllocator(rSoundSource::DTI)->memFree(ptr);
 }
 

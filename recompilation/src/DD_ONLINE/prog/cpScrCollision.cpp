@@ -26,14 +26,6 @@ const MtDTI& cGroundAttrInfo::getDTI() const {
     return cGroundAttrInfo::DTI;
 }
 
-inline void* cGroundAttrInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGroundAttrInfo::DTI)->memAlloc(sz, align, cGroundAttrInfo::DTI.getID());
-}
-
-inline void cGroundAttrInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGroundAttrInfo::DTI)->memFree(p_addr);
-}
-
 cGroundAttrInfo::~cGroundAttrInfo() {
 }
 
@@ -57,16 +49,8 @@ const MtDTI& cpScrCollision::getDTI() const {
     return cpScrCollision::DTI;
 }
 
-inline MtAllocator* cpScrCollision::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpScrCollision::DTI);
-}
-
 void* cpScrCollision::operator new(size_t sz, u32 align) {
     return cpScrCollision::getAllocator()->memAlloc(sz, align, cpScrCollision::DTI.getID());
-}
-
-inline void cpScrCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpScrCollision::DTI)->memFree(p_addr);
 }
 
 cpScrCollision::cpScrCollision() {
@@ -165,9 +149,10 @@ u32 cpScrCollision::callbackAdjustPosition(const sCollision::ScrCollisionInfo& N
     }
 }
 
-__attribute__((weak)) void cpScrCollision::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpScrCollision::applyWorldOffset")
-    /* stub */
+void cpScrCollision::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mAdjustPos.x = offset.x + mAdjustPos.x;
+    mAdjustPos.y = offset.y + mAdjustPos.y;
+    mAdjustPos.z = offset.z + mAdjustPos.z;
 }
 
 void cpScrCollision::updateGroundInfo() {

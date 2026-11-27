@@ -21,6 +21,7 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtSize;
+class MtVector3;
 class MtVector4;
 class cArcLoaderBase;
 class cControl;
@@ -33,6 +34,7 @@ class uGUIItemIcon;
 class uGUIPopCmd01;
 
 // Declarations
+class uGUIBazaarItem;
 class uGUIItem01;
 class uGUIItemBase01;
 
@@ -375,6 +377,73 @@ public:
     static const u32 MAX_ITEM_NUM = 40;
 };
 
+class uGUIBazaarItem : public uGUIItemBase01
+{
+public:
+    enum BAZAARP_ITM_GUIDE_BIT
+    {
+        BAZAAR_CHG_TGL = 1,
+        BAZAAR_ITM_BIT_MAX = 1,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    uGUIBazaarItem();
+    virtual ~uGUIBazaarItem();
+    virtual void setup();  // vtable slot 6
+    virtual void updateWait();  // vtable slot 112
+    virtual void moveInput();  // vtable slot 87
+    virtual void moveEvent();  // vtable slot 88
+    virtual void move();  // vtable slot 9
+    virtual u32 evCtrlCatch(cControl::Message* msg);  // vtable slot 178
+    virtual u32 evCtrlDecide(cControl::Message* msg);  // vtable slot 179
+    virtual u32 evCtrlCancel(cControl::Message* msg);  // vtable slot 180
+    virtual u32 evCtrlSubWindow(cControl::Message* msg);  // vtable slot 176
+    virtual u32 evCtrlCheckMode(cControl::Message* msg);  // vtable slot 177
+    bool isCancel() const;
+    void setCancel(bool result = false);
+    bool isDecide() const;
+    void setDecide(bool result = false);
+    void setDetailVisible(bool isVisible);
+    void setDetailPos(MtVector3& pos);
+protected:
+    virtual bool isMatrixHeightLimitOver();  // vtable slot 137
+    virtual sItemManager::cItemBag::ITEM_CATEGORY getTab2Category();  // vtable slot 164
+    virtual void loadItem();  // vtable slot 139
+    virtual void setTitle();  // vtable slot 141
+    virtual void setupGuideBtn();  // vtable slot 169
+protected:
+    uGUIBase::cReferenceUIToggleBtn mRefToggle;  // offset: 0xf98
+    uGUIBase::cReferenceUIBtnGuide::stGuideBtnData mTblGuide[1];  // offset: 0x1048
+private:
+    bool mIsCancel;  // offset: 0x1070
+    bool mIsDecide;  // offset: 0x1071
+    MtVector3 mDetailPos;  // offset: 0x1080
+    bool mIsResetTab;  // offset: 0x1090
+public:
+    static MyDTI DTI;
+};
+
 class uGUIItem01 : public uGUIItemBase01
 {
 public:
@@ -435,6 +504,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* uGUIBazaarItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void uGUIBazaarItem::setCancel(bool result) {
+    this->mIsCancel = false;
+}
+
+inline void uGUIBazaarItem::setDecide(bool result) {
+    this->mIsDecide = false;
+}
+
 inline void* uGUIItem01::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -449,4 +530,32 @@ inline bool uGUIItemBase01::isCheckMode() {
 
 inline void* uGUIItemBase01::cGUIItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIBazaarItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBazaarItem::DTI);
+}
+
+inline void uGUIBazaarItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBazaarItem::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIItem01::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIItem01::DTI);
+}
+
+inline void uGUIItem01::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIItem01::DTI)->memFree(p_addr);
+}
+
+inline void uGUIItemBase01::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIItemBase01::DTI)->memFree(p_addr);
+}
+
+inline void uGUIItemBase01::cGUIItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIItemBase01::cGUIItem::DTI)->memFree(p_addr);
 }

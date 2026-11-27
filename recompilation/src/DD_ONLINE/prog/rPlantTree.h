@@ -163,3 +163,65 @@ inline rPlantTree::Tree::Tree() {
 inline void* rPlantTree::Tree::Point::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rPlantTree::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPlantTree::DTI)->memAlloc(sz, align, ::rPlantTree::DTI.::MtDTI::getID());
+}
+
+inline void rPlantTree::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPlantTree::DTI)->memFree(p_addr);
+}
+
+inline rPlantTree::rPlantTree() {
+    this->::cResource::setAttribute(18u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void rPlantTree::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayNum != 0) {
+        do {
+            this->mpArray[i0].~Tree();
+            i0 += 1u;
+        } while (i0 < this->mArrayNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rPlantTree::DTI)->memFree(static_cast<void*>(this->mpArray));
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void* rPlantTree::Tree::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPlantTree::Tree::DTI)->memAlloc(sz, align, ::rPlantTree::Tree::DTI.::MtDTI::getID());
+}
+
+inline void rPlantTree::Tree::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPlantTree::Tree::DTI)->memFree(p_addr);
+}
+
+inline void* rPlantTree::Tree::Point::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPlantTree::Tree::Point::DTI)->memAlloc(sz, align, ::rPlantTree::Tree::Point::DTI.::MtDTI::getID());
+}
+
+inline void rPlantTree::Tree::Point::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPlantTree::Tree::Point::DTI)->memFree(p_addr);
+}
+
+inline rPlantTree::Tree::Point::Point() {
+    this->mPosition.x = ::MtVector3::Zero.x;
+    this->mPosition.y = ::MtVector3::Zero.y;
+    this->mPosition.z = ::MtVector3::Zero.z;
+    this->mPosition.pad_ = 0.0f;
+    this->mAngle.x = ::MtVector3::Zero.x;
+    this->mAngle.y = ::MtVector3::Zero.y;
+    this->mAngle.z = ::MtVector3::Zero.z;
+    this->mAngle.pad_ = 0.0f;
+    this->mScale.x = ::MtVector3::One.x;
+    this->mScale.y = ::MtVector3::One.y;
+    this->mScale.z = ::MtVector3::One.z;
+    this->mScale.pad_ = 0.0f;
+}

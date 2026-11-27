@@ -21,14 +21,6 @@ const MtDTI& CDataCharacterLevelParam::getDTI() const {
     return CDataCharacterLevelParam::DTI;
 }
 
-inline MtAllocator* CDataCharacterLevelParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterLevelParam::DTI);
-}
-
-inline void* CDataCharacterLevelParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataCharacterLevelParam::DTI)->memAlloc(sz, align, CDataCharacterLevelParam::DTI.getID());
-}
-
 __attribute__((weak)) void CDataCharacterLevelParam::operator delete(void* p_addr) {
     CDataCharacterLevelParam::getAllocator()->memFree(p_addr);
 }
@@ -43,10 +35,6 @@ MtObject* CDataCharacterLevelParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataCharacterListInfo::getDTI() const {
     return CDataCharacterListInfo::DTI;
-}
-
-inline MtAllocator* CDataCharacterListInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterListInfo::DTI);
 }
 
 void* CDataCharacterListInfo::operator new(size_t sz, u32 align) {
@@ -70,10 +58,6 @@ const MtDTI& CDataCharacterMessage::getDTI() const {
     return CDataCharacterMessage::DTI;
 }
 
-inline MtAllocator* CDataCharacterMessage::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterMessage::DTI);
-}
-
 void* CDataCharacterMessage::operator new(size_t sz, u32 align) {
     return CDataCharacterMessage::getAllocator()->memAlloc(sz, align, CDataCharacterMessage::DTI.getID());
 }
@@ -94,10 +78,6 @@ const MtDTI& CDataCharacterMsgSet::getDTI() const {
     return CDataCharacterMsgSet::DTI;
 }
 
-inline MtAllocator* CDataCharacterMsgSet::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterMsgSet::DTI);
-}
-
 void* CDataCharacterMsgSet::operator new(size_t sz, u32 align) {
     return CDataCharacterMsgSet::getAllocator()->memAlloc(sz, align, CDataCharacterMsgSet::DTI.getID());
 }
@@ -114,16 +94,28 @@ MtObject* CDataCharacterMsgSet::MyDTI::newInstance() const {
     return new (16u) CDataCharacterMsgSet;
 }
 
+const MtDTI& CDataCharacterReleaseElement::getDTI() const {
+    return CDataCharacterReleaseElement::DTI;
+}
+
+void* CDataCharacterReleaseElement::operator new(size_t sz, u32 align) {
+    return CDataCharacterReleaseElement::getAllocator()->memAlloc(sz, align, CDataCharacterReleaseElement::DTI.getID());
+}
+
+__attribute__((weak)) void CDataCharacterReleaseElement::operator delete(void* p_addr) {
+    CDataCharacterReleaseElement::getAllocator()->memFree(p_addr);
+}
+
+inline CDataCharacterReleaseElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataCharacterReleaseElement::MyDTI CDataCharacterReleaseElement::DTI("CDataCharacterReleaseElement", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataCharacterReleaseElement::MyDTI::newInstance() const {
+    return new (16u) CDataCharacterReleaseElement;
+}
+
 const MtDTI& CDataCharacterSearchParam::getDTI() const {
     return CDataCharacterSearchParam::DTI;
-}
-
-inline MtAllocator* CDataCharacterSearchParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterSearchParam::DTI);
-}
-
-inline void* CDataCharacterSearchParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataCharacterSearchParam::DTI)->memAlloc(sz, align, CDataCharacterSearchParam::DTI.getID());
 }
 
 __attribute__((weak)) void CDataCharacterSearchParam::operator delete(void* p_addr) {
@@ -142,10 +134,6 @@ const MtDTI& CDataCommunicationShortCut::getDTI() const {
     return CDataCommunicationShortCut::DTI;
 }
 
-inline MtAllocator* CDataCommunicationShortCut::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCommunicationShortCut::DTI);
-}
-
 void* CDataCommunicationShortCut::operator new(size_t sz, u32 align) {
     return CDataCommunicationShortCut::getAllocator()->memAlloc(sz, align, CDataCommunicationShortCut::DTI.getID());
 }
@@ -162,20 +150,52 @@ MtObject* CDataCommunicationShortCut::MyDTI::newInstance() const {
     return new (16u) CDataCommunicationShortCut;
 }
 
+const MtDTI& CDataEditParts::getDTI() const {
+    return CDataEditParts::DTI;
+}
+
+void* CDataEditParts::operator new(size_t sz, u32 align) {
+    return CDataEditParts::getAllocator()->memAlloc(sz, align, CDataEditParts::DTI.getID());
+}
+
+__attribute__((weak)) void CDataEditParts::operator delete(void* p_addr) {
+    CDataEditParts::getAllocator()->memFree(p_addr);
+}
+
+inline CDataEditParts::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataEditParts::MyDTI CDataEditParts::DTI("CDataEditParts", &::CPacketDataBase::DTI, 48ul, 0u, 0u);
+
+MtObject* CDataEditParts::MyDTI::newInstance() const {
+    return new (16u) CDataEditParts;
+}
+
+const MtDTI& CDataHistoryElement::getDTI() const {
+    return CDataHistoryElement::DTI;
+}
+
+void* CDataHistoryElement::operator new(size_t sz, u32 align) {
+    return CDataHistoryElement::getAllocator()->memAlloc(sz, align, CDataHistoryElement::DTI.getID());
+}
+
+__attribute__((weak)) void CDataHistoryElement::operator delete(void* p_addr) {
+    CDataHistoryElement::getAllocator()->memFree(p_addr);
+}
+
+inline CDataHistoryElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataHistoryElement::MyDTI CDataHistoryElement::DTI("CDataHistoryElement", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
+
+MtObject* CDataHistoryElement::MyDTI::newInstance() const {
+    return new (16u) CDataHistoryElement;
+}
+
 const MtDTI& CDataItemStorageIndicateNum::getDTI() const {
     return CDataItemStorageIndicateNum::DTI;
 }
 
-inline MtAllocator* CDataItemStorageIndicateNum::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataItemStorageIndicateNum::DTI);
-}
-
 void* CDataItemStorageIndicateNum::operator new(size_t sz, u32 align) {
     return CDataItemStorageIndicateNum::getAllocator()->memAlloc(sz, align, CDataItemStorageIndicateNum::DTI.getID());
-}
-
-inline void CDataItemStorageIndicateNum::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(CDataItemStorageIndicateNum::DTI)->memFree(p_addr);
 }
 
 inline CDataItemStorageIndicateNum::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -188,10 +208,6 @@ MtObject* CDataItemStorageIndicateNum::MyDTI::newInstance() const {
 
 const MtDTI& CDataMasterInfo::getDTI() const {
     return CDataMasterInfo::DTI;
-}
-
-inline MtAllocator* CDataMasterInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMasterInfo::DTI);
 }
 
 void* CDataMasterInfo::operator new(size_t sz, u32 align) {
@@ -214,14 +230,6 @@ const MtDTI& CDataMatchingProfile::getDTI() const {
     return CDataMatchingProfile::DTI;
 }
 
-inline MtAllocator* CDataMatchingProfile::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMatchingProfile::DTI);
-}
-
-inline void* CDataMatchingProfile::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataMatchingProfile::DTI)->memAlloc(sz, align, CDataMatchingProfile::DTI.getID());
-}
-
 __attribute__((weak)) void CDataMatchingProfile::operator delete(void* p_addr) {
     CDataMatchingProfile::getAllocator()->memFree(p_addr);
 }
@@ -236,14 +244,6 @@ MtObject* CDataMatchingProfile::MyDTI::newInstance() const {
 
 const MtDTI& CDataMyRoomOption::getDTI() const {
     return CDataMyRoomOption::DTI;
-}
-
-inline MtAllocator* CDataMyRoomOption::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMyRoomOption::DTI);
-}
-
-inline void* CDataMyRoomOption::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataMyRoomOption::DTI)->memAlloc(sz, align, CDataMyRoomOption::DTI.getID());
 }
 
 __attribute__((weak)) void CDataMyRoomOption::operator delete(void* p_addr) {
@@ -262,10 +262,6 @@ const MtDTI& CDataShortCut::getDTI() const {
     return CDataShortCut::DTI;
 }
 
-inline MtAllocator* CDataShortCut::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataShortCut::DTI);
-}
-
 void* CDataShortCut::operator new(size_t sz, u32 align) {
     return CDataShortCut::getAllocator()->memAlloc(sz, align, CDataShortCut::DTI.getID());
 }
@@ -282,12 +278,28 @@ MtObject* CDataShortCut::MyDTI::newInstance() const {
     return new (16u) CDataShortCut;
 }
 
-const MtDTI& CDataUpdateWalletPoint::getDTI() const {
-    return CDataUpdateWalletPoint::DTI;
+const MtDTI& CDataUnlockEmotion::getDTI() const {
+    return CDataUnlockEmotion::DTI;
 }
 
-inline MtAllocator* CDataUpdateWalletPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataUpdateWalletPoint::DTI);
+void* CDataUnlockEmotion::operator new(size_t sz, u32 align) {
+    return CDataUnlockEmotion::getAllocator()->memAlloc(sz, align, CDataUnlockEmotion::DTI.getID());
+}
+
+__attribute__((weak)) void CDataUnlockEmotion::operator delete(void* p_addr) {
+    CDataUnlockEmotion::getAllocator()->memFree(p_addr);
+}
+
+inline CDataUnlockEmotion::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataUnlockEmotion::MyDTI CDataUnlockEmotion::DTI("CDataUnlockEmotion", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataUnlockEmotion::MyDTI::newInstance() const {
+    return new (16u) CDataUnlockEmotion;
+}
+
+const MtDTI& CDataUpdateWalletPoint::getDTI() const {
+    return CDataUpdateWalletPoint::DTI;
 }
 
 void* CDataUpdateWalletPoint::operator new(size_t sz, u32 align) {
@@ -309,10 +321,6 @@ __attribute__((weak)) MtObject* CDataUpdateWalletPoint::MyDTI::newInstance() con
 
 const MtDTI& CDataWalletPoint::getDTI() const {
     return CDataWalletPoint::DTI;
-}
-
-inline MtAllocator* CDataWalletPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataWalletPoint::DTI);
 }
 
 void* CDataWalletPoint::operator new(size_t sz, u32 align) {

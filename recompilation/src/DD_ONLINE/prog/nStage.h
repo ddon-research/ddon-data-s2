@@ -3,10 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-// Declarations
-namespace nStage { struct stEventParam; }
-struct stStageSplitData;
-
 namespace nStage {
     enum STG_ZONE
     {
@@ -17,6 +13,10 @@ namespace nStage {
         STG_ZONE_NUM = 4,
     };
 }  // namespace nStage
+
+// Declarations
+namespace nStage { struct stEventParam; }
+struct stStageSplitData;
 
 // Type aliases from DWARF
 using f32 = float;

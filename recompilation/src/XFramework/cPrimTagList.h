@@ -18,6 +18,7 @@ class MtUI;
 class cPrimBuffer;
 namespace nPrim { struct DepthOrder; }
 namespace nPrim { struct Material; }
+class sPrimitive;
 
 // Declarations
 class cPrimTagList;
@@ -32,6 +33,7 @@ using u32 = unsigned int;
 
 class cPrimTagList : public cPrimObj
 {
+    friend class sPrimitive;
 public:
     class MyDTI;
     struct ObjState;
@@ -138,4 +140,12 @@ inline cPrimTagList::PrimTag::PrimTag() {
 }
 
 inline cPrimTagList::IndexTag::IndexTag() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cPrimTagList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrimTagList::DTI)->memFree(p_addr);
 }

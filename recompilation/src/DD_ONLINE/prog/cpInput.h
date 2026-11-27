@@ -270,3 +270,15 @@ public:
 inline void* cpInput::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpInput::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpInput::DTI);
+}
+
+inline void cpInput::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpInput::DTI)->memFree(p_addr);
+}

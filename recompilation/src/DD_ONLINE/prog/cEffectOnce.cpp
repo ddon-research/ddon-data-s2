@@ -16,10 +16,6 @@ const MtDTI& cOnceRequestEffectType::getDTI() const {
     return cOnceRequestEffectType::DTI;
 }
 
-inline void cOnceRequestEffectType::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOnceRequestEffectType::DTI)->memFree(p_addr);
-}
-
 cOnceRequestEffectType::~cOnceRequestEffectType() {
     if (mORETD.mLength != 0) {
         u32 v0_0 = mORETD.mLength;
@@ -127,10 +123,6 @@ const MtDTI& cOnceRequestEffectTypeData::getDTI() const {
     return cOnceRequestEffectTypeData::DTI;
 }
 
-inline void cOnceRequestEffectTypeData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOnceRequestEffectTypeData::DTI)->memFree(p_addr);
-}
-
 void cOnceRequestEffectTypeData::init() {
     mpEffect = nullptr;
     mPriority = 0;
@@ -148,10 +140,6 @@ __attribute__((weak)) MtObject* cOnceRequestEffectTypeData::MyDTI::newInstance()
 
 const MtDTI& cOnceRequestEffectTypeSuperErosionCam::getDTI() const {
     return cOnceRequestEffectTypeSuperErosionCam::DTI;
-}
-
-inline void cOnceRequestEffectTypeSuperErosionCam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOnceRequestEffectTypeSuperErosionCam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cOnceRequestEffectTypeSuperErosionCam::update() {
@@ -185,10 +173,6 @@ __attribute__((weak)) MtObject* cOnceRequestEffectTypeSuperErosionCam::MyDTI::ne
 
 const MtDTI& cOnceRequestEffectTypeSuperErosionCamData::getDTI() const {
     return cOnceRequestEffectTypeSuperErosionCamData::DTI;
-}
-
-inline void cOnceRequestEffectTypeSuperErosionCamData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOnceRequestEffectTypeSuperErosionCamData::DTI)->memFree(p_addr);
 }
 
 void cOnceRequestEffectTypeSuperErosionCamData::init() {

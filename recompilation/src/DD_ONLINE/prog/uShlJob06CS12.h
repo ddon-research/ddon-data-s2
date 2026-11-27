@@ -146,3 +146,15 @@ inline cShlParamJob06CS12::cShlParamJob06CS12() {
 inline void* uShlJob06CS12::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamJob06CS12::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamJob06CS12::DTI)->memAlloc(sz, align, ::cShlParamJob06CS12::DTI.::MtDTI::getID());
+}
+
+inline void uShlJob06CS12::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlJob06CS12::DTI)->memFree(p_addr);
+}

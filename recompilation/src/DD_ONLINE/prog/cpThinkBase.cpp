@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cpThinkBase.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cpComponent.h"
 #ifndef DDON_STUB
@@ -13,14 +11,6 @@
 
 const MtDTI& cpThinkBase::getDTI() const {
     return cpThinkBase::DTI;
-}
-
-inline void* cpThinkBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpThinkBase::DTI)->memAlloc(sz, align, cpThinkBase::DTI.getID());
-}
-
-inline void cpThinkBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpThinkBase::DTI)->memFree(p_addr);
 }
 
 cpThinkBase::cpThinkBase() {

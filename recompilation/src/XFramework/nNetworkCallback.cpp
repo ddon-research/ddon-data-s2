@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nNetworkCallback.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -27,10 +26,6 @@ __attribute__((noinline)) nNetwork::Callback::~Callback() {
 
 const MtDTI& nNetwork::Callback::getDTI() const {
     return nNetwork::Callback::DTI;
-}
-
-inline void nNetwork::Callback::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::DTI)->memFree(p_addr);
 }
 
 void nNetwork::Callback::createProperty(MtPropertyList& s) {
@@ -107,14 +102,6 @@ const MtDTI& nNetwork::Callback::Entry::getDTI() const {
     return nNetwork::Callback::Entry::DTI;
 }
 
-inline void* nNetwork::Callback::Entry::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Entry::DTI)->memAlloc(sz, align, ::nNetwork::Callback::Entry::DTI.mID);
-}
-
-inline void nNetwork::Callback::Entry::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Entry::DTI)->memFree(p_addr);
-}
-
 void nNetwork::Callback::Entry::createProperty(MtPropertyList& s) {
     s << ::MtProperty(static_cast<MtObject*>(this), ::MtProperty::TYPE_CLASSREF, "Parent", reinterpret_cast<MT_MFUNC>(&::nNetwork::Callback::Entry::getClass), reinterpret_cast<MT_MFUNC>(&::nNetwork::Callback::Entry::setClass), 147u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
     s << ::MtProperty(static_cast<MtObject*>(this), "mBuffering", &mBuffering, 0u, 0u);
@@ -144,10 +131,6 @@ const MtDTI& nNetwork::Callback::Queue::getDTI() const {
     return nNetwork::Callback::Queue::DTI;
 }
 
-inline void nNetwork::Callback::Queue::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Queue::DTI)->memFree(p_addr);
-}
-
 void nNetwork::Callback::Queue::createProperty(MtPropertyList& s) {
     this->::nNetwork::BlockQueue::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "mRate", &mRate, 0u, 0u);
@@ -158,9 +141,8 @@ inline nNetwork::Callback::Queue::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 
 nNetwork::Callback::Queue::MyDTI nNetwork::Callback::Queue::DTI("nNetwork::Callback::Queue", &::nNetwork::BlockQueue::DTI, 336ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nNetwork::Callback::Queue::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::Callback::Queue::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::Callback::Queue::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::Callback::Queue;
 }
 
 __attribute__((weak)) bool nNetwork::Callback::SelfQueue::push(const void* data_ptr, u32 data_size, const nNetwork::Callback::SelfHeader& header) {

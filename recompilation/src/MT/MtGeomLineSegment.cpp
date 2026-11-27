@@ -23,10 +23,6 @@ void* MtGeomLineSegment::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomLineSegment::DTI)->memAlloc(sz, align, MtGeomLineSegment::DTI.mID);
 }
 
-inline void MtGeomLineSegment::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomLineSegment::DTI)->memFree(p_addr);
-}
-
 void MtGeomLineSegment::load(MtDataReader& fin) {
     mLineSegment.p0.x = fin.readF32();
     mLineSegment.p1.x = fin.readF32();
@@ -221,8 +217,23 @@ bool MtGeomLineSegment::getClosest(const MtLineSegment& ls, MtContact* pContact)
 }
 
 __attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtSphere& sphere, MtContact* pContact) const {
-    DDON_STUB("MtGeomLineSegment::getClosest")
-    return {};
+    f32 t;
+    bool ret = MtCollision::closest(sphere, mLineSegment, static_cast<MtContact*>(nullptr), &t);
+    if (pContact != nullptr) {
+        const f32 t1 = t;
+        pContact->pos.x = MtVector3::Zero.x;
+        pContact->pos.y = MtVector3::Zero.y;
+        pContact->pos.z = MtVector3::Zero.z;
+        pContact->pos.pad_ = 0.0f;
+        pContact->normal.x = MtVector3::Zero.x;
+        pContact->normal.y = MtVector3::Zero.y;
+        pContact->normal.z = MtVector3::Zero.z;
+        pContact->normal.pad_ = 0.0f;
+        pContact->distance = 0.0f;
+        pContact->toi = t1;
+        pContact->bFind = ret;
+    }
+    return ret;
 }
 
 __attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtCapsule& capsule, MtContact* pContact) const {
@@ -236,8 +247,17 @@ __attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtAABB& aabb, MtC
 }
 
 __attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtOBB& obb, MtContact* pContact) const {
-    DDON_STUB("MtGeomLineSegment::getClosest")
-    return {};
+    f32 t;
+    bool ret = MtCollision::closest(obb, mLineSegment, nullptr, &t);
+    if (pContact != nullptr) {
+        f32 t1 = t;
+        pContact->pos = MtVector3::Zero;
+        pContact->normal = MtVector3::Zero;
+        pContact->distance = 0.0f;
+        pContact->toi = t1;
+        pContact->bFind = ret;
+    }
+    return ret;
 }
 
 __attribute__((weak)) bool MtGeomLineSegment::getClosest(const MtPlane& plane, MtContact* pContact) const {
@@ -312,9 +332,13 @@ __attribute__((weak)) MtVector3 MtGeomLineSegment::getSupportConst(const MtVecto
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void MtGeomLineSegment::addPos(const MtVector3& pos) {
-    DDON_STUB("MtGeomLineSegment::addPos")
-    /* stub */
+void MtGeomLineSegment::addPos(const MtVector3& pos) {
+    mLineSegment.p0.x = pos.x + mLineSegment.p0.x;
+    mLineSegment.p0.y = pos.y + mLineSegment.p0.y;
+    mLineSegment.p0.z = pos.z + mLineSegment.p0.z;
+    mLineSegment.p1.x = pos.x + mLineSegment.p1.x;
+    mLineSegment.p1.y = pos.y + mLineSegment.p1.y;
+    mLineSegment.p1.z = pos.z + mLineSegment.p1.z;
 }
 
 inline MtGeomLineSegment::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

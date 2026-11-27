@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlEnergyCharge.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -25,10 +23,6 @@
 
 const MtDTI& cShlParamEnergyCharge::getDTI() const {
     return cShlParamEnergyCharge::DTI;
-}
-
-inline void* cShlParamEnergyCharge::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamEnergyCharge::DTI)->memAlloc(sz, align, cShlParamEnergyCharge::DTI.getID());
 }
 
 inline void cShlParamEnergyCharge::operator delete(void* p_addr) {
@@ -63,18 +57,6 @@ MtObject* cShlParamEnergyCharge::MyDTI::newInstance() const {
 
 const MtDTI& uShlEnergyCharge::getDTI() const {
     return uShlEnergyCharge::DTI;
-}
-
-inline void* uShlEnergyCharge::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlEnergyCharge::DTI)->memAlloc(sz, align, uShlEnergyCharge::DTI.getID());
-}
-
-inline void uShlEnergyCharge::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlEnergyCharge::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamEnergyCharge* uShlEnergyCharge::getShlParam() const {
-    return static_cast<const cShlParamEnergyCharge*>(mpShlParam2);
 }
 
 uShlEnergyCharge::~uShlEnergyCharge() {

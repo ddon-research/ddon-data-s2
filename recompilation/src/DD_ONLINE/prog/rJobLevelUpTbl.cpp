@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rJobLevelUpTbl.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cIncreaseParam2::getDTI() const {
     return cIncreaseParam2::DTI;
-}
-
-inline void* cIncreaseParam2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cIncreaseParam2::DTI)->memAlloc(sz, align, cIncreaseParam2::DTI.getID());
-}
-
-inline void cIncreaseParam2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cIncreaseParam2::DTI)->memFree(p_addr);
 }
 
 void cIncreaseParam2::createProperty(MtPropertyList& s) {
@@ -43,14 +33,6 @@ MtObject* cIncreaseParam2::MyDTI::newInstance() const {
 
 const MtDTI& rJobLevelUpTbl2::getDTI() const {
     return rJobLevelUpTbl2::DTI;
-}
-
-inline void* rJobLevelUpTbl2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rJobLevelUpTbl2::DTI)->memAlloc(sz, align, rJobLevelUpTbl2::DTI.getID());
-}
-
-inline void rJobLevelUpTbl2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rJobLevelUpTbl2::DTI)->memFree(p_addr);
 }
 
 bool rJobLevelUpTbl2::loadData(MtDataReader& in, cIncreaseParam2* pData) {

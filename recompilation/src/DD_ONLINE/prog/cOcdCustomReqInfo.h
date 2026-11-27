@@ -67,3 +67,15 @@ public:
 inline void* cOcdCustomReqInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cOcdCustomReqInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdCustomReqInfo::DTI)->memAlloc(sz, align, ::cOcdCustomReqInfo::DTI.::MtDTI::getID());
+}
+
+inline void cOcdCustomReqInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdCustomReqInfo::DTI)->memFree(p_addr);
+}

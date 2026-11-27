@@ -30,12 +30,14 @@ class cAbilityParam;
 class cChargeEffectUID;
 class cContextInstHm;
 class cContextInterface;
+class cJob10ExecuteBoost;
 class cNetGameServer;
 class cOcdStatusParamRes;
 class cPlActWpnBow;
 namespace nJobParam { class cHumanBaseInfo; }
 namespace nJobParam { class cJobInfo; }
 class sPlayerManager;
+class uGUIArisenCard;
 class uHuman;
 class uHumanEnemy;
 class uNpc;
@@ -61,9 +63,11 @@ using u8 = unsigned char;
 class cContextPlayerInfo : public cContext
 {
     friend class cContextInterface;
+    friend class cJob10ExecuteBoost;
     friend class cNetGameServer;
     friend class cPlActWpnBow;
     friend class sPlayerManager;
+    friend class uGUIArisenCard;
     friend class uHuman;
     friend class uHumanEnemy;
     friend class uNpc;
@@ -432,6 +436,42 @@ inline cContextPlayerInfo::cAbility::cAbility() {
     this->mIsUsed = false;
 }
 
+inline bool cContextPlayerInfo::cAbility::isEnable() const {
+    return this->mIsEnable;
+}
+
+inline bool cContextPlayerInfo::cAbility::isUsed() const {
+    return this->mIsUsed;
+}
+
 inline void* rJobBaseParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cContextPlayerInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextPlayerInfo::DTI)->memFree(p_addr);
+}
+
+inline void cContextPlayerInfo::clearRefChargeEffect() {
+    this->mChargeEffectUID.::cChargeEffectUID::clearRefChargeEffect();
+}
+
+inline void* cContextPlayerInfo::cAbility::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cContextPlayerInfo::cAbility::DTI)->memAlloc(sz, align, ::cContextPlayerInfo::cAbility::DTI.::MtDTI::getID());
+}
+
+inline void cContextPlayerInfo::cAbility::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextPlayerInfo::cAbility::DTI)->memFree(p_addr);
+}
+
+inline void* rJobBaseParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rJobBaseParam::DTI)->memAlloc(sz, align, ::rJobBaseParam::DTI.::MtDTI::getID());
+}
+
+inline void rJobBaseParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rJobBaseParam::DTI)->memFree(p_addr);
 }

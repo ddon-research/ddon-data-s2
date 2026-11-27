@@ -356,3 +356,38 @@ inline uGUIGiveAndTake::cItemGiveList::cItemGiveList() {
 inline void* uGUIGiveAndTake::cItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline uGUIGiveAndTake::cItemList::cItemList() : mpInstNull(static_cast<cGUIInstNull*>(nullptr)) {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIGiveAndTake::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::DTI);
+}
+
+inline void uGUIGiveAndTake::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIGiveAndTake::cItemInfoList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemInfoList::DTI)->memAlloc(sz, align, ::uGUIGiveAndTake::cItemInfoList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIGiveAndTake::cItemInfoList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemInfoList::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIGiveAndTake::cItemGiveList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemGiveList::DTI);
+}
+
+inline void uGUIGiveAndTake::cItemGiveList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemGiveList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIGiveAndTake::cItemList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGiveAndTake::cItemList::DTI)->memAlloc(sz, align, ::uGUIGiveAndTake::cItemList::DTI.::MtDTI::getID());
+}

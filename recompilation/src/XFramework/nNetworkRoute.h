@@ -20,6 +20,8 @@ struct MtNetError;
 struct MtNetP2pConnectInfo;
 class MtNetUniqueId;
 class MtPropertyList;
+namespace nNetwork { class Connect; }
+namespace nNetwork { class Session; }
 namespace nNetwork { class SessionDatabase; }
 
 // Declarations
@@ -40,6 +42,9 @@ using u8 = unsigned char;
 namespace nNetwork {
     class Route : public ::MtObject
     {
+        friend class nNetwork::Connect;
+        friend class nNetwork::Session;
+        friend class nNetwork::SessionDatabase;
     public:
         class MyDTI;
         struct Rate;

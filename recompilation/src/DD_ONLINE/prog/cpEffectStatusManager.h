@@ -158,3 +158,23 @@ inline void* cpEffectStatusManager::operator new(size_t sz, void* p_addr) {
 inline cpEffectStatusManager::cpEffectStatusManager() {
     this->mEffectArray.mAutoDelete = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cEffectStatus::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEffectStatus::DTI)->memAlloc(sz, align, ::cEffectStatus::DTI.::MtDTI::getID());
+}
+
+inline void cEffectStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEffectStatus::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cpEffectStatusManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpEffectStatusManager::DTI);
+}
+
+inline void cpEffectStatusManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpEffectStatusManager::DTI)->memFree(p_addr);
+}

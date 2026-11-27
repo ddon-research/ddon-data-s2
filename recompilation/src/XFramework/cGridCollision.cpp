@@ -27,10 +27,6 @@ void* cGridCollision::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void cGridCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGridCollision::DTI)->memFree(p_addr);
-}
-
 cGridCollision::cGridCollision() {
     mMagic = 0;
     mVersion = 0;

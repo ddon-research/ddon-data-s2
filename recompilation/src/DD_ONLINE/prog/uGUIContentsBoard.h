@@ -195,3 +195,58 @@ inline void uGUIContentsBoard::setFlowIdNext(u32 flow_id) {
 inline void* uGUIContentsBoard::cListItemInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "sQuestManagerExt.h"
+
+inline MtAllocator* uGUIContentsBoard::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIContentsBoard::DTI);
+}
+
+inline void uGUIContentsBoard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIContentsBoard::DTI)->memFree(p_addr);
+}
+
+inline void uGUIContentsBoard::enableChangeBtn() {
+    if (this->::uGUIBase::mIsWindowActive) {
+        if (this->mpDecideCtrl != nullptr) {
+            this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF & 0xFFFFFFF7u;
+        }
+        if (this->mpCancelCtrl != nullptr) {
+            this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF & 0xFFFFFFF7u;
+        }
+        if (this->mpChkoutCtrl != nullptr) {
+            this->mpChkoutCtrl->mCtrlF = this->mpChkoutCtrl->mCtrlF & 0xFFFFFFF7u;
+        }
+        this->::uGUIQuestBoardBase::mMain.mClose.mEnable = true;
+        this->::uGUIQuestBoardBase::mList.mListCtrl.::uGUIBase::cScrollList::setEnableKey(true);
+    } else {
+        if (this->mpDecideCtrl != nullptr) {
+            this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | 8u;
+        }
+        if (this->mpCancelCtrl != nullptr) {
+            this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | 8u;
+        }
+        if (this->mpChkoutCtrl != nullptr) {
+            this->mpChkoutCtrl->mCtrlF = this->mpChkoutCtrl->mCtrlF | 8u;
+        }
+        this->::uGUIQuestBoardBase::mMain.mClose.mEnable = false;
+        this->::uGUIQuestBoardBase::mList.mListCtrl.::uGUIBase::cScrollList::setEnableKey(false);
+    }
+}
+
+inline void uGUIContentsBoard::eventChkout() {
+    if (this->mFlowId != 2) {
+        return;
+    }
+    if ((::sQuestManagerExt::mpInstance)->mNowCallEntryBoardContentsType != static_cast<nNetSv::E_CONTENT_TYPE>(3)) {
+        return;
+    }
+    this->mbCallNews = true;
+}
+
+inline void uGUIContentsBoard::cListItemInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIContentsBoard::cListItemInfo::DTI)->memFree(p_addr);
+}

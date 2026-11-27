@@ -15,16 +15,8 @@ const MtDTI& sFlag::getDTI() const {
     return sFlag::DTI;
 }
 
-inline MtAllocator* sFlag::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sFlag::DTI);
-}
-
 void* sFlag::operator new(size_t sz, u32 align) {
     return sFlag::getAllocator()->memAlloc(sz, align, sFlag::DTI.getID());
-}
-
-inline void sFlag::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sFlag::DTI)->memFree(p_addr);
 }
 
 sFlag::sFlag() {

@@ -17,13 +17,6 @@ class cDraw;
 class cEfcHandle;
 class cShlParamBase;
 
-// Declarations
-class cShlBakuensenLogNode;
-class cShlParamBakuensen;
-class cShlParamBakuensenSpark;
-class uBakuenseSpark;
-class uShlBakuensen;
-
 namespace nShlBakuensen {
     enum BAKUENSEN_PHASE
     {
@@ -37,6 +30,13 @@ namespace nShlBakuensen {
         MODE_BAKUEN_NUM = 7,
     };
 }  // namespace nShlBakuensen
+
+// Declarations
+class cShlBakuensenLogNode;
+class cShlParamBakuensen;
+class cShlParamBakuensenSpark;
+class uBakuenseSpark;
+class uShlBakuensen;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -289,4 +289,40 @@ inline void uShlBakuensen::waitShot() {
     if (0.0f > this->mShotWaitTimer) {
         this->mBakuenPhase = static_cast<nShlBakuensen::BAKUENSEN_PHASE>(5);
     }
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlBakuensenLogNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlBakuensenLogNode::DTI)->memAlloc(sz, align, ::cShlBakuensenLogNode::DTI.::MtDTI::getID());
+}
+
+inline void cShlBakuensenLogNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlBakuensenLogNode::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamBakuensen::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamBakuensen::DTI)->memAlloc(sz, align, ::cShlParamBakuensen::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamBakuensenSpark::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamBakuensenSpark::DTI)->memAlloc(sz, align, ::cShlParamBakuensenSpark::DTI.::MtDTI::getID());
+}
+
+inline void* uBakuenseSpark::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uBakuenseSpark::DTI)->memAlloc(sz, align, ::uBakuenseSpark::DTI.::MtDTI::getID());
+}
+
+inline void uBakuenseSpark::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uBakuenseSpark::DTI)->memFree(p_addr);
+}
+
+inline void uShlBakuensen::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlBakuensen::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamBakuensen* uShlBakuensen::getShlParam() const {
+    return static_cast<const cShlParamBakuensen*>(this->::uShlBase::mpShlParam2);
 }

@@ -24,8 +24,11 @@
 #include "sSetManager.h"
 #include "sWorldOffset.h"
 #include "../../XFramework/uCoord.h"
+#include "uLightExt.h"
 #include "uPlayer.h"
 #include "../../XFramework/uScheduler.h"
+#include "uScrModel.h"
+#include "uSkyWaterModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -34,16 +37,8 @@ const MtDTI& uStageFieldCtrl::getDTI() const {
     return uStageFieldCtrl::DTI;
 }
 
-inline MtAllocator* uStageFieldCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uStageFieldCtrl::DTI);
-}
-
 void* uStageFieldCtrl::operator new(size_t sz, u32 align) {
     return uStageFieldCtrl::getAllocator()->memAlloc(sz, align, uStageFieldCtrl::DTI.getID());
-}
-
-inline void uStageFieldCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uStageFieldCtrl::DTI)->memFree(p_addr);
 }
 
 uStageFieldCtrl::uStageFieldCtrl() {
@@ -109,9 +104,22 @@ void uStageFieldCtrl::initSplitData(s32 stageNo) {
     } while (i <= 1u);
 }
 
-__attribute__((weak)) bool uStageFieldCtrl::calcFieldArea(const MtVector3& pos, s32& outX, s32& outZ) {
-    DDON_STUB("uStageFieldCtrl::calcFieldArea")
-    return {};
+bool uStageFieldCtrl::calcFieldArea(const MtVector3& pos, s32& outX, s32& outZ) {
+    if (mSplitData.mStartPosX > pos.x) {
+        outZ = 0;
+        outX = 0;
+        return false;
+    } else {
+        if (mSplitData.mStartPosZ > pos.z) {
+            outZ = 0;
+            outX = 0;
+            return false;
+        } else {
+            outX = static_cast<int>((pos.x - mSplitData.mStartPosX) / mSplitData.mLengthX);
+            outZ = static_cast<int>((pos.z - mSplitData.mStartPosZ) / mSplitData.mLengthZ);
+            return true;
+        }
+    }
 }
 
 __attribute__((weak)) void uStageFieldCtrl::sbcSetMatrix() {

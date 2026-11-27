@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlCustomSpline.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -19,14 +17,6 @@
 
 const MtDTI& cShlParamCustomSpline::getDTI() const {
     return cShlParamCustomSpline::DTI;
-}
-
-inline void* cShlParamCustomSpline::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamCustomSpline::DTI)->memAlloc(sz, align, cShlParamCustomSpline::DTI.getID());
-}
-
-inline void cShlParamCustomSpline::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamCustomSpline::DTI)->memFree(p_addr);
 }
 
 MtDTI& cShlParamCustomSpline::getShlDTI() const {
@@ -74,14 +64,6 @@ MtObject* cShlParamCustomSpline::MyDTI::newInstance() const {
 
 const MtDTI& uShlCustomSpline::getDTI() const {
     return uShlCustomSpline::DTI;
-}
-
-inline void* uShlCustomSpline::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlCustomSpline::DTI)->memAlloc(sz, align, uShlCustomSpline::DTI.getID());
-}
-
-inline void uShlCustomSpline::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlCustomSpline::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uShlCustomSpline::initSub() {

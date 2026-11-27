@@ -332,3 +332,52 @@ inline rTblMenuOption::cCaption::cCaption() {
     mCaptionId = 0;
     mData.setAutoDelete(true);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rTblMenuOption::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTblMenuOption::DTI)->memAlloc(sz, align, ::rTblMenuOption::DTI.::MtDTI::getID());
+}
+
+inline void rTblMenuOption::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuOption::DTI)->memFree(p_addr);
+}
+
+inline rTblMenuOption::rTblMenuOption() {
+    this->::cResource::setAttribute(18u);
+    this->mCtgr.::MtArray::mAutoDelete = true;
+}
+
+inline void rTblMenuOption::cCtgr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuOption::cCtgr::DTI)->memFree(p_addr);
+}
+
+inline void* rTblMenuOption::cTab::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTblMenuOption::cTab::DTI)->memAlloc(sz, align, ::rTblMenuOption::cTab::DTI.::MtDTI::getID());
+}
+
+inline void rTblMenuOption::cTab::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuOption::cTab::DTI)->memFree(p_addr);
+}
+
+inline void rTblMenuOption::cCaption::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuOption::cCaption::DTI)->memFree(p_addr);
+}
+
+inline void* rTblMenuOption::cData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTblMenuOption::cData::DTI)->memAlloc(sz, align, ::rTblMenuOption::cData::DTI.::MtDTI::getID());
+}
+
+inline void rTblMenuOption::cData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuOption::cData::DTI)->memFree(p_addr);
+}
+
+inline void* rTblMenuOption::cPulldown::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTblMenuOption::cPulldown::DTI)->memAlloc(sz, align, ::rTblMenuOption::cPulldown::DTI.::MtDTI::getID());
+}
+
+inline void rTblMenuOption::cPulldown::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuOption::cPulldown::DTI)->memFree(p_addr);
+}

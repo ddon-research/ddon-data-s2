@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rPushRate.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cPushRate::getDTI() const {
     return cPushRate::DTI;
-}
-
-inline void* cPushRate::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPushRate::DTI)->memAlloc(sz, align, cPushRate::DTI.getID());
-}
-
-inline void cPushRate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPushRate::DTI)->memFree(p_addr);
 }
 
 void cPushRate::createProperty(MtPropertyList& s) {
@@ -44,14 +34,6 @@ MtObject* cPushRate::MyDTI::newInstance() const {
 
 const MtDTI& rPushRate::getDTI() const {
     return rPushRate::DTI;
-}
-
-inline void* rPushRate::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPushRate::DTI)->memAlloc(sz, align, rPushRate::DTI.getID());
-}
-
-inline void rPushRate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPushRate::DTI)->memFree(p_addr);
 }
 
 bool rPushRate::loadData(MtDataReader& in, cPushRate* pData) {

@@ -122,3 +122,38 @@ inline nErosionEnemySmall::EROSION_SMALL_MODE cpErosionEnemySmall::getErosionSma
 inline nErosionEnemySmall::EROSION_SMALL_STATUS cpErosionEnemySmall::getErosionCancelStatus() const {
     return this->mErosionCancelStatus;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cpObjCollision.h"
+#include "uCharacter.h"
+
+inline MtAllocator* cpErosionEnemySmall::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpErosionEnemySmall::DTI);
+}
+
+inline void cpErosionEnemySmall::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpErosionEnemySmall::DTI)->memFree(p_addr);
+}
+
+inline void cpErosionEnemySmall::updateErosionLevel() {
+    if (this->::cpErosionEnemyBase::getErosionCurrentLevel() != static_cast<nErosionEnemyBase::EROSION_LEVEL>(1)) {
+        return;
+    }
+    this->::cpErosionEnemyBase::reqOnSyncFlag(0x200000ul);
+}
+
+inline void cpErosionEnemySmall::killErosionCheckNode() {
+    if (this->mpErosionCheckNode != nullptr) {
+        this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mGuardComponent.mpObjCollision->::cpObjCollisionBase::killNode(this->mpErosionCheckNode);
+    }
+    this->mpErosionCheckNode = nullptr;
+}
+
+inline void cpErosionEnemySmall::killErosionCheckedNode() {
+    if (this->mpErosionCheckedNode != nullptr) {
+        this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mGuardComponent.mpObjCollision->::cpObjCollisionBase::killNode(this->mpErosionCheckedNode);
+    }
+    this->mpErosionCheckedNode = nullptr;
+}

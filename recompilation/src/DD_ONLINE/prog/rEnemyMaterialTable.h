@@ -136,3 +136,19 @@ inline void cEnemyMaterialTable::operator delete[](void* p_addr) {
 inline void* cEnemyMaterialTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEnemyMaterialTable::DTI)->memAlloc(sz, align, ::cEnemyMaterialTable::DTI.::MtDTI::getID());
 }
+
+inline void* cEnemyMaterialTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyMaterialTable::DTI)->memAlloc(sz, align, ::cEnemyMaterialTable::DTI.::MtDTI::getID());
+}
+
+inline void cEnemyMaterialTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyMaterialTable::DTI)->memFree(p_addr);
+}
+
+inline void* rEnemyMaterialTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEnemyMaterialTable::DTI)->memAlloc(sz, align, ::rEnemyMaterialTable::DTI.::MtDTI::getID());
+}
+
+inline void rEnemyMaterialTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEnemyMaterialTable::DTI)->memFree(p_addr);
+}

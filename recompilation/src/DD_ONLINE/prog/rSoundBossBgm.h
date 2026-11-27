@@ -139,3 +139,43 @@ inline bool rSoundBossBgm::cSoundBossBgm::load(MtDataReader& in) {
     this->mSrqrId = in.readU64();
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rSoundBossBgm::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::DTI)->memAlloc(sz, align, ::rSoundBossBgm::DTI.::MtDTI::getID());
+}
+
+inline void rSoundBossBgm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::DTI)->memFree(p_addr);
+}
+
+inline rSoundBossBgm::rSoundBossBgm() {
+    this->::cResource::setAttribute(22u);
+    this->::cResource::clear();
+    this->mpArrayData = nullptr;
+    this->mArrayDataNum = 0;
+}
+
+inline void rSoundBossBgm::releaseWork() {
+    unsigned int i0 = 0;
+    if (this->mArrayDataNum != 0) {
+        do {
+            this->mpArrayData[i0].~cSoundBossBgm();
+            i0 += 1u;
+        } while (i0 < this->mArrayDataNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::DTI)->memFree(static_cast<void*>(this->mpArrayData));
+    this->mpArrayData = nullptr;
+    this->mArrayDataNum = 0;
+}
+
+inline void* rSoundBossBgm::cSoundBossBgm::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::cSoundBossBgm::DTI)->memAlloc(sz, align, ::rSoundBossBgm::cSoundBossBgm::DTI.::MtDTI::getID());
+}
+
+inline void rSoundBossBgm::cSoundBossBgm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundBossBgm::cSoundBossBgm::DTI)->memFree(p_addr);
+}

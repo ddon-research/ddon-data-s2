@@ -37,6 +37,7 @@ class uLight;
 class uShadow;
 
 // Declarations
+struct LightEnumerationContext;
 class sScene;
 
 // Type aliases from DWARF
@@ -52,6 +53,16 @@ using u32 = unsigned int;
 using u64 = __uint64_t;
 using u8 = unsigned char;
 using uintptr = __uintptr_t;
+
+struct LightEnumerationContext
+{
+public:
+    u32 light_group;  // offset: 0x0
+    u32 view;  // offset: 0x4
+    u32 max_dynamic_light;  // offset: 0x8
+    u32 light_num;  // offset: 0xc
+    uLight* * plights;  // offset: 0x10
+};
 
 class sScene : public cSystem
 {
@@ -395,4 +406,20 @@ inline sScene::TextureInfo::TextureInfo() {
     this->mEnable = true;
     this->mName = nullptr;
     this->mIndex = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sScene::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sScene::DTI)->memFree(p_addr);
+}
+
+inline void* sScene::TextureInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sScene::TextureInfo::DTI)->memAlloc(sz, align, ::sScene::TextureInfo::DTI.::MtDTI::mID);
+}
+
+inline void sScene::TextureInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sScene::TextureInfo::DTI)->memFree(p_addr);
 }

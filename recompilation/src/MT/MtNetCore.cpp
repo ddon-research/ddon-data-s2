@@ -140,9 +140,23 @@ __attribute__((weak)) void MtNetCore::move() {
     /* stub */
 }
 
-__attribute__((weak)) void MtNetCore::reset() {
-    DDON_STUB("MtNetCore::reset")
-    /* stub */
+void MtNetCore::reset() {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+        clearFatal();
+    } else {
+        clearFatal();
+    }
 }
 
 __attribute__((weak)) MtNetContext* MtNetCore::newContext(s32 user_index, s32 service, u32 service_option) {

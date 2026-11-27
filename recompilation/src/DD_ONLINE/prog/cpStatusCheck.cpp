@@ -3,7 +3,6 @@
 #include "cpStatusCheck.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cComponentManager.h"
 #include "../../XFramework/cResource.h"
@@ -21,16 +20,8 @@ const MtDTI& cpStatusCheck::getDTI() const {
     return cpStatusCheck::DTI;
 }
 
-inline MtAllocator* cpStatusCheck::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpStatusCheck::DTI);
-}
-
 void* cpStatusCheck::operator new(size_t sz, u32 align) {
     return cpStatusCheck::getAllocator()->memAlloc(sz, align, cpStatusCheck::DTI.getID());
-}
-
-inline void cpStatusCheck::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpStatusCheck::DTI)->memFree(p_addr);
 }
 
 cpStatusCheck::cpStatusCheck() {

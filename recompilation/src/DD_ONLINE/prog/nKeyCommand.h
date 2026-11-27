@@ -3,11 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-// Declarations
-namespace nKeyCommand { struct stGenericParam; }
-namespace nKeyCommand { struct stKeyCommand; }
-namespace nKeyCommand { struct stKeyCommandForFunction; }
-
 namespace nKeyCommand {
     enum KEY_CMD_FUNC_SP
     {
@@ -31,6 +26,11 @@ namespace nKeyCommand {
         CND_SP_MAX = 16,
     };
 }  // namespace nKeyCommand
+
+// Declarations
+namespace nKeyCommand { struct stGenericParam; }
+namespace nKeyCommand { struct stKeyCommand; }
+namespace nKeyCommand { struct stKeyCommandForFunction; }
 
 // Type aliases from DWARF
 using __uint64_t = long unsigned int;

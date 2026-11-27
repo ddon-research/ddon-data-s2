@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rDmVecWeightParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cDmVecWeightParam::getDTI() const {
     return cDmVecWeightParam::DTI;
-}
-
-inline void* cDmVecWeightParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDmVecWeightParam::DTI)->memAlloc(sz, align, cDmVecWeightParam::DTI.getID());
-}
-
-inline void cDmVecWeightParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDmVecWeightParam::DTI)->memFree(p_addr);
 }
 
 void cDmVecWeightParam::createProperty(MtPropertyList& s) {
@@ -43,14 +33,6 @@ MtObject* cDmVecWeightParam::MyDTI::newInstance() const {
 
 const MtDTI& rDmVecWeightParam::getDTI() const {
     return rDmVecWeightParam::DTI;
-}
-
-inline void* rDmVecWeightParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDmVecWeightParam::DTI)->memAlloc(sz, align, rDmVecWeightParam::DTI.getID());
-}
-
-inline void rDmVecWeightParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDmVecWeightParam::DTI)->memFree(p_addr);
 }
 
 bool rDmVecWeightParam::loadData(MtDataReader& in, cDmVecWeightParam* pData) {

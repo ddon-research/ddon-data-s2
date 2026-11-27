@@ -189,3 +189,15 @@ inline void uGUIFKeyPalette::setUpdateKeyGuide() {
     this->mIsUpdateKeyGuideSCM = true;
     this->mIsUpdateKeyGuideSCC = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIFKeyPalette::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIFKeyPalette::DTI);
+}
+
+inline void uGUIFKeyPalette::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIFKeyPalette::DTI)->memFree(p_addr);
+}

@@ -63,13 +63,30 @@
 #include "../../XFramework/uModel.h"
 #include "uPlayer.h"
 #include "uShlBase.h"
-#include "uSoundOcclusion.h"
 #include "uSoundSubMixer.h"
 #include "uStageJoint.h"
 #include "uStageParts.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+static const RandomPitchData sSoundExt__mRandomPitchTbl[15] = {
+    {0, 0},
+    {-25, 25},
+    {-50, 50},
+    {-75, 75},
+    {-100, 100},
+    {-150, 150},
+    {-200, 200},
+    {-250, 250},
+    {-100, 100},
+    {-100, 100},
+    {-100, 100},
+    {-100, 100},
+    {-100, 100},
+    {-100, 100},
+    {-100, 100},
+};
 
 static const MT_ENUM SoundArmroSrqrTable[8] = {
     {"", 0},
@@ -129,14 +146,6 @@ const MtDTI& cSplitBgm::getDTI() const {
     return cSplitBgm::DTI;
 }
 
-inline void* cSplitBgm::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSplitBgm::DTI)->memAlloc(sz, align, cSplitBgm::DTI.getID());
-}
-
-inline void cSplitBgm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSplitBgm::DTI)->memFree(p_addr);
-}
-
 inline cSplitBgm::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cSplitBgm::MyDTI cSplitBgm::DTI("cSplitBgm", &::MtObject::DTI, 32ul, 0u, 0u);
@@ -149,16 +158,8 @@ const MtDTI& sSoundExt::getDTI() const {
     return sSoundExt::DTI;
 }
 
-inline MtAllocator* sSoundExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sSoundExt::DTI);
-}
-
 void* sSoundExt::operator new(size_t sz, u32 align) {
     return sSoundExt::getAllocator()->memAlloc(sz, align, sSoundExt::DTI.getID());
-}
-
-inline void sSoundExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSoundExt::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) sSoundExt::~sSoundExt() {
@@ -672,22 +673,6 @@ __attribute__((weak)) void sSoundExt::requestEnchantSe(u32 enchantType, nWeapon:
     /* stub */
 }
 
-inline void sSoundExt::releaseEnchantResource() {
-    if (mprEnchantRequest == nullptr) {
-        return;
-    }
-    mprEnchantRequest->release();
-    mprEnchantRequest = nullptr;
-}
-
-inline void sSoundExt::releaseHitEnchantResource() {
-    if (mprHitEnchantRequest == nullptr) {
-        return;
-    }
-    mprHitEnchantRequest->release();
-    mprHitEnchantRequest = nullptr;
-}
-
 void sSoundExt::loadGameCommon() {
     sArchiveManager* t0 = sArchiveManager::getInstance();
     ARC_TAGID t1 = rArchiveListArray::convTagId("sound_game_common");
@@ -870,38 +855,6 @@ rSoundStreamRequest* sSoundExt::getFsmEvBgmResource() {
     return mprFsmEvBgmRequest;
 }
 
-inline void sSoundExt::releaseMagicResource() {
-    if (mprMagicRequest == nullptr) {
-        return;
-    }
-    mprMagicRequest->release();
-    mprMagicRequest = nullptr;
-}
-
-inline void sSoundExt::releaseGameBuffResource() {
-    if (mprGameBuffRequest == nullptr) {
-        return;
-    }
-    mprGameBuffRequest->release();
-    mprGameBuffRequest = nullptr;
-}
-
-inline void sSoundExt::releaseShlJobShareResource() {
-    if (mprShlJobShareRequest == nullptr) {
-        return;
-    }
-    mprShlJobShareRequest->release();
-    mprShlJobShareRequest = nullptr;
-}
-
-inline void sSoundExt::releaseEnemyShareSeResource() {
-    if (mprEnemyShareRequest == nullptr) {
-        return;
-    }
-    mprEnemyShareRequest->release();
-    mprEnemyShareRequest = nullptr;
-}
-
 __attribute__((weak)) rSoundAreaInfo* sSoundExt::getSoundAreaInfo(const MtVector3& targetPos) {
     DDON_STUB("sSoundExt::getSoundAreaInfo")
     return nullptr;
@@ -1021,14 +974,6 @@ void sSoundExt::releaseCommonData() {
             mprOptionData = nullptr;
         }
     }
-}
-
-inline void sSoundExt::releaseHmParamOfsResource() {
-    if (mprHmParamOfs == nullptr) {
-        return;
-    }
-    mprHmParamOfs->release();
-    mprHmParamOfs = nullptr;
 }
 
 __attribute__((weak)) u32 sSoundExt::getKindParamOfs(uModel* pModel) {
@@ -1353,18 +1298,6 @@ cSplitBgm* sSoundExt::getSplitAreaBgmInfo(s8 areaNo) {
     return nullptr;
 }
 
-inline void sSoundExt::moveArea() {
-    if (mpuOCC != nullptr) {
-        if ((mpuOCC->mBeFlag - 1u) > 1u) {
-            mpuOCC = nullptr;
-        }
-    }
-    if ((sArea::mpInstance) == nullptr) {
-        return;
-    }
-    mpuOCC = static_cast<sAreaExt*>(sArea::mpInstance)->getSoundOcclusion();
-}
-
 __attribute__((weak)) void sSoundExt::setSePause(bool bpause) {
     DDON_STUB("sSoundExt::setSePause")
     /* stub */
@@ -1437,22 +1370,6 @@ __attribute__((weak)) void sSoundExt::setSubMixerResource() {
     /* stub */
 }
 
-inline void sSoundExt::setSoundSubMixerSetResource(rSoundSubMixerSet* pResource) {
-    if (mprSoundSubMixerSet != nullptr) {
-        return;
-    }
-    mprSoundSubMixerSet = pResource;
-    pResource->addRef();
-}
-
-inline void sSoundExt::releaseSoundSubMixerSetResource() {
-    if (mprSoundSubMixerSet == nullptr) {
-        return;
-    }
-    mprSoundSubMixerSet->release();
-    mprSoundSubMixerSet = nullptr;
-}
-
 __attribute__((weak)) void sSoundExt::moveListeningPosition() {
     DDON_STUB("sSoundExt::moveListeningPosition")
     /* stub */
@@ -1470,8 +1387,12 @@ void sSoundExt::setSeVolumeOfAllRatio(rSoundRequest* pRequest, const u32 reqNo, 
     this->sSound::setSeVolumeOfAllRatio(pRequest, reqNo, thisId, volume, isLink);
 }
 
-__attribute__((weak)) rSoundStreamRequest* sSoundExt::getNoStopStream(const MtDTI* pdti) {
-    DDON_STUB("sSoundExt::getNoStopStream")
+rSoundStreamRequest* sSoundExt::getNoStopStream(const MtDTI* pdti) {
+    for (unsigned int i0_1 = 0; i0_1 <= 7u; i0_1 = i0_1 + 1u) {
+        if (pdti == mNoStopStream[i0_1].mpNoStopStreamDTI) {
+            return mNoStopStream[i0_1].getStreamRequest();
+        }
+    }
     return nullptr;
 }
 
@@ -1495,19 +1416,85 @@ void sSoundExt::returnTicketNoStopAtream() {
     mBgmSystemTicket = t0;
 }
 
-__attribute__((weak)) bool sSoundExt::setNoStopStream(rSoundStreamRequest* pRequest, const MtDTI* pdti) {
-    DDON_STUB("sSoundExt::setNoStopStream")
-    return {};
+bool sSoundExt::setNoStopStream(rSoundStreamRequest* pRequest, const MtDTI* pdti) {
+    unsigned int v2_0;
+    if (pRequest != nullptr) {
+        for (unsigned int i0_1 = 0; i0_1 <= 7u; i0_1 = i0_1 + 1u) {
+            if (mNoStopStream[i0_1].mpNoStopStream == nullptr) {
+                mNoStopStream[i0_1].mpNoStopStream = pRequest;
+                pRequest->addRef();
+                mNoStopStream[i0_1].mpNoStopStreamDTI = pdti;
+                v2_0 = ((i0_1 * 3u) & 0xFFFFFF00u) | 1u;
+                return static_cast<bool>(static_cast<unsigned char>(v2_0));
+            }
+        }
+        v2_0 = 0;
+    } else {
+        v2_0 = 0;
+    }
+    return static_cast<bool>(static_cast<unsigned char>(v2_0));
 }
 
-__attribute__((weak)) bool sSoundExt::releaseNoStopStream(rSoundStreamRequest* pRequest) {
-    DDON_STUB("sSoundExt::releaseNoStopStream")
-    return {};
+bool sSoundExt::releaseNoStopStream(rSoundStreamRequest* pRequest) {
+    bool b2_0;
+    if (pRequest == nullptr) {
+        b2_0 = false;
+    } else {
+        for (unsigned int i0_0 = 0; i0_0 <= 7u; i0_0 += 1u) {
+            if (pRequest == mNoStopStream[i0_0].mpNoStopStream) {
+                pRequest->release();
+                mNoStopStream[i0_0].mpNoStopStreamDTI = nullptr;
+                mNoStopStream[i0_0].mpNoStopStream = nullptr;
+                b2_0 = true;
+                return b2_0;
+            }
+        }
+        b2_0 = false;
+    }
+    return b2_0;
 }
 
 __attribute__((weak)) void sSoundExt::releaseNoStopStreamAll() {
-    DDON_STUB("sSoundExt::releaseNoStopStreamAll")
-    /* stub */
+    if (mNoStopStream[0].getStreamRequest() != nullptr) {
+        mNoStopStream[0].getStreamRequest()->release();
+        mNoStopStream[0].mpNoStopStreamDTI = nullptr;
+        mNoStopStream[0].mpNoStopStream = nullptr;
+    }
+    if (mNoStopStream[1].getStreamRequest() != nullptr) {
+        mNoStopStream[1].getStreamRequest()->release();
+        mNoStopStream[1].mpNoStopStreamDTI = nullptr;
+        mNoStopStream[1].mpNoStopStream = nullptr;
+    }
+    if (mNoStopStream[2].getStreamRequest() != nullptr) {
+        mNoStopStream[2].getStreamRequest()->release();
+        mNoStopStream[2].mpNoStopStreamDTI = nullptr;
+        mNoStopStream[2].mpNoStopStream = nullptr;
+    }
+    if (mNoStopStream[3].getStreamRequest() != nullptr) {
+        mNoStopStream[3].getStreamRequest()->release();
+        mNoStopStream[3].mpNoStopStreamDTI = nullptr;
+        mNoStopStream[3].mpNoStopStream = nullptr;
+    }
+    if (mNoStopStream[4].getStreamRequest() != nullptr) {
+        mNoStopStream[4].getStreamRequest()->release();
+        mNoStopStream[4].mpNoStopStreamDTI = nullptr;
+        mNoStopStream[4].mpNoStopStream = nullptr;
+    }
+    if (mNoStopStream[5].getStreamRequest() != nullptr) {
+        mNoStopStream[5].getStreamRequest()->release();
+        mNoStopStream[5].mpNoStopStreamDTI = nullptr;
+        mNoStopStream[5].mpNoStopStream = nullptr;
+    }
+    if (mNoStopStream[6].getStreamRequest() != nullptr) {
+        mNoStopStream[6].getStreamRequest()->release();
+        mNoStopStream[6].mpNoStopStreamDTI = nullptr;
+        mNoStopStream[6].mpNoStopStream = nullptr;
+    }
+    if (mNoStopStream[7].getStreamRequest() != nullptr) {
+        mNoStopStream[7].getStreamRequest()->release();
+        mNoStopStream[7].mpNoStopStreamDTI = nullptr;
+        mNoStopStream[7].mpNoStopStream = nullptr;
+    }
 }
 
 sSoundExt::cNonStopStream* sSoundExt::checkNoStopStream(rSoundStreamRequest* pRequest) {
@@ -1561,22 +1548,54 @@ void sSoundExt::initMasterVolumeParam() {
     mGameVolCtrlFadeVolumeRatio = 1.0f;
 }
 
-__attribute__((weak)) void sSoundExt::setMasterVolumeParam(u32 fadeType, f32 fadeTime, f32 volume) {
-    DDON_STUB("sSoundExt::setMasterVolumeParam")
-    /* stub */
+void sSoundExt::setMasterVolumeParam(u32 fadeType, f32 fadeTime, f32 volume) {
+    if (fadeType == 2) {
+        if (0.0f > volume) {
+            mGameVolCtrlFadeStatus = 0;
+        } else {
+            if (volume > 1.0f) {
+                mGameVolCtrlFadeStatus = 0;
+            } else {
+                mGameVolCtrlFadeStatus = 2;
+                mGameVolCtrlFadeTime = fadeTime;
+                mGameVolCtrlFadeVolume = mGameVolCtrlVolume;
+                mGameVolCtrlFadeTargetVolume = volume;
+                if (fadeTime != 0.0f) {
+                    mGameVolCtrlFadeVolumeRatio = -(mGameVolCtrlVolume / fadeTime);
+                    if ((mGameVolCtrlVolume / fadeTime) == -0.0f) {
+                        mGameVolCtrlFadeVolumeRatio = -1.0f;
+                    }
+                } else {
+                    mGameVolCtrlFadeVolumeRatio = -1.0f;
+                }
+            }
+        }
+    } else {
+        if (fadeType == 1) {
+            if (0.0f > volume) {
+                mGameVolCtrlFadeStatus = 0;
+            } else {
+                if (volume > 1.0f) {
+                    mGameVolCtrlFadeStatus = 0;
+                } else {
+                    mGameVolCtrlFadeStatus = 1;
+                    mGameVolCtrlFadeTime = fadeTime;
+                    if (fadeTime == 0.0f) {
+                        mGameVolCtrlFadeVolumeRatio = 1.0f;
+                    } else {
+                        mGameVolCtrlFadeVolumeRatio = volume / fadeTime;
+                    }
+                    mGameVolCtrlFadeTargetVolume = volume;
+                    mGameVolCtrlFadeVolume = 0.0f;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sSoundExt::setOptVolume(u32 category, u32 item, f32 vol) {
     DDON_STUB("sSoundExt::setOptVolume")
     /* stub */
-}
-
-inline void sSoundExt::releaseOptionDataResource() {
-    if (mprOptionData == nullptr) {
-        return;
-    }
-    mprOptionData->release();
-    mprOptionData = nullptr;
 }
 
 inline sSoundExt::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1590,14 +1609,6 @@ __attribute__((weak)) MtObject* sSoundExt::MyDTI::newInstance() const {
 
 const MtDTI& sSoundExt::cVoiceRequest::getDTI() const {
     return sSoundExt::cVoiceRequest::DTI;
-}
-
-inline void* sSoundExt::cVoiceRequest::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sSoundExt::cVoiceRequest::DTI)->memAlloc(sz, align, sSoundExt::cVoiceRequest::DTI.getID());
-}
-
-inline void sSoundExt::cVoiceRequest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSoundExt::cVoiceRequest::DTI)->memFree(p_addr);
 }
 
 sSoundExt::cVoiceRequest::~cVoiceRequest() {
@@ -1625,17 +1636,12 @@ const MtDTI& sSoundExt::cNonStopStream::getDTI() const {
     return sSoundExt::cNonStopStream::DTI;
 }
 
-inline void sSoundExt::cNonStopStream::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSoundExt::cNonStopStream::DTI)->memFree(p_addr);
-}
-
 inline sSoundExt::cNonStopStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sSoundExt::cNonStopStream::MyDTI sSoundExt::cNonStopStream::DTI("sSoundExt::cNonStopStream", &::MtObject::DTI, 24ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sSoundExt::cNonStopStream::MyDTI::newInstance() const {
-    DDON_STUB("sSoundExt::cNonStopStream::MyDTI::newInstance")
-    return nullptr;
+MtObject* sSoundExt::cNonStopStream::MyDTI::newInstance() const {
+    return new (16u) sSoundExt::cNonStopStream;
 }
 
 template MtTypedArray<cSplitBgm>::~MtTypedArray();

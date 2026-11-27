@@ -243,3 +243,15 @@ void cCamExParamLockCore<ParentClass>::createProperty(MtPropertyList& s) {
     s << ::MtProperty(static_cast<MtObject*>(this), "mLockOnPosMargin", &this->mLockOnPosMargin, 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "mLockOnPosInterRate", &this->mLockOnPosInterRate, 0u, 0u);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCamExParamLock::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamLock::DTI);
+}
+
+inline void cCamImpLock::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpLock::DTI)->memFree(p_addr);
+}

@@ -180,3 +180,27 @@ inline void* cpShlList::operator new(size_t sz, void* p_addr) {
 inline void* cpShlSelector::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamCompList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamCompList::DTI)->memAlloc(sz, align, ::cShlParamCompList::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamCompList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamCompList::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cShlParamCompSelector::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamCompSelector::DTI);
+}
+
+inline void cpShlList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlList::DTI)->memFree(p_addr);
+}
+
+inline void cpShlSelector::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlSelector::DTI)->memFree(p_addr);
+}

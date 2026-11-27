@@ -87,6 +87,7 @@ public:
 public:
     class cEndContentsGroupInfo
     {
+        friend class cEndContentsManager;
     public:
         u32 getGroupNo() const;
         u32 getEntryNpcId() const;
@@ -249,4 +250,37 @@ inline void cEndContentsManager::moveEndContentsMain() {
 
 inline u32 cEndContentsManager::getScheduleId() const {
     return this->mScheduleId;
+}
+
+inline u32 cEndContentsManager::cEndContentsGroupInfo::getGroupNo() const {
+    return this->mEndContentsGroupNo;
+}
+
+inline u32 cEndContentsManager::cEndContentsGroupInfo::getEntryNpcId() const {
+    return this->mEntryNpcId;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cQuestTask.h"
+
+inline MtAllocator* cEndContentsManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cEndContentsManager::DTI);
+}
+
+inline void cEndContentsManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEndContentsManager::DTI)->memFree(p_addr);
+}
+
+inline void cEndContentsManager::moveEndContentsExit() {
+    if (this->mpMainTask != nullptr) {
+        this->mpMainTask->::cQuestTask::forceDelete();
+    }
+    this->mIsClear = false;
+    this->mIsInterrupt = false;
+    this->mIsFailed = false;
+    this->mIsExit = false;
+    this->mRno0 = 0;
+    this->mRno1 = 0;
 }

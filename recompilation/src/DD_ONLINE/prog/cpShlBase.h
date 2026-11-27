@@ -104,3 +104,19 @@ inline void* cpShlBase::operator new(size_t sz, void* p_addr) {
 inline const cShlParamComponent* cpShlBase::getParam() const {
     return this->mpParam;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cShlParamComponent::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamComponent::DTI)->memFree(p_addr);
+}
+
+inline void* cpShlBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpShlBase::DTI)->memAlloc(sz, align, ::cpShlBase::DTI.::MtDTI::getID());
+}
+
+inline void cpShlBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlBase::DTI)->memFree(p_addr);
+}

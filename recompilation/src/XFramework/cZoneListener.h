@@ -120,3 +120,11 @@ inline void* cZoneListener::operator new(size_t sz, void* p_addr) {
 inline cZoneLayout* cZoneListener::getZoneLayout() const {
     return this->mpZoneLayout;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cZoneListener::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneListener::DTI)->memFree(p_addr);
+}

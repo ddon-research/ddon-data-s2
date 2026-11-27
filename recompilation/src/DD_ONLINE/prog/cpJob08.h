@@ -131,3 +131,15 @@ inline void cpJob08::setLockOnCharge2Max(f32 time) {
 inline void cpJob08::setLockOnChrgeTime(f32 time) {
     this->mLockOnChargeTime = time;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob08::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob08::DTI);
+}
+
+inline void cpJob08::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob08::DTI)->memFree(p_addr);
+}

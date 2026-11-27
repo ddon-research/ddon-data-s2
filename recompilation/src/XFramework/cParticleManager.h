@@ -36,6 +36,7 @@ class uEffect;
 class uEffectExt;
 
 // Declarations
+class cEffectCulling;
 class cEffectJoint;
 class cEffectPath;
 class cParticleManager;
@@ -49,6 +50,18 @@ using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+class cEffectCulling
+{
+public:
+    void init(rEffectList::EFL_PARAM_CULLING* pCullingParam, const MtMatrix& Wmat);
+    void move(u32 DataIndex, const MtMatrix& Wmat);
+    const MtVector3& getDir(u32) const;
+    MtVector3 interpolateDir(u32 DataIndex, f32 InpRate);
+private:
+    MtVector3 mLocalDir;  // offset: 0x0
+    MtVector3 mCullingDir[2];  // offset: 0x10
+};
 
 class cEffectJoint
 {

@@ -54,6 +54,7 @@
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
+#include "sClanKyoten.h"
 #include "../../XFramework/sCollision.h"
 #include "sContextManager.h"
 #include "sControlManager.h"
@@ -86,16 +87,8 @@ const MtDTI& sSetManager::getDTI() const {
     return sSetManager::DTI;
 }
 
-inline MtAllocator* sSetManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sSetManager::DTI);
-}
-
 void* sSetManager::operator new(size_t sz, u32 align) {
     return sSetManager::getAllocator()->memAlloc(sz, align, sSetManager::DTI.getID());
-}
-
-inline void sSetManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSetManager::DTI)->memFree(p_addr);
 }
 
 sSetManager::sSetManager() {
@@ -225,8 +218,33 @@ __attribute__((weak)) void sSetManager::createSplitPartsSet(rLayout::TYPE lotTyp
 }
 
 __attribute__((weak)) void sSetManager::releaseSplitPartsSet(rLayout::TYPE lotType, u32 z) {
-    DDON_STUB("sSetManager::releaseSplitPartsSet")
-    /* stub */
+    nLayout::stSplitID splitID;
+    splitID.mSplitZ = z;
+    if (mThreadSafe || cSystem::mJobSafe) {
+        mCS.lock();
+    }
+    switch (lotType) {
+    case rLayout::TYPE_SCR:
+        mScrLotMgr.erasePartsLot(splitID);
+        break;
+    case rLayout::TYPE_PLAN:
+        mQOmLotMgr.erasePartsLot(splitID);
+        break;
+    case rLayout::TYPE_ENEMY:
+        mEmLotMgr.erasePartsLot(splitID);
+        break;
+    case rLayout::TYPE_NPC:
+        mNpcLotMgr.erasePartsLot(splitID);
+        break;
+    case rLayout::TYPE_TARGET:
+        mGpLotMgr.erasePartsLot(splitID);
+        break;
+    default:
+        break;
+    }
+    if (mThreadSafe || cSystem::mJobSafe) {
+        mCS.unlock();
+    }
 }
 
 bool sSetManager::isKilledEnemy(u32 group, u32 id) const {
@@ -238,10 +256,10 @@ bool sSetManager::isKilledEnemyGroup(u32 group) {
     if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 936)) != 0) {
         unsigned int i0 = 0;
         do {
-            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + static_cast<unsigned long>(static_cast<int>(i0) * 8)) + 0)) + 44)) & 511u) == group) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + static_cast<unsigned long>(static_cast<int>(i0) * 8)) + 0)) != 0) {
+            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + (static_cast<long>(static_cast<int>(i0)) * 8)) + 0)) + 44)) & 511u) == group) {
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + (static_cast<long>(static_cast<int>(i0)) * 8)) + 0)) != 0) {
                     if ((mEmGroupDataCur.elems[(group <= 511u) ? group : 0u].mGroupData & 511u) != 511) {
-                        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + static_cast<unsigned long>(static_cast<int>(i0) * 8)) + 0)) + 788)) != 0;
+                        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952)) + (static_cast<long>(static_cast<int>(i0)) * 8)) + 0)) + 788)) != 0;
                     }
                 }
                 return false;
@@ -399,8 +417,26 @@ __attribute__((weak)) cNamedParam* sSetManager::getNamedData(u32 namedId) {
 }
 
 __attribute__((weak)) bool sSetManager::getNamedMessage(u32 namedId, u32& mesType, u32& mesId) {
-    DDON_STUB("sSetManager::getNamedMessage")
-    return {};
+    if (mpNamedParam == nullptr) {
+        return false;
+    }
+    if (mpNamed_ID2Idx == nullptr) {
+        return false;
+    }
+    if (namedId <= cNamedParam::NAMED_ID_NONE || namedId > mNamed_ID2IdxMax) {
+        mesType = cNamedParam::NAMED_TYPE_NONE;
+        mesId = 0;
+        return false;
+    }
+    s16 t1 = mpNamed_ID2Idx[namedId].param_idx;
+    if (t1 >= 0 && static_cast<u32>(t1) < mpNamedParam->getDataNum()) {
+        cNamedParam* param = mpNamedParam->getData(static_cast<u32>(t1));
+        if (param != nullptr) {
+            mesType = param->getType();
+        }
+    }
+    mesId = mpNamed_ID2Idx[namedId].msg_idx;
+    return true;
 }
 
 s32 sSetManager::getEmNameMsgId(u32 enemyId) {
@@ -503,15 +539,15 @@ void sSetManager::setIsDieStageBossFlag(CDataStageLayoutID SLID) {
         u32 group = SLID.m_unGroupID;
         unsigned long v0_2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 952);
         for (unsigned int i0_3 = 0;;) {
-            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(static_cast<int>(i0_3) * 8)) + 0)) + 44)) & 511u) != group) {
+            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + (static_cast<long>(static_cast<int>(i0_3)) * 8)) + 0)) + 44)) & 511u) != group) {
                 if ((i0_3 + 1u) < v0_5) {
                     i0_3 += 1u;
                 } else {
                     break;
                 }
             } else {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(static_cast<int>(i0_3) * 8)) + 0)) != 0) {
-                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + static_cast<unsigned long>(static_cast<int>(i0_3) * 8)) + 0)) + 300) = 1;
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + (static_cast<long>(static_cast<int>(i0_3)) * 8)) + 0)) != 0) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_2 + (static_cast<long>(static_cast<int>(i0_3)) * 8)) + 0)) + 300) = 1;
                 }
                 return;
             }
@@ -562,9 +598,9 @@ void sSetManager::requestSubGroupSetList(u32 groupId, u32 subGroupId) {
                 if (v0_4 != 0) {
                     unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 912);
                     for (unsigned int i0_2 = 0;;) {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_2) * 8)) + 0)) != 0) {
-                            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_2) * 8)) + 0)) + 96)) >> 10) == groupId) {
-                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_2) * 8)) + 0)) + 124) = static_cast<unsigned int>(static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_2) * 8)) + 0)) + 124)) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(subGroupId) & 31)));
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + (static_cast<long>(static_cast<int>(i0_2)) * 8)) + 0)) != 0) {
+                            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + (static_cast<long>(static_cast<int>(i0_2)) * 8)) + 0)) + 96)) >> 10) == groupId) {
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + (static_cast<long>(static_cast<int>(i0_2)) * 8)) + 0)) + 124) = static_cast<unsigned int>(static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + (static_cast<long>(static_cast<int>(i0_2)) * 8)) + 0)) + 124)) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(subGroupId) & 31)));
                             }
                         }
                         if ((i0_2 + 1u) < v0_4) {
@@ -589,9 +625,9 @@ void sSetManager::appearEnemySubGroup(CDataStageLayoutID SLID, u32 subGroupId) {
                     u32 group = SLID.m_unGroupID;
                     unsigned long v0_1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 912);
                     for (unsigned int i0_5 = 0;;) {
-                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_5) * 8)) + 0)) != 0) {
-                            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_5) * 8)) + 0)) + 96)) >> 10) == group) {
-                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_5) * 8)) + 0)) + 128) = static_cast<unsigned int>(static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + static_cast<unsigned long>(static_cast<int>(i0_5) * 8)) + 0)) + 128)) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(subGroupId + 255u) & 31)));
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + (static_cast<long>(static_cast<int>(i0_5)) * 8)) + 0)) != 0) {
+                            if (((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + (static_cast<long>(static_cast<int>(i0_5)) * 8)) + 0)) + 96)) >> 10) == group) {
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + (static_cast<long>(static_cast<int>(i0_5)) * 8)) + 0)) + 128) = static_cast<unsigned int>(static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_1 + (static_cast<long>(static_cast<int>(i0_5)) * 8)) + 0)) + 128)) | (1ul << static_cast<unsigned long>(static_cast<unsigned char>(subGroupId + 255u) & 31)));
                             }
                         }
                         if ((i0_5 + 1u) < v0_0) {
@@ -875,10 +911,6 @@ const MtDTI& sSetManager::cUnitData::getDTI() const {
     return sSetManager::cUnitData::DTI;
 }
 
-inline void sSetManager::cUnitData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSetManager::cUnitData::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void sSetManager::cUnitData::createProperty(MtPropertyList& s) {
     DDON_STUB("sSetManager::cUnitData::createProperty")
     /* stub */
@@ -894,9 +926,16 @@ void sSetManager::cUnitData::set(cUnit* pUnit, u32 prio) {
     mPrio = prio;
 }
 
-__attribute__((weak)) void sSetManager::cUnitData::reserveCancel(const nLayout::stLayoutID& layoutID, u32 id) {
-    DDON_STUB("sSetManager::cUnitData::reserveCancel")
-    /* stub */
+void sSetManager::cUnitData::reserveCancel(const nLayout::stLayoutID& layoutID, u32 id) {
+    if (mReserveID.mReserveID != ((id * 0x10000u) | ((layoutID.mLayoutID >> 10) & 0xFFFFu))) {
+        return;
+    }
+    if (mState != sSetManager::UNIT_STATE_RESERVE) {
+        return;
+    }
+    mpUnit = nullptr;
+    mpGroupParam = nullptr;
+    mState = sSetManager::UNIT_STATE_EMPTY;
 }
 
 u32 sSetManager::cUnitData::getPrio() const {
@@ -926,14 +965,6 @@ const MtDTI& sSetManager::cOmGroupData::getDTI() const {
     return sSetManager::cOmGroupData::DTI;
 }
 
-inline void* sSetManager::cOmGroupData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sSetManager::cOmGroupData::DTI)->memAlloc(sz, align, sSetManager::cOmGroupData::DTI.getID());
-}
-
-inline void sSetManager::cOmGroupData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSetManager::cOmGroupData::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void sSetManager::cOmGroupData::createProperty(MtPropertyList& s) {
 }
 
@@ -953,10 +984,6 @@ const MtDTI& sSetManager::cEnemyDie::getDTI() const {
     return sSetManager::cEnemyDie::DTI;
 }
 
-inline void sSetManager::cEnemyDie::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSetManager::cEnemyDie::DTI)->memFree(p_addr);
-}
-
 inline sSetManager::cEnemyDie::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sSetManager::cEnemyDie::MyDTI sSetManager::cEnemyDie::DTI("sSetManager::cEnemyDie", &::MtObject::DTI, 48ul, 0u, 0u);
@@ -968,14 +995,6 @@ __attribute__((weak)) MtObject* sSetManager::cEnemyDie::MyDTI::newInstance() con
 
 const MtDTI& sSetManager::CreateContextParam::getDTI() const {
     return sSetManager::CreateContextParam::DTI;
-}
-
-inline void* sSetManager::CreateContextParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sSetManager::CreateContextParam::DTI)->memAlloc(sz, align, sSetManager::CreateContextParam::DTI.getID());
-}
-
-inline void sSetManager::CreateContextParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSetManager::CreateContextParam::DTI)->memFree(p_addr);
 }
 
 inline sSetManager::CreateContextParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

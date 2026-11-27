@@ -115,3 +115,25 @@ inline void cTargetCursorOffset::operator delete[](void* p_addr) {
 inline void* cTargetCursorOffset::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cTargetCursorOffset::DTI)->memAlloc(sz, align, ::cTargetCursorOffset::DTI.::MtDTI::getID());
 }
+
+inline void* cTargetCursorOffset::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cTargetCursorOffset::DTI)->memAlloc(sz, align, ::cTargetCursorOffset::DTI.::MtDTI::getID());
+}
+
+inline void cTargetCursorOffset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cTargetCursorOffset::DTI)->memFree(p_addr);
+}
+
+inline cTargetCursorOffset::cTargetCursorOffset() {
+    this->mId = 0;
+    this->mJointNo = -1;
+    this->mOffsetFromJoint = ::MtVector3::Zero;
+}
+
+inline void* rTargetCursorOffset::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTargetCursorOffset::DTI)->memAlloc(sz, align, ::rTargetCursorOffset::DTI.::MtDTI::getID());
+}
+
+inline void rTargetCursorOffset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTargetCursorOffset::DTI)->memFree(p_addr);
+}

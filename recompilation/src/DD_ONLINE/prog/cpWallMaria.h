@@ -92,3 +92,23 @@ inline void* cpWallMaria::operator new(size_t sz, void* p_addr) {
 inline void cpWallMaria::onWallMaria() {
     this->mIsEnableWallMaria = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpWallMaria::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpWallMaria::DTI);
+}
+
+inline void cpWallMaria::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpWallMaria::DTI)->memFree(p_addr);
+}
+
+inline void cpWallMaria::offWallMaria() {
+    this->mIsEnableWallMaria = false;
+    this->mPushVel.x = ::MtVector3::Zero.x;
+    this->mPushVel.y = ::MtVector3::Zero.y;
+    this->mPushVel.z = ::MtVector3::Zero.z;
+    this->mPushVel.pad_ = 0.0f;
+}

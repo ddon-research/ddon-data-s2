@@ -228,3 +228,7 @@ inline void* rSoundRequest::memAlloc(u32 size, u32 align) {
 inline void rSoundRequest::memFree(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(p_addr);
 }
+
+inline void rSoundRequest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundRequest::DTI)->memFree(p_addr);
+}

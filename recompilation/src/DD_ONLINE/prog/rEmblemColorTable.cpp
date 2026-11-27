@@ -16,10 +16,6 @@ const MtDTI& cEmblemColorTable::getDTI() const {
     return cEmblemColorTable::DTI;
 }
 
-inline void cEmblemColorTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmblemColorTable::DTI)->memFree(p_addr);
-}
-
 inline cEmblemColorTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cEmblemColorTable::MyDTI cEmblemColorTable::DTI("cEmblemColorTable", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -30,14 +26,6 @@ __attribute__((weak)) MtObject* cEmblemColorTable::MyDTI::newInstance() const {
 
 const MtDTI& rEmblemColorTable::getDTI() const {
     return rEmblemColorTable::DTI;
-}
-
-inline void* rEmblemColorTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmblemColorTable::DTI)->memAlloc(sz, align, rEmblemColorTable::DTI.getID());
-}
-
-inline void rEmblemColorTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmblemColorTable::DTI)->memFree(p_addr);
 }
 
 bool rEmblemColorTable::loadData(MtDataReader& r, cEmblemColorTable* pData) {

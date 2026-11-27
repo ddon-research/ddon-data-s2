@@ -46,10 +46,6 @@ const MtDTI& cpTalk::getDTI() const {
     return cpTalk::DTI;
 }
 
-inline MtAllocator* cpTalk::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpTalk::DTI);
-}
-
 void* cpTalk::operator new(size_t sz, u32 align) {
     return cpTalk::getAllocator()->memAlloc(sz, align, cpTalk::DTI.getID());
 }
@@ -130,15 +126,6 @@ s16 cpTalk::getTalkMotNo() {
     } else {
         return -1;
     }
-}
-
-inline void cpTalk::moveFace_none() {
-    if (!static_cast<aStage*>((sArea::mpInstance)->mpArea[2])->mbFsmEventPlay) {
-        return;
-    }
-    mVoiceHandle = 0;
-    mRno0 = 2;
-    mRno1 = 0;
 }
 
 __attribute__((weak)) void cpTalk::moveFace_eventWait() {

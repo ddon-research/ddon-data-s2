@@ -139,3 +139,63 @@ inline void cWeaponOffset::operator delete[](void* p_addr) {
 inline void* cWeaponOffset::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWeaponOffset::DTI)->memAlloc(sz, align, ::cWeaponOffset::DTI.::MtDTI::getID());
 }
+
+inline void* cWeaponOffset::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeaponOffset::DTI)->memAlloc(sz, align, ::cWeaponOffset::DTI.::MtDTI::getID());
+}
+
+inline void cWeaponOffset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeaponOffset::DTI)->memFree(p_addr);
+}
+
+inline cWeaponOffset::cWeaponOffset() {
+    this->mConstType = 0;
+    this->mJntNo = 0;
+    this->mRot.x = ::MtVector3::Zero.x;
+    this->mRot.y = ::MtVector3::Zero.y;
+    this->mRot.z = ::MtVector3::Zero.z;
+    this->mRot.pad_ = 0.0f;
+    this->mOfs.x = ::MtVector3::Zero.x;
+    this->mOfs.y = ::MtVector3::Zero.y;
+    this->mOfs.z = ::MtVector3::Zero.z;
+    this->mOfs.pad_ = 0.0f;
+    this->mFat = 1.0f;
+    this->mJntNoHold = 0;
+    this->mRotHold.x = ::MtVector3::Zero.x;
+    this->mRotHold.y = ::MtVector3::Zero.y;
+    this->mRotHold.z = ::MtVector3::Zero.z;
+    this->mRotHold.pad_ = 0.0f;
+    this->mOfsHold.x = ::MtVector3::Zero.x;
+    this->mOfsHold.y = ::MtVector3::Zero.y;
+    this->mOfsHold.z = ::MtVector3::Zero.z;
+    this->mOfsHold.pad_ = 0.0f;
+    this->mFatHold = 1.0f;
+    this->mJntNoDamage = 0;
+    this->mRotDamage.x = ::MtVector3::Zero.x;
+    this->mRotDamage.y = ::MtVector3::Zero.y;
+    this->mRotDamage.z = ::MtVector3::Zero.z;
+    this->mRotDamage.pad_ = 0.0f;
+    this->mOfsDamage.x = ::MtVector3::Zero.x;
+    this->mOfsDamage.y = ::MtVector3::Zero.y;
+    this->mOfsDamage.z = ::MtVector3::Zero.z;
+    this->mOfsDamage.pad_ = 0.0f;
+    this->mFatDamage = 1.0f;
+    this->mJntNoSpecial = 0;
+    this->mRotSpecial.x = ::MtVector3::Zero.x;
+    this->mRotSpecial.y = ::MtVector3::Zero.y;
+    this->mRotSpecial.z = ::MtVector3::Zero.z;
+    this->mRotSpecial.pad_ = 0.0f;
+    this->mOfsSpecial.x = ::MtVector3::Zero.x;
+    this->mOfsSpecial.y = ::MtVector3::Zero.y;
+    this->mOfsSpecial.z = ::MtVector3::Zero.z;
+    this->mOfsSpecial.pad_ = 0.0f;
+    this->mFatSpecial = 1.0f;
+}
+
+inline void* rWeaponOffset::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWeaponOffset::DTI)->memAlloc(sz, align, ::rWeaponOffset::DTI.::MtDTI::getID());
+}
+
+inline void rWeaponOffset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWeaponOffset::DTI)->memFree(p_addr);
+}

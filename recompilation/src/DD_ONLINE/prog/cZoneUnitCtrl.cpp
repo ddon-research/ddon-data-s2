@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cZoneUnitCtrl.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -29,14 +27,6 @@ const MtDTI& cZoneCategoryUnitCtrl::getDTI() const {
     return cZoneCategoryUnitCtrl::DTI;
 }
 
-inline void* cZoneCategoryUnitCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneCategoryUnitCtrl::DTI)->memAlloc(sz, align, cZoneCategoryUnitCtrl::DTI.getID());
-}
-
-inline void cZoneCategoryUnitCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneCategoryUnitCtrl::DTI)->memFree(p_addr);
-}
-
 cZoneCategoryUnitCtrl::~cZoneCategoryUnitCtrl() {
 }
 
@@ -58,19 +48,6 @@ const MtDTI& cZoneCategoryUnitCtrlBase::getDTI() const {
     return cZoneCategoryUnitCtrlBase::DTI;
 }
 
-inline void* cZoneCategoryUnitCtrlBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneCategoryUnitCtrlBase::DTI)->memAlloc(sz, align, cZoneCategoryUnitCtrlBase::DTI.getID());
-}
-
-inline void cZoneCategoryUnitCtrlBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneCategoryUnitCtrlBase::DTI)->memFree(p_addr);
-}
-
-inline cZoneCategoryUnitCtrlBase::cZoneCategoryUnitCtrlBase() {
-    setAttribute(32768u, true);
-    setAttribute(0x10000u, true);
-}
-
 inline cZoneCategoryUnitCtrlBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cZoneCategoryUnitCtrlBase::MyDTI cZoneCategoryUnitCtrlBase::DTI("cZoneCategoryUnitCtrlBase", &::cZoneContents::DTI, 32ul, 0u, 0u);
@@ -81,14 +58,6 @@ MtObject* cZoneCategoryUnitCtrlBase::MyDTI::newInstance() const {
 
 const MtDTI& cZoneUnitCtrl::getDTI() const {
     return cZoneUnitCtrl::DTI;
-}
-
-inline void* cZoneUnitCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneUnitCtrl::DTI)->memAlloc(sz, align, cZoneUnitCtrl::DTI.getID());
-}
-
-inline void cZoneUnitCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneUnitCtrl::DTI)->memFree(p_addr);
 }
 
 cZoneUnitCtrl::cZoneUnitCtrl() {

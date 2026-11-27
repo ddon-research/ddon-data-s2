@@ -171,3 +171,44 @@ inline void rStageCustom::setPartsResNumber() {
         this->mPartsDataNo = static_cast<s32>(std::strtoul(filePath.getFileTitle() + 2, nullptr, 10));
     }
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rStageCustom::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustom::DTI)->memAlloc(sz, align, ::rStageCustom::DTI.::MtDTI::getID());
+}
+
+inline void rStageCustom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageCustom::DTI)->memFree(p_addr);
+}
+
+inline rStageCustom::rStageCustom() {
+    this->mprParts = nullptr;
+    this->mPartsDataNo = -1;
+    this->::cResource::setAttribute(18u);
+    this->mpArrayArea = nullptr;
+    this->mArrayAreaNum = 0;
+}
+
+inline void rStageCustom::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayAreaNum != 0) {
+        do {
+            this->mpArrayArea[i0].~Area();
+            i0 += 1u;
+        } while (i0 < this->mArrayAreaNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rStageCustom::DTI)->memFree(static_cast<void*>(this->mpArrayArea));
+    this->mpArrayArea = nullptr;
+    this->mArrayAreaNum = 0;
+}
+
+inline void* rStageCustom::Area::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageCustom::Area::DTI)->memAlloc(sz, align, ::rStageCustom::Area::DTI.::MtDTI::getID());
+}
+
+inline void rStageCustom::Area::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageCustom::Area::DTI)->memFree(p_addr);
+}

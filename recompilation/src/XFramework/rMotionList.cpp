@@ -19,14 +19,6 @@ const MtDTI& rMotionList::getDTI() const {
     return rMotionList::DTI;
 }
 
-inline void* rMotionList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMotionList::DTI)->memAlloc(sz, align, rMotionList::DTI.mID);
-}
-
-inline void rMotionList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMotionList::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rMotionList::getExt() const {
     return "lmt";
 }

@@ -119,3 +119,19 @@ inline void cEmBaseInfoSv::operator delete[](void* p_addr) {
 inline void* cEmBaseInfoSv::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmBaseInfoSv::DTI)->memAlloc(sz, align, ::cEmBaseInfoSv::DTI.::MtDTI::getID());
 }
+
+inline void* cEmBaseInfoSv::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmBaseInfoSv::DTI)->memAlloc(sz, align, ::cEmBaseInfoSv::DTI.::MtDTI::getID());
+}
+
+inline void cEmBaseInfoSv::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmBaseInfoSv::DTI)->memFree(p_addr);
+}
+
+inline void* rEmBaseInfoSv::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmBaseInfoSv::DTI)->memAlloc(sz, align, ::rEmBaseInfoSv::DTI.::MtDTI::getID());
+}
+
+inline void rEmBaseInfoSv::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmBaseInfoSv::DTI)->memFree(p_addr);
+}

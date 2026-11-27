@@ -219,3 +219,35 @@ inline void cShlLimit::operator delete[](void* p_addr) {
 inline void* cShlLimit::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cShlLimit::DTI)->memAlloc(sz, align, ::cShlLimit::DTI.::MtDTI::getID());
 }
+
+inline void* cCustomShlLimit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCustomShlLimit::DTI)->memAlloc(sz, align, ::cCustomShlLimit::DTI.::MtDTI::getID());
+}
+
+inline void cCustomShlLimit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCustomShlLimit::DTI)->memFree(p_addr);
+}
+
+inline void* cShlLimit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlLimit::DTI)->memAlloc(sz, align, ::cShlLimit::DTI.::MtDTI::getID());
+}
+
+inline void cShlLimit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlLimit::DTI)->memFree(p_addr);
+}
+
+inline void* rCustimShlLimit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCustimShlLimit::DTI)->memAlloc(sz, align, ::rCustimShlLimit::DTI.::MtDTI::getID());
+}
+
+inline void rCustimShlLimit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCustimShlLimit::DTI)->memFree(p_addr);
+}
+
+inline void* rShlLimit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rShlLimit::DTI)->memAlloc(sz, align, ::rShlLimit::DTI.::MtDTI::getID());
+}
+
+inline void rShlLimit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rShlLimit::DTI)->memFree(p_addr);
+}

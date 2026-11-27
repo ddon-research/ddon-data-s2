@@ -5,7 +5,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOMath.h"
 #ifndef DDON_STUB
@@ -183,33 +182,12 @@ const MtDTI& nShlBase::cShlStickContextInfo::getDTI() const {
     return nShlBase::cShlStickContextInfo::DTI;
 }
 
-inline MtAllocator* nShlBase::cShlStickContextInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nShlBase::cShlStickContextInfo::DTI);
-}
-
 void* nShlBase::cShlStickContextInfo::operator new(size_t sz, u32 align) {
     return ::nShlBase::cShlStickContextInfo::getAllocator()->memAlloc(sz, align, ::nShlBase::cShlStickContextInfo::DTI.getID());
 }
 
 __attribute__((weak)) void nShlBase::cShlStickContextInfo::operator delete(void* p_addr) {
     ::nShlBase::cShlStickContextInfo::getAllocator()->memFree(p_addr);
-}
-
-nShlBase::cShlStickContextInfo::cShlStickContextInfo() {
-    mIsStickCreateControl = false;
-    mStickShlIndex = 0;
-    mStickJointNo = 0;
-    mStickShlGroup = 0;
-    mStickShlUniqueId = 0;
-    mStickUniqueId = 0;
-    mStickJointOffset.x = ::MtVector3::Zero.x;
-    mStickJointOffset.y = ::MtVector3::Zero.y;
-    mStickJointOffset.z = ::MtVector3::Zero.z;
-    mStickDirection.pad_ = 0.0f;
-    mStickDirection.y = 0.0f;
-    mStickDirection.z = 0.0f;
-    mStickJointOffset.pad_ = 0.0f;
-    mStickDirection.x = 0.0f;
 }
 
 inline nShlBase::cShlStickContextInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -65,16 +65,8 @@ const MtDTI& uGUIAreaMaster::getDTI() const {
     return uGUIAreaMaster::DTI;
 }
 
-inline MtAllocator* uGUIAreaMaster::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIAreaMaster::DTI);
-}
-
 void* uGUIAreaMaster::operator new(size_t sz, u32 align) {
     return uGUIAreaMaster::getAllocator()->memAlloc(sz, align, uGUIAreaMaster::DTI.getID());
-}
-
-inline void uGUIAreaMaster::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUIAreaMaster::setupMouseCollision(cControl* pCtrl, s32 pos, bool isReward, bool isButton, bool isQuickParty) {
@@ -576,10 +568,6 @@ __attribute__((weak)) void uGUIAreaMaster::adjustSpotInfoCursor() {
     /* stub */
 }
 
-inline void uGUIAreaMaster::setupQuickPartyCancel() {
-    (sMenu::mpInstance)->mQuickMatchCancel.cMenuQuickMatchCancel::initQuickMatchCancel(static_cast<uGUIBase*>(this));
-}
-
 __attribute__((weak)) void uGUIAreaMaster::updatePawnExpedition() {
     DDON_STUB("uGUIAreaMaster::updatePawnExpedition")
     /* stub */
@@ -591,8 +579,19 @@ __attribute__((weak)) void uGUIAreaMaster::makeYesNoDialog() {
 }
 
 __attribute__((weak)) void uGUIAreaMaster::makeNotice(MT_CTSTR msg) {
-    DDON_STUB("uGUIAreaMaster::makeNotice")
-    /* stub */
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
+    }
+    mpGUISystemMsg = new (16u) uGUISystemMsg(0u, 0u, false);
+    mpGUISystemMsg->setText(msg, -1);
+    sUnit::getInstance()->addBottom(
+        static_cast<MOVE_LINE>(sUnit::getInstance()->getNextMoveLineId(static_cast<u32>(getMoveLine()))),
+        mpGUISystemMsg,
+        getUnitGroup()
+    );
+    uGUISystemMsg* t1 = mpGUISystemMsg;
+    t1->mBasePointerPrio = mBasePointerPrio - mPointerPrioRange;
 }
 
 bool uGUIAreaMaster::reqCostRecover() {
@@ -1384,14 +1383,6 @@ const MtDTI& uGUIAreaMaster::cListItem::getDTI() const {
     return uGUIAreaMaster::cListItem::DTI;
 }
 
-inline void* uGUIAreaMaster::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIAreaMaster::cListItem::DTI)->memAlloc(sz, align, uGUIAreaMaster::cListItem::DTI.getID());
-}
-
-inline void uGUIAreaMaster::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIAreaMaster::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIAreaMaster::cListItem::MyDTI uGUIAreaMaster::cListItem::DTI("uGUIAreaMaster::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 216ul, 0u, 0u);
@@ -1402,14 +1393,6 @@ MtObject* uGUIAreaMaster::cListItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIAreaMaster::cPawnListItem::getDTI() const {
     return uGUIAreaMaster::cPawnListItem::DTI;
-}
-
-inline void* uGUIAreaMaster::cPawnListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIAreaMaster::cPawnListItem::DTI)->memAlloc(sz, align, uGUIAreaMaster::cPawnListItem::DTI.getID());
-}
-
-inline void uGUIAreaMaster::cPawnListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cPawnListItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIAreaMaster::cPawnListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1424,29 +1407,16 @@ const MtDTI& uGUIAreaMaster::cPointItem::getDTI() const {
     return uGUIAreaMaster::cPointItem::DTI;
 }
 
-inline void uGUIAreaMaster::cPointItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cPointItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIAreaMaster::cPointItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIAreaMaster::cPointItem::MyDTI uGUIAreaMaster::cPointItem::DTI("uGUIAreaMaster::cPointItem", &::uGUIBase::cScrollListItemBase::DTI, 376ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIAreaMaster::cPointItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIAreaMaster::cPointItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIAreaMaster::cPointItem::MyDTI::newInstance() const {
+    return new (16u) uGUIAreaMaster::cPointItem;
 }
 
 const MtDTI& uGUIAreaMaster::cSuppliesHeaderItem::getDTI() const {
     return uGUIAreaMaster::cSuppliesHeaderItem::DTI;
-}
-
-inline void* uGUIAreaMaster::cSuppliesHeaderItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesHeaderItem::DTI)->memAlloc(sz, align, uGUIAreaMaster::cSuppliesHeaderItem::DTI.getID());
-}
-
-inline void uGUIAreaMaster::cSuppliesHeaderItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesHeaderItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIAreaMaster::cSuppliesHeaderItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1461,10 +1431,6 @@ const MtDTI& uGUIAreaMaster::cSuppliesItem::getDTI() const {
     return uGUIAreaMaster::cSuppliesItem::DTI;
 }
 
-inline void uGUIAreaMaster::cSuppliesItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesItem::DTI)->memFree(p_addr);
-}
-
 uGUIAreaMaster::cSuppliesItem::~cSuppliesItem() {
 }
 
@@ -1472,9 +1438,8 @@ inline uGUIAreaMaster::cSuppliesItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 uGUIAreaMaster::cSuppliesItem::MyDTI uGUIAreaMaster::cSuppliesItem::DTI("uGUIAreaMaster::cSuppliesItem", &::uGUIBase::cScrollListItemBase::DTI, 480ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIAreaMaster::cSuppliesItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIAreaMaster::cSuppliesItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIAreaMaster::cSuppliesItem::MyDTI::newInstance() const {
+    return new (16u) uGUIAreaMaster::cSuppliesItem;
 }
 
 uGUIAreaMaster::stQuestInfo::stQuestInfo() {
@@ -1487,10 +1452,6 @@ uGUIAreaMaster::cSpotTexLoader::~cSpotTexLoader() {
 
 const MtDTI& uGUIAreaMaster::cDetailInfo::getDTI() const {
     return uGUIAreaMaster::cDetailInfo::DTI;
-}
-
-inline void uGUIAreaMaster::cDetailInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cDetailInfo::DTI)->memFree(p_addr);
 }
 
 void uGUIAreaMaster::cDetailInfo::addMouseTouchList(cControl* pCtrl, s32 pos) {
@@ -1513,10 +1474,6 @@ const MtDTI& uGUIAreaMaster::cListInfo::getDTI() const {
     return uGUIAreaMaster::cListInfo::DTI;
 }
 
-inline void uGUIAreaMaster::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cListInfo::DTI)->memFree(p_addr);
-}
-
 uGUIAreaMaster::cListInfo::~cListInfo() {
 }
 
@@ -1533,10 +1490,6 @@ const MtDTI& uGUIAreaMaster::cPointInfo::getDTI() const {
     return uGUIAreaMaster::cPointInfo::DTI;
 }
 
-inline void uGUIAreaMaster::cPointInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cPointInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUIAreaMaster::cPointInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIAreaMaster::cPointInfo::MyDTI uGUIAreaMaster::cPointInfo::DTI("uGUIAreaMaster::cPointInfo", &::uGUIBase::cScrollListInfoBase::DTI, 56ul, 0u, 0u);
@@ -1550,10 +1503,6 @@ const MtDTI& uGUIAreaMaster::cSuppliesHeaderInfo::getDTI() const {
     return uGUIAreaMaster::cSuppliesHeaderInfo::DTI;
 }
 
-inline void uGUIAreaMaster::cSuppliesHeaderInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesHeaderInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUIAreaMaster::cSuppliesHeaderInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIAreaMaster::cSuppliesHeaderInfo::MyDTI uGUIAreaMaster::cSuppliesHeaderInfo::DTI("uGUIAreaMaster::cSuppliesHeaderInfo", &::uGUIBase::cScrollListInfoBase::DTI, 48ul, 0u, 0u);
@@ -1565,10 +1514,6 @@ __attribute__((weak)) MtObject* uGUIAreaMaster::cSuppliesHeaderInfo::MyDTI::newI
 
 const MtDTI& uGUIAreaMaster::cSuppliesInfo::getDTI() const {
     return uGUIAreaMaster::cSuppliesInfo::DTI;
-}
-
-inline void uGUIAreaMaster::cSuppliesInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAreaMaster::cSuppliesInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIAreaMaster::cSuppliesInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

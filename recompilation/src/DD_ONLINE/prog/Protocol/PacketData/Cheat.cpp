@@ -3,7 +3,6 @@
 #include "Cheat.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -12,10 +11,6 @@
 
 const MtDTI& CDataCheatInfo::getDTI() const {
     return CDataCheatInfo::DTI;
-}
-
-inline MtAllocator* CDataCheatInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCheatInfo::DTI);
 }
 
 void* CDataCheatInfo::operator new(size_t sz, u32 align) {

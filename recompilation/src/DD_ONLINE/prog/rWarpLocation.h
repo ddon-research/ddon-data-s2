@@ -132,3 +132,19 @@ inline void cWarpLocation::operator delete[](void* p_addr) {
 inline void* cWarpLocation::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWarpLocation::DTI)->memAlloc(sz, align, ::cWarpLocation::DTI.::MtDTI::getID());
 }
+
+inline void* cWarpLocation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWarpLocation::DTI)->memAlloc(sz, align, ::cWarpLocation::DTI.::MtDTI::getID());
+}
+
+inline void cWarpLocation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWarpLocation::DTI)->memFree(p_addr);
+}
+
+inline void* rWarpLocation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWarpLocation::DTI)->memAlloc(sz, align, ::rWarpLocation::DTI.::MtDTI::getID());
+}
+
+inline void rWarpLocation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWarpLocation::DTI)->memFree(p_addr);
+}

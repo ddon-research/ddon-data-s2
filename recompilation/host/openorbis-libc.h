@@ -5,6 +5,9 @@
 // libc is musl, whose `<pthread.h>` defines the same two names as other
 // types, and its libc++ includes it (`<memory>` -> `<atomic>` ->
 // `<__threading_support>`): 151 of 1,153 units did not compile.
+// `sDDOMain.h` declares a third, `using pthread_attr_t = pthread_attr*;`,
+// renamed the same way (as host-libc.h does; aTitle.cpp, which includes
+// it, did not compile beside musl's struct).
 //
 // So the headers that name them are parsed here, first, while the two names
 // are spelled differently: musl and libc++ keep their own types, and the
@@ -14,9 +17,11 @@
 
 #define pthread_t ddon_host_pthread_t
 #define pthread_mutex_t ddon_host_pthread_mutex_t
+#define pthread_attr_t ddon_host_pthread_attr_t
 #include <cstddef>
 #include <pthread.h>
 #include <signal.h>  // `pthread_kill(pthread_t, int)`
 #include <__threading_support>
 #undef pthread_t
 #undef pthread_mutex_t
+#undef pthread_attr_t

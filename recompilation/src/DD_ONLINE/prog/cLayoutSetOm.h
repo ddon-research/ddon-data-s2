@@ -87,3 +87,15 @@ public:
 inline void* cLayoutSetOm::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cLayoutSetOm::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cLayoutSetOm::DTI);
+}
+
+inline void cLayoutSetOm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLayoutSetOm::DTI)->memFree(p_addr);
+}

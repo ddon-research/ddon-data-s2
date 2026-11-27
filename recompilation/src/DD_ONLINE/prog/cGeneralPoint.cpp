@@ -19,10 +19,6 @@ const MtDTI& cGeneralPoint::getDTI() const {
     return cGeneralPoint::DTI;
 }
 
-inline void cGeneralPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGeneralPoint::DTI)->memFree(p_addr);
-}
-
 cGeneralPoint::cGeneralPoint() {
     mUniqueID = sceAtomicAdd32Relaxed(&mUniqueIDCounter, 1) + 1;
     mPos = MtVector3::Zero;
@@ -116,9 +112,10 @@ void cGeneralPoint::updatePoint() {
     mCategory = mCategoryReq;
 }
 
-__attribute__((weak)) void cGeneralPoint::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cGeneralPoint::applyWorldOffset")
-    /* stub */
+void cGeneralPoint::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mPos.x = offset.x + mPos.x;
+    mPos.y = offset.y + mPos.y;
+    mPos.z = offset.z + mPos.z;
 }
 
 inline cGeneralPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -30,14 +30,6 @@ inline void rScheduler::memFree(void* p_addr) {
     getAllocator()->memFree(p_addr);
 }
 
-inline void* rScheduler::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rScheduler::DTI)->memAlloc(sz, align, rScheduler::DTI.mID);
-}
-
-inline void rScheduler::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rScheduler::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rScheduler::getExt() const {
     return "sdl";
 }

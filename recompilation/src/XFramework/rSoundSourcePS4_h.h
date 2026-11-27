@@ -135,3 +135,15 @@ inline rSoundStreamSourcePackage* rSoundSourceStreamAT9::getSourcePackage() cons
 inline u32 rSoundSourceStreamAT9::getPackageFileOffset() {
     return this->mPackageFileOffset;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rSoundSourceAT9::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSourceAT9::DTI)->memFree(p_addr);
+}
+
+inline void rSoundSourceStreamAT9::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSourceStreamAT9::DTI)->memFree(p_addr);
+}

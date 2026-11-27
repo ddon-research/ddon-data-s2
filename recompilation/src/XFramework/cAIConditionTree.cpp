@@ -22,10 +22,6 @@ const MtDTI& cAIConditionTree::getDTI() const {
     return cAIConditionTree::DTI;
 }
 
-inline void cAIConditionTree::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIConditionTree::DTI)->memFree(p_addr);
-}
-
 cAIConditionTree::cAIConditionTree() {
     DDON_STUB("cAIConditionTree::cAIConditionTree")
     /* stub */
@@ -137,10 +133,6 @@ const MtDTI& cAIConditionTree::TreeInfo::getDTI() const {
     return cAIConditionTree::TreeInfo::DTI;
 }
 
-inline void cAIConditionTree::TreeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIConditionTree::TreeInfo::DTI)->memFree(p_addr);
-}
-
 inline cAIConditionTree::TreeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAIConditionTree::TreeInfo::MyDTI cAIConditionTree::TreeInfo::DTI("cAIConditionTree::TreeInfo", &::cAIObject::DTI, 40ul, 0u, 0u);
@@ -152,10 +144,6 @@ __attribute__((weak)) MtObject* cAIConditionTree::TreeInfo::MyDTI::newInstance()
 
 const MtDTI& cAIConditionTree::OperationWorkNode::getDTI() const {
     return cAIConditionTree::OperationWorkNode::DTI;
-}
-
-inline void cAIConditionTree::OperationWorkNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIConditionTree::OperationWorkNode::DTI)->memFree(p_addr);
 }
 
 cAIConditionTree::OperationWorkNode::~OperationWorkNode() {
@@ -176,9 +164,143 @@ s32 cAIConditionTree::OperationWorkNode::getState() {
     return static_cast<s32>(mResult);
 }
 
-__attribute__((weak)) rAIConditionTreeNode::STATE_TYPE cAIConditionTree::OperationWorkNode::compare(cAIConditionTreeNode* pNodeL, cAIConditionTreeNode* pNodeR, u32 ope) {
-    DDON_STUB("cAIConditionTree::OperationWorkNode::compare")
-    return {};
+rAIConditionTreeNode::STATE_TYPE cAIConditionTree::OperationWorkNode::compare(cAIConditionTreeNode* pNodeL, cAIConditionTreeNode* pNodeR, u32 ope) {
+    switch (ope - 1u) {
+        case 0:
+        {
+            if (pNodeL != nullptr) {
+                switch (static_cast<unsigned int>(pNodeL->getValueType() - 1)) {
+                    case 0:
+                    {
+                        return static_cast<rAIConditionTreeNode::STATE_TYPE>(pNodeL->getBool());
+                    }
+                    case 1:
+                    {
+                        if (pNodeL->getS32() == 0) {
+                            return rAIConditionTreeNode::STATE_FALSE;
+                        } else {
+                            return rAIConditionTreeNode::STATE_TRUE;
+                        }
+                        break;
+                    }
+                    case 5:
+                    {
+                        if (pNodeL->getState() != 1) {
+                            return rAIConditionTreeNode::STATE_FALSE;
+                        } else {
+                            return rAIConditionTreeNode::STATE_TRUE;
+                        }
+                        break;
+                    }
+                    case 6:
+                    {
+                        if (pNodeL->getS64() == 0) {
+                            return rAIConditionTreeNode::STATE_FALSE;
+                        } else {
+                            return rAIConditionTreeNode::STATE_TRUE;
+                        }
+                        break;
+                    }
+                    default:
+                    {
+                        return rAIConditionTreeNode::STATE_FALSE;
+                    }
+                }
+            } else {
+                return rAIConditionTreeNode::STATE_FALSE;
+            }
+            break;
+        }
+        case 1:
+        {
+            if (pNodeL != nullptr) {
+                switch (static_cast<unsigned int>(pNodeL->getValueType() - 1)) {
+                    case 0:
+                    {
+                        return static_cast<rAIConditionTreeNode::STATE_TYPE>(!pNodeL->getBool());
+                    }
+                    case 1:
+                    {
+                        if (pNodeL->getS32() == 0) {
+                            return rAIConditionTreeNode::STATE_TRUE;
+                        } else {
+                            return rAIConditionTreeNode::STATE_FALSE;
+                        }
+                        break;
+                    }
+                    case 5:
+                    {
+                        if (pNodeL->getState() != 1) {
+                            return rAIConditionTreeNode::STATE_TRUE;
+                        } else {
+                            return rAIConditionTreeNode::STATE_FALSE;
+                        }
+                        break;
+                    }
+                    case 6:
+                    {
+                        if (pNodeL->getS64() == 0) {
+                            return rAIConditionTreeNode::STATE_TRUE;
+                        } else {
+                            return rAIConditionTreeNode::STATE_FALSE;
+                        }
+                        break;
+                    }
+                    default:
+                    {
+                        return rAIConditionTreeNode::STATE_TRUE;
+                    }
+                }
+            } else {
+                return rAIConditionTreeNode::STATE_TRUE;
+            }
+            break;
+        }
+        case 2:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(compareEqual(pNodeL, pNodeR));
+        }
+        case 3:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(!compareEqual(pNodeL, pNodeR));
+        }
+        case 4:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(compareLess(pNodeL, pNodeR));
+        }
+        case 5:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(!compareGreater(pNodeL, pNodeR));
+        }
+        case 6:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(compareGreater(pNodeL, pNodeR));
+        }
+        case 7:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(!compareLess(pNodeL, pNodeR));
+        }
+        case 8:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(compareBitOnAnd(pNodeL, pNodeR));
+        }
+        case 9:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(compareBitOnOr(pNodeL, pNodeR));
+        }
+        case 15:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(compareAnd(pNodeL, pNodeR));
+        }
+        case 16:
+        {
+            return static_cast<rAIConditionTreeNode::STATE_TYPE>(compareOr(pNodeL, pNodeR));
+        }
+        default:
+        {
+            return rAIConditionTreeNode::STATE_FALSE;
+        }
+    }
 }
 
 __attribute__((weak)) bool cAIConditionTree::OperationWorkNode::compareEqual(cAIConditionTreeNode* pNodeL, cAIConditionTreeNode* pNodeR) {
@@ -227,10 +349,6 @@ __attribute__((weak)) MtObject* cAIConditionTree::OperationWorkNode::MyDTI::newI
 
 const MtDTI& cAIConditionTree::ConstWorkNode::getDTI() const {
     return cAIConditionTree::ConstWorkNode::DTI;
-}
-
-inline void cAIConditionTree::ConstWorkNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIConditionTree::ConstWorkNode::DTI)->memFree(p_addr);
 }
 
 cAIConditionTree::ConstWorkNode::~ConstWorkNode() {
@@ -327,10 +445,6 @@ const MtDTI& cAIConditionTree::ConstEnumWorkNode::getDTI() const {
     return cAIConditionTree::ConstEnumWorkNode::DTI;
 }
 
-inline void cAIConditionTree::ConstEnumWorkNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIConditionTree::ConstEnumWorkNode::DTI)->memFree(p_addr);
-}
-
 cAIConditionTree::ConstEnumWorkNode::~ConstEnumWorkNode() {
     DDON_STUB("cAIConditionTree::ConstEnumWorkNode::~ConstEnumWorkNode")
     /* stub */
@@ -368,10 +482,6 @@ __attribute__((weak)) MtObject* cAIConditionTree::ConstEnumWorkNode::MyDTI::newI
 
 const MtDTI& cAIConditionTree::VariableWorkNode::getDTI() const {
     return cAIConditionTree::VariableWorkNode::DTI;
-}
-
-inline void cAIConditionTree::VariableWorkNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIConditionTree::VariableWorkNode::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cAIConditionTree::VariableWorkNode::~VariableWorkNode() {
@@ -450,14 +560,6 @@ __attribute__((weak)) MtObject* cAIConditionTree::VariableWorkNode::MyDTI::newIn
 
 const MtDTI& cAIConditionTreeNode::getDTI() const {
     return cAIConditionTreeNode::DTI;
-}
-
-inline void* cAIConditionTreeNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIConditionTreeNode::DTI)->memAlloc(sz, align, cAIConditionTreeNode::DTI.mID);
-}
-
-inline void cAIConditionTreeNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIConditionTreeNode::DTI)->memFree(p_addr);
 }
 
 cAIConditionTreeNode::~cAIConditionTreeNode() {

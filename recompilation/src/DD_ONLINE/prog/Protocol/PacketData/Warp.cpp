@@ -3,7 +3,6 @@
 #include "Warp.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -12,10 +11,6 @@
 
 const MtDTI& CDataAreaWarpPoint::getDTI() const {
     return CDataAreaWarpPoint::DTI;
-}
-
-inline MtAllocator* CDataAreaWarpPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAreaWarpPoint::DTI);
 }
 
 void* CDataAreaWarpPoint::operator new(size_t sz, u32 align) {
@@ -38,10 +33,6 @@ const MtDTI& CDataFavoriteWarpPoint::getDTI() const {
     return CDataFavoriteWarpPoint::DTI;
 }
 
-inline MtAllocator* CDataFavoriteWarpPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataFavoriteWarpPoint::DTI);
-}
-
 void* CDataFavoriteWarpPoint::operator new(size_t sz, u32 align) {
     return CDataFavoriteWarpPoint::getAllocator()->memAlloc(sz, align, CDataFavoriteWarpPoint::DTI.getID());
 }
@@ -58,12 +49,24 @@ MtObject* CDataFavoriteWarpPoint::MyDTI::newInstance() const {
     return new (16u) CDataFavoriteWarpPoint;
 }
 
-const MtDTI& CDataWarpPoint::getDTI() const {
-    return CDataWarpPoint::DTI;
+const MtDTI& CDataJumpLocation::getDTI() const {
+    return CDataJumpLocation::DTI;
 }
 
-inline MtAllocator* CDataWarpPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataWarpPoint::DTI);
+__attribute__((weak)) void CDataJumpLocation::operator delete(void* p_addr) {
+    CDataJumpLocation::getAllocator()->memFree(p_addr);
+}
+
+inline CDataJumpLocation::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataJumpLocation::MyDTI CDataJumpLocation::DTI("CDataJumpLocation", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataJumpLocation::MyDTI::newInstance() const {
+    return new (16u) CDataJumpLocation;
+}
+
+const MtDTI& CDataWarpPoint::getDTI() const {
+    return CDataWarpPoint::DTI;
 }
 
 void* CDataWarpPoint::operator new(size_t sz, u32 align) {

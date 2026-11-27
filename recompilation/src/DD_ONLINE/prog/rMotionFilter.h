@@ -122,3 +122,19 @@ inline void cMotionFilter::operator delete[](void* p_addr) {
 inline void* cMotionFilter::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cMotionFilter::DTI)->memAlloc(sz, align, ::cMotionFilter::DTI.::MtDTI::getID());
 }
+
+inline void* cMotionFilter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMotionFilter::DTI)->memAlloc(sz, align, ::cMotionFilter::DTI.::MtDTI::getID());
+}
+
+inline void cMotionFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMotionFilter::DTI)->memFree(p_addr);
+}
+
+inline void* rMotionFilter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMotionFilter::DTI)->memAlloc(sz, align, ::rMotionFilter::DTI.::MtDTI::getID());
+}
+
+inline void rMotionFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMotionFilter::DTI)->memFree(p_addr);
+}

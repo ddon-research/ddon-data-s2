@@ -101,3 +101,20 @@ public:
 inline void* rLanguageResIDConverter::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rLanguageResIDConverter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memAlloc(sz, align, ::rLanguageResIDConverter::DTI.::MtDTI::getID());
+}
+
+inline void rLanguageResIDConverter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLanguageResIDConverter::DTI)->memFree(p_addr);
+}
+
+inline rLanguageResIDConverter::rLanguageResIDConverter() {
+    this->::cResource::setAttribute(16u);
+    this->mpHeader = nullptr;
+}

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSoundStreamSourcePackage.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtFile.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -16,14 +15,6 @@
 
 const MtDTI& rSoundStreamSourcePackage::getDTI() const {
     return rSoundStreamSourcePackage::DTI;
-}
-
-inline void* rSoundStreamSourcePackage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundStreamSourcePackage::DTI)->memAlloc(sz, align, rSoundStreamSourcePackage::DTI.mID);
-}
-
-inline void rSoundStreamSourcePackage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundStreamSourcePackage::DTI)->memFree(p_addr);
 }
 
 rSoundStreamSourcePackage::~rSoundStreamSourcePackage() {
@@ -66,10 +57,6 @@ MtObject* rSoundStreamSourcePackage::MyDTI::newInstance() const {
 
 const MtDTI& rSoundStreamSourcePackage::PackageFile::getDTI() const {
     return rSoundStreamSourcePackage::PackageFile::DTI;
-}
-
-inline void rSoundStreamSourcePackage::PackageFile::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundStreamSourcePackage::PackageFile::DTI)->memFree(p_addr);
 }
 
 rSoundStreamSourcePackage::PackageFile::~PackageFile() {

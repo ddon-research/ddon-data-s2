@@ -3,7 +3,6 @@
 #include "cOcdPriority.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,20 +14,8 @@ const MtDTI& cOcdPriorityParam::getDTI() const {
     return cOcdPriorityParam::DTI;
 }
 
-inline MtAllocator* cOcdPriorityParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cOcdPriorityParam::DTI);
-}
-
-inline void* cOcdPriorityParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdPriorityParam::DTI)->memAlloc(sz, align, cOcdPriorityParam::DTI.getID());
-}
-
 void* cOcdPriorityParam::operator new[](size_t sz, u32 align) {
     return cOcdPriorityParam::getAllocator()->memAlloc(sz, align, cOcdPriorityParam::DTI.getID());
-}
-
-inline void cOcdPriorityParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdPriorityParam::DTI)->memFree(p_addr);
 }
 
 void cOcdPriorityParam::operator delete[](void* p_addr) {

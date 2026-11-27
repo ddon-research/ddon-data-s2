@@ -3,7 +3,6 @@
 #include <_pthread.h>
 #include <stdlib.h>
 #include "sOccluder.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -21,10 +20,6 @@
 
 const MtDTI& sOccluder::getDTI() const {
     return sOccluder::DTI;
-}
-
-inline void sOccluder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sOccluder::DTI)->memFree(p_addr);
 }
 
 sOccluder::~sOccluder() {

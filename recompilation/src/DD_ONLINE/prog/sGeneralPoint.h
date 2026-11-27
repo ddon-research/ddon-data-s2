@@ -120,3 +120,15 @@ inline void* sGeneralPoint::operator new(size_t sz, void* p_addr) {
 inline sGeneralPoint* sGeneralPoint::getInstance() {
     return ::sGeneralPoint::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sGeneralPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sGeneralPoint::DTI);
+}
+
+inline void sGeneralPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGeneralPoint::DTI)->memFree(p_addr);
+}

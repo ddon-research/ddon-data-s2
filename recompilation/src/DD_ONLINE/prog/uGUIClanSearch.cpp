@@ -41,10 +41,6 @@ const MtDTI& uGUIClanSearch::getDTI() const {
     return uGUIClanSearch::DTI;
 }
 
-inline void uGUIClanSearch::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIClanSearch::DTI)->memFree(p_addr);
-}
-
 uGUIClanSearch::uGUIClanSearch() {
     DDON_STUB("uGUIClanSearch::uGUIClanSearch")
     /* stub */
@@ -307,14 +303,6 @@ const MtDTI& uGUIClanSearch::cGUIPageListSearchClan::getDTI() const {
     return uGUIClanSearch::cGUIPageListSearchClan::DTI;
 }
 
-inline void* uGUIClanSearch::cGUIPageListSearchClan::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIClanSearch::cGUIPageListSearchClan::DTI)->memAlloc(sz, align, uGUIClanSearch::cGUIPageListSearchClan::DTI.getID());
-}
-
-inline void uGUIClanSearch::cGUIPageListSearchClan::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIClanSearch::cGUIPageListSearchClan::DTI)->memFree(p_addr);
-}
-
 s32 uGUIClanSearch::cGUIPageListSearchClan::getItemNum() const {
     return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanSearchListPacket()->m_ClanList.size());
 }
@@ -353,10 +341,6 @@ MtObject* uGUIClanSearch::cGUIPageListSearchClan::MyDTI::newInstance() const {
 
 const MtDTI& uGUIClanSearchBase::getDTI() const {
     return uGUIClanSearchBase::DTI;
-}
-
-inline void uGUIClanSearchBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIClanSearchBase::DTI)->memFree(p_addr);
 }
 
 uGUIClanSearchBase::~uGUIClanSearchBase() {

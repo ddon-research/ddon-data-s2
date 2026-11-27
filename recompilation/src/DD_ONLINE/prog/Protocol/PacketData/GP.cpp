@@ -17,10 +17,6 @@ const MtDTI& CDataCAPtoGPChangeElement::getDTI() const {
     return CDataCAPtoGPChangeElement::DTI;
 }
 
-inline MtAllocator* CDataCAPtoGPChangeElement::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCAPtoGPChangeElement::DTI);
-}
-
 void* CDataCAPtoGPChangeElement::operator new(size_t sz, u32 align) {
     return CDataCAPtoGPChangeElement::getAllocator()->memAlloc(sz, align, CDataCAPtoGPChangeElement::DTI.getID());
 }
@@ -39,10 +35,6 @@ MtObject* CDataCAPtoGPChangeElement::MyDTI::newInstance() const {
 
 const MtDTI& CDataGPCourseAvailable::getDTI() const {
     return CDataGPCourseAvailable::DTI;
-}
-
-inline MtAllocator* CDataGPCourseAvailable::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPCourseAvailable::DTI);
 }
 
 void* CDataGPCourseAvailable::operator new(size_t sz, u32 align) {
@@ -65,10 +57,6 @@ const MtDTI& CDataGPCourseEffectParam::getDTI() const {
     return CDataGPCourseEffectParam::DTI;
 }
 
-inline MtAllocator* CDataGPCourseEffectParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPCourseEffectParam::DTI);
-}
-
 void* CDataGPCourseEffectParam::operator new(size_t sz, u32 align) {
     return CDataGPCourseEffectParam::getAllocator()->memAlloc(sz, align, CDataGPCourseEffectParam::DTI.getID());
 }
@@ -87,10 +75,6 @@ MtObject* CDataGPCourseEffectParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataGPCourseInfo::getDTI() const {
     return CDataGPCourseInfo::DTI;
-}
-
-inline MtAllocator* CDataGPCourseInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPCourseInfo::DTI);
 }
 
 void* CDataGPCourseInfo::operator new(size_t sz, u32 align) {
@@ -114,10 +98,6 @@ const MtDTI& CDataGPCourseValid::getDTI() const {
     return CDataGPCourseValid::DTI;
 }
 
-inline MtAllocator* CDataGPCourseValid::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPCourseValid::DTI);
-}
-
 void* CDataGPCourseValid::operator new(size_t sz, u32 align) {
     return CDataGPCourseValid::getAllocator()->memAlloc(sz, align, CDataGPCourseValid::DTI.getID());
 }
@@ -138,10 +118,6 @@ const MtDTI& CDataGPDetail::getDTI() const {
     return CDataGPDetail::DTI;
 }
 
-inline MtAllocator* CDataGPDetail::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPDetail::DTI);
-}
-
 void* CDataGPDetail::operator new(size_t sz, u32 align) {
     return CDataGPDetail::getAllocator()->memAlloc(sz, align, CDataGPDetail::DTI.getID());
 }
@@ -159,12 +135,28 @@ __attribute__((weak)) MtObject* CDataGPDetail::MyDTI::newInstance() const {
     return nullptr;
 }
 
-const MtDTI& CDataGPPeriod::getDTI() const {
-    return CDataGPPeriod::DTI;
+const MtDTI& CDataGPEditVoiceBuyHistory::getDTI() const {
+    return CDataGPEditVoiceBuyHistory::DTI;
 }
 
-inline MtAllocator* CDataGPPeriod::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPPeriod::DTI);
+void* CDataGPEditVoiceBuyHistory::operator new(size_t sz, u32 align) {
+    return CDataGPEditVoiceBuyHistory::getAllocator()->memAlloc(sz, align, CDataGPEditVoiceBuyHistory::DTI.getID());
+}
+
+__attribute__((weak)) void CDataGPEditVoiceBuyHistory::operator delete(void* p_addr) {
+    CDataGPEditVoiceBuyHistory::getAllocator()->memFree(p_addr);
+}
+
+inline CDataGPEditVoiceBuyHistory::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataGPEditVoiceBuyHistory::MyDTI CDataGPEditVoiceBuyHistory::DTI("CDataGPEditVoiceBuyHistory", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
+
+MtObject* CDataGPEditVoiceBuyHistory::MyDTI::newInstance() const {
+    return new (16u) CDataGPEditVoiceBuyHistory;
+}
+
+const MtDTI& CDataGPPeriod::getDTI() const {
+    return CDataGPPeriod::DTI;
 }
 
 void* CDataGPPeriod::operator new(size_t sz, u32 align) {
@@ -187,10 +179,6 @@ const MtDTI& CDataGPShopBuyHistoryElement::getDTI() const {
     return CDataGPShopBuyHistoryElement::DTI;
 }
 
-inline MtAllocator* CDataGPShopBuyHistoryElement::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPShopBuyHistoryElement::DTI);
-}
-
 void* CDataGPShopBuyHistoryElement::operator new(size_t sz, u32 align) {
     return CDataGPShopBuyHistoryElement::getAllocator()->memAlloc(sz, align, CDataGPShopBuyHistoryElement::DTI.getID());
 }
@@ -209,10 +197,6 @@ MtObject* CDataGPShopBuyHistoryElement::MyDTI::newInstance() const {
 
 const MtDTI& CDataGPShopDisplayLineup::getDTI() const {
     return CDataGPShopDisplayLineup::DTI;
-}
-
-inline MtAllocator* CDataGPShopDisplayLineup::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPShopDisplayLineup::DTI);
 }
 
 void* CDataGPShopDisplayLineup::operator new(size_t sz, u32 align) {
@@ -241,10 +225,6 @@ const MtDTI& CDataGPShopDisplayType::getDTI() const {
     return CDataGPShopDisplayType::DTI;
 }
 
-inline MtAllocator* CDataGPShopDisplayType::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPShopDisplayType::DTI);
-}
-
 void* CDataGPShopDisplayType::operator new(size_t sz, u32 align) {
     return CDataGPShopDisplayType::getAllocator()->memAlloc(sz, align, CDataGPShopDisplayType::DTI.getID());
 }
@@ -265,14 +245,6 @@ const MtDTI& CDataGPShopLineupElementBase::getDTI() const {
     return CDataGPShopLineupElementBase::DTI;
 }
 
-inline MtAllocator* CDataGPShopLineupElementBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPShopLineupElementBase::DTI);
-}
-
-inline void* CDataGPShopLineupElementBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataGPShopLineupElementBase::DTI)->memAlloc(sz, align, CDataGPShopLineupElementBase::DTI.getID());
-}
-
 __attribute__((weak)) void CDataGPShopLineupElementBase::operator delete(void* p_addr) {
     CDataGPShopLineupElementBase::getAllocator()->memFree(p_addr);
 }
@@ -289,10 +261,6 @@ const MtDTI& CDataGPShopLineupElementCourse::getDTI() const {
     return CDataGPShopLineupElementCourse::DTI;
 }
 
-inline MtAllocator* CDataGPShopLineupElementCourse::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGPShopLineupElementCourse::DTI);
-}
-
 void* CDataGPShopLineupElementCourse::operator new(size_t sz, u32 align) {
     return CDataGPShopLineupElementCourse::getAllocator()->memAlloc(sz, align, CDataGPShopLineupElementCourse::DTI.getID());
 }
@@ -307,5 +275,45 @@ CDataGPShopLineupElementCourse::MyDTI CDataGPShopLineupElementCourse::DTI("CData
 
 MtObject* CDataGPShopLineupElementCourse::MyDTI::newInstance() const {
     return new (16u) CDataGPShopLineupElementCourse;
+}
+
+const MtDTI& CDataGPShopLineupElementItem::getDTI() const {
+    return CDataGPShopLineupElementItem::DTI;
+}
+
+void* CDataGPShopLineupElementItem::operator new(size_t sz, u32 align) {
+    return CDataGPShopLineupElementItem::getAllocator()->memAlloc(sz, align, CDataGPShopLineupElementItem::DTI.getID());
+}
+
+__attribute__((weak)) void CDataGPShopLineupElementItem::operator delete(void* p_addr) {
+    CDataGPShopLineupElementItem::getAllocator()->memFree(p_addr);
+}
+
+inline CDataGPShopLineupElementItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataGPShopLineupElementItem::MyDTI CDataGPShopLineupElementItem::DTI("CDataGPShopLineupElementItem", &::CPacketDataBase::DTI, 64ul, 0u, 0u);
+
+MtObject* CDataGPShopLineupElementItem::MyDTI::newInstance() const {
+    return new (16u) CDataGPShopLineupElementItem;
+}
+
+const MtDTI& CDataGPShopLineupElementPawn::getDTI() const {
+    return CDataGPShopLineupElementPawn::DTI;
+}
+
+void* CDataGPShopLineupElementPawn::operator new(size_t sz, u32 align) {
+    return CDataGPShopLineupElementPawn::getAllocator()->memAlloc(sz, align, CDataGPShopLineupElementPawn::DTI.getID());
+}
+
+__attribute__((weak)) void CDataGPShopLineupElementPawn::operator delete(void* p_addr) {
+    CDataGPShopLineupElementPawn::getAllocator()->memFree(p_addr);
+}
+
+inline CDataGPShopLineupElementPawn::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataGPShopLineupElementPawn::MyDTI CDataGPShopLineupElementPawn::DTI("CDataGPShopLineupElementPawn", &::CPacketDataBase::DTI, 64ul, 0u, 0u);
+
+MtObject* CDataGPShopLineupElementPawn::MyDTI::newInstance() const {
+    return new (16u) CDataGPShopLineupElementPawn;
 }
 

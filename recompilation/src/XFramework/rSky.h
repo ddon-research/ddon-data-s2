@@ -204,3 +204,19 @@ inline rStarCatalog::rStarCatalog() {
     this->mStarNum = 0;
     this->mpStarCatalog = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rSky::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSky::DTI)->memFree(p_addr);
+}
+
+inline void* rStarCatalog::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStarCatalog::DTI)->memAlloc(sz, align, ::rStarCatalog::DTI.::MtDTI::mID);
+}
+
+inline void rStarCatalog::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStarCatalog::DTI)->memFree(p_addr);
+}

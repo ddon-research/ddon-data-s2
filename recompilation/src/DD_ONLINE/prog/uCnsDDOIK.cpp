@@ -25,16 +25,8 @@ const MtDTI& uCnsDDOIK::getDTI() const {
     return uCnsDDOIK::DTI;
 }
 
-inline MtAllocator* uCnsDDOIK::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCnsDDOIK::DTI);
-}
-
 void* uCnsDDOIK::operator new(size_t sz, u32 align) {
     return uCnsDDOIK::getAllocator()->memAlloc(sz, align, uCnsDDOIK::DTI.getID());
-}
-
-inline void uCnsDDOIK::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsDDOIK::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) MtVector3 uCnsDDOIK::calcUpVectorArmR() {
@@ -174,9 +166,13 @@ void uCnsDDOIK::createSCollisionParam(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "CollisionCheckGroupBit", &mCollisionParam.checkGroupBit, 0u, 0u);
 }
 
-__attribute__((weak)) void uCnsDDOIK::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uCnsDDOIK::applyWorldOffset")
-    /* stub */
+void uCnsDDOIK::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mEffectorPos.x = offset.x + mEffectorPos.x;
+    mEffectorPos.y = offset.y + mEffectorPos.y;
+    mEffectorPos.z = offset.z + mEffectorPos.z;
+    mUpVectorPos.x = offset.x + mUpVectorPos.x;
+    mUpVectorPos.y = offset.y + mUpVectorPos.y;
+    mUpVectorPos.z = offset.z + mUpVectorPos.z;
 }
 
 __attribute__((weak)) void uCnsDDOIK::adjust(uModel::Joint* pJoint, uModel* pModel) {
@@ -354,9 +350,23 @@ void uCnsDDOIK::setEffectorPos(const MtVector3& Pos) {
     mEffectorPosEnable = true;
 }
 
-__attribute__((weak)) void uCnsDDOIK::setEffectorRot(const MtMatrix& mat) {
-    DDON_STUB("uCnsDDOIK::setEffectorRot")
-    /* stub */
+void uCnsDDOIK::setEffectorRot(const MtMatrix& mat) {
+    mEffectorMat.m[0].x = mat.m[0].x;
+    mEffectorMat.m[0].y = mat.m[0].y;
+    mEffectorMat.m[0].z = mat.m[0].z;
+    mEffectorMat.m[0].w = mat.m[0].w;
+    mEffectorMat.m[1].x = mat.m[1].x;
+    mEffectorMat.m[1].y = mat.m[1].y;
+    mEffectorMat.m[1].z = mat.m[1].z;
+    mEffectorMat.m[1].w = mat.m[1].w;
+    mEffectorMat.m[2].x = mat.m[2].x;
+    mEffectorMat.m[2].y = mat.m[2].y;
+    mEffectorMat.m[2].z = mat.m[2].z;
+    mEffectorMat.m[2].w = mat.m[2].w;
+    mEffectorMat.m[3].x = mat.m[3].x;
+    mEffectorMat.m[3].y = mat.m[3].y;
+    mEffectorMat.m[3].z = mat.m[3].z;
+    mEffectorMat.m[3].w = mat.m[3].w;
 }
 
 __attribute__((weak)) MtMatrix uCnsDDOIK::getEffectorMat() {
@@ -379,10 +389,6 @@ __attribute__((weak)) MtObject* uCnsDDOIK::MyDTI::newInstance() const {
 
 const MtDTI& uCnsDDOIK::JointInfo::getDTI() const {
     return uCnsDDOIK::JointInfo::DTI;
-}
-
-inline void uCnsDDOIK::JointInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsDDOIK::JointInfo::DTI)->memFree(p_addr);
 }
 
 uCnsDDOIK::JointInfo::~JointInfo() {
@@ -418,21 +424,12 @@ inline uCnsDDOIK::JointInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t
 
 uCnsDDOIK::JointInfo::MyDTI uCnsDDOIK::JointInfo::DTI("uCnsDDOIK::JointInfo", &::MtObject::DTI, 672ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uCnsDDOIK::JointInfo::MyDTI::newInstance() const {
-    DDON_STUB("uCnsDDOIK::JointInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* uCnsDDOIK::JointInfo::MyDTI::newInstance() const {
+    return new (16u) uCnsDDOIK::JointInfo;
 }
 
 const MtDTI& uCnsDDOIK::uCnsJoint::getDTI() const {
     return uCnsDDOIK::uCnsJoint::DTI;
-}
-
-inline void* uCnsDDOIK::uCnsJoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uCnsDDOIK::uCnsJoint::DTI)->memAlloc(sz, align, uCnsDDOIK::uCnsJoint::DTI.getID());
-}
-
-inline void uCnsDDOIK::uCnsJoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsDDOIK::uCnsJoint::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uCnsDDOIK::uCnsJoint::adjust(uModel::Joint* pJoint, uModel* pModel) {

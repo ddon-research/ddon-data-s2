@@ -17,14 +17,6 @@ const MtDTI& cShlParamCompCollision::getDTI() const {
     return cShlParamCompCollision::DTI;
 }
 
-inline void* cShlParamCompCollision::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamCompCollision::DTI)->memAlloc(sz, align, cShlParamCompCollision::DTI.getID());
-}
-
-inline void cShlParamCompCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamCompCollision::DTI)->memFree(p_addr);
-}
-
 const MtDTI& cShlParamCompCollision::getComponentDTI() const {
     return cpShlCollision::DTI;
 }
@@ -69,10 +61,6 @@ MtObject* cShlParamCompCollision::MyDTI::newInstance() const {
 
 const MtDTI& cpShlCollision::getDTI() const {
     return cpShlCollision::DTI;
-}
-
-inline void cpShlCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlCollision::DTI)->memFree(p_addr);
 }
 
 inline cpShlCollision::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

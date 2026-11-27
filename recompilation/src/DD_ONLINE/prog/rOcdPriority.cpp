@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rOcdPriority.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cOcdPriority.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& rOcdPriorityParam::getDTI() const {
     return rOcdPriorityParam::DTI;
-}
-
-inline void* rOcdPriorityParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOcdPriorityParam::DTI)->memAlloc(sz, align, rOcdPriorityParam::DTI.getID());
-}
-
-inline void rOcdPriorityParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOcdPriorityParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rOcdPriorityParam::loadData(MtDataReader& in, cOcdPriorityParam* pData) {

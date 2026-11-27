@@ -203,3 +203,15 @@ inline void* uShlCustomConditionBase::operator new(size_t sz, void* p_addr) {
 inline void* uShlCustomConditionFollowMove::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uShlCustomConditionBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlCustomConditionBase::DTI)->memFree(p_addr);
+}
+
+inline void uShlCustomConditionFollowMove::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlCustomConditionFollowMove::DTI)->memFree(p_addr);
+}

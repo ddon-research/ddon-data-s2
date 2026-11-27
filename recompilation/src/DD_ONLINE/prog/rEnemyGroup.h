@@ -182,3 +182,23 @@ inline bool cEnemyGroup::cEmList::load(MtDataReader& r) {
 inline void cEnemyGroup::addEmList(cEnemyGroup::cEmList* p) {
     this->mEmList.add(p);
 }
+
+inline void cEnemyGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyGroup::DTI)->memFree(p_addr);
+}
+
+inline void* cEnemyGroup::cEmList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyGroup::cEmList::DTI)->memAlloc(sz, align, ::cEnemyGroup::cEmList::DTI.::MtDTI::getID());
+}
+
+inline void cEnemyGroup::cEmList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyGroup::cEmList::DTI)->memFree(p_addr);
+}
+
+inline void* rEnemyGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEnemyGroup::DTI)->memAlloc(sz, align, ::rEnemyGroup::DTI.::MtDTI::getID());
+}
+
+inline void rEnemyGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEnemyGroup::DTI)->memFree(p_addr);
+}

@@ -151,3 +151,18 @@ inline CDataReleaseElement::CDataReleaseElement() {
     this->m_unReleaseID = 0;
     this->m_ucReleaseLv = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataJobChangeInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJobChangeInfo::DTI);
+}
+
+inline MtAllocator* CDataPawnJobChangeInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnJobChangeInfo::DTI);
+}
+
+inline MtAllocator* CDataReleaseElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataReleaseElement::DTI);
+}

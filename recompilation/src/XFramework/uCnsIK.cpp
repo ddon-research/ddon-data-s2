@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uCnsIK.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -23,10 +22,6 @@ __attribute__((weak)) void uCnsIK::usage() {
 
 const MtDTI& uCnsIK::getDTI() const {
     return uCnsIK::DTI;
-}
-
-inline void uCnsIK::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsIK::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool uCnsIK::setupJointInfo(uModel* pModel, uCnsIK::JointInfo* JointInfoTbl, s32 Num, uConstraint::DIRECTION DirVector, uConstraint::DIRECTION UpVector) {
@@ -143,9 +138,13 @@ void uCnsIK::createSCollisionParam(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "CollisionCheckGroupBit", &mCollisionParam.checkGroupBit, 0u, 0u);
 }
 
-__attribute__((weak)) void uCnsIK::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uCnsIK::applyWorldOffset")
-    /* stub */
+void uCnsIK::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mEffectorPos.x = offset.x + mEffectorPos.x;
+    mEffectorPos.y = offset.y + mEffectorPos.y;
+    mEffectorPos.z = offset.z + mEffectorPos.z;
+    mUpVectorPos.x = offset.x + mUpVectorPos.x;
+    mUpVectorPos.y = offset.y + mUpVectorPos.y;
+    mUpVectorPos.z = offset.z + mUpVectorPos.z;
 }
 
 __attribute__((weak)) void uCnsIK::adjust(uModel::Joint* pJoint, uModel* pModel) {
@@ -326,9 +325,23 @@ void uCnsIK::setEffectorPos(const MtVector3& Pos) {
     mEffectorPosEnable = true;
 }
 
-__attribute__((weak)) void uCnsIK::setEffectorRot(const MtMatrix& mat) {
-    DDON_STUB("uCnsIK::setEffectorRot")
-    /* stub */
+void uCnsIK::setEffectorRot(const MtMatrix& mat) {
+    mEffectorMat.m[0].x = mat.m[0].x;
+    mEffectorMat.m[0].y = mat.m[0].y;
+    mEffectorMat.m[0].z = mat.m[0].z;
+    mEffectorMat.m[0].w = mat.m[0].w;
+    mEffectorMat.m[1].x = mat.m[1].x;
+    mEffectorMat.m[1].y = mat.m[1].y;
+    mEffectorMat.m[1].z = mat.m[1].z;
+    mEffectorMat.m[1].w = mat.m[1].w;
+    mEffectorMat.m[2].x = mat.m[2].x;
+    mEffectorMat.m[2].y = mat.m[2].y;
+    mEffectorMat.m[2].z = mat.m[2].z;
+    mEffectorMat.m[2].w = mat.m[2].w;
+    mEffectorMat.m[3].x = mat.m[3].x;
+    mEffectorMat.m[3].y = mat.m[3].y;
+    mEffectorMat.m[3].z = mat.m[3].z;
+    mEffectorMat.m[3].w = mat.m[3].w;
 }
 
 __attribute__((weak)) MtMatrix uCnsIK::getEffectorMat() {
@@ -359,10 +372,6 @@ __attribute__((weak)) MtObject* uCnsIK::MyDTI::newInstance() const {
 
 const MtDTI& uCnsIK::JointInfo::getDTI() const {
     return uCnsIK::JointInfo::DTI;
-}
-
-inline void uCnsIK::JointInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsIK::JointInfo::DTI)->memFree(p_addr);
 }
 
 uCnsIK::JointInfo::~JointInfo() {
@@ -410,10 +419,6 @@ __attribute__((weak)) MtObject* uCnsIK::JointInfo::MyDTI::newInstance() const {
 
 const MtDTI& uCnsIK::uCnsJoint::getDTI() const {
     return uCnsIK::uCnsJoint::DTI;
-}
-
-inline void uCnsIK::uCnsJoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsIK::uCnsJoint::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uCnsIK::uCnsJoint::adjust(uModel::Joint* pJoint, uModel* pModel) {

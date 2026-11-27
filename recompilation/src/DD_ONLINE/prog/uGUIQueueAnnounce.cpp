@@ -20,10 +20,6 @@ const MtDTI& uGUIQueueAnnounce::getDTI() const {
     return uGUIQueueAnnounce::DTI;
 }
 
-inline void uGUIQueueAnnounce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQueueAnnounce::DTI)->memFree(p_addr);
-}
-
 uGUIQueueAnnounce::~uGUIQueueAnnounce() {
     if (mpGUIRes == nullptr) {
         return;

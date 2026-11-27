@@ -178,3 +178,15 @@ inline void rkThinkData::destruct() {
 inline void* rkThinkData::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rkThinkData::DTI)->memAlloc(sz, align, rkThinkData::DTI.getID());
 }
+
+inline MtAllocator* kTHINKDATA::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::kTHINKDATA::DTI);
+}
+
+inline void* kTHINKDATA::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::kTHINKDATA::DTI)->memAlloc(sz, align, ::kTHINKDATA::DTI.::MtDTI::getID());
+}
+
+inline void rkThinkData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rkThinkData::DTI)->memFree(p_addr);
+}

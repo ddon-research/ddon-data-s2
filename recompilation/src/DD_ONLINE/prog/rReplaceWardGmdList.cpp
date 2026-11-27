@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rReplaceWardGmdList.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cResPath.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -17,14 +15,6 @@ const MtDTI& cReplaceWardGmdList::getDTI() const {
     return cReplaceWardGmdList::DTI;
 }
 
-inline void* cReplaceWardGmdList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cReplaceWardGmdList::DTI)->memAlloc(sz, align, cReplaceWardGmdList::DTI.getID());
-}
-
-inline void cReplaceWardGmdList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cReplaceWardGmdList::DTI)->memFree(p_addr);
-}
-
 inline cReplaceWardGmdList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cReplaceWardGmdList::MyDTI cReplaceWardGmdList::DTI("cReplaceWardGmdList", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -35,14 +25,6 @@ MtObject* cReplaceWardGmdList::MyDTI::newInstance() const {
 
 const MtDTI& rReplaceWardGmdList::getDTI() const {
     return rReplaceWardGmdList::DTI;
-}
-
-inline void* rReplaceWardGmdList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rReplaceWardGmdList::DTI)->memAlloc(sz, align, rReplaceWardGmdList::DTI.getID());
-}
-
-inline void rReplaceWardGmdList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rReplaceWardGmdList::DTI)->memFree(p_addr);
 }
 
 bool rReplaceWardGmdList::loadData(MtDataReader& r, cReplaceWardGmdList* pData) {

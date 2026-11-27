@@ -27,6 +27,7 @@ class cMenuSupportMenu;
 namespace nMenu { struct MENU_PARTS; }
 namespace nNet { struct stEntryBoardItemInfo; }
 class uGUIDialogTextBox;
+class uGUIEntryBoardRecruit;
 
 // Declarations
 class cMenuContentsExecutor;
@@ -297,6 +298,7 @@ public:
 
 class cMenuEntryBoardItem : public cMenuBase
 {
+    friend class uGUIEntryBoardRecruit;
 public:
     enum TYPE
     {
@@ -1189,4 +1191,124 @@ inline void* cMenuStartEntryBoardItem::operator new(size_t sz, void* p_addr) {
 }
 
 inline cMenuStartEntryBoardItem::cMenuStartEntryBoardItem() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cMenuContentsExecutor::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuContentsExecutor::DTI)->memAlloc(sz, align, ::cMenuContentsExecutor::DTI.::MtDTI::getID());
+}
+
+inline void cMenuContentsExecutor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuContentsExecutor::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuCreateEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuCreateEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuCreateEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuCreateEntryBoardItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuCreateEntryBoardItem::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditCommentEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditCommentEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuEditCommentEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuEntryBoardInvite::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardInvite::DTI)->memAlloc(sz, align, ::cMenuEntryBoardInvite::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuEntryBoardItemList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardItemList::DTI)->memAlloc(sz, align, ::cMenuEntryBoardItemList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEntryBoardItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardItemList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEntryBoardMember::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardMember::DTI)->memAlloc(sz, align, ::cMenuEntryBoardMember::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEntryBoardMember::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardMember::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEntryBoardRecruit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardRecruit::DTI)->memAlloc(sz, align, ::cMenuEntryBoardRecruit::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEntryBoardRecruit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEntryBoardRecruit::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuExtendEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuExtendEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuExtendEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuExtendEntryBoardItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuExtendEntryBoardItem::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuGetEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuGetEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuGetEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuGetEntryBoardItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuGetEntryBoardItem::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuInviteEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuInviteEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuInviteEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuInviteEntryBoardItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuInviteEntryBoardItem::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuJoinEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuJoinEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuJoinEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuLeaveEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuLeaveEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuLeaveEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuReadyEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuReadyEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuReadyEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuReadyEntryBoardItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuReadyEntryBoardItem::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuRecreateEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuRecreateEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuRecreateEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuRecreateEntryBoardItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuRecreateEntryBoardItem::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuReleasePassEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuReleasePassEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuReleasePassEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuReleasePassEntryBoardItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuReleasePassEntryBoardItem::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuStartEntryBoardItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuStartEntryBoardItem::DTI)->memAlloc(sz, align, ::cMenuStartEntryBoardItem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuStartEntryBoardItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuStartEntryBoardItem::DTI)->memFree(p_addr);
 }

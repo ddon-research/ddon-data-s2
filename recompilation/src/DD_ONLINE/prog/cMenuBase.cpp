@@ -27,6 +27,7 @@
 #include "Protocol/UserSession/S2C.h"
 #include "Protocol/PacketData/Server.h"
 #include "Protocol/PacketData/SupportPoint.h"
+#include "aMenu.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cCharacterData.h"
@@ -69,6 +70,7 @@
 #include "../../XFramework/rGUIMessage.h"
 #include "rItemList.h"
 #include "rKeyConfigTextTable.h"
+#include "../../XFramework/rSoundRequest.h"
 #include "sAIPawnSys.h"
 #include "sAIPawnTalkMgr.h"
 #include "sArchiveManager.h"
@@ -96,6 +98,7 @@
 #include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
 #include "../../XFramework/sRender.h"
+#include "sReward.h"
 #include "../../XFramework/sSavedata.h"
 #include "sSavedataExt.h"
 #include "../../XFramework/sSound.h"
@@ -108,25 +111,39 @@
 #include "uControlNpc.h"
 #include "uDDOModel.h"
 #include "uGUIAreaMaster.h"
+#include "uGUIArisenCard.h"
 #include "uGUIBase.h"
 #include "uGUIBaseExt.h"
+#include "uGUIBazaar.h"
 #include "uGUIBoughtBox.h"
 #include "uGUIBoxGachaInfo.h"
 #include "uGUICharacterEditPopCard.h"
 #include "uGUICommunityList.h"
 #include "uGUICraft.h"
 #include "uGUIDialogTextBox.h"
+#include "uGUIFreeGroupChat.h"
 #include "uGUIGPShop.h"
 #include "uGUIGPShopDialog.h"
 #include "uGUIKeyConfig.h"
+#include "uGUIMail.h"
+#include "uGUIMailDetail.h"
 #include "uGUIMenuAreaInfo.h"
 #include "uGUINewspaper.h"
 #include "uGUIOption.h"
+#include "uGUIPartyList.h"
+#include "uGUIPawnReview.h"
 #include "uGUIPopCmd01.h"
 #include "uGUIPopFilter.h"
+#include "uGUIPopPartyList.h"
+#include "uGUIPopPartyMember.h"
+#include "uGUIPopPawnList.h"
+#include "uGUIPopPawnPoint.h"
+#include "uGUIPopProfile.h"
 #include "uGUIPopTopSel.h"
 #include "uGUIRankUp.h"
 #include "uGUIRetry.h"
+#include "uGUIRimStone.h"
+#include "uGUIServerSelect.h"
 #include "uGUISystemMsg.h"
 #include "uHuman.h"
 #include "uPlayer.h"
@@ -248,18 +265,6 @@ const MtDTI& cMenuActiveList::getDTI() const {
     return cMenuActiveList::DTI;
 }
 
-inline MtAllocator* cMenuActiveList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cMenuActiveList::DTI);
-}
-
-inline void* cMenuActiveList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuActiveList::DTI)->memAlloc(sz, align, cMenuActiveList::DTI.getID());
-}
-
-inline void cMenuActiveList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuActiveList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuActiveList::initActiveList(uGUIBase* pRefGUI, s32 type, nCharacterData::stCharacterName* pDstName, u32* pCharacterId, CommunityCharacterBaseInfoVec* pExcludeList) {
     DDON_STUB("cMenuActiveList::initActiveList")
     /* stub */
@@ -306,10 +311,6 @@ const MtDTI& cMenuApplyFriend::getDTI() const {
     return cMenuApplyFriend::DTI;
 }
 
-inline void* cMenuApplyFriend::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuApplyFriend::DTI)->memAlloc(sz, align, cMenuApplyFriend::DTI.getID());
-}
-
 cMenuApplyFriend::~cMenuApplyFriend() {
 }
 
@@ -340,10 +341,6 @@ const MtDTI& cMenuApproveFriend::getDTI() const {
     return cMenuApproveFriend::DTI;
 }
 
-inline void* cMenuApproveFriend::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuApproveFriend::DTI)->memAlloc(sz, align, cMenuApproveFriend::DTI.getID());
-}
-
 cMenuApproveFriend::~cMenuApproveFriend() {
 }
 
@@ -372,14 +369,6 @@ MtObject* cMenuApproveFriend::MyDTI::newInstance() const {
 
 const MtDTI& cMenuAreaMaster::getDTI() const {
     return cMenuAreaMaster::DTI;
-}
-
-inline void* cMenuAreaMaster::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuAreaMaster::DTI)->memAlloc(sz, align, cMenuAreaMaster::DTI.getID());
-}
-
-inline void cMenuAreaMaster::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuAreaMaster::DTI)->memFree(p_addr);
 }
 
 cMenuAreaMaster::cMenuAreaMaster() {
@@ -441,14 +430,6 @@ const MtDTI& cMenuAreaMasterHistory::getDTI() const {
     return cMenuAreaMasterHistory::DTI;
 }
 
-inline void* cMenuAreaMasterHistory::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuAreaMasterHistory::DTI)->memAlloc(sz, align, cMenuAreaMasterHistory::DTI.getID());
-}
-
-inline void cMenuAreaMasterHistory::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuAreaMasterHistory::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterHistory::moveAreaMasterHistory() {
     DDON_STUB("cMenuAreaMasterHistory::moveAreaMasterHistory")
     return {};
@@ -466,14 +447,6 @@ const MtDTI& cMenuAreaMasterQuestInfo::getDTI() const {
     return cMenuAreaMasterQuestInfo::DTI;
 }
 
-inline void* cMenuAreaMasterQuestInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuAreaMasterQuestInfo::DTI)->memAlloc(sz, align, cMenuAreaMasterQuestInfo::DTI.getID());
-}
-
-inline void cMenuAreaMasterQuestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuAreaMasterQuestInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterQuestInfo::moveAreaMasterQuestInfo() {
     DDON_STUB("cMenuAreaMasterQuestInfo::moveAreaMasterQuestInfo")
     return {};
@@ -489,14 +462,6 @@ MtObject* cMenuAreaMasterQuestInfo::MyDTI::newInstance() const {
 
 const MtDTI& cMenuAreaMasterRankUp::getDTI() const {
     return cMenuAreaMasterRankUp::DTI;
-}
-
-inline void* cMenuAreaMasterRankUp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuAreaMasterRankUp::DTI)->memAlloc(sz, align, cMenuAreaMasterRankUp::DTI.getID());
-}
-
-inline void cMenuAreaMasterRankUp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuAreaMasterRankUp::DTI)->memFree(p_addr);
 }
 
 cMenuAreaMasterRankUp::cMenuAreaMasterRankUp() {
@@ -543,14 +508,6 @@ const MtDTI& cMenuAreaMasterSpotInfo::getDTI() const {
     return cMenuAreaMasterSpotInfo::DTI;
 }
 
-inline void* cMenuAreaMasterSpotInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuAreaMasterSpotInfo::DTI)->memAlloc(sz, align, cMenuAreaMasterSpotInfo::DTI.getID());
-}
-
-inline void cMenuAreaMasterSpotInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuAreaMasterSpotInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterSpotInfo::moveAreaMasterSpotInfo() {
     DDON_STUB("cMenuAreaMasterSpotInfo::moveAreaMasterSpotInfo")
     return {};
@@ -566,14 +523,6 @@ MtObject* cMenuAreaMasterSpotInfo::MyDTI::newInstance() const {
 
 const MtDTI& cMenuAreaMasterSupplies::getDTI() const {
     return cMenuAreaMasterSupplies::DTI;
-}
-
-inline void* cMenuAreaMasterSupplies::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuAreaMasterSupplies::DTI)->memAlloc(sz, align, cMenuAreaMasterSupplies::DTI.getID());
-}
-
-inline void cMenuAreaMasterSupplies::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuAreaMasterSupplies::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuAreaMasterSupplies::moveAreaMasterSupplies() {
@@ -593,17 +542,26 @@ const MtDTI& cMenuBaggageMenu::getDTI() const {
     return cMenuBaggageMenu::DTI;
 }
 
-inline void* cMenuBaggageMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuBaggageMenu::DTI)->memAlloc(sz, align, cMenuBaggageMenu::DTI.getID());
-}
-
-inline void cMenuBaggageMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuBaggageMenu::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuBaggageMenu::initBaggageMenu() {
-    DDON_STUB("cMenuBaggageMenu::initBaggageMenu")
-    /* stub */
+    initMenu();
+    mMenuRno[BAGGAGE_RNO_BASE] = RNO_INIT;
+    mpGUIGPShop = nullptr;
+    mpGUIItemBaggage = nullptr;
+    mLeftStorage = nItem::STORAGE_TYPE_BAGGAGE_FREE;
+    mRightStorage = nItem::STORAGE_TYPE_BAG_USE;
+    setupSupportMenu(BAGGAGE_MAX, false, true);
+    const u32 menu_1_tbl[2] = { 5, 6 };
+    for (u32 i = 0; i < 2; ++i) {
+        addMenuList(menu_1_tbl[i]);
+    }
+    uGUIPopTopSel* const pGUI = new (16u) uGUIPopTopSel(false, 0);
+    if (pGUI != nullptr) {
+        *reinterpret_cast<u32*>(reinterpret_cast<char*>(pGUI) + 0xa94) = uGUIPopTopSel::MODE_BAGGAGE;
+        static_cast<sGUIExt*>(sGUI::getInstance())->setSingletonMenu(pGUI);
+        mpGUIMenu = pGUI;
+        mUseGUIMenu = true;
+        static_cast<sGUIExt*>(sGUI::getInstance())->createShopTitle(sGUIExt::SHOPTITLE_TYPE::DEPOSITBOX, sGUIExt::SHOPTITLE_TYPE::GOLD);
+    }
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuBaggageMenu::moveBaggageMenu() {
@@ -628,14 +586,6 @@ MtObject* cMenuBaggageMenu::MyDTI::newInstance() const {
 
 const MtDTI& cMenuBase::getDTI() const {
     return cMenuBase::DTI;
-}
-
-inline void* cMenuBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuBase::DTI)->memAlloc(sz, align, cMenuBase::DTI.getID());
-}
-
-inline void cMenuBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuBase::DTI)->memFree(p_addr);
 }
 
 cMenuBase::cMenuBase() {
@@ -708,9 +658,30 @@ MtUI* cMenuBase::createUI(MtProperty& prop) {
 __attribute__((weak)) void cMenuBase::createProperty(MtPropertyList& s) {
 }
 
-__attribute__((weak)) void cMenuBase::updatePtr() {
-    DDON_STUB("cMenuBase::updatePtr")
-    /* stub */
+void cMenuBase::updatePtr() {
+    if (mpGUIMenu != nullptr) {
+        if (!mpGUIMenu->isEnable()) {
+            mpGUIMenu = nullptr;
+        }
+    }
+    if (mpRefGUI != nullptr) {
+        if (!mpRefGUI->isEnable()) {
+            mpRefGUI = nullptr;
+        }
+    }
+    if (mpGUISystemMsg != nullptr) {
+        if (!mpGUISystemMsg->isEnable()) {
+            mpGUISystemMsg = nullptr;
+        }
+    }
+    if (mMenuSupportList.mLength == 0) {
+        return;
+    }
+    u32 i = 0;
+    do {
+        static_cast<cMenuSupport*>(mMenuSupportList.getBuffer()[static_cast<int>(i)])->updatePtr();
+        i += 1u;
+    } while (i < mMenuSupportList.mLength);
 }
 
 bool cMenuBase::isMove() {
@@ -1098,25 +1069,11 @@ __attribute__((weak)) cMenuSupportMenu* cMenuBase::setupSupportMenu(u32 menuMax,
     return nullptr;
 }
 
-inline void cMenuBase::updateSupportMenu() {
-    if (mpMenu == nullptr) {
-        return;
-    }
-    mpMenu->updateMenu();
-}
-
 void cMenuBase::moveSupportMenu(s32 cursorOrderId) {
     if (mpMenu == nullptr) {
         return;
     }
     mpMenu->moveMenu(cursorOrderId);
-}
-
-inline void cMenuBase::clearMenuList() {
-    if (mpMenu == nullptr) {
-        return;
-    }
-    mpMenu->mMenuNum = 0;
 }
 
 void cMenuBase::createMenuListTbl(const s32* pTbl, u32 menuNum) {
@@ -1183,14 +1140,6 @@ const MtDTI& cMenuBazaarBuy::getDTI() const {
     return cMenuBazaarBuy::DTI;
 }
 
-inline void* cMenuBazaarBuy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuBazaarBuy::DTI)->memAlloc(sz, align, cMenuBazaarBuy::DTI.getID());
-}
-
-inline void cMenuBazaarBuy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuBazaarBuy::DTI)->memFree(p_addr);
-}
-
 inline cMenuBazaarBuy::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuBazaarBuy::MyDTI cMenuBazaarBuy::DTI("cMenuBazaarBuy", &::cMenuBase::DTI, 176ul, 0u, 0u);
@@ -1203,17 +1152,16 @@ const MtDTI& cMenuBazaarMenu::getDTI() const {
     return cMenuBazaarMenu::DTI;
 }
 
-inline void* cMenuBazaarMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuBazaarMenu::DTI)->memAlloc(sz, align, cMenuBazaarMenu::DTI.getID());
-}
-
-inline void cMenuBazaarMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuBazaarMenu::DTI)->memFree(p_addr);
-}
-
-__attribute__((weak)) void cMenuBazaarMenu::initBazaarMenu() {
-    DDON_STUB("cMenuBazaarMenu::initBazaarMenu")
-    /* stub */
+void cMenuBazaarMenu::initBazaarMenu() {
+    initMenu();
+    mMenuRno[0] = 0;
+    mMenuCursor[0] = 0;
+    mMenuCursor[1] = 0;
+    mMenuCursor[2] = 0;
+    if ((mpGUIMenu = static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(static_cast<const MtDTI*>(&uGUIBazaar::DTI))) == nullptr) {
+        return;
+    }
+    mUseGUIMenu = true;
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuBazaarMenu::moveBazaarMenu() {
@@ -1231,14 +1179,6 @@ MtObject* cMenuBazaarMenu::MyDTI::newInstance() const {
 
 const MtDTI& cMenuBlackList::getDTI() const {
     return cMenuBlackList::DTI;
-}
-
-inline void* cMenuBlackList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuBlackList::DTI)->memAlloc(sz, align, cMenuBlackList::DTI.getID());
-}
-
-inline void cMenuBlackList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuBlackList::DTI)->memFree(p_addr);
 }
 
 void cMenuBlackList::initBlackList(uGUIBase* pRefGUI) {
@@ -1270,14 +1210,6 @@ MtObject* cMenuBlackList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuBreakupParty::getDTI() const {
     return cMenuBreakupParty::DTI;
-}
-
-inline void* cMenuBreakupParty::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuBreakupParty::DTI)->memAlloc(sz, align, cMenuBreakupParty::DTI.getID());
-}
-
-inline void cMenuBreakupParty::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuBreakupParty::DTI)->memFree(p_addr);
 }
 
 nMenu::MENU_RET cMenuBreakupParty::moveBreakupParty() {
@@ -1370,10 +1302,6 @@ const MtDTI& cMenuCancelFriend::getDTI() const {
     return cMenuCancelFriend::DTI;
 }
 
-inline void* cMenuCancelFriend::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCancelFriend::DTI)->memAlloc(sz, align, cMenuCancelFriend::DTI.getID());
-}
-
 cMenuCancelFriend::~cMenuCancelFriend() {
 }
 
@@ -1448,14 +1376,6 @@ const MtDTI& cMenuChangeServer::getDTI() const {
     return cMenuChangeServer::DTI;
 }
 
-inline void* cMenuChangeServer::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuChangeServer::DTI)->memAlloc(sz, align, cMenuChangeServer::DTI.getID());
-}
-
-inline void cMenuChangeServer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuChangeServer::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuChangeServer::moveChangeServer() {
     DDON_STUB("cMenuChangeServer::moveChangeServer")
     return {};
@@ -1475,14 +1395,6 @@ MtObject* cMenuChangeServer::MyDTI::newInstance() const {
 
 const MtDTI& cMenuCharacterList::getDTI() const {
     return cMenuCharacterList::DTI;
-}
-
-inline void* cMenuCharacterList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCharacterList::DTI)->memAlloc(sz, align, cMenuCharacterList::DTI.getID());
-}
-
-inline void cMenuCharacterList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCharacterList::DTI)->memFree(p_addr);
 }
 
 void cMenuCharacterList::initCharacterList(uGUIBase* pGUIRefMenu) {
@@ -1528,10 +1440,6 @@ const MtDTI& cMenuCraftColorFrame::getDTI() const {
     return cMenuCraftColorFrame::DTI;
 }
 
-inline void cMenuCraftColorFrame::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftColorFrame::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftColorFrame::moveCraftColorFrame(u32* slotNo) {
     DDON_STUB("cMenuCraftColorFrame::moveCraftColorFrame")
     return {};
@@ -1550,10 +1458,6 @@ const MtDTI& cMenuCraftColorFrame::cMenuCtrl::getDTI() const {
     return cMenuCraftColorFrame::cMenuCtrl::DTI;
 }
 
-inline void cMenuCraftColorFrame::cMenuCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftColorFrame::cMenuCtrl::DTI)->memFree(p_addr);
-}
-
 inline cMenuCraftColorFrame::cMenuCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuCraftColorFrame::cMenuCtrl::MyDTI cMenuCraftColorFrame::cMenuCtrl::DTI("cMenuCraftColorFrame::cMenuCtrl", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -1565,14 +1469,6 @@ __attribute__((weak)) MtObject* cMenuCraftColorFrame::cMenuCtrl::MyDTI::newInsta
 
 const MtDTI& cMenuCraftColorItem::getDTI() const {
     return cMenuCraftColorItem::DTI;
-}
-
-inline void* cMenuCraftColorItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftColorItem::DTI)->memAlloc(sz, align, cMenuCraftColorItem::DTI.getID());
-}
-
-inline void cMenuCraftColorItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftColorItem::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftColorItem::moveCraftColorItem() {
@@ -1592,14 +1488,6 @@ const MtDTI& cMenuCraftCreateItem::getDTI() const {
     return cMenuCraftCreateItem::DTI;
 }
 
-inline void* cMenuCraftCreateItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftCreateItem::DTI)->memAlloc(sz, align, cMenuCraftCreateItem::DTI.getID());
-}
-
-inline void cMenuCraftCreateItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftCreateItem::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftCreateItem::moveCraftCreateItem() {
     DDON_STUB("cMenuCraftCreateItem::moveCraftCreateItem")
     return {};
@@ -1615,10 +1503,6 @@ MtObject* cMenuCraftCreateItem::MyDTI::newInstance() const {
 
 const MtDTI& cMenuCraftElementFrame::getDTI() const {
     return cMenuCraftElementFrame::DTI;
-}
-
-inline void cMenuCraftElementFrame::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftElementFrame::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftElementFrame::moveCraftElementFrame(u32* slotNo) {
@@ -1639,10 +1523,6 @@ const MtDTI& cMenuCraftElementFrame::cMenuCtrl::getDTI() const {
     return cMenuCraftElementFrame::cMenuCtrl::DTI;
 }
 
-inline void cMenuCraftElementFrame::cMenuCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftElementFrame::cMenuCtrl::DTI)->memFree(p_addr);
-}
-
 inline cMenuCraftElementFrame::cMenuCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuCraftElementFrame::cMenuCtrl::MyDTI cMenuCraftElementFrame::cMenuCtrl::DTI("cMenuCraftElementFrame::cMenuCtrl", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -1654,14 +1534,6 @@ __attribute__((weak)) MtObject* cMenuCraftElementFrame::cMenuCtrl::MyDTI::newIns
 
 const MtDTI& cMenuCraftElementItem::getDTI() const {
     return cMenuCraftElementItem::DTI;
-}
-
-inline void* cMenuCraftElementItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftElementItem::DTI)->memAlloc(sz, align, cMenuCraftElementItem::DTI.getID());
-}
-
-inline void cMenuCraftElementItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftElementItem::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftElementItem::moveCraftElementItem() {
@@ -1681,14 +1553,6 @@ const MtDTI& cMenuCraftGoldStoneDialog::getDTI() const {
     return cMenuCraftGoldStoneDialog::DTI;
 }
 
-inline void* cMenuCraftGoldStoneDialog::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftGoldStoneDialog::DTI)->memAlloc(sz, align, cMenuCraftGoldStoneDialog::DTI.getID());
-}
-
-inline void cMenuCraftGoldStoneDialog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftGoldStoneDialog::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftGoldStoneDialog::moveCraftGoldStoneDialog(s32* selectType) {
     DDON_STUB("cMenuCraftGoldStoneDialog::moveCraftGoldStoneDialog")
     return {};
@@ -1706,14 +1570,6 @@ const MtDTI& cMenuCraftItemSelect::getDTI() const {
     return cMenuCraftItemSelect::DTI;
 }
 
-inline void* cMenuCraftItemSelect::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftItemSelect::DTI)->memAlloc(sz, align, cMenuCraftItemSelect::DTI.getID());
-}
-
-inline void cMenuCraftItemSelect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftItemSelect::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftItemSelect::moveCraftItemSelect() {
     DDON_STUB("cMenuCraftItemSelect::moveCraftItemSelect")
     return {};
@@ -1729,14 +1585,6 @@ MtObject* cMenuCraftItemSelect::MyDTI::newInstance() const {
 
 const MtDTI& cMenuCraftMenu::getDTI() const {
     return cMenuCraftMenu::DTI;
-}
-
-inline void* cMenuCraftMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftMenu::DTI)->memAlloc(sz, align, cMenuCraftMenu::DTI.getID());
-}
-
-inline void cMenuCraftMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftMenu::DTI)->memFree(p_addr);
 }
 
 void cMenuCraftMenu::initCraftMenu() {
@@ -1775,14 +1623,6 @@ const MtDTI& cMenuCraftMyPawnList::getDTI() const {
     return cMenuCraftMyPawnList::DTI;
 }
 
-inline void* cMenuCraftMyPawnList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftMyPawnList::DTI)->memAlloc(sz, align, cMenuCraftMyPawnList::DTI.getID());
-}
-
-inline void cMenuCraftMyPawnList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftMyPawnList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftMyPawnList::moveCraftMyPawnList() {
     DDON_STUB("cMenuCraftMyPawnList::moveCraftMyPawnList")
     return {};
@@ -1800,14 +1640,6 @@ const MtDTI& cMenuCraftPoint::getDTI() const {
     return cMenuCraftPoint::DTI;
 }
 
-inline void* cMenuCraftPoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftPoint::DTI)->memAlloc(sz, align, cMenuCraftPoint::DTI.getID());
-}
-
-inline void cMenuCraftPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftPoint::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftPoint::moveCraftPoint() {
     DDON_STUB("cMenuCraftPoint::moveCraftPoint")
     return {};
@@ -1823,14 +1655,6 @@ MtObject* cMenuCraftPoint::MyDTI::newInstance() const {
 
 const MtDTI& cMenuCraftProcessMenu::getDTI() const {
     return cMenuCraftProcessMenu::DTI;
-}
-
-inline void* cMenuCraftProcessMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftProcessMenu::DTI)->memAlloc(sz, align, cMenuCraftProcessMenu::DTI.getID());
-}
-
-inline void cMenuCraftProcessMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftProcessMenu::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftProcessMenu::moveCraftProcessMenu(u32* slotNo) {
@@ -1855,14 +1679,6 @@ const MtDTI& cMenuCraftRecipeList::getDTI() const {
     return cMenuCraftRecipeList::DTI;
 }
 
-inline void* cMenuCraftRecipeList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftRecipeList::DTI)->memAlloc(sz, align, cMenuCraftRecipeList::DTI.getID());
-}
-
-inline void cMenuCraftRecipeList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftRecipeList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftRecipeList::moveCraftRecipeList() {
     DDON_STUB("cMenuCraftRecipeList::moveCraftRecipeList")
     return {};
@@ -1873,9 +1689,37 @@ __attribute__((weak)) cMenuCraftMenu::CREATE_STATE cMenuCraftRecipeList::isCreat
     return {};
 }
 
-__attribute__((weak)) void cMenuCraftRecipeList::errorAnnounce(cMenuCraftMenu::CREATE_STATE state) {
-    DDON_STUB("cMenuCraftRecipeList::errorAnnounce")
-    /* stub */
+void cMenuCraftRecipeList::errorAnnounce(cMenuCraftMenu::CREATE_STATE state) {
+    switch (static_cast<unsigned int>(state - 1)) {
+        case 0:
+        {
+            sGUI* t0 = sGUI::getInstance();
+            static_cast<sGUIExt*>(t0)->requestAnnounce(static_cast<sGUIExt*>(t0)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t0)->getMsgCommonDialog(), 327u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+            break;
+        }
+        case 1:
+        {
+            sGUI* t1 = sGUI::getInstance();
+            static_cast<sGUIExt*>(t1)->requestAnnounce(static_cast<sGUIExt*>(t1)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t1)->getMsgCommonDialog(), 328u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+            break;
+        }
+        case 2:
+        {
+            sGUI* t2 = sGUI::getInstance();
+            static_cast<sGUIExt*>(t2)->requestAnnounce(static_cast<sGUIExt*>(t2)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t2)->getMsgCommonDialog(), 329u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+            break;
+        }
+        case 3:
+        {
+            sGUI* t3 = sGUI::getInstance();
+            static_cast<sGUIExt*>(t3)->requestAnnounce(static_cast<sGUIExt*>(t3)->getMsgFromIdxInfo(static_cast<sGUIExt*>(t3)->getMsgCommonDialog(), 330u), 1u, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr), 0u, 0u, true);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 inline cMenuCraftRecipeList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1888,10 +1732,6 @@ MtObject* cMenuCraftRecipeList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuCraftSupportFrame::getDTI() const {
     return cMenuCraftSupportFrame::DTI;
-}
-
-inline void cMenuCraftSupportFrame::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftSupportFrame::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftSupportFrame::moveCraftSupportFrame(u32* slotNo) {
@@ -1912,10 +1752,6 @@ const MtDTI& cMenuCraftSupportFrame::cMenuCtrl::getDTI() const {
     return cMenuCraftSupportFrame::cMenuCtrl::DTI;
 }
 
-inline void cMenuCraftSupportFrame::cMenuCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftSupportFrame::cMenuCtrl::DTI)->memFree(p_addr);
-}
-
 inline cMenuCraftSupportFrame::cMenuCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuCraftSupportFrame::cMenuCtrl::MyDTI cMenuCraftSupportFrame::cMenuCtrl::DTI("cMenuCraftSupportFrame::cMenuCtrl", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -1929,14 +1765,6 @@ const MtDTI& cMenuCraftSupportList::getDTI() const {
     return cMenuCraftSupportList::DTI;
 }
 
-inline void* cMenuCraftSupportList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftSupportList::DTI)->memAlloc(sz, align, cMenuCraftSupportList::DTI.getID());
-}
-
-inline void cMenuCraftSupportList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftSupportList::DTI)->memFree(p_addr);
-}
-
 inline cMenuCraftSupportList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuCraftSupportList::MyDTI cMenuCraftSupportList::DTI("cMenuCraftSupportList", &::cMenuBase::DTI, 184ul, 0u, 0u);
@@ -1947,14 +1775,6 @@ MtObject* cMenuCraftSupportList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuCraftTask::getDTI() const {
     return cMenuCraftTask::DTI;
-}
-
-inline void* cMenuCraftTask::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftTask::DTI)->memAlloc(sz, align, cMenuCraftTask::DTI.getID());
-}
-
-inline void cMenuCraftTask::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftTask::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftTask::moveCraftTask() {
@@ -1974,14 +1794,6 @@ const MtDTI& cMenuCraftUpGradeItem::getDTI() const {
     return cMenuCraftUpGradeItem::DTI;
 }
 
-inline void* cMenuCraftUpGradeItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftUpGradeItem::DTI)->memAlloc(sz, align, cMenuCraftUpGradeItem::DTI.getID());
-}
-
-inline void cMenuCraftUpGradeItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftUpGradeItem::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftUpGradeItem::moveCraftUpGradeItem() {
     DDON_STUB("cMenuCraftUpGradeItem::moveCraftUpGradeItem")
     return {};
@@ -1999,14 +1811,6 @@ const MtDTI& cMenuCraftUpGradeList::getDTI() const {
     return cMenuCraftUpGradeList::DTI;
 }
 
-inline void* cMenuCraftUpGradeList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCraftUpGradeList::DTI)->memAlloc(sz, align, cMenuCraftUpGradeList::DTI.getID());
-}
-
-inline void cMenuCraftUpGradeList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCraftUpGradeList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuCraftUpGradeList::moveCraftUpGradeList() {
     DDON_STUB("cMenuCraftUpGradeList::moveCraftUpGradeList")
     return {};
@@ -2022,14 +1826,6 @@ MtObject* cMenuCraftUpGradeList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuCreateGameSession::getDTI() const {
     return cMenuCreateGameSession::DTI;
-}
-
-inline void* cMenuCreateGameSession::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCreateGameSession::DTI)->memAlloc(sz, align, cMenuCreateGameSession::DTI.getID());
-}
-
-inline void cMenuCreateGameSession::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuCreateGameSession::DTI)->memFree(p_addr);
 }
 
 void cMenuCreateGameSession::initCreateGameSession(s32 type) {
@@ -2054,10 +1850,6 @@ MtObject* cMenuCreateGameSession::MyDTI::newInstance() const {
 
 const MtDTI& cMenuCustomize::getDTI() const {
     return cMenuCustomize::DTI;
-}
-
-inline void* cMenuCustomize::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuCustomize::DTI)->memAlloc(sz, align, cMenuCustomize::DTI.getID());
 }
 
 cMenuCustomize::~cMenuCustomize() {
@@ -2087,14 +1879,6 @@ const MtDTI& cMenuDispStatus::getDTI() const {
     return cMenuDispStatus::DTI;
 }
 
-inline void* cMenuDispStatus::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuDispStatus::DTI)->memAlloc(sz, align, cMenuDispStatus::DTI.getID());
-}
-
-inline void cMenuDispStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuDispStatus::DTI)->memFree(p_addr);
-}
-
 cMenuDispStatus::~cMenuDispStatus() {
 }
 
@@ -2103,9 +1887,34 @@ __attribute__((weak)) void cMenuDispStatus::initDispStatus(s32 dispType, const c
     /* stub */
 }
 
-__attribute__((weak)) void cMenuDispStatus::initDispStatus(s32 dispType, s32 charType, s32 masterId, s32 pawnType, u32 prio, bool isChatSubMenu) {
-    DDON_STUB("cMenuDispStatus::initDispStatus")
-    /* stub */
+void cMenuDispStatus::initDispStatus(s32 dispType, s32 charType, s32 masterId, s32 pawnType, u32 prio, bool isChatSubMenu) {
+    initMenu();
+    mMasterId = 0;
+    mPawnType = 0;
+    mDispType = 0;
+    mCharType = 0;
+    mContext.cContextInstHm::reset();
+    mpRefContext = &mContext;
+    mMenuCursor[0] = 0;
+    mMenuRno[0] = 0;
+    mIsMyPawn = false;
+    mIsPartyPawn = false;
+    mIsChatSubMenu = false;
+    mDispType = dispType;
+    mCharType = charType;
+    mMasterId = static_cast<u32>(masterId);
+    mPawnType = pawnType;
+    if (charType != 0) {
+        if (pawnType == 0) {
+            mIsMyPawn = true;
+        }
+    } else {
+        if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId == static_cast<unsigned int>(masterId)) {
+            mpRefContext = sContextManager::getInstance()->getContextMyPlayer();
+        }
+    }
+    mBasePointerPrio = prio;
+    mIsChatSubMenu = isChatSubMenu;
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuDispStatus::moveDispStatus() {
@@ -2123,14 +1932,6 @@ MtObject* cMenuDispStatus::MyDTI::newInstance() const {
 
 const MtDTI& cMenuEditBlackList::getDTI() const {
     return cMenuEditBlackList::DTI;
-}
-
-inline void* cMenuEditBlackList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuEditBlackList::DTI)->memAlloc(sz, align, cMenuEditBlackList::DTI.getID());
-}
-
-inline void cMenuEditBlackList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuEditBlackList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cMenuEditBlackList::~cMenuEditBlackList() {
@@ -2156,10 +1957,6 @@ MtObject* cMenuEditBlackList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuEditFavoritePawn::getDTI() const {
     return cMenuEditFavoritePawn::DTI;
-}
-
-inline void* cMenuEditFavoritePawn::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuEditFavoritePawn::DTI)->memAlloc(sz, align, cMenuEditFavoritePawn::DTI.getID());
 }
 
 cMenuEditFavoritePawn::~cMenuEditFavoritePawn() {
@@ -2260,14 +2057,6 @@ const MtDTI& cMenuEntryGameSession::getDTI() const {
     return cMenuEntryGameSession::DTI;
 }
 
-inline void* cMenuEntryGameSession::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuEntryGameSession::DTI)->memAlloc(sz, align, cMenuEntryGameSession::DTI.getID());
-}
-
-inline void cMenuEntryGameSession::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuEntryGameSession::DTI)->memFree(p_addr);
-}
-
 inline cMenuEntryGameSession::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuEntryGameSession::MyDTI cMenuEntryGameSession::DTI("cMenuEntryGameSession", &::cMenuBase::DTI, 184ul, 0u, 0u);
@@ -2278,10 +2067,6 @@ MtObject* cMenuEntryGameSession::MyDTI::newInstance() const {
 
 const MtDTI& cMenuFavoriteFriend::getDTI() const {
     return cMenuFavoriteFriend::DTI;
-}
-
-inline void* cMenuFavoriteFriend::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuFavoriteFriend::DTI)->memAlloc(sz, align, cMenuFavoriteFriend::DTI.getID());
 }
 
 cMenuFavoriteFriend::~cMenuFavoriteFriend() {
@@ -2314,14 +2099,6 @@ const MtDTI& cMenuFirstOption::getDTI() const {
     return cMenuFirstOption::DTI;
 }
 
-inline void* cMenuFirstOption::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuFirstOption::DTI)->memAlloc(sz, align, cMenuFirstOption::DTI.getID());
-}
-
-inline void cMenuFirstOption::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuFirstOption::DTI)->memFree(p_addr);
-}
-
 void cMenuFirstOption::initFirstOption() {
     initMenu();
     mMenuRno[0] = 0;
@@ -2347,18 +2124,6 @@ MtObject* cMenuFirstOption::MyDTI::newInstance() const {
 
 const MtDTI& cMenuFriendList::getDTI() const {
     return cMenuFriendList::DTI;
-}
-
-inline MtAllocator* cMenuFriendList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cMenuFriendList::DTI);
-}
-
-inline void* cMenuFriendList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuFriendList::DTI)->memAlloc(sz, align, cMenuFriendList::DTI.getID());
-}
-
-inline void cMenuFriendList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuFriendList::DTI)->memFree(p_addr);
 }
 
 void cMenuFriendList::exitMenu() {
@@ -2520,14 +2285,6 @@ const MtDTI& cMenuGetAreaMasterInfo::getDTI() const {
     return cMenuGetAreaMasterInfo::DTI;
 }
 
-inline void* cMenuGetAreaMasterInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetAreaMasterInfo::DTI)->memAlloc(sz, align, cMenuGetAreaMasterInfo::DTI.getID());
-}
-
-inline void cMenuGetAreaMasterInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetAreaMasterInfo::DTI)->memFree(p_addr);
-}
-
 inline cMenuGetAreaMasterInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuGetAreaMasterInfo::MyDTI cMenuGetAreaMasterInfo::DTI("cMenuGetAreaMasterInfo", &::cMenuBase::DTI, 200ul, 0u, 0u);
@@ -2540,14 +2297,6 @@ const MtDTI& cMenuGetBlackList::getDTI() const {
     return cMenuGetBlackList::DTI;
 }
 
-inline void* cMenuGetBlackList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetBlackList::DTI)->memAlloc(sz, align, cMenuGetBlackList::DTI.getID());
-}
-
-inline void cMenuGetBlackList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetBlackList::DTI)->memFree(p_addr);
-}
-
 inline cMenuGetBlackList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuGetBlackList::MyDTI cMenuGetBlackList::DTI("cMenuGetBlackList", &::cMenuBase::DTI, 176ul, 0u, 0u);
@@ -2558,14 +2307,6 @@ MtObject* cMenuGetBlackList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuGetCharacterName::getDTI() const {
     return cMenuGetCharacterName::DTI;
-}
-
-inline void* cMenuGetCharacterName::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetCharacterName::DTI)->memAlloc(sz, align, cMenuGetCharacterName::DTI.getID());
-}
-
-inline void cMenuGetCharacterName::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetCharacterName::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuGetCharacterName::moveGetCharacterName() {
@@ -2583,14 +2324,6 @@ MtObject* cMenuGetCharacterName::MyDTI::newInstance() const {
 
 const MtDTI& cMenuGetCraftRecipeToServer::getDTI() const {
     return cMenuGetCraftRecipeToServer::DTI;
-}
-
-inline void* cMenuGetCraftRecipeToServer::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetCraftRecipeToServer::DTI)->memAlloc(sz, align, cMenuGetCraftRecipeToServer::DTI.getID());
-}
-
-inline void cMenuGetCraftRecipeToServer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetCraftRecipeToServer::DTI)->memFree(p_addr);
 }
 
 nMenu::MENU_RET cMenuGetCraftRecipeToServer::moveGetCraftRecipeToServer() {
@@ -2711,14 +2444,6 @@ const MtDTI& cMenuGetFriendList::getDTI() const {
     return cMenuGetFriendList::DTI;
 }
 
-inline void* cMenuGetFriendList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetFriendList::DTI)->memAlloc(sz, align, cMenuGetFriendList::DTI.getID());
-}
-
-inline void cMenuGetFriendList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetFriendList::DTI)->memFree(p_addr);
-}
-
 inline cMenuGetFriendList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuGetFriendList::MyDTI cMenuGetFriendList::DTI("cMenuGetFriendList", &::cMenuBase::DTI, 176ul, 0u, 0u);
@@ -2729,14 +2454,6 @@ MtObject* cMenuGetFriendList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuGetItemBaggageListToServer::getDTI() const {
     return cMenuGetItemBaggageListToServer::DTI;
-}
-
-inline void* cMenuGetItemBaggageListToServer::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetItemBaggageListToServer::DTI)->memAlloc(sz, align, cMenuGetItemBaggageListToServer::DTI.getID());
-}
-
-inline void cMenuGetItemBaggageListToServer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetItemBaggageListToServer::DTI)->memFree(p_addr);
 }
 
 cMenuGetItemBaggageListToServer::~cMenuGetItemBaggageListToServer() {
@@ -2810,14 +2527,6 @@ const MtDTI& cMenuGetItemListToServer::getDTI() const {
     return cMenuGetItemListToServer::DTI;
 }
 
-inline void* cMenuGetItemListToServer::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetItemListToServer::DTI)->memAlloc(sz, align, cMenuGetItemListToServer::DTI.getID());
-}
-
-inline void cMenuGetItemListToServer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetItemListToServer::DTI)->memFree(p_addr);
-}
-
 cMenuGetItemListToServer::~cMenuGetItemListToServer() {
     if (mStorageList.mLength != 0) {
         u32 v0_0 = mStorageList.mLength;
@@ -2889,14 +2598,6 @@ const MtDTI& cMenuGetMailList::getDTI() const {
     return cMenuGetMailList::DTI;
 }
 
-inline void* cMenuGetMailList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetMailList::DTI)->memAlloc(sz, align, cMenuGetMailList::DTI.getID());
-}
-
-inline void cMenuGetMailList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetMailList::DTI)->memFree(p_addr);
-}
-
 void cMenuGetMailList::initGetMailList(bool newMailOnly) {
     initMenu();
     mMenuCursor[0] = 0;
@@ -2922,14 +2623,6 @@ const MtDTI& cMenuGetMatchingProfile::getDTI() const {
     return cMenuGetMatchingProfile::DTI;
 }
 
-inline void* cMenuGetMatchingProfile::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetMatchingProfile::DTI)->memAlloc(sz, align, cMenuGetMatchingProfile::DTI.getID());
-}
-
-inline void cMenuGetMatchingProfile::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetMatchingProfile::DTI)->memFree(p_addr);
-}
-
 void cMenuGetMatchingProfile::exitMenu() {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->clearGetMatchingProfilePacket();
     this->cMenuBase::exitMenu();
@@ -2945,14 +2638,6 @@ MtObject* cMenuGetMatchingProfile::MyDTI::newInstance() const {
 
 const MtDTI& cMenuGetOrbGainExtendParam::getDTI() const {
     return cMenuGetOrbGainExtendParam::DTI;
-}
-
-inline void* cMenuGetOrbGainExtendParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetOrbGainExtendParam::DTI)->memAlloc(sz, align, cMenuGetOrbGainExtendParam::DTI.getID());
-}
-
-inline void cMenuGetOrbGainExtendParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetOrbGainExtendParam::DTI)->memFree(p_addr);
 }
 
 void cMenuGetOrbGainExtendParam::initGetOrbGainExtendParam() {
@@ -2977,14 +2662,6 @@ const MtDTI& cMenuGetPawnName::getDTI() const {
     return cMenuGetPawnName::DTI;
 }
 
-inline void* cMenuGetPawnName::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetPawnName::DTI)->memAlloc(sz, align, cMenuGetPawnName::DTI.getID());
-}
-
-inline void cMenuGetPawnName::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetPawnName::DTI)->memFree(p_addr);
-}
-
 inline cMenuGetPawnName::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuGetPawnName::MyDTI cMenuGetPawnName::DTI("cMenuGetPawnName", &::cMenuBase::DTI, 200ul, 0u, 0u);
@@ -2997,14 +2674,6 @@ const MtDTI& cMenuGetRecentList::getDTI() const {
     return cMenuGetRecentList::DTI;
 }
 
-inline void* cMenuGetRecentList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGetRecentList::DTI)->memAlloc(sz, align, cMenuGetRecentList::DTI.getID());
-}
-
-inline void cMenuGetRecentList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGetRecentList::DTI)->memFree(p_addr);
-}
-
 inline cMenuGetRecentList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuGetRecentList::MyDTI cMenuGetRecentList::DTI("cMenuGetRecentList", &::cMenuBase::DTI, 176ul, 0u, 0u);
@@ -3015,14 +2684,6 @@ MtObject* cMenuGetRecentList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuGroupChatMemberList::getDTI() const {
     return cMenuGroupChatMemberList::DTI;
-}
-
-inline void* cMenuGroupChatMemberList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuGroupChatMemberList::DTI)->memAlloc(sz, align, cMenuGroupChatMemberList::DTI.getID());
-}
-
-inline void cMenuGroupChatMemberList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuGroupChatMemberList::DTI)->memFree(p_addr);
 }
 
 cMenuGroupChatMemberList::~cMenuGroupChatMemberList() {
@@ -3103,14 +2764,39 @@ void cMenuGroupChatMemberList::exitMenu() {
     this->cMenuBase::exitMenu();
 }
 
-__attribute__((weak)) void cMenuGroupChatMemberList::setPage(s32 page) {
-    DDON_STUB("cMenuGroupChatMemberList::setPage")
-    /* stub */
+void cMenuGroupChatMemberList::setPage(s32 page) {
+    if (static_cast<unsigned int>(page) < (((mSortListCount + 14u) <= 14u) ? 1ul : ((static_cast<unsigned long>(mSortListCount + 14u) * 0x88888889ul) >> 35))) {
+        mMenuCursor[1] = page;
+        mMenuNum = 0;
+        u32 v0_0 = mSortListCount;
+        unsigned int i0_1 = 0;
+        for (s32 v0_3 = page;;) {
+            if ((i0_1 + (v0_3 * 15)) >= v0_0) {
+                break;
+            } else {
+                u32 t0 = mMenuNum;
+                mMenuNum = t0 + 1u;
+                mMenuList[t0] = static_cast<int>(i0_1);
+                if ((i0_1 + 1u) > 14u) {
+                    break;
+                } else {
+                    v0_0 = mSortListCount;
+                    i0_1 += 1u;
+                    v0_3 = mMenuCursor[1];
+                }
+            }
+        }
+        u32 t1 = mMenuNum;
+        mMenuNum = t1 + 1u;
+        mMenuList[t1] = 15;
+        u32 t2 = mMenuNum;
+        mMenuNum = t2 + 1u;
+        mMenuList[t2] = 16;
+    }
 }
 
-__attribute__((weak)) u32 cMenuGroupChatMemberList::getPageNum() {
-    DDON_STUB("cMenuGroupChatMemberList::getPageNum")
-    return {};
+u32 cMenuGroupChatMemberList::getPageNum() {
+    return static_cast<u32>(((mSortListCount + 14u) <= 14u) ? 1ul : ((static_cast<unsigned long>(mSortListCount + 14u) * 0x88888889ul) >> 35));
 }
 
 u32 cMenuGroupChatMemberList::getListIndex(u32 page, u32 cursor) {
@@ -3201,14 +2887,6 @@ const MtDTI& cMenuInvite::getDTI() const {
     return cMenuInvite::DTI;
 }
 
-inline void* cMenuInvite::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuInvite::DTI)->memAlloc(sz, align, cMenuInvite::DTI.getID());
-}
-
-inline void cMenuInvite::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuInvite::DTI)->memFree(p_addr);
-}
-
 void cMenuInvite::initInviteCore(s32 inviteType, cPawnListParam* pPawnParam, CDataClientPartyListInfo* pPartyParam, u32 characterId, CHAR_NAME* pCharacterName) {
     initMenu();
     mMenuRno[0] = 0;
@@ -3247,10 +2925,6 @@ const MtDTI& cMenuInviteGroupChat::getDTI() const {
     return cMenuInviteGroupChat::DTI;
 }
 
-inline void* cMenuInviteGroupChat::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuInviteGroupChat::DTI)->memAlloc(sz, align, cMenuInviteGroupChat::DTI.getID());
-}
-
 cMenuInviteGroupChat::~cMenuInviteGroupChat() {
 }
 
@@ -3281,14 +2955,6 @@ const MtDTI& cMenuJoinGameSession::getDTI() const {
     return cMenuJoinGameSession::DTI;
 }
 
-inline void* cMenuJoinGameSession::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuJoinGameSession::DTI)->memAlloc(sz, align, cMenuJoinGameSession::DTI.getID());
-}
-
-inline void cMenuJoinGameSession::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuJoinGameSession::DTI)->memFree(p_addr);
-}
-
 void cMenuJoinGameSession::initJoinGameSession(u32 joinType) {
     initMenu();
     mMenuRno[0] = 0;
@@ -3313,14 +2979,6 @@ const MtDTI& cMenuJoinPartyFlow::getDTI() const {
     return cMenuJoinPartyFlow::DTI;
 }
 
-inline void* cMenuJoinPartyFlow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuJoinPartyFlow::DTI)->memAlloc(sz, align, cMenuJoinPartyFlow::DTI.getID());
-}
-
-inline void cMenuJoinPartyFlow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuJoinPartyFlow::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuJoinPartyFlow::moveJoinPartyFlow() {
     DDON_STUB("cMenuJoinPartyFlow::moveJoinPartyFlow")
     return {};
@@ -3341,10 +2999,6 @@ MtObject* cMenuJoinPartyFlow::MyDTI::newInstance() const {
 
 const MtDTI& cMenuKeyConfig::getDTI() const {
     return cMenuKeyConfig::DTI;
-}
-
-void cMenuKeyConfig::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuKeyConfig::DTI)->memFree(p_addr);
 }
 
 cMenuKeyConfig::cMenuKeyConfig() {
@@ -3525,13 +3179,10 @@ const MtDTI& cMenuKeyConfigCopyCategory::getDTI() const {
     return cMenuKeyConfigCopyCategory::DTI;
 }
 
-inline void cMenuKeyConfigCopyCategory::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuKeyConfigCopyCategory::DTI)->memFree(p_addr);
-}
-
 cMenuKeyConfigCopyCategory::cMenuKeyConfigCopyCategory() {
-    DDON_STUB("cMenuKeyConfigCopyCategory::cMenuKeyConfigCopyCategory")
-    /* stub */
+    mCategoryListIndex = 0;
+    mSelectIndex = 0;
+    mKeyCustomManagers = nullptr;
 }
 
 cMenuKeyConfigCopyCategory::~cMenuKeyConfigCopyCategory() {
@@ -3546,17 +3197,12 @@ inline cMenuKeyConfigCopyCategory::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 cMenuKeyConfigCopyCategory::MyDTI cMenuKeyConfigCopyCategory::DTI("cMenuKeyConfigCopyCategory", &::cMenuBase::DTI, 192ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cMenuKeyConfigCopyCategory::MyDTI::newInstance() const {
-    DDON_STUB("cMenuKeyConfigCopyCategory::MyDTI::newInstance")
-    return nullptr;
+MtObject* cMenuKeyConfigCopyCategory::MyDTI::newInstance() const {
+    return new (16u) cMenuKeyConfigCopyCategory;
 }
 
 const MtDTI& cMenuKeyConfigRenameCategory::getDTI() const {
     return cMenuKeyConfigRenameCategory::DTI;
-}
-
-inline void cMenuKeyConfigRenameCategory::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuKeyConfigRenameCategory::DTI)->memFree(p_addr);
 }
 
 cMenuKeyConfigRenameCategory::cMenuKeyConfigRenameCategory() {
@@ -3590,14 +3236,6 @@ const MtDTI& cMenuKeyConfigSubMenu::getDTI() const {
     return cMenuKeyConfigSubMenu::DTI;
 }
 
-inline void* cMenuKeyConfigSubMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenu::DTI)->memAlloc(sz, align, cMenuKeyConfigSubMenu::DTI.getID());
-}
-
-inline void cMenuKeyConfigSubMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenu::DTI)->memFree(p_addr);
-}
-
 cMenuKeyConfigSubMenu::~cMenuKeyConfigSubMenu() {
 }
 
@@ -3611,14 +3249,6 @@ MtObject* cMenuKeyConfigSubMenu::MyDTI::newInstance() const {
 
 const MtDTI& cMenuKeyConfigSubMenuCategoryList::getDTI() const {
     return cMenuKeyConfigSubMenuCategoryList::DTI;
-}
-
-inline void* cMenuKeyConfigSubMenuCategoryList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenuCategoryList::DTI)->memAlloc(sz, align, cMenuKeyConfigSubMenuCategoryList::DTI.getID());
-}
-
-inline void cMenuKeyConfigSubMenuCategoryList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenuCategoryList::DTI)->memFree(p_addr);
 }
 
 cMenuKeyConfigSubMenuCategoryList::cMenuKeyConfigSubMenuCategoryList() {
@@ -3653,14 +3283,6 @@ MtObject* cMenuKeyConfigSubMenuCategoryList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuKeyConfigSubMenuKeyList::getDTI() const {
     return cMenuKeyConfigSubMenuKeyList::DTI;
-}
-
-inline void* cMenuKeyConfigSubMenuKeyList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenuKeyList::DTI)->memAlloc(sz, align, cMenuKeyConfigSubMenuKeyList::DTI.getID());
-}
-
-inline void cMenuKeyConfigSubMenuKeyList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuKeyConfigSubMenuKeyList::DTI)->memFree(p_addr);
 }
 
 cMenuKeyConfigSubMenuKeyList::cMenuKeyConfigSubMenuKeyList() {
@@ -3704,10 +3326,6 @@ MtObject* cMenuKeyConfigSubMenuKeyList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuKeyJobLink::getDTI() const {
     return cMenuKeyJobLink::DTI;
-}
-
-inline void cMenuKeyJobLink::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuKeyJobLink::DTI)->memFree(p_addr);
 }
 
 cMenuKeyJobLink::cMenuKeyJobLink() {
@@ -3758,10 +3376,6 @@ const MtDTI& cMenuKickGroupChat::getDTI() const {
     return cMenuKickGroupChat::DTI;
 }
 
-inline void* cMenuKickGroupChat::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuKickGroupChat::DTI)->memAlloc(sz, align, cMenuKickGroupChat::DTI.getID());
-}
-
 cMenuKickGroupChat::~cMenuKickGroupChat() {
 }
 
@@ -3790,14 +3404,6 @@ MtObject* cMenuKickGroupChat::MyDTI::newInstance() const {
 
 const MtDTI& cMenuLeaveGroupChat::getDTI() const {
     return cMenuLeaveGroupChat::DTI;
-}
-
-inline void* cMenuLeaveGroupChat::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuLeaveGroupChat::DTI)->memAlloc(sz, align, cMenuLeaveGroupChat::DTI.getID());
-}
-
-inline void cMenuLeaveGroupChat::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuLeaveGroupChat::DTI)->memFree(p_addr);
 }
 
 nMenu::MENU_RET cMenuLeaveGroupChat::moveLeaveGroupChat() {
@@ -3943,14 +3549,6 @@ const MtDTI& cMenuLeaveOnTheWay::getDTI() const {
     return cMenuLeaveOnTheWay::DTI;
 }
 
-inline void* cMenuLeaveOnTheWay::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuLeaveOnTheWay::DTI)->memAlloc(sz, align, cMenuLeaveOnTheWay::DTI.getID());
-}
-
-inline void cMenuLeaveOnTheWay::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuLeaveOnTheWay::DTI)->memFree(p_addr);
-}
-
 void cMenuLeaveOnTheWay::initLeaveOnTheWay() {
     initMenu();
     mMenuRno[0] = 0;
@@ -3982,14 +3580,6 @@ const MtDTI& cMenuLostPawnList::getDTI() const {
     return cMenuLostPawnList::DTI;
 }
 
-inline void* cMenuLostPawnList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuLostPawnList::DTI)->memAlloc(sz, align, cMenuLostPawnList::DTI.getID());
-}
-
-inline void cMenuLostPawnList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuLostPawnList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuLostPawnList::moveLostPawnList() {
     DDON_STUB("cMenuLostPawnList::moveLostPawnList")
     return {};
@@ -4005,10 +3595,6 @@ MtObject* cMenuLostPawnList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuLostPawnRevive::getDTI() const {
     return cMenuLostPawnRevive::DTI;
-}
-
-inline void* cMenuLostPawnRevive::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuLostPawnRevive::DTI)->memAlloc(sz, align, cMenuLostPawnRevive::DTI.getID());
 }
 
 cMenuLostPawnRevive::~cMenuLostPawnRevive() {
@@ -4139,14 +3725,6 @@ const MtDTI& cMenuMail::getDTI() const {
     return cMenuMail::DTI;
 }
 
-inline void* cMenuMail::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMail::DTI)->memAlloc(sz, align, cMenuMail::DTI.getID());
-}
-
-inline void cMenuMail::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMail::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuMail::initMail() {
     DDON_STUB("cMenuMail::initMail")
     /* stub */
@@ -4200,10 +3778,6 @@ const MtDTI& cMenuMailCreate::getDTI() const {
     return cMenuMailCreate::DTI;
 }
 
-inline void* cMenuMailCreate::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMailCreate::DTI)->memAlloc(sz, align, cMenuMailCreate::DTI.getID());
-}
-
 cMenuMailCreate::~cMenuMailCreate() {
 }
 
@@ -4244,14 +3818,6 @@ const MtDTI& cMenuMailDelete::getDTI() const {
     return cMenuMailDelete::DTI;
 }
 
-inline void* cMenuMailDelete::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMailDelete::DTI)->memAlloc(sz, align, cMenuMailDelete::DTI.getID());
-}
-
-inline void cMenuMailDelete::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMailDelete::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuMailDelete::moveMailDelete() {
     DDON_STUB("cMenuMailDelete::moveMailDelete")
     return {};
@@ -4269,14 +3835,6 @@ const MtDTI& cMenuMailDeleteMulti::getDTI() const {
     return cMenuMailDeleteMulti::DTI;
 }
 
-inline void* cMenuMailDeleteMulti::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMailDeleteMulti::DTI)->memAlloc(sz, align, cMenuMailDeleteMulti::DTI.getID());
-}
-
-inline void cMenuMailDeleteMulti::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMailDeleteMulti::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuMailDeleteMulti::moveMailDeleteMulti() {
     DDON_STUB("cMenuMailDeleteMulti::moveMailDeleteMulti")
     return {};
@@ -4292,14 +3850,6 @@ MtObject* cMenuMailDeleteMulti::MyDTI::newInstance() const {
 
 const MtDTI& cMenuMailDetail::getDTI() const {
     return cMenuMailDetail::DTI;
-}
-
-inline void* cMenuMailDetail::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMailDetail::DTI)->memAlloc(sz, align, cMenuMailDetail::DTI.getID());
-}
-
-inline void cMenuMailDetail::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMailDetail::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuMailDetail::initMailDetail(CMailInfo& info, const MtVector4& setPos) {
@@ -4329,14 +3879,6 @@ const MtDTI& cMenuMailGetItem::getDTI() const {
     return cMenuMailGetItem::DTI;
 }
 
-inline void* cMenuMailGetItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMailGetItem::DTI)->memAlloc(sz, align, cMenuMailGetItem::DTI.getID());
-}
-
-inline void cMenuMailGetItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMailGetItem::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuMailGetItem::moveMailGetItem() {
     DDON_STUB("cMenuMailGetItem::moveMailGetItem")
     return {};
@@ -4357,14 +3899,6 @@ MtObject* cMenuMailGetItem::MyDTI::newInstance() const {
 
 const MtDTI& cMenuMailGetItemAll::getDTI() const {
     return cMenuMailGetItemAll::DTI;
-}
-
-inline void* cMenuMailGetItemAll::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMailGetItemAll::DTI)->memAlloc(sz, align, cMenuMailGetItemAll::DTI.getID());
-}
-
-inline void cMenuMailGetItemAll::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMailGetItemAll::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuMailGetItemAll::moveMailGetItemAll() {
@@ -4389,14 +3923,6 @@ const MtDTI& cMenuMailToList::getDTI() const {
     return cMenuMailToList::DTI;
 }
 
-inline void* cMenuMailToList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMailToList::DTI)->memAlloc(sz, align, cMenuMailToList::DTI.getID());
-}
-
-inline void cMenuMailToList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMailToList::DTI)->memFree(p_addr);
-}
-
 void cMenuMailToList::exitMenu() {
     this->cMenuBase::exitMenu();
 }
@@ -4411,14 +3937,6 @@ MtObject* cMenuMailToList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuMatchingProfile::getDTI() const {
     return cMenuMatchingProfile::DTI;
-}
-
-inline void* cMenuMatchingProfile::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMatchingProfile::DTI)->memAlloc(sz, align, cMenuMatchingProfile::DTI.getID());
-}
-
-inline void cMenuMatchingProfile::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMatchingProfile::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuMatchingProfile::initMatchingProfile(bool IsCardType, u32 PointerPrio) {
@@ -4490,14 +4008,6 @@ const MtDTI& cMenuMyPawnList::getDTI() const {
     return cMenuMyPawnList::DTI;
 }
 
-inline void* cMenuMyPawnList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuMyPawnList::DTI)->memAlloc(sz, align, cMenuMyPawnList::DTI.getID());
-}
-
-inline void cMenuMyPawnList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuMyPawnList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuMyPawnList::initMyPawnList(u32 attr, s32 cursorPos, u32 listType) {
     DDON_STUB("cMenuMyPawnList::initMyPawnList")
     /* stub */
@@ -4528,14 +4038,6 @@ MtObject* cMenuMyPawnList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuOnlineShop::getDTI() const {
     return cMenuOnlineShop::DTI;
-}
-
-inline void* cMenuOnlineShop::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuOnlineShop::DTI)->memAlloc(sz, align, cMenuOnlineShop::DTI.getID());
-}
-
-inline void cMenuOnlineShop::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuOnlineShop::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuOnlineShop::initMenuOnlineShop(u32 moveline) {
@@ -4574,14 +4076,6 @@ MtObject* cMenuOnlineShop::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPartyList::getDTI() const {
     return cMenuPartyList::DTI;
-}
-
-inline void* cMenuPartyList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPartyList::DTI)->memAlloc(sz, align, cMenuPartyList::DTI.getID());
-}
-
-inline void cMenuPartyList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPartyList::DTI)->memFree(p_addr);
 }
 
 void cMenuPartyList::initPartyList(uGUIBase* pGUIRefMenu) {
@@ -4772,14 +4266,6 @@ const MtDTI& cMenuPartyListMemberInfo::getDTI() const {
     return cMenuPartyListMemberInfo::DTI;
 }
 
-inline void* cMenuPartyListMemberInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPartyListMemberInfo::DTI)->memAlloc(sz, align, cMenuPartyListMemberInfo::DTI.getID());
-}
-
-inline void cMenuPartyListMemberInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPartyListMemberInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuPartyListMemberInfo::initPartyListMemberInfo(MtTypedArray<CDataPartyMember>* pInfo, u32 prio) {
     DDON_STUB("cMenuPartyListMemberInfo::initPartyListMemberInfo")
     /* stub */
@@ -4795,14 +4281,6 @@ MtObject* cMenuPartyListMemberInfo::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPartyManager::getDTI() const {
     return cMenuPartyManager::DTI;
-}
-
-inline void* cMenuPartyManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPartyManager::DTI)->memAlloc(sz, align, cMenuPartyManager::DTI.getID());
-}
-
-inline void cMenuPartyManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPartyManager::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuPartyManager::initPartyManager(cMenuPartyManager::PARTY_MANAGER_TAB tab, bool isShortCut) {
@@ -4829,14 +4307,6 @@ MtObject* cMenuPartyManager::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPartyMemberList::getDTI() const {
     return cMenuPartyMemberList::DTI;
-}
-
-inline void* cMenuPartyMemberList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPartyMemberList::DTI)->memAlloc(sz, align, cMenuPartyMemberList::DTI.getID());
-}
-
-inline void cMenuPartyMemberList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPartyMemberList::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuPartyMemberList::movePartyMemberList() {
@@ -4981,14 +4451,6 @@ const MtDTI& cMenuPartyReq::getDTI() const {
     return cMenuPartyReq::DTI;
 }
 
-inline void* cMenuPartyReq::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPartyReq::DTI)->memAlloc(sz, align, cMenuPartyReq::DTI.getID());
-}
-
-inline void cMenuPartyReq::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPartyReq::DTI)->memFree(p_addr);
-}
-
 void cMenuPartyReq::initPartyReq(CDataClientPartyListInfo* pInfo, u32 characterId, CHAR_NAME* pCharacterName) {
     initMenu();
     mMenuRno[0] = 0;
@@ -5023,14 +4485,6 @@ MtObject* cMenuPartyReq::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPawnDelete::getDTI() const {
     return cMenuPawnDelete::DTI;
-}
-
-inline void* cMenuPawnDelete::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnDelete::DTI)->memAlloc(sz, align, cMenuPawnDelete::DTI.getID());
-}
-
-inline void cMenuPawnDelete::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnDelete::DTI)->memFree(p_addr);
 }
 
 nMenu::MENU_RET cMenuPawnDelete::movePawnDelete() {
@@ -5133,14 +4587,6 @@ const MtDTI& cMenuPawnFeedback::getDTI() const {
     return cMenuPawnFeedback::DTI;
 }
 
-inline void* cMenuPawnFeedback::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnFeedback::DTI)->memAlloc(sz, align, cMenuPawnFeedback::DTI.getID());
-}
-
-inline void cMenuPawnFeedback::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnFeedback::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuPawnFeedback::initPawnFeedback(nNet::FEEDBACK_TYPE type, nNet::stFeedbackData& feedback) {
     DDON_STUB("cMenuPawnFeedback::initPawnFeedback")
     /* stub */
@@ -5165,14 +4611,6 @@ MtObject* cMenuPawnFeedback::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPawnHistory::getDTI() const {
     return cMenuPawnHistory::DTI;
-}
-
-inline void* cMenuPawnHistory::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnHistory::DTI)->memAlloc(sz, align, cMenuPawnHistory::DTI.getID());
-}
-
-inline void cMenuPawnHistory::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnHistory::DTI)->memFree(p_addr);
 }
 
 void cMenuPawnHistory::exitMenu() {
@@ -5217,14 +4655,6 @@ const MtDTI& cMenuPawnManageMenu::getDTI() const {
     return cMenuPawnManageMenu::DTI;
 }
 
-inline void* cMenuPawnManageMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnManageMenu::DTI)->memAlloc(sz, align, cMenuPawnManageMenu::DTI.getID());
-}
-
-inline void cMenuPawnManageMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnManageMenu::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuPawnManageMenu::initPawnManageMenu() {
     DDON_STUB("cMenuPawnManageMenu::initPawnManageMenu")
     /* stub */
@@ -5254,14 +4684,6 @@ const MtDTI& cMenuPawnManager::getDTI() const {
     return cMenuPawnManager::DTI;
 }
 
-inline void* cMenuPawnManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnManager::DTI)->memAlloc(sz, align, cMenuPawnManager::DTI.getID());
-}
-
-inline void cMenuPawnManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnManager::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuPawnManager::initPawnManager(s32 initTab) {
     DDON_STUB("cMenuPawnManager::initPawnManager")
     /* stub */
@@ -5286,14 +4708,6 @@ MtObject* cMenuPawnManager::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPawnPoint::getDTI() const {
     return cMenuPawnPoint::DTI;
-}
-
-inline void* cMenuPawnPoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnPoint::DTI)->memAlloc(sz, align, cMenuPawnPoint::DTI.getID());
-}
-
-inline void cMenuPawnPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnPoint::DTI)->memFree(p_addr);
 }
 
 cMenuPawnPoint::~cMenuPawnPoint() {
@@ -5346,14 +4760,6 @@ const MtDTI& cMenuPawnRental::getDTI() const {
     return cMenuPawnRental::DTI;
 }
 
-inline void* cMenuPawnRental::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnRental::DTI)->memAlloc(sz, align, cMenuPawnRental::DTI.getID());
-}
-
-inline void cMenuPawnRental::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnRental::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuPawnRental::movePawnRental() {
     DDON_STUB("cMenuPawnRental::movePawnRental")
     return {};
@@ -5371,14 +4777,6 @@ const MtDTI& cMenuPawnReqList::getDTI() const {
     return cMenuPawnReqList::DTI;
 }
 
-inline void* cMenuPawnReqList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnReqList::DTI)->memAlloc(sz, align, cMenuPawnReqList::DTI.getID());
-}
-
-inline void cMenuPawnReqList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnReqList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuPawnReqList::movePawnReqList() {
     DDON_STUB("cMenuPawnReqList::movePawnReqList")
     return {};
@@ -5394,14 +4792,6 @@ MtObject* cMenuPawnReqList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPawnReqMenu::getDTI() const {
     return cMenuPawnReqMenu::DTI;
-}
-
-inline void* cMenuPawnReqMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnReqMenu::DTI)->memAlloc(sz, align, cMenuPawnReqMenu::DTI.getID());
-}
-
-inline void cMenuPawnReqMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnReqMenu::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuPawnReqMenu::initPawnReqMenu() {
@@ -5424,14 +4814,6 @@ MtObject* cMenuPawnReqMenu::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPawnReturn::getDTI() const {
     return cMenuPawnReturn::DTI;
-}
-
-inline void* cMenuPawnReturn::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnReturn::DTI)->memAlloc(sz, align, cMenuPawnReturn::DTI.getID());
-}
-
-inline void cMenuPawnReturn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnReturn::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuPawnReturn::initPawnReturn(u32 pawnId, u32 prio) {
@@ -5461,17 +4843,32 @@ const MtDTI& cMenuPawnRevive::getDTI() const {
     return cMenuPawnRevive::DTI;
 }
 
-inline void* cMenuPawnRevive::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnRevive::DTI)->memAlloc(sz, align, cMenuPawnRevive::DTI.getID());
-}
-
-inline void cMenuPawnRevive::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnRevive::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuPawnRevive::initPawnRevive(s32 type) {
-    DDON_STUB("cMenuPawnRevive::initPawnRevive")
-    /* stub */
+    initMenu();
+    mMenuCursor[PAWN_REVIVE_CURSOR_SELECT] = 0;
+    mMenuRno[PAWN_REVIVE_RNO_BASE] = MOVE_PAWN_REVIVE_RNO_INIT;
+    mType = type;
+    uGUIRetry* pGUIRetry = nullptr;
+    if (type == PAWN_REVIVE_MENU_TYPE_PL_DEAD) {
+        pGUIRetry = new (16u) uGUIRetry;
+        if (pGUIRetry != nullptr) {
+            sUnit::getInstance()->addBottom(static_cast<MOVE_LINE>(sUnitExt::ML_UI_AREA1), pGUIRetry, sUnitExt::GPT_UI_SUB);
+        }
+    } else {
+        pGUIRetry = static_cast<uGUIRetry*>(static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(&uGUIRetry::DTI));
+    }
+    if (pGUIRetry != nullptr) {
+        mpGUIMenu = pGUIRetry;
+        mUseGUIMenu = true;
+    }
+    mpGUIShop = nullptr;
+    mKodouIndex = 0;
+    mUseRim = 0;
+    mMenuNum = 0;
+    if (mType == PAWN_REVIVE_MENU_TYPE_PL_DEAD) {
+        static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getReturnLocation();
+        sQuestManagerExt::getInstance()->notifyOpenRetrySelect();
+    }
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuPawnRevive::movePawnRevive(uHuman* pHm, s32& retReviveType) {
@@ -5524,14 +4921,6 @@ MtObject* cMenuPawnRevive::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPawnSearch::getDTI() const {
     return cMenuPawnSearch::DTI;
-}
-
-inline void* cMenuPawnSearch::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnSearch::DTI)->memAlloc(sz, align, cMenuPawnSearch::DTI.getID());
-}
-
-inline void cMenuPawnSearch::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnSearch::DTI)->memFree(p_addr);
 }
 
 cMenuPawnSearch::~cMenuPawnSearch() {
@@ -5666,14 +5055,6 @@ const MtDTI& cMenuPawnSetPartner::getDTI() const {
     return cMenuPawnSetPartner::DTI;
 }
 
-inline void* cMenuPawnSetPartner::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnSetPartner::DTI)->memAlloc(sz, align, cMenuPawnSetPartner::DTI.getID());
-}
-
-inline void cMenuPawnSetPartner::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnSetPartner::DTI)->memFree(p_addr);
-}
-
 nMenu::MENU_RET cMenuPawnSetPartner::movePawnSetPartner() {
     moveMenu();
     u32 v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->mpGameServer->mMyPawnList.mLength;
@@ -5766,14 +5147,6 @@ const MtDTI& cMenuPawnShareRange::getDTI() const {
     return cMenuPawnShareRange::DTI;
 }
 
-inline void* cMenuPawnShareRange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPawnShareRange::DTI)->memAlloc(sz, align, cMenuPawnShareRange::DTI.getID());
-}
-
-inline void cMenuPawnShareRange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPawnShareRange::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuPawnShareRange::initPawnShareRange(u32 pawnId, u32 prio) {
     DDON_STUB("cMenuPawnShareRange::initPawnShareRange")
     /* stub */
@@ -5794,14 +5167,6 @@ MtObject* cMenuPawnShareRange::MyDTI::newInstance() const {
 
 const MtDTI& cMenuPlDeadMenu::getDTI() const {
     return cMenuPlDeadMenu::DTI;
-}
-
-inline void* cMenuPlDeadMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuPlDeadMenu::DTI)->memAlloc(sz, align, cMenuPlDeadMenu::DTI.getID());
-}
-
-inline void cMenuPlDeadMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuPlDeadMenu::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuPlDeadMenu::initPlDeadMenu() {
@@ -5834,10 +5199,6 @@ MtObject* cMenuPlDeadMenu::MyDTI::newInstance() const {
 
 const MtDTI& cMenuQuickMatch::getDTI() const {
     return cMenuQuickMatch::DTI;
-}
-
-inline void* cMenuQuickMatch::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuQuickMatch::DTI)->memAlloc(sz, align, cMenuQuickMatch::DTI.getID());
 }
 
 cMenuQuickMatch::~cMenuQuickMatch() {
@@ -5917,14 +5278,6 @@ MtObject* cMenuQuickMatch::MyDTI::newInstance() const {
 
 const MtDTI& cMenuQuickMatchCancel::getDTI() const {
     return cMenuQuickMatchCancel::DTI;
-}
-
-inline void* cMenuQuickMatchCancel::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuQuickMatchCancel::DTI)->memAlloc(sz, align, cMenuQuickMatchCancel::DTI.getID());
-}
-
-inline void cMenuQuickMatchCancel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuQuickMatchCancel::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuQuickMatchCancel::initQuickMatchCancel(uGUIBase* pParentGUI) {
@@ -6076,14 +5429,6 @@ const MtDTI& cMenuQuickMatchRetry::getDTI() const {
     return cMenuQuickMatchRetry::DTI;
 }
 
-inline void* cMenuQuickMatchRetry::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuQuickMatchRetry::DTI)->memAlloc(sz, align, cMenuQuickMatchRetry::DTI.getID());
-}
-
-inline void cMenuQuickMatchRetry::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuQuickMatchRetry::DTI)->memFree(p_addr);
-}
-
 nMenu::MENU_RET cMenuQuickMatchRetry::moveQuickMatchRetry() {
     moveMenu();
     if (mMenuRno[0] != 1) {
@@ -6216,14 +5561,6 @@ const MtDTI& cMenuQuickMatchSelect::getDTI() const {
     return cMenuQuickMatchSelect::DTI;
 }
 
-inline void* cMenuQuickMatchSelect::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuQuickMatchSelect::DTI)->memAlloc(sz, align, cMenuQuickMatchSelect::DTI.getID());
-}
-
-inline void cMenuQuickMatchSelect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuQuickMatchSelect::DTI)->memFree(p_addr);
-}
-
 void cMenuQuickMatchSelect::exitMenu() {
     if (mpGUINews != nullptr) {
         mpGUINews->kill();
@@ -6287,14 +5624,6 @@ MtObject* cMenuQuickMatchSelect::MyDTI::newInstance() const {
 
 const MtDTI& cMenuReadyCheck::getDTI() const {
     return cMenuReadyCheck::DTI;
-}
-
-inline void* cMenuReadyCheck::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuReadyCheck::DTI)->memAlloc(sz, align, cMenuReadyCheck::DTI.getID());
-}
-
-inline void cMenuReadyCheck::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuReadyCheck::DTI)->memFree(p_addr);
 }
 
 void cMenuReadyCheck::exitMenu() {
@@ -6400,18 +5729,6 @@ MtObject* cMenuReadyCheck::MyDTI::newInstance() const {
 
 const MtDTI& cMenuRecentList::getDTI() const {
     return cMenuRecentList::DTI;
-}
-
-inline MtAllocator* cMenuRecentList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cMenuRecentList::DTI);
-}
-
-inline void* cMenuRecentList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuRecentList::DTI)->memAlloc(sz, align, cMenuRecentList::DTI.getID());
-}
-
-inline void cMenuRecentList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuRecentList::DTI)->memFree(p_addr);
 }
 
 void cMenuRecentList::initRecentList(uGUIBase* pRefGUI) {
@@ -6523,10 +5840,6 @@ const MtDTI& cMenuRemoveFriend::getDTI() const {
     return cMenuRemoveFriend::DTI;
 }
 
-inline void* cMenuRemoveFriend::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuRemoveFriend::DTI)->memAlloc(sz, align, cMenuRemoveFriend::DTI.getID());
-}
-
 cMenuRemoveFriend::~cMenuRemoveFriend() {
 }
 
@@ -6557,17 +5870,71 @@ const MtDTI& cMenuRentalPawnList::getDTI() const {
     return cMenuRentalPawnList::DTI;
 }
 
-inline void* cMenuRentalPawnList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuRentalPawnList::DTI)->memAlloc(sz, align, cMenuRentalPawnList::DTI.getID());
-}
-
-inline void cMenuRentalPawnList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuRentalPawnList::DTI)->memFree(p_addr);
-}
-
-__attribute__((weak)) void cMenuRentalPawnList::initRentalPawnList(s32 listType, s32 cursorPos, s32 listAttr) {
-    DDON_STUB("cMenuRentalPawnList::initRentalPawnList")
-    /* stub */
+void cMenuRentalPawnList::initRentalPawnList(s32 listType, s32 cursorPos, s32 listAttr) {
+    initMenu();
+    mMenuRno[0] = 0;
+    mMenuRno[1] = 0;
+    mListType = listType;
+    mListAttr = listAttr;
+    mpRefGUI = nullptr;
+    mUseGUIMenu = false;
+    setupSupportList(10u, 10u, 0u);
+    if (mpList != nullptr) {
+        mpList->mListCursor = cursorPos;
+        mpList->createList(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRentedPawnList.mLength);
+    } else {
+        if (mpMenu != nullptr) {
+            mpMenu->mListCursor = cursorPos;
+        }
+    }
+    mMenuParts[0] = sMenu::mDefMenuParts;
+    mMenuParts[1] = sMenu::mDefMenuParts;
+    mMenuParts[2] = sMenu::mDefMenuParts;
+    mMenuParts[3] = sMenu::mDefMenuParts;
+    mMenuParts[4] = sMenu::mDefMenuParts;
+    mMenuParts[5] = sMenu::mDefMenuParts;
+    mMenuParts[6] = sMenu::mDefMenuParts;
+    mMenuParts[7] = sMenu::mDefMenuParts;
+    mMenuParts[8] = sMenu::mDefMenuParts;
+    mMenuParts[9] = sMenu::mDefMenuParts;
+    mpMenuParts = &mMenuParts[0];
+    if (listType == 3) {
+        if (sMenu::getInstance()->mPawnManager.mpGUIMenu == nullptr) {
+            setRefGUI(sMenu::getInstance()->mPawnManager.mpRefGUI, true);
+        } else {
+            setRefGUI(sMenu::getInstance()->mPawnManager.mpGUIMenu, true);
+        }
+        return;
+    } else {
+        if (listType == 2) {
+            if (sMenu::getInstance()->mPartyManager.mpGUIMenu == nullptr) {
+                setRefGUI(sMenu::getInstance()->mPartyManager.mpRefGUI, true);
+            } else {
+                setRefGUI(sMenu::getInstance()->mPartyManager.mpGUIMenu, true);
+            }
+            return;
+        } else {
+            uGUIBase* v0_9 = static_cast<sGUIExt*>(sGUI::getInstance())->getSingletonMenu();
+            if (v0_9 != nullptr) {
+                const MtDTI& t0 = v0_9->getDTI();
+                MT_CTSTR v0_1 = uGUICraft::DTI.mName;
+                for (const MtDTI* v0_0 = &t0;;) {
+                    if (v0_1 == v0_0->mName) {
+                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 2364)) != 57) {
+                            setRefGUI(v0_9, true);
+                        }
+                        return;
+                    } else {
+                        if (v0_0->mpParent != nullptr) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuRentalPawnList::moveRentalPawnList() {
@@ -6597,14 +5964,6 @@ const MtDTI& cMenuResetCraftPoint::getDTI() const {
     return cMenuResetCraftPoint::DTI;
 }
 
-inline void* cMenuResetCraftPoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuResetCraftPoint::DTI)->memAlloc(sz, align, cMenuResetCraftPoint::DTI.getID());
-}
-
-inline void cMenuResetCraftPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuResetCraftPoint::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) nMenu::MENU_RET cMenuResetCraftPoint::moveResetCraftPoint() {
     DDON_STUB("cMenuResetCraftPoint::moveResetCraftPoint")
     return {};
@@ -6620,14 +5979,6 @@ MtObject* cMenuResetCraftPoint::MyDTI::newInstance() const {
 
 const MtDTI& cMenuSearchFilter::getDTI() const {
     return cMenuSearchFilter::DTI;
-}
-
-inline void* cMenuSearchFilter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuSearchFilter::DTI)->memAlloc(sz, align, cMenuSearchFilter::DTI.getID());
-}
-
-inline void cMenuSearchFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSearchFilter::DTI)->memFree(p_addr);
 }
 
 cMenuSearchFilter::~cMenuSearchFilter() {
@@ -6670,13 +6021,6 @@ void cMenuSearchFilter::exitMenu() {
     mExcludeList.mBufsiz = 0;
     mExcludeList.mLength = 0;
     this->cMenuBase::exitMenu();
-}
-
-inline void cMenuSearchFilter::initSetting() {
-    if (mType != 5) {
-        return;
-    }
-    mpSetting->initSearchFilter(5);
 }
 
 __attribute__((weak)) void cMenuSearchFilter::initExcludeList() {
@@ -6728,14 +6072,6 @@ const MtDTI& cMenuServerList::getDTI() const {
     return cMenuServerList::DTI;
 }
 
-inline void* cMenuServerList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuServerList::DTI)->memAlloc(sz, align, cMenuServerList::DTI.getID());
-}
-
-inline void cMenuServerList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuServerList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuServerList::initServerList() {
     DDON_STUB("cMenuServerList::initServerList")
     /* stub */
@@ -6775,8 +6111,8 @@ s32 cMenuServerList::getServerId(s32 cursorPos) {
                     unsigned int t0 = mSortList[static_cast<unsigned int>((mMenuCursor[1] * 256) + mpMenuList[static_cast<unsigned int>(cursorPos)])];
                     if (static_cast<int>(t0) > -1) {
                         nUserSession::CPacket_S2C_GET_SERVER_LIST_RES* t1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getGetServerListPacket();
-                        if (t1->m_ServerList.mpArray[static_cast<int>(t0)] != nullptr) {
-                            return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(t1->m_ServerList.mpArray[static_cast<int>(t0)]) + 8);
+                        if (t1->m_ServerList.getBuffer()[static_cast<int>(t0)] != nullptr) {
+                            return static_cast<CDataGameServerListInfo*>(t1->m_ServerList.getBuffer()[static_cast<int>(t0)])->m_usId;
                         } else {
                             return 0;
                         }
@@ -6817,14 +6153,6 @@ MtObject* cMenuServerList::MyDTI::newInstance() const {
 
 const MtDTI& cMenuSetJob::getDTI() const {
     return cMenuSetJob::DTI;
-}
-
-inline void* cMenuSetJob::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuSetJob::DTI)->memAlloc(sz, align, cMenuSetJob::DTI.getID());
-}
-
-inline void cMenuSetJob::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSetJob::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuSetJob::initSetJob(u32 attr, u32& dstJob, bool* pSetting, u32 setNum, uGUIBase* pRefGUI) {
@@ -6875,14 +6203,6 @@ const MtDTI& cMenuSetLevel::getDTI() const {
     return cMenuSetLevel::DTI;
 }
 
-inline void* cMenuSetLevel::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuSetLevel::DTI)->memAlloc(sz, align, cMenuSetLevel::DTI.getID());
-}
-
-inline void cMenuSetLevel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSetLevel::DTI)->memFree(p_addr);
-}
-
 void cMenuSetLevel::exitMenu() {
     this->cMenuBase::exitMenu();
 }
@@ -6897,14 +6217,6 @@ MtObject* cMenuSetLevel::MyDTI::newInstance() const {
 
 const MtDTI& cMenuSetLimitPreset::getDTI() const {
     return cMenuSetLimitPreset::DTI;
-}
-
-inline void* cMenuSetLimitPreset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuSetLimitPreset::DTI)->memAlloc(sz, align, cMenuSetLimitPreset::DTI.getID());
-}
-
-inline void cMenuSetLimitPreset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSetLimitPreset::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cMenuSetLimitPreset::initSetLimitPreset(u32 type, u32 attr, u32* dstLevelMin, u32* dstLevelMax, bool* pSetting) {
@@ -6935,14 +6247,6 @@ MtObject* cMenuSetLimitPreset::MyDTI::newInstance() const {
 
 const MtDTI& cMenuSimplePartyReq::getDTI() const {
     return cMenuSimplePartyReq::DTI;
-}
-
-inline void* cMenuSimplePartyReq::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuSimplePartyReq::DTI)->memAlloc(sz, align, cMenuSimplePartyReq::DTI.getID());
-}
-
-inline void cMenuSimplePartyReq::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSimplePartyReq::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuSimplePartyReq::moveSimplePartyReq() {
@@ -6992,14 +6296,6 @@ const MtDTI& cMenuStartGameSession::getDTI() const {
     return cMenuStartGameSession::DTI;
 }
 
-inline void* cMenuStartGameSession::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuStartGameSession::DTI)->memAlloc(sz, align, cMenuStartGameSession::DTI.getID());
-}
-
-inline void cMenuStartGameSession::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuStartGameSession::DTI)->memFree(p_addr);
-}
-
 inline cMenuStartGameSession::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cMenuStartGameSession::MyDTI cMenuStartGameSession::DTI("cMenuStartGameSession", &::cMenuBase::DTI, 184ul, 0u, 0u);
@@ -7010,10 +6306,6 @@ MtObject* cMenuStartGameSession::MyDTI::newInstance() const {
 
 const MtDTI& cMenuSubMenu::getDTI() const {
     return cMenuSubMenu::DTI;
-}
-
-inline void cMenuSubMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuSubMenu::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cMenuSubMenu::~cMenuSubMenu() {
@@ -7212,14 +6504,6 @@ const MtDTI& cMenuTraining::getDTI() const {
     return cMenuTraining::DTI;
 }
 
-inline void* cMenuTraining::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuTraining::DTI)->memAlloc(sz, align, cMenuTraining::DTI.getID());
-}
-
-inline void cMenuTraining::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuTraining::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuTraining::initMenuTraining(u32 moveline) {
     DDON_STUB("cMenuTraining::initMenuTraining")
     /* stub */
@@ -7242,17 +6526,40 @@ const MtDTI& cMenuTreasuresLot::getDTI() const {
     return cMenuTreasuresLot::DTI;
 }
 
-inline void* cMenuTreasuresLot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuTreasuresLot::DTI)->memAlloc(sz, align, cMenuTreasuresLot::DTI.getID());
-}
-
-inline void cMenuTreasuresLot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuTreasuresLot::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cMenuTreasuresLot::initTreasuresLotMenu(u32 type, u32 moveLine) {
-    DDON_STUB("cMenuTreasuresLot::initTreasuresLotMenu")
-    /* stub */
+    cMenuBase::initMenu();
+    mUseGUIMenu = false;
+    mCheckDraw = false;
+    mpGUIGPShop = nullptr;
+    mpGUITopSel = nullptr;
+    mpGUIBoughtBox = nullptr;
+    mpGUIGPShopDialog = nullptr;
+    mType = type;
+    mMoveLine = moveLine;
+    mIsInit = true;
+    mMenuRno[TREASURESLOT_RNO_BASE] = RNO_LOT_MENU_SETLECT;
+    
+    uGUIBoxGachaInfo* const pGUI = new (16u) uGUIBoxGachaInfo;
+    if (pGUI != nullptr) {
+        mpGUIMenu = pGUI;
+        pGUI->setGUIMove(false);
+        constexpr u32 t1 = 0xae15;
+        *reinterpret_cast<bool*>(reinterpret_cast<char*>(pGUI) + t1) = false;
+        pGUI->setWindowActive(false);
+        mUseGUIMenu = true;
+        sUnit::getInstance()->addBottom(static_cast<MOVE_LINE>(mMoveLine), mpGUIMenu, sUnitExt::GPT_UI_SUB);
+        static_cast<sGUIExt*>(sGUI::getInstance())->createShopTitle(sGUIExt::SHOPTITLE_TYPE::GACHA, sGUIExt::SHOPTITLE_TYPE::GP_CT);
+        static_cast<sGUIExt*>(sGUI::getInstance())->setMoveQuestActive(false);
+    }
+    
+    uGUIPopTopSel* const t2 = new (16u) uGUIPopTopSel(false, 0u);
+    mpGUITopSel = t2;
+    if (t2 != nullptr) {
+        constexpr u32 t3 = 0xa94;
+        *reinterpret_cast<u32*>(reinterpret_cast<char*>(t2) + t3) = uGUIPopTopSel::MODE_GACHA;
+        sUnit::getInstance()->addBottom(static_cast<MOVE_LINE>(mMoveLine), t2, sUnitExt::GPT_UI_SUB);
+        mpGUITopSel->begin();
+    }
 }
 
 __attribute__((weak)) nMenu::MENU_RET cMenuTreasuresLot::moveTreasuresLotMenu() {
@@ -7299,14 +6606,6 @@ const MtDTI& cMenuTreasuresLotAnnounce::getDTI() const {
     return cMenuTreasuresLotAnnounce::DTI;
 }
 
-inline void* cMenuTreasuresLotAnnounce::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuTreasuresLotAnnounce::DTI)->memAlloc(sz, align, cMenuTreasuresLotAnnounce::DTI.getID());
-}
-
-inline void cMenuTreasuresLotAnnounce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuTreasuresLotAnnounce::DTI)->memFree(p_addr);
-}
-
 void cMenuTreasuresLotAnnounce::exitMenu() {
     this->cMenuBase::exitMenu();
 }
@@ -7321,14 +6620,6 @@ MtObject* cMenuTreasuresLotAnnounce::MyDTI::newInstance() const {
 
 const MtDTI& cMenuUILargeSetting::getDTI() const {
     return cMenuUILargeSetting::DTI;
-}
-
-inline void* cMenuUILargeSetting::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuUILargeSetting::DTI)->memAlloc(sz, align, cMenuUILargeSetting::DTI.getID());
-}
-
-inline void cMenuUILargeSetting::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuUILargeSetting::DTI)->memFree(p_addr);
 }
 
 nMenu::MENU_RET cMenuUILargeSetting::move() {
@@ -7446,14 +6737,6 @@ MtObject* cMenuUILargeSetting::MyDTI::newInstance() const {
 
 const MtDTI& cMenuUpdateCommunityList::getDTI() const {
     return cMenuUpdateCommunityList::DTI;
-}
-
-inline void* cMenuUpdateCommunityList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMenuUpdateCommunityList::DTI)->memAlloc(sz, align, cMenuUpdateCommunityList::DTI.getID());
-}
-
-inline void cMenuUpdateCommunityList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMenuUpdateCommunityList::DTI)->memFree(p_addr);
 }
 
 void cMenuUpdateCommunityList::initUpdateCommunityList(bool isGetRecentList) {

@@ -21,14 +21,6 @@ const MtDTI& cCyclePartInfo::getDTI() const {
     return cCyclePartInfo::DTI;
 }
 
-inline void* cCyclePartInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCyclePartInfo::DTI)->memAlloc(sz, align, cCyclePartInfo::DTI.getID());
-}
-
-inline void cCyclePartInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCyclePartInfo::DTI)->memFree(p_addr);
-}
-
 cCyclePartInfo::~cCyclePartInfo() {
     if (mpEfcHandle == nullptr) {
         return;
@@ -40,20 +32,6 @@ cCyclePartInfo::~cCyclePartInfo() {
 __attribute__((weak)) void cCyclePartInfo::createProperty(MtPropertyList& s) {
 }
 
-inline void cCyclePartInfo::getInfoFromReq(cCyclePartReqInfo& reqInfo) {
-    mEffLoopTimer = reqInfo.mEffLoopTime;
-    mEffLoopTimerMax = mEffLoopTimer;
-    mEpvIndex = reqInfo.mEpvIndex;
-    mEpvElement = reqInfo.mEpvElement;
-    mIsEffect = reqInfo.mIsEffect;
-    mEpvFinishIndex = reqInfo.mEpvFinishIndex;
-    mEpvFinishElement = reqInfo.mEpvFinishElement;
-    mIsEndEffect = reqInfo.mIsEndEffect;
-    mOutLineIndex = reqInfo.mOutLineIndex;
-    mIsOutLine = reqInfo.mIsOutLine;
-    mPartType = reqInfo.mPartType;
-}
-
 __attribute__((weak)) void cCyclePartInfo::partInit() {
     DDON_STUB("cCyclePartInfo::partInit")
     /* stub */
@@ -62,10 +40,6 @@ __attribute__((weak)) void cCyclePartInfo::partInit() {
 __attribute__((weak)) void cCyclePartInfo::partEnd() {
     DDON_STUB("cCyclePartInfo::partEnd")
     /* stub */
-}
-
-inline void cCyclePartInfo::callOutLine() {
-    mpModel->requestOutline(static_cast<u32>(mOutLineIndex));
 }
 
 inline cCyclePartInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -80,14 +54,6 @@ const MtDTI& cCyclePartReqInfo::getDTI() const {
     return cCyclePartReqInfo::DTI;
 }
 
-inline void* cCyclePartReqInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCyclePartReqInfo::DTI)->memAlloc(sz, align, cCyclePartReqInfo::DTI.getID());
-}
-
-inline void cCyclePartReqInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCyclePartReqInfo::DTI)->memFree(p_addr);
-}
-
 inline cCyclePartReqInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCyclePartReqInfo::MyDTI cCyclePartReqInfo::DTI("cCyclePartReqInfo", &::MtObject::DTI, 48ul, 0u, 0u);
@@ -98,10 +64,6 @@ MtObject* cCyclePartReqInfo::MyDTI::newInstance() const {
 
 const MtDTI& cEffectCycleCtrl::getDTI() const {
     return cEffectCycleCtrl::DTI;
-}
-
-inline void cEffectCycleCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEffectCycleCtrl::DTI)->memFree(p_addr);
 }
 
 cEffectCycleCtrl::cEffectCycleCtrl() {
@@ -125,9 +87,9 @@ void cEffectCycleCtrl::updatePtr() {
     if (v0_0 != 0) {
         for (unsigned int i0_1 = 0;;) {
             if (mEffectPartArray.getBuffer()[static_cast<int>(i0_1)] != nullptr) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)]) + 64)) != 0) {
-                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)]) + 64)) + 16)) & 7u) - 1u) > 1u) {
-                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)]) + 64) = 0;
+                if (static_cast<cCyclePartInfo*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)])->mpModel != nullptr) {
+                    if (!static_cast<cCyclePartInfo*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)])->mpModel->isEnable()) {
+                        static_cast<cCyclePartInfo*>(mEffectPartArray.getBuffer()[static_cast<int>(i0_1)])->mpModel = nullptr;
                     }
                 }
             }

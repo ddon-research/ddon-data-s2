@@ -36,16 +36,8 @@ const MtDTI& cScenarioArg_AreaJump::getDTI() const {
     return cScenarioArg_AreaJump::DTI;
 }
 
-inline MtAllocator* cScenarioArg_AreaJump::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cScenarioArg_AreaJump::DTI);
-}
-
 void* cScenarioArg_AreaJump::operator new(size_t sz, u32 align) {
     return cScenarioArg_AreaJump::getAllocator()->memAlloc(sz, align, cScenarioArg_AreaJump::DTI.getID());
-}
-
-inline void cScenarioArg_AreaJump::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cScenarioArg_AreaJump::DTI)->memFree(p_addr);
 }
 
 cScenarioArg_AreaJump::cScenarioArg_AreaJump(cScenario* pSce) : cScenarioArg(pSce) {
@@ -95,16 +87,8 @@ const MtDTI& cScenarioArg_BootFSM::getDTI() const {
     return cScenarioArg_BootFSM::DTI;
 }
 
-inline MtAllocator* cScenarioArg_BootFSM::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cScenarioArg_BootFSM::DTI);
-}
-
 void* cScenarioArg_BootFSM::operator new(size_t sz, u32 align) {
     return cScenarioArg_BootFSM::getAllocator()->memAlloc(sz, align, cScenarioArg_BootFSM::DTI.getID());
-}
-
-inline void cScenarioArg_BootFSM::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cScenarioArg_BootFSM::DTI)->memFree(p_addr);
 }
 
 cScenarioArg_BootFSM::cScenarioArg_BootFSM(cScenario* pSce) : cScenarioArg(static_cast<cScenario*>(nullptr)) {

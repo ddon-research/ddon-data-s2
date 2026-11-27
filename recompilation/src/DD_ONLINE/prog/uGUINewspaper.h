@@ -1293,3 +1293,71 @@ inline void* uGUINewspaper::cScrollRewardDetailInfoList::operator new(size_t sz,
 inline void* uGUINewspaper::cScrollRewardSummaryInfoList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUINewspaper::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUINewspaper::DTI);
+}
+
+inline void uGUINewspaper::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::DTI)->memFree(p_addr);
+}
+
+inline void* uGUINewspaper::cCycleContentsNewsInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cCycleContentsNewsInfo::DTI)->memAlloc(sz, align, ::uGUINewspaper::cCycleContentsNewsInfo::DTI.::MtDTI::getID());
+}
+
+inline void* uGUINewspaper::cScrollAreaDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollAreaDispList::DTI)->memAlloc(sz, align, ::uGUINewspaper::cScrollAreaDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUINewspaper::cScrollAreaDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollAreaDispList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUINewspaper::cScrollQuestDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollQuestDispList::DTI)->memAlloc(sz, align, ::uGUINewspaper::cScrollQuestDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUINewspaper::cScrollQuestDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollQuestDispList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUINewspaper::cScrollRankingDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRankingDispList::DTI)->memAlloc(sz, align, ::uGUINewspaper::cScrollRankingDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUINewspaper::cScrollRankingDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRankingDispList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUINewspaper::cScrollRewardSummaryItemList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardSummaryItemList::DTI)->memAlloc(sz, align, ::uGUINewspaper::cScrollRewardSummaryItemList::DTI.::MtDTI::getID());
+}
+
+inline void uGUINewspaper::cScrollRewardSummaryItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardSummaryItemList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUINewspaper::cScrollRewardDetailItemList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardDetailItemList::DTI)->memAlloc(sz, align, ::uGUINewspaper::cScrollRewardDetailItemList::DTI.::MtDTI::getID());
+}
+
+inline void uGUINewspaper::cScrollRewardDetailItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardDetailItemList::DTI)->memFree(p_addr);
+}
+
+inline void uGUINewspaper::cScrollRankingItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRankingItemList::DTI)->memFree(p_addr);
+}
+
+inline void uGUINewspaper::cScrollRewardDetailInfoList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardDetailInfoList::DTI)->memFree(p_addr);
+}
+
+inline void uGUINewspaper::cScrollRewardSummaryInfoList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINewspaper::cScrollRewardSummaryInfoList::DTI)->memFree(p_addr);
+}

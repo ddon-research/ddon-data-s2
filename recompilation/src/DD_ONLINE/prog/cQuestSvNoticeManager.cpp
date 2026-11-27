@@ -18,16 +18,8 @@ const MtDTI& cQuestSvNoticeManager::getDTI() const {
     return cQuestSvNoticeManager::DTI;
 }
 
-inline MtAllocator* cQuestSvNoticeManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cQuestSvNoticeManager::DTI);
-}
-
 void* cQuestSvNoticeManager::operator new(size_t sz, u32 align) {
     return cQuestSvNoticeManager::getAllocator()->memAlloc(sz, align, cQuestSvNoticeManager::DTI.getID());
-}
-
-inline void cQuestSvNoticeManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestSvNoticeManager::DTI)->memFree(p_addr);
 }
 
 cQuestSvNoticeCallback* cQuestSvNoticeManager::addCallbackFunc(const MtDTI& callbackClassDti, const MtDTI& noticeClassDti) {

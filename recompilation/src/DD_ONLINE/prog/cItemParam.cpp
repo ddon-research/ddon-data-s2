@@ -22,14 +22,6 @@ const MtDTI& cCraftParam::getDTI() const {
     return cCraftParam::DTI;
 }
 
-inline void* cCraftParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCraftParam::DTI)->memAlloc(sz, align, cCraftParam::DTI.getID());
-}
-
-inline void cCraftParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftParam::DTI)->memFree(p_addr);
-}
-
 cCraftParam::cCraftParam() {
     init();
 }
@@ -126,10 +118,6 @@ MtObject* cCraftParam::MyDTI::newInstance() const {
 
 const MtDTI& cItemParam::getDTI() const {
     return cItemParam::DTI;
-}
-
-inline MtAllocator* cItemParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cItemParam::DTI);
 }
 
 void* cItemParam::operator new(size_t sz, u32 align) {

@@ -14,6 +14,7 @@
 #include "../../XFramework/cResource.h"
 #include "cpActionManager.h"
 #include "cpComponent.h"
+#include "cpEnemyLocalEst.h"
 #include "cpErosionEnemyBase.h"
 #include "cpObjCollision.h"
 #include "cpOcdCtrl.h"
@@ -40,16 +41,8 @@ const MtDTI& cpStatusChange::getDTI() const {
     return cpStatusChange::DTI;
 }
 
-inline MtAllocator* cpStatusChange::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpStatusChange::DTI);
-}
-
 void* cpStatusChange::operator new(size_t sz, u32 align) {
     return cpStatusChange::getAllocator()->memAlloc(sz, align, cpStatusChange::DTI.getID());
-}
-
-inline void cpStatusChange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpStatusChange::DTI)->memFree(p_addr);
 }
 
 cpStatusChange::cpStatusChange() {
@@ -240,11 +233,11 @@ __attribute__((weak)) bool cpStatusChange::callBackCheck(u32 index) {
 bool cpStatusChange::repeatCheck_UnUse(u32 param) {
     if (param < mcStatusChange.mLength) {
         if (mcStatusChange.getBuffer()[static_cast<int>(param)] != nullptr) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mcStatusChange.getBuffer()[static_cast<int>(param)]) + 8)) == 2) {
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mcStatusChange.getBuffer()[static_cast<int>(param)]) + 39) = 1;
+            if (static_cast<cStatusChange*>(mcStatusChange.getBuffer()[static_cast<int>(param)])->mData.mStatus == 2) {
+                static_cast<cStatusChange*>(mcStatusChange.getBuffer()[static_cast<int>(param)])->mData.mIsRepeatFuncUse = true;
                 return true;
             }
-            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mcStatusChange.getBuffer()[static_cast<int>(param)]) + 39) = 0;
+            static_cast<cStatusChange*>(mcStatusChange.getBuffer()[static_cast<int>(param)])->mData.mIsRepeatFuncUse = false;
         }
     }
     return false;
@@ -269,7 +262,7 @@ bool cpStatusChange::repeat_ExecFunc(u32 repeatCount, u32 index) {
                                 for (unsigned int i0_3 = 0;;) {
                                     if (i0_3 < mcStatusChange.mLength) {
                                         if (mcStatusChange.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
-                                            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mcStatusChange.getBuffer()[static_cast<int>(i0_3)]) + 36) = 0;
+                                            static_cast<cStatusChange*>(mcStatusChange.getBuffer()[static_cast<int>(i0_3)])->mData.mIsStandby = false;
                                         }
                                     }
                                     if ((i0_3 + 1u) < mpResource->getDataNum()) {

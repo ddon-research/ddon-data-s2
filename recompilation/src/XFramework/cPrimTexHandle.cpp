@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cPrimTexHandle.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "cPrimObj.h"
 #include "sPrimitive.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cPrimTexHandle::getDTI() const {
     return cPrimTexHandle::DTI;
-}
-
-inline void* cPrimTexHandle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrimTexHandle::DTI)->memAlloc(sz, align, cPrimTexHandle::DTI.mID);
-}
-
-inline void cPrimTexHandle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrimTexHandle::DTI)->memFree(p_addr);
 }
 
 cPrimTexHandle::cPrimTexHandle() {

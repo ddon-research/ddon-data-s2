@@ -3,9 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-// Declarations
-namespace nMenu { struct MENU_PARTS; }
-
 namespace nMenu {
     enum MENU_RET
     {
@@ -17,6 +14,9 @@ namespace nMenu {
         MENU_RET_BUSY = 4,
     };
 }  // namespace nMenu
+
+// Declarations
+namespace nMenu { struct MENU_PARTS; }
 
 // Type aliases from DWARF
 using u32 = unsigned int;

@@ -121,3 +121,19 @@ inline void cStartPosArea::operator delete[](void* p_addr) {
 inline void* cStartPosArea::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cStartPosArea::DTI)->memAlloc(sz, align, ::cStartPosArea::DTI.::MtDTI::getID());
 }
+
+inline void* cStartPosArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStartPosArea::DTI)->memAlloc(sz, align, ::cStartPosArea::DTI.::MtDTI::getID());
+}
+
+inline void cStartPosArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStartPosArea::DTI)->memFree(p_addr);
+}
+
+inline void* rStartPosArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStartPosArea::DTI)->memAlloc(sz, align, ::rStartPosArea::DTI.::MtDTI::getID());
+}
+
+inline void rStartPosArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStartPosArea::DTI)->memFree(p_addr);
+}

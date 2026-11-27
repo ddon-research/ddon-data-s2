@@ -36,6 +36,7 @@ class cMagicCommand : public MtObject
 {
 
     friend class cMagicCommandList;
+    friend class cMagicCommandList;
 public:
     class MyDTI;
 public:
@@ -185,4 +186,33 @@ inline void* cMagicCommandList::operator new(size_t sz, void* p_addr) {
 
 inline void* rMagicCommandList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cMagicCommand::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMagicCommand::DTI)->memAlloc(sz, align, ::cMagicCommand::DTI.::MtDTI::getID());
+}
+
+inline void cMagicCommand::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMagicCommand::DTI)->memFree(p_addr);
+}
+
+inline void cMagicCommandList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMagicCommandList::DTI)->memFree(p_addr);
+}
+
+inline void* rMagicCommandList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMagicCommandList::DTI)->memAlloc(sz, align, ::rMagicCommandList::DTI.::MtDTI::getID());
+}
+
+inline void rMagicCommandList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMagicCommandList::DTI)->memFree(p_addr);
+}
+
+inline rMagicCommandList::rMagicCommandList() {
+    this->::cResource::setAttribute(18u);
+    this->mMagicCommandList.::MtArray::mAutoDelete = true;
 }

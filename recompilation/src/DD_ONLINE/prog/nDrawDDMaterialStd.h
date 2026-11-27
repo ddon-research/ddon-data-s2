@@ -121,3 +121,11 @@ inline void nDraw::DDMrlStdEstObj::setBlendAlphaThreshold(f32 val) {
 inline void nDraw::DDMrlStdEstObj::setBlendAlphaBand(f32 val) {
     this->mBlendAlphaBand = val;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void nDraw::DDMrlStdEstObj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::DDMrlStdEstObj::DTI)->memFree(p_addr);
+}

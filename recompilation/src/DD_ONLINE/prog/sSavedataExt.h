@@ -16,18 +16,18 @@ class MtDataWriter;
 class MtObject;
 class cEditParam;
 
-// Declarations
-class cStorageData;
-class cStorageDataBase;
-class cStorageDataEdit;
-class sSavedataExt;
-
 enum SAVEDATA_TYPE
 {
     SAVEDATA_TYPE_MAIN = 0,
     SAVEDATA_TYPE_EDIT = 1,
     SAVEDATA_TYPE_NUM = 2,
 };
+
+// Declarations
+class cStorageData;
+class cStorageDataBase;
+class cStorageDataEdit;
+class sSavedataExt;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -480,4 +480,32 @@ inline void* sSavedataExt::operator new(size_t sz, void* p_addr) {
 
 inline bool sSavedataExt::isCheckTrophySize() {
     return this->mIsCheckTrophySize;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cStorageData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStorageData::DTI)->memFree(p_addr);
+}
+
+inline void* cStorageDataBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStorageDataBase::DTI)->memAlloc(sz, align, ::cStorageDataBase::DTI.::MtDTI::getID());
+}
+
+inline void cStorageDataBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStorageDataBase::DTI)->memFree(p_addr);
+}
+
+inline void cStorageDataEdit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStorageDataEdit::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sSavedataExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sSavedataExt::DTI);
+}
+
+inline void sSavedataExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSavedataExt::DTI)->memFree(p_addr);
 }

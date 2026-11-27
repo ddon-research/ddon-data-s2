@@ -203,3 +203,23 @@ inline sContextManager::List::List() {
 inline cContext* sContextManager::List::getTop() {
     return this->mpTop;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sContextManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sContextManager::DTI);
+}
+
+inline void sContextManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sContextManager::DTI)->memFree(p_addr);
+}
+
+inline void* sContextManager::List::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sContextManager::List::DTI)->memAlloc(sz, align, ::sContextManager::List::DTI.::MtDTI::getID());
+}
+
+inline void sContextManager::List::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sContextManager::List::DTI)->memFree(p_addr);
+}

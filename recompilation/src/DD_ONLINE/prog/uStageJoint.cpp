@@ -20,6 +20,7 @@
 #include "cOmControl.h"
 #include "cResPath.h"
 #include "../../XFramework/cResource.h"
+#include "cScenario.h"
 #include "cSplitBase.h"
 #include "cStageEpvCtrl.h"
 #include "../../XFramework/cUnit.h"
@@ -60,11 +61,15 @@
 #include "sUnitExt.h"
 #include "sWeatherManager.h"
 #include "sWorldOffset.h"
+#include "sZoneStatus.h"
 #include "sZoneUnitCtrl.h"
 #include "../../XFramework/uCoord.h"
+#include "uLightExt.h"
 #include "uPlayer.h"
 #include "../../XFramework/uScheduler.h"
+#include "uScrModel.h"
 #include "../../XFramework/uScrollCollisionGeometry.h"
+#include "uSkyWaterModel.h"
 #include "uSoundGenerator.h"
 #include "uSoundOcclusion.h"
 #include "uSoundTrigger.h"
@@ -76,16 +81,8 @@ const MtDTI& uStageJointCtrl::getDTI() const {
     return uStageJointCtrl::DTI;
 }
 
-inline MtAllocator* uStageJointCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uStageJointCtrl::DTI);
-}
-
 void* uStageJointCtrl::operator new(size_t sz, u32 align) {
     return uStageJointCtrl::getAllocator()->memAlloc(sz, align, uStageJointCtrl::DTI.getID());
-}
-
-inline void uStageJointCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uStageJointCtrl::DTI)->memFree(p_addr);
 }
 
 uStageJointCtrl::uStageJointCtrl() {
@@ -158,9 +155,26 @@ __attribute__((weak)) void uStageJointCtrl::setResource(s32 stageNo) {
     /* stub */
 }
 
-__attribute__((weak)) bool uStageJointCtrl::calcJointArea(const MtVector3& pos, s32& outX, s32& outZ) {
-    DDON_STUB("uStageJointCtrl::calcJointArea")
-    return {};
+bool uStageJointCtrl::calcJointArea(const MtVector3& pos, s32& outX, s32& outZ) {
+    if (mpJointArea != nullptr) {
+        if (mpJointArea->mParam.mStartX > pos.x) {
+            outZ = 0;
+            outX = 0;
+            return false;
+        } else {
+            if (mpJointArea->mParam.mStartZ > pos.z) {
+                outZ = 0;
+                outX = 0;
+                return false;
+            } else {
+                outX = static_cast<int>((pos.x - mpJointArea->mParam.mStartX) / mpJointArea->mParam.mDeltaX);
+                outZ = static_cast<int>((pos.z - mpJointArea->mParam.mStartZ) / mpJointArea->mParam.mDeltaZ);
+                return true;
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 bool uStageJointCtrl::isSetup() {
@@ -397,10 +411,6 @@ const MtDTI& uStageJointMdl::getDTI() const {
     return uStageJointMdl::DTI;
 }
 
-inline void uStageJointMdl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uStageJointMdl::DTI)->memFree(p_addr);
-}
-
 uStageJointMdl::~uStageJointMdl() {
 }
 
@@ -414,9 +424,186 @@ __attribute__((weak)) void uStageJointMdl::move() {
     /* stub */
 }
 
-__attribute__((weak)) void uStageJointMdl::kill() {
-    DDON_STUB("uStageJointMdl::kill")
-    /* stub */
+void uStageJointMdl::kill() {
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) == 0) {
+        if ((mBeFlag - 1u) <= 1u) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
+        }
+    }
+    if (mScrSbcHandle[0] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mScrSbcHandle[0]);
+        mScrSbcHandle[0] = 0xFFFFFFFF;
+    }
+    if (mEffSbcHandle[0] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mEffSbcHandle[0]);
+        mEffSbcHandle[0] = 0xFFFFFFFF;
+    }
+    if (mScrSbcHandle[1] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mScrSbcHandle[1]);
+        mScrSbcHandle[1] = 0xFFFFFFFF;
+    }
+    if (mEffSbcHandle[1] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mEffSbcHandle[1]);
+        mEffSbcHandle[1] = 0xFFFFFFFF;
+    }
+    if (mScrSbcHandle[2] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mScrSbcHandle[2]);
+        mScrSbcHandle[2] = 0xFFFFFFFF;
+    }
+    if (mEffSbcHandle[2] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mEffSbcHandle[2]);
+        mEffSbcHandle[2] = 0xFFFFFFFF;
+    }
+    if (mpMdlRsrc != nullptr) {
+        mpMdlRsrc->release();
+        mpMdlRsrc = nullptr;
+    }
+    if (mpMdlSchdl != nullptr) {
+        mpMdlSchdl->kill();
+        mpMdlSchdl = nullptr;
+    }
+    if (mpLightSdlRsrc != nullptr) {
+        mpLightSdlRsrc->release();
+        mpLightSdlRsrc = nullptr;
+    }
+    if (mpLightSchdl != nullptr) {
+        mpLightSchdl->kill();
+        mpLightSchdl = nullptr;
+    }
+    static_cast<sEffectExt*>(sEffect::getInstance())->releaseEfcZone(mEfcColorHandle, 0u);
+    u32 v11_9 = cZoneLayout::INVALID_HANDLE;
+    mEfcColorHandle = v11_9;
+    static_cast<sEffectExt*>(sEffect::getInstance())->releaseEfcZone(mEfcCtrlHandle, 2u);
+    static_cast<sEffectExt*>(sEffect::getInstance())->eraseZoneEffectProvider(mEfcCtrlHandle);
+    mEfcCtrlHandle = v11_9;
+    if (mpEfcColorZone != nullptr) {
+        mpEfcColorZone->release();
+        mpEfcColorZone = nullptr;
+    }
+    if (mpEfcCtrlZone != nullptr) {
+        mpEfcCtrlZone->release();
+        mpEfcCtrlZone = nullptr;
+    }
+    sWeatherManager::getInstance()->eraseZoneIndoorRes(mIndoorZoneHandle);
+    sWeatherManager::getInstance()->eraseLightZoneRes(mLightAndFogZoneHandle);
+    mLightAndFogZoneHandle = v11_9;
+    sZoneUnitCtrl::getInstance()->eraseZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_OM, mZoneUnitCtrlHandle[0]);
+    sZoneUnitCtrl::getInstance()->eraseZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_LIGHT, mZoneUnitCtrlHandle[1]);
+    sZoneUnitCtrl::getInstance()->eraseZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_SCRL, mZoneUnitCtrlHandle[2]);
+    sZoneStatus::getInstance()->eraseZoneStatus(mZoneStatusHandle);
+    static_cast<sSoundExt*>(sSound::getInstance())->releaseBgmSplitAreaResource(reinterpret_cast<uintptr>(this));
+    if (mpSoundAreaInfo != nullptr) {
+        mpSoundAreaInfo->release();
+        mpSoundAreaInfo = nullptr;
+    }
+    if (mpSoundTrigger != nullptr) {
+        mpSoundTrigger->kill();
+        mpSoundTrigger = nullptr;
+    }
+    if (mpSoundGenerator != nullptr) {
+        mpSoundGenerator->kill();
+        mpSoundGenerator = nullptr;
+    }
+    if (mpSoundOcclusion != nullptr) {
+        mpSoundOcclusion->kill();
+        mpSoundOcclusion = nullptr;
+    }
+    u32 v18_0;
+    if (mOmCtrl.mLength == 0) {
+        v18_0 = 0;
+    } else {
+        for (unsigned int i17_3 = 0;;) {
+            sOmManager::getInstance()->releaseTreeInsCtrl(static_cast<cOmTreeControl*>(mOmCtrl.getBuffer()[static_cast<int>(i17_3)]));
+            if ((i17_3 + 1u) < mOmCtrl.mLength) {
+                i17_3 += 1u;
+            } else {
+                v18_0 = mOmCtrl.mLength;
+                break;
+            }
+        }
+    }
+    if (mOmCtrl.mAutoDelete) {
+        u32 v22_0;
+        if (v18_0 != 0) {
+            u32 v19_0 = v18_0;
+            unsigned int i19_3 = 0;
+            u32 v20_0;
+            for (;;) {
+                if (mOmCtrl.mpArray[i19_3] == nullptr) {
+                    v20_0 = v19_0;
+                } else {
+                    delete mOmCtrl.mpArray[i19_3];
+                    v20_0 = mOmCtrl.mLength;
+                }
+                if ((i19_3 + 1u) < v20_0) {
+                    v19_0 = v20_0;
+                    i19_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+            v22_0 = v20_0;
+        } else {
+            v22_0 = 0;
+        }
+        memset(static_cast<void*>(mOmCtrl.mpArray), 0, static_cast<size_t>(v22_0) * 8);
+    }
+    mOmCtrl.mLength = 0;
+    if (mpPlantTree != nullptr) {
+        mpPlantTree->release();
+        mpPlantTree = nullptr;
+    }
+    cArcLoaderBase* v25_10;
+    if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isKeepArchive()) {
+        cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+        if (mArcTicket != t0) {
+            if (mArcTicket->getArcPtr(0u) != nullptr) {
+                sGame* t1 = sGame::getInstance();
+                t1->keepArc(mArcTicket->getArcPtr(0u));
+            }
+            v25_10 = t0;
+        } else {
+            v25_10 = mArcTicket;
+        }
+    } else {
+        v25_10 = sArchiveManager::INVALID_TICKET;
+    }
+    if (v25_10 != mArcTicket) {
+        sArchiveManager::getInstance()->returnTicket(mArcTicket);
+        mArcTicket = v25_10;
+    }
+    mStageEpvCtrl.releaseEpvCtrl();
+    mpGrassReceiver = nullptr;
+    if (mSceArray.mLength != 0) {
+        u32 v27_0 = mSceArray.mLength;
+        unsigned int i27_3 = 0;
+        u32 v28_0;
+        for (;;) {
+            if (mSceArray.mpArray[i27_3] == nullptr) {
+                v28_0 = v27_0;
+            } else {
+                sScenario::getInstance()->release(static_cast<cScenario*>(mSceArray.mpArray[i27_3]));
+                mSceArray.mpArray[i27_3] = nullptr;
+                v28_0 = mSceArray.mLength;
+            }
+            if ((i27_3 + 1u) < v28_0) {
+                v27_0 = v28_0;
+                i27_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mSceArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSceArray.mpArray));
+    }
+    mSceArray.mpArray = nullptr;
+    mSceArray.mBufsiz = 0;
+    mSceArray.mLength = 0;
+    if (mpSbcGeometry != nullptr) {
+        mpSbcGeometry->kill();
+        mpSbcGeometry = nullptr;
+    }
 }
 
 void uStageJointMdl::updatePtr() {

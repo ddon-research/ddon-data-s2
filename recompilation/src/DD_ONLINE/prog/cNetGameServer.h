@@ -181,15 +181,18 @@ class MtMemoryStream;
 struct MtNetError;
 class MtObject;
 class MtString;
+class cActiveQuestManager;
 class cCharacterData;
 class cContextInstHm;
 class cContextInstance;
 class cContextInterface;
+class cEditChargeInfoUpdator;
 class cEditParam;
 class cItemParam;
 class cMenuBlackList;
 class cMenuCancelClanScoutEntry;
 class cMenuClanInfoDisp;
+class cMenuDispStatus;
 class cMenuExtendEntryBoardItem;
 class cMenuFriendList;
 class cMenuGetClanBaseInfo;
@@ -208,6 +211,7 @@ class cMenuQuickMatchRetry;
 class cMenuReadyCheck;
 class cMenuReadyEntryBoardItem;
 class cMenuRecentList;
+class cMenuRentalPawnList;
 class cMenuSimplePartyReq;
 class cQuestSvRequestManager;
 class cQuestTask;
@@ -492,16 +496,22 @@ namespace nUserSession { class CPacket_S2C_USER_LIST_LEAVE_NTC; }
 namespace nUserSession { class CPacket_S2C_USE_BAG_ITEM_NOTICE; }
 namespace nUserSession { class CPacket_S2C_WEATHER_FORECAST_GET_RES; }
 class sBazaarManager;
+class sClanKyoten;
 class sContextManager;
 class sCraftManager;
 class sGame;
 class sNetworkExt;
 class sNpcManager;
 class sQuestManagerExt;
+class sReward;
 class uCharacterEdit;
+class uGUIAnnounce;
+class uGUIClanEmblem;
+class uGUIClanStatus;
 class uGUICraft;
 class uGUIEntryBoardInfo;
 class uGUILoginBonus;
+class uGUIPartyList;
 class uGUIRimWarp;
 class uStageCraftPawnCtrl;
 class uStageRevivalPawn;
@@ -958,7 +968,7 @@ private:
     void getSessionKeyPrivate(MT_CHAR*) const;
     void setSessionKeyPrivate(const MT_CHAR* NewValue);
     bool isLoginWithSessionKeyPrivate() const;
-    void setLoginWithSessionKeyPrivate(bool NewValue);
+    void setLoginWithSessionKeyPrivate(bool NewValue = false);
     bool isLoginSuccessPrivate() const;
     void setLoginSuccessPrivate(bool NewValue);
 public:
@@ -2491,11 +2501,14 @@ protected:
 
 class cNetGameServer : public MtObject
 {
+    friend class cActiveQuestManager;
     friend class cContextInterface;
+    friend class cEditChargeInfoUpdator;
     friend class cItemParam;
     friend class cMenuBlackList;
     friend class cMenuCancelClanScoutEntry;
     friend class cMenuClanInfoDisp;
+    friend class cMenuDispStatus;
     friend class cMenuExtendEntryBoardItem;
     friend class cMenuFriendList;
     friend class cMenuGetClanBaseInfo;
@@ -2514,21 +2527,28 @@ class cNetGameServer : public MtObject
     friend class cMenuReadyCheck;
     friend class cMenuReadyEntryBoardItem;
     friend class cMenuRecentList;
+    friend class cMenuRentalPawnList;
     friend class cMenuSimplePartyReq;
     friend class cQuestSvRequestManager;
     friend class cQuestTask;
     friend class nSessionManager::cNetSessionManager;
     friend class sBazaarManager;
+    friend class sClanKyoten;
     friend class sContextManager;
     friend class sCraftManager;
     friend class sGame;
     friend class sNetworkExt;
     friend class sNpcManager;
     friend class sQuestManagerExt;
+    friend class sReward;
     friend class uCharacterEdit;
+    friend class uGUIAnnounce;
+    friend class uGUIClanEmblem;
+    friend class uGUIClanStatus;
     friend class uGUICraft;
     friend class uGUIEntryBoardInfo;
     friend class uGUILoginBonus;
+    friend class uGUIPartyList;
     friend class uGUIRimWarp;
     friend class uStageCraftPawnCtrl;
     friend class uStageRevivalPawn;
@@ -5155,8 +5175,57 @@ inline void* cNetGameServer::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cNetGameServer::allClearFlow() {
+    this->mFlow[0].mError.mCause = 0;
+    this->mFlow[0].mError.mNative = 0;
+    this->mFlow[0].mCommand = 0;
+    this->mFlow[0].mError.mNo = 0;
+    this->mFlow[0].mRno0 = 0;
+    this->mFlow[0].mRno1 = 0;
+    this->mFlow[0].mIsCallback = true;
+    this->mFlow[1].mError.mCause = 0;
+    this->mFlow[1].mError.mNative = 0;
+    this->mFlow[1].mCommand = 0;
+    this->mFlow[1].mError.mNo = 0;
+    this->mFlow[1].mRno0 = 0;
+    this->mFlow[1].mRno1 = 0;
+    this->mFlow[1].mIsCallback = true;
+    this->mFlow[2].mError.mCause = 0;
+    this->mFlow[2].mError.mNative = 0;
+    this->mFlow[2].mCommand = 0;
+    this->mFlow[2].mError.mNo = 0;
+    this->mFlow[2].mRno0 = 0;
+    this->mFlow[2].mRno1 = 0;
+    this->mFlow[2].mIsCallback = true;
+    this->mFlow[3].mError.mCause = 0;
+    this->mFlow[3].mError.mNative = 0;
+    this->mFlow[3].mCommand = 0;
+    this->mFlow[3].mError.mNo = 0;
+    this->mFlow[3].mRno0 = 0;
+    this->mFlow[3].mRno1 = 0;
+    this->mFlow[3].mIsCallback = true;
+    this->mFlow[4].mError.mCause = 0;
+    this->mFlow[4].mError.mNative = 0;
+    this->mFlow[4].mCommand = 0;
+    this->mFlow[4].mError.mNo = 0;
+    this->mFlow[4].mRno0 = 0;
+    this->mFlow[4].mRno1 = 0;
+    this->mFlow[4].mIsCallback = true;
+    this->mFlow[5].mError.mCause = 0;
+    this->mFlow[5].mError.mNative = 0;
+    this->mFlow[5].mCommand = 0;
+    this->mFlow[5].mError.mNo = 0;
+    this->mFlow[5].mRno0 = 0;
+    this->mFlow[5].mRno1 = 0;
+    this->mFlow[5].mIsCallback = true;
+}
+
 inline void cNetGameServer::setSelectServerNo(u32 serverNo) {
     this->mLoginData.mSelectServerNo = serverNo;
+}
+
+inline bool cNetGameServer::isCOGLogin() const {
+    return this->mIsCOGLogin;
 }
 
 inline void cNetGameServer::setSelectServerNoPrivate(u32 NewValue) {
@@ -5177,6 +5246,10 @@ inline u32 cNetGameServer::getCharacterId() {
 
 inline void cNetGameServer::setJoinPartyId(u32 partyId) {
     this->mJoinPartyId = partyId;
+}
+
+inline s32 cNetGameServer::getLeaderMemberIndex() {
+    return this->mLeaderCharacterId;
 }
 
 inline u32 cNetGameServer::getInviteLeaderCharacterId() {
@@ -5448,4 +5521,118 @@ inline void* cSeedGameSvConnection::operator new(size_t sz, void* p_addr) {
 
 inline bool cSeedGameSvConnection::isLoginSuccess() const {
     return this->mGuardData.mIsLoginSuccess;
+}
+
+inline void cSeedGameSvConnection::setLoginWithSessionKeyPrivate(bool NewValue) {
+    this->mGuardData.mIsLoginWithSessionKey = false;
+    this->mGuardData.mIsLoginSuccess = false;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "Protocol/UserSession/S2C.h"
+#include "../../XFramework/sMain.h"
+#include "../../XFramework/sNetwork.h"
+
+inline void* cCompleteQuest::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCompleteQuest::DTI)->memAlloc(sz, align, ::cCompleteQuest::DTI.::MtDTI::getID());
+}
+
+inline void cCompleteQuest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCompleteQuest::DTI)->memFree(p_addr);
+}
+
+inline void* cEditSalonInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEditSalonInfo::DTI)->memAlloc(sz, align, ::cEditSalonInfo::DTI.::MtDTI::getID());
+}
+
+inline void cEditSalonInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEditSalonInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cNetGameServer::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cNetGameServer::DTI);
+}
+
+inline void cNetGameServer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNetGameServer::DTI)->memFree(p_addr);
+}
+
+inline void cNetGameServer::clearConsumeStorageItemList() {
+    unsigned int i1 = 0;
+    if (this->mReqStorageItemList.::MtArray::mLength != 0) {
+        do {
+            if (this->mReqStorageItemList.::MtArray::mpArray[i1] != nullptr) {
+                delete this->mReqStorageItemList.::MtArray::mpArray[i1];
+            }
+            i1 += 1u;
+        } while (i1 < this->mReqStorageItemList.::MtArray::mLength);
+    }
+    this->mReqStorageItemList.::MtArray::mLength = 0;
+}
+
+inline void cNetGameServer::clearClanDirectInvitedList() {
+    unsigned int i1 = 0;
+    if (this->mClanDirectInvitedList.::MtArray::mLength != 0) {
+        do {
+            if (this->mClanDirectInvitedList.::MtArray::mpArray[i1] != nullptr) {
+                delete this->mClanDirectInvitedList.::MtArray::mpArray[i1];
+            }
+            i1 += 1u;
+        } while (i1 < this->mClanDirectInvitedList.::MtArray::mLength);
+    }
+    this->mClanDirectInvitedList.::MtArray::mLength = 0;
+}
+
+inline void cNetGameServer::countMailUpdateTimer() {
+    if (this->mEnableUpdateSysMailTimer > 0.0f) {
+        this->mEnableUpdateSysMailTimer = this->mEnableUpdateSysMailTimer - (::sMain::mpInstance)->mDeltaTime;
+    }
+}
+
+inline void cNetGameServer::resetMailUpdateTimer() {
+    this->mEnableUpdateSysMailTimer = (::sMain::mpInstance)->mFps * static_cast<float>(static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->mpConnection->mpGetGameSettingPacket->m_GameSetting.m_unMailCacheExpireTime);
+}
+
+inline void cNetGameServer::OnPacket_S2C_QUEST_PROGRESS_RES(nUserSession::CPacket_S2C_QUEST_PROGRESS_RES& packet) {
+    this->mRecvProgressQuestScheduleId = packet.m_unQuestScheduleId;
+    if (packet.m_nResult != 0) {
+        this->mStatus[145] = static_cast<sNetworkExt::NET_STAT>(4);
+    } else {
+        this->mStatus[145] = static_cast<sNetworkExt::NET_STAT>(2);
+        this->mpQuestProcessStateList = &this->mpConnection->mpQuestProgressPacket->m_QuestProcessStateList;
+    }
+}
+
+inline void* cNetGameServer::cCtrlFlow::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNetGameServer::cCtrlFlow::DTI)->memAlloc(sz, align, ::cNetGameServer::cCtrlFlow::DTI.::MtDTI::getID());
+}
+
+inline void cNetGameServer::cCtrlFlow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNetGameServer::cCtrlFlow::DTI)->memFree(p_addr);
+}
+
+inline void* cNetGameServer::cChatLog::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNetGameServer::cChatLog::DTI)->memAlloc(sz, align, ::cNetGameServer::cChatLog::DTI.::MtDTI::getID());
+}
+
+inline void cPartyMemberInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPartyMemberInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cPawnListParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnListParam::DTI)->memAlloc(sz, align, ::cPawnListParam::DTI.::MtDTI::getID());
+}
+
+inline void* cPawnVoiceData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnVoiceData::DTI)->memAlloc(sz, align, ::cPawnVoiceData::DTI.::MtDTI::getID());
+}
+
+inline void cPawnVoiceData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPawnVoiceData::DTI)->memFree(p_addr);
+}
+
+inline void cSeedGameSvConnection::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSeedGameSvConnection::DTI)->memFree(p_addr);
 }

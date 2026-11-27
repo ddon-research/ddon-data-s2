@@ -153,3 +153,50 @@ inline cGeomIterator::cGeomIterator() {
 inline void* cHitGeom::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cGeomIterator::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGeomIterator::DTI)->memAlloc(sz, align, ::cGeomIterator::DTI.::MtDTI::getID());
+}
+
+inline void cGeomIterator::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGeomIterator::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cHitGeom::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cHitGeom::DTI);
+}
+
+inline void cHitGeom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHitGeom::DTI)->memFree(p_addr);
+}
+
+inline cHitGeom::cHitGeom() {
+    this->mpNode = nullptr;
+    this->mpObjCollision = nullptr;
+    this->mpGeomInter = nullptr;
+    this->mpGeom = nullptr;
+    this->mpSrcNode = nullptr;
+    this->mpSrcGeom = nullptr;
+    this->mIsActive = true;
+    this->mInterpolate = 0;
+    this->mRangeCheckMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mRangeCheckMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mRangeCheckMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mRangeCheckMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mRangeCheckMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mRangeCheckMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mRangeCheckMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mRangeCheckMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mRangeCheckMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mRangeCheckMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mRangeCheckMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mRangeCheckMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mRangeCheckMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mRangeCheckMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mRangeCheckMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mRangeCheckMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+}

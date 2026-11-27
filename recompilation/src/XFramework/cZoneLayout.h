@@ -280,3 +280,19 @@ inline bool cZoneLayout::cInGameGroupManager::isEnable() const {
 inline void* cZoneLayout::cDynamicBVHMaster::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cZoneLayout::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneLayout::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneLayout::cInGameGroupManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneLayout::cInGameGroupManager::DTI)->memAlloc(sz, align, ::cZoneLayout::cInGameGroupManager::DTI.::MtDTI::mID);
+}
+
+inline void cZoneLayout::cDynamicBVHMaster::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneLayout::cDynamicBVHMaster::DTI)->memFree(p_addr);
+}

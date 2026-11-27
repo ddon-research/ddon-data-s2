@@ -501,3 +501,11 @@ inline sShader2* sShader2::getInstance() {
 inline bool sShader2::isSRGBEnable() {
     return this->mSRGBEnable;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sShader2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShader2::DTI)->memFree(p_addr);
+}

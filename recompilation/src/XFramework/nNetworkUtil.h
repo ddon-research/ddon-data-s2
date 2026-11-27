@@ -16,6 +16,7 @@ class MtProperty;
 class MtPropertyList;
 class MtString;
 class MtUI;
+namespace nNetwork { class SessionDatabase; }
 
 // Declarations
 namespace nNetwork { class SearchFilterListPtr; }
@@ -37,6 +38,8 @@ using u32 = unsigned int;
 namespace nNetwork {
     class SearchKeyPtr : public ::MtObject
     {
+        friend class nNetwork::SearchFilterListPtr;
+        friend class nNetwork::SearchKeyListPtr;
         friend class nNetwork::SearchResultListPtr;
     public:
         class MyDTI;
@@ -94,6 +97,7 @@ namespace nNetwork {
 namespace nNetwork {
     class SearchFilterPtr : public ::MtObject
     {
+        friend class nNetwork::SearchFilterListPtr;
     public:
         class MyDTI;
     public:
@@ -237,6 +241,7 @@ namespace nNetwork {
     class SearchResultPtr : public ::MtObject
     {
         friend class nNetwork::SearchResultListPtr;
+        friend class nNetwork::SessionDatabase;
     public:
         SearchResultPtr();
         virtual ~SearchResultPtr() {}
@@ -257,6 +262,7 @@ namespace nNetwork {
 namespace nNetwork {
     class SearchResultListPtr : public ::MtObject
     {
+        friend class nNetwork::SessionDatabase;
     public:
         SearchResultListPtr();
         virtual ~SearchResultListPtr() {}
@@ -288,4 +294,24 @@ inline void* nNetwork::SearchKeyListPtr::operator new(size_t sz, void* p_addr) {
 
 inline void* nNetwork::SearchKeyPtr::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::SearchFilterListPtr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::SearchFilterListPtr::DTI)->memFree(p_addr);
+}
+
+inline void nNetwork::SearchFilterPtr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::SearchFilterPtr::DTI)->memFree(p_addr);
+}
+
+inline void nNetwork::SearchKeyListPtr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::SearchKeyListPtr::DTI)->memFree(p_addr);
+}
+
+inline void nNetwork::SearchKeyPtr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::SearchKeyPtr::DTI)->memFree(p_addr);
 }

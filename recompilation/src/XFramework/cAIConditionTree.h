@@ -414,3 +414,39 @@ inline cAIConditionTreeNode::cAIConditionTreeNode() {
     this->mpChildList = nullptr;
     this->mpResource = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cAIConditionTree::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIConditionTree::DTI)->memFree(p_addr);
+}
+
+inline void cAIConditionTree::TreeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIConditionTree::TreeInfo::DTI)->memFree(p_addr);
+}
+
+inline void cAIConditionTree::OperationWorkNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIConditionTree::OperationWorkNode::DTI)->memFree(p_addr);
+}
+
+inline void cAIConditionTree::ConstWorkNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIConditionTree::ConstWorkNode::DTI)->memFree(p_addr);
+}
+
+inline void cAIConditionTree::ConstEnumWorkNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIConditionTree::ConstEnumWorkNode::DTI)->memFree(p_addr);
+}
+
+inline void cAIConditionTree::VariableWorkNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIConditionTree::VariableWorkNode::DTI)->memFree(p_addr);
+}
+
+inline void* cAIConditionTreeNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIConditionTreeNode::DTI)->memAlloc(sz, align, ::cAIConditionTreeNode::DTI.::MtDTI::mID);
+}
+
+inline void cAIConditionTreeNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIConditionTreeNode::DTI)->memFree(p_addr);
+}

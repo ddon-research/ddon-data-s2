@@ -99,3 +99,11 @@ inline void* uCnsJointOffset::operator new(size_t sz, void* p_addr) {
 inline u32 uCnsJointOffset::getJoint() {
     return this->mJoint;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uCnsJointOffset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsJointOffset::DTI)->memFree(p_addr);
+}

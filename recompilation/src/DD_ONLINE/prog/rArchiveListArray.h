@@ -112,3 +112,21 @@ inline void rArchiveListArray::allocMem(u32 size) {
     freeMem();
     mpHeader = static_cast<stHeader*>(MtMemoryAllocator::getAllocator(rArchiveListArray::DTI)->memAlloc(size, 16));
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rArchiveListArray::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rArchiveListArray::DTI)->memAlloc(sz, align, ::rArchiveListArray::DTI.::MtDTI::getID());
+}
+
+inline void rArchiveListArray::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rArchiveListArray::DTI)->memFree(p_addr);
+}
+
+inline rArchiveListArray::rArchiveListArray() {
+    this->::cResource::setAttribute(16u);
+    this->mpDbgResDat = nullptr;
+    this->mpHeader = nullptr;
+}

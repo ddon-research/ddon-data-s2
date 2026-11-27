@@ -27,16 +27,8 @@ const MtDTI& uGUITextHud::getDTI() const {
     return uGUITextHud::DTI;
 }
 
-inline MtAllocator* uGUITextHud::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUITextHud::DTI);
-}
-
 void* uGUITextHud::operator new(size_t sz, u32 align) {
     return uGUITextHud::getAllocator()->memAlloc(sz, align, uGUITextHud::DTI.getID());
-}
-
-inline void uGUITextHud::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUITextHud::DTI)->memFree(p_addr);
 }
 
 uGUITextHud::~uGUITextHud() {

@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUIOption.h"
 #include "Protocol/PacketData/Character.h"
 #include "../../MT/MtAllocator.h"
@@ -57,16 +58,8 @@ const MtDTI& uGUIOption::getDTI() const {
     return uGUIOption::DTI;
 }
 
-inline MtAllocator* uGUIOption::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIOption::DTI);
-}
-
 void* uGUIOption::operator new(size_t sz, u32 align) {
     return uGUIOption::getAllocator()->memAlloc(sz, align, uGUIOption::DTI.getID());
-}
-
-inline void uGUIOption::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIOption::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIOption::~uGUIOption() {
@@ -204,9 +197,156 @@ __attribute__((weak)) void uGUIOption::moveInput() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIOption::moveEvent() {
-    DDON_STUB("uGUIOption::moveEvent")
-    /* stub */
+void uGUIOption::moveEvent() {
+    for (u32 i = 0; i <= 15u; i += 1u) {
+        if (mPulldown[i].mpInstNull != nullptr) {
+            if ((mPulldown[i].mpInstNull->mAttr & 1u) != 0) {
+                if (mPulldown[i].mPulldown.moveEvent()) {
+                    return;
+                }
+            }
+        } else {
+            if (mPulldown[i].mPulldown.moveEvent()) {
+                return;
+            }
+        }
+    }
+    switch (getInputEvent() - 66u) {
+        case 0:
+        {
+            if (mOptionType <= 1u) {
+                if (memcmp(static_cast<const void*>(&static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData().mOptionSys.mGamma), static_cast<const void*>(&mOptionSysTmp.mGamma), 60ul) == 0) {
+                    if (mKeyCustomManagers.isExistChange(true)) {
+                        createExitDialog();
+                        return;
+                    } else {
+                        if (mIsEndSave) {
+                            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateSaveData);
+                            return;
+                        } else {
+                            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateExit);
+                            return;
+                        }
+                    }
+                } else {
+                    createExitDialog();
+                    return;
+                }
+            } else {
+                if (memcmp(static_cast<const void*>(&(sGame::mpInstance)->mCharData.mCharData.mOption.mOnlineStatus), static_cast<const void*>(&mOptionChrTmp.mOnlineStatus), 96ul) != 0) {
+                    createExitDialog();
+                    return;
+                } else {
+                    if (mIsEndSave) {
+                        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateSaveData);
+                        return;
+                    } else {
+                        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateExit);
+                        return;
+                    }
+                }
+            }
+            break;
+        }
+        case 1:
+        {
+            updateTab();
+            updateDisp();
+            return;
+        }
+        case 2:
+        {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWaitData);
+            if (mpVLCtgr != nullptr) {
+                if (mpVLCtgr->getCurrentPos() == mpVLCtgr->mOldPos) {
+                    updatePage(false, true);
+                    updateDisp();
+                    return;
+                } else {
+                    updateTab();
+                    updateDisp();
+                    return;
+                }
+            } else {
+                updateDisp();
+                return;
+            }
+            break;
+        }
+        case 3:
+        {
+            updatePage(false, true);
+            updateDisp();
+            return;
+        }
+        case 4:
+        {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIOption::updateWait);
+            if (mpHLAOI != nullptr) {
+                mpHLAOI->setCurrentPos(0, false);
+                updateDisp();
+                return;
+            } else {
+                updateDisp();
+                return;
+            }
+            break;
+        }
+        case 5:
+        {
+            if (mpHLAOI != nullptr) {
+                mpHLAOI->setCurrentPos(0, false);
+                updateDisp();
+                return;
+            } else {
+                updateDisp();
+                return;
+            }
+            break;
+        }
+        case 6:
+        {
+            evDataDecide();
+            return;
+        }
+        case 7:
+        {
+            updateDisp();
+            return;
+        }
+        case 8:
+        {
+            evAOIDecide();
+            return;
+        }
+        case 9:
+        {
+            if (mOptionType <= 1u) {
+                if (memcmp(static_cast<const void*>(&static_cast<sSavedataExt*>(sSavedata::getInstance())->getStorageData().mOptionSys.mGamma), static_cast<const void*>(&mOptionSysTmp.mGamma), 60ul) == 0) {
+                    if (mKeyCustomManagers.isExistChange(true)) {
+                        mIsEndSave = true;
+                    }
+                    saveOptionData();
+                    return;
+                } else {
+                    mIsEndSave = true;
+                    saveOptionData();
+                    return;
+                }
+            } else {
+                if (memcmp(static_cast<const void*>(&(sGame::mpInstance)->mCharData.mCharData.mOption.mOnlineStatus), static_cast<const void*>(&mOptionChrTmp.mOnlineStatus), 96ul) != 0) {
+                    mIsEndSave = true;
+                }
+                saveOptionData();
+                return;
+            }
+            break;
+        }
+        default:
+        {
+            return;
+        }
+    }
 }
 
 void uGUIOption::updateInit() {

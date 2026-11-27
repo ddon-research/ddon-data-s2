@@ -15,10 +15,6 @@ const MtDTI& CDataRankingBoard::getDTI() const {
     return CDataRankingBoard::DTI;
 }
 
-inline MtAllocator* CDataRankingBoard::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataRankingBoard::DTI);
-}
-
 void* CDataRankingBoard::operator new(size_t sz, u32 align) {
     return CDataRankingBoard::getAllocator()->memAlloc(sz, align, CDataRankingBoard::DTI.getID());
 }
@@ -38,10 +34,6 @@ __attribute__((weak)) MtObject* CDataRankingBoard::MyDTI::newInstance() const {
 
 const MtDTI& CDataRankingData::getDTI() const {
     return CDataRankingData::DTI;
-}
-
-inline MtAllocator* CDataRankingData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataRankingData::DTI);
 }
 
 void* CDataRankingData::operator new(size_t sz, u32 align) {

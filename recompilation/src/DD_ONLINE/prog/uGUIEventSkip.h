@@ -89,3 +89,15 @@ private:
 inline void* uGUIEventSkip::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIEventSkip::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIEventSkip::DTI);
+}
+
+inline void uGUIEventSkip::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIEventSkip::DTI)->memFree(p_addr);
+}

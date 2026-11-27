@@ -39,16 +39,8 @@ const MtDTI& cGUIFloorManager::getDTI() const {
     return cGUIFloorManager::DTI;
 }
 
-inline MtAllocator* cGUIFloorManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGUIFloorManager::DTI);
-}
-
 void* cGUIFloorManager::operator new(size_t sz, u32 align) {
     return cGUIFloorManager::getAllocator()->memAlloc(sz, align, cGUIFloorManager::DTI.getID());
-}
-
-inline void cGUIFloorManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIFloorManager::DTI)->memFree(p_addr);
 }
 
 cGUIFloorManager::cGUIFloorManager() {
@@ -156,7 +148,7 @@ void cGUIFloorManager::setFloorBaseIdOfs(u32 idx, s32 sFloorBaseIdOfs) {
         return;
     }
     if (idx < mParamArray.mLength) {
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mParamArray.getBuffer()[static_cast<int>(idx)]) + 16) = static_cast<unsigned int>(sFloorBaseIdOfs);
+        static_cast<cParam*>(mParamArray.getBuffer()[static_cast<int>(idx)])->mFloorBaseIdOfs = sFloorBaseIdOfs;
     }
 }
 
@@ -170,14 +162,6 @@ MtObject* cGUIFloorManager::MyDTI::newInstance() const {
 
 const MtDTI& cGUIFloorManager::cParam::getDTI() const {
     return cGUIFloorManager::cParam::DTI;
-}
-
-inline void* cGUIFloorManager::cParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGUIFloorManager::cParam::DTI)->memAlloc(sz, align, cGUIFloorManager::cParam::DTI.getID());
-}
-
-inline void cGUIFloorManager::cParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIFloorManager::cParam::DTI)->memFree(p_addr);
 }
 
 cGUIFloorManager::cParam::~cParam() {

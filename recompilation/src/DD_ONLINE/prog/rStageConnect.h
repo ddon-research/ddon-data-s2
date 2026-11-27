@@ -184,3 +184,49 @@ inline rStageConnect::Connect::Connect() {
     this->mIndex[2] = -1;
     this->mIndex[3] = -1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rStageConnect::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageConnect::DTI)->memAlloc(sz, align, ::rStageConnect::DTI.::MtDTI::getID());
+}
+
+inline void rStageConnect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageConnect::DTI)->memFree(p_addr);
+}
+
+inline rStageConnect::rStageConnect() {
+    this->::cResource::setAttribute(22u);
+    this->mpConnectorArray = nullptr;
+    this->mConnectorNum = 0;
+    this->mpConnectionArray = nullptr;
+    this->mConnectionNum = 0;
+}
+
+inline void* rStageConnect::Data::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageConnect::Data::DTI)->memAlloc(sz, align, ::rStageConnect::Data::DTI.::MtDTI::getID());
+}
+
+inline void rStageConnect::Data::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageConnect::Data::DTI)->memFree(p_addr);
+}
+
+inline rStageConnect::Data::Data() {
+    this->mType = 0;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mPartsNo = 0;
+    this->mMapGroup = 0;
+}
+
+inline void* rStageConnect::Connect::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageConnect::Connect::DTI)->memAlloc(sz, align, ::rStageConnect::Connect::DTI.::MtDTI::getID());
+}
+
+inline void rStageConnect::Connect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageConnect::Connect::DTI)->memFree(p_addr);
+}

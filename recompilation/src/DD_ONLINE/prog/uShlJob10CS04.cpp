@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlJob10CS04.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -21,10 +19,6 @@
 
 const MtDTI& cShlParamJob10CS04::getDTI() const {
     return cShlParamJob10CS04::DTI;
-}
-
-inline void* cShlParamJob10CS04::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamJob10CS04::DTI)->memAlloc(sz, align, cShlParamJob10CS04::DTI.getID());
 }
 
 inline void cShlParamJob10CS04::operator delete(void* p_addr) {
@@ -63,23 +57,6 @@ const MtDTI& uShlJob10CS04::getDTI() const {
     return uShlJob10CS04::DTI;
 }
 
-inline void* uShlJob10CS04::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlJob10CS04::DTI)->memAlloc(sz, align, uShlJob10CS04::DTI.getID());
-}
-
-inline void uShlJob10CS04::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlJob10CS04::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamJob10CS04* uShlJob10CS04::getShlParam() const {
-    return static_cast<const cShlParamJob10CS04*>(mpShlParam2);
-}
-
-inline uShlJob10CS04::uShlJob10CS04() {
-    mFlgCreateDieShl = false;
-    mDiePos = MtVector3::Zero;
-}
-
 void uShlJob10CS04::setup() {
     this->uShlSpeed::setup();
 }
@@ -98,9 +75,11 @@ __attribute__((weak)) void uShlJob10CS04::progKillReqOrg() {
     /* stub */
 }
 
-__attribute__((weak)) void uShlJob10CS04::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlJob10CS04::applyWorldOffset")
-    /* stub */
+void uShlJob10CS04::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlSpeed::applyWorldOffset(offset, absolute_offset);
+    mDiePos.x = offset.x + mDiePos.x;
+    mDiePos.y = offset.y + mDiePos.y;
+    mDiePos.z = offset.z + mDiePos.z;
 }
 
 __attribute__((weak)) void uShlJob10CS04::callbackAttack(cHitInfo* pHitInfo) {

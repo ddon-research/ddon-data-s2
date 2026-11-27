@@ -22,14 +22,6 @@ const MtDTI& cCharacterEditPresetPalette::getDTI() const {
     return cCharacterEditPresetPalette::DTI;
 }
 
-inline void* cCharacterEditPresetPalette::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCharacterEditPresetPalette::DTI)->memAlloc(sz, align, cCharacterEditPresetPalette::DTI.getID());
-}
-
-inline void cCharacterEditPresetPalette::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharacterEditPresetPalette::DTI)->memFree(p_addr);
-}
-
 inline cCharacterEditPresetPalette::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCharacterEditPresetPalette::MyDTI cCharacterEditPresetPalette::DTI("cCharacterEditPresetPalette", &::cCharacterEditPaletteBase::DTI, 32ul, 0u, 0u);
@@ -40,14 +32,6 @@ MtObject* cCharacterEditPresetPalette::MyDTI::newInstance() const {
 
 const MtDTI& rCharacterEditPresetPalette::getDTI() const {
     return rCharacterEditPresetPalette::DTI;
-}
-
-inline void* rCharacterEditPresetPalette::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCharacterEditPresetPalette::DTI)->memAlloc(sz, align, rCharacterEditPresetPalette::DTI.getID());
-}
-
-inline void rCharacterEditPresetPalette::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCharacterEditPresetPalette::DTI)->memFree(p_addr);
 }
 
 rCharacterEditPresetPalette::~rCharacterEditPresetPalette() {

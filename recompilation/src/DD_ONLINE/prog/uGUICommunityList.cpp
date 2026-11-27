@@ -40,16 +40,8 @@ const MtDTI& uGUICommunityList::getDTI() const {
     return uGUICommunityList::DTI;
 }
 
-inline MtAllocator* uGUICommunityList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICommunityList::DTI);
-}
-
 void* uGUICommunityList::operator new(size_t sz, u32 align) {
     return uGUICommunityList::getAllocator()->memAlloc(sz, align, uGUICommunityList::DTI.getID());
-}
-
-inline void uGUICommunityList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICommunityList::~uGUICommunityList() {
@@ -300,10 +292,6 @@ const MtDTI& uGUICommunityList::cTabData::getDTI() const {
     return uGUICommunityList::cTabData::DTI;
 }
 
-inline void uGUICommunityList::cTabData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabData::DTI)->memFree(p_addr);
-}
-
 uGUICommunityList::cTabData::cTabData() {
     DDON_STUB("uGUICommunityList::cTabData::cTabData")
     /* stub */
@@ -360,9 +348,28 @@ void uGUICommunityList::cTabData::updateScrollList() {
     mpOwner->updateScrollList(this);
 }
 
-__attribute__((weak)) void uGUICommunityList::cTabData::copyExecuteFlag() {
-    DDON_STUB("uGUICommunityList::cTabData::copyExecuteFlag")
-    /* stub */
+void uGUICommunityList::cTabData::copyExecuteFlag() {
+    if (mDataArray.mLength != 0) {
+        unsigned int i0_3 = 0;
+        MtObject* * v1_1;
+        cGUIInstNull* v1_4;
+        for (;;) {
+            if (static_cast<cTabDataInData*>(mDataArray.mpArray[i0_3])->mpInst == nullptr) {
+                v1_1 = mDataArray.mpArray;
+                v1_4 = nullptr;
+            } else {
+                static_cast<cTabDataInData*>(mDataArray.mpArray[i0_3])->mpInst->setExecuteTree(true);
+                v1_1 = mDataArray.mpArray;
+                v1_4 = static_cast<cTabDataInData*>(mDataArray.mpArray[i0_3])->mpInst;
+            }
+            cGUIUtility::copyParameter(static_cast<cGUIInstance*>(v1_4), reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*v1_1) + 16)), 3);
+            if ((i0_3 + 1u) < mDataArray.mLength) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUICommunityList::cTabData::createData(u32 tabIndex) {
@@ -374,9 +381,14 @@ void uGUICommunityList::cTabData::linkInstancePointer(u32 DataPos, cGUIInstNull*
     static_cast<uGUICommunityList::cTabDataInData*>(mDataArray.mpArray[DataPos])->setInstancePointer(pInst);
 }
 
-__attribute__((weak)) void uGUICommunityList::cTabData::referenceSetup() {
-    DDON_STUB("uGUICommunityList::cTabData::referenceSetup")
-    /* stub */
+void uGUICommunityList::cTabData::referenceSetup() {
+    u32 i = 0;
+    if (mDataArray.mLength != 0) {
+        do {
+            static_cast<cTabDataInData*>(mDataArray.mpArray[i])->mOnlineStatusIcon.setup(static_cast<uGUIBase*>(static_cast<cTabDataInData*>(mDataArray.mpArray[i])->mpOwner), static_cast<cTabDataInData*>(mDataArray.mpArray[i])->mpInstFixIcon);
+            i += 1u;
+        } while (i < mDataArray.mLength);
+    }
 }
 
 bool uGUICommunityList::cTabData::isMenuListCompListup() {
@@ -426,14 +438,6 @@ __attribute__((weak)) MtObject* uGUICommunityList::cTabData::MyDTI::newInstance(
 
 const MtDTI& uGUICommunityList::cTabDataInData::getDTI() const {
     return uGUICommunityList::cTabDataInData::DTI;
-}
-
-inline void* uGUICommunityList::cTabDataInData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataInData::DTI)->memAlloc(sz, align, uGUICommunityList::cTabDataInData::DTI.getID());
-}
-
-inline void uGUICommunityList::cTabDataInData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataInData::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUICommunityList::cTabDataInData::setInstancePointer(cGUIInstNull* pInst) {
@@ -586,14 +590,6 @@ const MtDTI& uGUICommunityList::cScrollDispList::getDTI() const {
     return uGUICommunityList::cScrollDispList::DTI;
 }
 
-inline void* uGUICommunityList::cScrollDispList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICommunityList::cScrollDispList::DTI)->memAlloc(sz, align, uGUICommunityList::cScrollDispList::DTI.getID());
-}
-
-inline void uGUICommunityList::cScrollDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::cScrollDispList::DTI)->memFree(p_addr);
-}
-
 inline uGUICommunityList::cScrollDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICommunityList::cScrollDispList::MyDTI uGUICommunityList::cScrollDispList::DTI("uGUICommunityList::cScrollDispList", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
@@ -604,10 +600,6 @@ MtObject* uGUICommunityList::cScrollDispList::MyDTI::newInstance() const {
 
 const MtDTI& uGUICommunityList::cScrollItemList::getDTI() const {
     return uGUICommunityList::cScrollItemList::DTI;
-}
-
-inline void uGUICommunityList::cScrollItemList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::cScrollItemList::DTI)->memFree(p_addr);
 }
 
 inline uGUICommunityList::cScrollItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -621,10 +613,6 @@ __attribute__((weak)) MtObject* uGUICommunityList::cScrollItemList::MyDTI::newIn
 
 const MtDTI& uGUICommunityList::cTabDataFriendList::getDTI() const {
     return uGUICommunityList::cTabDataFriendList::DTI;
-}
-
-inline void uGUICommunityList::cTabDataFriendList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataFriendList::DTI)->memFree(p_addr);
 }
 
 void uGUICommunityList::cTabDataFriendList::init() {
@@ -706,10 +694,6 @@ __attribute__((weak)) MtObject* uGUICommunityList::cTabDataFriendList::MyDTI::ne
 
 const MtDTI& uGUICommunityList::cTabDataActiveList::getDTI() const {
     return uGUICommunityList::cTabDataActiveList::DTI;
-}
-
-inline void uGUICommunityList::cTabDataActiveList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataActiveList::DTI)->memFree(p_addr);
 }
 
 void uGUICommunityList::cTabDataActiveList::init() {
@@ -803,10 +787,6 @@ const MtDTI& uGUICommunityList::cTabDataNearPlayerList::getDTI() const {
     return uGUICommunityList::cTabDataNearPlayerList::DTI;
 }
 
-inline void uGUICommunityList::cTabDataNearPlayerList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataNearPlayerList::DTI)->memFree(p_addr);
-}
-
 void uGUICommunityList::cTabDataNearPlayerList::init() {
     mpOwner->initScrollList(static_cast<cTabData*>(this));
 }
@@ -887,10 +867,6 @@ __attribute__((weak)) MtObject* uGUICommunityList::cTabDataNearPlayerList::MyDTI
 
 const MtDTI& uGUICommunityList::cTabDataBlackList::getDTI() const {
     return uGUICommunityList::cTabDataBlackList::DTI;
-}
-
-inline void uGUICommunityList::cTabDataBlackList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICommunityList::cTabDataBlackList::DTI)->memFree(p_addr);
 }
 
 void uGUICommunityList::cTabDataBlackList::init() {

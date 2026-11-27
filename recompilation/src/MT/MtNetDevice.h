@@ -22,6 +22,7 @@ class sNetworkExt;
 
 // Declarations
 struct MtNetAddress;
+class MtNetBase64Url;
 class MtNetByteOrder;
 struct MtNetIpAddress;
 class MtNetLog;
@@ -44,6 +45,15 @@ using u16 = unsigned short;
 using u32 = unsigned int;
 using u64 = __uint64_t;
 using u8 = unsigned char;
+
+class MtNetBase64Url
+{
+public:
+    static s32 encode(const void* pIn, u32 cIn, void* pOut, u32 cOut);
+    static s32 decode(const void* pIn, u32 cIn, void* pOut, u32 cOut);
+private:
+    static u8 _charconv(u8 c);
+};
 
 class MtNetByteOrder
 {
@@ -238,4 +248,12 @@ inline void* MtNetServiceError::operator new(size_t sz, void* p_addr) {
 
 inline MtNetServiceError* MtNetServiceError::getInstance() {
     return ::MtNetServiceError::mpInstance;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void MtNetServiceError::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtNetServiceError::DTI)->memFree(p_addr);
 }

@@ -13,14 +13,6 @@ const MtDTI& cQuestEventArg::getDTI() const {
     return cQuestEventArg::DTI;
 }
 
-inline void* cQuestEventArg::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestEventArg::DTI)->memAlloc(sz, align, cQuestEventArg::DTI.getID());
-}
-
-inline void cQuestEventArg::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestEventArg::DTI)->memFree(p_addr);
-}
-
 cQuestEventArg::cQuestEventArg() {
 }
 
@@ -37,10 +29,6 @@ MtObject* cQuestEventArg::MyDTI::newInstance() const {
 
 const MtDTI& cQuestEventArgEntryParty::getDTI() const {
     return cQuestEventArgEntryParty::DTI;
-}
-
-inline void cQuestEventArgEntryParty::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestEventArgEntryParty::DTI)->memFree(p_addr);
 }
 
 u32 cQuestEventArgEntryParty::getCharacterId() const {
@@ -65,6 +53,35 @@ cQuestEventArgEntryParty::MyDTI cQuestEventArgEntryParty::DTI("cQuestEventArgEnt
 
 __attribute__((weak)) MtObject* cQuestEventArgEntryParty::MyDTI::newInstance() const {
     DDON_STUB("cQuestEventArgEntryParty::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cQuestEventArgLeaveParty::getDTI() const {
+    return cQuestEventArgLeaveParty::DTI;
+}
+
+u32 cQuestEventArgLeaveParty::getCharacterId() const {
+    return mCharacterId;
+}
+
+bool cQuestEventArgLeaveParty::isPawn() const {
+    return mIsPawn;
+}
+
+cQuestEventArgLeaveParty::cQuestEventArgLeaveParty(u32 characterId, bool isPawn) {
+    DDON_STUB("cQuestEventArgLeaveParty::cQuestEventArgLeaveParty")
+    /* stub */
+}
+
+cQuestEventArgLeaveParty::~cQuestEventArgLeaveParty() {
+}
+
+inline cQuestEventArgLeaveParty::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cQuestEventArgLeaveParty::MyDTI cQuestEventArgLeaveParty::DTI("cQuestEventArgLeaveParty", &::cQuestEventArg::DTI, 16ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cQuestEventArgLeaveParty::MyDTI::newInstance() const {
+    DDON_STUB("cQuestEventArgLeaveParty::MyDTI::newInstance")
     return nullptr;
 }
 

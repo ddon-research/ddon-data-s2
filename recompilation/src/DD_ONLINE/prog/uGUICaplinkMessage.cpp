@@ -27,16 +27,8 @@ const MtDTI& uGUICaplinkMessage::getDTI() const {
     return uGUICaplinkMessage::DTI;
 }
 
-inline MtAllocator* uGUICaplinkMessage::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkMessage::DTI);
-}
-
 void* uGUICaplinkMessage::operator new(size_t sz, u32 align) {
     return uGUICaplinkMessage::getAllocator()->memAlloc(sz, align, uGUICaplinkMessage::DTI.getID());
-}
-
-inline void uGUICaplinkMessage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkMessage::DTI)->memFree(p_addr);
 }
 
 uGUICaplinkMessage::~uGUICaplinkMessage() {
@@ -188,23 +180,6 @@ void uGUICaplinkMessage::eventDecide() {
         }
         mMain.mTextBox.wakeupKeyboard(2);
     }
-}
-
-inline void uGUICaplinkMessage::eventCancel() {
-    mFlowId = 3;
-    if (mpDecideCtrl != nullptr) {
-        mpDecideCtrl->mCtrlF = mpDecideCtrl->mCtrlF | 8u;
-    }
-    if (mpCancelCtrl != nullptr) {
-        mpCancelCtrl->mCtrlF = mpCancelCtrl->mCtrlF | 8u;
-    }
-    if (mpUDCtrl != nullptr) {
-        mpUDCtrl->mCtrlF = mpUDCtrl->mCtrlF | 8u;
-    }
-    if (mpButtonCtrl != nullptr) {
-        mpButtonCtrl->mCtrlF = mpButtonCtrl->mCtrlF | 8u;
-    }
-    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICaplinkMessage::updateExit);
 }
 
 u32 uGUICaplinkMessage::evCtrlDecide(cControl::Message* msg) {

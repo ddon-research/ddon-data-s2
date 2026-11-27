@@ -2,6 +2,7 @@
 #include <new>
 #include <string.h>
 #include "MtCollisionUtil.h"
+#include "../DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/HttpPatchManager.h"
 #include "MtAllocator.h"
 #include "MtCollection.h"
 #include "MtDTI.h"
@@ -13,6 +14,8 @@
 #include "MtPropertyList.h"
 #include "MtString.h"
 #include "../XFramework/cDynamicBVHCollision.h"
+#include "../DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/httpPatchTypes.h"
+#include "../DD_ONLINE/prog/HttpPatchDL/modules/network/networkHttpDownloadManager.h"
 #include "../XFramework/sCollision.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -24,10 +27,6 @@ const MtDTI& MtCollisionUtil::MtArrayEx::getDTI() const {
 
 void* MtCollisionUtil::MtArrayEx::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtArrayEx::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtArrayEx::DTI.mID);
-}
-
-inline void MtCollisionUtil::MtArrayEx::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtArrayEx::DTI)->memFree(p_addr);
 }
 
 MtCollisionUtil::MtArrayEx::~MtArrayEx() {
@@ -182,13 +181,8 @@ const MtDTI& MtCollisionUtil::MtDtiObject::getDTI() const {
     return MtCollisionUtil::MtDtiObject::DTI;
 }
 
-inline void MtCollisionUtil::MtDtiObject::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDtiObject::DTI)->memFree(p_addr);
-}
-
 MtCollisionUtil::MtDtiObject::MtDtiObject(const MtDTI* pDTI) {
-    DDON_STUB("MtCollisionUtil::MtDtiObject::MtDtiObject")
-    /* stub */
+    mpRegistDTI = pDTI;
 }
 
 MtCollisionUtil::MtDtiObject::~MtDtiObject() {
@@ -232,9 +226,8 @@ u32 MtCollisionUtil::MtDtiObject::getRegistDTI_ID() const {
     }
 }
 
-__attribute__((weak)) void MtCollisionUtil::MtDtiObject::registDTI_ID(u32 NewDTI_ID) {
-    DDON_STUB("MtCollisionUtil::MtDtiObject::registDTI_ID")
-    /* stub */
+void MtCollisionUtil::MtDtiObject::registDTI_ID(u32 NewDTI_ID) {
+    mpRegistDTI = ::MtDTI::from(NewDTI_ID);
 }
 
 inline MtCollisionUtil::MtDtiObject::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -267,10 +260,6 @@ const MtDTI& MtCollisionUtil::MtDtiSelecterIntermediate::getDTI() const {
     return MtCollisionUtil::MtDtiSelecterIntermediate::DTI;
 }
 
-inline void MtCollisionUtil::MtDtiSelecterIntermediate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDtiSelecterIntermediate::DTI)->memFree(p_addr);
-}
-
 inline MtCollisionUtil::MtDtiSelecterIntermediate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 MtCollisionUtil::MtDtiSelecterIntermediate::MyDTI MtCollisionUtil::MtDtiSelecterIntermediate::DTI("MtCollisionUtil::MtDtiSelecterIntermediate", &::MtDtiSelecter::DTI, 16ul, 0u, 0u);
@@ -282,10 +271,6 @@ __attribute__((weak)) MtObject* MtCollisionUtil::MtDtiSelecterIntermediate::MyDT
 
 const MtDTI& MtCollisionUtil::MtFuncBase::getDTI() const {
     return MtCollisionUtil::MtFuncBase::DTI;
-}
-
-inline void* MtCollisionUtil::MtFuncBase::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtFuncBase::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtFuncBase::DTI.mID);
 }
 
 MtCollisionUtil::MtFuncBase::~MtFuncBase() {

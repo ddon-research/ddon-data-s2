@@ -142,3 +142,15 @@ inline void* uGUINpcWindow::operator new(size_t sz, void* p_addr) {
 inline void uGUINpcWindow::reqUpdateDisp() {
     this->mReqUpdateDisp = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUINpcWindow::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUINpcWindow::DTI);
+}
+
+inline void uGUINpcWindow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUINpcWindow::DTI)->memFree(p_addr);
+}

@@ -118,3 +118,35 @@ inline void cFacialEditJointPreset::operator delete[](void* p_addr) {
 inline void* cFacialEditJointPreset::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cFacialEditJointPreset::DTI)->memAlloc(sz, align, ::cFacialEditJointPreset::DTI.::MtDTI::getID());
 }
+
+inline void* cFacialEditJointPreset::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFacialEditJointPreset::DTI)->memAlloc(sz, align, ::cFacialEditJointPreset::DTI.::MtDTI::getID());
+}
+
+inline void cFacialEditJointPreset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFacialEditJointPreset::DTI)->memFree(p_addr);
+}
+
+inline cFacialEditJointPreset::cFacialEditJointPreset() {
+    this->mJntNo = 0;
+    this->mTrans.x = ::MtVector3::Zero.x;
+    this->mTrans.y = ::MtVector3::Zero.y;
+    this->mTrans.z = ::MtVector3::Zero.z;
+    this->mTrans.pad_ = 0.0f;
+    this->mRot.x = ::MtVector3::Zero.x;
+    this->mRot.y = ::MtVector3::Zero.y;
+    this->mRot.z = ::MtVector3::Zero.z;
+    this->mRot.pad_ = 0.0f;
+    this->mScale.x = ::MtVector3::One.x;
+    this->mScale.y = ::MtVector3::One.y;
+    this->mScale.z = ::MtVector3::One.z;
+    this->mScale.pad_ = 0.0f;
+}
+
+inline void* rFacialEditJointPreset::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFacialEditJointPreset::DTI)->memAlloc(sz, align, ::rFacialEditJointPreset::DTI.::MtDTI::getID());
+}
+
+inline void rFacialEditJointPreset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFacialEditJointPreset::DTI)->memFree(p_addr);
+}

@@ -18,14 +18,6 @@ const MtDTI& rCameraList::getDTI() const {
     return rCameraList::DTI;
 }
 
-inline void* rCameraList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCameraList::DTI)->memAlloc(sz, align, rCameraList::DTI.mID);
-}
-
-inline void rCameraList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCameraList::DTI)->memFree(p_addr);
-}
-
 rCameraList::~rCameraList() {
     CAMERA_LIST_HDR* t0 = mpHdr;
     MtMemoryAllocator::getAllocator(rCameraList::DTI)->memFree(static_cast<void*>(t0));

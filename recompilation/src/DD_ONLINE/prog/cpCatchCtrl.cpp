@@ -54,22 +54,6 @@ const MtDTI& cCatchInfo::getDTI() const {
     return cCatchInfo::DTI;
 }
 
-inline void* cCatchInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCatchInfo::DTI)->memAlloc(sz, align, cCatchInfo::DTI.getID());
-}
-
-inline void cCatchInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCatchInfo::DTI)->memFree(p_addr);
-}
-
-inline cCatchInfo::cCatchInfo() {
-    mCatchType = 0;
-    mReleaseType = 0;
-    mCatchUid = 0;
-    mJointNo = 0xFF;
-    mHitPos = MtVector3::Zero;
-}
-
 cCatchInfo::~cCatchInfo() {
 }
 
@@ -83,22 +67,6 @@ MtObject* cCatchInfo::MyDTI::newInstance() const {
 
 const MtDTI& cCaughtInfo::getDTI() const {
     return cCaughtInfo::DTI;
-}
-
-inline void* cCaughtInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCaughtInfo::DTI)->memAlloc(sz, align, cCaughtInfo::DTI.getID());
-}
-
-inline void cCaughtInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCaughtInfo::DTI)->memFree(p_addr);
-}
-
-inline cCaughtInfo::cCaughtInfo() {
-    mCatchType = 0;
-    mEscapeType = 0;
-    mCatchUid = 0;
-    mJointNo = 0xFF;
-    mHitPos = MtVector3::Zero;
 }
 
 cCaughtInfo::~cCaughtInfo() {
@@ -116,16 +84,8 @@ const MtDTI& cpCatchCtrl::getDTI() const {
     return cpCatchCtrl::DTI;
 }
 
-inline MtAllocator* cpCatchCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpCatchCtrl::DTI);
-}
-
 void* cpCatchCtrl::operator new(size_t sz, u32 align) {
     return cpCatchCtrl::getAllocator()->memAlloc(sz, align, cpCatchCtrl::DTI.getID());
-}
-
-inline void cpCatchCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpCatchCtrl::DTI)->memFree(p_addr);
 }
 
 cpCatchCtrl::cpCatchCtrl() {

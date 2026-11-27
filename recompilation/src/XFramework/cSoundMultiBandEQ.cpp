@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cSoundMultiBandEQ.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -14,10 +13,6 @@
 
 const MtDTI& cSoundMultiBandEQ::getDTI() const {
     return cSoundMultiBandEQ::DTI;
-}
-
-inline void cSoundMultiBandEQ::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundMultiBandEQ::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cSoundMultiBandEQ::setEQParam(u32 unit) {

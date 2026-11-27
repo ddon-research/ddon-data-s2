@@ -162,3 +162,23 @@ inline cpHmHeadCtrl::cActParam::cActParam() {
     this->mMoveTime = 0.0f;
     this->mWaitTime = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpHmHeadCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpHmHeadCtrl::DTI);
+}
+
+inline void cpHmHeadCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpHmHeadCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cpHmHeadCtrl::cActParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpHmHeadCtrl::cActParam::DTI)->memAlloc(sz, align, ::cpHmHeadCtrl::cActParam::DTI.::MtDTI::getID());
+}
+
+inline void cpHmHeadCtrl::cActParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpHmHeadCtrl::cActParam::DTI)->memFree(p_addr);
+}

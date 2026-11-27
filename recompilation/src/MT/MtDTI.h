@@ -36,6 +36,8 @@ namespace MtMemoryAllocator { class Initializer; }
 class MtMemoryStream;
 namespace MtNet { namespace Utility { namespace PS4 { class BlockList; } } }
 namespace MtNet { namespace Utility { namespace PS4 { class Json; } } }
+namespace MtNet { namespace Utility { namespace PS4 { class Match; } } }
+namespace MtNet { namespace Utility { namespace PS4 { class WebApi; } } }
 class MtNetObject;
 class MtNetRanking;
 class MtNetServiceError;
@@ -46,6 +48,7 @@ class MtScalableAllocator;
 class MtStream;
 class MtThread;
 class MtTree;
+class aStage;
 class cAIConditionTreeNode;
 class cAIDEnum;
 class cAIFSM;
@@ -61,6 +64,8 @@ class cAIPathTrace;
 class cAIQuadTree;
 class cAIResource;
 class cAIService;
+class cAISvDynamicPathFinding;
+class cAISvFSM;
 class cAISvNavPathFinding;
 class cAISvPathFinding;
 class cAISvUserProcess;
@@ -70,6 +75,7 @@ class cAITreeBase;
 class cAIUserProcess;
 class cAIUserProcessCallback;
 class cAIUserProcessReference;
+class cAction;
 class cBVHCollision;
 class cColliderNodeParam;
 class cContextInterface;
@@ -84,16 +90,21 @@ class cGeneralPoint;
 class cGeomConvexHull;
 class cGridCollision;
 class cHttpClient;
+class cHumanActEmotionBase;
 class cLayoutSetEnemy;
 class cLayoutSetOm;
 class cMenuBase;
+class cMenuRentalPawnList;
 class cOmControl;
+class cParticleGeneratorAdhesion;
+class cParticleGeneratorPolygon;
 class cPlActWpnBow;
 class cPrim;
 class cPrimBuffer;
 class cPrimBufferManager;
 class cPrimObj;
 class cPrimTagList;
+class cPrimTagManager;
 class cPrimTexHandle;
 class cPrimTexHandleManager;
 class cQuestSvNoticeCallback;
@@ -137,19 +148,76 @@ class cZoneContents;
 class cZoneLayout;
 class cpBakeJoint;
 class cpCharacterEdit;
+class cpDDMrlMgr;
 class cpEquip;
 class cpHmHeadCtrl;
 class cpHumanWarpCtrl;
 class cpIKCtrl;
 class cpJob09;
 class cpJobBase;
+class cpOmBase;
 class cpShlSelectorJob10Cs08;
 class cpSoftBody;
+class cpTalkPawn;
 namespace nAI { class EnumProp; }
 
 namespace nAI { class TaskPerformanceInfo; }
+namespace nCaplink { class ChatGroupCreateReqCtx; }
+namespace nCaplink { class ChatGroupListGetReqCtx; }
+namespace nCaplink { class ChatGroupMemberAddReqCtx; }
+namespace nCaplink { class ChatGroupMemberLeaveReqCtx; }
+namespace nCaplink { class ChatGroupMemberListGetReqCtx; }
+namespace nCaplink { class ChatGroupMemberRejectReqCtx; }
+namespace nCaplink { class ChatGroupModifyReqCtx; }
+namespace nCaplink { class ChatGroupRemoveReqCtx; }
+namespace nCaplink { class ChatGroupResignReqCtx; }
+namespace nCaplink { class ChatLastIdReqCtx; }
+namespace nCaplink { class ChatListGetReqCtx; }
+namespace nCaplink { class ChatReadReqCtx; }
+namespace nCaplink { class ChatSendReqCtx; }
+namespace nCaplink { class ContentAchievementGetReqCtx; }
+namespace nCaplink { class ContentAchievementListGetReqCtx; }
+namespace nCaplink { class ContentAchievementRelationGetReqCtx; }
+namespace nCaplink { class ContentInviteAvailableListGetReqCtx; }
+namespace nCaplink { class ContentInviteListGetReqCtx; }
+namespace nCaplink { class ContentInviteRemoveReqCtx; }
+namespace nCaplink { class ContentInviteReqCtx; }
+namespace nCaplink { class ContentInviteTotalGetReqCtx; }
+namespace nCaplink { class ContentListGetReqCtx; }
+namespace nCaplink { class Context; }
 namespace nCaplink { class ContextListener; }
+namespace nCaplink { class FriendAttributeReqCtx; }
+namespace nCaplink { class FriendEntryCancelReqCtx; }
+namespace nCaplink { class FriendEntryRecvListGetReqCtx; }
+namespace nCaplink { class FriendEntryReplyReqCtx; }
+namespace nCaplink { class FriendEntrySendListGetReqCtx; }
+namespace nCaplink { class FriendEntrySendReqCtx; }
+namespace nCaplink { class FriendListGetReqCtx; }
+namespace nCaplink { class FriendReleaseReqCtx; }
+namespace nCaplink { class FriendTagContentListGetReqCtx; }
+namespace nCaplink { class FriendTagFreeListGetReqCtx; }
+namespace nCaplink { class FriendTagFreeReqCtx; }
+namespace nCaplink { class LoginCogKeyReqCtx; }
+namespace nCaplink { class NotifyAppListGetReqCtx; }
+namespace nCaplink { class NotifyAppReadReqCtx; }
+namespace nCaplink { class NotifyDeviceSettingModifyReqCtx; }
+namespace nCaplink { class NotifyDeviceSettingReqCtx; }
+namespace nCaplink { class NotifyReqCtx; }
+namespace nCaplink { class NotifyTimeGetReqCtx; }
+namespace nCaplink { class NotifyTimeModifyReqCtx; }
 namespace nCaplink { class Object; }
+namespace nCaplink { class ReportReqCtx; }
+namespace nCaplink { class ResourcePresetListGetReqCtx; }
+namespace nCaplink { class TagListGetReqCtx; }
+namespace nCaplink { class TagModifyReqCtx; }
+namespace nCaplink { class UserIgnoreListGetReqCtx; }
+namespace nCaplink { class UserIgnoreRemoveReqCtx; }
+namespace nCaplink { class UserProfileContentListGetReqCtx; }
+namespace nCaplink { class UserProfileContentModifyReqCtx; }
+namespace nCaplink { class UserProfileGetReqCtx; }
+namespace nCaplink { class UserProfileModifyReqCtx; }
+namespace nCaplink { class UserSearchReqCtx; }
+namespace nCaplink { class WebsocketServerListGetReqCtx; }
 namespace nCaplink { class cAchievementExtendedInfo; }
 namespace nCaplink { class cAchievementListInfo; }
 namespace nCaplink { class cAchievementRelationInfo; }
@@ -176,6 +244,7 @@ namespace nCollision { class cMotionSequenceSupport; }
 namespace nCollision { class cScrCommonFilter; }
 namespace nCollisionUtil { class cOwnerSystem; }
 namespace nDraw { class Animation; }
+namespace nDraw { class BlendState; }
 namespace nDraw { class IndexBuffer; }
 namespace nDraw { class InputLayout; }
 namespace nDraw { class MaterialNull; }
@@ -189,14 +258,18 @@ namespace nDraw { class SamplerState; }
 namespace nDraw { class Scene; }
 namespace nDraw { class Texture; }
 namespace nDraw { class VertexBuffer; }
+namespace nNetBase { class cNetBase; }
 namespace nNetwork { class BlockBuffer; }
 namespace nNetwork { class Callback; }
 namespace nNetwork { class Connect; }
 namespace nNetwork { class Match; }
 namespace nNetwork { class ProtocolStandard; }
+namespace nNetwork { class RpcNetSystem_AnsDetour; }
+namespace nNetwork { class RpcNetSystem_Config; }
 namespace nNetwork { class RpcNetSystem_LinkState; }
 namespace nNetwork { class RpcNetSystem_Match; }
 namespace nNetwork { class RpcNetSystem_RouteKey; }
+namespace nNetwork { class RpcNetSystem_Terminate; }
 namespace nNetwork { class SessionDatabase; }
 namespace nNetwork { class SessionListener; }
 namespace nNetwork { class Storage; }
@@ -207,7 +280,11 @@ namespace nNetwork { namespace nAchievement { class Object; } }
 namespace nNetwork { namespace nRanking { class Object; } }
 namespace nNetwork { namespace nSharedMemory2 { class CProtocol; } }
 namespace nNetwork { namespace nSharedMemory2 { class CRecord; } }
+namespace nNetwork { namespace nSharedMemory2 { class CSessionListener; } }
 namespace nNetwork { namespace nSharedMemory2 { class Object; } }
+namespace nPhysics { class InertiaTensor; }
+namespace nPhysics { class Material; }
+namespace nPhysics { class RigidBody; }
 namespace nZone { class ShapeInfoAABB; }
 namespace nZone { class ShapeInfoArea; }
 namespace nZone { class ShapeInfoCapsule; }
@@ -223,6 +300,7 @@ class rAIFSM;
 class rAIPathBase;
 class rArchive;
 class rCameraList;
+class rCnsIK;
 class rCollisionHeightField;
 class rDeformWeightMap;
 class rDynamicSbc;
@@ -242,6 +320,8 @@ class rNavigationMesh;
 class rOccluder;
 class rRenderTargetTexture;
 class rScheduler;
+class rShader2;
+class rShaderCache;
 class rShaderPackage;
 class rSoundBank;
 class rSoundCurveSet;
@@ -257,27 +337,42 @@ class rVibration;
 class rZone;
 class sAI;
 class sApp;
+class sArea;
+class sAreaExt;
+class sBenchmark;
+class sCapture;
 class sCollision;
+class sCommonDialog;
+class sContextManager;
 class sControlManager;
+class sCoprocessor;
 class sEffect;
 class sEffectExt;
 class sEnemyManager;
+class sFile;
 class sGUI;
 class sGUIExt;
 class sGpuParticle;
+class sGrass;
+class sMovie;
+class sOmManager;
 class sPlatformUtil;
 class sPrimitive;
+class sQuestManagerExt;
 class sRemoteProcedure;
 class sResource;
 class sScene;
 class sShader2;
 class sShadow;
 class sSound;
+class sSyncPoint;
 class sTalkManager;
 class sUnit;
+class sUnitExt;
 class sUserManager;
 class sWeatherManager;
 class sZone;
+class uActorModel;
 class uBaseModel;
 class uCharacter;
 class uCnsJointOffset;
@@ -298,12 +393,15 @@ class uGUICharacterEdit;
 class uGUIItem01;
 class uGUIItemBase01;
 class uGUIMap;
+class uGUINpcWindow;
+class uGUIPopNumber01;
 class uGUIStorage;
 class uGUIUseItemBase;
 class uGeometry2;
 class uGeometry2Collider;
 class uGeometry2Group;
 class uGeometry2GroupCollider;
+class uHuman;
 class uLight;
 class uModel;
 class uMotionBlurFilter;
@@ -313,13 +411,16 @@ class uMultiBloomFilter;
 class uMultiBlurFilter;
 class uMultiColorCorrectFilter;
 class uMultiGodRaysFilter;
+class uNpc;
 class uScheduler;
+class uScrBaseModel;
 class uScreenSpace;
 class uScrollCollisionGeometry;
 class uScrollCollisionGeometryGroupModel;
 class uScrollCollisionGeometryModel;
 class uShadow;
 class uShlComponentCtrl;
+class uShlRenmadanCtrl;
 class uSimSoftBody;
 class uSimpleEffect;
 class uSoundMotionSe;
@@ -374,6 +475,8 @@ class MtDTI
     friend class MtMemoryStream;
     friend class MtNet::Utility::PS4::BlockList;
     friend class MtNet::Utility::PS4::Json;
+    friend class MtNet::Utility::PS4::Match;
+    friend class MtNet::Utility::PS4::WebApi;
     friend class MtNetObject;
     friend class MtNetRanking;
     friend class MtNetServiceError;
@@ -383,6 +486,7 @@ class MtDTI
     friend class MtStream;
     friend class MtThread;
     friend class MtTree;
+    friend class aStage;
     friend class cAIConditionTreeNode;
     friend class cAIDEnum;
     friend class cAIFSM;
@@ -398,6 +502,8 @@ class MtDTI
     friend class cAIQuadTree;
     friend class cAIResource;
     friend class cAIService;
+    friend class cAISvDynamicPathFinding;
+    friend class cAISvFSM;
     friend class cAISvNavPathFinding;
     friend class cAISvPathFinding;
     friend class cAISvUserProcess;
@@ -407,6 +513,7 @@ class MtDTI
     friend class cAIUserProcess;
     friend class cAIUserProcessCallback;
     friend class cAIUserProcessReference;
+    friend class cAction;
     friend class cBVHCollision;
     friend class cColliderNodeParam;
     friend class cContextInterface;
@@ -421,16 +528,21 @@ class MtDTI
     friend class cGeomConvexHull;
     friend class cGridCollision;
     friend class cHttpClient;
+    friend class cHumanActEmotionBase;
     friend class cLayoutSetEnemy;
     friend class cLayoutSetOm;
     friend class cMenuBase;
+    friend class cMenuRentalPawnList;
     friend class cOmControl;
+    friend class cParticleGeneratorAdhesion;
+    friend class cParticleGeneratorPolygon;
     friend class cPlActWpnBow;
     friend class cPrim;
     friend class cPrimBuffer;
     friend class cPrimBufferManager;
     friend class cPrimObj;
     friend class cPrimTagList;
+    friend class cPrimTagManager;
     friend class cPrimTexHandle;
     friend class cPrimTexHandleManager;
     friend class cQuestSvNoticeCallback;
@@ -474,19 +586,76 @@ class MtDTI
     friend class cZoneLayout;
     friend class cpBakeJoint;
     friend class cpCharacterEdit;
+    friend class cpDDMrlMgr;
     friend class cpEquip;
     friend class cpHmHeadCtrl;
     friend class cpHumanWarpCtrl;
     friend class cpIKCtrl;
     friend class cpJob09;
     friend class cpJobBase;
+    friend class cpOmBase;
     friend class cpShlSelectorJob10Cs08;
     friend class cpSoftBody;
-    friend class nAI::EnumProp;
 
+    friend class nAI::EnumProp;
+    friend class cpTalkPawn;
     friend class nAI::TaskPerformanceInfo;
+    friend class nCaplink::ChatGroupCreateReqCtx;
+    friend class nCaplink::ChatGroupListGetReqCtx;
+    friend class nCaplink::ChatGroupMemberAddReqCtx;
+    friend class nCaplink::ChatGroupMemberLeaveReqCtx;
+    friend class nCaplink::ChatGroupMemberListGetReqCtx;
+    friend class nCaplink::ChatGroupMemberRejectReqCtx;
+    friend class nCaplink::ChatGroupModifyReqCtx;
+    friend class nCaplink::ChatGroupRemoveReqCtx;
+    friend class nCaplink::ChatGroupResignReqCtx;
+    friend class nCaplink::ChatLastIdReqCtx;
+    friend class nCaplink::ChatListGetReqCtx;
+    friend class nCaplink::ChatReadReqCtx;
+    friend class nCaplink::ChatSendReqCtx;
+    friend class nCaplink::ContentAchievementGetReqCtx;
+    friend class nCaplink::ContentAchievementListGetReqCtx;
+    friend class nCaplink::ContentAchievementRelationGetReqCtx;
+    friend class nCaplink::ContentInviteAvailableListGetReqCtx;
+    friend class nCaplink::ContentInviteListGetReqCtx;
+    friend class nCaplink::ContentInviteRemoveReqCtx;
+    friend class nCaplink::ContentInviteReqCtx;
+    friend class nCaplink::ContentInviteTotalGetReqCtx;
+    friend class nCaplink::ContentListGetReqCtx;
+    friend class nCaplink::Context;
     friend class nCaplink::ContextListener;
+    friend class nCaplink::FriendAttributeReqCtx;
+    friend class nCaplink::FriendEntryCancelReqCtx;
+    friend class nCaplink::FriendEntryRecvListGetReqCtx;
+    friend class nCaplink::FriendEntryReplyReqCtx;
+    friend class nCaplink::FriendEntrySendListGetReqCtx;
+    friend class nCaplink::FriendEntrySendReqCtx;
+    friend class nCaplink::FriendListGetReqCtx;
+    friend class nCaplink::FriendReleaseReqCtx;
+    friend class nCaplink::FriendTagContentListGetReqCtx;
+    friend class nCaplink::FriendTagFreeListGetReqCtx;
+    friend class nCaplink::FriendTagFreeReqCtx;
+    friend class nCaplink::LoginCogKeyReqCtx;
+    friend class nCaplink::NotifyAppListGetReqCtx;
+    friend class nCaplink::NotifyAppReadReqCtx;
+    friend class nCaplink::NotifyDeviceSettingModifyReqCtx;
+    friend class nCaplink::NotifyDeviceSettingReqCtx;
+    friend class nCaplink::NotifyReqCtx;
+    friend class nCaplink::NotifyTimeGetReqCtx;
+    friend class nCaplink::NotifyTimeModifyReqCtx;
     friend class nCaplink::Object;
+    friend class nCaplink::ReportReqCtx;
+    friend class nCaplink::ResourcePresetListGetReqCtx;
+    friend class nCaplink::TagListGetReqCtx;
+    friend class nCaplink::TagModifyReqCtx;
+    friend class nCaplink::UserIgnoreListGetReqCtx;
+    friend class nCaplink::UserIgnoreRemoveReqCtx;
+    friend class nCaplink::UserProfileContentListGetReqCtx;
+    friend class nCaplink::UserProfileContentModifyReqCtx;
+    friend class nCaplink::UserProfileGetReqCtx;
+    friend class nCaplink::UserProfileModifyReqCtx;
+    friend class nCaplink::UserSearchReqCtx;
+    friend class nCaplink::WebsocketServerListGetReqCtx;
     friend class nCaplink::cAchievementExtendedInfo;
     friend class nCaplink::cAchievementListInfo;
     friend class nCaplink::cAchievementRelationInfo;
@@ -513,6 +682,7 @@ class MtDTI
     friend class nCollision::cScrCommonFilter;
     friend class nCollisionUtil::cOwnerSystem;
     friend class nDraw::Animation;
+    friend class nDraw::BlendState;
     friend class nDraw::IndexBuffer;
     friend class nDraw::InputLayout;
     friend class nDraw::MaterialNull;
@@ -526,14 +696,18 @@ class MtDTI
     friend class nDraw::Scene;
     friend class nDraw::Texture;
     friend class nDraw::VertexBuffer;
+    friend class nNetBase::cNetBase;
     friend class nNetwork::BlockBuffer;
     friend class nNetwork::Callback;
     friend class nNetwork::Connect;
     friend class nNetwork::Match;
     friend class nNetwork::ProtocolStandard;
+    friend class nNetwork::RpcNetSystem_AnsDetour;
+    friend class nNetwork::RpcNetSystem_Config;
     friend class nNetwork::RpcNetSystem_LinkState;
     friend class nNetwork::RpcNetSystem_Match;
     friend class nNetwork::RpcNetSystem_RouteKey;
+    friend class nNetwork::RpcNetSystem_Terminate;
     friend class nNetwork::SessionDatabase;
     friend class nNetwork::SessionListener;
     friend class nNetwork::Storage;
@@ -544,7 +718,11 @@ class MtDTI
     friend class nNetwork::nRanking::Object;
     friend class nNetwork::nSharedMemory2::CProtocol;
     friend class nNetwork::nSharedMemory2::CRecord;
+    friend class nNetwork::nSharedMemory2::CSessionListener;
     friend class nNetwork::nSharedMemory2::Object;
+    friend class nPhysics::InertiaTensor;
+    friend class nPhysics::Material;
+    friend class nPhysics::RigidBody;
     friend class nZone::ShapeInfoAABB;
     friend class nZone::ShapeInfoArea;
     friend class nZone::ShapeInfoCapsule;
@@ -560,6 +738,7 @@ class MtDTI
     friend class rAIPathBase;
     friend class rArchive;
     friend class rCameraList;
+    friend class rCnsIK;
     friend class rCollisionHeightField;
     friend class rDeformWeightMap;
     friend class rDynamicSbc;
@@ -579,6 +758,8 @@ class MtDTI
     friend class rOccluder;
     friend class rRenderTargetTexture;
     friend class rScheduler;
+    friend class rShader2;
+    friend class rShaderCache;
     friend class rShaderPackage;
     friend class rSoundBank;
     friend class rSoundCurveSet;
@@ -601,27 +782,42 @@ class MtDTI
     friend class rZone;
     friend class sAI;
     friend class sApp;
+    friend class sArea;
+    friend class sAreaExt;
+    friend class sBenchmark;
+    friend class sCapture;
     friend class sCollision;
+    friend class sCommonDialog;
+    friend class sContextManager;
     friend class sControlManager;
+    friend class sCoprocessor;
     friend class sEffect;
     friend class sEffectExt;
     friend class sEnemyManager;
+    friend class sFile;
     friend class sGUI;
     friend class sGUIExt;
     friend class sGpuParticle;
+    friend class sGrass;
+    friend class sMovie;
+    friend class sOmManager;
     friend class sPlatformUtil;
     friend class sPrimitive;
+    friend class sQuestManagerExt;
     friend class sRemoteProcedure;
     friend class sResource;
     friend class sScene;
     friend class sShader2;
     friend class sShadow;
     friend class sSound;
+    friend class sSyncPoint;
     friend class sTalkManager;
     friend class sUnit;
+    friend class sUnitExt;
     friend class sUserManager;
     friend class sWeatherManager;
     friend class sZone;
+    friend class uActorModel;
     friend class uBaseModel;
     friend class uCharacter;
     friend class uCnsJointOffset;
@@ -642,12 +838,15 @@ class MtDTI
     friend class uGUIItem01;
     friend class uGUIItemBase01;
     friend class uGUIMap;
+    friend class uGUINpcWindow;
+    friend class uGUIPopNumber01;
     friend class uGUIStorage;
     friend class uGUIUseItemBase;
     friend class uGeometry2;
     friend class uGeometry2Collider;
     friend class uGeometry2Group;
     friend class uGeometry2GroupCollider;
+    friend class uHuman;
     friend class uLight;
     friend class uModel;
     friend class uMotionBlurFilter;
@@ -657,13 +856,16 @@ class MtDTI
     friend class uMultiBlurFilter;
     friend class uMultiColorCorrectFilter;
     friend class uMultiGodRaysFilter;
+    friend class uNpc;
     friend class uScheduler;
+    friend class uScrBaseModel;
     friend class uScreenSpace;
     friend class uScrollCollisionGeometry;
     friend class uScrollCollisionGeometryGroupModel;
     friend class uScrollCollisionGeometryModel;
     friend class uShadow;
     friend class uShlComponentCtrl;
+    friend class uShlRenmadanCtrl;
     friend class uSimSoftBody;
     friend class uSimpleEffect;
     friend class uSoundMotionSe;

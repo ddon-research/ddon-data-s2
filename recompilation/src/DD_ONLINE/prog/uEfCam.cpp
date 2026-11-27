@@ -25,16 +25,8 @@ const MtDTI& uEfCam::getDTI() const {
     return uEfCam::DTI;
 }
 
-inline MtAllocator* uEfCam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uEfCam::DTI);
-}
-
 void* uEfCam::operator new(size_t sz, u32 align) {
     return uEfCam::getAllocator()->memAlloc(sz, align, uEfCam::DTI.getID());
-}
-
-inline void uEfCam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uEfCam::DTI)->memFree(p_addr);
 }
 
 uEfCam::uEfCam() {

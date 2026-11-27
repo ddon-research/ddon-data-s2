@@ -24,10 +24,6 @@ const MtDTI& rGUIMapSetting::getDTI() const {
     return rGUIMapSetting::DTI;
 }
 
-inline void rGUIMapSetting::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGUIMapSetting::DTI)->memFree(p_addr);
-}
-
 rGUIMapSetting::~rGUIMapSetting() {
     if (mArray.mLength != 0) {
         u32 v0_0 = mArray.mLength;
@@ -174,14 +170,6 @@ __attribute__((weak)) MtObject* rGUIMapSetting::MyDTI::newInstance() const {
 
 const MtDTI& rGUIMapSetting::cData::getDTI() const {
     return rGUIMapSetting::cData::DTI;
-}
-
-void* rGUIMapSetting::cData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rGUIMapSetting::cData::DTI)->memAlloc(sz, align, rGUIMapSetting::cData::DTI.getID());
-}
-
-inline void rGUIMapSetting::cData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGUIMapSetting::cData::DTI)->memFree(p_addr);
 }
 
 rGUIMapSetting::cData::~cData() {

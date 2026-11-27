@@ -20,16 +20,8 @@ const MtDTI& uCnsEdit::getDTI() const {
     return uCnsEdit::DTI;
 }
 
-inline MtAllocator* uCnsEdit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCnsEdit::DTI);
-}
-
 void* uCnsEdit::operator new(size_t sz, u32 align) {
     return uCnsEdit::getAllocator()->memAlloc(sz, align, uCnsEdit::DTI.getID());
-}
-
-inline void uCnsEdit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsEdit::DTI)->memFree(p_addr);
 }
 
 uCnsEdit::uCnsEdit() {

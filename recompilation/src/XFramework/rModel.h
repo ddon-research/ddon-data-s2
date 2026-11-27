@@ -312,3 +312,15 @@ inline nDraw::VertexBuffer* rModel::getVertexBuffer() const {
 inline u32 rModel::getPrimitiveNum() const {
     return this->mPrimitiveNum;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rModel::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rModel::DTI)->memAlloc(sz, align, ::rModel::DTI.::MtDTI::mID);
+}
+
+inline void rModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rModel::DTI)->memFree(p_addr);
+}

@@ -340,3 +340,19 @@ inline bool uStageJointMdl::isSetResource() {
 inline uScheduler* uStageJointMdl::getLightSdl() const {
     return this->mpLightSchdl;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uStageJointCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uStageJointCtrl::DTI);
+}
+
+inline void uStageJointCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uStageJointCtrl::DTI)->memFree(p_addr);
+}
+
+inline void uStageJointMdl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uStageJointMdl::DTI)->memFree(p_addr);
+}

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cTalkState.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "nTalk.h"
 #ifndef DDON_STUB
@@ -12,10 +10,6 @@
 
 const MtDTI& cTalkState::getDTI() const {
     return cTalkState::DTI;
-}
-
-inline void cTalkState::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cTalkState::DTI)->memFree(p_addr);
 }
 
 u8 cTalkState::getRno0() const {

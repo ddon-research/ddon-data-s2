@@ -375,3 +375,11 @@ inline void uBaseEffect::setBoundaryType(u32 BoundaryType) {
 inline f32 uBaseEffect::getTransparency() const {
     return this->mTransparencyParam.mTransparency[0];
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uBaseEffect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uBaseEffect::DTI)->memFree(p_addr);
+}

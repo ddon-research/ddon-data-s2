@@ -24,14 +24,6 @@ const MtDTI& cShlParamCompCondition::getDTI() const {
     return cShlParamCompCondition::DTI;
 }
 
-inline void* cShlParamCompCondition::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamCompCondition::DTI)->memAlloc(sz, align, cShlParamCompCondition::DTI.getID());
-}
-
-inline void cShlParamCompCondition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamCompCondition::DTI)->memFree(p_addr);
-}
-
 const MtDTI& cShlParamCompCondition::getComponentDTI() const {
     return cpShlCondition::DTI;
 }
@@ -72,14 +64,6 @@ const MtDTI& cShlParamCompCustomCondition::getDTI() const {
     return cShlParamCompCustomCondition::DTI;
 }
 
-inline void* cShlParamCompCustomCondition::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamCompCustomCondition::DTI)->memAlloc(sz, align, cShlParamCompCustomCondition::DTI.getID());
-}
-
-inline void cShlParamCompCustomCondition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamCompCustomCondition::DTI)->memFree(p_addr);
-}
-
 const MtDTI& cShlParamCompCustomCondition::getComponentDTI() const {
     return cpShlCustomCondition::DTI;
 }
@@ -116,10 +100,6 @@ const MtDTI& cpShlCondition::getDTI() const {
     return cpShlCondition::DTI;
 }
 
-inline void cpShlCondition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlCondition::DTI)->memFree(p_addr);
-}
-
 inline cpShlCondition::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cpShlCondition::MyDTI cpShlCondition::DTI("cpShlCondition", &::cpShlBase::DTI, 120ul, 0u, 0u);
@@ -131,10 +111,6 @@ __attribute__((weak)) MtObject* cpShlCondition::MyDTI::newInstance() const {
 
 const MtDTI& cpShlCustomCondition::getDTI() const {
     return cpShlCustomCondition::DTI;
-}
-
-inline void cpShlCustomCondition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlCustomCondition::DTI)->memFree(p_addr);
 }
 
 cpShlCustomCondition::cpShlCustomCondition() {

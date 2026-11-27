@@ -18,14 +18,6 @@ const MtDTI& CDataEntryBoardItemSearchParameter::getDTI() const {
     return CDataEntryBoardItemSearchParameter::DTI;
 }
 
-inline MtAllocator* CDataEntryBoardItemSearchParameter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEntryBoardItemSearchParameter::DTI);
-}
-
-inline void* CDataEntryBoardItemSearchParameter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataEntryBoardItemSearchParameter::DTI)->memAlloc(sz, align, CDataEntryBoardItemSearchParameter::DTI.getID());
-}
-
 __attribute__((weak)) void CDataEntryBoardItemSearchParameter::operator delete(void* p_addr) {
     CDataEntryBoardItemSearchParameter::getAllocator()->memFree(p_addr);
 }
@@ -40,10 +32,6 @@ MtObject* CDataEntryBoardItemSearchParameter::MyDTI::newInstance() const {
 
 const MtDTI& CDataEntryItem::getDTI() const {
     return CDataEntryItem::DTI;
-}
-
-inline MtAllocator* CDataEntryItem::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEntryItem::DTI);
 }
 
 void* CDataEntryItem::operator new(size_t sz, u32 align) {
@@ -66,14 +54,6 @@ const MtDTI& CDataEntryItemParam::getDTI() const {
     return CDataEntryItemParam::DTI;
 }
 
-inline MtAllocator* CDataEntryItemParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEntryItemParam::DTI);
-}
-
-inline void* CDataEntryItemParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataEntryItemParam::DTI)->memAlloc(sz, align, CDataEntryItemParam::DTI.getID());
-}
-
 __attribute__((weak)) void CDataEntryItemParam::operator delete(void* p_addr) {
     CDataEntryItemParam::getAllocator()->memFree(p_addr);
 }
@@ -88,10 +68,6 @@ MtObject* CDataEntryItemParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataEntryMemberData::getDTI() const {
     return CDataEntryMemberData::DTI;
-}
-
-inline MtAllocator* CDataEntryMemberData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEntryMemberData::DTI);
 }
 
 void* CDataEntryMemberData::operator new(size_t sz, u32 align) {
@@ -115,10 +91,6 @@ const MtDTI& CDataEntryRecruitData::getDTI() const {
     return CDataEntryRecruitData::DTI;
 }
 
-inline MtAllocator* CDataEntryRecruitData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEntryRecruitData::DTI);
-}
-
 void* CDataEntryRecruitData::operator new(size_t sz, u32 align) {
     return CDataEntryRecruitData::getAllocator()->memAlloc(sz, align, CDataEntryRecruitData::DTI.getID());
 }
@@ -137,10 +109,6 @@ MtObject* CDataEntryRecruitData::MyDTI::newInstance() const {
 
 const MtDTI& CDataEntryRecruitJob::getDTI() const {
     return CDataEntryRecruitJob::DTI;
-}
-
-inline MtAllocator* CDataEntryRecruitJob::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEntryRecruitJob::DTI);
 }
 
 void* CDataEntryRecruitJob::operator new(size_t sz, u32 align) {

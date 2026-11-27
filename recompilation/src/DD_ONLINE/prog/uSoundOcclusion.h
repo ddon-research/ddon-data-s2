@@ -27,14 +27,6 @@ namespace nZone { class ShapeInfoPanel; }
 namespace nZone { class cLayoutElement; }
 class rZone;
 
-// Declarations
-class cSoundOcclusionLayoutInfo;
-class cSoundOcclusionListener;
-namespace nSoundOcclusion { class cBaseContents; }
-namespace nSoundOcclusion { class cCategory; }
-namespace nSoundOcclusion { class cFreeWorkContents; }
-class uSoundOcclusion;
-
 namespace nSoundOcclusion {
     enum OPTION
     {
@@ -43,6 +35,14 @@ namespace nSoundOcclusion {
         OPTION_FLIP = 2,
     };
 }  // namespace nSoundOcclusion
+
+// Declarations
+class cSoundOcclusionLayoutInfo;
+class cSoundOcclusionListener;
+namespace nSoundOcclusion { class cBaseContents; }
+namespace nSoundOcclusion { class cCategory; }
+namespace nSoundOcclusion { class cFreeWorkContents; }
+class uSoundOcclusion;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -554,4 +554,73 @@ inline void* uSoundOcclusion::cOcclusionGroupManager::operator new(size_t sz, vo
 }
 
 inline uSoundOcclusion::cOcclusionGroupManager::cOcclusionGroupManager() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemory.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cSoundOcclusionLayoutInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundOcclusionLayoutInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cSoundOcclusionListener::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundOcclusionListener::DTI)->memAlloc(sz, align, ::cSoundOcclusionListener::DTI.::MtDTI::getID());
+}
+
+inline void cSoundOcclusionListener::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundOcclusionListener::DTI)->memFree(p_addr);
+}
+
+inline void nSoundOcclusion::cBaseContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cBaseContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundOcclusion::cCategory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cCategory::DTI)->memFree(p_addr);
+}
+
+inline void nSoundOcclusion::cFreeWorkContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cFreeWorkContents::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uSoundOcclusion::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::DTI);
+}
+
+inline void uSoundOcclusion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundOcclusion::cBoundingBox::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cBoundingBox::DTI)->memAlloc(sz, align, ::uSoundOcclusion::cBoundingBox::DTI.::MtDTI::getID());
+}
+
+inline void uSoundOcclusion::cBoundingBox::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cBoundingBox::DTI)->memFree(p_addr);
+}
+
+inline void uSoundOcclusion::cBoundingBox::BoundingWork::operator delete[](void* padr) {
+    ::MtMemory::mpAllocatorType[14]->memFree(padr);
+}
+
+inline void uSoundOcclusion::cBoundingBox::PairWork::operator delete[](void* padr) {
+    ::MtMemory::mpAllocatorType[14]->memFree(padr);
+}
+
+inline void* uSoundOcclusion::cHollowManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cHollowManager::DTI)->memAlloc(sz, align, ::uSoundOcclusion::cHollowManager::DTI.::MtDTI::getID());
+}
+
+inline void uSoundOcclusion::cHollowManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cHollowManager::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundOcclusion::cOcclusionGroupManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cOcclusionGroupManager::DTI)->memAlloc(sz, align, ::uSoundOcclusion::cOcclusionGroupManager::DTI.::MtDTI::getID());
+}
+
+inline void uSoundOcclusion::cOcclusionGroupManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundOcclusion::cOcclusionGroupManager::DTI)->memFree(p_addr);
 }

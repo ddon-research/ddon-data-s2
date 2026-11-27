@@ -124,3 +124,35 @@ private:
 inline void* uGUIAnnounce::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtColor.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIObject.h"
+
+inline MtAllocator* uGUIAnnounce::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIAnnounce::DTI);
+}
+
+inline void uGUIAnnounce::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAnnounce::DTI)->memFree(p_addr);
+}
+
+inline void uGUIAnnounce::adjustWindowColor() {
+    if (this->mpObjColAdjWindow != nullptr) {
+        if (this->mColor != 0) {
+            this->mpObjColAdjWindow->mAmbientColor.rgba = 0xF0FC8;
+        } else {
+            this->mpObjColAdjWindow->mAmbientColor.rgba = 0xFF9B00;
+        }
+    }
+    if (this->mpObjColAdjText == nullptr) {
+        return;
+    }
+    if (this->mColor != 0) {
+        this->mpObjColAdjText->mAmbientColor.rgba = 166;
+    } else {
+        this->mpObjColAdjText->mAmbientColor.rgba = 0xA66200;
+    }
+}

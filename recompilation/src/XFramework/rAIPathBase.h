@@ -208,3 +208,19 @@ inline u32 rAIPathBase::HierarchyArea::getNumberOfChild() {
 inline u32 rAIPathBase::HierarchyArea::getNumberOfLink() {
     return this->mNumberOfLink;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rAIPathBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAIPathBase::DTI)->memAlloc(sz, align, ::rAIPathBase::DTI.::MtDTI::mID);
+}
+
+inline void rAIPathBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIPathBase::DTI)->memFree(p_addr);
+}
+
+inline void rAIPathBase::HierarchyArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIPathBase::HierarchyArea::DTI)->memFree(p_addr);
+}

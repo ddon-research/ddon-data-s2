@@ -130,3 +130,19 @@ inline void cCraftSkillCostData::operator delete[](void* p_addr) {
 inline void* cCraftSkillCostData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCraftSkillCostData::DTI)->memAlloc(sz, align, ::cCraftSkillCostData::DTI.::MtDTI::getID());
 }
+
+inline void* cCraftSkillCostData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftSkillCostData::DTI)->memAlloc(sz, align, ::cCraftSkillCostData::DTI.::MtDTI::getID());
+}
+
+inline void cCraftSkillCostData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftSkillCostData::DTI)->memFree(p_addr);
+}
+
+inline void* rCraftSkillCost::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCraftSkillCost::DTI)->memAlloc(sz, align, ::rCraftSkillCost::DTI.::MtDTI::getID());
+}
+
+inline void rCraftSkillCost::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCraftSkillCost::DTI)->memFree(p_addr);
+}

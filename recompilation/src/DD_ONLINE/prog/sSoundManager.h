@@ -26,9 +26,6 @@ class uControlNpc;
 class uDDOModel;
 class uHuman;
 
-// Declarations
-class sSoundManager;
-
 namespace sBattleState {
     enum SYS_BATTLE_STATE
     {
@@ -38,6 +35,9 @@ namespace sBattleState {
         SYS_STATE_ESCAPE = 3,
     };
 }  // namespace sBattleState
+
+// Declarations
+class sSoundManager;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -544,4 +544,111 @@ inline sSoundManager::cEmSetState::cEmSetState() {
     this->mbDead = false;
     this->mbWin = false;
     this->mpuChr = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/rSoundStreamRequest.h"
+
+inline void sSoundManager::setBtlStqr(rSoundStreamRequest* pr) {
+    if (pr == this->mprBtl) {
+        return;
+    }
+    if (this->mprBtl != nullptr) {
+        this->mprBtl->::cResource::release();
+        this->mprBtl = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->::cResource::addRef();
+    }
+    this->mprBtl = pr;
+}
+
+inline void sSoundManager::setStgStqr(rSoundStreamRequest* pr) {
+    if (pr == this->mprStg) {
+        return;
+    }
+    if (this->mprStg != nullptr) {
+        this->mprStg->::cResource::release();
+        this->mprStg = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->::cResource::addRef();
+    }
+    this->mprStg = pr;
+}
+
+inline void sSoundManager::flushCycle() {
+    if (this->mprCyclePause == nullptr) {
+        return;
+    }
+    if (this->mCycleReqNoPause == 0xFFFFFFFFu) {
+        return;
+    }
+    this->mbCyclePause = false;
+    this->mbCyclePauseNoBgm = false;
+    this->mprCyclePause->::cResource::release();
+    this->mprCyclePause = nullptr;
+    this->mCycleReqNoPause = 0xFFFFFFFF;
+    this->mCyclePausePos = 0;
+}
+
+inline void sSoundManager::setQuestStqr(rSoundStreamRequest* pr) {
+    if (pr == this->mprQuest) {
+        return;
+    }
+    if (this->mprQuest != nullptr) {
+        this->mprQuest->::cResource::release();
+        this->mprQuest = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->::cResource::addRef();
+    }
+    this->mprQuest = pr;
+}
+
+inline void sSoundManager::setBarStqr(rSoundStreamRequest* pr) {
+    if (pr == this->mprBar) {
+        return;
+    }
+    if (this->mprBar != nullptr) {
+        this->mprBar->::cResource::release();
+        this->mprBar = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->::cResource::addRef();
+    }
+    this->mprBar = pr;
+}
+
+inline void sSoundManager::setBaseStqr(rSoundStreamRequest* pr) {
+    if (pr == this->mprBase) {
+        return;
+    }
+    if (this->mprBase != nullptr) {
+        this->mprBase->::cResource::release();
+        this->mprBase = nullptr;
+    }
+    if (pr != nullptr) {
+        pr->::cResource::addRef();
+    }
+    this->mprBase = pr;
+}
+
+inline MtAllocator* sSoundManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sSoundManager::DTI);
+}
+
+inline void sSoundManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSoundManager::DTI)->memFree(p_addr);
+}
+
+inline void* sSoundManager::cEmSetState::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sSoundManager::cEmSetState::DTI)->memAlloc(sz, align, ::sSoundManager::cEmSetState::DTI.::MtDTI::getID());
+}
+
+inline void sSoundManager::cEmSetState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSoundManager::cEmSetState::DTI)->memFree(p_addr);
 }

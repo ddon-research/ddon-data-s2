@@ -214,3 +214,36 @@ inline void* cZoneCategoryUnitCtrlBase::operator new(size_t sz, void* p_addr) {
 inline void* cZoneUnitCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cZoneCategoryUnitCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneCategoryUnitCtrl::DTI)->memAlloc(sz, align, ::cZoneCategoryUnitCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cZoneCategoryUnitCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneCategoryUnitCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneCategoryUnitCtrlBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneCategoryUnitCtrlBase::DTI)->memAlloc(sz, align, ::cZoneCategoryUnitCtrlBase::DTI.::MtDTI::getID());
+}
+
+inline void cZoneCategoryUnitCtrlBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneCategoryUnitCtrlBase::DTI)->memFree(p_addr);
+}
+
+inline cZoneCategoryUnitCtrlBase::cZoneCategoryUnitCtrlBase() {
+    this->::cZoneContents::setAttribute(32768u, true);
+    this->::cZoneContents::setAttribute(0x10000u, true);
+}
+
+inline void* cZoneUnitCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneUnitCtrl::DTI)->memAlloc(sz, align, ::cZoneUnitCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cZoneUnitCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneUnitCtrl::DTI)->memFree(p_addr);
+}

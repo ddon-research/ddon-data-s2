@@ -22,14 +22,6 @@ const MtDTI& cIKCtrl::getDTI() const {
     return cIKCtrl::DTI;
 }
 
-inline void* cIKCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cIKCtrl::DTI)->memAlloc(sz, align, cIKCtrl::DTI.getID());
-}
-
-inline void cIKCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cIKCtrl::DTI)->memFree(p_addr);
-}
-
 inline cIKCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cIKCtrl::MyDTI cIKCtrl::DTI("cIKCtrl", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -40,14 +32,6 @@ MtObject* cIKCtrl::MyDTI::newInstance() const {
 
 const MtDTI& rIKCtrl::getDTI() const {
     return rIKCtrl::DTI;
-}
-
-inline void* rIKCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rIKCtrl::DTI)->memAlloc(sz, align, rIKCtrl::DTI.getID());
-}
-
-inline void rIKCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rIKCtrl::DTI)->memFree(p_addr);
 }
 
 rIKCtrl::~rIKCtrl() {

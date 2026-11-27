@@ -28,6 +28,7 @@ class cDamageMsg;
 class cEquipData;
 class cGUIUtility;
 class cItemParam;
+class cOcdElementCover;
 class cParentRegionStatus;
 class cPawnActInterDamage;
 class cPawnActInterReload;
@@ -99,6 +100,7 @@ class cContextInterface : public MtObject
 {
     friend class aStage;
     friend class cGUIUtility;
+    friend class cOcdElementCover;
     friend class cParentRegionStatus;
     friend class cPawnActInterDamage;
     friend class cPawnActInterReload;
@@ -1425,4 +1427,29 @@ public:
 
 inline void* cContextInterface::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cContextInstance.h"
+
+inline void* cContextInterface::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cContextInterface::DTI)->memAlloc(sz, align, ::cContextInterface::DTI.::MtDTI::getID());
+}
+
+inline void cContextInterface::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextInterface::DTI)->memFree(p_addr);
+}
+
+inline f32 cContextInterface::getElementGuardTime(const cContextInstHm* pInst) {
+    return pInst->mElementGuardTime;
+}
+
+inline f32 cContextInterface::getElementCoverDamageRate(const cContextInstHm* pInst) {
+    return pInst->mElementCoverDamageRate;
+}
+
+inline s32 cContextInterface::getSJobWork0(const cContextInstHm* pInst) {
+    return pInst->mSJobWork0;
 }

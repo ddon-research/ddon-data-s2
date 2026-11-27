@@ -321,6 +321,33 @@ inline void* uGUICaplinkTrophyReceive::cListItem::operator new(size_t sz, void* 
     return p_addr;
 }
 
+inline uGUICaplinkTrophyReceive::cListItem::cListItem() : mpObjMsgStatus(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgTrophyName(static_cast<cGUIObjMessage*>(nullptr)), mpInstAnimStatus(static_cast<cGUIInstAnimation*>(nullptr)), mpInstAnimStatusIcon(static_cast<cGUIInstAnimation*>(nullptr)) {
+}
+
 inline void* uGUICaplinkTrophyReceive::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkTrophyReceive::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyReceive::DTI);
+}
+
+inline void uGUICaplinkTrophyReceive::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyReceive::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICaplinkTrophyReceive::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyReceive::cListItem::DTI)->memAlloc(sz, align, ::uGUICaplinkTrophyReceive::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkTrophyReceive::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyReceive::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkTrophyReceive::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyReceive::cListInfo::DTI)->memFree(p_addr);
 }

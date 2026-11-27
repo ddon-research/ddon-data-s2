@@ -127,3 +127,42 @@ inline bool rMapSpotStageList::Data::load(MtDataReader& r) {
     mStageNo = r.readS32();
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rMapSpotStageList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::DTI)->memAlloc(sz, align, ::rMapSpotStageList::DTI.::MtDTI::getID());
+}
+
+inline void rMapSpotStageList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::DTI)->memFree(p_addr);
+}
+
+inline rMapSpotStageList::rMapSpotStageList() {
+    this->::cResource::setAttribute(22u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void rMapSpotStageList::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayNum != 0) {
+        do {
+            this->mpArray[i0].~Data();
+            i0 += 1u;
+        } while (i0 < this->mArrayNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::DTI)->memFree(static_cast<void*>(this->mpArray));
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void* rMapSpotStageList::Data::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::Data::DTI)->memAlloc(sz, align, ::rMapSpotStageList::Data::DTI.::MtDTI::getID());
+}
+
+inline void rMapSpotStageList::Data::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMapSpotStageList::Data::DTI)->memFree(p_addr);
+}

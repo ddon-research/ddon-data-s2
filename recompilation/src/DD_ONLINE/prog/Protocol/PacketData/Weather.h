@@ -215,3 +215,27 @@ inline CDataWeatherSchedule::CDataWeatherSchedule() {
     this->m_llEndTimeSec = 0;
     this->m_llBeginTimeSec = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataGameTimeBaseInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameTimeBaseInfo::DTI);
+}
+
+inline void* CDataGameTimeBaseInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameTimeBaseInfo::DTI)->memAlloc(sz, align, ::CDataGameTimeBaseInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataMoonSchedule::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMoonSchedule::DTI);
+}
+
+inline MtAllocator* CDataWeatherLoop::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataWeatherLoop::DTI);
+}
+
+inline MtAllocator* CDataWeatherSchedule::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataWeatherSchedule::DTI);
+}

@@ -33,16 +33,8 @@ const MtDTI& uGUIGaugeSkill::getDTI() const {
     return uGUIGaugeSkill::DTI;
 }
 
-inline MtAllocator* uGUIGaugeSkill::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGaugeSkill::DTI);
-}
-
 void* uGUIGaugeSkill::operator new(size_t sz, u32 align) {
     return uGUIGaugeSkill::getAllocator()->memAlloc(sz, align, uGUIGaugeSkill::DTI.getID());
-}
-
-inline void uGUIGaugeSkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeSkill::DTI)->memFree(p_addr);
 }
 
 uGUIGaugeSkill::~uGUIGaugeSkill() {

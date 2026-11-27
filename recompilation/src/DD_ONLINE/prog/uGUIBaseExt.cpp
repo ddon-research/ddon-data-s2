@@ -25,10 +25,6 @@ const MtDTI& uGUIBaseExt::getDTI() const {
     return uGUIBaseExt::DTI;
 }
 
-inline void uGUIBaseExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBaseExt::DTI)->memFree(p_addr);
-}
-
 uGUIBaseExt::~uGUIBaseExt() {
     DDON_STUB("uGUIBaseExt::~uGUIBaseExt")
     /* stub */
@@ -290,10 +286,6 @@ const MtDTI& uGUIBaseExtHud::getDTI() const {
     return uGUIBaseExtHud::DTI;
 }
 
-inline void uGUIBaseExtHud::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBaseExtHud::DTI)->memFree(p_addr);
-}
-
 uGUIBaseExtHud::~uGUIBaseExtHud() {
 }
 
@@ -341,10 +333,6 @@ MtObject* uGUIBaseExtHud::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBaseExtWindow::getDTI() const {
     return uGUIBaseExtWindow::DTI;
-}
-
-inline void uGUIBaseExtWindow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBaseExtWindow::DTI)->memFree(p_addr);
 }
 
 uGUIBaseExtWindow::~uGUIBaseExtWindow() {

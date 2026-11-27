@@ -20,22 +20,8 @@ const MtDTI& rTutorialDialogMessage::getDTI() const {
     return rTutorialDialogMessage::DTI;
 }
 
-inline void* rTutorialDialogMessage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTutorialDialogMessage::DTI)->memAlloc(sz, align, rTutorialDialogMessage::DTI.getID());
-}
-
-inline void rTutorialDialogMessage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTutorialDialogMessage::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rTutorialDialogMessage::getExt() const {
     return "tdm";
-}
-
-inline rTutorialDialogMessage::rTutorialDialogMessage() {
-    mTitleGmdIdx = 0;
-    mCategoryGmdIdx = 0;
-    setAttribute(22u);
 }
 
 rTutorialDialogMessage::~rTutorialDialogMessage() {
@@ -117,14 +103,6 @@ MtObject* rTutorialDialogMessage::MyDTI::newInstance() const {
 
 const MtDTI& rTutorialDialogMessage::cDialogPage::getDTI() const {
     return rTutorialDialogMessage::cDialogPage::DTI;
-}
-
-void* rTutorialDialogMessage::cDialogPage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTutorialDialogMessage::cDialogPage::DTI)->memAlloc(sz, align, rTutorialDialogMessage::cDialogPage::DTI.getID());
-}
-
-inline void rTutorialDialogMessage::cDialogPage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTutorialDialogMessage::cDialogPage::DTI)->memFree(p_addr);
 }
 
 rTutorialDialogMessage::cDialogPage::~cDialogPage() {

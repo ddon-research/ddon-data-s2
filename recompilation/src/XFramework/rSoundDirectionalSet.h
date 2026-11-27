@@ -131,3 +131,15 @@ inline rSoundDirectionalSet::rSoundDirectionalSet() {
     this->mCurveNum = 0;
     this->::cResource::mAttr = 18;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rSoundDirectionalSet::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI)->memAlloc(sz, align, ::rSoundDirectionalSet::DTI.::MtDTI::mID);
+}
+
+inline void rSoundDirectionalSet::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalSet::DTI)->memFree(p_addr);
+}

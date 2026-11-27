@@ -197,3 +197,28 @@ inline void cStageMap::addParam(cStageMap::cParam* p) {
 inline void cStageMap::cParam::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::cStageMap::cParam::DTI)->memFree(p_addr);
 }
+
+inline void cStageMap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStageMap::DTI)->memFree(p_addr);
+}
+
+inline void* cStageMap::cParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStageMap::cParam::DTI)->memAlloc(sz, align, ::cStageMap::cParam::DTI.::MtDTI::getID());
+}
+
+inline cStageMap::cParam::cParam() {
+    this->mAreaNo = 0;
+    this->mSize = 0.0f;
+    this->mConnectPos.x = ::MtVector3::Zero.x;
+    this->mConnectPos.y = ::MtVector3::Zero.y;
+    this->mConnectPos.z = ::MtVector3::Zero.z;
+    this->mConnectPos.pad_ = 0.0f;
+}
+
+inline void* rStageMap::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageMap::DTI)->memAlloc(sz, align, ::rStageMap::DTI.::MtDTI::getID());
+}
+
+inline void rStageMap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageMap::DTI)->memFree(p_addr);
+}

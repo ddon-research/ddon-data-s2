@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rErosionRegionScaleChange.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -15,22 +13,6 @@
 
 const MtDTI& cErosionRegionScaleChange::getDTI() const {
     return cErosionRegionScaleChange::DTI;
-}
-
-inline void* cErosionRegionScaleChange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cErosionRegionScaleChange::DTI)->memAlloc(sz, align, cErosionRegionScaleChange::DTI.getID());
-}
-
-inline void cErosionRegionScaleChange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cErosionRegionScaleChange::DTI)->memFree(p_addr);
-}
-
-cErosionRegionScaleChange::cErosionRegionScaleChange() {
-    mInitScale.x = MtVector3::Zero.x;
-    mInitScale.y = MtVector3::Zero.y;
-    mInitScale.z = MtVector3::Zero.z;
-    mInitScale.pad_ = 0.0f;
-    mChangeFrame = 0.0f;
 }
 
 inline cErosionRegionScaleChange::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -43,14 +25,6 @@ MtObject* cErosionRegionScaleChange::MyDTI::newInstance() const {
 
 const MtDTI& rErosionRegionScaleChange::getDTI() const {
     return rErosionRegionScaleChange::DTI;
-}
-
-inline void* rErosionRegionScaleChange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rErosionRegionScaleChange::DTI)->memAlloc(sz, align, rErosionRegionScaleChange::DTI.getID());
-}
-
-inline void rErosionRegionScaleChange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rErosionRegionScaleChange::DTI)->memFree(p_addr);
 }
 
 bool rErosionRegionScaleChange::loadData(MtDataReader& r, cErosionRegionScaleChange* pData) {

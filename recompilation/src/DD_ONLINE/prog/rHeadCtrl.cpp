@@ -21,10 +21,6 @@ const MtDTI& cHeadCtrl::getDTI() const {
     return cHeadCtrl::DTI;
 }
 
-inline void cHeadCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHeadCtrl::DTI)->memFree(p_addr);
-}
-
 inline cHeadCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cHeadCtrl::MyDTI cHeadCtrl::DTI("cHeadCtrl", &::MtObject::DTI, 48ul, 0u, 0u);
@@ -35,10 +31,6 @@ __attribute__((weak)) MtObject* cHeadCtrl::MyDTI::newInstance() const {
 
 const MtDTI& rHeadCtrl::getDTI() const {
     return rHeadCtrl::DTI;
-}
-
-inline void rHeadCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rHeadCtrl::DTI)->memFree(p_addr);
 }
 
 bool rHeadCtrl::loadData(MtDataReader& r, cHeadCtrl* pData) {

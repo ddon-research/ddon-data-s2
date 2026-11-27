@@ -114,3 +114,23 @@ inline void* uShlEnergyCharge::operator new(size_t sz, void* p_addr) {
 
 inline uShlEnergyCharge::uShlEnergyCharge() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamEnergyCharge::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamEnergyCharge::DTI)->memAlloc(sz, align, ::cShlParamEnergyCharge::DTI.::MtDTI::getID());
+}
+
+inline void* uShlEnergyCharge::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlEnergyCharge::DTI)->memAlloc(sz, align, ::uShlEnergyCharge::DTI.::MtDTI::getID());
+}
+
+inline void uShlEnergyCharge::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlEnergyCharge::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamEnergyCharge* uShlEnergyCharge::getShlParam() const {
+    return static_cast<const cShlParamEnergyCharge*>(this->::uShlBase::mpShlParam2);
+}

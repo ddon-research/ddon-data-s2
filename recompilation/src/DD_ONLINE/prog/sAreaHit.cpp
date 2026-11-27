@@ -23,16 +23,8 @@ const MtDTI& sAreaHit::getDTI() const {
     return sAreaHit::DTI;
 }
 
-inline MtAllocator* sAreaHit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sAreaHit::DTI);
-}
-
 void* sAreaHit::operator new(size_t sz, u32 align) {
     return sAreaHit::getAllocator()->memAlloc(sz, align, sAreaHit::DTI.getID());
-}
-
-inline void sAreaHit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sAreaHit::DTI)->memFree(p_addr);
 }
 
 sAreaHit::sAreaHit() {

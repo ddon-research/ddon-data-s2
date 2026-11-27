@@ -36,10 +36,6 @@ const MtDTI& uGUIStorage::getDTI() const {
     return uGUIStorage::DTI;
 }
 
-inline void uGUIStorage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIStorage::DTI)->memFree(p_addr);
-}
-
 uGUIStorage::~uGUIStorage() {
     if (mpShareUnit == nullptr) {
         return;
@@ -164,9 +160,21 @@ bool uGUIStorage::isChangeRow() {
     return false;
 }
 
-__attribute__((weak)) void uGUIStorage::loadItem() {
-    DDON_STUB("uGUIStorage::loadItem")
-    /* stub */
+void uGUIStorage::loadItem() {
+    loadItemEx();
+    if (!mIsResetTab) {
+        return;
+    }
+    u32 t0 = getItemDrawNum();
+    if (t0 > 79u) {
+        mTab.setVisibleTabMax(static_cast<u32>((static_cast<unsigned long>(t0) * 0xCCCCCCCDul) >> 37));
+    } else {
+        mTab.setVisibleTabMax(0u);
+    }
+    mpCtrlTab->resetItemNum(static_cast<s32>(mTab.getVisibleNum()), static_cast<const u32*>(nullptr), 0);
+    mTab.setupMouseTouchList(static_cast<cControl*>(mpCtrlTab), -1);
+    mIsResetTab = false;
+    mPageTabNo = 0;
 }
 
 __attribute__((weak)) void uGUIStorage::loadItemEx() {

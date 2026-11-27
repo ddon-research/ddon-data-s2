@@ -186,3 +186,28 @@ inline void* cZoneListenerEffectColor::operator new(size_t sz, void* p_addr) {
 inline void* cZoneListenerEffectEFL::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cZoneListenerEffect::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneListenerEffect::DTI)->memAlloc(sz, align, ::cZoneListenerEffect::DTI.::MtDTI::getID());
+}
+
+inline void cZoneListenerEffect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneListenerEffect::DTI)->memFree(p_addr);
+}
+
+inline cZoneListenerEffect::cZoneListenerEffect() {
+    this->mbHited = false;
+    this->mCheckPos = ::MtVector3::Zero;
+}
+
+inline void cZoneListenerEffectColor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneListenerEffectColor::DTI)->memFree(p_addr);
+}
+
+inline void cZoneListenerEffectEFL::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneListenerEffectEFL::DTI)->memFree(p_addr);
+}

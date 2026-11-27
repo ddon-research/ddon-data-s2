@@ -32,16 +32,8 @@ const MtDTI& cpHmHeadCtrl::getDTI() const {
     return cpHmHeadCtrl::DTI;
 }
 
-inline MtAllocator* cpHmHeadCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpHmHeadCtrl::DTI);
-}
-
 void* cpHmHeadCtrl::operator new(size_t sz, u32 align) {
     return cpHmHeadCtrl::getAllocator()->memAlloc(sz, align, cpHmHeadCtrl::DTI.getID());
-}
-
-inline void cpHmHeadCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpHmHeadCtrl::DTI)->memFree(p_addr);
 }
 
 void cpHmHeadCtrl::setOwner(MtObject* pOwner) {
@@ -222,14 +214,6 @@ __attribute__((weak)) MtObject* cpHmHeadCtrl::MyDTI::newInstance() const {
 
 const MtDTI& cpHmHeadCtrl::cActParam::getDTI() const {
     return cpHmHeadCtrl::cActParam::DTI;
-}
-
-inline void* cpHmHeadCtrl::cActParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpHmHeadCtrl::cActParam::DTI)->memAlloc(sz, align, cpHmHeadCtrl::cActParam::DTI.getID());
-}
-
-inline void cpHmHeadCtrl::cActParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpHmHeadCtrl::cActParam::DTI)->memFree(p_addr);
 }
 
 inline cpHmHeadCtrl::cActParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

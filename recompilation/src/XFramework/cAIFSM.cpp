@@ -12,6 +12,8 @@
 #include "../MT/MtString.h"
 #include "cAIConditionTree.h"
 #include "cAIObject.h"
+#include "cAIService.h"
+#include "cAISvFSM.h"
 #include "cAIUserProcess.h"
 #include "cResource.h"
 #include "rAIFSM.h"
@@ -25,13 +27,38 @@ const MtDTI& cAIFSM::getDTI() const {
     return cAIFSM::DTI;
 }
 
-inline void cAIFSM::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSM::DTI)->memFree(p_addr);
-}
-
 cAIFSM::cAIFSM() {
-    DDON_STUB("cAIFSM::cAIFSM")
-    /* stub */
+    mpOwner = nullptr;
+    mCoreNum = 0;
+    mpCurrentCore = nullptr;
+    mCoreList = nullptr;
+    mConditionWaitTime = -1.0f;
+    mFFree[7] = 0.0f;
+    mFFree[5] = 0.0f;
+    mFFree[6] = 0.0f;
+    mFFree[3] = 0.0f;
+    mFFree[4] = 0.0f;
+    mFFree[1] = 0.0f;
+    mFFree[2] = 0.0f;
+    mIFree[7] = 0;
+    mFFree[0] = 0.0f;
+    mIFree[5] = 0;
+    mIFree[6] = 0;
+    mIFree[3] = 0;
+    mIFree[4] = 0;
+    mIFree[1] = 0;
+    mIFree[2] = 0;
+    mStatus = 0;
+    mIFree[0] = 0;
+    createCore(1u);
+    if ((sAI::mpInstance) == nullptr) {
+        return;
+    }
+    cAISvFSM* pSvFSM = static_cast<cAISvFSM*>((sAI::mpInstance)->sAI::getService(cAISvFSM::DTI, static_cast<MT_CTSTR>(nullptr)));
+    if (pSvFSM == nullptr) {
+        return;
+    }
+    pSvFSM->entryFSM(this);
 }
 
 __attribute__((noinline)) cAIFSM::~cAIFSM() {
@@ -170,10 +197,6 @@ const MtDTI& cAIFSM::Core::getDTI() const {
     return cAIFSM::Core::DTI;
 }
 
-inline void cAIFSM::Core::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSM::Core::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) cAIFSM::Core::~Core() {
     DDON_STUB("cAIFSM::Core::~Core")
     /* stub */
@@ -298,14 +321,6 @@ const MtDTI& cAIFSM::Core::ClusterDriveInfo::getDTI() const {
     return cAIFSM::Core::ClusterDriveInfo::DTI;
 }
 
-inline void* cAIFSM::Core::ClusterDriveInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterDriveInfo::DTI)->memAlloc(sz, align, cAIFSM::Core::ClusterDriveInfo::DTI.mID);
-}
-
-inline void cAIFSM::Core::ClusterDriveInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterDriveInfo::DTI)->memFree(p_addr);
-}
-
 inline cAIFSM::Core::ClusterDriveInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAIFSM::Core::ClusterDriveInfo::MyDTI cAIFSM::Core::ClusterDriveInfo::DTI("cAIFSM::Core::ClusterDriveInfo", &::cAIObject::DTI, 64ul, 0u, 0u);
@@ -316,14 +331,6 @@ MtObject* cAIFSM::Core::ClusterDriveInfo::MyDTI::newInstance() const {
 
 const MtDTI& cAIFSM::Core::ClusterWork::getDTI() const {
     return cAIFSM::Core::ClusterWork::DTI;
-}
-
-inline void* cAIFSM::Core::ClusterWork::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memAlloc(sz, align, cAIFSM::Core::ClusterWork::DTI.mID);
-}
-
-inline void cAIFSM::Core::ClusterWork::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSM::Core::ClusterWork::DTI)->memFree(p_addr);
 }
 
 cAIFSM::Core::ClusterWork::~ClusterWork() {
@@ -441,10 +448,6 @@ const MtDTI& cAIFSM::Core::ClearTransitionFromAllOnceParam::getDTI() const {
     return cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI;
 }
 
-inline void cAIFSM::Core::ClearTransitionFromAllOnceParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI)->memFree(p_addr);
-}
-
 void cAIFSM::Core::ClearTransitionFromAllOnceParam::copy(cAICopiableParameter* pParam) {
     mType = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 8);
     mStateID = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pParam) + 12);
@@ -465,20 +468,17 @@ inline cAIFSM::Core::ClearTransitionFromAllOnceParam::MyDTI::MyDTI(MT_CTSTR clas
 cAIFSM::Core::ClearTransitionFromAllOnceParam::MyDTI cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI("cAIFSM::Core::ClearTransitionFromAllOnceParam", &::cAICopiableParameter::DTI, 16ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cAIFSM::Core::ClearTransitionFromAllOnceParam::MyDTI::newInstance() const {
-    DDON_STUB("cAIFSM::Core::ClearTransitionFromAllOnceParam::MyDTI::newInstance")
-    return nullptr;
+    void* t1 = MtMemoryAllocator::getAllocator(cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI)->memAlloc(sizeof(cAIFSM::Core::ClearTransitionFromAllOnceParam), 16u, cAIFSM::Core::ClearTransitionFromAllOnceParam::DTI.mID);
+    // workaround
+    new (t1) cAIResource();
+    cAIFSM::Core::ClearTransitionFromAllOnceParam* t2 = new (t1) cAIFSM::Core::ClearTransitionFromAllOnceParam(*static_cast<cAIFSM::Core::ClearTransitionFromAllOnceParam*>(t1));
+    t2->mType = 0;
+    t2->mStateID = 0;
+    return t2;
 }
 
 const MtDTI& cAIFSMData::getDTI() const {
     return cAIFSMData::DTI;
-}
-
-inline void* cAIFSMData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memAlloc(sz, align, cAIFSMData::DTI.mID);
-}
-
-inline void cAIFSMData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMData::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cAIFSMData::~cAIFSMData() {
@@ -582,14 +582,6 @@ MtObject* cAIFSMData::MyDTI::newInstance() const {
 
 const MtDTI& cAIFSMData::Core::getDTI() const {
     return cAIFSMData::Core::DTI;
-}
-
-inline void* cAIFSMData::Core::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memAlloc(sz, align, cAIFSMData::Core::DTI.mID);
-}
-
-inline void cAIFSMData::Core::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMData::Core::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cAIFSMData::Core::~Core() {
@@ -776,14 +768,6 @@ const MtDTI& cAIFSMData::Cluster::getDTI() const {
     return cAIFSMData::Cluster::DTI;
 }
 
-inline void* cAIFSMData::Cluster::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSMData::Cluster::DTI)->memAlloc(sz, align, cAIFSMData::Cluster::DTI.mID);
-}
-
-inline void cAIFSMData::Cluster::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMData::Cluster::DTI)->memFree(p_addr);
-}
-
 void cAIFSMData::Cluster::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mId", &mId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mNextId", &mNextId, 0u, 0u);
@@ -804,14 +788,6 @@ MtObject* cAIFSMData::Cluster::MyDTI::newInstance() const {
 
 const MtDTI& cAIFSMData::ClusterLog::getDTI() const {
     return cAIFSMData::ClusterLog::DTI;
-}
-
-inline void* cAIFSMData::ClusterLog::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIFSMData::ClusterLog::DTI)->memAlloc(sz, align, cAIFSMData::ClusterLog::DTI.mID);
-}
-
-inline void cAIFSMData::ClusterLog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMData::ClusterLog::DTI)->memFree(p_addr);
 }
 
 cAIFSMData::ClusterLog::~ClusterLog() {
@@ -878,10 +854,6 @@ const MtDTI& cAIFSMProcessContainer::getDTI() const {
 
 void* cAIFSMProcessContainer::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIFSMProcessContainer::DTI)->memAlloc(sz, align, cAIFSMProcessContainer::DTI.mID);
-}
-
-inline void cAIFSMProcessContainer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIFSMProcessContainer::DTI)->memFree(p_addr);
 }
 
 cAIFSMProcessContainer::~cAIFSMProcessContainer() {

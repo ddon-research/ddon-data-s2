@@ -18,14 +18,6 @@ const MtDTI& cShlParamDividedCalled::getDTI() const {
     return cShlParamDividedCalled::DTI;
 }
 
-inline void* cShlParamDividedCalled::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamDividedCalled::DTI)->memAlloc(sz, align, cShlParamDividedCalled::DTI.getID());
-}
-
-inline void cShlParamDividedCalled::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamDividedCalled::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamDividedCalled::getShlDTI() const {
     return uShlDividedCalled::DTI;
 }
@@ -94,14 +86,6 @@ const MtDTI& cShlParamDividedCalled::cDividedCalledParam::getDTI() const {
     return cShlParamDividedCalled::cDividedCalledParam::DTI;
 }
 
-inline void* cShlParamDividedCalled::cDividedCalledParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamDividedCalled::cDividedCalledParam::DTI)->memAlloc(sz, align, cShlParamDividedCalled::cDividedCalledParam::DTI.getID());
-}
-
-inline void cShlParamDividedCalled::cDividedCalledParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamDividedCalled::cDividedCalledParam::DTI)->memFree(p_addr);
-}
-
 void cShlParamDividedCalled::cDividedCalledParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "value", &value, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "shlNo", &shlNo, 0u, 0u);
@@ -122,14 +106,6 @@ MtObject* cShlParamDividedCalled::cDividedCalledParam::MyDTI::newInstance() cons
 
 const MtDTI& uShlDividedCalled::getDTI() const {
     return uShlDividedCalled::DTI;
-}
-
-inline void* uShlDividedCalled::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlDividedCalled::DTI)->memAlloc(sz, align, uShlDividedCalled::DTI.getID());
-}
-
-inline void uShlDividedCalled::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlDividedCalled::DTI)->memFree(p_addr);
 }
 
 uShlDividedCalled::~uShlDividedCalled() {

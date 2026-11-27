@@ -196,3 +196,23 @@ inline void* cOnceRequestEffectTypeSuperErosionCam::operator new(size_t sz, void
 inline void* cOnceRequestEffectTypeSuperErosionCamData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cOnceRequestEffectType::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOnceRequestEffectType::DTI)->memFree(p_addr);
+}
+
+inline void cOnceRequestEffectTypeData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOnceRequestEffectTypeData::DTI)->memFree(p_addr);
+}
+
+inline void cOnceRequestEffectTypeSuperErosionCam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOnceRequestEffectTypeSuperErosionCam::DTI)->memFree(p_addr);
+}
+
+inline void cOnceRequestEffectTypeSuperErosionCamData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOnceRequestEffectTypeSuperErosionCamData::DTI)->memFree(p_addr);
+}

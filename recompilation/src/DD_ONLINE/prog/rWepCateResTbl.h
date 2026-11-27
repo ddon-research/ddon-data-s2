@@ -131,3 +131,11 @@ inline void cWepCateResTbl::operator delete[](void* p_addr) {
 inline void* cWepCateResTbl::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cWepCateResTbl::DTI)->memAlloc(sz, align, ::cWepCateResTbl::DTI.::MtDTI::getID());
 }
+
+inline void* rWepCateResTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWepCateResTbl::DTI)->memAlloc(sz, align, ::rWepCateResTbl::DTI.::MtDTI::getID());
+}
+
+inline void rWepCateResTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWepCateResTbl::DTI)->memFree(p_addr);
+}

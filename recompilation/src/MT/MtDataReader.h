@@ -50,6 +50,7 @@ class cSetInfoOmGather;
 class cSetInfoOmTreasureBox;
 namespace nCollision { class cObjectBase; }
 namespace nZone { class ShapeInfoAABB; }
+namespace nZone { class ShapeInfoArea; }
 namespace nZone { class ShapeInfoBase; }
 namespace nZone { class ShapeInfoCapsule; }
 namespace nZone { class ShapeInfoCone; }
@@ -130,6 +131,7 @@ class MtDataReader
     friend class cSetInfoOmTreasureBox;
     friend class nCollision::cObjectBase;
     friend class nZone::ShapeInfoAABB;
+    friend class nZone::ShapeInfoArea;
     friend class nZone::ShapeInfoBase;
     friend class nZone::ShapeInfoCapsule;
     friend class nZone::ShapeInfoCone;

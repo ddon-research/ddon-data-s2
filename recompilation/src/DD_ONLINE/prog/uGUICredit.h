@@ -180,3 +180,15 @@ inline void* uGUICredit::operator new(size_t sz, void* p_addr) {
 inline void* uGUICredit::cElement::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICredit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICredit::DTI);
+}
+
+inline void uGUICredit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICredit::DTI)->memFree(p_addr);
+}

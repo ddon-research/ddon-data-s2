@@ -23,16 +23,8 @@ const MtDTI& uGUIQueueAnnounceLvUp::getDTI() const {
     return uGUIQueueAnnounceLvUp::DTI;
 }
 
-inline MtAllocator* uGUIQueueAnnounceLvUp::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIQueueAnnounceLvUp::DTI);
-}
-
 void* uGUIQueueAnnounceLvUp::operator new(size_t sz, u32 align) {
     return uGUIQueueAnnounceLvUp::getAllocator()->memAlloc(sz, align, uGUIQueueAnnounceLvUp::DTI.getID());
-}
-
-inline void uGUIQueueAnnounceLvUp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQueueAnnounceLvUp::DTI)->memFree(p_addr);
 }
 
 uGUIQueueAnnounceLvUp::uGUIQueueAnnounceLvUp() {

@@ -414,3 +414,11 @@ inline void sEffect::setCollisionParamType(u32 Type) {
 inline void sEffect::setCollisionParamFilter(u32 Filter) {
     this->mCollisionParam.filter = 0x2000080C;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sEffect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEffect::DTI)->memFree(p_addr);
+}

@@ -20,10 +20,6 @@ const MtDTI& cAICopiableParameter::getDTI() const {
     return cAICopiableParameter::DTI;
 }
 
-inline void cAICopiableParameter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAICopiableParameter::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cAICopiableParameter::copy(cAICopiableParameter* pParam) {
     DDON_STUB("cAICopiableParameter::copy")
     /* stub */
@@ -39,10 +35,6 @@ __attribute__((weak)) MtObject* cAICopiableParameter::MyDTI::newInstance() const
 
 const MtDTI& cAIUserProcess::getDTI() const {
     return cAIUserProcess::DTI;
-}
-
-inline void cAIUserProcess::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIUserProcess::DTI)->memFree(p_addr);
 }
 
 cAIUserProcess::~cAIUserProcess() {
@@ -171,10 +163,6 @@ const MtDTI& cAIUserProcessCallback::getDTI() const {
 
 void* cAIUserProcessCallback::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAIUserProcessCallback::DTI)->memAlloc(sz, align, cAIUserProcessCallback::DTI.mID);
-}
-
-inline void cAIUserProcessCallback::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIUserProcessCallback::DTI)->memFree(p_addr);
 }
 
 cAIUserProcessCallback::~cAIUserProcessCallback() {
@@ -343,14 +331,6 @@ __attribute__((weak)) MtObject* cAIUserProcessContainer::MyDTI::newInstance() co
 
 const MtDTI& cAIUserProcessReference::getDTI() const {
     return cAIUserProcessReference::DTI;
-}
-
-inline void* cAIUserProcessReference::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIUserProcessReference::DTI)->memAlloc(sz, align, cAIUserProcessReference::DTI.mID);
-}
-
-inline void cAIUserProcessReference::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIUserProcessReference::DTI)->memFree(p_addr);
 }
 
 cAIUserProcessReference::~cAIUserProcessReference() {

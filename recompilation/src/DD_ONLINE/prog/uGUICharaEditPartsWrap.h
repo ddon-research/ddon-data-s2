@@ -1118,3 +1118,146 @@ inline void* uGUICharaEditPartsWrap::cPartsMyName::operator new(size_t sz, void*
 inline void* uGUICharaEditPartsWrap::cPartsHList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUICharaEditPartsWrap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICharaEditPartsWrap::cDupliObjectBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cDupliObjectBase::DTI)->memAlloc(sz, align, ::uGUICharaEditPartsWrap::cDupliObjectBase::DTI.::MtDTI::getID());
+}
+
+inline void uGUICharaEditPartsWrap::cDupliObjectBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cDupliObjectBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsBase::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsSlider::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsSlider::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsSlider::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsSlider::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::DTI)->memAlloc(sz, align, ::uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::DTI.::MtDTI::getID());
+}
+
+inline void uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsImage::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsImage::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsImage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsImage::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsImage::cObject::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsImage::cObject::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsImage::cObject::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsImage::cObject::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsColor::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsColor::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsColor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsColor::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsColor::cObject::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsColor::cObject::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsColor::cObject::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsColor::cObject::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsColorEye::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsColorEye::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsColorEye::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsColorEye::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsColorHairAll::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsColorHairAll::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsColorHairAll::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsColorHairAll::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsPulldown::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsPulldown::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsPulldown::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsPulldown::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsPulldown::evInputPartsClosePullDown() {
+    this->mRefPulldown.::uGUIBase::cReferenceUIPullDown::setFocus(false);
+    this->mRefPulldown.::uGUIBase::cReferenceUIPullDown::close(true);
+    this->::uGUICharaEditPartsWrap::cPartsBase::mIsClose = true;
+    this->evClose(true);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsMask::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsMask::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsMask::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsMask::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsRadioButton::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsRadioButton::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsRadioButton::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsRadioButton::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsRadioSlider::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsRadioSlider::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsRadioSlider::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsRadioSlider::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUICharaEditPartsWrap::cPartsMyName::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsMyName::DTI);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsMyName::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsMyName::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharaEditPartsWrap::cPartsHList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharaEditPartsWrap::cPartsHList::DTI)->memFree(p_addr);
+}

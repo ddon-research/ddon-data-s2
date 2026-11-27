@@ -71,3 +71,15 @@ inline void* cCraftPlusItem::operator new(size_t sz, void* p_addr) {
 inline void cCraftPlusItem::init() {
     this->mpQualityResource = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCraftPlusItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftPlusItem::DTI)->memAlloc(sz, align, ::cCraftPlusItem::DTI.::MtDTI::getID());
+}
+
+inline void cCraftPlusItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftPlusItem::DTI)->memFree(p_addr);
+}

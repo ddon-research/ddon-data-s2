@@ -75,3 +75,15 @@ public:
 inline void* cLayoutSetGeneralPoint::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cLayoutSetGeneralPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cLayoutSetGeneralPoint::DTI);
+}
+
+inline void cLayoutSetGeneralPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLayoutSetGeneralPoint::DTI)->memFree(p_addr);
+}

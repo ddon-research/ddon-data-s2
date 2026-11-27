@@ -25,6 +25,7 @@ class cGUIInstNull;
 class cGUIObjMessage;
 class cGUIObjPolygon;
 class rGUI;
+class uGUIArisenCard;
 class uGUIBase;
 class uGUIItemBase01;
 class uGUISkill;
@@ -42,6 +43,7 @@ using u32 = unsigned int;
 
 class uGUIPopCmd01 : public uGUIPopBase
 {
+    friend class uGUIArisenCard;
     friend class uGUIItemBase01;
     friend class uGUISkill;
 public:
@@ -225,4 +227,16 @@ inline void* uGUIPopCmd01::operator new(size_t sz, void* p_addr) {
 
 inline void* uGUIPopCmd01::cItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopCmd01::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopCmd01::DTI);
+}
+
+inline void uGUIPopCmd01::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopCmd01::DTI)->memFree(p_addr);
 }

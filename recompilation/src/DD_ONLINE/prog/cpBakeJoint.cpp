@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cpBakeJoint.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "cDDMaterialCtrl.h"
@@ -12,11 +10,13 @@
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
+#include "cpDDMrlMgr.h"
 #include "rBakeJoint.h"
 #include "../../XFramework/rModel.h"
 #include "sBakingJointOrder.h"
 #include "../../XFramework/sScene.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uDDOActorModel.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
@@ -25,10 +25,6 @@
 
 const MtDTI& cpBakeJoint::getDTI() const {
     return cpBakeJoint::DTI;
-}
-
-inline void cpBakeJoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpBakeJoint::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cpBakeJoint::getSkinJointNum() const {

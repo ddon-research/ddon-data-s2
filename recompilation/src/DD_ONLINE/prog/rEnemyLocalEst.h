@@ -173,3 +173,19 @@ inline void cEnemyLocalEstTable::operator delete[](void* p_addr) {
 inline void* cEnemyLocalEstTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEnemyLocalEstTable::DTI)->memAlloc(sz, align, ::cEnemyLocalEstTable::DTI.::MtDTI::getID());
 }
+
+inline void* cEnemyLocalEstTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyLocalEstTable::DTI)->memAlloc(sz, align, ::cEnemyLocalEstTable::DTI.::MtDTI::getID());
+}
+
+inline void cEnemyLocalEstTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyLocalEstTable::DTI)->memFree(p_addr);
+}
+
+inline void* rEnemyLocalEst::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEnemyLocalEst::DTI)->memAlloc(sz, align, ::rEnemyLocalEst::DTI.::MtDTI::getID());
+}
+
+inline void rEnemyLocalEst::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEnemyLocalEst::DTI)->memFree(p_addr);
+}

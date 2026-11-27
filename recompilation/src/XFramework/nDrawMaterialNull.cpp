@@ -18,10 +18,6 @@ void* nDraw::MaterialNull::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::MaterialNull::DTI)->memAlloc(sz, align, ::nDraw::MaterialNull::DTI.mID);
 }
 
-inline void nDraw::MaterialNull::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::MaterialNull::DTI)->memFree(p_addr);
-}
-
 nDraw::MaterialNull::MaterialNull() : nDraw::Material(0x4AF70B19u) {
 }
 

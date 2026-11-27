@@ -182,3 +182,50 @@ inline rNPCEmoMyRoom::InfoBinary::MotDataBinary::MotDataBinary() {
     this->mFinger = -1;
     this->mLoop = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rNPCEmoMyRoom::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::DTI)->memAlloc(sz, align, ::rNPCEmoMyRoom::DTI.::MtDTI::getID());
+}
+
+inline void rNPCEmoMyRoom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::DTI)->memFree(p_addr);
+}
+
+inline rNPCEmoMyRoom::rNPCEmoMyRoom() {
+    this->::cResource::setAttribute(18u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void rNPCEmoMyRoom::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayNum != 0) {
+        do {
+            this->mpArray[i0].~InfoBinary();
+            i0 += 1u;
+        } while (i0 < this->mArrayNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::DTI)->memFree(static_cast<void*>(this->mpArray));
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void* rNPCEmoMyRoom::InfoBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::InfoBinary::DTI)->memAlloc(sz, align, ::rNPCEmoMyRoom::InfoBinary::DTI.::MtDTI::getID());
+}
+
+inline void rNPCEmoMyRoom::InfoBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::InfoBinary::DTI)->memFree(p_addr);
+}
+
+inline void* rNPCEmoMyRoom::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, ::rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI.::MtDTI::getID());
+}
+
+inline void rNPCEmoMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCEmoMyRoom::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
+}

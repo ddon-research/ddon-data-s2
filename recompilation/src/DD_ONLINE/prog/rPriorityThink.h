@@ -3769,12 +3769,76 @@ inline rPriorityThink::rPriorityThink() {
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtMemoryAllocator.h"
 
+inline cPrioThkCmd::cTmpResult::cTmpResult() {
+    this->mRate = 100;
+    this->mpPawnAct = nullptr;
+    this->mpTarget = nullptr;
+}
+
+inline void* cPrioThkCmd::cTmpResult::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline cPrioThkCmdAddPartyStatus::cPrioThkCmdAddPartyStatus() {
+    // unproven
+}
+
+inline void* cPrioThkCmdAddPartyStatus::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline cPrioThkCmdFilTargetStatus::cPrioThkCmdFilTargetStatus() {
+    // unproven
+}
+
+inline void* cPrioThkCmdFilTargetStatus::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
 inline cPrioThkCmdIsOrder::cPrioThkCmdIsOrder() {
     // unproven
 }
 
 inline void* cPrioThkCmdIsOrder::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cPrioThkCmdIsOrder::DTI)->memAlloc(sz, align, cPrioThkCmdIsOrder::DTI.getID());
+}
+
+inline cPrioThkCmdIsOtherFlag::cPrioThkCmdIsOtherFlag() {
+    // unproven
+}
+
+inline void* cPrioThkCmdIsOtherFlag::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline cPrioThkCmdIsStatus::cPrioThkCmdIsStatus() {
+    this->mPrioThkStatusFlag.clear();
+    this->mCheckTargetMaster = false;
+}
+
+inline void* cPrioThkCmdIsStatus::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline cPrioThkCmdRetActGoldBurst::cPrioThkCmdRetActGoldBurst() {
+    // unproven
+}
+
+inline void* cPrioThkCmdRetActGoldBurst::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline cPrioThkCmdRetActGroup::cPrioThkCmdRetActGroup() {
+    this->mActionInterfaceGroup = 0;
+    this->mReqTargetType = 3;
+    this->mReqTargetFrameType = 0;
+    this->mReqTargetFrame = 0.0f;
+    this->mReqTargetRealPos = MtVector3::Zero;
+    this->mReqUseEmChecker = false;
+}
+
+inline void* cPrioThkCmdRetActGroup::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
 }
 
 inline cPrioThkCmdRetActInter::cPrioThkCmdRetActInter() {
@@ -3786,6 +3850,22 @@ inline cPrioThkCmdRetActInter::cPrioThkCmdRetActInter() {
 }
 
 inline void* cPrioThkCmdRetActInter::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline cPrioThkCmdRetActInterTarget::cPrioThkCmdRetActInterTarget() {
+    this->mActionInterfaceID = 0;
+}
+
+inline void* cPrioThkCmdRetActInterTarget::operator new(size_t sz, u32 align) {
+    return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
+}
+
+inline cPrioThkCmdRetHealAct::cPrioThkCmdRetHealAct() {
+    // unproven
+}
+
+inline void* cPrioThkCmdRetHealAct::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(DTI)->memAlloc(sz, align, DTI.getID());
 }
 
@@ -3806,4 +3886,626 @@ inline void* cPrioThkCode::operator new(size_t sz, u32 align) {
 
 inline void* cPrioThkCode::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPrioThkCode::DTI)->memAlloc(sz, align, ::cPrioThkCode::DTI.::MtDTI::getID());
+}
+
+inline void* cPrioThkCmd::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmd::DTI)->memAlloc(sz, align, ::cPrioThkCmd::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmd::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmd::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmd::cTmpResult::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmd::cTmpResult::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddAnimalCoop::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddAnimalCoop::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddAnimalCoop::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddAnimalCoop::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddAnimalCoop::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddAnimalProtect::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddAnimalProtect::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddAnimalProtect::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddAnimalProtect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddAnimalProtect::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddBase::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddBase::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddBase::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddBreakTarget::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddBreakTarget::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddBreakTarget::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddBreakTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddBreakTarget::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddCoreNearTarget::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddCoreNearTarget::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddCoreNearTarget::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddCoreNearTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddCoreNearTarget::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddEnemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEnemy::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddEnemy::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEnemy::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddEnemyClimb::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEnemyClimb::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddEnemyClimb::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddEnemyClimb::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEnemyClimb::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddEnemyHp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEnemyHp::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddEnemyHp::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddEnemyHp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEnemyHp::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddEnemyRange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEnemyRange::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddEnemyRange::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddEnemyRange::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEnemyRange::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddErosionRequest::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddErosionRequest::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddErosionRequest::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddErosionRequest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddErosionRequest::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddEvaluation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEvaluation::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddEvaluation::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddEvaluation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddEvaluation::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddHiPrioEnemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddHiPrioEnemy::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddHiPrioEnemy::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddHiPrioEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddHiPrioEnemy::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddParty::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddParty::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddParty::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddParty::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddParty::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddPartyAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyAction::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddPartyAction::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddPartyAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyAction::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddPartyHp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyHp::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddPartyHp::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddPartyHp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyHp::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddPartyHpForShift::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyHpForShift::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddPartyHpForShift::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddPartyHpForShift::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyHpForShift::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddPartyOcd::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyOcd::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddPartyOcd::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddPartyOcd::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyOcd::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdAddPartyStamina::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyStamina::DTI)->memAlloc(sz, align, ::cPrioThkCmdAddPartyStamina::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdAddPartyStamina::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyStamina::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdAddPartyStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdAddPartyStatus::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdConCureSpot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConCureSpot::DTI)->memAlloc(sz, align, ::cPrioThkCmdConCureSpot::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdConCureSpot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConCureSpot::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdConEventOmElf::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConEventOmElf::DTI)->memAlloc(sz, align, ::cPrioThkCmdConEventOmElf::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdConEventOmElf::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConEventOmElf::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdConFollowArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConFollowArea::DTI)->memAlloc(sz, align, ::cPrioThkCmdConFollowArea::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdConFollowArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConFollowArea::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdConHealFountain::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConHealFountain::DTI)->memAlloc(sz, align, ::cPrioThkCmdConHealFountain::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdConHealFountain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConHealFountain::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdConHealSpot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConHealSpot::DTI)->memAlloc(sz, align, ::cPrioThkCmdConHealSpot::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdConHealSpot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConHealSpot::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdConSpot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConSpot::DTI)->memAlloc(sz, align, ::cPrioThkCmdConSpot::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdConSpot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConSpot::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdConSpotExt::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConSpotExt::DTI)->memAlloc(sz, align, ::cPrioThkCmdConSpotExt::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdConSpotExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdConSpotExt::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdFilTargetStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdFilTargetStatus::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsAction::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsAction::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsAction::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsAutoSituation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsAutoSituation::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsAutoSituation::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsAutoSituation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsAutoSituation::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsBakuensen::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsBakuensen::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsBakuensen::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsBakuensen::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsBakuensen::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsBase::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsBase::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsBase::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsBattle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsBattle::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsBattle::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsBattle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsBattle::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsBattleAct::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsBattleAct::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsBattleAct::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsBattleAct::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsBattleAct::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsCanErosionRescue::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsCanErosionRescue::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsCanErosionRescue::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsCanErosionRescue::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsCanErosionRescue::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsCanSetEmotion::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsCanSetEmotion::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsCanSetEmotion::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsCanSetEmotion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsCanSetEmotion::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsDamage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsDamage::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsDamage::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsDamage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsDamage::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsDanger::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsDanger::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsDanger::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsDanger::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsDanger::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsEnableArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsEnableArea::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsEnableArea::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsEnableArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsEnableArea::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsEvaluation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsEvaluation::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsEvaluation::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsEvaluation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsEvaluation::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsFollowEnable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsFollowEnable::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsFollowEnable::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsFollowEnable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsFollowEnable::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsGuardBit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsGuardBit::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsGuardBit::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsGuardBit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsGuardBit::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsHp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsHp::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsHp::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsHp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsHp::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsImpactForce::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsImpactForce::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsImpactForce::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsImpactForce::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsImpactForce::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsLanternOff::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsLanternOff::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsLanternOff::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsLanternOff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsLanternOff::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsLanternOn::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsLanternOn::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsLanternOn::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsLanternOn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsLanternOn::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsMasterDead::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsMasterDead::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsMasterDead::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsMasterDead::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsMasterDead::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsNotice::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsNotice::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsNotice::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsNotice::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsNotice::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdIsOrder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsOrder::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdIsOtherFlag::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsOtherFlag::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsPartyJob::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsPartyJob::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsPartyJob::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsPartyJob::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsPartyJob::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsReleaseAlchemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsReleaseAlchemy::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsReleaseAlchemy::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsReleaseAlchemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsReleaseAlchemy::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsReload::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsReload::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsReload::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsReload::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsReload::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsShl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsShl::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsShl::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsShl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsShl::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsStageNo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStageNo::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsStageNo::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsStageNo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStageNo::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsStageType::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStageType::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsStageType::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsStageType::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStageType::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsStamina::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStamina::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsStamina::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsStamina::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStamina::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsStandOffTime::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStandOffTime::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsStandOffTime::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsStandOffTime::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStandOffTime::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdIsStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStatus::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsStatusCounter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStatusCounter::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsStatusCounter::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsStatusCounter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStatusCounter::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsStatusEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStatusEx::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsStatusEx::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsStatusEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsStatusEx::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsTalkWithPl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsTalkWithPl::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsTalkWithPl::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsTalkWithPl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsTalkWithPl::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdIsTarget::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsTarget::DTI)->memAlloc(sz, align, ::cPrioThkCmdIsTarget::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdIsTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdIsTarget::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdRetActGoldBurst::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetActGoldBurst::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdRetActGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetActGroup::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdRetActInter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetActInter::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCmdRetActInterTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetActInterTarget::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetCureAct::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetCureAct::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetCureAct::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetCureAct::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetCureAct::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetDispersion::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetDispersion::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetDispersion::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetDispersion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetDispersion::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetEnemyTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetEnemyTable::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetEnemyTable::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetEnemyTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetEnemyTable::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetFollow::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetFollow::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetFollow::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetFollow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetFollow::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetFreeParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetFreeParam::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetFreeParam::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetFreeParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetFreeParam::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetGoto::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetGoto::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetGoto::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetGoto::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetGoto::DTI)->memFree(p_addr);
+}
+
+inline cPrioThkCmdRetGoto::cPrioThkCmdRetGoto() {
+    this->mReqTargetType = 2;
+    this->mReqTargetRealPos.x = ::MtVector3::Zero.x;
+    this->mReqTargetRealPos.y = ::MtVector3::Zero.y;
+    this->mReqTargetRealPos.z = ::MtVector3::Zero.z;
+    this->mReqTargetRealPos.pad_ = 0.0f;
+    this->mReqTargetRange = 100.0f;
+    this->mReqMoveType = 0;
+}
+
+inline void cPrioThkCmdRetHealAct::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetHealAct::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetNoMoveJump::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetNoMoveJump::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetNoMoveJump::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetNoMoveJump::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetNoMoveJump::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetOrder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetOrder::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetOrder::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetOrder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetOrder::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetRouteInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetRouteInfo::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetRouteInfo::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetRouteInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetRouteInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetStaminaHealAct::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetStaminaHealAct::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetStaminaHealAct::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetStaminaHealAct::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetStaminaHealAct::DTI)->memFree(p_addr);
+}
+
+inline void* cPrioThkCmdRetSupport::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetSupport::DTI)->memAlloc(sz, align, ::cPrioThkCmdRetSupport::DTI.::MtDTI::getID());
+}
+
+inline void cPrioThkCmdRetSupport::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCmdRetSupport::DTI)->memFree(p_addr);
+}
+
+inline void cPrioThkCode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPrioThkCode::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cPrioThkIO::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cPrioThkIO::DTI);
+}
+
+inline void* rPriorityThink::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPriorityThink::DTI)->memAlloc(sz, align, ::rPriorityThink::DTI.::MtDTI::getID());
+}
+
+inline void rPriorityThink::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPriorityThink::DTI)->memFree(p_addr);
 }

@@ -779,3 +779,15 @@ inline u32 rEffect2D::getListNum() const {
 inline u32 rEffect2D::getResourceSize() const {
     return (this->mParamBuffSize + (this->mResourceInfoNum * 48u)) + 208u;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rEffect2D::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffect2D::DTI)->memAlloc(sz, align, ::rEffect2D::DTI.::MtDTI::mID);
+}
+
+inline void rEffect2D::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffect2D::DTI)->memFree(p_addr);
+}

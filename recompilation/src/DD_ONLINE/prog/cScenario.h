@@ -20,11 +20,6 @@ class cAreaHit;
 class cScenarioData;
 class uDDOModel;
 
-// Declarations
-class cScenario;
-class cScenarioArg;
-class cScenarioParam;
-
 enum SCENARIO_ACTION_RETURN
 {
     SCENARIO_ACTION_RETURN_CONTINUE = 0,
@@ -67,6 +62,11 @@ enum SCENARIO_TASK_ENUM
     SCENARIO_TASK_MAX = 4,
     SCENARIO_TASK_ERROR = 5,
 };
+
+// Declarations
+class cScenario;
+class cScenarioArg;
+class cScenarioParam;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -322,4 +322,28 @@ inline u32 cScenarioParam::getDetectAttr() {
 
 inline void cScenarioParam::setDetectAttr(u32 d) {
     this->mDetectAttr = 1;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cScenario::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cScenario::DTI);
+}
+
+inline void cScenario::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cScenario::DTI)->memFree(p_addr);
+}
+
+inline void cScenarioArg::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cScenarioArg::DTI)->memFree(p_addr);
+}
+
+inline void* cScenarioParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cScenarioParam::DTI)->memAlloc(sz, align, ::cScenarioParam::DTI.::MtDTI::getID());
+}
+
+inline void cScenarioParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cScenarioParam::DTI)->memFree(p_addr);
 }

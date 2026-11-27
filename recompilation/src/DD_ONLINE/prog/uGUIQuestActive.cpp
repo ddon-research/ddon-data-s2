@@ -67,16 +67,8 @@ const MtDTI& uGUIQuestActive::getDTI() const {
     return uGUIQuestActive::DTI;
 }
 
-inline MtAllocator* uGUIQuestActive::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIQuestActive::DTI);
-}
-
 void* uGUIQuestActive::operator new(size_t sz, u32 align) {
     return uGUIQuestActive::getAllocator()->memAlloc(sz, align, uGUIQuestActive::DTI.getID());
-}
-
-inline void uGUIQuestActive::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestActive::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUIQuestActive::instTitleSetupAsQuestName(uGUIQuestActive::InstTitle& instTitle, cGUIInstNull* pINST_Null_quest, u32 instanceId) {

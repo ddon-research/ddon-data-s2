@@ -26,10 +26,6 @@ const MtDTI& nNetwork::nSharedMemory2::CConsistentHash::getDTI() const {
     return nNetwork::nSharedMemory2::CConsistentHash::DTI;
 }
 
-inline void nNetwork::nSharedMemory2::CConsistentHash::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CConsistentHash::DTI)->memFree(p_addr);
-}
-
 nNetwork::nSharedMemory2::CConsistentHash::~CConsistentHash() {
     DDON_STUB("nNetwork::nSharedMemory2::CConsistentHash::~CConsistentHash")
     /* stub */
@@ -53,10 +49,6 @@ const MtDTI& nNetwork::nSharedMemory2::CNode::getDTI() const {
     return nNetwork::nSharedMemory2::CNode::DTI;
 }
 
-inline void nNetwork::nSharedMemory2::CNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CNode::DTI)->memFree(p_addr);
-}
-
 inline nNetwork::nSharedMemory2::CNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nNetwork::nSharedMemory2::CNode::MyDTI nNetwork::nSharedMemory2::CNode::DTI("nNetwork::nSharedMemory2::CNode", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -68,14 +60,6 @@ __attribute__((weak)) MtObject* nNetwork::nSharedMemory2::CNode::MyDTI::newInsta
 
 const MtDTI& nNetwork::nSharedMemory2::CProtocol::getDTI() const {
     return nNetwork::nSharedMemory2::CProtocol::DTI;
-}
-
-inline void* nNetwork::nSharedMemory2::CProtocol::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CProtocol::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::CProtocol::DTI.mID);
-}
-
-inline void nNetwork::nSharedMemory2::CProtocol::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CProtocol::DTI)->memFree(p_addr);
 }
 
 void nNetwork::nSharedMemory2::CProtocol::get(s32 src_index, const void* data, u32 data_size) {
@@ -100,10 +84,6 @@ const MtDTI& nNetwork::nSharedMemory2::CRecord::getDTI() const {
     return nNetwork::nSharedMemory2::CRecord::DTI;
 }
 
-inline void* nNetwork::nSharedMemory2::CRecord::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CRecord::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::CRecord::DTI.mID);
-}
-
 inline nNetwork::nSharedMemory2::CRecord::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 nNetwork::nSharedMemory2::CRecord::MyDTI nNetwork::nSharedMemory2::CRecord::DTI("nNetwork::nSharedMemory2::CRecord", &::MtObject::DTI, 32ul, 0u, 0u);
@@ -112,9 +92,42 @@ MtObject* nNetwork::nSharedMemory2::CRecord::MyDTI::newInstance() const {
     return new (16u) ::nNetwork::nSharedMemory2::CRecord;
 }
 
-__attribute__((weak)) void nNetwork::nSharedMemory2::CSessionListener::onLeaveMember(s32 index, MtNetSession::Member* member) {
-    DDON_STUB("nNetwork::nSharedMemory2::CSessionListener::onLeaveMember")
-    /* stub */
+void nNetwork::nSharedMemory2::CSessionListener::onLeaveMember(s32 index, MtNetSession::Member* member) {
+    if (mpParent->mRecordMap.mListNum != 0) {
+        unsigned int i0_3 = 0;
+        nNetwork::nSharedMemory2::Object* v0_5 = mpParent;
+        const MtDTI* v1_0;
+        for (;;) {
+            MtObject* v1_9 = v0_5->mRecordMap.at(i0_3);
+            const MtDTI& t0 = v1_9->getDTI();
+            MT_CTSTR v1_1 = ::nNetwork::nSharedMemory2::CRecord::DTI.mName;
+            v1_0 = &t0;
+            for (;;) {
+                if (v1_1 != v1_0->mName) {
+                    if (v1_0->mpParent != nullptr) {
+                        v1_0 = v1_0->mpParent;
+                    } else {
+                        break;
+                    }
+                } else {
+                    if (v1_9 != nullptr) {
+                        nNetwork::nSharedMemory2::CRecord* pRecord = static_cast<nNetwork::nSharedMemory2::CRecord*>(v1_9);
+                        if (pRecord->mLock == index) {
+                            pRecord->mLock = -1;
+                            mpParent->checkReqLockList();
+                        }
+                    }
+                    break;
+                }
+            }
+            if ((i0_3 + 1u) < mpParent->mRecordMap.mListNum) {
+                i0_3 += 1u;
+                v0_5 = mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void nNetwork::nSharedMemory2::CSessionListener::onHostMemberChange(s32 index, MtNetSession::Member* member) {
@@ -128,10 +141,6 @@ const MtDTI& nNetwork::nSharedMemory2::Object::getDTI() const {
 
 void* nNetwork::nSharedMemory2::Object::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::Object::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::Object::DTI.mID);
-}
-
-inline void nNetwork::nSharedMemory2::Object::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::Object::DTI)->memFree(p_addr);
 }
 
 nNetwork::nSharedMemory2::Object::Object() {

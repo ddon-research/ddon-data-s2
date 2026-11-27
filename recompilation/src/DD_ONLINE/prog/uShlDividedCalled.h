@@ -160,3 +160,31 @@ inline void* uShlDividedCalled::operator new(size_t sz, void* p_addr) {
 inline uShlDividedCalled::uShlDividedCalled() {
     this->mDivideValue = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamDividedCalled::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamDividedCalled::DTI)->memAlloc(sz, align, ::cShlParamDividedCalled::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamDividedCalled::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamDividedCalled::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamDividedCalled::cDividedCalledParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamDividedCalled::cDividedCalledParam::DTI)->memAlloc(sz, align, ::cShlParamDividedCalled::cDividedCalledParam::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamDividedCalled::cDividedCalledParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamDividedCalled::cDividedCalledParam::DTI)->memFree(p_addr);
+}
+
+inline void* uShlDividedCalled::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlDividedCalled::DTI)->memAlloc(sz, align, ::uShlDividedCalled::DTI.::MtDTI::getID());
+}
+
+inline void uShlDividedCalled::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlDividedCalled::DTI)->memFree(p_addr);
+}

@@ -2,9 +2,7 @@
 #include <new>
 #include "uControlEnemy.h"
 #include "Protocol/PacketData/Enemy.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "cContext.h"
@@ -22,10 +20,6 @@
 
 const MtDTI& uControlEnemy::getDTI() const {
     return uControlEnemy::DTI;
-}
-
-inline void* uControlEnemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uControlEnemy::DTI)->memAlloc(sz, align, uControlEnemy::DTI.getID());
 }
 
 uControlEnemy::~uControlEnemy() {

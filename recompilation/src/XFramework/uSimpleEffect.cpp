@@ -33,10 +33,6 @@ void* uSimpleEffect::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uSimpleEffect::DTI)->memAlloc(sz, align, uSimpleEffect::DTI.mID);
 }
 
-inline void uSimpleEffect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSimpleEffect::DTI)->memFree(p_addr);
-}
-
 uSimpleEffect::uSimpleEffect() {
     mpVertices = nullptr;
     mParticleNum = 0;
@@ -118,9 +114,18 @@ MtUI* uSimpleEffect::createUI(MtProperty& prop) {
     return this->uBaseEffect::createUI(prop);
 }
 
-__attribute__((weak)) void uSimpleEffect::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uSimpleEffect::applyWorldOffset")
-    /* stub */
+void uSimpleEffect::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uBaseEffect::applyWorldOffset(offset, MtVector3::Zero);
+    for (Particle* pParticle = mpParticle;;) {
+        if (pParticle == nullptr) {
+            break;
+        } else {
+            pParticle->mPos.x = offset.x + pParticle->mPos.x;
+            pParticle->mPos.y = offset.y + pParticle->mPos.y;
+            pParticle->mPos.z = offset.z + pParticle->mPos.z;
+            pParticle = pParticle->mpNext;
+        }
+    }
 }
 
 void uSimpleEffect::setEffectList(rEffectList* pEffectList) {
@@ -258,9 +263,5 @@ MtObject* uSimpleEffect::MyDTI::newInstance() const {
 }
 
 uSimpleEffect::Particle::~Particle() {
-}
-
-inline void uSimpleEffect::Particle::operator delete(void* pObj) {
-    MtMemoryAllocator::getAllocator(uSimpleEffect::DTI)->memFree(pObj);
 }
 

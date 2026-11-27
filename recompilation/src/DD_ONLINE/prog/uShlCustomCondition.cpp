@@ -103,10 +103,6 @@ const MtDTI& uShlCustomConditionBase::getDTI() const {
     return uShlCustomConditionBase::DTI;
 }
 
-inline void uShlCustomConditionBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlCustomConditionBase::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uShlCustomConditionBase::initSub() {
     DDON_STUB("uShlCustomConditionBase::initSub")
     /* stub */
@@ -119,10 +115,6 @@ __attribute__((weak)) MtObject* uShlCustomConditionBase::MyDTI::newInstance() co
 
 const MtDTI& uShlCustomConditionFollowMove::getDTI() const {
     return uShlCustomConditionFollowMove::DTI;
-}
-
-inline void uShlCustomConditionFollowMove::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlCustomConditionFollowMove::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uShlCustomConditionFollowMove::initSub() {

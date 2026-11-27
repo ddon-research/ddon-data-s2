@@ -21,10 +21,6 @@ void* cPrimTagList::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cPrimTagList::DTI)->memAlloc(sz, align, cPrimTagList::DTI.mID);
 }
 
-inline void cPrimTagList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrimTagList::DTI)->memFree(p_addr);
-}
-
 cPrimTagList::cPrimTagList() {
     mCurrentStack = 0;
     mTagSize = 0;

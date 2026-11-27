@@ -89,3 +89,26 @@ public:
 inline void* cHitInfoAfterLocal::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cHitInfoAfterLocal::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cHitInfoAfterLocal::DTI);
+}
+
+inline void* cHitInfoAfterLocal::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHitInfoAfterLocal::DTI)->memAlloc(sz, align, ::cHitInfoAfterLocal::DTI.::MtDTI::getID());
+}
+
+inline cHitInfoAfterLocal::cHitInfoAfterLocal() {
+    this->mHitPos.x = ::MtVector3::Zero.x;
+    this->mHitPos.y = ::MtVector3::Zero.y;
+    this->mHitPos.z = ::MtVector3::Zero.z;
+    this->mHitStopFlag = 0;
+    this->mIsForceHitStop = false;
+    this->mHitPos.pad_ = 0.0f;
+    this->mpShlAtkPtr = nullptr;
+    this->mHitStopTime = 0.0f;
+}

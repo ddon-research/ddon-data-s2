@@ -194,3 +194,15 @@ inline f32 cpChargeCtrl::getCharge(u8 level) const {
 inline u8 cpChargeCtrl::getMaxChargeLevel() const {
     return this->mMaxChargeLevel;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpChargeCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpChargeCtrl::DTI);
+}
+
+inline void cpChargeCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpChargeCtrl::DTI)->memFree(p_addr);
+}

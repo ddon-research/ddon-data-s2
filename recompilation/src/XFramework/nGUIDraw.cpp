@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nGUIDraw.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
@@ -20,10 +19,6 @@
 
 const MtDTI& nGUI::Draw::getDTI() const {
     return nGUI::Draw::DTI;
-}
-
-inline void nGUI::Draw::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nGUI::Draw::DTI)->memFree(p_addr);
 }
 
 nGUI::Draw::Draw(cDraw* pDraw, bool _3d) {

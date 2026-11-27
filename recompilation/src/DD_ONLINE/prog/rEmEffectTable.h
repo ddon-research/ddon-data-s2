@@ -153,3 +153,28 @@ inline bool rEmEffectTable::saveData(MtDataWriter& out) {
     }
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+
+inline void* cEmEffectTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmEffectTable::DTI)->memAlloc(sz, align, ::cEmEffectTable::DTI.::MtDTI::getID());
+}
+
+inline void cEmEffectTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmEffectTable::DTI)->memFree(p_addr);
+}
+
+inline void* rEmEffectTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmEffectTable::DTI)->memAlloc(sz, align, ::rEmEffectTable::DTI.::MtDTI::getID());
+}
+
+inline void rEmEffectTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmEffectTable::DTI)->memFree(p_addr);
+}
+
+inline rEmEffectTable::rEmEffectTable() {
+    this->::cResource::setAttribute(16u);
+}

@@ -13,13 +13,6 @@ class uGUIBase;
 class uGUIItemBase01;
 class uGUIPopDetail01;
 
-// Declarations
-namespace nCharacterData { struct stCharacterName; }
-namespace nCharacterData { struct stChatCstmCh; }
-namespace nCharacterData { struct stEquipData; }
-namespace nCharacterData { struct stItemParam; }
-namespace nCharacterData { struct stMessageSet; }
-
 namespace nCharacterData {
     enum ARROW_EQUIP
     {
@@ -136,6 +129,13 @@ namespace nCharacterData {
         MESSAGE_LINK_MAX = 16,
     };
 }  // namespace nCharacterData
+
+// Declarations
+namespace nCharacterData { struct stCharacterName; }
+namespace nCharacterData { struct stChatCstmCh; }
+namespace nCharacterData { struct stEquipData; }
+namespace nCharacterData { struct stItemParam; }
+namespace nCharacterData { struct stMessageSet; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;

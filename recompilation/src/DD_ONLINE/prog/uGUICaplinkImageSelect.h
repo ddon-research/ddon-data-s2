@@ -209,3 +209,15 @@ inline void uGUICaplinkImageSelect::cancel() {
 
 inline uGUICaplinkImageSelect::stVariable::stVariable() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkImageSelect::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkImageSelect::DTI);
+}
+
+inline void uGUICaplinkImageSelect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkImageSelect::DTI)->memFree(p_addr);
+}

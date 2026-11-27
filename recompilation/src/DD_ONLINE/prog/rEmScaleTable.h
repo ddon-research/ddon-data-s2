@@ -126,3 +126,19 @@ inline void cEmScaleTable::operator delete[](void* p_addr) {
 inline void* cEmScaleTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmScaleTable::DTI)->memAlloc(sz, align, ::cEmScaleTable::DTI.::MtDTI::getID());
 }
+
+inline void* cEmScaleTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmScaleTable::DTI)->memAlloc(sz, align, ::cEmScaleTable::DTI.::MtDTI::getID());
+}
+
+inline void cEmScaleTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmScaleTable::DTI)->memFree(p_addr);
+}
+
+inline void* rEmScaleTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmScaleTable::DTI)->memAlloc(sz, align, ::rEmScaleTable::DTI.::MtDTI::getID());
+}
+
+inline void rEmScaleTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmScaleTable::DTI)->memFree(p_addr);
+}

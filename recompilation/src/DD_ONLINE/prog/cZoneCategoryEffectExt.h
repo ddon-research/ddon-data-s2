@@ -462,3 +462,59 @@ inline void* cZCEffectControl::operator new(size_t sz, void* p_addr) {
 
 inline cZCEffectControl::cZCEffectControl() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cZCEFLControl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZCEFLControl::DTI)->memAlloc(sz, align, ::cZCEFLControl::DTI.::MtDTI::getID());
+}
+
+inline void cZCEFLControl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEFLControl::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cZCEFLControl::cResourceSet::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cZCEFLControl::cResourceSet::DTI);
+}
+
+inline void cZCEFLControl::cResourceSet::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEFLControl::cResourceSet::DTI)->memFree(p_addr);
+}
+
+inline void cZCEffectColorControl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEffectColorControl::DTI)->memFree(p_addr);
+}
+
+inline void cZCEffectColorControlBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEffectColorControlBase::DTI)->memFree(p_addr);
+}
+
+inline void cZCEffectColorControlColorOff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEffectColorControlColorOff::DTI)->memFree(p_addr);
+}
+
+inline void cZCEffectColorControlDayOff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEffectColorControlDayOff::DTI)->memFree(p_addr);
+}
+
+inline void cZCEffectColorControlDisregard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEffectColorControlDisregard::DTI)->memFree(p_addr);
+}
+
+inline void cZCEffectColorControlNightOff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEffectColorControlNightOff::DTI)->memFree(p_addr);
+}
+
+inline void cZCEffectColorControlWater::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEffectColorControlWater::DTI)->memFree(p_addr);
+}
+
+inline void* cZCEffectControl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZCEffectControl::DTI)->memAlloc(sz, align, ::cZCEffectControl::DTI.::MtDTI::getID());
+}
+
+inline void cZCEffectControl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZCEffectControl::DTI)->memFree(p_addr);
+}

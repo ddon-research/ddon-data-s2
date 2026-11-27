@@ -39,6 +39,8 @@
 #include "cpOcdCtrl.h"
 #include "cpPathFinding.h"
 #include "cpPawnThink.h"
+#include "cpReturnTerritory.h"
+#include "cpRootComponent.h"
 #include "cpScrCollision.h"
 #include "cpShlShotCtrl.h"
 #include "nDDOUtility.h"
@@ -74,10 +76,6 @@
 
 const MtDTI& uHumanEnemy::getDTI() const {
     return uHumanEnemy::DTI;
-}
-
-inline void uHumanEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uHumanEnemy::DTI)->memFree(p_addr);
 }
 
 uHumanEnemy::~uHumanEnemy() {
@@ -245,9 +243,9 @@ __attribute__((weak)) void uHumanEnemy::createComponent() {
     /* stub */
 }
 
-__attribute__((weak)) void uHumanEnemy::setupComponentPtr() {
-    DDON_STUB("uHumanEnemy::setupComponentPtr")
-    /* stub */
+void uHumanEnemy::setupComponentPtr() {
+    this->uHuman::setupComponentPtr();
+    mpErosionEnemySmall = static_cast<cpErosionEnemySmall*>(mComponentMgr.getRootComponent()->find(cpErosionEnemySmall::DTI, true, true));
 }
 
 __attribute__((weak)) void uHumanEnemy::setHumanEnemyParam() {

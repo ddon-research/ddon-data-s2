@@ -18,10 +18,6 @@ const MtDTI& CDataDispelBaseItem::getDTI() const {
     return CDataDispelBaseItem::DTI;
 }
 
-inline MtAllocator* CDataDispelBaseItem::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelBaseItem::DTI);
-}
-
 void* CDataDispelBaseItem::operator new(size_t sz, u32 align) {
     return CDataDispelBaseItem::getAllocator()->memAlloc(sz, align, CDataDispelBaseItem::DTI.getID());
 }
@@ -41,10 +37,6 @@ __attribute__((weak)) MtObject* CDataDispelBaseItem::MyDTI::newInstance() const 
 
 const MtDTI& CDataDispelBaseItemData::getDTI() const {
     return CDataDispelBaseItemData::DTI;
-}
-
-inline MtAllocator* CDataDispelBaseItemData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelBaseItemData::DTI);
 }
 
 void* CDataDispelBaseItemData::operator new(size_t sz, u32 align) {
@@ -67,10 +59,6 @@ const MtDTI& CDataDispelCategoryInfo::getDTI() const {
     return CDataDispelCategoryInfo::DTI;
 }
 
-inline MtAllocator* CDataDispelCategoryInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelCategoryInfo::DTI);
-}
-
 void* CDataDispelCategoryInfo::operator new(size_t sz, u32 align) {
     return CDataDispelCategoryInfo::getAllocator()->memAlloc(sz, align, CDataDispelCategoryInfo::DTI.getID());
 }
@@ -89,10 +77,6 @@ MtObject* CDataDispelCategoryInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataDispelLotColor::getDTI() const {
     return CDataDispelLotColor::DTI;
-}
-
-inline MtAllocator* CDataDispelLotColor::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelLotColor::DTI);
 }
 
 void* CDataDispelLotColor::operator new(size_t sz, u32 align) {
@@ -115,10 +99,6 @@ const MtDTI& CDataDispelLotCrest::getDTI() const {
     return CDataDispelLotCrest::DTI;
 }
 
-inline MtAllocator* CDataDispelLotCrest::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelLotCrest::DTI);
-}
-
 void* CDataDispelLotCrest::operator new(size_t sz, u32 align) {
     return CDataDispelLotCrest::getAllocator()->memAlloc(sz, align, CDataDispelLotCrest::DTI.getID());
 }
@@ -137,10 +117,6 @@ MtObject* CDataDispelLotCrest::MyDTI::newInstance() const {
 
 const MtDTI& CDataDispelLotData::getDTI() const {
     return CDataDispelLotData::DTI;
-}
-
-inline MtAllocator* CDataDispelLotData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelLotData::DTI);
 }
 
 void* CDataDispelLotData::operator new(size_t sz, u32 align) {
@@ -163,14 +139,6 @@ const MtDTI& CDataDispelLotItem::getDTI() const {
     return CDataDispelLotItem::DTI;
 }
 
-inline MtAllocator* CDataDispelLotItem::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelLotItem::DTI);
-}
-
-inline void* CDataDispelLotItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataDispelLotItem::DTI)->memAlloc(sz, align, CDataDispelLotItem::DTI.getID());
-}
-
 __attribute__((weak)) void CDataDispelLotItem::operator delete(void* p_addr) {
     CDataDispelLotItem::getAllocator()->memFree(p_addr);
 }
@@ -185,10 +153,6 @@ MtObject* CDataDispelLotItem::MyDTI::newInstance() const {
 
 const MtDTI& CDataDispelLotPlus::getDTI() const {
     return CDataDispelLotPlus::DTI;
-}
-
-inline MtAllocator* CDataDispelLotPlus::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelLotPlus::DTI);
 }
 
 void* CDataDispelLotPlus::operator new(size_t sz, u32 align) {
@@ -209,10 +173,6 @@ MtObject* CDataDispelLotPlus::MyDTI::newInstance() const {
 
 const MtDTI& CDataDispelResultInfo::getDTI() const {
     return CDataDispelResultInfo::DTI;
-}
-
-inline MtAllocator* CDataDispelResultInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDispelResultInfo::DTI);
 }
 
 void* CDataDispelResultInfo::operator new(size_t sz, u32 align) {

@@ -187,10 +187,6 @@ void* cUnit::cHardwareDispCtrl::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cUnit::cHardwareDispCtrl::DTI)->memAlloc(sz, align, cUnit::cHardwareDispCtrl::DTI.mID);
 }
 
-inline void cUnit::cHardwareDispCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cUnit::cHardwareDispCtrl::DTI)->memFree(p_addr);
-}
-
 void cUnit::cHardwareDispCtrl::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mFlag", &mFlag, 0u, 0u);
 }

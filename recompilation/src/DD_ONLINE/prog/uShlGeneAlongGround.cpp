@@ -25,14 +25,6 @@ const MtDTI& cShlParamGeneAlongGround::getDTI() const {
     return cShlParamGeneAlongGround::DTI;
 }
 
-inline void* cShlParamGeneAlongGround::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamGeneAlongGround::DTI)->memAlloc(sz, align, cShlParamGeneAlongGround::DTI.getID());
-}
-
-inline void cShlParamGeneAlongGround::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamGeneAlongGround::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamGeneAlongGround::getShlDTI() const {
     return uShlGeneAlongGround::DTI;
 }
@@ -67,21 +59,6 @@ const MtDTI& uShlGeneAlongGround::getDTI() const {
     return uShlGeneAlongGround::DTI;
 }
 
-inline void* uShlGeneAlongGround::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlGeneAlongGround::DTI)->memAlloc(sz, align, uShlGeneAlongGround::DTI.getID());
-}
-
-inline void uShlGeneAlongGround::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlGeneAlongGround::DTI)->memFree(p_addr);
-}
-
-inline uShlGeneAlongGround::uShlGeneAlongGround() {
-    mLastGeneratPos.x = MtVector3::Zero.x;
-    mLastGeneratPos.y = MtVector3::Zero.y;
-    mLastGeneratPos.z = MtVector3::Zero.z;
-    mLastGeneratPos.pad_ = 0.0f;
-}
-
 uShlGeneAlongGround::~uShlGeneAlongGround() {
 }
 
@@ -90,9 +67,11 @@ void uShlGeneAlongGround::setup() {
     mLastGeneratPos = mPos;
 }
 
-__attribute__((weak)) void uShlGeneAlongGround::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlGeneAlongGround::applyWorldOffset")
-    /* stub */
+void uShlGeneAlongGround::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlBase::applyWorldOffset(offset, absolute_offset);
+    mLastGeneratPos.x = offset.x + mLastGeneratPos.x;
+    mLastGeneratPos.y = offset.y + mLastGeneratPos.y;
+    mLastGeneratPos.z = offset.z + mLastGeneratPos.z;
 }
 
 __attribute__((weak)) void uShlGeneAlongGround::setShl(u32 shlNo, const MtVector3& offset, f32 degX, f32 degY) {

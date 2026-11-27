@@ -52,11 +52,15 @@
 #include "../../XFramework/sUnit.h"
 #include "sUnitExt.h"
 #include "sWeatherManager.h"
+#include "sZoneStatus.h"
 #include "sZoneUnitCtrl.h"
 #include "../../XFramework/uCoord.h"
+#include "uLightExt.h"
 #include "uPlayer.h"
 #include "../../XFramework/uScheduler.h"
+#include "uScrModel.h"
 #include "../../XFramework/uScrollCollisionGeometry.h"
+#include "uSkyWaterModel.h"
 #include "uSoundGenerator.h"
 #include "uSoundOcclusion.h"
 #include "uSoundTrigger.h"
@@ -68,16 +72,8 @@ const MtDTI& uStagePartsCtrl::getDTI() const {
     return uStagePartsCtrl::DTI;
 }
 
-inline MtAllocator* uStagePartsCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uStagePartsCtrl::DTI);
-}
-
 void* uStagePartsCtrl::operator new(size_t sz, u32 align) {
     return uStagePartsCtrl::getAllocator()->memAlloc(sz, align, uStagePartsCtrl::DTI.getID());
-}
-
-inline void uStagePartsCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uStagePartsCtrl::DTI)->memFree(p_addr);
 }
 
 uStagePartsCtrl::uStagePartsCtrl() {
@@ -448,18 +444,6 @@ __attribute__((weak)) void uStagePartsCtrl::uStageCustomCtrlSetup() {
     /* stub */
 }
 
-inline void uStagePartsCtrl::uStageCustomCtrlKill() {
-    if (mpOccluder == nullptr) {
-        return;
-    }
-    static_cast<sOccluderEx*>(sOccluder::mpInstance)->partsFinal();
-    if (mpOccluder == nullptr) {
-        return;
-    }
-    mpOccluder->release();
-    mpOccluder = nullptr;
-}
-
 __attribute__((weak)) void uStagePartsCtrl::uStageCustomCtrlSetBlockArcLoad(s32 stageNo, const MtVector3& plPos) {
     DDON_STUB("uStagePartsCtrl::uStageCustomCtrlSetBlockArcLoad")
     /* stub */
@@ -503,10 +487,6 @@ const MtDTI& uStagePartsMdl::getDTI() const {
     return uStagePartsMdl::DTI;
 }
 
-inline void uStagePartsMdl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uStagePartsMdl::DTI)->memFree(p_addr);
-}
-
 uStagePartsMdl::~uStagePartsMdl() {
 }
 
@@ -520,9 +500,111 @@ __attribute__((weak)) void uStagePartsMdl::move() {
     /* stub */
 }
 
-__attribute__((weak)) void uStagePartsMdl::kill() {
-    DDON_STUB("uStagePartsMdl::kill")
-    /* stub */
+void uStagePartsMdl::kill() {
+    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) >> 8) & 32u) == 0) {
+        if ((mBeFlag - 1u) <= 1u) {
+            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16) = ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 16)) & 0xFFFFFFF8u) | 3u;
+        }
+    }
+    if (mScrSbcHandle[0] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mScrSbcHandle[0]);
+        mScrSbcHandle[0] = 0xFFFFFFFF;
+    }
+    if (mEffSbcHandle[0] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mEffSbcHandle[0]);
+        mEffSbcHandle[0] = 0xFFFFFFFF;
+    }
+    if (mScrSbcHandle[1] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mScrSbcHandle[1]);
+        mScrSbcHandle[1] = 0xFFFFFFFF;
+    }
+    if (mEffSbcHandle[1] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mEffSbcHandle[1]);
+        mEffSbcHandle[1] = 0xFFFFFFFF;
+    }
+    if (mScrSbcHandle[2] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mScrSbcHandle[2]);
+        mScrSbcHandle[2] = 0xFFFFFFFF;
+    }
+    if (mEffSbcHandle[2] != 0xFFFFFFFFu) {
+        sCollision::getInstance()->reserveUnregistResource(mEffSbcHandle[2]);
+        mEffSbcHandle[2] = 0xFFFFFFFF;
+    }
+    static_cast<sAIExt*>(sAI::getInstance())->resetNavigationMesh(static_cast<void*>(this), mNavMeshSetHandle);
+    mNavMeshSetHandle = -1;
+    if (mpNaviMesh != nullptr) {
+        mpNaviMesh->release();
+        mpNaviMesh = nullptr;
+    }
+    if (mpSdlRsrc != nullptr) {
+        mpSdlRsrc->release();
+        mpSdlRsrc = nullptr;
+    }
+    if (mpScrSchdl != nullptr) {
+        mpScrSchdl->kill();
+        mpScrSchdl = nullptr;
+    }
+    if (mpLightSdlRsrc != nullptr) {
+        mpLightSdlRsrc->release();
+        mpLightSdlRsrc = nullptr;
+    }
+    if (mpLightSchdl != nullptr) {
+        mpLightSchdl->kill();
+        mpLightSchdl = nullptr;
+    }
+    static_cast<sSoundExt*>(sSound::getInstance())->releaseBgmSplitAreaResource(reinterpret_cast<uintptr>(this));
+    mStageEpvCtrl.releaseEpvCtrl();
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    if (mArcTicket != t0) {
+        sArchiveManager::getInstance()->returnTicket(mArcTicket);
+        mArcTicket = t0;
+    }
+    static_cast<sEffectExt*>(sEffect::getInstance())->releaseEfcZone(mEfcColorHandle, 0u);
+    u32 v13_9 = cZoneLayout::INVALID_HANDLE;
+    mEfcColorHandle = v13_9;
+    static_cast<sEffectExt*>(sEffect::getInstance())->releaseEfcZone(mEfcCtrlHandle, 2u);
+    static_cast<sEffectExt*>(sEffect::getInstance())->eraseZoneEffectProvider(mEfcCtrlHandle);
+    mEfcCtrlHandle = v13_9;
+    if (mpEfcColorZone != nullptr) {
+        mpEfcColorZone->release();
+        mpEfcColorZone = nullptr;
+    }
+    if (mpEfcCtrlZone != nullptr) {
+        mpEfcCtrlZone->release();
+        mpEfcCtrlZone = nullptr;
+    }
+    sWeatherManager::getInstance()->eraseZoneIndoorRes(mIndoorZoneHandle);
+    sWeatherManager::getInstance()->eraseLightZoneRes(mLightAndFogZoneHandle);
+    mLightAndFogZoneHandle = v13_9;
+    sZoneUnitCtrl::getInstance()->eraseZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_OM, mZoneUnitCtrlHandle[0]);
+    mZoneUnitCtrlHandle[0] = v13_9;
+    sZoneUnitCtrl::getInstance()->eraseZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_LIGHT, mZoneUnitCtrlHandle[1]);
+    mZoneUnitCtrlHandle[1] = v13_9;
+    sZoneUnitCtrl::getInstance()->eraseZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE_SCRL, mZoneUnitCtrlHandle[2]);
+    mZoneUnitCtrlHandle[2] = v13_9;
+    sZoneStatus::getInstance()->eraseZoneStatus(mZoneStatusHandle);
+    mZoneStatusHandle = v13_9;
+    if (mpSoundAreaInfo != nullptr) {
+        mpSoundAreaInfo->release();
+        mpSoundAreaInfo = nullptr;
+    }
+    if (mpSoundTrigger != nullptr) {
+        mpSoundTrigger->kill();
+        mpSoundTrigger = nullptr;
+    }
+    if (mpSoundGenerator != nullptr) {
+        mpSoundGenerator->kill();
+        mpSoundGenerator = nullptr;
+    }
+    if (mpSoundOcclusion != nullptr) {
+        mpSoundOcclusion->kill();
+        mpSoundOcclusion = nullptr;
+    }
+    mpGrassReceiver = nullptr;
+    if (mpSbcGeometry != nullptr) {
+        mpSbcGeometry->kill();
+        mpSbcGeometry = nullptr;
+    }
 }
 
 void uStagePartsMdl::updatePtr() {
@@ -588,16 +670,6 @@ void uStagePartsMdl::setCollisionType() {
         mpSbcGeometry = nullptr;
     }
     mIsSetResource = true;
-}
-
-inline void uStagePartsMdl::releaseNavigationMesh() {
-    static_cast<sAIExt*>(sAI::mpInstance)->resetNavigationMesh(static_cast<void*>(this), mNavMeshSetHandle);
-    mNavMeshSetHandle = -1;
-    if (mpNaviMesh == nullptr) {
-        return;
-    }
-    mpNaviMesh->release();
-    mpNaviMesh = nullptr;
 }
 
 inline uStagePartsMdl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

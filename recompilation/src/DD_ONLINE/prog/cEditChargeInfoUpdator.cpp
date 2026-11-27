@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cEditChargeInfoUpdator.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cNetGameServer.h"
 #include "sItemManager.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cEditChargeInfoUpdator::getDTI() const {
     return cEditChargeInfoUpdator::DTI;
-}
-
-inline void* cEditChargeInfoUpdator::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEditChargeInfoUpdator::DTI)->memAlloc(sz, align, cEditChargeInfoUpdator::DTI.getID());
-}
-
-inline void cEditChargeInfoUpdator::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEditChargeInfoUpdator::DTI)->memFree(p_addr);
 }
 
 cEditChargeInfoUpdator::cEditChargeInfoUpdator() {
@@ -50,11 +40,11 @@ void cEditChargeInfoUpdator::move() {
         }
         case ROUTINE_BUY_WAIT:
         {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 928)) != 4) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 928)) == 3) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[230] != sNetworkExt::NET_STAT_ERROR) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[230] == sNetworkExt::NET_STAT_CANCEL) {
                     mRno = ROUTINE_BUY_ERROR;
                 } else {
-                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 928)) == 2) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[230] == sNetworkExt::NET_STAT_SUCCESS) {
                         mRno = ROUTINE_GET_GP_INIT;
                     }
                 }
@@ -85,7 +75,7 @@ void cEditChargeInfoUpdator::move() {
         }
         case ROUTINE_GET_GP_REQ_WAIT:
         {
-            switch ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()) + 824)) - 1u) {
+            switch (static_cast<unsigned int>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[204] - 1)) {
                 case 0:
                 {
                     break;

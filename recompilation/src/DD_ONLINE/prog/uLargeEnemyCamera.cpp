@@ -5,7 +5,6 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -31,16 +30,8 @@ const MtDTI& uLargeEnemyCamera::getDTI() const {
     return uLargeEnemyCamera::DTI;
 }
 
-inline MtAllocator* uLargeEnemyCamera::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uLargeEnemyCamera::DTI);
-}
-
 void* uLargeEnemyCamera::operator new(size_t sz, u32 align) {
     return uLargeEnemyCamera::getAllocator()->memAlloc(sz, align, uLargeEnemyCamera::DTI.getID());
-}
-
-inline void uLargeEnemyCamera::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uLargeEnemyCamera::DTI)->memFree(p_addr);
 }
 
 uLargeEnemyCamera::uLargeEnemyCamera() {

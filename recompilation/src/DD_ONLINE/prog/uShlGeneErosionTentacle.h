@@ -176,3 +176,31 @@ inline uShlGeneErosionTentacle::uShlGeneErosionTentacle() {
     this->mShlSetFrame = 0.0f;
     this->mShlSetNum = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamGeneErosionTentacle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamGeneErosionTentacle::DTI)->memAlloc(sz, align, ::cShlParamGeneErosionTentacle::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamGeneErosionTentacle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamGeneErosionTentacle::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::DTI)->memAlloc(sz, align, ::cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::DTI)->memFree(p_addr);
+}
+
+inline void* uShlGeneErosionTentacle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlGeneErosionTentacle::DTI)->memAlloc(sz, align, ::uShlGeneErosionTentacle::DTI.::MtDTI::getID());
+}
+
+inline void uShlGeneErosionTentacle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlGeneErosionTentacle::DTI)->memFree(p_addr);
+}

@@ -138,3 +138,19 @@ inline void cSndPitchLimitData::operator delete[](void* p_addr) {
 inline void* cSndPitchLimitData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cSndPitchLimitData::DTI)->memAlloc(sz, align, ::cSndPitchLimitData::DTI.::MtDTI::getID());
 }
+
+inline void* cSndPitchLimitData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSndPitchLimitData::DTI)->memAlloc(sz, align, ::cSndPitchLimitData::DTI.::MtDTI::getID());
+}
+
+inline void cSndPitchLimitData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSndPitchLimitData::DTI)->memFree(p_addr);
+}
+
+inline void* rSndPitchLimit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSndPitchLimit::DTI)->memAlloc(sz, align, ::rSndPitchLimit::DTI.::MtDTI::getID());
+}
+
+inline void rSndPitchLimit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSndPitchLimit::DTI)->memFree(p_addr);
+}

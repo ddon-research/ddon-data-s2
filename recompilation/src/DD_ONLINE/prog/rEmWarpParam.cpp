@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmWarpParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -14,14 +12,6 @@
 
 const MtDTI& cEmWarpParam::getDTI() const {
     return cEmWarpParam::DTI;
-}
-
-inline void* cEmWarpParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmWarpParam::DTI)->memAlloc(sz, align, cEmWarpParam::DTI.getID());
-}
-
-inline void cEmWarpParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmWarpParam::DTI)->memFree(p_addr);
 }
 
 inline cEmWarpParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -34,14 +24,6 @@ MtObject* cEmWarpParam::MyDTI::newInstance() const {
 
 const MtDTI& rEmWarpParam::getDTI() const {
     return rEmWarpParam::DTI;
-}
-
-inline void* rEmWarpParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmWarpParam::DTI)->memAlloc(sz, align, rEmWarpParam::DTI.getID());
-}
-
-inline void rEmWarpParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmWarpParam::DTI)->memFree(p_addr);
 }
 
 bool rEmWarpParam::loadData(MtDataReader& r, cEmWarpParam* pData) {

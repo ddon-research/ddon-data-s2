@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rAdjustParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cAdjustParam::getDTI() const {
     return cAdjustParam::DTI;
-}
-
-inline void* cAdjustParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAdjustParam::DTI)->memAlloc(sz, align, cAdjustParam::DTI.getID());
-}
-
-inline void cAdjustParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAdjustParam::DTI)->memFree(p_addr);
 }
 
 void cAdjustParam::createProperty(MtPropertyList& s) {
@@ -39,14 +29,6 @@ MtObject* cAdjustParam::MyDTI::newInstance() const {
 
 const MtDTI& rAdjustParam::getDTI() const {
     return rAdjustParam::DTI;
-}
-
-inline void* rAdjustParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAdjustParam::DTI)->memAlloc(sz, align, rAdjustParam::DTI.getID());
-}
-
-inline void rAdjustParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAdjustParam::DTI)->memFree(p_addr);
 }
 
 bool rAdjustParam::loadData(MtDataReader& in, cAdjustParam* pData) {

@@ -147,3 +147,36 @@ inline cZoneCategoryStatus::cZoneCategoryStatus() {
 inline void* cZoneCategoryStatusBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cZoneCategoryCheckState::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneCategoryCheckState::DTI)->memAlloc(sz, align, ::cZoneCategoryCheckState::DTI.::MtDTI::getID());
+}
+
+inline void cZoneCategoryCheckState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneCategoryCheckState::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneCategoryStatus::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneCategoryStatus::DTI)->memAlloc(sz, align, ::cZoneCategoryStatus::DTI.::MtDTI::getID());
+}
+
+inline void cZoneCategoryStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneCategoryStatus::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneCategoryStatusBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneCategoryStatusBase::DTI)->memAlloc(sz, align, ::cZoneCategoryStatusBase::DTI.::MtDTI::getID());
+}
+
+inline void cZoneCategoryStatusBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneCategoryStatusBase::DTI)->memFree(p_addr);
+}
+
+inline cZoneCategoryStatusBase::cZoneCategoryStatusBase() {
+    this->::cZoneContents::setAttribute(32768u, true);
+    this->::cZoneContents::setAttribute(0x10000u, true);
+}

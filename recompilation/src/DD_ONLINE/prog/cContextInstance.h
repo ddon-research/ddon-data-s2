@@ -1310,3 +1310,31 @@ inline u32 cContextInstance::getQuestId() const {
 inline void cContextInstance::setQuestId(u32 QuestId) {
     this->mQuestId = QuestId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cContextInstChar::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextInstChar::DTI)->memFree(p_addr);
+}
+
+inline void cContextInstEm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextInstEm::DTI)->memFree(p_addr);
+}
+
+inline void cContextInstHm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextInstHm::DTI)->memFree(p_addr);
+}
+
+inline void cContextInstNpc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextInstNpc::DTI)->memFree(p_addr);
+}
+
+inline void* cContextInstance::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cContextInstance::DTI)->memAlloc(sz, align, ::cContextInstance::DTI.::MtDTI::getID());
+}
+
+inline void cContextInstance::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextInstance::DTI)->memFree(p_addr);
+}

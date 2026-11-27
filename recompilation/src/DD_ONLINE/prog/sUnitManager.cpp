@@ -28,10 +28,6 @@ const MtDTI& sUnitManager::getDTI() const {
     return sUnitManager::DTI;
 }
 
-inline void sUnitManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sUnitManager::DTI)->memFree(p_addr);
-}
-
 sUnitManager::sUnitManager() {
     DDON_STUB("sUnitManager::sUnitManager")
     /* stub */
@@ -290,8 +286,38 @@ void sUnitManager::releaseUnit(u32 uniqId) {
 }
 
 __attribute__((weak)) void sUnitManager::releaseUnitAll() {
-    DDON_STUB("sUnitManager::releaseUnitAll")
-    /* stub */
+    update();
+    u32 num = mRefArray.mLength;
+    if (num != 0) {
+        u32 v0_0 = num;
+        for (unsigned int i0_3 = 0;;) {
+            if (i0_3 < v0_0) {
+                if (mRefArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                    releaseUnit(static_cast<uBaseModel*>(mRefArray.getBuffer()[static_cast<int>(i0_3)]));
+                }
+            }
+            mRefArray.getBuffer()[static_cast<int>(i0_3)] = nullptr;
+            if (num == (i0_3 + 1u)) {
+                break;
+            } else {
+                v0_0 = getUnitNum();
+                i0_3 += 1u;
+            }
+        }
+    }
+    mbModify = true;
+    if (mRefArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mRefArray.mpArray));
+    }
+    mRefArray.mpArray = nullptr;
+    mRefArray.mBufsiz = 0;
+    mRefArray.mLength = 0;
+    if (mAddArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAddArray.mpArray));
+    }
+    mAddArray.mpArray = nullptr;
+    mAddArray.mLength = 0;
+    mAddArray.mBufsiz = 0;
 }
 
 uBaseModel* sUnitManager::getLayoutUnit(u32 uid) {
@@ -382,10 +408,6 @@ MtVector2 sUnitManager::getLosDistDataParam(u32 num) {
     return result;
 }
 
-sUnitManager::cLODDistData* sUnitManager::getLodDistData(u32 index) {
-    return static_cast<cLODDistData*>(mLODDistData.mpArray[index]);
-}
-
 inline sUnitManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sUnitManager::MyDTI sUnitManager::DTI("sUnitManager", &::cSystem::DTI, 160ul, 0u, 1u);
@@ -396,14 +418,6 @@ MtObject* sUnitManager::MyDTI::newInstance() const {
 
 const MtDTI& sUnitManager::cLODDistData::getDTI() const {
     return sUnitManager::cLODDistData::DTI;
-}
-
-inline void* sUnitManager::cLODDistData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sUnitManager::cLODDistData::DTI)->memAlloc(sz, align, sUnitManager::cLODDistData::DTI.getID());
-}
-
-inline void sUnitManager::cLODDistData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sUnitManager::cLODDistData::DTI)->memFree(p_addr);
 }
 
 static auto ddon_emit_0x01acfbe0 __attribute__((used)) = &sUnitManager::cLODDistData::getLow;

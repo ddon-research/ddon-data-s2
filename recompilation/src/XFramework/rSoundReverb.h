@@ -185,3 +185,11 @@ inline rSoundReverb::cSoundReverbData::cSoundReverbData() : mId(0xFFFFFFFF), mRe
 inline void rSoundReverb::memFree(void* p_addr) {
     MtMemoryAllocator::getAllocator(rSoundReverb::DTI)->memFree(p_addr);
 }
+
+inline void rSoundReverb::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundReverb::DTI)->memFree(p_addr);
+}
+
+inline void rSoundReverb::cSoundReverbData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundReverb::cSoundReverbData::DTI)->memFree(p_addr);
+}

@@ -61,16 +61,8 @@ const MtDTI& uGUIQuestList::getDTI() const {
     return uGUIQuestList::DTI;
 }
 
-inline MtAllocator* uGUIQuestList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIQuestList::DTI);
-}
-
 void* uGUIQuestList::operator new(size_t sz, u32 align) {
     return uGUIQuestList::getAllocator()->memAlloc(sz, align, uGUIQuestList::DTI.getID());
-}
-
-inline void uGUIQuestList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIQuestList::~uGUIQuestList() {
@@ -218,9 +210,35 @@ void uGUIQuestList::updateExit() {
     end();
 }
 
-__attribute__((weak)) void uGUIQuestList::initCallback(u32 ErrorCode) {
-    DDON_STUB("uGUIQuestList::initCallback")
-    /* stub */
+void uGUIQuestList::initCallback(u32 ErrorCode) {
+    if (ErrorCode != 0) {
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIQuestList::updateExit);
+    } else {
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIQuestList::updateInit);
+        if (mFlowId <= 15u) {
+            if (((43009ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) == 0) {
+                if (((5120ul >> static_cast<unsigned long>(mFlowId & 31u)) & 1ul) != 0) {
+                    if (mpSystemMsg != nullptr) {
+                        if (!mpSystemMsg->mIsWindowActive) {
+                            mpSystemMsg->setWindowActive(true);
+                        }
+                    }
+                } else {
+                    if (mFlowId == 14) {
+                        if (mpMap != nullptr) {
+                            if (!mpMap->mIsWindowActive) {
+                                mpMap->setWindowActive(true);
+                            }
+                        }
+                    } else {
+                        setWindowActive(true);
+                    }
+                }
+            }
+        } else {
+            setWindowActive(true);
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIQuestList::setActiveQuest(bool isActive) {
@@ -297,9 +315,71 @@ __attribute__((weak)) u32 uGUIQuestList::evCtrlMouseClick(cControl::Message* msg
     return {};
 }
 
-__attribute__((weak)) bool uGUIQuestList::evCtrlScrl(cControl::Message* msg) {
-    DDON_STUB("uGUIQuestList::evCtrlScrl")
-    return {};
+bool uGUIQuestList::evCtrlScrl(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (msg->pSender != nullptr) {
+            nGUIExt::MSG_REASON t0 = msg->reason;
+            if (static_cast<unsigned int>(t0 - 37) <= 1) {
+                u32 t1 = mFlowId;
+                if (mpListCtrl != nullptr) {
+                    mpListCtrl->setCurrentPos(1, false);
+                }
+                if (t1 != 2) {
+                    if (t1 != 4) {
+                        if (mList.mToggle.mValue != 1) {
+                            setFlowId(2u);
+                        } else {
+                            setFlowId(4u);
+                        }
+                        if (t0 == nGUIExt::MOUSE_LCLICK) {
+                            if (msg->pSender != nullptr) {
+                                if (msg->pSender->getCurrentPos() != msg->pSender->mOldPos) {
+                                    adjustListCursor();
+                                    evCtrlDecide(msg);
+                                } else {
+                                    evCtrlAdjustCursor(msg);
+                                }
+                            } else {
+                                evCtrlAdjustCursor(msg);
+                            }
+                        } else {
+                            evCtrlAdjustCursor(msg);
+                        }
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                if (t0 == nGUIExt::TRG_DOWN) {
+                    if (msg->pSender->mCurrentPos == 0) {
+                        msg->pSender->setCurrentPos(msg->pSender->getOldPos(), false);
+                        if (mpListCtrl != nullptr) {
+                            mpListCtrl->setCurrentPos(0, false);
+                        }
+                    }
+                    evCtrlAdjustCursor(msg);
+                    return false;
+                } else {
+                    if (t0 == nGUIExt::BTN_START) {
+                        if (msg->pSender->mCurrentPos == (msg->pSender->mItemNum - 1)) {
+                            msg->pSender->setCurrentPos(msg->pSender->getOldPos(), false);
+                            if (mpListCtrl != nullptr) {
+                                mpListCtrl->setCurrentPos(0, false);
+                            }
+                        }
+                        evCtrlAdjustCursor(msg);
+                        return false;
+                    } else {
+                        return true;
+                    }
+                }
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
 }
 
 __attribute__((weak)) bool uGUIQuestList::isReleaseAnyTask() {
@@ -435,14 +515,6 @@ void uGUIQuestList::setupBonusPos(uGUIQuestList::stBonusItem& bonus, s32& bonus_
     list_pos = mVar.param_bonus_margin + (list_pos);
 }
 
-inline void uGUIQuestList::setupDetail() {
-    mList.mToggle.uGUIBase::cReferenceUIToggleBtn::setFocus(false);
-}
-
-inline void uGUIQuestList::setupReward() {
-    mList.mToggle.uGUIBase::cReferenceUIToggleBtn::setFocus(false);
-}
-
 __attribute__((weak)) void uGUIQuestList::adjustInfoCursor() {
     DDON_STUB("uGUIQuestList::adjustInfoCursor")
     /* stub */
@@ -498,14 +570,6 @@ __attribute__((weak)) void uGUIQuestList::setupMap() {
     /* stub */
 }
 
-inline void uGUIQuestList::hideDetail() {
-    if (mpPopDetail != nullptr) {
-        mpPopDetail->setItemParam(static_cast<cItemParam*>(nullptr), static_cast<rItemList::rItemParam*>(nullptr), nCharacterData::EQUIP_SLOT_TYPE_START);
-    }
-    mDrawItemId = 0;
-    mSelectItemId = 0;
-}
-
 __attribute__((weak)) void uGUIQuestList::updateDetail() {
     DDON_STUB("uGUIQuestList::updateDetail")
     /* stub */
@@ -539,17 +603,12 @@ const MtDTI& uGUIQuestList::cListItem::getDTI() const {
     return uGUIQuestList::cListItem::DTI;
 }
 
-inline void uGUIQuestList::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestList::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIQuestList::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIQuestList::cListItem::MyDTI uGUIQuestList::cListItem::DTI("uGUIQuestList::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 352ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIQuestList::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIQuestList::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIQuestList::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIQuestList::cListItem;
 }
 
 uGUIQuestList::stInfo::stInfo() {
@@ -559,10 +618,6 @@ uGUIQuestList::stInfo::stInfo() {
 
 const MtDTI& uGUIQuestList::cListInfo::getDTI() const {
     return uGUIQuestList::cListInfo::DTI;
-}
-
-inline void uGUIQuestList::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestList::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIQuestList::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -576,10 +631,6 @@ __attribute__((weak)) MtObject* uGUIQuestList::cListInfo::MyDTI::newInstance() c
 
 const MtDTI& uGUIQuestList::cDetailInfo::getDTI() const {
     return uGUIQuestList::cDetailInfo::DTI;
-}
-
-inline void uGUIQuestList::cDetailInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestList::cDetailInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIQuestList::cDetailInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

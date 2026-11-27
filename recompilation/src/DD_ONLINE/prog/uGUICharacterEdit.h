@@ -897,3 +897,35 @@ inline void* uGUICharacterEdit::cList::operator new(size_t sz, void* p_addr) {
 inline void* uGUICharacterEdit::cVerticalListEx::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICharacterEdit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharacterEdit::DTI);
+}
+
+inline void uGUICharacterEdit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharacterEdit::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharacterEdit::cListStage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharacterEdit::cListStage::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharacterEdit::cListEquip::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharacterEdit::cListEquip::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharacterEdit::cIndex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharacterEdit::cIndex::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharacterEdit::cGUIUnderHelpMsg::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharacterEdit::cGUIUnderHelpMsg::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharacterEdit::cVerticalListEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharacterEdit::cVerticalListEx::DTI)->memFree(p_addr);
+}

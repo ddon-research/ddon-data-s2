@@ -31,16 +31,8 @@ const MtDTI& uGUIPopListDialog::getDTI() const {
     return uGUIPopListDialog::DTI;
 }
 
-inline MtAllocator* uGUIPopListDialog::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopListDialog::DTI);
-}
-
 void* uGUIPopListDialog::operator new(size_t sz, u32 align) {
     return uGUIPopListDialog::getAllocator()->memAlloc(sz, align, uGUIPopListDialog::DTI.getID());
-}
-
-inline void uGUIPopListDialog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopListDialog::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIPopListDialog::~uGUIPopListDialog() {
@@ -204,21 +196,11 @@ __attribute__((weak)) MtObject* uGUIPopListDialog::MyDTI::newInstance() const {
     return nullptr;
 }
 
-uGUIPopListDialog::stList::stList() {
-    DDON_STUB("uGUIPopListDialog::stList::stList")
-    /* stub */
+uGUIPopListDialog::stList::stList() : mpObjPolyMask(static_cast<cGUIObjPolygon*>(nullptr)), mpInstNull(static_cast<cGUIInstNull*>(nullptr)) {
 }
 
 const MtDTI& uGUIPopListDialog::cListItem::getDTI() const {
     return uGUIPopListDialog::cListItem::DTI;
-}
-
-inline void* uGUIPopListDialog::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIPopListDialog::cListItem::DTI)->memAlloc(sz, align, uGUIPopListDialog::cListItem::DTI.getID());
-}
-
-inline void uGUIPopListDialog::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopListDialog::cListItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIPopListDialog::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -231,10 +213,6 @@ MtObject* uGUIPopListDialog::cListItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIPopListDialog::cListInfo::getDTI() const {
     return uGUIPopListDialog::cListInfo::DTI;
-}
-
-inline void uGUIPopListDialog::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopListDialog::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIPopListDialog::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

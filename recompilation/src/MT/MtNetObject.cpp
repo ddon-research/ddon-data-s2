@@ -68,9 +68,27 @@ void MtNetObject::getFatal(MtNetError* err) {
     }
 }
 
-__attribute__((weak)) void MtNetObject::clearFatal() {
-    DDON_STUB("MtNetObject::clearFatal")
-    /* stub */
+void MtNetObject::clearFatal() {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        mFatal.mNative = 0;
+        mFatal.mNo = 0;
+        mFatal.mCause = 0;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        mFatal.mNative = 0;
+        mFatal.mNo = 0;
+        mFatal.mCause = 0;
+    }
 }
 
 __attribute__((weak)) void MtNetObject::setFatal(const MtNetError* err) {

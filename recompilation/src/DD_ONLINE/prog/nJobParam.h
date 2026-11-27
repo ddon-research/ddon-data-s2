@@ -364,6 +364,10 @@ inline f32 nJobParam::cHumanBaseInfo::getMaxHP() const {
     return this->mMaxHP_pri;
 }
 
+inline void nJobParam::cHumanBaseInfo::setMaxHP(f32 NewValue) {
+    this->mMaxHP_pri = NewValue;
+}
+
 inline f32 nJobParam::cHumanBaseInfo::getFinalMaxHPPrivate() const {
     return this->mFinalMaxHP_pri;
 }
@@ -528,12 +532,44 @@ inline u64 nJobParam::cJobInfo::getExp() const {
     return this->mExp_pri;
 }
 
+inline u32 nJobParam::cJobInfo::getAtk() const {
+    return this->mAtk_pri;
+}
+
+inline u32 nJobParam::cJobInfo::getDef() const {
+    return this->mDef_pri;
+}
+
+inline u32 nJobParam::cJobInfo::getMAtk() const {
+    return this->mMAtk_pri;
+}
+
+inline u32 nJobParam::cJobInfo::getMDef() const {
+    return this->mMDef_pri;
+}
+
+inline u32 nJobParam::cJobInfo::getStrength() const {
+    return this->mStrength_pri;
+}
+
 inline void nJobParam::cJobInfo::setStrength(u32 NewValue) {
     this->mStrength_pri = NewValue;
 }
 
+inline u32 nJobParam::cJobInfo::getDownPower() const {
+    return this->mDownPower_pri;
+}
+
+inline u32 nJobParam::cJobInfo::getShakePower() const {
+    return this->mShakePower_pri;
+}
+
 inline void nJobParam::cJobInfo::setShakePower(u32 NewValue) {
     this->mShakePower_pri = NewValue;
+}
+
+inline u32 nJobParam::cJobInfo::getStanPower() const {
+    return this->mStanPower_pri;
 }
 
 inline u32 nJobParam::cJobInfo::getConstitution() const {
@@ -685,5 +721,17 @@ inline void nJobParam::cJobInfo::operator delete[](void* p_addr) {
 }
 
 inline void* nJobParam::cJobInfo::operator new[](size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI)->memAlloc(sz, align, ::nJobParam::cJobInfo::DTI.::MtDTI::getID());
+}
+
+inline void nJobParam::cHumanBaseInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nJobParam::cHumanBaseInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nJobParam::cJobInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI);
+}
+
+inline void* nJobParam::cJobInfo::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI)->memAlloc(sz, align, ::nJobParam::cJobInfo::DTI.::MtDTI::getID());
 }

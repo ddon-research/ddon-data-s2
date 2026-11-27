@@ -7,7 +7,6 @@
 #include "../../MT/MtGeomOBB.h"
 #include "../../MT/MtGeometry3D.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtProperty.h"
@@ -23,14 +22,6 @@
 
 const MtDTI& cGeomIterator::getDTI() const {
     return cGeomIterator::DTI;
-}
-
-inline void* cGeomIterator::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGeomIterator::DTI)->memAlloc(sz, align, cGeomIterator::DTI.getID());
-}
-
-inline void cGeomIterator::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGeomIterator::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cGeomIterator::begin(cpObjCollisionBase* pObjCollision, u32 attr) {
@@ -63,16 +54,8 @@ const MtDTI& cHitGeom::getDTI() const {
     return cHitGeom::DTI;
 }
 
-inline MtAllocator* cHitGeom::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cHitGeom::DTI);
-}
-
 void* cHitGeom::operator new(size_t sz, u32 align) {
     return cHitGeom::getAllocator()->memAlloc(sz, align, cHitGeom::DTI.getID());
-}
-
-inline void cHitGeom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHitGeom::DTI)->memFree(p_addr);
 }
 
 cHitGeom::~cHitGeom() {
@@ -144,8 +127,7 @@ inline cHitGeom::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cHitGeom::MyDTI cHitGeom::DTI("cHitGeom", &::MtObject::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cHitGeom::MyDTI::newInstance() const {
-    DDON_STUB("cHitGeom::MyDTI::newInstance")
-    return nullptr;
+MtObject* cHitGeom::MyDTI::newInstance() const {
+    return new (16u) cHitGeom;
 }
 

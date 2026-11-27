@@ -3,7 +3,6 @@
 #include "cUIObject.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cResource.h"
@@ -15,16 +14,8 @@ const MtDTI& cTexturePNG::getDTI() const {
     return cTexturePNG::DTI;
 }
 
-inline MtAllocator* cTexturePNG::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cTexturePNG::DTI);
-}
-
 void* cTexturePNG::operator new(size_t sz, u32 align) {
     return cTexturePNG::getAllocator()->memAlloc(sz, align, cTexturePNG::DTI.getID());
-}
-
-inline void cTexturePNG::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cTexturePNG::DTI)->memFree(p_addr);
 }
 
 cTexturePNG::~cTexturePNG() {
@@ -47,10 +38,6 @@ MtObject* cTexturePNG::MyDTI::newInstance() const {
 
 const MtDTI& cUIObject::getDTI() const {
     return cUIObject::DTI;
-}
-
-inline MtAllocator* cUIObject::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cUIObject::DTI);
 }
 
 void* cUIObject::operator new(size_t sz, u32 align) {
@@ -78,14 +65,6 @@ MtObject* cUIObject::MyDTI::newInstance() const {
 
 const MtDTI& cUIResource::getDTI() const {
     return cUIResource::DTI;
-}
-
-inline void* cUIResource::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cUIResource::DTI)->memAlloc(sz, align, cUIResource::DTI.getID());
-}
-
-inline void cUIResource::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cUIResource::DTI)->memFree(p_addr);
 }
 
 MtUI* cUIResource::createUI(MtProperty& prop) {

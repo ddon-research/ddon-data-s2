@@ -123,7 +123,9 @@ inline rSituationMsgCtrl::cSituationData::cSituationData(u32 GroupSerial, u32 St
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataWriter.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 inline bool rSituationMsgCtrl::cSituationData::save(MtDataWriter& w) {
     w.writeU32(mGroupSerial);
@@ -132,4 +134,24 @@ inline bool rSituationMsgCtrl::cSituationData::save(MtDataWriter& w) {
     w.writeU32(mEndQuestId);
     w.writeU8(mIsEndQuestIdStart);
     return true;
+}
+
+inline void* rSituationMsgCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::DTI)->memAlloc(sz, align, ::rSituationMsgCtrl::DTI.::MtDTI::getID());
+}
+
+inline void rSituationMsgCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::DTI)->memFree(p_addr);
+}
+
+inline rSituationMsgCtrl::rSituationMsgCtrl() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rSituationMsgCtrl::cSituationData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::cSituationData::DTI)->memAlloc(sz, align, ::rSituationMsgCtrl::cSituationData::DTI.::MtDTI::getID());
+}
+
+inline void rSituationMsgCtrl::cSituationData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSituationMsgCtrl::cSituationData::DTI)->memFree(p_addr);
 }

@@ -186,3 +186,38 @@ inline void* rCraftRecipe::cMaterialData::operator new(size_t sz, void* p_addr) 
 inline u32 rCraftRecipe::cMaterialData::getItemId() const {
     return this->mItemId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rCraftRecipe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCraftRecipe::DTI)->memAlloc(sz, align, ::rCraftRecipe::DTI.::MtDTI::getID());
+}
+
+inline void rCraftRecipe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCraftRecipe::DTI)->memFree(p_addr);
+}
+
+inline rCraftRecipe::rCraftRecipe() {
+    this->::cResource::setAttribute(22u);
+    this->::cResource::clear();
+    this->mpArrayData = nullptr;
+    this->mArrayDataNum = 0;
+}
+
+inline MtAllocator* rCraftRecipe::cCraftRecipe::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rCraftRecipe::cCraftRecipe::DTI);
+}
+
+inline void rCraftRecipe::cCraftRecipe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCraftRecipe::cCraftRecipe::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* rCraftRecipe::cMaterialData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rCraftRecipe::cMaterialData::DTI);
+}
+
+inline void rCraftRecipe::cMaterialData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCraftRecipe::cMaterialData::DTI)->memFree(p_addr);
+}

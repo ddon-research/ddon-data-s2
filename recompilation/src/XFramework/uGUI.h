@@ -61,6 +61,7 @@ namespace nGUI { struct SWITCH_CONDITION; }
 class rGUI;
 class uGUIBase;
 class uGUIJobSelect;
+class uGUINpcWindow;
 
 // Declarations
 class uGUI;
@@ -84,6 +85,7 @@ class uGUI : public uCoord
     friend class cGUIInstRoot;
     friend class uGUIBase;
     friend class uGUIJobSelect;
+    friend class uGUINpcWindow;
 public:
     class MyDTI;
     struct DuplicateBuffer;
@@ -420,4 +422,16 @@ inline void uGUI::setScreenLayer(u32 layer) {
 
 inline u32 uGUI::getScreenLayer() const {
     return this->mScreenLayer;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUI::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUI::DTI);
+}
+
+inline void uGUI::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUI::DTI)->memFree(p_addr);
 }

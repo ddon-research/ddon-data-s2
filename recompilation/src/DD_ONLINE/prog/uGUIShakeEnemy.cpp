@@ -27,16 +27,8 @@ const MtDTI& uGUIShakeEnemy::getDTI() const {
     return uGUIShakeEnemy::DTI;
 }
 
-inline MtAllocator* uGUIShakeEnemy::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIShakeEnemy::DTI);
-}
-
 void* uGUIShakeEnemy::operator new(size_t sz, u32 align) {
     return uGUIShakeEnemy::getAllocator()->memAlloc(sz, align, uGUIShakeEnemy::DTI.getID());
-}
-
-inline void uGUIShakeEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIShakeEnemy::DTI)->memFree(p_addr);
 }
 
 uGUIShakeEnemy::~uGUIShakeEnemy() {
@@ -77,8 +69,44 @@ void uGUIShakeEnemy::updateWait() {
 }
 
 __attribute__((weak)) void uGUIShakeEnemy::updateDisp() {
-    DDON_STUB("uGUIShakeEnemy::updateDisp")
-    /* stub */
+    if (mpInstNullD == nullptr || mpInstButton == nullptr) {
+        return;
+    }
+    
+    bool is_visible = false;
+    uHuman* pPlayer = sPlayerManager::getInstance()->getMyPlayer();
+    constexpr u32 t5 = 0x3590;
+    // workaround
+    if (pPlayer != nullptr && *reinterpret_cast<const uHuman::CLIMB_JOLT_TYPE*>(
+            reinterpret_cast<const char*>(pPlayer) + t5) != uHuman::CLIMB_JOLT_NONE) {
+        uDDOModel* pModel = pPlayer->getClimbEnemy();
+        if (pModel != nullptr && pModel->mIsEnemy) {
+            is_visible = true;
+            if (mInputGuideMonitor.checkUpdate()) {
+                nGUIExt::StringKeyCustomIconTag t1;
+                cGUIUtility::getIconTag(t1, static_cast<nKeyCustom::KB_CUSTOM>(0x17),
+                    cGUIUtility::ICON_TAG_OUT_TYPE_ALL, cGUIUtility::ICON_TAG_JOINT_TYPE_PLUS, 0u);
+                if (mpOBJ_btn_m_btn_txt != nullptr) {
+                    // workaround
+                    mpOBJ_btn_m_btn_txt->setMessage(reinterpret_cast<const char*>(&t1) + sizeof(u32),
+                        *reinterpret_cast<const u32*>(&t1));
+                }
+            }
+        }
+    }
+    
+    mpInstNullD->setVisible(is_visible);
+    mpInstNullD->setExecute(is_visible);
+    
+    constexpr u32 t6 = 0x10;
+    // workaround
+    u32& t2 = *reinterpret_cast<u32*>(reinterpret_cast<char*>(this) + t6);
+    u32 t3 = t2;
+    u32 t4 = t3 & 0x4807u;
+    t2 = !is_visible ? (t3 & ~0x800u) : (t3 | 0x800u);
+    if (t4 == 0x4802u && (t2 & 0x4807u) != 0x4802u) {
+        callbackChangeVisibleTrueToFalse();
+    }
 }
 
 inline uGUIShakeEnemy::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

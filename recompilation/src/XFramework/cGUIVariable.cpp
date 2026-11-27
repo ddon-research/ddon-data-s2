@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cGUIVariable.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
@@ -17,10 +16,6 @@ const MtDTI& cGUIVarFloat::getDTI() const {
 
 void* cGUIVarFloat::operator new(size_t sz, void* p_addr) {
     return p_addr;
-}
-
-inline void cGUIVarFloat::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIVarFloat::DTI)->memFree(p_addr);
 }
 
 cGUIVarFloat::cGUIVarFloat() {
@@ -93,10 +88,6 @@ const MtDTI& cGUIVarInt::getDTI() const {
 
 void* cGUIVarInt::operator new(size_t sz, void* p_addr) {
     return p_addr;
-}
-
-inline void cGUIVarInt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIVarInt::DTI)->memFree(p_addr);
 }
 
 cGUIVarInt::cGUIVarInt() {

@@ -222,3 +222,15 @@ inline void* uGUIEntryBoard::operator new(size_t sz, void* p_addr) {
 inline void* uGUIEntryBoard::cData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIEntryBoard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIEntryBoard::DTI)->memFree(p_addr);
+}
+
+inline void uGUIEntryBoard::cData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIEntryBoard::cData::DTI)->memFree(p_addr);
+}

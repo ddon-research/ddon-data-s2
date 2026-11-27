@@ -270,3 +270,15 @@ inline void sScreenShot::setShotCategory(u32 cate) {
 inline void sScreenShot::setGetAuthAddr(bool flg) {
     this->mIsGetAuthAddr = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sScreenShot::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sScreenShot::DTI);
+}
+
+inline void sScreenShot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sScreenShot::DTI)->memFree(p_addr);
+}

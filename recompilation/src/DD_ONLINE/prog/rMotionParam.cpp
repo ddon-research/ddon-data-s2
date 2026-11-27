@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rMotionParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cMotionParam::getDTI() const {
     return cMotionParam::DTI;
-}
-
-inline void* cMotionParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMotionParam::DTI)->memAlloc(sz, align, cMotionParam::DTI.getID());
-}
-
-inline void cMotionParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMotionParam::DTI)->memFree(p_addr);
 }
 
 inline cMotionParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,14 +23,6 @@ MtObject* cMotionParam::MyDTI::newInstance() const {
 
 const MtDTI& rMotionParam::getDTI() const {
     return rMotionParam::DTI;
-}
-
-inline void* rMotionParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMotionParam::DTI)->memAlloc(sz, align, rMotionParam::DTI.getID());
-}
-
-inline void rMotionParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMotionParam::DTI)->memFree(p_addr);
 }
 
 bool rMotionParam::loadData(MtDataReader& r, cMotionParam* pData) {

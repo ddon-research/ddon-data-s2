@@ -6,8 +6,7 @@
 #define DDON_STUB(name)
 #endif
 
-__attribute__((weak)) bool nErosionEnemy::isErosionRegion(nRegionStatus::P_REGION_CATEGORY category) {
-    DDON_STUB("nErosionEnemy::isErosionRegion")
-    return {};
+bool nErosionEnemy::isErosionRegion(nRegionStatus::P_REGION_CATEGORY category) {
+    return static_cast<unsigned int>(category - 1) <= 3;
 }
 

@@ -28,7 +28,6 @@
 #include "sNetworkExt.h"
 #include "sQuestManagerExt.h"
 #include "../../XFramework/sUnit.h"
-#include "../../XFramework/uCoord.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUIPopDetail01.h"
@@ -41,16 +40,8 @@ const MtDTI& uGUIQuestInfo::getDTI() const {
     return uGUIQuestInfo::DTI;
 }
 
-inline MtAllocator* uGUIQuestInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIQuestInfo::DTI);
-}
-
 void* uGUIQuestInfo::operator new(size_t sz, u32 align) {
     return uGUIQuestInfo::getAllocator()->memAlloc(sz, align, uGUIQuestInfo::DTI.getID());
-}
-
-inline void uGUIQuestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIQuestInfo::~uGUIQuestInfo() {
@@ -143,9 +134,104 @@ void uGUIQuestInfo::clearDetail() {
     mIsCleared = true;
 }
 
-__attribute__((weak)) void uGUIQuestInfo::adjustScale() {
-    DDON_STUB("uGUIQuestInfo::adjustScale")
-    /* stub */
+void uGUIQuestInfo::adjustScale() {
+    float t0 = 1.0f;
+    const f32 fScaleRate = getScaleForDefaultResolution(t0);
+    cGUIInstNull* t1 = mpInstNullBase;
+    if (t1 != nullptr) {
+        t1->setScaleX(fScaleRate);
+        t1->setScaleY(fScaleRate);
+        t1->setScaleZ(fScaleRate);
+        f32 t2 = mDispPos.x;
+        f32 t3 = mDispPos.y;
+        f32 t4 = mDispPos.z;
+        mPos.x = t2 * fScaleRate;
+        mPos.y = t3 * fScaleRate;
+        mPos.z = t4 * fScaleRate;
+        mPos.pad_ = 0.0f;
+        uGUIPopRmcQuestInfo* t5 = mpPopBonus;
+        if (t5 != nullptr) {
+            cGUIInstNull* t6 = mMain.mpInstNullBonus;
+            MtVector2 frame48(uGUIBase::getInstanceScreenPos(static_cast<cGUIInstance*>(t6), mPos));
+            uGUIPopRmcQuestInfo* t7 = mpPopBonus;
+            f32 t8 = frame48.x;
+            f32 t9 = frame48.y;
+            t7->mPos.x = t8;
+            t7->mPos.y = t9;
+            t7->mPos.z = 0.0f;
+            t7->mPos.pad_ = 0.0f;
+            uGUIPopDetail01* t10 = mpPopDetail;
+            if (t10 != nullptr) {
+                cGUIInstNull* t11 = mMain.mpInstNullDetail;
+                MtVector2 frame56(uGUIBase::getInstanceScreenPos(static_cast<cGUIInstance*>(t11), mPos));
+                uGUIPopDetail01* t12 = mpPopDetail;
+                f32 t13 = frame56.x;
+                f32 t14 = frame56.y;
+                t12->mPos.x = t13;
+                t12->mPos.y = t14;
+                t12->mPos.z = 0.0f;
+                t12->mPos.pad_ = 0.0f;
+            }
+        } else {
+            uGUIPopDetail01* t10 = mpPopDetail;
+            if (t10 != nullptr) {
+                cGUIInstNull* t11 = mMain.mpInstNullDetail;
+                MtVector2 frame56(uGUIBase::getInstanceScreenPos(static_cast<cGUIInstance*>(t11), mPos));
+                uGUIPopDetail01* t12 = mpPopDetail;
+                f32 t13 = frame56.x;
+                f32 t14 = frame56.y;
+                t12->mPos.x = t13;
+                t12->mPos.y = t14;
+                t12->mPos.z = 0.0f;
+                t12->mPos.pad_ = 0.0f;
+            }
+        }
+    } else {
+        f32 t2 = mDispPos.x;
+        f32 t3 = mDispPos.y;
+        f32 t4 = mDispPos.z;
+        mPos.x = t2 * fScaleRate;
+        mPos.y = t3 * fScaleRate;
+        mPos.z = t4 * fScaleRate;
+        mPos.pad_ = 0.0f;
+        uGUIPopRmcQuestInfo* t5 = mpPopBonus;
+        if (t5 != nullptr) {
+            cGUIInstNull* t6 = mMain.mpInstNullBonus;
+            MtVector2 frame48(uGUIBase::getInstanceScreenPos(static_cast<cGUIInstance*>(t6), mPos));
+            uGUIPopRmcQuestInfo* t7 = mpPopBonus;
+            f32 t8 = frame48.x;
+            f32 t9 = frame48.y;
+            t7->mPos.x = t8;
+            t7->mPos.y = t9;
+            t7->mPos.z = 0.0f;
+            t7->mPos.pad_ = 0.0f;
+            uGUIPopDetail01* t10 = mpPopDetail;
+            if (t10 != nullptr) {
+                cGUIInstNull* t11 = mMain.mpInstNullDetail;
+                MtVector2 frame56(uGUIBase::getInstanceScreenPos(static_cast<cGUIInstance*>(t11), mPos));
+                uGUIPopDetail01* t12 = mpPopDetail;
+                f32 t13 = frame56.x;
+                f32 t14 = frame56.y;
+                t12->mPos.x = t13;
+                t12->mPos.y = t14;
+                t12->mPos.z = 0.0f;
+                t12->mPos.pad_ = 0.0f;
+            }
+        } else {
+            uGUIPopDetail01* t10 = mpPopDetail;
+            if (t10 != nullptr) {
+                cGUIInstNull* t11 = mMain.mpInstNullDetail;
+                MtVector2 frame56(uGUIBase::getInstanceScreenPos(static_cast<cGUIInstance*>(t11), mPos));
+                uGUIPopDetail01* t12 = mpPopDetail;
+                f32 t13 = frame56.x;
+                f32 t14 = frame56.y;
+                t12->mPos.x = t13;
+                t12->mPos.y = t14;
+                t12->mPos.z = 0.0f;
+                t12->mPos.pad_ = 0.0f;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIQuestInfo::setFlowId(u32 flow_id) {
@@ -342,10 +428,6 @@ const MtDTI& uGUIQuestInfo::cRewardItem::getDTI() const {
     return uGUIQuestInfo::cRewardItem::DTI;
 }
 
-inline void uGUIQuestInfo::cRewardItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestInfo::cRewardItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIQuestInfo::cRewardItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIQuestInfo::cRewardItem::MyDTI uGUIQuestInfo::cRewardItem::DTI("uGUIQuestInfo::cRewardItem", &::uGUIBase::cScrollListItemBase::DTI, 2096ul, 0u, 0u);
@@ -357,10 +439,6 @@ __attribute__((weak)) MtObject* uGUIQuestInfo::cRewardItem::MyDTI::newInstance()
 
 const MtDTI& uGUIQuestInfo::cListInfo::getDTI() const {
     return uGUIQuestInfo::cListInfo::DTI;
-}
-
-inline void uGUIQuestInfo::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestInfo::cListInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUIQuestInfo::cListInfo::addMouseTouchList(cControl* pCtrl, s32 pos) {

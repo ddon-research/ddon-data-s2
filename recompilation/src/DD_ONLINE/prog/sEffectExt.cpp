@@ -88,14 +88,6 @@ const MtDTI& cVfxLightInfluence::getDTI() const {
     return cVfxLightInfluence::DTI;
 }
 
-inline void* cVfxLightInfluence::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cVfxLightInfluence::DTI)->memAlloc(sz, align, cVfxLightInfluence::DTI.getID());
-}
-
-inline void cVfxLightInfluence::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cVfxLightInfluence::DTI)->memFree(p_addr);
-}
-
 void cVfxLightInfluence::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mLightIntensity", &mLightIntensity, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mCustom1", &mCustom1, 0u, 0u);
@@ -117,14 +109,6 @@ MtObject* cVfxLightInfluence::MyDTI::newInstance() const {
 
 const MtDTI& rVfxLightInfluence::getDTI() const {
     return rVfxLightInfluence::DTI;
-}
-
-inline void* rVfxLightInfluence::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rVfxLightInfluence::DTI)->memAlloc(sz, align, rVfxLightInfluence::DTI.getID());
-}
-
-inline void rVfxLightInfluence::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rVfxLightInfluence::DTI)->memFree(p_addr);
 }
 
 bool rVfxLightInfluence::loadData(MtDataReader& in, cVfxLightInfluence* pData) {
@@ -159,16 +143,8 @@ const MtDTI& sEffectExt::getDTI() const {
     return sEffectExt::DTI;
 }
 
-inline MtAllocator* sEffectExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sEffectExt::DTI);
-}
-
 void* sEffectExt::operator new(size_t sz, u32 align) {
     return sEffectExt::getAllocator()->memAlloc(sz, align, sEffectExt::DTI.getID());
-}
-
-inline void sEffectExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffectExt::DTI)->memFree(p_addr);
 }
 
 sEffectExt::sEffectExt() {
@@ -273,14 +249,178 @@ __attribute__((weak)) void sEffectExt::setEffect(rEffectProvider* pEPV, s32 Inde
     /* stub */
 }
 
-__attribute__((weak)) void sEffectExt::setTypeEffect(rEffectProvider* pEPV, u32 effectType, const sEffectExt::EfcParam& param, uDDOModel* pOrigin, MtTypedArray<cEfcHandle>* pEffects) {
-    DDON_STUB("sEffectExt::setTypeEffect")
-    /* stub */
+void sEffectExt::setTypeEffect(rEffectProvider* pEPV, u32 effectType, const sEffectExt::EfcParam& param, uDDOModel* pOrigin, MtTypedArray<cEfcHandle>* pEffects) {
+    if (pEPV != nullptr) {
+        u32 effectIndexSize = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEPV) + 136);
+        if (effectIndexSize != 0) {
+            int i0_10 = 0;
+            unsigned long v1_4;
+            unsigned long v1_7;
+            int i1_9;
+            unsigned long v2_4;
+            unsigned long v2_7;
+            for (;;) {
+                if (i0_10 > -1) {
+                    if (i0_10 < static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEPV) + 136))) {
+                        if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(i0_10) * 24)) != 0) {
+                            u32 effectElementSize = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(i0_10) * 24)) + 16);
+                            if (effectElementSize != 0) {
+                                v1_4 = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(i0_10) * 24)) + 8ul;
+                                v1_7 = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(i0_10) * 24)) + 16ul;
+                                i1_9 = 0;
+                                for (;;) {
+                                    if (i1_9 <= -1) {
+                                        v2_4 = v1_4;
+                                        v2_7 = v1_7;
+                                    } else {
+                                        if (i1_9 >= static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_7) + 0))) {
+                                            v2_4 = v1_4;
+                                            v2_7 = v1_7;
+                                        } else {
+                                            if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_4) + 0)) + (static_cast<long>(i1_9) * 304)) == 0) {
+                                                v2_4 = v1_4;
+                                                v2_7 = v1_7;
+                                            } else {
+                                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_4) + 0)) + (static_cast<long>(i1_9) * 304)) + 88)) != effectType) {
+                                                    v2_4 = v1_4;
+                                                    v2_7 = v1_7;
+                                                } else {
+                                                    cEfcHandle* t0 = setEffect(pEPV, i0_10, i1_9, param, pOrigin);
+                                                    if (pEffects == nullptr) {
+                                                        v2_4 = v1_4;
+                                                    } else {
+                                                        if (t0 == nullptr) {
+                                                            v2_4 = v1_4;
+                                                        } else {
+                                                            unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffects) + 8);
+                                                            unsigned int t2 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffects) + 12);
+                                                            if (t1 < t2) {
+                                                                pEffects->mLength = t1 + 1u;
+                                                                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((static_cast<unsigned long>(t1) * 8) + (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffects) + 24))) + 0) = reinterpret_cast<unsigned long>(t0);
+                                                            } else {
+                                                                void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t2 + 32u) * 8, 16u);
+                                                                memset(t3, 0, static_cast<size_t>(t2 + 32u) * 8);
+                                                                memcpy(t3, reinterpret_cast<const void*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffects) + 24)), static_cast<size_t>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffects) + 8)) * 8);
+                                                                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(reinterpret_cast<void*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffects) + 24)));
+                                                                pEffects->mpArray = static_cast<MtObject* *>(t3);
+                                                                pEffects->mBufsiz = t2 + 32u;
+                                                                unsigned int t4 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffects) + 8);
+                                                                pEffects->mLength = t4 + 1u;
+                                                                pEffects->mpArray[t4] = static_cast<MtObject*>(t0);
+                                                            }
+                                                            v2_4 = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(i0_10) * 24)) + 8ul;
+                                                        }
+                                                    }
+                                                    v2_7 = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(i0_10) * 24)) + 16ul;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    if (effectElementSize != static_cast<unsigned int>(i1_9 + 1)) {
+                                        v1_4 = v2_4;
+                                        v1_7 = v2_7;
+                                        i1_9 += 1;
+                                    } else {
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEPV) + 136)) != static_cast<unsigned int>(i0_10 + 1)) {
+                    i0_10 += 1;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void sEffectExt::setTypeEffect(rEffectProvider* pEPV, s32 indexNo, u32 effectType, const sEffectExt::EfcParam& param, uDDOModel* pOrigin, MtTypedArray<cEfcHandle>* pEffects) {
-    DDON_STUB("sEffectExt::setTypeEffect")
-    /* stub */
+void sEffectExt::setTypeEffect(rEffectProvider* pEPV, s32 indexNo, u32 effectType, const sEffectExt::EfcParam& param, uDDOModel* pOrigin, MtTypedArray<cEfcHandle>* pEffects) {
+    if (pEPV != nullptr) {
+        if (indexNo > -1) {
+            if (indexNo < static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEPV) + 136))) {
+                if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(indexNo) * 24)) != 0) {
+                    u32 effectElementSize = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(indexNo) * 24)) + 16);
+                    if (effectElementSize != 0) {
+                        s32 v0_2 = indexNo;
+                        unsigned long v0_3 = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(indexNo) * 24)) + 16ul;
+                        unsigned long v0_8 = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(indexNo) * 24)) + 8ul;
+                        int i0_9 = 0;
+                        unsigned int v1_2;
+                        unsigned long v1_3;
+                        unsigned long v1_8;
+                        for (;;) {
+                            if (i0_9 <= -1) {
+                                v1_2 = v0_2;
+                                v1_3 = v0_3;
+                                v1_8 = v0_8;
+                            } else {
+                                if (i0_9 >= static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_3) + 0))) {
+                                    v1_2 = v0_2;
+                                    v1_3 = v0_3;
+                                    v1_8 = v0_8;
+                                } else {
+                                    if (((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_8) + 0)) + (static_cast<long>(i0_9) * 304)) == 0) {
+                                        v1_2 = v0_2;
+                                        v1_3 = v0_3;
+                                        v1_8 = v0_8;
+                                    } else {
+                                        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_8) + 0)) + (static_cast<long>(i0_9) * 304)) + 88)) != effectType) {
+                                            v1_2 = v0_2;
+                                            v1_3 = v0_3;
+                                            v1_8 = v0_8;
+                                        } else {
+                                            cEfcHandle* t0 = setEffect(pEPV, v0_2, i0_9, param, pOrigin);
+                                            if (pEffects == nullptr) {
+                                                v1_2 = v0_2;
+                                                v1_3 = v0_3;
+                                            } else {
+                                                if (t0 == nullptr) {
+                                                    v1_2 = v0_2;
+                                                    v1_3 = v0_3;
+                                                } else {
+                                                    unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffects) + 8);
+                                                    unsigned int t2 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffects) + 12);
+                                                    if (t1 < t2) {
+                                                        pEffects->mLength = t1 + 1u;
+                                                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((static_cast<unsigned long>(t1) * 8) + (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffects) + 24))) + 0) = reinterpret_cast<unsigned long>(t0);
+                                                    } else {
+                                                        void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t2 + 32u) * 8, 16u);
+                                                        memset(t3, 0, static_cast<size_t>(t2 + 32u) * 8);
+                                                        memcpy(t3, reinterpret_cast<const void*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffects) + 24)), static_cast<size_t>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffects) + 8)) * 8);
+                                                        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(reinterpret_cast<void*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEffects) + 24)));
+                                                        pEffects->mpArray = static_cast<MtObject* *>(t3);
+                                                        pEffects->mBufsiz = t2 + 32u;
+                                                        unsigned int t4 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pEffects) + 8);
+                                                        pEffects->mLength = t4 + 1u;
+                                                        pEffects->mpArray[t4] = static_cast<MtObject*>(t0);
+                                                    }
+                                                    v1_2 = v0_2;
+                                                    v1_3 = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(indexNo) * 24)) + 16ul;
+                                                }
+                                            }
+                                            v1_8 = ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pEPV) + 128)) + (static_cast<long>(indexNo) * 24)) + 8ul;
+                                        }
+                                    }
+                                }
+                            }
+                            if (effectElementSize != static_cast<unsigned int>(i0_9 + 1)) {
+                                v0_2 = v1_2;
+                                v0_3 = v1_3;
+                                v0_8 = v1_8;
+                                i0_9 += 1;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) uEffectExt* sEffectExt::setEffectConst(rEffectList* pResource, uDDOModel* pParent, uDDOModel* pActor, u32 group, u32 material, u32 custom, MOVE_LINE MoveLine) {
@@ -1116,14 +1256,6 @@ __attribute__((weak)) void sEffectExt::updateInvalidHandle() {
     /* stub */
 }
 
-inline void sEffectExt::releaseCommonELI() {
-    if (mpCommonELI == nullptr) {
-        return;
-    }
-    mpCommonELI->release();
-    mpCommonELI = nullptr;
-}
-
 rVfxLightInfluence* sEffectExt::getCommonELI() {
     return mpCommonELI;
 }
@@ -1274,10 +1406,6 @@ const MtDTI& sEffectExt::cZoneEpvStack::getDTI() const {
     return sEffectExt::cZoneEpvStack::DTI;
 }
 
-inline void sEffectExt::cZoneEpvStack::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffectExt::cZoneEpvStack::DTI)->memFree(p_addr);
-}
-
 sEffectExt::cZoneEpvStack::~cZoneEpvStack() {
     DDON_STUB("sEffectExt::cZoneEpvStack::~cZoneEpvStack")
     /* stub */
@@ -1294,14 +1422,6 @@ __attribute__((weak)) MtObject* sEffectExt::cZoneEpvStack::MyDTI::newInstance() 
 
 const MtDTI& sEffectExt::cZoneEffectUnitLayout::getDTI() const {
     return sEffectExt::cZoneEffectUnitLayout::DTI;
-}
-
-inline void* sEffectExt::cZoneEffectUnitLayout::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sEffectExt::cZoneEffectUnitLayout::DTI)->memAlloc(sz, align, sEffectExt::cZoneEffectUnitLayout::DTI.getID());
-}
-
-inline void sEffectExt::cZoneEffectUnitLayout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffectExt::cZoneEffectUnitLayout::DTI)->memFree(p_addr);
 }
 
 inline sEffectExt::cZoneEffectUnitLayout::cZoneEffectUnitLayout() {
@@ -1342,10 +1462,6 @@ const MtDTI& sEffectExt::cZoneEffectUnit::getDTI() const {
     return sEffectExt::cZoneEffectUnit::DTI;
 }
 
-inline void sEffectExt::cZoneEffectUnit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffectExt::cZoneEffectUnit::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) sEffectExt::cZoneEffectUnit::~cZoneEffectUnit() {
     DDON_STUB("sEffectExt::cZoneEffectUnit::~cZoneEffectUnit")
     /* stub */
@@ -1364,14 +1480,6 @@ const MtDTI& sEffectExt::cEfcCameraQuakeData::getDTI() const {
     return sEffectExt::cEfcCameraQuakeData::DTI;
 }
 
-inline void* sEffectExt::cEfcCameraQuakeData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeData::DTI)->memAlloc(sz, align, sEffectExt::cEfcCameraQuakeData::DTI.getID());
-}
-
-inline void sEffectExt::cEfcCameraQuakeData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeData::DTI)->memFree(p_addr);
-}
-
 inline sEffectExt::cEfcCameraQuakeData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sEffectExt::cEfcCameraQuakeData::MyDTI sEffectExt::cEfcCameraQuakeData::DTI("sEffectExt::cEfcCameraQuakeData", &::MtObject::DTI, 96ul, 0u, 0u);
@@ -1382,14 +1490,6 @@ MtObject* sEffectExt::cEfcCameraQuakeData::MyDTI::newInstance() const {
 
 const MtDTI& sEffectExt::cEfcCameraQuakeDataLarge::getDTI() const {
     return sEffectExt::cEfcCameraQuakeDataLarge::DTI;
-}
-
-inline void* sEffectExt::cEfcCameraQuakeDataLarge::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataLarge::DTI)->memAlloc(sz, align, sEffectExt::cEfcCameraQuakeDataLarge::DTI.getID());
-}
-
-inline void sEffectExt::cEfcCameraQuakeDataLarge::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataLarge::DTI)->memFree(p_addr);
 }
 
 inline sEffectExt::cEfcCameraQuakeDataLarge::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1404,14 +1504,6 @@ const MtDTI& sEffectExt::cEfcCameraQuakeDataMiddle::getDTI() const {
     return sEffectExt::cEfcCameraQuakeDataMiddle::DTI;
 }
 
-inline void* sEffectExt::cEfcCameraQuakeDataMiddle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataMiddle::DTI)->memAlloc(sz, align, sEffectExt::cEfcCameraQuakeDataMiddle::DTI.getID());
-}
-
-inline void sEffectExt::cEfcCameraQuakeDataMiddle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataMiddle::DTI)->memFree(p_addr);
-}
-
 inline sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI sEffectExt::cEfcCameraQuakeDataMiddle::DTI("sEffectExt::cEfcCameraQuakeDataMiddle", &::sEffectExt::cEfcCameraQuakeData::DTI, 96ul, 0u, 0u);
@@ -1422,14 +1514,6 @@ MtObject* sEffectExt::cEfcCameraQuakeDataMiddle::MyDTI::newInstance() const {
 
 const MtDTI& sEffectExt::cEfcCameraQuakeDataSmall::getDTI() const {
     return sEffectExt::cEfcCameraQuakeDataSmall::DTI;
-}
-
-inline void* sEffectExt::cEfcCameraQuakeDataSmall::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataSmall::DTI)->memAlloc(sz, align, sEffectExt::cEfcCameraQuakeDataSmall::DTI.getID());
-}
-
-inline void sEffectExt::cEfcCameraQuakeDataSmall::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffectExt::cEfcCameraQuakeDataSmall::DTI)->memFree(p_addr);
 }
 
 inline sEffectExt::cEfcCameraQuakeDataSmall::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

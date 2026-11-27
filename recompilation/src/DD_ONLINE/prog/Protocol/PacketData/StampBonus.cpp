@@ -4,7 +4,6 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -13,10 +12,6 @@
 
 const MtDTI& CDataStampBonus::getDTI() const {
     return CDataStampBonus::DTI;
-}
-
-inline MtAllocator* CDataStampBonus::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataStampBonus::DTI);
 }
 
 void* CDataStampBonus::operator new(size_t sz, u32 align) {
@@ -39,10 +34,6 @@ const MtDTI& CDataStampBonusDaily::getDTI() const {
     return CDataStampBonusDaily::DTI;
 }
 
-inline MtAllocator* CDataStampBonusDaily::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataStampBonusDaily::DTI);
-}
-
 void* CDataStampBonusDaily::operator new(size_t sz, u32 align) {
     return CDataStampBonusDaily::getAllocator()->memAlloc(sz, align, CDataStampBonusDaily::DTI.getID());
 }
@@ -61,10 +52,6 @@ MtObject* CDataStampBonusDaily::MyDTI::newInstance() const {
 
 const MtDTI& CDataStampBonusTotal::getDTI() const {
     return CDataStampBonusTotal::DTI;
-}
-
-inline MtAllocator* CDataStampBonusTotal::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataStampBonusTotal::DTI);
 }
 
 void* CDataStampBonusTotal::operator new(size_t sz, u32 align) {

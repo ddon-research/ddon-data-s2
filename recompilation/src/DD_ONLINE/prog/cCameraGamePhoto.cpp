@@ -6,6 +6,7 @@
 #include "../../MT/MtEaseCurve.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtString.h"
 #include "cpCharacterEdit.h"
@@ -33,10 +34,6 @@
 
 const MtDTI& cCamExParamPhoto::getDTI() const {
     return cCamExParamPhoto::DTI;
-}
-
-inline MtAllocator* cCamExParamPhoto::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamExParamPhoto::DTI);
 }
 
 void* cCamExParamPhoto::operator new(size_t sz, u32 align) {
@@ -82,10 +79,6 @@ const MtDTI& cCamImpPhoto::getDTI() const {
     return cCamImpPhoto::DTI;
 }
 
-inline void cCamImpPhoto::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpPhoto::DTI)->memFree(p_addr);
-}
-
 cCamImpPhoto::~cCamImpPhoto() {
 }
 
@@ -97,9 +90,57 @@ __attribute__((weak)) void cCamImpPhoto::ctrlPhoto(MtVector3& camPos) {
     /* stub */
 }
 
-__attribute__((weak)) void cCamImpPhoto::initSub(MtVector3& cameraPos, MtVector3& targetPos, f32& angX, f32& angY) {
-    DDON_STUB("cCamImpPhoto::initSub")
-    /* stub */
+void cCamImpPhoto::initSub(MtVector3& cameraPos, MtVector3& targetPos, f32& angX, f32& angY) {
+    f32 j0;
+    f32 j1;
+    f32 j2;
+    mpParamPhoto = static_cast<const cCamExParamPhoto*>(getParam());
+    const f32 t0 = getParam()->mDistance;
+    mPhotoDistance = t0;
+    mPhotoDistanceOld = mPhotoDistance;
+    f32 t1 = cameraPos.x;
+    f32 t2 = cameraPos.y;
+    f32 t3 = cameraPos.z;
+    if (1.1920929e-7f > ((((t1 - targetPos.x) * (t1 - targetPos.x)) + ((t2 - targetPos.y) * (t2 - targetPos.y))) + ((t3 - targetPos.z) * (t3 - targetPos.z)))) {
+        nCameraGame::calcCameraPos(cameraPos, targetPos, angX, angY, t0);
+        f32 t4 = cameraPos.x;
+        f32 t5 = cameraPos.y;
+        f32 t6 = cameraPos.z;
+        j0 = t4;
+        j1 = t5;
+        j2 = t6;
+    } else {
+        j0 = t1;
+        j1 = t2;
+        j2 = t3;
+    }
+    mInitAngX = angX;
+    mInitAngY = angY;
+    mAngYOld = angY;
+    mAngXOld = angX;
+    mCamPosOld.x = j0;
+    mCamPosOld.y = j1;
+    mCamPosOld.z = j2;
+    mCamPosOld.pad_ = 0.0f;
+    mTarPosOld.x = targetPos.x;
+    mTarPosOld.y = targetPos.y;
+    mTarPosOld.z = targetPos.z;
+    mTarPosOld.pad_ = 0.0f;
+    f32 t7 = static_cast<sCameraExt*>(sCamera::getInstance())->getCameraOffsetX();
+    mPhotoOffsetXOld = t7;
+    mPhotoOffsetX = mPhotoOffsetXOld;
+    mPhotoOffsetYOld = 0.0f;
+    mPhotoOffsetY = 0.0f;
+    moveSub(cameraPos, targetPos, angX, angY);
+    nCameraGame::CAMERA_TYPE t8 = mpC->getOldCameraType();
+    const f32 t9 = mpParamPhoto->mInterCamRate;
+    const f32 t10 = mpParamPhoto->mMarginAdjPow;
+    mIsInterporate = true;
+    if (static_cast<unsigned int>(t8) <= 1) {
+        mpC->initInterSpring(t9, t10);
+    } else {
+        mpC->initInterParam(t9, t10);
+    }
 }
 
 __attribute__((weak)) void cCamImpPhoto::ctrlSub(MtVector3& idealCam, MtVector3& idealTar, f32& angX, f32& angY) {
@@ -135,8 +176,7 @@ inline cCamImpPhoto::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u
 
 cCamImpPhoto::MyDTI cCamImpPhoto::DTI("cCamImpPhoto", &::cCamImpBase::DTI, 320ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCamImpPhoto::MyDTI::newInstance() const {
-    DDON_STUB("cCamImpPhoto::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCamImpPhoto::MyDTI::newInstance() const {
+    return new (16u) cCamImpPhoto;
 }
 

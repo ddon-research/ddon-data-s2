@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cObjHitCache.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -14,14 +12,6 @@
 
 const MtDTI& cObjHitCache::getDTI() const {
     return cObjHitCache::DTI;
-}
-
-inline void* cObjHitCache::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cObjHitCache::DTI)->memAlloc(sz, align, cObjHitCache::DTI.getID());
-}
-
-inline void cObjHitCache::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cObjHitCache::DTI)->memFree(p_addr);
 }
 
 cObjHitCache::cObjHitCache() {

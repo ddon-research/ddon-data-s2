@@ -112,3 +112,15 @@ public:
 inline void* uGUIHudJob10Gauge::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIHudJob10Gauge::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIHudJob10Gauge::DTI);
+}
+
+inline void uGUIHudJob10Gauge::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIHudJob10Gauge::DTI)->memFree(p_addr);
+}

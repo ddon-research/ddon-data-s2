@@ -37,18 +37,25 @@ namespace nGUI { struct PROP_SETTER; }
 class rGUI;
 class uGUI;
 class uGUIActionPalette;
+class uGUIArisenCard;
 class uGUIBase;
+class uGUIBazaar;
 class uGUIBoxGachaInfo;
 class uGUIClanSearch;
 class uGUICommunityList;
 class uGUIFKeyPalette;
 class uGUIGauge;
+class uGUIGaugeNpc;
 class uGUIHudCustomSkillPallet;
 class uGUIMapMini;
+class uGUINpcWindow;
+class uGUIOption;
+class uGUIPawnReview;
 class uGUIPhoto;
 class uGUIPhotoAlbum;
 class uGUIPointer;
 class uGUIPopRmcQuestInfo;
+class uGUIServerSelectBase;
 
 // Declarations
 class cGUIInstAnimControl;
@@ -79,7 +86,10 @@ class cGUIInstance : public MtObject
     friend class uGUIBoxGachaInfo;
     friend class uGUICommunityList;
     friend class uGUIHudCustomSkillPallet;
+    friend class uGUIOption;
+    friend class uGUIPawnReview;
     friend class uGUIPopRmcQuestInfo;
+    friend class uGUIServerSelectBase;
 public:
     class MyDTI;
 public:
@@ -236,11 +246,15 @@ class cGUIInstNull : public cGUIInstance
     friend class cGUIInstAnimation;
     friend class cGUIUtility;
     friend class uGUIActionPalette;
+    friend class uGUIArisenCard;
     friend class uGUIBase;
+    friend class uGUIBazaar;
     friend class uGUIClanSearch;
     friend class uGUICommunityList;
     friend class uGUIFKeyPalette;
     friend class uGUIGauge;
+    friend class uGUIGaugeNpc;
+    friend class uGUINpcWindow;
     friend class uGUIPhoto;
     friend class uGUIPhotoAlbum;
     friend class uGUIPointer;
@@ -779,6 +793,18 @@ inline f32 cGUIInstNull::getScaleZ() const {
     return this->mScale.z;
 }
 
+inline f32 cGUIInstNull::getRotationX() const {
+    return this->mRotation.x * 57.295776f;
+}
+
+inline f32 cGUIInstNull::getRotationY() const {
+    return this->mRotation.y * 57.295776f;
+}
+
+inline f32 cGUIInstNull::getRotationZ() const {
+    return this->mRotation.z * 57.295776f;
+}
+
 inline MtVector4 cGUIInstNull::getColorScale() const {
     return this->mColorScale;
 }
@@ -825,4 +851,24 @@ inline cGUIInstance* cGUIInstance::getNext() const {
 
 inline cGUIInstance* cGUIInstance::getParent() const {
     return this->mpParent;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cGUIInstNull::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIInstNull::DTI)->memFree(p_addr);
+}
+
+inline void cGUIInstRoot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIInstRoot::DTI)->memFree(p_addr);
+}
+
+inline void cGUIInstScissorMask::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIInstScissorMask::DTI)->memFree(p_addr);
+}
+
+inline void cGUIInstance::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIInstance::DTI)->memFree(p_addr);
 }

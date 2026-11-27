@@ -18,20 +18,6 @@ const MtDTI& rTblMenuComm::getDTI() const {
     return rTblMenuComm::DTI;
 }
 
-inline void* rTblMenuComm::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTblMenuComm::DTI)->memAlloc(sz, align, rTblMenuComm::DTI.getID());
-}
-
-inline void rTblMenuComm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuComm::DTI)->memFree(p_addr);
-}
-
-inline rTblMenuComm::rTblMenuComm() {
-    setAttribute(18u);
-    mResourceType = 0;
-    mArray.mAutoDelete = true;
-}
-
 rTblMenuComm::~rTblMenuComm() {
     if (mArray.mLength != 0) {
         u32 v0_0 = mArray.mLength;
@@ -147,7 +133,7 @@ u32 rTblMenuComm::getCtgrNum() {
 
 u32 rTblMenuComm::getMsgNum(u32 uCtgrIdx) {
     if (uCtgrIdx < mArray.mLength) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mArray.getBuffer()[static_cast<int>(uCtgrIdx)]) + 24);
+        return static_cast<cDataList*>(mArray.getBuffer()[static_cast<int>(uCtgrIdx)])->mList.mLength;
     } else {
         return 0;
     }
@@ -163,14 +149,6 @@ MtObject* rTblMenuComm::MyDTI::newInstance() const {
 
 const MtDTI& rTblMenuComm::cDataList::getDTI() const {
     return rTblMenuComm::cDataList::DTI;
-}
-
-inline void* rTblMenuComm::cDataList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTblMenuComm::cDataList::DTI)->memAlloc(sz, align, rTblMenuComm::cDataList::DTI.getID());
-}
-
-inline void rTblMenuComm::cDataList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuComm::cDataList::DTI)->memFree(p_addr);
 }
 
 rTblMenuComm::cDataList::~cDataList() {
@@ -224,14 +202,6 @@ MtObject* rTblMenuComm::cDataList::MyDTI::newInstance() const {
 
 const MtDTI& rTblMenuComm::cData::getDTI() const {
     return rTblMenuComm::cData::DTI;
-}
-
-inline void* rTblMenuComm::cData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTblMenuComm::cData::DTI)->memAlloc(sz, align, rTblMenuComm::cData::DTI.getID());
-}
-
-inline void rTblMenuComm::cData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuComm::cData::DTI)->memFree(p_addr);
 }
 
 rTblMenuComm::cData::~cData() {

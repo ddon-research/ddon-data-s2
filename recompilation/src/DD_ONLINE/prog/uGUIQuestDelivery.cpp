@@ -44,10 +44,6 @@ const MtDTI& uGUIQuestDelivery::getDTI() const {
     return uGUIQuestDelivery::DTI;
 }
 
-inline void uGUIQuestDelivery::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestDelivery::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIQuestDelivery::~uGUIQuestDelivery() {
     if (mpGMDDeliveryRes != nullptr) {
         mpGMDDeliveryRes->release();
@@ -454,14 +450,6 @@ const MtDTI& uGUIQuestDelivery::cListItem::getDTI() const {
     return uGUIQuestDelivery::cListItem::DTI;
 }
 
-inline void* uGUIQuestDelivery::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIQuestDelivery::cListItem::DTI)->memAlloc(sz, align, uGUIQuestDelivery::cListItem::DTI.getID());
-}
-
-inline void uGUIQuestDelivery::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestDelivery::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIQuestDelivery::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIQuestDelivery::cListItem::MyDTI uGUIQuestDelivery::cListItem::DTI("uGUIQuestDelivery::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 104ul, 0u, 0u);
@@ -472,10 +460,6 @@ MtObject* uGUIQuestDelivery::cListItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIQuestDelivery::cDeliveryItem::getDTI() const {
     return uGUIQuestDelivery::cDeliveryItem::DTI;
-}
-
-inline void* uGUIQuestDelivery::cDeliveryItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIQuestDelivery::cDeliveryItem::DTI)->memAlloc(sz, align, uGUIQuestDelivery::cDeliveryItem::DTI.getID());
 }
 
 uGUIQuestDelivery::cDeliveryItem::~cDeliveryItem() {
@@ -491,10 +475,6 @@ MtObject* uGUIQuestDelivery::cDeliveryItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIQuestDelivery::cListInfo::getDTI() const {
     return uGUIQuestDelivery::cListInfo::DTI;
-}
-
-inline void uGUIQuestDelivery::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIQuestDelivery::cListInfo::DTI)->memFree(p_addr);
 }
 
 uGUIQuestDelivery::cListInfo::~cListInfo() {

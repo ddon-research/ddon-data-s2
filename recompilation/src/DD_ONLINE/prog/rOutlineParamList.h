@@ -175,3 +175,34 @@ inline cOutlineParam::cOutlineParam() {
 inline void* rOutlineParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cOutlineCtrl::request(const cOutlineParam* pNew) {
+    if (this->mpRequestParam != nullptr) {
+        if (pNew->mPriority >= this->mpRequestParam->mPriority) {
+            this->mpRequestParam = pNew;
+        }
+    } else {
+        this->mpRequestParam = pNew;
+    }
+}
+
+inline void cOutlineParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOutlineParam::DTI)->memFree(p_addr);
+}
+
+inline void* rOutlineParamList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOutlineParamList::DTI)->memAlloc(sz, align, ::rOutlineParamList::DTI.::MtDTI::getID());
+}
+
+inline void rOutlineParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOutlineParamList::DTI)->memFree(p_addr);
+}
+
+inline rOutlineParamList::rOutlineParamList() {
+    this->::cResource::setAttribute(18u);
+    this->mParamList.mAutoDelete = true;
+}

@@ -20,10 +20,6 @@ const MtDTI& rGeometry3::getDTI() const {
     return rGeometry3::DTI;
 }
 
-inline void rGeometry3::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGeometry3::DTI)->memFree(p_addr);
-}
-
 rGeometry3::~rGeometry3() {
     DDON_STUB("rGeometry3::~rGeometry3")
     /* stub */

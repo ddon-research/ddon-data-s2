@@ -3,7 +3,6 @@
 #include "cOcdParamRes.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,20 +14,8 @@ const MtDTI& cOcdImmuneParamRes::getDTI() const {
     return cOcdImmuneParamRes::DTI;
 }
 
-inline MtAllocator* cOcdImmuneParamRes::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cOcdImmuneParamRes::DTI);
-}
-
-inline void* cOcdImmuneParamRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdImmuneParamRes::DTI)->memAlloc(sz, align, cOcdImmuneParamRes::DTI.getID());
-}
-
 void* cOcdImmuneParamRes::operator new[](size_t sz, u32 align) {
     return cOcdImmuneParamRes::getAllocator()->memAlloc(sz, align, cOcdImmuneParamRes::DTI.getID());
-}
-
-inline void cOcdImmuneParamRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdImmuneParamRes::DTI)->memFree(p_addr);
 }
 
 void cOcdImmuneParamRes::operator delete[](void* p_addr) {
@@ -59,20 +46,8 @@ const MtDTI& cOcdStatusParamRes::getDTI() const {
     return cOcdStatusParamRes::DTI;
 }
 
-inline MtAllocator* cOcdStatusParamRes::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cOcdStatusParamRes::DTI);
-}
-
-inline void* cOcdStatusParamRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdStatusParamRes::DTI)->memAlloc(sz, align, cOcdStatusParamRes::DTI.getID());
-}
-
 void* cOcdStatusParamRes::operator new[](size_t sz, u32 align) {
     return cOcdStatusParamRes::getAllocator()->memAlloc(sz, align, cOcdStatusParamRes::DTI.getID());
-}
-
-inline void cOcdStatusParamRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdStatusParamRes::DTI)->memFree(p_addr);
 }
 
 void cOcdStatusParamRes::operator delete[](void* p_addr) {

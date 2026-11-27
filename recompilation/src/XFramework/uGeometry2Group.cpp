@@ -13,6 +13,7 @@
 #include "cResource.h"
 #include "cUnit.h"
 #include "nCollision.h"
+#include "rGeometry2Group.h"
 #include "sMain.h"
 #include "uGeometry2.h"
 #include "uGeometry2Base.h"
@@ -30,10 +31,6 @@ const MtDTI& uGeometry2Group::getDTI() const {
 
 void* uGeometry2Group::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uGeometry2Group::DTI)->memAlloc(sz, align, uGeometry2Group::DTI.mID);
-}
-
-inline void uGeometry2Group::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGeometry2Group::DTI)->memFree(p_addr);
 }
 
 uGeometry2Group::uGeometry2Group() {
@@ -181,14 +178,12 @@ __attribute__((weak)) void uGeometry2Group::updateGeometry(u32 GeometryIndex) {
     /* stub */
 }
 
-__attribute__((weak)) void uGeometry2Group::setResourceForUI(cResource* pRGeometryGroup) {
-    DDON_STUB("uGeometry2Group::setResourceForUI")
-    /* stub */
+void uGeometry2Group::setResourceForUI(cResource* pRGeometryGroup) {
+    loadResource(static_cast<rGeometry2Group*>(pRGeometryGroup));
 }
 
-__attribute__((weak)) cResource* uGeometry2Group::getResourceForUI() {
-    DDON_STUB("uGeometry2Group::getResourceForUI")
-    return nullptr;
+cResource* uGeometry2Group::getResourceForUI() {
+    return mpRGeometryGroup;
 }
 
 inline uGeometry2Group::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

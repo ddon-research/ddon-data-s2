@@ -61,3 +61,15 @@ inline void* uJobEquip::operator new(size_t sz, void* p_addr) {
 
 inline uJobEquip::uJobEquip() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* uJobEquip::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uJobEquip::DTI)->memAlloc(sz, align, ::uJobEquip::DTI.::MtDTI::getID());
+}
+
+inline void uJobEquip::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uJobEquip::DTI)->memFree(p_addr);
+}

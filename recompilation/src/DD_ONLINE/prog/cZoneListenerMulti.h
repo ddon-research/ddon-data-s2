@@ -144,6 +144,7 @@ public:
 
 class cZoneMultiListener : public cZoneListener
 {
+    friend class sWeatherManager;
 public:
     class MyDTI;
     struct stStack;
@@ -411,4 +412,46 @@ inline void* cZoneMultiStack::operator new(size_t sz, void* p_addr) {
 
 inline void* cZoneMultiStackNode::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cZoneContactInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneContactInfo::DTI)->memAlloc(sz, align, ::cZoneContactInfo::DTI.::MtDTI::getID());
+}
+
+inline void cZoneContactInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneContactInfo::DTI)->memFree(p_addr);
+}
+
+inline cZoneContactInfo::cZoneContactInfo() {
+    this->mOffset = ::MtVector3::Zero;
+    this->mHandle = -1;
+    this->mGroupId = -1;
+}
+
+inline void cZoneContactInfoList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneContactInfoList::DTI)->memFree(p_addr);
+}
+
+inline void cZoneContactPairInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneContactPairInfo::DTI)->memFree(p_addr);
+}
+
+inline void cZoneListenerMulti::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneListenerMulti::DTI)->memFree(p_addr);
+}
+
+inline void cZoneMultiListener::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneMultiListener::DTI)->memFree(p_addr);
+}
+
+inline void cZoneMultiStack::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneMultiStack::DTI)->memFree(p_addr);
+}
+
+inline void cZoneMultiStackNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneMultiStackNode::DTI)->memFree(p_addr);
 }

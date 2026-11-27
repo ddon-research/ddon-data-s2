@@ -147,3 +147,28 @@ inline cAISvUserProcess::cAISvUserProcess() {
 inline void* cAISvUserProcess::UserObjectInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline cAISvUserProcess::UserObjectInfo::UserObjectInfo() : mpObjectInstance(static_cast<MtObject*>(nullptr)), mpObjectDTI(static_cast<const MtDTI*>(nullptr)) {
+    this->mpNext = nullptr;
+    this->mpPrev = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* cAISvUserProcess::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAISvUserProcess::DTI)->memAlloc(sz, align, ::cAISvUserProcess::DTI.::MtDTI::mID);
+}
+
+inline void cAISvUserProcess::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAISvUserProcess::DTI)->memFree(p_addr);
+}
+
+inline void* cAISvUserProcess::UserObjectInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAISvUserProcess::UserObjectInfo::DTI)->memAlloc(sz, align, ::cAISvUserProcess::UserObjectInfo::DTI.::MtDTI::mID);
+}
+
+inline void cAISvUserProcess::UserObjectInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAISvUserProcess::UserObjectInfo::DTI)->memFree(p_addr);
+}

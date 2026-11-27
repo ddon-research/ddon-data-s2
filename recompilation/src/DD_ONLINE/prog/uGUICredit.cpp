@@ -50,16 +50,8 @@ const MtDTI& uGUICredit::getDTI() const {
     return uGUICredit::DTI;
 }
 
-inline MtAllocator* uGUICredit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICredit::DTI);
-}
-
 void* uGUICredit::operator new(size_t sz, u32 align) {
     return uGUICredit::getAllocator()->memAlloc(sz, align, uGUICredit::DTI.getID());
-}
-
-inline void uGUICredit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICredit::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICredit::~uGUICredit() {
@@ -102,14 +94,36 @@ void uGUICredit::moveEvent() {
     mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateFadeOut);
 }
 
-__attribute__((weak)) void uGUICredit::updateInit() {
-    DDON_STUB("uGUICredit::updateInit")
-    /* stub */
+void uGUICredit::updateInit() {
+    if (mCreditType == 1) {
+        sGame::getInstance()->fadeIn(30.0f, 0u);
+        static_cast<sSoundExt*>(sSound::getInstance())->requestStream(mpSoundRes, 34u, reinterpret_cast<const uintptr>(this), static_cast<sSound::CALLBACK_FUNC>(nullptr), static_cast<void*>(nullptr));
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICredit::updateWait);
 }
 
-__attribute__((weak)) void uGUICredit::updateWait() {
-    DDON_STUB("uGUICredit::updateWait")
-    /* stub */
+void uGUICredit::updateWait() {
+    mSpdRate = 1.0f;
+    if (mCreditType != 1) {
+        if ((sMouse::mpInstance)->mState[sInputManager::getInstance()->mMouseCurrentType].az > 0) {
+            mSpdRate = 12.0f;
+        }
+        if (sInputManager::getInstance()->getKeyCommon(nKeyCustom::KEY_CUSTOM_UI_MOUSE_DECIDE, nKeyCustom::GET_ON, nKeyCustom::MODE_CUSTOM, 0u) != 0) {
+            mSpdRate = 0.0f;
+        }
+        if (sInputManager::getInstance()->getKeyCommon(nKeyCustom::KEY_CUSTOM_KEY_UP, nKeyCustom::GET_ON, nKeyCustom::MODE_CUSTOM, 0u) != 0) {
+            mSpdRate = 6.0f;
+        } else {
+            if (sInputManager::getInstance()->getKeyCommon(nKeyCustom::KEY_CUSTOM_KEY_DOWN, nKeyCustom::GET_ON, nKeyCustom::MODE_CUSTOM, 0u) != 0) {
+                mSpdRate = 0.25f;
+            } else {
+                if (sInputManager::getInstance()->getKeyCommon(nKeyCustom::KEY_CUSTOM_UI_Y, nKeyCustom::GET_ON, nKeyCustom::MODE_CUSTOM, 0u) != 0) {
+                    mSpdRate = 0.0f;
+                }
+            }
+        }
+    }
+    updateDisp();
 }
 
 void uGUICredit::updateFadeOut() {

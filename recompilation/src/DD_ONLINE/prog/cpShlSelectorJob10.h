@@ -106,3 +106,15 @@ inline void* cShlParamCompSelectorJob10Cs08::operator new(size_t sz, void* p_add
 inline void* cpShlSelectorJob10Cs08::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cShlParamCompSelectorJob10Cs08::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamCompSelectorJob10Cs08::DTI)->memFree(p_addr);
+}
+
+inline void cpShlSelectorJob10Cs08::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlSelectorJob10Cs08::DTI)->memFree(p_addr);
+}

@@ -3,7 +3,6 @@
 #include "rFullbodyIKHuman2.h"
 
 #include "uFullbodyIKHuman2.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -22,10 +21,6 @@ __attribute__((weak)) void rFullbodyIKHuman2::usage() {
 
 const MtDTI& rFullbodyIKHuman2::getDTI() const {
     return rFullbodyIKHuman2::DTI;
-}
-
-inline void rFullbodyIKHuman2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFullbodyIKHuman2::DTI)->memFree(p_addr);
 }
 
 rFullbodyIKHuman2::rFullbodyIKHuman2() {
@@ -145,24 +140,6 @@ __attribute__((weak)) MtObject* rFullbodyIKHuman2::MyDTI::newInstance() const {
 
 const MtDTI& rFullbodyIKHuman2::JointAssign::getDTI() const {
     return rFullbodyIKHuman2::JointAssign::DTI;
-}
-
-inline void* rFullbodyIKHuman2::JointAssign::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFullbodyIKHuman2::JointAssign::DTI)->memAlloc(sz, align, rFullbodyIKHuman2::JointAssign::DTI.mID);
-}
-
-inline void rFullbodyIKHuman2::JointAssign::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFullbodyIKHuman2::JointAssign::DTI)->memFree(p_addr);
-}
-
-inline rFullbodyIKHuman2::JointAssign::JointAssign() {
-    mFBIKJntNo = 255;
-    mTargetJntNo = 255;
-    mRotate = false;
-    mEffOffset.x = MtVector3::Zero.x;
-    mEffOffset.y = MtVector3::Zero.y;
-    mEffOffset.z = MtVector3::Zero.z;
-    mEffOffset.pad_ = 0.0f;
 }
 
 void rFullbodyIKHuman2::JointAssign::createProperty(MtPropertyList& s) {

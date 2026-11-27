@@ -119,3 +119,19 @@ inline void cReplaceWardGmdList::operator delete[](void* p_addr) {
 inline void* cReplaceWardGmdList::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cReplaceWardGmdList::DTI)->memAlloc(sz, align, ::cReplaceWardGmdList::DTI.::MtDTI::getID());
 }
+
+inline void* cReplaceWardGmdList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cReplaceWardGmdList::DTI)->memAlloc(sz, align, ::cReplaceWardGmdList::DTI.::MtDTI::getID());
+}
+
+inline void cReplaceWardGmdList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cReplaceWardGmdList::DTI)->memFree(p_addr);
+}
+
+inline void* rReplaceWardGmdList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rReplaceWardGmdList::DTI)->memAlloc(sz, align, ::rReplaceWardGmdList::DTI.::MtDTI::getID());
+}
+
+inline void rReplaceWardGmdList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rReplaceWardGmdList::DTI)->memFree(p_addr);
+}

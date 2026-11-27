@@ -729,12 +729,18 @@ inline void* uGUIBoxGachaInfo::cLotList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIBoxGachaInfo::cLotList::cLotList() : mpInstImgLoadAnm(static_cast<cGUIInstAnimation*>(nullptr)), mpObjMsgComment(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgName(static_cast<cGUIObjMessage*>(nullptr)), mpObjTexRefIcon(static_cast<cGUIObjTextureRef*>(nullptr)), mpObjNullIcon(static_cast<cGUIObjNull*>(nullptr)), mpInstAnm(static_cast<cGUIInstAnimation*>(nullptr)), mpInstNullLotlist(static_cast<cGUIInstNull*>(nullptr)) {
+}
+
 inline void* uGUIBoxGachaInfo::cSumList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline void* uGUIBoxGachaInfo::cListItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIBoxGachaInfo::cListItem::cListItem() : mpInstItemiconinfoAnm(static_cast<cGUIInstAnimation*>(nullptr)), mpInstItemiconbaseAnm(static_cast<cGUIInstAnimation*>(nullptr)), mpInstItemiconAnm(static_cast<cGUIInstAnimation*>(nullptr)), mpInstItemiconNull(static_cast<cGUIInstNull*>(nullptr)), mpObjItemNumMsg2(static_cast<cGUIObjMessage*>(nullptr)), mpObjItemNumMsg(static_cast<cGUIObjMessage*>(nullptr)), mpObjItemlistMsg(static_cast<cGUIObjMessage*>(nullptr)), mpInstItemlistAnm(static_cast<cGUIInstAnimation*>(nullptr)), mpInstNullPointer(static_cast<cGUIInstNull*>(nullptr)), mpInstItemlistNull(static_cast<cGUIInstNull*>(nullptr)) {
 }
 
 inline uGUIBoxGachaInfo::stDetail::stDetail() {
@@ -758,4 +764,52 @@ inline uGUIBoxGachaInfo::cItemInfo::cItemInfo() {
     this->mItemDrawOne = 0;
     this->mItemId = 0;
     this->mItemNum = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIBoxGachaInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::DTI);
+}
+
+inline void uGUIBoxGachaInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBoxGachaInfo::cLotList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cLotList::DTI)->memAlloc(sz, align, ::uGUIBoxGachaInfo::cLotList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBoxGachaInfo::cLotList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cLotList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBoxGachaInfo::cSumList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cSumList::DTI)->memAlloc(sz, align, ::uGUIBoxGachaInfo::cSumList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBoxGachaInfo::cSumList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cSumList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBoxGachaInfo::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cListItem::DTI)->memAlloc(sz, align, ::uGUIBoxGachaInfo::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBoxGachaInfo::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBoxGachaInfo::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cListInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBoxGachaInfo::cItemInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cItemInfo::DTI)->memAlloc(sz, align, ::uGUIBoxGachaInfo::cItemInfo::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBoxGachaInfo::cItemInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBoxGachaInfo::cItemInfo::DTI)->memFree(p_addr);
 }

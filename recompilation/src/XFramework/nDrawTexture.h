@@ -147,11 +147,6 @@ namespace sce { namespace Gnm { class DepthRenderTarget; } }
 namespace sce { namespace Gnm { class RenderTarget; } }
 namespace sce { namespace Gnm { class Texture; } }
 
-// Declarations
-namespace nDraw { class DepthStencilView; }
-namespace nDraw { class RenderTargetView; }
-namespace nDraw { class Texture; }
-
 namespace nDraw {
     enum FORMAT_TYPE
     {
@@ -239,6 +234,11 @@ namespace nDraw {
         TT_2DMSARRAY = 9,
     };
 }  // namespace nDraw
+
+// Declarations
+namespace nDraw { class DepthStencilView; }
+namespace nDraw { class RenderTargetView; }
+namespace nDraw { class Texture; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -517,4 +517,12 @@ inline bool nDraw::Texture::isSRGBFormat(nDraw::FORMAT_TYPE fmt) {
            fmt == FORMAT_B8G8R8A8_UNORM_SRGB ||
            fmt == FORMAT_BCX_YCCA_SRGB ||
            fmt == FORMAT_BC7_UNORM_SRGB;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nDraw::Texture::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::Texture::DTI)->memFree(p_addr);
 }

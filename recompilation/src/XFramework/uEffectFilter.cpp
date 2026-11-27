@@ -23,10 +23,6 @@ void* uMultiBloomFilter::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uMultiBloomFilter::DTI)->memAlloc(sz, align, uMultiBloomFilter::DTI.mID);
 }
 
-inline void uMultiBloomFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uMultiBloomFilter::DTI)->memFree(p_addr);
-}
-
 uMultiBloomFilter::uMultiBloomFilter() {
     DDON_STUB("uMultiBloomFilter::uMultiBloomFilter")
     /* stub */
@@ -89,10 +85,6 @@ void* uMultiBlurFilter::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uMultiBlurFilter::DTI)->memAlloc(sz, align, uMultiBlurFilter::DTI.mID);
 }
 
-inline void uMultiBlurFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uMultiBlurFilter::DTI)->memFree(p_addr);
-}
-
 uMultiBlurFilter::uMultiBlurFilter() {
     DDON_STUB("uMultiBlurFilter::uMultiBlurFilter")
     /* stub */
@@ -153,10 +145,6 @@ const MtDTI& uMultiColorCorrectFilter::getDTI() const {
 
 void* uMultiColorCorrectFilter::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uMultiColorCorrectFilter::DTI)->memAlloc(sz, align, uMultiColorCorrectFilter::DTI.mID);
-}
-
-inline void uMultiColorCorrectFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uMultiColorCorrectFilter::DTI)->memFree(p_addr);
 }
 
 uMultiColorCorrectFilter::uMultiColorCorrectFilter() {
@@ -291,10 +279,6 @@ void* uMultiGodRaysFilter::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uMultiGodRaysFilter::DTI)->memAlloc(sz, align, uMultiGodRaysFilter::DTI.mID);
 }
 
-inline void uMultiGodRaysFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uMultiGodRaysFilter::DTI)->memFree(p_addr);
-}
-
 uMultiGodRaysFilter::uMultiGodRaysFilter() {
     DDON_STUB("uMultiGodRaysFilter::uMultiGodRaysFilter")
     /* stub */
@@ -336,8 +320,12 @@ __attribute__((weak)) s32 uMultiGodRaysFilter::getFilterOrder(const MtVector4& V
 }
 
 __attribute__((weak)) void uMultiGodRaysFilter::drawFilter(cDraw* pDraw, u32 EntryNo, f32 Transparency) {
-    DDON_STUB("uMultiGodRaysFilter::drawFilter")
-    /* stub */
+    // workaround
+    uGodRaysFilter::drawGodRays(
+        pDraw,
+        this,
+        *reinterpret_cast<const uGodRaysFilter::GodRaysParam*>(getFilterParam(EntryNo) + 1),
+        Transparency);
 }
 
 inline uMultiGodRaysFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

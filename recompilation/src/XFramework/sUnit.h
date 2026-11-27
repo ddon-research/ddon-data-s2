@@ -35,9 +35,6 @@ class uFullbodyIKHuman2;
 class uScrollCollisionGeometryGroupModel;
 class uScrollCollisionGeometryModel;
 
-// Declarations
-class sUnit;
-
 enum MOVE_LINE
 {
     NOT_CHAINED = 127,
@@ -107,6 +104,9 @@ enum MOVE_LINE
     LINE_63 = 63,
     MAX_MOVELINE = 64,
 };
+
+// Declarations
+class sUnit;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -461,4 +461,24 @@ inline bool sUnit::MoveLine::getRecvDraw() const {
 
 inline void* sUnit::UnitGroup::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sUnit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sUnit::DTI)->memFree(p_addr);
+}
+
+inline void* sUnit::MoveLine::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sUnit::MoveLine::DTI)->memAlloc(sz, align, ::sUnit::MoveLine::DTI.::MtDTI::mID);
+}
+
+inline void sUnit::MoveLine::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sUnit::MoveLine::DTI)->memFree(p_addr);
+}
+
+inline void sUnit::UnitGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sUnit::UnitGroup::DTI)->memFree(p_addr);
 }

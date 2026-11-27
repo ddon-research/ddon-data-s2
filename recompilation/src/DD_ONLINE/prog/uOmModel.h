@@ -236,3 +236,40 @@ inline uOmSimple::uOmSimple() {
     this->mpCtrl = nullptr;
     this->mbReqKill = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* uOmModel::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uOmModel::DTI)->memAlloc(sz, align, ::uOmModel::DTI.::MtDTI::getID());
+}
+
+inline void uOmModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uOmModel::DTI)->memFree(p_addr);
+}
+
+inline uOmModel::uOmModel() {
+    this->::uDDOModel::mUnitId = this->::uDDOModel::mUnitId | 256u;
+    this->mOmComp.mOmType = 1;
+    this->mHitPos.x = ::MtVector3::Zero.x;
+    this->mHitPos.y = ::MtVector3::Zero.y;
+    this->mHitPos.z = ::MtVector3::Zero.z;
+    this->mpCpOmLadder = nullptr;
+    this->mRnoHead = 0;
+    this->mHitPos.pad_ = 0.0f;
+    this->mpuAtkPL = nullptr;
+    this->mShlTimer = 0.0f;
+}
+
+inline void uOmShell::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uOmShell::DTI)->memFree(p_addr);
+}
+
+inline void* uOmSimple::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uOmSimple::DTI)->memAlloc(sz, align, ::uOmSimple::DTI.::MtDTI::getID());
+}
+
+inline void uOmSimple::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uOmSimple::DTI)->memFree(p_addr);
+}

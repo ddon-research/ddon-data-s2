@@ -68,8 +68,11 @@ nNetwork::Decoder::~Decoder() {
 }
 
 __attribute__((weak)) u16 nNetwork::Decoder::readU16() {
-    DDON_STUB("nNetwork::Decoder::readU16")
-    return {};
+    u16 val = 0;
+    if (mStream.read(&val, sizeof(val)) != sizeof(val)) {
+        mIsDrain = true;
+    }
+    return MtNetByteOrder::netToHost16(val);
 }
 
 __attribute__((weak)) u32 nNetwork::Decoder::readU32() {

@@ -25,10 +25,6 @@ const MtDTI& rStageJoint::getDTI() const {
     return rStageJoint::DTI;
 }
 
-inline void rStageJoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageJoint::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rStageJoint::~rStageJoint() {
     destruct();
 }
@@ -84,10 +80,6 @@ __attribute__((weak)) MtObject* rStageJoint::MyDTI::newInstance() const {
 
 const MtDTI& rStageJoint::Param::getDTI() const {
     return rStageJoint::Param::DTI;
-}
-
-inline void rStageJoint::Param::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageJoint::Param::DTI)->memFree(p_addr);
 }
 
 rStageJoint::Param::~Param() {
@@ -347,25 +339,12 @@ void rStageJoint::Info::setSndInfoName(const MtString& name) {
 
 static auto ddon_emit_0x01ab3140 __attribute__((used)) = &rStageJoint::Info::getSndInfoName;
 
-u64 rStageJoint::Info::getEfcColorZone() const {
-    return mEfcColorZone.mId;
-}
-
-u64 rStageJoint::Info::getEfcCtrlZone() const {
-    return mEfcCtrlZone.mId;
-}
-
-u64 rStageJoint::Info::getLightAndFogZone() const {
-    return mLightAndFogZone.mId;
-}
-
-__attribute__((weak)) u64 rStageJoint::Info::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE type) const {
-    DDON_STUB("rStageJoint::Info::getZoneUnitCtrl")
-    return {};
-}
-
-u64 rStageJoint::Info::getZoneStatus() const {
-    return mZoneStatus.mId;
+u64 rStageJoint::Info::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE type) const {
+    if (static_cast<unsigned int>(type) <= 2) {
+        return mZoneUnitCtrl[type].getResId();
+    } else {
+        return 0;
+    }
 }
 
 bool rStageJoint::Info::hasInfo() const {

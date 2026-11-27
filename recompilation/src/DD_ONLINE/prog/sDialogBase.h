@@ -162,3 +162,15 @@ inline void* sDialogBase::operator new(size_t sz, void* p_addr) {
 inline sDialogBase* sDialogBase::getInstance() {
     return ::sDialogBase::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sDialogBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sDialogBase::DTI);
+}
+
+inline void sDialogBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sDialogBase::DTI)->memFree(p_addr);
+}

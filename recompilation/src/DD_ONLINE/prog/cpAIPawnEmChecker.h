@@ -85,3 +85,23 @@ public:
 inline void* cpAIPawnEmChecker::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpAIPawnEmChecker::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpAIPawnEmChecker::DTI);
+}
+
+inline void cpAIPawnEmChecker::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpAIPawnEmChecker::DTI)->memFree(p_addr);
+}
+
+inline rAIPawnEmParam* cpAIPawnEmChecker::getAIPawnEmParam() {
+    return this->mpEmParam.mpPtr;
+}
+
+inline const rAIPawnEmParam* cpAIPawnEmChecker::getAIPawnEmParam() const {
+    return this->mpEmParam.mpPtr;
+}

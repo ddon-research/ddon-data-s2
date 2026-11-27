@@ -174,3 +174,19 @@ inline cLightQuestManager::cLightQuestInfo::cLightQuestInfo() {
     this->mEnemyGroupId = 0;
     this->mItemId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cLightQuestManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cLightQuestManager::DTI);
+}
+
+inline void cLightQuestManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLightQuestManager::DTI)->memFree(p_addr);
+}
+
+inline void* cLightQuestManager::cLightQuestInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cLightQuestManager::cLightQuestInfo::DTI)->memAlloc(sz, align, ::cLightQuestManager::cLightQuestInfo::DTI.::MtDTI::getID());
+}

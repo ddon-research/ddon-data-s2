@@ -16,14 +16,6 @@ const MtDTI& rGUIIconInfo::getDTI() const {
     return rGUIIconInfo::DTI;
 }
 
-inline void* rGUIIconInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memAlloc(sz, align, rGUIIconInfo::DTI.mID);
-}
-
-inline void rGUIIconInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGUIIconInfo::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rGUIIconInfo::getExt() const {
     return "gii";
 }

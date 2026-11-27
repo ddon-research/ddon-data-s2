@@ -76,3 +76,15 @@ public:
 inline void* cOcdCache::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cOcdCache::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdCache::DTI)->memAlloc(sz, align, ::cOcdCache::DTI.::MtDTI::getID());
+}
+
+inline void cOcdCache::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdCache::DTI)->memFree(p_addr);
+}

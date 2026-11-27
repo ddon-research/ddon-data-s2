@@ -4,7 +4,6 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
@@ -14,10 +13,6 @@
 
 const MtDTI& CDataC2SChangeCharacterEquipInfo::getDTI() const {
     return CDataC2SChangeCharacterEquipInfo::DTI;
-}
-
-inline MtAllocator* CDataC2SChangeCharacterEquipInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataC2SChangeCharacterEquipInfo::DTI);
 }
 
 void* CDataC2SChangeCharacterEquipInfo::operator new(size_t sz, u32 align) {
@@ -36,10 +31,6 @@ const MtDTI& CDataChangeEquipJobItem::getDTI() const {
     return CDataChangeEquipJobItem::DTI;
 }
 
-inline MtAllocator* CDataChangeEquipJobItem::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataChangeEquipJobItem::DTI);
-}
-
 void* CDataChangeEquipJobItem::operator new(size_t sz, u32 align) {
     return CDataChangeEquipJobItem::getAllocator()->memAlloc(sz, align, CDataChangeEquipJobItem::DTI.getID());
 }
@@ -54,10 +45,6 @@ MtObject* CDataChangeEquipJobItem::MyDTI::newInstance() const {
 
 const MtDTI& CDataCharacterItemSlotInfo::getDTI() const {
     return CDataCharacterItemSlotInfo::DTI;
-}
-
-inline MtAllocator* CDataCharacterItemSlotInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterItemSlotInfo::DTI);
 }
 
 void* CDataCharacterItemSlotInfo::operator new(size_t sz, u32 align) {
@@ -76,12 +63,28 @@ MtObject* CDataCharacterItemSlotInfo::MyDTI::newInstance() const {
     return new (16u) CDataCharacterItemSlotInfo;
 }
 
-const MtDTI& CDataEquipElementParam::getDTI() const {
-    return CDataEquipElementParam::DTI;
+const MtDTI& CDataEquipBindNotice::getDTI() const {
+    return CDataEquipBindNotice::DTI;
 }
 
-inline MtAllocator* CDataEquipElementParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEquipElementParam::DTI);
+void* CDataEquipBindNotice::operator new(size_t sz, u32 align) {
+    return CDataEquipBindNotice::getAllocator()->memAlloc(sz, align, CDataEquipBindNotice::DTI.getID());
+}
+
+__attribute__((weak)) void CDataEquipBindNotice::operator delete(void* p_addr) {
+    CDataEquipBindNotice::getAllocator()->memFree(p_addr);
+}
+
+inline CDataEquipBindNotice::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataEquipBindNotice::MyDTI CDataEquipBindNotice::DTI("CDataEquipBindNotice", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
+
+MtObject* CDataEquipBindNotice::MyDTI::newInstance() const {
+    return new (16u) CDataEquipBindNotice;
+}
+
+const MtDTI& CDataEquipElementParam::getDTI() const {
+    return CDataEquipElementParam::DTI;
 }
 
 void* CDataEquipElementParam::operator new(size_t sz, u32 align) {
@@ -104,10 +107,6 @@ const MtDTI& CDataEquipItemInfo::getDTI() const {
     return CDataEquipItemInfo::DTI;
 }
 
-inline MtAllocator* CDataEquipItemInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEquipItemInfo::DTI);
-}
-
 void* CDataEquipItemInfo::operator new(size_t sz, u32 align) {
     return CDataEquipItemInfo::getAllocator()->memAlloc(sz, align, CDataEquipItemInfo::DTI.getID());
 }
@@ -126,10 +125,6 @@ MtObject* CDataEquipItemInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataEquipJobItem::getDTI() const {
     return CDataEquipJobItem::DTI;
-}
-
-inline MtAllocator* CDataEquipJobItem::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEquipJobItem::DTI);
 }
 
 void* CDataEquipJobItem::operator new(size_t sz, u32 align) {
@@ -152,10 +147,6 @@ const MtDTI& CDataEquipPreset::getDTI() const {
     return CDataEquipPreset::DTI;
 }
 
-inline MtAllocator* CDataEquipPreset::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataEquipPreset::DTI);
-}
-
 void* CDataEquipPreset::operator new(size_t sz, u32 align) {
     return CDataEquipPreset::getAllocator()->memAlloc(sz, align, CDataEquipPreset::DTI.getID());
 }
@@ -172,12 +163,28 @@ MtObject* CDataEquipPreset::MyDTI::newInstance() const {
     return new (16u) CDataEquipPreset;
 }
 
-const MtDTI& CDataFurnitureLayoutData::getDTI() const {
-    return CDataFurnitureLayoutData::DTI;
+const MtDTI& CDataFurnitureLayout::getDTI() const {
+    return CDataFurnitureLayout::DTI;
 }
 
-inline MtAllocator* CDataFurnitureLayoutData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataFurnitureLayoutData::DTI);
+void* CDataFurnitureLayout::operator new(size_t sz, u32 align) {
+    return CDataFurnitureLayout::getAllocator()->memAlloc(sz, align, CDataFurnitureLayout::DTI.getID());
+}
+
+__attribute__((weak)) void CDataFurnitureLayout::operator delete(void* p_addr) {
+    CDataFurnitureLayout::getAllocator()->memFree(p_addr);
+}
+
+inline CDataFurnitureLayout::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataFurnitureLayout::MyDTI CDataFurnitureLayout::DTI("CDataFurnitureLayout", &::CPacketDataBase::DTI, 24ul, 0u, 0u);
+
+MtObject* CDataFurnitureLayout::MyDTI::newInstance() const {
+    return new (16u) CDataFurnitureLayout;
+}
+
+const MtDTI& CDataFurnitureLayoutData::getDTI() const {
+    return CDataFurnitureLayoutData::DTI;
 }
 
 void* CDataFurnitureLayoutData::operator new(size_t sz, u32 align) {
@@ -200,10 +207,6 @@ const MtDTI& CDataGameItemStorage::getDTI() const {
     return CDataGameItemStorage::DTI;
 }
 
-inline MtAllocator* CDataGameItemStorage::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGameItemStorage::DTI);
-}
-
 void* CDataGameItemStorage::operator new(size_t sz, u32 align) {
     return CDataGameItemStorage::getAllocator()->memAlloc(sz, align, CDataGameItemStorage::DTI.getID());
 }
@@ -222,10 +225,6 @@ MtObject* CDataGameItemStorage::MyDTI::newInstance() const {
 
 const MtDTI& CDataGameItemStorageInfo::getDTI() const {
     return CDataGameItemStorageInfo::DTI;
-}
-
-inline MtAllocator* CDataGameItemStorageInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGameItemStorageInfo::DTI);
 }
 
 void* CDataGameItemStorageInfo::operator new(size_t sz, u32 align) {
@@ -248,10 +247,6 @@ const MtDTI& CDataItemEquipElement::getDTI() const {
     return CDataItemEquipElement::DTI;
 }
 
-inline MtAllocator* CDataItemEquipElement::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataItemEquipElement::DTI);
-}
-
 void* CDataItemEquipElement::operator new(size_t sz, u32 align) {
     return CDataItemEquipElement::getAllocator()->memAlloc(sz, align, CDataItemEquipElement::DTI.getID());
 }
@@ -270,10 +265,6 @@ MtObject* CDataItemEquipElement::MyDTI::newInstance() const {
 
 const MtDTI& CDataItemList::getDTI() const {
     return CDataItemList::DTI;
-}
-
-inline MtAllocator* CDataItemList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataItemList::DTI);
 }
 
 void* CDataItemList::operator new(size_t sz, u32 align) {
@@ -296,10 +287,6 @@ const MtDTI& CDataItemUIDList::getDTI() const {
     return CDataItemUIDList::DTI;
 }
 
-inline MtAllocator* CDataItemUIDList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataItemUIDList::DTI);
-}
-
 void* CDataItemUIDList::operator new(size_t sz, u32 align) {
     return CDataItemUIDList::getAllocator()->memAlloc(sz, align, CDataItemUIDList::DTI.getID());
 }
@@ -318,10 +305,6 @@ MtObject* CDataItemUIDList::MyDTI::newInstance() const {
 
 const MtDTI& CDataItemUpdateResult::getDTI() const {
     return CDataItemUpdateResult::DTI;
-}
-
-inline MtAllocator* CDataItemUpdateResult::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataItemUpdateResult::DTI);
 }
 
 void* CDataItemUpdateResult::operator new(size_t sz, u32 align) {
@@ -344,10 +327,6 @@ const MtDTI& CDataJewelryEquipLimit::getDTI() const {
     return CDataJewelryEquipLimit::DTI;
 }
 
-inline MtAllocator* CDataJewelryEquipLimit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataJewelryEquipLimit::DTI);
-}
-
 void* CDataJewelryEquipLimit::operator new(size_t sz, u32 align) {
     return CDataJewelryEquipLimit::getAllocator()->memAlloc(sz, align, CDataJewelryEquipLimit::DTI.getID());
 }
@@ -366,10 +345,6 @@ MtObject* CDataJewelryEquipLimit::MyDTI::newInstance() const {
 
 const MtDTI& CDataMoveItemUIDFromTo::getDTI() const {
     return CDataMoveItemUIDFromTo::DTI;
-}
-
-inline MtAllocator* CDataMoveItemUIDFromTo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataMoveItemUIDFromTo::DTI);
 }
 
 void* CDataMoveItemUIDFromTo::operator new(size_t sz, u32 align) {
@@ -392,10 +367,6 @@ const MtDTI& CDataPresetEquipInfo::getDTI() const {
     return CDataPresetEquipInfo::DTI;
 }
 
-inline MtAllocator* CDataPresetEquipInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPresetEquipInfo::DTI);
-}
-
 void* CDataPresetEquipInfo::operator new(size_t sz, u32 align) {
     return CDataPresetEquipInfo::getAllocator()->memAlloc(sz, align, CDataPresetEquipInfo::DTI.getID());
 }
@@ -414,10 +385,6 @@ MtObject* CDataPresetEquipInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataS2CCharacterEquipInfo::getDTI() const {
     return CDataS2CCharacterEquipInfo::DTI;
-}
-
-inline MtAllocator* CDataS2CCharacterEquipInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataS2CCharacterEquipInfo::DTI);
 }
 
 void* CDataS2CCharacterEquipInfo::operator new(size_t sz, u32 align) {
@@ -440,10 +407,6 @@ const MtDTI& CDataS2CPawnEquipInfo::getDTI() const {
     return CDataS2CPawnEquipInfo::DTI;
 }
 
-inline MtAllocator* CDataS2CPawnEquipInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataS2CPawnEquipInfo::DTI);
-}
-
 void* CDataS2CPawnEquipInfo::operator new(size_t sz, u32 align) {
     return CDataS2CPawnEquipInfo::getAllocator()->memAlloc(sz, align, CDataS2CPawnEquipInfo::DTI.getID());
 }
@@ -462,10 +425,6 @@ MtObject* CDataS2CPawnEquipInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataStorageItemUIDList::getDTI() const {
     return CDataStorageItemUIDList::DTI;
-}
-
-inline MtAllocator* CDataStorageItemUIDList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataStorageItemUIDList::DTI);
 }
 
 void* CDataStorageItemUIDList::operator new(size_t sz, u32 align) {

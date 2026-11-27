@@ -431,3 +431,15 @@ inline void cBVHCollision::NodeBinaryBasic::operator delete(void* padr) {
 inline void cBVHCollision::NodeBinaryBasic::operator delete[](void* padr) {
     MtMemory::mpAllocatorType[12]->memFree(padr);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cBVHCollision::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBVHCollision::DTI)->memFree(p_addr);
+}
+
+inline void* cBVHCollision::cWorkBuildOnlineFast::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBVHCollision::cWorkBuildOnlineFast::DTI)->memAlloc(sz, align, ::cBVHCollision::cWorkBuildOnlineFast::DTI.::MtDTI::mID);
+}

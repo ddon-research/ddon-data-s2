@@ -91,3 +91,10 @@ inline void* uGUIIndicator::operator new(size_t sz, void* p_addr) {
 inline void uGUIIndicator::setType(u32 uType) {
     this->mType = uType;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIIndicator::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIIndicator::DTI);
+}

@@ -703,3 +703,71 @@ inline rWeatherStageInfo::rWeatherStageInfo() {
     mEnvMapBlendColorScale[0] = 0.8f;
     mEnvMapBlendColorScale[1] = 0.05f;
 }
+
+inline void cWeatherCloudModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherCloudModel::DTI)->memFree(p_addr);
+}
+
+inline void* cWeatherFogInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherFogInfo::DTI)->memAlloc(sz, align, ::cWeatherFogInfo::DTI.::MtDTI::getID());
+}
+
+inline void cWeatherFogInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherFogInfo::DTI)->memFree(p_addr);
+}
+
+inline void cWeatherInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cWeatherParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherParam::DTI)->memAlloc(sz, align, ::cWeatherParam::DTI.::MtDTI::getID());
+}
+
+inline void cWeatherParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherParam::DTI)->memFree(p_addr);
+}
+
+inline void cWeatherParamEfcInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherParamEfcInfo::DTI)->memFree(p_addr);
+}
+
+inline void cWeatherParamInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherParamInfo::DTI)->memFree(p_addr);
+}
+
+inline void* rWeatherFogInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWeatherFogInfo::DTI)->memAlloc(sz, align, ::rWeatherFogInfo::DTI.::MtDTI::getID());
+}
+
+inline void rWeatherFogInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWeatherFogInfo::DTI)->memFree(p_addr);
+}
+
+inline void* rWeatherInfoTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWeatherInfoTbl::DTI)->memAlloc(sz, align, ::rWeatherInfoTbl::DTI.::MtDTI::getID());
+}
+
+inline void rWeatherInfoTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWeatherInfoTbl::DTI)->memFree(p_addr);
+}
+
+inline void* rWeatherParamEfcInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWeatherParamEfcInfo::DTI)->memAlloc(sz, align, ::rWeatherParamEfcInfo::DTI.::MtDTI::getID());
+}
+
+inline void rWeatherParamEfcInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWeatherParamEfcInfo::DTI)->memFree(p_addr);
+}
+
+inline void* rWeatherParamInfoTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWeatherParamInfoTbl::DTI)->memAlloc(sz, align, ::rWeatherParamInfoTbl::DTI.::MtDTI::getID());
+}
+
+inline void rWeatherParamInfoTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWeatherParamInfoTbl::DTI)->memFree(p_addr);
+}
+
+inline void rWeatherStageInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWeatherStageInfo::DTI)->memFree(p_addr);
+}

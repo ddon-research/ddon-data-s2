@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,10 +15,6 @@
 
 const MtDTI& cTbl2ChatMacro::getDTI() const {
     return cTbl2ChatMacro::DTI;
-}
-
-MtAllocator* cTbl2ChatMacro::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cTbl2ChatMacro::DTI);
 }
 
 void* cTbl2ChatMacro::operator new(size_t sz, u32 align) {
@@ -50,10 +45,6 @@ MtObject* cTbl2ChatMacro::MyDTI::newInstance() const {
 
 const MtDTI& rTbl2ChatMacro::getDTI() const {
     return rTbl2ChatMacro::DTI;
-}
-
-inline void* rTbl2ChatMacro::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTbl2ChatMacro::DTI)->memAlloc(sz, align, rTbl2ChatMacro::DTI.getID());
 }
 
 __attribute__((weak)) bool rTbl2ChatMacro::loadData(MtDataReader& in, cTbl2ChatMacro* pData) {

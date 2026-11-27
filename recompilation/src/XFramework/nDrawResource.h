@@ -13,6 +13,7 @@ class MtDTI;
 class MtPropertyList;
 class cDraw;
 class sGUI;
+class sGrass;
 class sRender;
 
 // Declarations
@@ -31,6 +32,7 @@ namespace nDraw {
     {
         friend class ::cDraw;
         friend class ::sGUI;
+        friend class ::sGrass;
         friend class ::sRender;
 
         friend class Material;
@@ -96,4 +98,12 @@ inline void* nDraw::Resource::operator new(size_t sz, void* p_addr) {
 
 inline bool nDraw::Resource::isProtect() const {
     return this->mRefFrame >= ::nDraw::Resource::mRenderFrame;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nDraw::Resource::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::Resource::DTI)->memFree(p_addr);
 }

@@ -386,3 +386,39 @@ inline void* uSoundSubMixer::FaderParam::operator new(size_t sz, void* p_addr) {
 inline uSoundSubMixer::FaderParam::FaderParam() {
     this->mpSoundSubMixer = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uSoundSubMixer::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::DTI);
+}
+
+inline void uSoundSubMixer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundSubMixer::CurrentSubMixer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::CurrentSubMixer::DTI)->memAlloc(sz, align, ::uSoundSubMixer::CurrentSubMixer::DTI.::MtDTI::getID());
+}
+
+inline void uSoundSubMixer::CurrentSubMixer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::CurrentSubMixer::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundSubMixer::CurrentSubMixer::CurrentFader::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI)->memAlloc(sz, align, ::uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI.::MtDTI::getID());
+}
+
+inline void uSoundSubMixer::CurrentSubMixer::CurrentFader::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::CurrentSubMixer::CurrentFader::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundSubMixer::FaderParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::FaderParam::DTI)->memAlloc(sz, align, ::uSoundSubMixer::FaderParam::DTI.::MtDTI::getID());
+}
+
+inline void uSoundSubMixer::FaderParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundSubMixer::FaderParam::DTI)->memFree(p_addr);
+}

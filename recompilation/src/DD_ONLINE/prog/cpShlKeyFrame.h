@@ -128,3 +128,19 @@ inline cShlParamCompKeyFrame::cShlParamCompKeyFrame() : type(static_cast<cShlPar
 inline void* cpShlKeyFrame::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline cpShlKeyFrame::cpShlKeyFrame() {
+    this->mTimeMax = 0.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cpShlKeyFrame::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpShlKeyFrame::DTI)->memAlloc(sz, align, ::cpShlKeyFrame::DTI.::MtDTI::getID());
+}
+
+inline void cpShlKeyFrame::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlKeyFrame::DTI)->memFree(p_addr);
+}

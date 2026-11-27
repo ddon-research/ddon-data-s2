@@ -25,6 +25,7 @@ class MtVector3;
 class cContextInstHm;
 class cCycleQuestSubCategoryManager;
 class cEndContentsManager;
+class cQuestSyncDataManager;
 class cQuestTask;
 namespace nMarker { class cMarkerInfo; }
 class rGUIMessage;
@@ -32,52 +33,6 @@ class sQuestManagerExt;
 class sTalkManager;
 class uGUIAreaMaster;
 class uGUIQuestList;
-
-// Declarations
-namespace nQuest { struct stValues; }
-namespace nQuest { class SCHEDULE_ID; }
-namespace nQuest { class QUEST_ID; }
-namespace nQuest { class cQuestInfoBase; }
-namespace nQuest { class cOrderCondition; }
-namespace nQuest { class cRepeatBonus; }
-namespace nQuest { class cRewardData; }
-namespace nQuest { class cFixRewardData; }
-namespace nQuest { class cDeliverRequestItemInfo; }
-namespace nQuest { class cQuestDeliverRequestInfo; }
-namespace nQuest { class cDeliveredItemInfo; }
-namespace nQuest { class cQuestDeliveredInfo; }
-namespace nQuest { class cQuestMarker; }
-namespace nQuest { class cCycleContentsPersonalRankInfo; }
-namespace nQuest { class cCycleContentsInfo; }
-namespace nQuest { class cGUINewspaperSetQuestMonsterInfo; }
-namespace nQuest { class cGUINewspaperSetQuestItemInfo; }
-namespace nQuest { class cGUINewspaperSetQuestInfo; }
-namespace nQuest { class cGUINewspaperRecommededQuestInfo; }
-namespace nQuest { class cGUINewspaperSetQuestOpenDateInfo; }
-namespace nQuest { class cCycleContentsResultPointInfo; }
-namespace nQuest { class cCycleContentsResultRewardInfo; }
-namespace nQuest { class cCycleContentsResultInfo; }
-namespace nQuest { class cCycleContentsRankingInfo; }
-namespace nQuest { class cCycleContentsRankingRewardInfo; }
-namespace nQuest { class cCycleContentsBorderRewardInfo; }
-namespace nQuest { class cQuestCommand; }
-namespace nQuest { class cTalkData; }
-namespace nQuest { class cDeliverTargetInfo; }
-namespace nQuest { class cGUIListData; }
-namespace nQuest { class cGUIInfoData; }
-namespace nQuest { class cGUIBoardData; }
-namespace nQuest { class cGUIDeliveryData; }
-namespace nQuest { class cGUIEventBoardData; }
-namespace nQuest { class cGUIAreaMasterData; }
-namespace nQuest { class cGUIActiveData; }
-namespace nQuest { class cCycleContentsSituationInfo; }
-namespace nQuest { class cEndContentsGroupQuestInfo; }
-namespace nQuest { class cTargetEnemyInfo; }
-namespace nQuest { class cScheduleInfo; }
-namespace nQuest { class cPartyBonusInfo; }
-namespace nQuest { class cGUINewspaperSetQuestInfoList; }
-namespace nQuest { class TargetEnemyInfoArray; }
-namespace nQuest { class QuestCommandList; }
 
 namespace nQuest {
     enum ACTIVE_QUEST_TYPE
@@ -447,6 +402,52 @@ namespace nQuest {
     };
 }  // namespace nQuest
 
+// Declarations
+namespace nQuest { struct stValues; }
+namespace nQuest { class SCHEDULE_ID; }
+namespace nQuest { class QUEST_ID; }
+namespace nQuest { class cQuestInfoBase; }
+namespace nQuest { class cOrderCondition; }
+namespace nQuest { class cRepeatBonus; }
+namespace nQuest { class cRewardData; }
+namespace nQuest { class cFixRewardData; }
+namespace nQuest { class cDeliverRequestItemInfo; }
+namespace nQuest { class cQuestDeliverRequestInfo; }
+namespace nQuest { class cDeliveredItemInfo; }
+namespace nQuest { class cQuestDeliveredInfo; }
+namespace nQuest { class cQuestMarker; }
+namespace nQuest { class cCycleContentsPersonalRankInfo; }
+namespace nQuest { class cCycleContentsInfo; }
+namespace nQuest { class cGUINewspaperSetQuestMonsterInfo; }
+namespace nQuest { class cGUINewspaperSetQuestItemInfo; }
+namespace nQuest { class cGUINewspaperSetQuestInfo; }
+namespace nQuest { class cGUINewspaperRecommededQuestInfo; }
+namespace nQuest { class cGUINewspaperSetQuestOpenDateInfo; }
+namespace nQuest { class cCycleContentsResultPointInfo; }
+namespace nQuest { class cCycleContentsResultRewardInfo; }
+namespace nQuest { class cCycleContentsResultInfo; }
+namespace nQuest { class cCycleContentsRankingInfo; }
+namespace nQuest { class cCycleContentsRankingRewardInfo; }
+namespace nQuest { class cCycleContentsBorderRewardInfo; }
+namespace nQuest { class cQuestCommand; }
+namespace nQuest { class cTalkData; }
+namespace nQuest { class cDeliverTargetInfo; }
+namespace nQuest { class cGUIListData; }
+namespace nQuest { class cGUIInfoData; }
+namespace nQuest { class cGUIBoardData; }
+namespace nQuest { class cGUIDeliveryData; }
+namespace nQuest { class cGUIEventBoardData; }
+namespace nQuest { class cGUIAreaMasterData; }
+namespace nQuest { class cGUIActiveData; }
+namespace nQuest { class cCycleContentsSituationInfo; }
+namespace nQuest { class cEndContentsGroupQuestInfo; }
+namespace nQuest { class cTargetEnemyInfo; }
+namespace nQuest { class cScheduleInfo; }
+namespace nQuest { class cPartyBonusInfo; }
+namespace nQuest { class cGUINewspaperSetQuestInfoList; }
+namespace nQuest { class TargetEnemyInfoArray; }
+namespace nQuest { class QuestCommandList; }
+
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
@@ -582,6 +583,7 @@ namespace nQuest {
     class SCHEDULE_ID : public ::MtObject
     {
         friend class ::cCycleQuestSubCategoryManager;
+        friend class ::cQuestSyncDataManager;
         friend class nQuest::cGUIInfoData;
         friend class nQuest::cQuestMarker;
         friend class ::sQuestManagerExt;
@@ -661,6 +663,8 @@ namespace nQuest {
 
     class cOrderCondition : public nQuest::cQuestInfoBase
     {
+        friend class nQuest::cCycleContentsSituationInfo;
+        friend class nQuest::cEndContentsGroupQuestInfo;
     public:
         class MyDTI;
     public:
@@ -2895,4 +2899,276 @@ inline u32 nQuest::cPartyBonusInfo::getAreaPointRatio() const {
 
 inline bool nQuest::cPartyBonusInfo::hasReceived() const {
     return this->mHasReceived;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void nQuest::cQuestInfoBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cQuestInfoBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cOrderCondition::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cOrderCondition::DTI);
+}
+
+inline void* nQuest::cRepeatBonus::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cRepeatBonus::DTI)->memAlloc(sz, align, ::nQuest::cRepeatBonus::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cRepeatBonus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cRepeatBonus::DTI)->memFree(p_addr);
+}
+
+inline void* nQuest::cRewardData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cRewardData::DTI)->memAlloc(sz, align, ::nQuest::cRewardData::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cRewardData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cRewardData::DTI)->memFree(p_addr);
+}
+
+inline void nQuest::cFixRewardData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cFixRewardData::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cDeliverRequestItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cDeliverRequestItemInfo::DTI);
+}
+
+inline void nQuest::cDeliverRequestItemInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cDeliverRequestItemInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cQuestDeliverRequestInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cQuestDeliverRequestInfo::DTI);
+}
+
+inline void nQuest::cQuestDeliverRequestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cQuestDeliverRequestInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cDeliveredItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cDeliveredItemInfo::DTI);
+}
+
+inline void nQuest::cDeliveredItemInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cDeliveredItemInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cDeliveredItemInfo::cDeliverCharacterInfo::DTI);
+}
+
+inline MtAllocator* nQuest::cQuestDeliveredInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cQuestDeliveredInfo::DTI);
+}
+
+inline void nQuest::cQuestDeliveredInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cQuestDeliveredInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cQuestMarker::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cQuestMarker::DTI);
+}
+
+inline void nQuest::cQuestMarker::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cQuestMarker::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cCycleContentsPersonalRankInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsPersonalRankInfo::DTI);
+}
+
+inline MtAllocator* nQuest::cCycleContentsInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsInfo::DTI);
+}
+
+inline void nQuest::cCycleContentsInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cGUINewspaperSetQuestMonsterInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperSetQuestMonsterInfo::DTI);
+}
+
+inline void nQuest::cGUINewspaperSetQuestMonsterInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperSetQuestMonsterInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cGUINewspaperSetQuestItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperSetQuestItemInfo::DTI);
+}
+
+inline void nQuest::cGUINewspaperSetQuestItemInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperSetQuestItemInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cGUINewspaperSetQuestInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperSetQuestInfo::DTI);
+}
+
+inline void nQuest::cGUINewspaperSetQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperSetQuestInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cGUINewspaperRecommededQuestInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperRecommededQuestInfo::DTI);
+}
+
+inline void nQuest::cGUINewspaperRecommededQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperRecommededQuestInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cGUINewspaperSetQuestOpenDateInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperSetQuestOpenDateInfo::DTI);
+}
+
+inline void nQuest::cGUINewspaperSetQuestOpenDateInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUINewspaperSetQuestOpenDateInfo::DTI)->memFree(p_addr);
+}
+
+inline void* nQuest::cCycleContentsResultPointInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultPointInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsResultPointInfo::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cCycleContentsResultPointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultPointInfo::DTI)->memFree(p_addr);
+}
+
+inline void* nQuest::cCycleContentsResultRewardInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsResultRewardInfo::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cCycleContentsResultRewardInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultRewardInfo::DTI)->memFree(p_addr);
+}
+
+inline void* nQuest::cCycleContentsResultInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsResultInfo::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cCycleContentsResultInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsResultInfo::DTI)->memFree(p_addr);
+}
+
+inline void* nQuest::cCycleContentsRankingInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsRankingInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsRankingInfo::DTI.::MtDTI::getID());
+}
+
+inline void* nQuest::cCycleContentsRankingRewardInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsRankingRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsRankingRewardInfo::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cCycleContentsRankingRewardInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsRankingRewardInfo::DTI)->memFree(p_addr);
+}
+
+inline void* nQuest::cCycleContentsBorderRewardInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsBorderRewardInfo::DTI)->memAlloc(sz, align, ::nQuest::cCycleContentsBorderRewardInfo::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cCycleContentsBorderRewardInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsBorderRewardInfo::DTI)->memFree(p_addr);
+}
+
+inline void* nQuest::cQuestCommand::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cQuestCommand::DTI)->memAlloc(sz, align, ::nQuest::cQuestCommand::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cQuestCommand::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cQuestCommand::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cTalkData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cTalkData::DTI);
+}
+
+inline void nQuest::cTalkData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cTalkData::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cDeliverTargetInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cDeliverTargetInfo::DTI);
+}
+
+inline void nQuest::cDeliverTargetInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cDeliverTargetInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cGUIListData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIListData::DTI);
+}
+
+inline MtAllocator* nQuest::cGUIBoardData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIBoardData::DTI);
+}
+
+inline void nQuest::cGUIBoardData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUIBoardData::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cGUIDeliveryData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIDeliveryData::DTI);
+}
+
+inline void nQuest::cGUIDeliveryData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUIDeliveryData::DTI)->memFree(p_addr);
+}
+
+inline void* nQuest::cGUIEventBoardData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIEventBoardData::DTI)->memAlloc(sz, align, ::nQuest::cGUIEventBoardData::DTI.::MtDTI::getID());
+}
+
+inline void nQuest::cGUIEventBoardData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUIEventBoardData::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cGUIAreaMasterData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIAreaMasterData::DTI);
+}
+
+inline MtAllocator* nQuest::cGUIActiveData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cGUIActiveData::DTI);
+}
+
+inline void nQuest::cGUIActiveData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cGUIActiveData::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cCycleContentsSituationInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsSituationInfo::DTI);
+}
+
+inline void nQuest::cCycleContentsSituationInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cCycleContentsSituationInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cEndContentsGroupQuestInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cEndContentsGroupQuestInfo::DTI);
+}
+
+inline void nQuest::cEndContentsGroupQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cEndContentsGroupQuestInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cTargetEnemyInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cTargetEnemyInfo::DTI);
+}
+
+inline void nQuest::cTargetEnemyInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cTargetEnemyInfo::DTI)->memFree(p_addr);
+}
+
+inline void nQuest::cScheduleInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cScheduleInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nQuest::cPartyBonusInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nQuest::cPartyBonusInfo::DTI);
+}
+
+inline void nQuest::cPartyBonusInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nQuest::cPartyBonusInfo::DTI)->memFree(p_addr);
 }

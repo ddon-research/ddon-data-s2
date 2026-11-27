@@ -28,16 +28,8 @@ const MtDTI& sArchiveManager::getDTI() const {
     return sArchiveManager::DTI;
 }
 
-inline MtAllocator* sArchiveManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sArchiveManager::DTI);
-}
-
 void* sArchiveManager::operator new(size_t sz, u32 align) {
     return sArchiveManager::getAllocator()->memAlloc(sz, align, sArchiveManager::DTI.getID());
-}
-
-inline void sArchiveManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sArchiveManager::DTI)->memFree(p_addr);
 }
 
 TICKET sArchiveManager::IssueTicket() {
@@ -125,8 +117,19 @@ bool sArchiveManager::addArcLoader(cArcLoaderBase* pBase) {
 }
 
 __attribute__((weak)) void sArchiveManager::eraseArcLoader(cArcLoaderBase* pBase) {
-    DDON_STUB("sArchiveManager::eraseArcLoader")
-    /* stub */
+    if (mpArcLoaderActive == pBase) {
+        mpArcLoaderActive = nullptr;
+    }
+    
+    pBase->setStateArcLoaderClear();
+    
+    if (pBase->mHandle != -1 && pBase != nullptr) {
+        mArcLoaderStack.elems[static_cast<unsigned short>(pBase->mHandle) <= 255U
+            ? static_cast<unsigned int>(pBase->mHandle)
+            : 0U] = nullptr;
+        mArcLoaderRelease = true;
+        pBase->mHandle = -1;
+    }
 }
 
 __attribute__((weak)) void sArchiveManager::moveArcLoader() {

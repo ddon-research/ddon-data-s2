@@ -107,16 +107,8 @@ const MtDTI& cpJob03::getDTI() const {
     return cpJob03::DTI;
 }
 
-inline MtAllocator* cpJob03::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJob03::DTI);
-}
-
 void* cpJob03::operator new(size_t sz, u32 align) {
     return cpJob03::getAllocator()->memAlloc(sz, align, cpJob03::DTI.getID());
-}
-
-inline void cpJob03::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob03::DTI)->memFree(p_addr);
 }
 
 cpJob03::cpJob03() {
@@ -296,8 +288,43 @@ void cpJob03::updatePtr() {
 }
 
 __attribute__((weak)) void cpJob03::updateEfcHandle() {
-    DDON_STUB("cpJob03::updateEfcHandle")
-    /* stub */
+    uLineCtrlUnit* t1 = mpLandEfcUnit;
+    cEfcHandle** t2;
+    
+    if (t1 != nullptr) {
+        t2 = reinterpret_cast<cEfcHandle**>(reinterpret_cast<char*>(t1) + 0x2510);
+        if (*t2 != nullptr &&
+            static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(*t2)) {
+            *reinterpret_cast<void**>(reinterpret_cast<char*>(*t2) + 0x60) = nullptr;
+            *t2 = nullptr;
+        }
+    }
+    
+    t1 = mpLandHitEfcUnit;
+    if (t1 != nullptr) {
+        t2 = reinterpret_cast<cEfcHandle**>(reinterpret_cast<char*>(t1) + 0x2510);
+        if (*t2 != nullptr &&
+            static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(*t2)) {
+            *reinterpret_cast<void**>(reinterpret_cast<char*>(*t2) + 0x60) = nullptr;
+            *t2 = nullptr;
+        }
+    }
+    
+    t1 = mpCs05EfcUnit;
+    if (t1 != nullptr) {
+        t2 = reinterpret_cast<cEfcHandle**>(reinterpret_cast<char*>(t1) + 0x2510);
+        if (*t2 != nullptr &&
+            static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(*t2)) {
+            *reinterpret_cast<void**>(reinterpret_cast<char*>(*t2) + 0x60) = nullptr;
+            *t2 = nullptr;
+        }
+    }
+    
+    if (mpEfcBakuretsu != nullptr &&
+        static_cast<sEffectExt*>(sEffect::getInstance())->isInvalidHandle(mpEfcBakuretsu)) {
+        *reinterpret_cast<void**>(reinterpret_cast<char*>(mpEfcBakuretsu) + 0x60) = nullptr;
+        mpEfcBakuretsu = nullptr;
+    }
 }
 
 __attribute__((weak)) void cpJob03::setupJobData() {
@@ -506,10 +533,6 @@ __attribute__((weak)) MtObject* cpJob03::MyDTI::newInstance() const {
 
 const MtDTI& cpJob03::uLineCtrlUnit::getDTI() const {
     return cpJob03::uLineCtrlUnit::DTI;
-}
-
-inline void cpJob03::uLineCtrlUnit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob03::uLineCtrlUnit::DTI)->memFree(p_addr);
 }
 
 cpJob03::uLineCtrlUnit::~uLineCtrlUnit() {

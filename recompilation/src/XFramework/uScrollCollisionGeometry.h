@@ -33,6 +33,7 @@ namespace nCollision { class cScrCommonFilter; }
 class rCollisionObj;
 class rGeometry2;
 class rGeometry3;
+class sCollision;
 
 // Declarations
 class uScrollCollisionGeometry;
@@ -47,6 +48,7 @@ using u8 = unsigned char;
 
 class uScrollCollisionGeometry : public uScrollCollision
 {
+    friend class sCollision;
 public:
     class MyDTI;
     class cGeometryInfo;
@@ -249,4 +251,12 @@ inline void* uScrollCollisionGeometry::operator new(size_t sz, void* p_addr) {
 
 inline void* uScrollCollisionGeometry::cGeometryInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uScrollCollisionGeometry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uScrollCollisionGeometry::DTI)->memFree(p_addr);
 }

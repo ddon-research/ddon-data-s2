@@ -251,3 +251,27 @@ inline void* cShlParamSpline::cSplineShlNodeParam::operator new(size_t sz, void*
 inline void* uShlSpline::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamSpline::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamSpline::DTI)->memAlloc(sz, align, ::cShlParamSpline::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamSpline::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamSpline::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cShlParamSpline::cSplineShlNodeParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamSpline::cSplineShlNodeParam::DTI);
+}
+
+inline cShlParamSpline::cSplineShlNodeParam::cSplineShlNodeParam() {
+    this->mOffset = ::MtVector3::Zero;
+}
+
+inline void uShlSpline::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlSpline::DTI)->memFree(p_addr);
+}

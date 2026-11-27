@@ -8,6 +8,7 @@
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
+#include "cQuestMarkerManager.h"
 #include "cQuestSvRequestManager.h"
 #include "cQuestTask.h"
 #include "nQuest.h"
@@ -27,10 +28,6 @@
 
 const MtDTI& cQuestManagerBase::getDTI() const {
     return cQuestManagerBase::DTI;
-}
-
-inline void cQuestManagerBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestManagerBase::DTI)->memFree(p_addr);
 }
 
 u32 cQuestManagerBase::getQuestNum() const {
@@ -105,9 +102,56 @@ __attribute__((weak)) void cQuestManagerBase::cancelQuestNotOrderEndDistribution
     /* stub */
 }
 
-__attribute__((weak)) void cQuestManagerBase::deleteQuestTask(cQuestTask* pTask) {
-    DDON_STUB("cQuestManagerBase::deleteQuestTask")
-    /* stub */
+void cQuestManagerBase::deleteQuestTask(cQuestTask* pTask) {
+    cQuestSvRequestManager* t0 = sQuestManagerExt::getInstance()->getQuestSvRequestMgr();
+    t0->deleteRequestQueue(pTask->getScheduleId());
+    cQuestMarkerManager* t1 = sQuestManagerExt::getInstance()->getQuestMarkerMgr();
+    t1->removeMarker(pTask->getScheduleId(), -1);
+    u32 v0_0 = mQuestTask.mLength;
+    if (v0_0 != 0) {
+        MtObject* * v0_1 = mQuestTask.mpArray;
+        unsigned int i0_3 = 0;
+        u32 v3_0;
+        unsigned int v4_1;
+        u32 v4_2;
+        unsigned int v4_3;
+        for (;;) {
+            if (pTask == v0_1[i0_3]) {
+                if (!mQuestTask.mAutoDelete) {
+                    v3_0 = v0_0;
+                } else {
+                    if (pTask == nullptr) {
+                        v3_0 = v0_0;
+                    } else {
+                        delete pTask;
+                        v3_0 = mQuestTask.mLength;
+                    }
+                }
+                if ((i0_3 + 1u) < v3_0) {
+                    v4_1 = i0_3 + 1u;
+                    v4_2 = v3_0;
+                    v4_3 = i0_3;
+                    for (;;) {
+                        mQuestTask.mpArray[v4_3] = mQuestTask.mpArray[v4_1];
+                        if (v4_2 != (v4_1 + 1u)) {
+                            v4_3 = v4_1;
+                            v4_1 = v4_1 + 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                mQuestTask.mLength = v3_0 - 1u;
+                break;
+            } else {
+                if ((i0_3 + 1u) < v0_0) {
+                    i0_3 = i0_3 + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void cQuestManagerBase::initStage() {

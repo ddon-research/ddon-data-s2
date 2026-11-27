@@ -20,23 +20,6 @@ const MtDTI& rSoundMotionSe::getDTI() const {
     return rSoundMotionSe::DTI;
 }
 
-inline void* rSoundMotionSe::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundMotionSe::DTI)->memAlloc(sz, align, rSoundMotionSe::DTI.getID());
-}
-
-inline void rSoundMotionSe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundMotionSe::DTI)->memFree(p_addr);
-}
-
-inline rSoundMotionSe::rSoundMotionSe() {
-    setAttribute(18u);
-    mHeader.Magic = 0x45534D;
-    mHeader.Version = 9;
-    mpIDToIndexTbl = nullptr;
-    mIDToIndexTblNum = 0;
-    mMotionSe.mAutoDelete = true;
-}
-
 __attribute__((noinline)) rSoundMotionSe::~rSoundMotionSe() {
     if (mpIDToIndexTbl != nullptr) {
         MtMemoryAllocator::getAllocator(rSoundMotionSe::DTI)->memFree(static_cast<void*>(mpIDToIndexTbl));
@@ -154,10 +137,6 @@ MtObject* rSoundMotionSe::MyDTI::newInstance() const {
 
 const MtDTI& rSoundMotionSe::cSoundMotionSeData::getDTI() const {
     return rSoundMotionSe::cSoundMotionSeData::DTI;
-}
-
-inline void rSoundMotionSe::cSoundMotionSeData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundMotionSe::cSoundMotionSeData::DTI)->memFree(p_addr);
 }
 
 rSoundMotionSe::cSoundMotionSeData::~cSoundMotionSeData() {

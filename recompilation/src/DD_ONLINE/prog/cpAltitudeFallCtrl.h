@@ -124,3 +124,15 @@ inline f32 cpAltitudeFallCtrl::getFallDistance() {
 inline f32 cpAltitudeFallCtrl::getLastFallDistance() {
     return this->mLastFallDistance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpAltitudeFallCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpAltitudeFallCtrl::DTI);
+}
+
+inline void cpAltitudeFallCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpAltitudeFallCtrl::DTI)->memFree(p_addr);
+}

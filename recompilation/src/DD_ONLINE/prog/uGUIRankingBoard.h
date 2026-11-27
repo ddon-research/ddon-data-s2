@@ -524,3 +524,35 @@ inline void* uGUIRankingBoard::cListInfo::operator new(size_t sz, void* p_addr) 
 inline void* uGUIRankingBoard::cRankingInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIRankingBoard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRankingBoard::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIRankingBoard::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIRankingBoard::cListItem::DTI)->memAlloc(sz, align, ::uGUIRankingBoard::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIRankingBoard::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRankingBoard::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIRankingBoard::cRankingItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIRankingBoard::cRankingItem::DTI)->memAlloc(sz, align, ::uGUIRankingBoard::cRankingItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIRankingBoard::cRankingItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRankingBoard::cRankingItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIRankingBoard::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRankingBoard::cListInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIRankingBoard::cRankingInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRankingBoard::cRankingInfo::DTI)->memFree(p_addr);
+}

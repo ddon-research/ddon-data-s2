@@ -32,23 +32,6 @@ class MtUI;
 class MtVector3;
 class MtVector4;
 
-// Declarations
-namespace MtCollisionUtil { class MtArrayElement; }
-namespace MtCollisionUtil { class MtDataBuffer; }
-namespace MtCollisionUtil { class MtStack; }
-namespace MtCollisionUtil { class MtFunc; }
-namespace MtCollisionUtil { class MtFunc32; }
-namespace MtCollisionUtil { class MtFunc32X2; }
-namespace MtCollisionUtil { class MtFuncPtr; }
-namespace MtCollisionUtil { class MtFuncPtr32; }
-namespace MtCollisionUtil { class MtListElement; }
-namespace MtCollisionUtil { class MtList; }
-namespace MtCollisionUtil { class MtTreeDTI; }
-namespace MtCollisionUtil { struct EpaFace; }
-namespace MtCollisionUtil { struct EpaExpandEdge; }
-namespace MtCollisionUtil { struct MtDataPtr32; }
-namespace MtCollisionUtil { struct MtU32_U16Two; }
-
 namespace MtCollisionUtil {
     enum AABB_EDGE_ID
     {
@@ -119,6 +102,23 @@ namespace MtCollisionUtil {
         TRI_VORONOI_V2 = 6,
     };
 }  // namespace MtCollisionUtil
+
+// Declarations
+namespace MtCollisionUtil { class MtArrayElement; }
+namespace MtCollisionUtil { class MtDataBuffer; }
+namespace MtCollisionUtil { class MtStack; }
+namespace MtCollisionUtil { class MtFunc; }
+namespace MtCollisionUtil { class MtFunc32; }
+namespace MtCollisionUtil { class MtFunc32X2; }
+namespace MtCollisionUtil { class MtFuncPtr; }
+namespace MtCollisionUtil { class MtFuncPtr32; }
+namespace MtCollisionUtil { class MtListElement; }
+namespace MtCollisionUtil { class MtList; }
+namespace MtCollisionUtil { class MtTreeDTI; }
+namespace MtCollisionUtil { struct EpaFace; }
+namespace MtCollisionUtil { struct EpaExpandEdge; }
+namespace MtCollisionUtil { struct MtDataPtr32; }
+namespace MtCollisionUtil { struct MtU32_U16Two; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -826,4 +826,28 @@ inline void* MtCollisionUtil::MtTreeDTI::operator new(size_t sz, void* p_addr) {
 }
 
 inline MtCollisionUtil::MtTreeDTI::MtTreeDTI() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void* MtCollisionUtil::MtDataBuffer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDataBuffer::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtDataBuffer::DTI.::MtDTI::mID);
+}
+
+inline void* MtCollisionUtil::MtListElement::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtListElement::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtListElement::DTI.::MtDTI::mID);
+}
+
+inline void* MtCollisionUtil::MtList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtList::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtList::DTI.::MtDTI::mID);
+}
+
+inline void* MtCollisionUtil::MtTreeDTI::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtTreeDTI::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtTreeDTI::DTI.::MtDTI::mID);
+}
+
+inline void MtCollisionUtil::MtTreeDTI::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtTreeDTI::DTI)->memFree(p_addr);
 }

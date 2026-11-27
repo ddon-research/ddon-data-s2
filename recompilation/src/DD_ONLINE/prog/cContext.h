@@ -685,7 +685,7 @@ inline void cContextCharacter::clrIsServerDamage() {
 }
 
 inline u32 cContextCharacter::getServerDamageMsgNum() const {
-    return this->mServerDamageMsgArray.::MtArray::mLength;
+    return this->mServerDamageMsgArray.::MtArray::length();
 }
 
 inline bool cContextCharacter::isSlaveDamage() const {
@@ -701,7 +701,7 @@ inline void cContextCharacter::clrIsSlaveDamage() {
 }
 
 inline u32 cContextCharacter::getDamageMsgNum() const {
-    return this->mDamageMsgArray.::MtArray::mLength;
+    return this->mDamageMsgArray.::MtArray::length();
 }
 
 inline bool cContextCharacter::isCatchHit() const {
@@ -870,4 +870,24 @@ inline u32 cContextCharacter::getBowNetUpdateFlag() const {
 
 inline void cContextCharacter::setBowNetUpdateFlag(u32 flag) {
     this->mBowNetUpdateFlag = flag;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cContext::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContext::DTI)->memFree(p_addr);
+}
+
+inline void cContextCharacter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cContextCharacter::DTI)->memFree(p_addr);
+}
+
+inline const nNetMsgData::stNetPos& cContextCharacter::getShlRealPos(u32 index) const {
+    return this->mShlPos[index];
+}
+
+inline const nNetMsgData::stNetPos& cContextCharacter::getShlTargetRealPos(u32 index) const {
+    return this->mShlTarget[index];
 }

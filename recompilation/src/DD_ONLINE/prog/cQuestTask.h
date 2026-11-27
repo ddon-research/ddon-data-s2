@@ -1418,3 +1418,96 @@ inline u32 cQuestTask::cQuestProcess::getDieEmNum() {
 inline cQuestTask* cQuestTask::cQuestProcess::getQuestTask() const {
     return this->mpParent;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cQuestPersonalData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPersonalData::DTI)->memFree(p_addr);
+}
+
+inline s32 cQuestPersonalData::getRequestDeliverProcessNo(uControl* pCtrl) const {
+    cQuestTask::cQuestProcess* pProcess = this->::cQuestPersonalData::getDeliverProcess(pCtrl);
+    if (pProcess != nullptr) {
+        return pProcess->mProcessNo;
+    } else {
+        return 0;
+    }
+}
+
+inline void* cQuestPersonalData::cQuestPurpose::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestPersonalData::cQuestPurpose::DTI)->memAlloc(sz, align, ::cQuestPersonalData::cQuestPurpose::DTI.::MtDTI::getID());
+}
+
+inline void cQuestPersonalData::cQuestPurpose::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPersonalData::cQuestPurpose::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestPersonalData::cQuestFlag::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestPersonalData::cQuestFlag::DTI)->memAlloc(sz, align, ::cQuestPersonalData::cQuestFlag::DTI.::MtDTI::getID());
+}
+
+inline void cQuestPersonalData::cQuestFlag::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPersonalData::cQuestFlag::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cQuestTask::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cQuestTask::DTI);
+}
+
+inline void cQuestTask::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTask::DTI)->memFree(p_addr);
+}
+
+inline void cQuestTask::cQuestOmTargetData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTask::cQuestOmTargetData::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestTask::cLayoutFlagInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestTask::cLayoutFlagInfo::DTI)->memAlloc(sz, align, ::cQuestTask::cLayoutFlagInfo::DTI.::MtDTI::getID());
+}
+
+inline void cQuestTask::cLayoutFlagInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTask::cLayoutFlagInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestTask::cLayoutFlagInfo::cSetInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestTask::cLayoutFlagInfo::cSetInfo::DTI)->memAlloc(sz, align, ::cQuestTask::cLayoutFlagInfo::cSetInfo::DTI.::MtDTI::getID());
+}
+
+inline void cQuestTask::cLayoutFlagInfo::cSetInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTask::cLayoutFlagInfo::cSetInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestTask::cEnemyGroupInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestTask::cEnemyGroupInfo::DTI)->memAlloc(sz, align, ::cQuestTask::cEnemyGroupInfo::DTI.::MtDTI::getID());
+}
+
+inline void cQuestTask::cEnemyGroupInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTask::cEnemyGroupInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestTask::cLeaderQuestProgress::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestTask::cLeaderQuestProgress::DTI)->memAlloc(sz, align, ::cQuestTask::cLeaderQuestProgress::DTI.::MtDTI::getID());
+}
+
+inline void cQuestTask::cLeaderQuestProgress::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTask::cLeaderQuestProgress::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestTask::cDeliveryItemInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestTask::cDeliveryItemInfo::DTI)->memAlloc(sz, align, ::cQuestTask::cDeliveryItemInfo::DTI.::MtDTI::getID());
+}
+
+inline void cQuestTask::cDeliveryItemInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTask::cDeliveryItemInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cQuestTask::cQuestProcess::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cQuestTask::cQuestProcess::DTI);
+}
+
+inline void cQuestTask::cQuestProcess::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTask::cQuestProcess::DTI)->memFree(p_addr);
+}

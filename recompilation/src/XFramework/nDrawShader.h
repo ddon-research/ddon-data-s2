@@ -6,18 +6,9 @@
 // Forward declarations
 namespace nDraw { struct InputLayouts; }
 namespace nDraw { struct SHADER_PARAM; }
-namespace nDraw { struct VARIABLE; }
 namespace nPS4 { class GeometryShaderObject; }
 namespace nPS4 { class PixelShaderObject; }
 namespace nPS4 { class VertexShaderObject; }
-
-// Declarations
-namespace nDraw { struct OBJECT; }
-namespace nDraw { struct SHADER; }
-namespace nDraw { struct SHADER_CODE; }
-namespace nDraw { struct SHADER_DESC; }
-namespace nDraw { struct SHADER_PARAMINFO; }
-namespace nDraw { struct SQ_BASE; }
 
 namespace nDraw {
     enum CLASS_TYPE
@@ -82,9 +73,24 @@ namespace nDraw {
     };
 }  // namespace nDraw
 
+// Declarations
+namespace nDraw { struct OBJECT; }
+namespace nDraw { struct SHADER; }
+namespace nDraw { struct SHADER_CODE; }
+namespace nDraw { struct SHADER_DESC; }
+namespace nDraw { struct SHADER_INPUT; }
+namespace nDraw { struct SHADER_KEY; }
+namespace nDraw { struct SHADER_OBJECT_KEY; }
+namespace nDraw { struct SHADER_PARAMINFO; }
+namespace nDraw { struct SQ_BASE; }
+namespace nDraw { struct VARIABLE; }
+
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
+using u32 = unsigned int;
+using SO_HANDLE = u32;
+using __uint64_t = long unsigned int;
 namespace nDraw { using HComputeShader = void*; }
 namespace nDraw { using HDomainShader = void*; }
 namespace nDraw { using HGeometryShader = nPS4::GeometryShaderObject*; }
@@ -92,7 +98,8 @@ namespace nDraw { using HHullShader = void*; }
 namespace nDraw { using HInputLayout = nDraw::InputLayouts*; }
 namespace nDraw { using HPixelShader = nPS4::PixelShaderObject*; }
 namespace nDraw { using HVertexShader = nPS4::VertexShaderObject*; }
-using u32 = unsigned int;
+using u16 = unsigned short;
+using u64 = __uint64_t;
 
 namespace nDraw {
     struct OBJECT
@@ -138,6 +145,32 @@ namespace nDraw {
 }  // namespace nDraw
 
 namespace nDraw {
+    struct SHADER_INPUT
+    {
+    public:
+        SO_HANDLE layouts[4];  // offset: 0x0
+        u32 crc;  // offset: 0x10
+        u32 padding1;  // offset: 0x14
+        void* playout;  // offset: 0x18
+    };
+}  // namespace nDraw
+
+namespace nDraw {
+    struct SHADER_OBJECT_KEY
+    {
+    public:
+        SO_HANDLE handle;  // offset: 0x0
+        u32 padding1;  // offset: 0x4
+        union
+        {
+        public:
+            SO_HANDLE hdata;  // offset: 0x0
+            void* pdata;  // offset: 0x0
+        };  // offset: 0x8
+    };
+}  // namespace nDraw
+
+namespace nDraw {
     struct SHADER_PARAMINFO
     {
     public:
@@ -154,6 +187,53 @@ namespace nDraw {
     public:
         u32 type : 4;  // offset: 0x0
         u32 reserved : 28;  // offset: 0x0
+    };
+}  // namespace nDraw
+
+namespace nDraw {
+    struct VARIABLE
+    {
+    public:
+        MT_CTSTR name;  // offset: 0x0
+        u32 attr : 19;  // offset: 0x8
+        u32 ctype : 3;  // offset: 0x8
+        u32 size : 10;  // offset: 0x8
+        union
+        {
+        public:
+            struct
+            {
+            public:
+                u32 dtype : 4;  // offset: 0x0
+                u32 col_num : 4;  // offset: 0x0
+                u32 row_num : 4;  // offset: 0x0
+                u32 reserved : 8;  // offset: 0x0
+                u32 element_num : 12;  // offset: 0x0
+            };  // offset: 0x0
+            struct
+            {
+            public:
+                u32 hstruct : 12;  // offset: 0x0
+                u32 padding4 : 8;  // offset: 0x0
+                u32 padding : 12;  // offset: 0x0
+            };  // offset: 0x0
+            struct
+            {
+            public:
+                u32 padding2 : 12;  // offset: 0x0
+                u32 otype : 4;  // offset: 0x0
+                u32 ttype : 4;  // offset: 0x0
+                u32 padding3 : 12;  // offset: 0x0
+            };  // offset: 0x0
+        };  // offset: 0xc
+        MT_CTSTR sname;  // offset: 0x10
+        u32 sindex : 8;  // offset: 0x18
+        u32 offset : 10;  // offset: 0x18
+        u32 svalue : 6;  // offset: 0x18
+        u32 annotation_num : 8;  // offset: 0x18
+        u32 padding1;  // offset: 0x1c
+        nDraw::VARIABLE* annotations;  // offset: 0x20
+        void* pinitvalues;  // offset: 0x28
     };
 }  // namespace nDraw
 
@@ -179,5 +259,22 @@ namespace nDraw {
         u32* resources;  // offset: 0x60
         u32 resource_num;  // offset: 0x68
         u32 padding;  // offset: 0x6c
+    };
+}  // namespace nDraw
+
+namespace nDraw {
+    struct SHADER_KEY
+    {
+    public:
+        u64 id;  // offset: 0x0
+        u32 version;  // offset: 0x8
+        u32 size;  // offset: 0xc
+        SO_HANDLE technique;  // offset: 0x10
+        SO_HANDLE layouts[4];  // offset: 0x14
+        u32 encode_targets;  // offset: 0x24
+        u32 reserved;  // offset: 0x28
+        u16 tech_pass;  // offset: 0x2c
+        u16 key_num;  // offset: 0x2e
+        nDraw::SHADER_OBJECT_KEY keys[1];  // offset: 0x30
     };
 }  // namespace nDraw

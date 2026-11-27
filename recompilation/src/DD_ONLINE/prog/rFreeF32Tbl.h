@@ -124,3 +124,20 @@ inline void rFreeF32Tbl::allocMem(u32 size) {
     freeMem();
     mpHeader = static_cast<stHeader*>(getAllocator()->memAlloc(size, 16u));
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rFreeF32Tbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFreeF32Tbl::DTI)->memAlloc(sz, align, ::rFreeF32Tbl::DTI.::MtDTI::getID());
+}
+
+inline void rFreeF32Tbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFreeF32Tbl::DTI)->memFree(p_addr);
+}
+
+inline rFreeF32Tbl::rFreeF32Tbl() {
+    this->::cResource::setAttribute(16u);
+    this->mpHeader = nullptr;
+}

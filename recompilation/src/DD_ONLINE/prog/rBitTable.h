@@ -136,3 +136,19 @@ inline void cBitTable::operator delete[](void* p_addr) {
 inline void* cBitTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cBitTable::DTI)->memAlloc(sz, align, ::cBitTable::DTI.::MtDTI::getID());
 }
+
+inline void* cBitTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBitTable::DTI)->memAlloc(sz, align, ::cBitTable::DTI.::MtDTI::getID());
+}
+
+inline void cBitTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBitTable::DTI)->memFree(p_addr);
+}
+
+inline void* rBitTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rBitTable::DTI)->memAlloc(sz, align, ::rBitTable::DTI.::MtDTI::getID());
+}
+
+inline void rBitTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rBitTable::DTI)->memFree(p_addr);
+}

@@ -3,7 +3,6 @@
 #include "ScreenShot.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
@@ -13,10 +12,6 @@
 
 const MtDTI& CDataScreenShotCategory::getDTI() const {
     return CDataScreenShotCategory::DTI;
-}
-
-inline MtAllocator* CDataScreenShotCategory::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataScreenShotCategory::DTI);
 }
 
 void* CDataScreenShotCategory::operator new(size_t sz, u32 align) {

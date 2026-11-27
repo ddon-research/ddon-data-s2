@@ -468,3 +468,27 @@ inline nEquipDataJewelry::cJewelryData::cJewelryData() {
     this->mNum = 0;
     this->mKind = static_cast<rItemList::rItemParam::EQUIP_SUB_CATEGORY>(0);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cEquipData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cEquipData::DTI);
+}
+
+inline void* nEquipAbilityInfo::cEquipAbilityData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nEquipAbilityInfo::cEquipAbilityData::DTI)->memAlloc(sz, align, ::nEquipAbilityInfo::cEquipAbilityData::DTI.::MtDTI::getID());
+}
+
+inline void nEquipAbilityInfo::cEquipAbilityData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nEquipAbilityInfo::cEquipAbilityData::DTI)->memFree(p_addr);
+}
+
+inline void* nEquipDataJewelry::cJewelryData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nEquipDataJewelry::cJewelryData::DTI)->memAlloc(sz, align, ::nEquipDataJewelry::cJewelryData::DTI.::MtDTI::getID());
+}
+
+inline void nEquipDataJewelry::cJewelryData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nEquipDataJewelry::cJewelryData::DTI)->memFree(p_addr);
+}

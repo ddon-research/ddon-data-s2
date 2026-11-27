@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSoundReverb.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemory.h"
@@ -33,10 +32,6 @@ inline void* rSoundReverb::cSoundReverbData::operator new(size_t sz, u32 align) 
 
 const MtDTI& rSoundReverb::getDTI() const {
     return rSoundReverb::DTI;
-}
-
-inline void rSoundReverb::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundReverb::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rSoundReverb::~rSoundReverb() {
@@ -172,10 +167,6 @@ __attribute__((weak)) MtObject* rSoundReverb::MyDTI::newInstance() const {
 
 const MtDTI& rSoundReverb::cSoundReverbData::getDTI() const {
     return rSoundReverb::cSoundReverbData::DTI;
-}
-
-inline void rSoundReverb::cSoundReverbData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundReverb::cSoundReverbData::DTI)->memFree(p_addr);
 }
 
 rSoundReverb::cSoundReverbData::~cSoundReverbData() {

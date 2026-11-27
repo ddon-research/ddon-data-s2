@@ -5,7 +5,6 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -28,16 +27,8 @@ const MtDTI& uSoundSequenceSe::getDTI() const {
     return uSoundSequenceSe::DTI;
 }
 
-inline MtAllocator* uSoundSequenceSe::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uSoundSequenceSe::DTI);
-}
-
 void* uSoundSequenceSe::operator new(size_t sz, u32 align) {
     return uSoundSequenceSe::getAllocator()->memAlloc(sz, align, uSoundSequenceSe::DTI.getID());
-}
-
-inline void uSoundSequenceSe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundSequenceSe::DTI)->memFree(p_addr);
 }
 
 uSoundSequenceSe::uSoundSequenceSe() {
@@ -82,13 +73,6 @@ MtUI* uSoundSequenceSe::createUI(MtProperty& prop) {
 __attribute__((weak)) void uSoundSequenceSe::setSequenceSe(rSoundSequenceSe* pRes) {
     DDON_STUB("uSoundSequenceSe::setSequenceSe")
     /* stub */
-}
-
-void uSoundSequenceSe::setCallPos(const MtVector3& pos) {
-    mCallPos.x = pos.x;
-    mCallPos.y = pos.y;
-    mCallPos.z = pos.z;
-    mCallPos.pad_ = 0.0f;
 }
 
 static auto ddon_emit_0x01b257e0 __attribute__((used)) = &uSoundSequenceSe::getSequenceSe;

@@ -21,10 +21,6 @@ const MtDTI& cStageEpvCtrl::getDTI() const {
     return cStageEpvCtrl::DTI;
 }
 
-inline void cStageEpvCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStageEpvCtrl::DTI)->memFree(p_addr);
-}
-
 cStageEpvCtrl::cStageEpvCtrl() {
     DDON_STUB("cStageEpvCtrl::cStageEpvCtrl")
     /* stub */

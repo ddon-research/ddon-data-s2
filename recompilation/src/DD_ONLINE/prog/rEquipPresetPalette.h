@@ -127,3 +127,15 @@ inline cEquipPresetPalette::cEquipPresetPalette() {
 inline void* cEquipPresetPalette::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEquipPresetPalette::DTI)->memAlloc(sz, align, ::cEquipPresetPalette::DTI.::MtDTI::getID());
 }
+
+inline void cEquipPresetPalette::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEquipPresetPalette::DTI)->memFree(p_addr);
+}
+
+inline void* rEquipPresetPalette::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEquipPresetPalette::DTI)->memAlloc(sz, align, ::rEquipPresetPalette::DTI.::MtDTI::getID());
+}
+
+inline void rEquipPresetPalette::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEquipPresetPalette::DTI)->memFree(p_addr);
+}

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmDmgTimerTbl.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cEmDmgTimerTbl::getDTI() const {
     return cEmDmgTimerTbl::DTI;
-}
-
-inline void* cEmDmgTimerTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmDmgTimerTbl::DTI)->memAlloc(sz, align, cEmDmgTimerTbl::DTI.getID());
-}
-
-inline void cEmDmgTimerTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmDmgTimerTbl::DTI)->memFree(p_addr);
 }
 
 inline cEmDmgTimerTbl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,14 +23,6 @@ MtObject* cEmDmgTimerTbl::MyDTI::newInstance() const {
 
 const MtDTI& rEmDmgTimerTbl::getDTI() const {
     return rEmDmgTimerTbl::DTI;
-}
-
-inline void* rEmDmgTimerTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmDmgTimerTbl::DTI)->memAlloc(sz, align, rEmDmgTimerTbl::DTI.getID());
-}
-
-inline void rEmDmgTimerTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmDmgTimerTbl::DTI)->memFree(p_addr);
 }
 
 bool rEmDmgTimerTbl::loadData(MtDataReader& r, cEmDmgTimerTbl* pData) {

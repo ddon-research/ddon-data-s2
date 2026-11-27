@@ -282,3 +282,23 @@ inline cpInvincibleCtrl::cInvInfo::cInvInfo() {
 inline void* cpInvincibleCtrl::cInvInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpInvincibleCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpInvincibleCtrl::DTI);
+}
+
+inline void cpInvincibleCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpInvincibleCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cpInvincibleCtrl::cInvInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpInvincibleCtrl::cInvInfo::DTI)->memAlloc(sz, align, ::cpInvincibleCtrl::cInvInfo::DTI.::MtDTI::getID());
+}
+
+inline void cpInvincibleCtrl::cInvInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpInvincibleCtrl::cInvInfo::DTI)->memFree(p_addr);
+}

@@ -159,3 +159,26 @@ inline void cpErosionEnemyBase::setErosionCurrentLevel(nErosionEnemyBase::EROSIO
 inline void cpErosionEnemyBase::setErosionRealLevel(nErosionEnemyBase::EROSION_LEVEL level) {
     this->mErosionRealLevel = level;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+#include "rAttackParam.h"
+#include "sObjCollision.h"
+
+inline void cpErosionEnemyBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpErosionEnemyBase::DTI)->memFree(p_addr);
+}
+
+inline void cpErosionEnemyBase::releaseErosionAttackParam(nErosionEnemyBase::EROSION_LEVEL level) {
+    if (this->mpErosionAttackParamRes[level] == nullptr) {
+        return;
+    }
+    (::sObjCollision::mpInstance)->::sObjCollision::releaseAttackParamTable(this->mpErosionAttackParamRes[level]);
+    if (this->mpErosionAttackParamRes[level] == nullptr) {
+        return;
+    }
+    this->mpErosionAttackParamRes[level]->::cResource::release();
+    this->mpErosionAttackParamRes[level] = nullptr;
+}

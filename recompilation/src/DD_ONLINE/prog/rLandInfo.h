@@ -160,7 +160,9 @@ inline rLandInfo::cLandInfo::cLandAreaInfo::cLandAreaInfo() {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
 #include "../../generated/shared/nDDOIO.h"
 
 inline bool rLandInfo::cLandInfo::load(MtDataReader& r) {
@@ -172,4 +174,32 @@ inline bool rLandInfo::cLandInfo::load(MtDataReader& r) {
 inline bool rLandInfo::cLandInfo::cLandAreaInfo::load(MtDataReader& r) {
     mAreaId = r.readU32();
     return true;
+}
+
+inline void* rLandInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLandInfo::DTI)->memAlloc(sz, align, ::rLandInfo::DTI.::MtDTI::getID());
+}
+
+inline void rLandInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLandInfo::DTI)->memFree(p_addr);
+}
+
+inline rLandInfo::rLandInfo() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rLandInfo::cLandInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLandInfo::cLandInfo::DTI)->memAlloc(sz, align, ::rLandInfo::cLandInfo::DTI.::MtDTI::getID());
+}
+
+inline void rLandInfo::cLandInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLandInfo::cLandInfo::DTI)->memFree(p_addr);
+}
+
+inline void* rLandInfo::cLandInfo::cLandAreaInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLandInfo::cLandInfo::cLandAreaInfo::DTI)->memAlloc(sz, align, ::rLandInfo::cLandInfo::cLandAreaInfo::DTI.::MtDTI::getID());
+}
+
+inline void rLandInfo::cLandInfo::cLandAreaInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLandInfo::cLandInfo::cLandAreaInfo::DTI)->memFree(p_addr);
 }

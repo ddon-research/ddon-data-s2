@@ -29,16 +29,8 @@ const MtDTI& uGUIPopSkillInfo::getDTI() const {
     return uGUIPopSkillInfo::DTI;
 }
 
-inline MtAllocator* uGUIPopSkillInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopSkillInfo::DTI);
-}
-
 void* uGUIPopSkillInfo::operator new(size_t sz, u32 align) {
     return uGUIPopSkillInfo::getAllocator()->memAlloc(sz, align, uGUIPopSkillInfo::DTI.getID());
-}
-
-inline void uGUIPopSkillInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopSkillInfo::DTI)->memFree(p_addr);
 }
 
 uGUIPopSkillInfo::~uGUIPopSkillInfo() {

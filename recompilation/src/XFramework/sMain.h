@@ -22,22 +22,29 @@ class MtSemaphore;
 class MtStream;
 class MtUI;
 struct _SceKernelEventFlag;
+class cAISvDynamicPathFinding;
 class cAITask;
 class cDDMaterialCtrl;
 class cNetGameServer;
+class cQuestTask;
 class cSeedServerConnection;
 class cSplitLot;
+class cStateTransitionFromGameInfo;
 class cpCatchCtrl;
 class cpChantCommand;
 class cpJob01;
 class cpJob06;
+class cpReturnTerritory;
 class cpSlave;
 namespace nFsm { class cCameraCtrl; }
+namespace nPhysics { class System; }
 struct pthread;
 class sAI;
 class sApp;
+class sBenchmark;
 class sCollision;
 class sContextManager;
+class sDDOMain;
 class sEffect;
 class sGUIExt;
 class sItemManager;
@@ -46,9 +53,12 @@ class sNetworkExt;
 class sObjCollision;
 class sOmManager;
 class sPadExt;
+class sPrimitive;
+class sUnit;
 class sVibration;
 class uAnimal;
 class uCameraBase;
+class uCharacterSelect;
 class uControl;
 class uEffect2DExt;
 class uEffectExt;
@@ -58,6 +68,7 @@ class uGUIQueueAnnounceLvUp;
 class uGUITelop;
 class uGrassEffect;
 class uGrassWindDirection;
+class uGrassWindPoint;
 class uHuman;
 
 // Declarations
@@ -94,22 +105,29 @@ namespace nFsm { f32 getDeltaSec(); }
 
 class sMain : public cSystem
 {
+    friend class cAISvDynamicPathFinding;
     friend class cAITask;
     friend class cDDMaterialCtrl;
     friend class cNetGameServer;
+    friend class cQuestTask;
     friend class cSeedServerConnection;
     friend class cSplitLot;
+    friend class cStateTransitionFromGameInfo;
     friend class cpCatchCtrl;
     friend class cpChantCommand;
     friend class cpJob01;
     friend class cpJob06;
+    friend class cpReturnTerritory;
     friend class cpSlave;
     friend class nFsm::cCameraCtrl;
     friend f32 nFsm::getDeltaSec();
+    friend class nPhysics::System;
     friend class sAI;
     friend class sApp;
+    friend class sBenchmark;
     friend class sCollision;
     friend class sContextManager;
+    friend class sDDOMain;
     friend class sEffect;
     friend class sGUIExt;
     friend class sItemManager;
@@ -118,9 +136,12 @@ class sMain : public cSystem
     friend class sObjCollision;
     friend class sOmManager;
     friend class sPadExt;
+    friend class sPrimitive;
+    friend class sUnit;
     friend class sVibration;
     friend class uAnimal;
     friend class uCameraBase;
+    friend class uCharacterSelect;
     friend class uControl;
     friend class uEffect2DExt;
     friend class uEffectExt;
@@ -130,6 +151,7 @@ class sMain : public cSystem
     friend class uGUITelop;
     friend class uGrassEffect;
     friend class uGrassWindDirection;
+    friend class uGrassWindPoint;
     friend class uHuman;
 public:
     enum JOB_MODE
@@ -420,4 +442,12 @@ inline f32 sMain::getDeltaTime() const {
 
 inline void sMain::setDeltaTime(f32 NewValue) {
     this->mDeltaTime = NewValue;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sMain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sMain::DTI)->memFree(p_addr);
 }

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rHumanEnemyCustomSkill.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cHumanEnemyCustomSkill::getDTI() const {
     return cHumanEnemyCustomSkill::DTI;
-}
-
-inline void* cHumanEnemyCustomSkill::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cHumanEnemyCustomSkill::DTI)->memAlloc(sz, align, cHumanEnemyCustomSkill::DTI.getID());
-}
-
-inline void cHumanEnemyCustomSkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHumanEnemyCustomSkill::DTI)->memFree(p_addr);
 }
 
 inline cHumanEnemyCustomSkill::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,14 +23,6 @@ MtObject* cHumanEnemyCustomSkill::MyDTI::newInstance() const {
 
 const MtDTI& rHumanEnemyCustomSkill::getDTI() const {
     return rHumanEnemyCustomSkill::DTI;
-}
-
-inline void* rHumanEnemyCustomSkill::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rHumanEnemyCustomSkill::DTI)->memAlloc(sz, align, rHumanEnemyCustomSkill::DTI.getID());
-}
-
-inline void rHumanEnemyCustomSkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rHumanEnemyCustomSkill::DTI)->memFree(p_addr);
 }
 
 bool rHumanEnemyCustomSkill::loadData(MtDataReader& r, cHumanEnemyCustomSkill* pData) {

@@ -119,3 +119,19 @@ inline void cCaughtDamageRateReference::operator delete[](void* p_addr) {
 inline void* cCaughtDamageRateReference::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCaughtDamageRateReference::DTI)->memAlloc(sz, align, ::cCaughtDamageRateReference::DTI.::MtDTI::getID());
 }
+
+inline void* cCaughtDamageRateReference::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaughtDamageRateReference::DTI)->memAlloc(sz, align, ::cCaughtDamageRateReference::DTI.::MtDTI::getID());
+}
+
+inline void cCaughtDamageRateReference::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCaughtDamageRateReference::DTI)->memFree(p_addr);
+}
+
+inline void* rCaughtDamageRateRefTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCaughtDamageRateRefTbl::DTI)->memAlloc(sz, align, ::rCaughtDamageRateRefTbl::DTI.::MtDTI::getID());
+}
+
+inline void rCaughtDamageRateRefTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCaughtDamageRateRefTbl::DTI)->memFree(p_addr);
+}

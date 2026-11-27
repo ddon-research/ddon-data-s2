@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../XFramework/cUnit.h"
@@ -33,16 +32,8 @@ const MtDTI& cpHugeble::getDTI() const {
     return cpHugeble::DTI;
 }
 
-inline MtAllocator* cpHugeble::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpHugeble::DTI);
-}
-
 void* cpHugeble::operator new(size_t sz, u32 align) {
     return cpHugeble::getAllocator()->memAlloc(sz, align, cpHugeble::DTI.getID());
-}
-
-inline void cpHugeble::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpHugeble::DTI)->memFree(p_addr);
 }
 
 cpHugeble::cpHugeble() {
@@ -82,9 +73,13 @@ __attribute__((weak)) void cpHugeble::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void cpHugeble::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpHugeble::applyWorldOffset")
-    /* stub */
+void cpHugeble::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mHugebleDeathEffPos.x = offset.x + mHugebleDeathEffPos.x;
+    mHugebleDeathEffPos.y = offset.y + mHugebleDeathEffPos.y;
+    mHugebleDeathEffPos.z = offset.z + mHugebleDeathEffPos.z;
+    mHugebleOldPos.x = offset.x + mHugebleOldPos.x;
+    mHugebleOldPos.y = offset.y + mHugebleOldPos.y;
+    mHugebleOldPos.z = offset.z + mHugebleOldPos.z;
 }
 
 void cpHugeble::setOwner(MtObject* pOwner) {

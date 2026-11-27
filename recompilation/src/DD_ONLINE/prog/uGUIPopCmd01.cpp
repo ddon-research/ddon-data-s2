@@ -33,16 +33,8 @@ const MtDTI& uGUIPopCmd01::getDTI() const {
     return uGUIPopCmd01::DTI;
 }
 
-inline MtAllocator* uGUIPopCmd01::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopCmd01::DTI);
-}
-
 void* uGUIPopCmd01::operator new(size_t sz, u32 align) {
     return uGUIPopCmd01::getAllocator()->memAlloc(sz, align, uGUIPopCmd01::DTI.getID());
-}
-
-inline void uGUIPopCmd01::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopCmd01::DTI)->memFree(p_addr);
 }
 
 uGUIPopCmd01::~uGUIPopCmd01() {
@@ -189,10 +181,10 @@ void uGUIPopCmd01::updateWait() {
     u32 i = 0;
     if (mItems.mLength != 0) {
         do {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mItems.getBuffer()[static_cast<int>(i)]) + 128)) != 0) {
-                setMessageColor(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mItems.getBuffer()[static_cast<int>(i)]) + 32)), sGUIExt::FONT_COLOR_DISABLE);
+            if (static_cast<cItem*>(mItems.getBuffer()[static_cast<int>(i)])->mMode != MODE_DEFAULT) {
+                setMessageColor(static_cast<cGUIObject*>(static_cast<cItem*>(mItems.getBuffer()[static_cast<int>(i)])->mpOBJ_msg_cmnd_box_m_cmnd_name), sGUIExt::FONT_COLOR_DISABLE);
             } else {
-                setMessageColor(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mItems.getBuffer()[static_cast<int>(i)]) + 32)), sGUIExt::FONT_COLOR_DEFAULT);
+                setMessageColor(static_cast<cGUIObject*>(static_cast<cItem*>(mItems.getBuffer()[static_cast<int>(i)])->mpOBJ_msg_cmnd_box_m_cmnd_name), sGUIExt::FONT_COLOR_DEFAULT);
             }
             i += 1u;
         } while (i < mItems.mLength);

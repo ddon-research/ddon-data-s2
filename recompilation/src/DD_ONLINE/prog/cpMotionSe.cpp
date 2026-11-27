@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
@@ -36,16 +35,8 @@ const MtDTI& cpMotionSe::getDTI() const {
     return cpMotionSe::DTI;
 }
 
-inline MtAllocator* cpMotionSe::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpMotionSe::DTI);
-}
-
 void* cpMotionSe::operator new(size_t sz, u32 align) {
     return cpMotionSe::getAllocator()->memAlloc(sz, align, cpMotionSe::DTI.getID());
-}
-
-inline void cpMotionSe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpMotionSe::DTI)->memFree(p_addr);
 }
 
 cpMotionSe::cpMotionSe() {

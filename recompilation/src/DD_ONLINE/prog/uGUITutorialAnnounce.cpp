@@ -5,7 +5,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIInstance.h"
@@ -32,16 +31,8 @@ const MtDTI& uGUITutorialAnnounce::getDTI() const {
     return uGUITutorialAnnounce::DTI;
 }
 
-inline MtAllocator* uGUITutorialAnnounce::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUITutorialAnnounce::DTI);
-}
-
 void* uGUITutorialAnnounce::operator new(size_t sz, u32 align) {
     return uGUITutorialAnnounce::getAllocator()->memAlloc(sz, align, uGUITutorialAnnounce::DTI.getID());
-}
-
-inline void uGUITutorialAnnounce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUITutorialAnnounce::DTI)->memFree(p_addr);
 }
 
 void uGUITutorialAnnounce::ctrlVisible() {

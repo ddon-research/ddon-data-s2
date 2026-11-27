@@ -120,3 +120,19 @@ inline void cMagicCommandWord::operator delete[](void* p_addr) {
 inline void* cMagicCommandWord::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cMagicCommandWord::DTI)->memAlloc(sz, align, ::cMagicCommandWord::DTI.::MtDTI::getID());
 }
+
+inline void* cMagicCommandWord::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMagicCommandWord::DTI)->memAlloc(sz, align, ::cMagicCommandWord::DTI.::MtDTI::getID());
+}
+
+inline void cMagicCommandWord::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMagicCommandWord::DTI)->memFree(p_addr);
+}
+
+inline void* rMagicCommandWord::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMagicCommandWord::DTI)->memAlloc(sz, align, ::rMagicCommandWord::DTI.::MtDTI::getID());
+}
+
+inline void rMagicCommandWord::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMagicCommandWord::DTI)->memFree(p_addr);
+}

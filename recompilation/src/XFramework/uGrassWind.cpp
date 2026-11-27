@@ -1,8 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include <math.h>
+#include <ymath.h>
 #include "uGrassWind.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtLogisticMap.h"
 #include "../MT/MtMath.h"
@@ -27,10 +27,6 @@ __attribute__((weak)) void uGrassWind::usage() {
 
 const MtDTI& uGrassWind::getDTI() const {
     return uGrassWind::DTI;
-}
-
-inline void uGrassWind::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGrassWind::DTI)->memFree(p_addr);
 }
 
 uGrassWind::uGrassWind(f32 Amplification, f32 Frequency, f32 Phase, u32 Priority) : uGrassEffect(Priority) {
@@ -111,10 +107,6 @@ const MtDTI& uGrassWind::cSwingParameters::getDTI() const {
     return uGrassWind::cSwingParameters::DTI;
 }
 
-inline void uGrassWind::cSwingParameters::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGrassWind::cSwingParameters::DTI)->memFree(p_addr);
-}
-
 uGrassWind::cSwingParameters::cSwingParameters() {
     DDON_STUB("uGrassWind::cSwingParameters::cSwingParameters")
     /* stub */
@@ -173,10 +165,6 @@ const MtDTI& uGrassWindDirection::getDTI() const {
     return uGrassWindDirection::DTI;
 }
 
-inline void uGrassWindDirection::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGrassWindDirection::DTI)->memFree(p_addr);
-}
-
 uGrassWindDirection::~uGrassWindDirection() {
     DDON_STUB("uGrassWindDirection::~uGrassWindDirection")
     /* stub */
@@ -198,9 +186,8 @@ void uGrassWindDirection::move() {
     play();
 }
 
-__attribute__((weak)) void uGrassWindDirection::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uGrassWindDirection::applyWorldOffset")
-    /* stub */
+void uGrassWindDirection::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mElapsedPhase = fmodf(mElapsedPhase - (mFrequency * (((mDirection.x * offset.x) + (mDirection.y * offset.y)) + (mDirection.z * offset.z))), 6.2831855f);
 }
 
 void uGrassWindDirection::getAABB(MtAABB& aabb) {
@@ -242,9 +229,17 @@ MtVector4 uGrassWindDirection::getAngle(const MtVector3& pos, const f32& phase) 
     return mParam.uGrassWind::cSwingParameters::getRotationAngle(pos, phase);
 }
 
-__attribute__((weak)) MtVector3 uGrassWindDirection::getForce(const MtVector3& pos) {
-    DDON_STUB("uGrassWindDirection::getForce")
-    __builtin_unreachable();
+MtVector3 uGrassWindDirection::getForce(const MtVector3& pos) {
+    MtVector3 result;
+    float t0 = _FSin(mElapsedPhase + (mFrequency * (((mDirection.x * pos.x) + (mDirection.y * pos.y)) + (mDirection.z * pos.z))), 0u, 0);
+    f32 t1 = mAmplification;
+    f32 t2 = mDirection.y;
+    f32 t3 = mDirection.z;
+    result.x = mDirection.x * (t1 * (1.0f + t0));
+    result.y = t2 * (t1 * (1.0f + t0));
+    result.z = t3 * (t1 * (1.0f + t0));
+    result.pad_ = 0.0f;
+    return result;
 }
 
 __attribute__((weak)) void uGrassWindDirection::getDrawUnitState(u32& type, u32& priority) const {
@@ -258,6 +253,102 @@ uGrassWindDirection::MyDTI uGrassWindDirection::DTI("uGrassWindDirection", &::uG
 
 __attribute__((weak)) MtObject* uGrassWindDirection::MyDTI::newInstance() const {
     DDON_STUB("uGrassWindDirection::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& uGrassWindPoint::getDTI() const {
+    return uGrassWindPoint::DTI;
+}
+
+uGrassWindPoint::~uGrassWindPoint() {
+    DDON_STUB("uGrassWindPoint::~uGrassWindPoint")
+    /* stub */
+}
+
+void uGrassWindPoint::createProperty(MtPropertyList& s) {
+    this->uGrassWind::createProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mPoint", &mPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mAttenuation", &mAttenuation, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpParent", reinterpret_cast<MtObject* *>(&mpParent), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParentNo", &mParentNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mParam", static_cast<MtObject*>(&mParam), 0u, 0u);
+}
+
+MtUI* uGrassWindPoint::createUI(MtProperty& prop) {
+    return this->uGrassEffect::createUI(prop);
+}
+
+void uGrassWindPoint::move() {
+    mParam.uGrassWind::cSwingParameters::update(mFrequency, mPhase);
+    mElapsedPhase = fmodf(mElapsedPhase + (mParam.mCurrentPhaseSpeed * ((mPhase * mDeltaTime) / (sMain::mpInstance)->mFps)), 6.2831855f);
+    play();
+}
+
+__attribute__((weak)) void uGrassWindPoint::moveAfter() {
+    DDON_STUB("uGrassWindPoint::moveAfter")
+    /* stub */
+}
+
+void uGrassWindPoint::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    if (mpParent != nullptr) {
+        return;
+    }
+    mPoint.x = offset.x + mPoint.x;
+    mPoint.y = offset.y + mPoint.y;
+    mPoint.z = offset.z + mPoint.z;
+}
+
+__attribute__((weak)) bool uGrassWindPoint::getBoundary(MtSphere* sphere) {
+    DDON_STUB("uGrassWindPoint::getBoundary")
+    return {};
+}
+
+void uGrassWindPoint::getAABB(MtAABB& aabb) {
+    aabb.minpos.x = mAABB.minpos.x;
+    aabb.minpos.y = mAABB.minpos.y;
+    aabb.minpos.z = mAABB.minpos.z;
+    aabb.minpos.pad_ = 0.0f;
+    aabb.maxpos.x = mAABB.maxpos.x;
+    aabb.maxpos.y = mAABB.maxpos.y;
+    aabb.maxpos.z = mAABB.maxpos.z;
+    aabb.maxpos.pad_ = 0.0f;
+}
+
+MtVector4 uGrassWindPoint::getInfo() {
+    MtVector4 result;
+    f32 t0 = mAttenuation;
+    result.x = mWorldPos.x;
+    result.y = mWorldPos.y;
+    result.z = mWorldPos.z;
+    result.w = t0;
+    return result;
+}
+
+__attribute__((weak)) MtVector3 uGrassWindPoint::getDirection(const MtVector3& pos) {
+    DDON_STUB("uGrassWindPoint::getDirection")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector4 uGrassWindPoint::getAngle(const MtVector3& pos, const f32& phase) {
+    DDON_STUB("uGrassWindPoint::getAngle")
+    __builtin_unreachable();
+}
+
+__attribute__((weak)) MtVector3 uGrassWindPoint::getForce(const MtVector3& pos) {
+    DDON_STUB("uGrassWindPoint::getForce")
+    __builtin_unreachable();
+}
+
+sScene::Node* uGrassWindPoint::getSceneNode() {
+    return &mNode;
+}
+
+inline uGrassWindPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uGrassWindPoint::MyDTI uGrassWindPoint::DTI("uGrassWindPoint", &::uGrassWind::DTI, 4288ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* uGrassWindPoint::MyDTI::newInstance() const {
+    DDON_STUB("uGrassWindPoint::MyDTI::newInstance")
     return nullptr;
 }
 

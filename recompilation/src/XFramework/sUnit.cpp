@@ -16,6 +16,8 @@
 #include "cDraw.h"
 #include "cSystem.h"
 #include "cUnit.h"
+#include "nPrim.h"
+#include "nSyncPoint.h"
 #include "sMain.h"
 #include "sRender.h"
 #include "uBaseModel.h"
@@ -25,10 +27,6 @@
 
 const MtDTI& sUnit::getDTI() const {
     return sUnit::DTI;
-}
-
-inline void sUnit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sUnit::DTI)->memFree(p_addr);
 }
 
 sUnit::sUnit(u32 line_num, u32 group_num) {
@@ -46,19 +44,49 @@ __attribute__((weak)) void sUnit::reset() {
     /* stub */
 }
 
-__attribute__((weak)) void sUnit::move() {
-    DDON_STUB("sUnit::move")
-    /* stub */
+void sUnit::move() {
+    nSyncPoint::cSyncPointDefinition syncPoint(nSyncPoint::SP_BEFORE_MOVE);
+    if (((sMain::mpInstance)->mSkip == 0) && (sMain::mpInstance)->mPause) {
+        return;
+    }
+    if ((sUnit::mpInstance)->mLineNum == 0) {
+        return;
+    }
+    u32 i = 0;
+    do {
+        move(static_cast<MOVE_LINE>(getMoveLineId(i)));
+        i += 1u;
+    } while (i < (sUnit::mpInstance)->mLineNum);
 }
 
-__attribute__((weak)) void sUnit::moveAfter() {
-    DDON_STUB("sUnit::moveAfter")
-    /* stub */
+void sUnit::moveAfter() {
+    nSyncPoint::cSyncPointDefinition syncPoint(nSyncPoint::SP_BEFORE_MOVEAFTER);
+    if (((sMain::mpInstance)->mSkip == 0) && (sMain::mpInstance)->mPause) {
+        return;
+    }
+    if ((sUnit::mpInstance)->mLineNum == 0) {
+        return;
+    }
+    u32 i = 0;
+    do {
+        moveAfter(static_cast<MOVE_LINE>(getMoveLineId(i)));
+        i += 1u;
+    } while (i < (sUnit::mpInstance)->mLineNum);
 }
 
-__attribute__((weak)) void sUnit::sync() {
-    DDON_STUB("sUnit::sync")
-    /* stub */
+void sUnit::sync() {
+    nSyncPoint::cSyncPointDefinition syncPoint(nSyncPoint::SP_BEFORE_SYNC);
+    if (((sMain::mpInstance)->mSkip == 0) && (sMain::mpInstance)->mPause) {
+        return;
+    }
+    if ((sUnit::mpInstance)->mLineNum == 0) {
+        return;
+    }
+    u32 i = 0;
+    do {
+        sync(static_cast<MOVE_LINE>(getMoveLineId(i)));
+        i += 1u;
+    } while (i < (sUnit::mpInstance)->mLineNum);
 }
 
 MtUI* sUnit::createUI(MtProperty& prop) {
@@ -448,8 +476,14 @@ void sUnit::updateDrawCommandCache() {
 }
 
 __attribute__((weak)) void sUnit::setUnitGroupMove(u32 group, bool flag) {
-    DDON_STUB("sUnit::setUnitGroupMove")
-    /* stub */
+    if (group < mGroupCount) {
+        const u64 t1 = static_cast<u64>(1) << static_cast<unsigned char>(group);
+        if (flag) {
+            mGroupMoveFlag |= t1;
+        } else {
+            mGroupMoveFlag &= ~t1;
+        }
+    }
 }
 
 __attribute__((weak)) void sUnit::setUnitGroupDraw(u32 group, bool flag) {
@@ -712,9 +746,21 @@ __attribute__((weak)) u32 sUnit::getInvolveSphereUnits(cDraw* pDraw, cUnit* * pU
     return {};
 }
 
-__attribute__((weak)) void sUnit::drawInvolvingArray(cDraw* pdraw, cUnit* * pUnitArray, u32 unit_num) {
-    DDON_STUB("sUnit::drawInvolvingArray")
-    /* stub */
+void sUnit::drawInvolvingArray(cDraw* pdraw, cUnit* * pUnitArray, u32 unit_num) {
+    nPrim::beginBranch(pdraw, static_cast<cDraw*>(nullptr), 0u, true);
+    if (unit_num != 0) {
+        cUnit* * p0_3 = pUnitArray;
+        for (u32 v0_10 = unit_num;;) {
+            (*p0_3)->draw(pdraw);
+            if ((v0_10 - 1u) != 0) {
+                p0_3 += 1;
+                v0_10 += 0xFFFFFFFFu;
+            } else {
+                break;
+            }
+        }
+    }
+    nPrim::endBranch(pdraw, static_cast<cDraw*>(nullptr), 0u);
 }
 
 u32 sUnit::getMoveLineId(u32 i) {
@@ -776,14 +822,6 @@ __attribute__((weak)) MtObject* sUnit::MyDTI::newInstance() const {
 
 const MtDTI& sUnit::MoveLine::getDTI() const {
     return sUnit::MoveLine::DTI;
-}
-
-inline void* sUnit::MoveLine::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sUnit::MoveLine::DTI)->memAlloc(sz, align, sUnit::MoveLine::DTI.mID);
-}
-
-inline void sUnit::MoveLine::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sUnit::MoveLine::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void sUnit::MoveLine::createProperty(MtPropertyList& s) {
@@ -871,10 +909,6 @@ MtObject* sUnit::MoveLine::MyDTI::newInstance() const {
 
 const MtDTI& sUnit::UnitGroup::getDTI() const {
     return sUnit::UnitGroup::DTI;
-}
-
-inline void sUnit::UnitGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sUnit::UnitGroup::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void sUnit::UnitGroup::createProperty(MtPropertyList& s) {

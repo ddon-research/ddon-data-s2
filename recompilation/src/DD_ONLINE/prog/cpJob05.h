@@ -349,3 +349,34 @@ inline cpJob05::ForceGaugeInfo::ForceGaugeInfo() {
     this->mStockMax_Gi = 0;
     this->mNowGauge_Gi = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cpInput.h"
+#include "uHuman.h"
+
+inline MtAllocator* cpJob05::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob05::DTI);
+}
+
+inline void cpJob05::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob05::DTI)->memFree(p_addr);
+}
+
+inline void cpJob05::setTransActTimer(f32 timer) {
+    this->mTransActTimer = timer;
+    if (timer > 0.0f) {
+        if (this->::cpJobBase::mpHuman->::uDDOModel::mGuardComponent.mpInput != nullptr) {
+            this->::cpJobBase::mpHuman->::uDDOModel::mGuardComponent.mpInput->::cpInput::startupCheckCommand();
+        }
+    }
+}
+
+inline void* cpJob05::ForceGaugeInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJob05::ForceGaugeInfo::DTI)->memAlloc(sz, align, ::cpJob05::ForceGaugeInfo::DTI.::MtDTI::getID());
+}
+
+inline void cpJob05::ForceGaugeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob05::ForceGaugeInfo::DTI)->memFree(p_addr);
+}

@@ -16,16 +16,8 @@ const MtDTI& cPlayPointInfo::getDTI() const {
     return cPlayPointInfo::DTI;
 }
 
-inline MtAllocator* cPlayPointInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cPlayPointInfo::DTI);
-}
-
 void* cPlayPointInfo::operator new(size_t sz, u32 align) {
     return cPlayPointInfo::getAllocator()->memAlloc(sz, align, cPlayPointInfo::DTI.getID());
-}
-
-inline void cPlayPointInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPlayPointInfo::DTI)->memFree(p_addr);
 }
 
 cPlayPointInfo::cPlayPointInfo() {
@@ -101,14 +93,6 @@ __attribute__((weak)) MtObject* cPlayPointInfo::MyDTI::newInstance() const {
 
 const MtDTI& cPlayPointInfo::cPlayPoint::getDTI() const {
     return cPlayPointInfo::cPlayPoint::DTI;
-}
-
-inline void* cPlayPointInfo::cPlayPoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPlayPointInfo::cPlayPoint::DTI)->memAlloc(sz, align, cPlayPointInfo::cPlayPoint::DTI.getID());
-}
-
-inline void cPlayPointInfo::cPlayPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPlayPointInfo::cPlayPoint::DTI)->memFree(p_addr);
 }
 
 inline cPlayPointInfo::cPlayPoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

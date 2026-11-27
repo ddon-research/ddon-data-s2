@@ -275,3 +275,29 @@ inline u32 cpDDMrlMgr::getDDMrlCtrlNum() {
 inline void* cpDDMrlMgr::cMaterialAnimationRequestData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpDDMrlMgr::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpDDMrlMgr::DTI);
+}
+
+inline void cpDDMrlMgr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpDDMrlMgr::DTI)->memFree(p_addr);
+}
+
+inline void cpDDMrlMgr::setDDShadingState() {
+    if (this->::cpComponent::mpOwner == nullptr) {
+        return;
+    }
+    this->mpDDMrlCtrl.::cDDMaterialCtrl::setCommonState();
+    unsigned int i3 = 0;
+    do {
+        if (this->mpDDMrlCtrlEquip[i3] != nullptr) {
+            this->mpDDMrlCtrlEquip[i3]->::cDDMaterialCtrl::setCommonState();
+        }
+        i3 += 1u;
+    } while (i3 != 16);
+}

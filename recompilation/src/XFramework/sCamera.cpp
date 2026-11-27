@@ -3,7 +3,6 @@
 #include <_pthread.h>
 #include <stdlib.h>
 #include "sCamera.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCRC.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
@@ -11,6 +10,7 @@
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPrimitive3D.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtSynchronize.h"
@@ -31,10 +31,6 @@
 
 const MtDTI& sCamera::getDTI() const {
     return sCamera::DTI;
-}
-
-inline void sCamera::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCamera::DTI)->memFree(p_addr);
 }
 
 sCamera::sCamera() {
@@ -134,9 +130,36 @@ __attribute__((weak)) bool sCamera::isDispAABB(sCamera::VIEWPORT_NO vp, const Mt
     return {};
 }
 
-__attribute__((weak)) bool sCamera::isDispSphere(sCamera::VIEWPORT_NO vp, const MtSphere& a) {
-    DDON_STUB("sCamera::isDispSphere")
-    return {};
+bool sCamera::isDispSphere(sCamera::VIEWPORT_NO vp, const MtSphere& a) {
+    if (mViewport[vp].mpCamera != nullptr) {
+        if ((-a.r) > (mViewport[vp].mFrustum[0].w + (((a.pos.x * mViewport[vp].mFrustum[0].x) + (a.pos.y * mViewport[vp].mFrustum[0].y)) + (a.pos.z * mViewport[vp].mFrustum[0].z)))) {
+            return false;
+        } else {
+            if ((-a.r) > (mViewport[vp].mFrustum[1].w + (((a.pos.x * mViewport[vp].mFrustum[1].x) + (a.pos.y * mViewport[vp].mFrustum[1].y)) + (a.pos.z * mViewport[vp].mFrustum[1].z)))) {
+                return false;
+            } else {
+                if ((-a.r) > (mViewport[vp].mFrustum[2].w + (((a.pos.x * mViewport[vp].mFrustum[2].x) + (a.pos.y * mViewport[vp].mFrustum[2].y)) + (a.pos.z * mViewport[vp].mFrustum[2].z)))) {
+                    return false;
+                } else {
+                    if ((-a.r) > (mViewport[vp].mFrustum[3].w + (((a.pos.x * mViewport[vp].mFrustum[3].x) + (a.pos.y * mViewport[vp].mFrustum[3].y)) + (a.pos.z * mViewport[vp].mFrustum[3].z)))) {
+                        return false;
+                    } else {
+                        if ((-a.r) > (mViewport[vp].mFrustum[4].w + (((a.pos.x * mViewport[vp].mFrustum[4].x) + (a.pos.y * mViewport[vp].mFrustum[4].y)) + (a.pos.z * mViewport[vp].mFrustum[4].z)))) {
+                            return false;
+                        } else {
+                            if ((-a.r) > (mViewport[vp].mFrustum[5].w + (((a.pos.x * mViewport[vp].mFrustum[5].x) + (a.pos.y * mViewport[vp].mFrustum[5].y)) + (a.pos.z * mViewport[vp].mFrustum[5].z)))) {
+                                return false;
+                            } else {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 void sCamera::setInstancingDissolveDefaultParam() {

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nWeather.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -11,14 +9,6 @@
 
 const MtDTI& cWeatherObjectRes::getDTI() const {
     return cWeatherObjectRes::DTI;
-}
-
-inline void* cWeatherObjectRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWeatherObjectRes::DTI)->memAlloc(sz, align, cWeatherObjectRes::DTI.getID());
-}
-
-inline void cWeatherObjectRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherObjectRes::DTI)->memFree(p_addr);
 }
 
 inline cWeatherObjectRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -31,14 +21,6 @@ MtObject* cWeatherObjectRes::MyDTI::newInstance() const {
 
 const MtDTI& cWeatherObjectSys::getDTI() const {
     return cWeatherObjectSys::DTI;
-}
-
-inline void* cWeatherObjectSys::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWeatherObjectSys::DTI)->memAlloc(sz, align, cWeatherObjectSys::DTI.getID());
-}
-
-inline void cWeatherObjectSys::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherObjectSys::DTI)->memFree(p_addr);
 }
 
 inline cWeatherObjectSys::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

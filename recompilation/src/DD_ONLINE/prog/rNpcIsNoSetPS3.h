@@ -127,3 +127,19 @@ inline void cNpcIsNoSetPS3::operator delete[](void* p_addr) {
 inline void* cNpcIsNoSetPS3::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cNpcIsNoSetPS3::DTI)->memAlloc(sz, align, ::cNpcIsNoSetPS3::DTI.::MtDTI::getID());
 }
+
+inline void* cNpcIsNoSetPS3::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcIsNoSetPS3::DTI)->memAlloc(sz, align, ::cNpcIsNoSetPS3::DTI.::MtDTI::getID());
+}
+
+inline void cNpcIsNoSetPS3::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcIsNoSetPS3::DTI)->memFree(p_addr);
+}
+
+inline void* rNpcIsNoSetPS3::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNpcIsNoSetPS3::DTI)->memAlloc(sz, align, ::rNpcIsNoSetPS3::DTI.::MtDTI::getID());
+}
+
+inline void rNpcIsNoSetPS3::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcIsNoSetPS3::DTI)->memFree(p_addr);
+}

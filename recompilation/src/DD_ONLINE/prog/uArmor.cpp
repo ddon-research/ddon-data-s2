@@ -40,10 +40,6 @@ const MtDTI& uArmor::getDTI() const {
     return uArmor::DTI;
 }
 
-inline void uArmor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uArmor::DTI)->memFree(p_addr);
-}
-
 uArmor::~uArmor() {
     if (mpModelRes != nullptr) {
         mpModelRes->release();

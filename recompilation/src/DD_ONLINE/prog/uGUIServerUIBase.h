@@ -19,6 +19,7 @@ class MtObject;
 class MtString;
 class cServerUIClientControl;
 namespace nUserSession { class CPacket_S2C_OPEN_UI_NTC; }
+class uGUIServerUIDialog;
 
 // Declarations
 class uGUIServerUIBase;
@@ -36,6 +37,7 @@ using u32 = unsigned int;
 class uGUIServerUIBase : public uGUIBase
 {
     friend class cServerUIClientControl;
+    friend class uGUIServerUIDialog;
 public:
     class MyDTI;
     struct CommandInfo;
@@ -112,4 +114,12 @@ inline void* uGUIServerUIBase::operator new(size_t sz, void* p_addr) {
 }
 
 inline uGUIServerUIBase::CommandInfo::CommandInfo() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIServerUIBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIServerUIBase::DTI)->memFree(p_addr);
 }

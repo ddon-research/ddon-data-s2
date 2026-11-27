@@ -33,16 +33,8 @@ const MtDTI& cpLegCtrl::getDTI() const {
     return cpLegCtrl::DTI;
 }
 
-inline MtAllocator* cpLegCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpLegCtrl::DTI);
-}
-
 void* cpLegCtrl::operator new(size_t sz, u32 align) {
     return cpLegCtrl::getAllocator()->memAlloc(sz, align, cpLegCtrl::DTI.getID());
-}
-
-inline void cpLegCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpLegCtrl::DTI)->memFree(p_addr);
 }
 
 cpLegCtrl::cpLegCtrl() {

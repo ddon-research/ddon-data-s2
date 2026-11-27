@@ -34,6 +34,7 @@ class cHitInfoAfter;
 class cParentRegionStatus;
 class cRegionBreakInfo;
 class cUnitDieInfo;
+class cpEmParamCtrl;
 namespace nObjCondition { struct stHolyAbsorpReqInfo; }
 namespace nObjCondition { struct stHolyAbsorpReqMsg; }
 class rChildRegionStatusParam;
@@ -175,6 +176,7 @@ public:
 
 class cpHpDamageCtrl : public cpComponent
 {
+    friend class cpEmParamCtrl;
     friend class uEnemy;
 public:
     enum ATDF_CALC_TYPE
@@ -559,4 +561,89 @@ inline void cpHpDamageCtrl::resetDamageCheatCheckWork() {
 
 inline HP_DATATYPE cpHpDamageCtrl::getDamageCheatCheckSum() const {
     return this->mDamageCheatCheckSum;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cDamageEffInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDamageEffInfo::DTI)->memAlloc(sz, align, ::cDamageEffInfo::DTI.::MtDTI::getID());
+}
+
+inline void cDamageEffInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDamageEffInfo::DTI)->memFree(p_addr);
+}
+
+inline cDamageEffInfo::cDamageEffInfo() {
+    this->mpReceiver = nullptr;
+    this->mpAttacker = nullptr;
+    this->mPhysTypeEff = 2;
+    this->mJointNo = 0;
+    this->mHitPos.x = ::MtVector3::Zero.x;
+    this->mHitPos.y = ::MtVector3::Zero.y;
+    this->mHitPos.z = ::MtVector3::Zero.z;
+    this->mHitPos.pad_ = 0.0f;
+    this->mHitNormal.x = ::MtVector3::Zero.x;
+    this->mHitNormal.y = ::MtVector3::Zero.y;
+    this->mHitNormal.z = ::MtVector3::Zero.z;
+    this->mHitNormal.pad_ = 0.0f;
+    this->mOffsetFromJoint.x = ::MtVector3::Zero.x;
+    this->mOffsetFromJoint.y = ::MtVector3::Zero.y;
+    this->mOffsetFromJoint.z = ::MtVector3::Zero.z;
+    this->mOffsetFromJoint.pad_ = 0.0f;
+    this->mSurfaceType = 0;
+    this->mElemntType = static_cast<nDDOGame::ELEMENT_TYPE>(1);
+    this->mEffectAngle = 1;
+    this->mEffectFlag = 0;
+    this->mEpvType = 0;
+    this->mIsDownWeakRegion = false;
+    this->mIsArrow = false;
+    this->mDamageRatePhys = 0.0f;
+    this->mDamageRatemagic = 0.0f;
+}
+
+inline void* cDamageSeInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDamageSeInfo::DTI)->memAlloc(sz, align, ::cDamageSeInfo::DTI.::MtDTI::getID());
+}
+
+inline void cDamageSeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDamageSeInfo::DTI)->memFree(p_addr);
+}
+
+inline cDamageSeInfo::cDamageSeInfo() {
+    this->mIsDownWeakRegion = false;
+    this->mIsThrust = false;
+    this->mAttackType = 0;
+    this->mSurfaceType = 0;
+    this->mpDefenderOwner = nullptr;
+    this->mpAttackerOwner = nullptr;
+    this->mpDefender = nullptr;
+    this->mpAttacker = nullptr;
+    this->mAttackReactionType = 1;
+    this->mAttackLevel = 0;
+    this->mIsNoDamage = false;
+    this->mWeaponCategory = 0;
+    this->mAttackerType = 7;
+    this->mDefenderType = 7;
+    this->mAttackerBodySize = 1;
+    this->mElementType = static_cast<nDDOGame::ELEMENT_TYPE>(1);
+    this->mEnemyWeaponType = 0xFFFFFFFF;
+    this->mWeaponType = 0;
+    this->mSeType = 0;
+    this->mIsNonePhysSe = false;
+    this->mIsNoneElementSe = false;
+    this->mHitPos.x = ::MtVector3::Zero.x;
+    this->mHitPos.y = ::MtVector3::Zero.y;
+    this->mHitPos.z = ::MtVector3::Zero.z;
+    this->mHitPos.pad_ = 0.0f;
+    this->mJointNo = -1;
+}
+
+inline MtAllocator* cpHpDamageCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpHpDamageCtrl::DTI);
+}
+
+inline void cpHpDamageCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpHpDamageCtrl::DTI)->memFree(p_addr);
 }

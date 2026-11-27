@@ -17,16 +17,8 @@ const MtDTI& cNamedParam::getDTI() const {
     return cNamedParam::DTI;
 }
 
-MtAllocator* cNamedParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cNamedParam::DTI);
-}
-
 void* cNamedParam::operator new(size_t sz, u32 align) {
     return cNamedParam::getAllocator()->memAlloc(sz, align, cNamedParam::DTI.getID());
-}
-
-inline void cNamedParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNamedParam::DTI)->memFree(p_addr);
 }
 
 cNamedParam::cNamedParam() {
@@ -190,14 +182,6 @@ __attribute__((weak)) MtObject* cNamedParam::MyDTI::newInstance() const {
 
 const MtDTI& rNamedParam::getDTI() const {
     return rNamedParam::DTI;
-}
-
-inline void* rNamedParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNamedParam::DTI)->memAlloc(sz, align, rNamedParam::DTI.getID());
-}
-
-inline void rNamedParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNamedParam::DTI)->memFree(p_addr);
 }
 
 bool rNamedParam::loadData(MtDataReader& in, cNamedParam* pData) {

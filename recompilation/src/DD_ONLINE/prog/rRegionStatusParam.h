@@ -403,3 +403,133 @@ inline void* cParentRegionStatusParam::operator new(size_t sz, u32 align) {
 inline void* cParentRegionStatusParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cParentRegionStatusParam::DTI)->memAlloc(sz, align, ::cParentRegionStatusParam::DTI.::MtDTI::getID());
 }
+
+inline void* cChildRegionStatusParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParam::DTI)->memAlloc(sz, align, ::cChildRegionStatusParam::DTI.::MtDTI::getID());
+}
+
+inline void cChildRegionStatusParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParam::DTI)->memFree(p_addr);
+}
+
+inline cChildRegionStatusParam::cChildRegionStatusParam() {
+    this->mParentNo[1] = 0;
+    this->mNo = 0;
+    this->mParentNo[0] = 0;
+    this->mAttackTolerance[0] = 1.0f;
+    this->mAttackTolerance[1] = 1.0f;
+    this->mAttackTolerance[2] = 1.0f;
+    this->mAttackTolerance[3] = 1.0f;
+    this->mMagicTolerance[0] = 1.0f;
+    this->mMagicTolerance[1] = 1.0f;
+    this->mMagicTolerance[2] = 1.0f;
+    this->mMagicTolerance[3] = 1.0f;
+    this->mMagicTolerance[4] = 1.0f;
+    this->mMagicTolerance[5] = 1.0f;
+    this->mMagicTolerance[6] = 1.0f;
+    this->mShrinkAdj = 1.0f;
+    this->mBlowAdj = 1.0f;
+    this->mDownAdj = 1.0f;
+    this->mOcdAdj = 1.0f;
+    this->mShrinkDamageRatePhys[0] = 1.0f;
+    this->mShrinkDamageRatePhys[1] = 1.0f;
+    this->mShrinkDamageRatePhys[2] = 1.0f;
+    this->mShrinkDamageRatePhys[3] = 1.0f;
+    this->mShrinkDamageRateMagic[0] = 1.0f;
+    this->mShrinkDamageRateMagic[1] = 1.0f;
+    this->mShrinkDamageRateMagic[2] = 1.0f;
+    this->mShrinkDamageRateMagic[3] = 1.0f;
+    this->mShrinkDamageRateMagic[4] = 1.0f;
+    this->mShrinkDamageRateMagic[5] = 1.0f;
+    this->mShrinkDamageRateMagic[6] = 1.0f;
+    this->mBlowDamageRatePhys[0] = 1.0f;
+    this->mBlowDamageRatePhys[1] = 1.0f;
+    this->mBlowDamageRatePhys[2] = 1.0f;
+    this->mBlowDamageRatePhys[3] = 1.0f;
+    this->mBlowDamageRateMagic[0] = 1.0f;
+    this->mBlowDamageRateMagic[1] = 1.0f;
+    this->mBlowDamageRateMagic[2] = 1.0f;
+    this->mBlowDamageRateMagic[3] = 1.0f;
+    this->mBlowDamageRateMagic[4] = 1.0f;
+    this->mBlowDamageRateMagic[5] = 1.0f;
+    this->mBlowDamageRateMagic[6] = 1.0f;
+    this->mDownDamageRatePhys[0] = 1.0f;
+    this->mDownDamageRatePhys[1] = 1.0f;
+    this->mDownDamageRatePhys[2] = 1.0f;
+    this->mDownDamageRatePhys[3] = 1.0f;
+    this->mDownDamageRateMagic[0] = 1.0f;
+    this->mDownDamageRateMagic[1] = 1.0f;
+    this->mDownDamageRateMagic[2] = 1.0f;
+    this->mDownDamageRateMagic[3] = 1.0f;
+    this->mDownDamageRateMagic[4] = 1.0f;
+    this->mDownDamageRateMagic[5] = 1.0f;
+    this->mDownDamageRateMagic[6] = 1.0f;
+    this->mRageShrinkAdj = 1.0f;
+    this->mShakeAdjPhys[0] = 1.0f;
+    this->mShakeAdjPhys[1] = 1.0f;
+    this->mShakeAdjPhys[2] = 1.0f;
+    this->mShakeAdjPhys[3] = 1.0f;
+    this->mShakeAdjMagic[0] = 1.0f;
+    this->mShakeAdjMagic[1] = 1.0f;
+    this->mShakeAdjMagic[2] = 1.0f;
+    this->mShakeAdjMagic[3] = 1.0f;
+    this->mShakeAdjMagic[4] = 1.0f;
+    this->mShakeAdjMagic[5] = 1.0f;
+    this->mShakeAdjMagic[6] = 1.0f;
+    this->mShakeAdjShake = 1.0f;
+    this->mHitStopAdj = 1.0f;
+    this->mHitSlowAdj = 1.0f;
+    this->mHitStopDefenceAttr = 0;
+    this->mSurface = 0;
+    this->mIsClimbBonus = false;
+    this->mIsDownWeakRegion = false;
+    this->mCorePointType = 0;
+    this->mCorePointID = -1;
+    this->mCoreJointNo = -1;
+    this->mCoreJointOffset = ::MtVector3::Zero;
+    this->mCoreEpvIndex = -1;
+    this->mCoreEpvElementNo = -1;
+    this->mAttackReactionType[0] = 1;
+    this->mAttackReactionType[1] = 1;
+    this->mAttackReactionType[2] = 1;
+    this->mAttackReactionType[3] = 1;
+    this->mIsElementWeakRegion[6] = false;
+    this->mIsElementWeakRegion[4] = false;
+    this->mIsElementWeakRegion[5] = false;
+    this->mIsElementWeakRegion[0] = false;
+    this->mIsElementWeakRegion[1] = false;
+    this->mIsElementWeakRegion[2] = false;
+    this->mIsElementWeakRegion[3] = false;
+}
+
+inline void cChildRegionStatusParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cChildRegionStatusParamList::DTI)->memFree(p_addr);
+}
+
+inline void cParentRegionStatusParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cParentRegionStatusParam::DTI)->memFree(p_addr);
+}
+
+inline void* rChildRegionStatusParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rChildRegionStatusParam::DTI)->memAlloc(sz, align, ::rChildRegionStatusParam::DTI.::MtDTI::getID());
+}
+
+inline void rChildRegionStatusParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rChildRegionStatusParam::DTI)->memFree(p_addr);
+}
+
+inline void* rChildRegionStatusParamList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rChildRegionStatusParamList::DTI)->memAlloc(sz, align, ::rChildRegionStatusParamList::DTI.::MtDTI::getID());
+}
+
+inline void rChildRegionStatusParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rChildRegionStatusParamList::DTI)->memFree(p_addr);
+}
+
+inline void* rParentRegionStatusParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rParentRegionStatusParam::DTI)->memAlloc(sz, align, ::rParentRegionStatusParam::DTI.::MtDTI::getID());
+}
+
+inline void rParentRegionStatusParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rParentRegionStatusParam::DTI)->memFree(p_addr);
+}

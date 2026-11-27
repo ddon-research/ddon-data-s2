@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uEffectEmitter.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -25,10 +24,6 @@ __attribute__((weak)) void uEffectEmitter::usage() {
 
 const MtDTI& uEffectEmitter::getDTI() const {
     return uEffectEmitter::DTI;
-}
-
-inline void uEffectEmitter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uEffectEmitter::DTI)->memFree(p_addr);
 }
 
 uEffectEmitter::~uEffectEmitter() {
@@ -113,9 +108,10 @@ MtUI* uEffectEmitter::createUI(MtProperty& prop) {
     return this->cUnit::createUI(prop);
 }
 
-__attribute__((weak)) void uEffectEmitter::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uEffectEmitter::applyWorldOffset")
-    /* stub */
+void uEffectEmitter::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mPos.x = offset.x + mPos.x;
+    mPos.y = offset.y + mPos.y;
+    mPos.z = offset.z + mPos.z;
 }
 
 void uEffectEmitter::kill() {

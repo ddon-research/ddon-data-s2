@@ -25,13 +25,11 @@ const MtDTI& cFSMCore::getDTI() const {
     return cFSMCore::DTI;
 }
 
-inline void cFSMCore::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMCore::DTI)->memFree(p_addr);
-}
-
-__attribute__((weak)) void cFSMCore::move() {
-    DDON_STUB("cFSMCore::move")
-    /* stub */
+void cFSMCore::move() {
+    mFSM.cAIFSM::move();
+    const f32 deltaSec = nFsm::getDeltaSec();
+    mCountState = mCountState + deltaSec;
+    mCountFSM = mCountFSM + deltaSec;
 }
 
 bool cFSMCore::setupFSM(MT_CTSTR resourcePath) {

@@ -77,3 +77,15 @@ public:
 inline void* uGUIHudCustomSkillPallet::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIHudCustomSkillPallet::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIHudCustomSkillPallet::DTI);
+}
+
+inline void uGUIHudCustomSkillPallet::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIHudCustomSkillPallet::DTI)->memFree(p_addr);
+}

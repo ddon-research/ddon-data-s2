@@ -64,3 +64,10 @@ inline void* CDataScreenShotCategory::operator new(size_t sz, void* p_addr) {
 inline CDataScreenShotCategory::CDataScreenShotCategory() {
     this->m_unId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataScreenShotCategory::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataScreenShotCategory::DTI);
+}

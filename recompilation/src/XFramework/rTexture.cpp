@@ -23,14 +23,6 @@ const MtDTI& rTexture::getDTI() const {
     return rTexture::DTI;
 }
 
-inline void* rTexture::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTexture::DTI)->memAlloc(sz, align, rTexture::DTI.mID);
-}
-
-inline void rTexture::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTexture::DTI)->memFree(p_addr);
-}
-
 rTexture::rTexture() {
     mAttr = 16;
     mbStream = false;
@@ -264,10 +256,6 @@ const MtDTI& rTextureMemory::getDTI() const {
 
 void* rTextureMemory::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rTextureMemory::DTI)->memAlloc(sz, align, rTextureMemory::DTI.mID);
-}
-
-inline void rTextureMemory::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTextureMemory::DTI)->memFree(p_addr);
 }
 
 rTextureMemory::rTextureMemory(nDraw::Texture* ptex) {

@@ -113,3 +113,15 @@ inline void uGUIGainInfo::setData0(s32 sData) {
 inline void uGUIGainInfo::setData1(s32 sData) {
     this->mData1 = sData;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIGainInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGainInfo::DTI);
+}
+
+inline void uGUIGainInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGainInfo::DTI)->memFree(p_addr);
+}

@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rAnimalData.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -20,25 +18,6 @@ extern template __attribute__((noinline)) void rTbl2<cAnimalData>::allocData(uns
 
 const MtDTI& cAnimalData::getDTI() const {
     return cAnimalData::DTI;
-}
-
-inline void* cAnimalData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAnimalData::DTI)->memAlloc(sz, align, cAnimalData::DTI.getID());
-}
-
-inline void cAnimalData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAnimalData::DTI)->memFree(p_addr);
-}
-
-cAnimalData::cAnimalData() {
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mAngle.x = MtVector3::Zero.x;
-    mAngle.y = MtVector3::Zero.y;
-    mAngle.z = MtVector3::Zero.z;
-    mAngle.pad_ = 0.0f;
 }
 
 cAnimalData::~cAnimalData() {
@@ -59,14 +38,6 @@ MtObject* cAnimalData::MyDTI::newInstance() const {
 
 const MtDTI& rAnimalData::getDTI() const {
     return rAnimalData::DTI;
-}
-
-inline void* rAnimalData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAnimalData::DTI)->memAlloc(sz, align, rAnimalData::DTI.getID());
-}
-
-inline void rAnimalData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAnimalData::DTI)->memFree(p_addr);
 }
 
 bool rAnimalData::loadData(MtDataReader& in, cAnimalData* pData) {

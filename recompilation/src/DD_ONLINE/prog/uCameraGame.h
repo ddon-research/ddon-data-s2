@@ -33,6 +33,7 @@ class cCamImpMot;
 class cCamImpMotTar;
 class cCamImpNml;
 class cCamImpPhoto;
+class cCamImpTemplate;
 class cCamInterAll;
 class cCamInterporateAng3Time;
 class cCamInterporateRange;
@@ -202,6 +203,7 @@ class uCameraGame : public uCameraBase
     friend class cCamImpMotTar;
     friend class cCamImpNml;
     friend class cCamImpPhoto;
+    friend class cCamImpTemplate;
     friend class sCameraExt;
 public:
     enum FOV_TYPE
@@ -998,6 +1000,14 @@ inline void* cCamImpSdr::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cCamImpSdr::cCamImpSdr() {
+    this->mIndex = 0;
+    this->mFrame = 0.0f;
+    this->mExtendFrame = 0.0f;
+    this->mpImple = nullptr;
+    this->mpParamSdr = nullptr;
+}
+
 inline const cCamImpBase* cCamImpSdr::getCamImp() const {
     return this->mpImple;
 }
@@ -1097,4 +1107,54 @@ inline void uCameraGame::setOldCameraType(nCameraGame::CAMERA_TYPE type) {
 
 inline void uCameraGame::setInvalidPresetInter() {
     this->mInvalidPresetInter = true;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uDDOModel.h"
+
+inline void* cCamExParamSdr::cSdrParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamSdr::cSdrParam::DTI)->memAlloc(sz, align, ::cCamExParamSdr::cSdrParam::DTI.::MtDTI::getID());
+}
+
+inline void cCamExParamSdr::cSdrParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamExParamSdr::cSdrParam::DTI)->memFree(p_addr);
+}
+
+inline void cCamImpBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpBase::DTI)->memFree(p_addr);
+}
+
+inline void cCamImpBase::updatePtr() {
+    if (this->mpOwner == nullptr) {
+        return;
+    }
+    if ((this->mpOwner->::cUnit::mBeFlag - 1u) > 1u) {
+        this->mpOwner = nullptr;
+    }
+}
+
+inline void* cCamImpSdr::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCamImpSdr::DTI)->memAlloc(sz, align, ::cCamImpSdr::DTI.::MtDTI::getID());
+}
+
+inline void cCamImpSdr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpSdr::DTI)->memFree(p_addr);
+}
+
+inline void cCamImpTarget::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpTarget::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nCameraGame::cTemplateParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nCameraGame::cTemplateParam::DTI);
+}
+
+inline MtAllocator* uCameraGame::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCameraGame::DTI);
+}
+
+inline void uCameraGame::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCameraGame::DTI)->memFree(p_addr);
 }

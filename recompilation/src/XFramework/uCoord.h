@@ -138,3 +138,11 @@ inline void uCoord::setParentFlags(u32 flags) {
 inline u32 uCoord::getParentFlags() {
     return this->mParentFlags;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uCoord::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCoord::DTI)->memFree(p_addr);
+}

@@ -110,3 +110,15 @@ inline void cpLayout::setQuestId(u32 QuestId) {
 inline u32 cpLayout::getQuestId() {
     return this->mQuestId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpLayout::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpLayout::DTI);
+}
+
+inline void cpLayout::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpLayout::DTI)->memFree(p_addr);
+}

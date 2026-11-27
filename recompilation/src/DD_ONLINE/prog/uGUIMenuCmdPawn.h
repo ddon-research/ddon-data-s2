@@ -153,3 +153,15 @@ public:
 inline void* uGUIMenuCmdPawn::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIMenuCmdPawn::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMenuCmdPawn::DTI);
+}
+
+inline void uGUIMenuCmdPawn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMenuCmdPawn::DTI)->memFree(p_addr);
+}

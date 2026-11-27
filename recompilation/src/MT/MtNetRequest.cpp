@@ -135,9 +135,60 @@ __attribute__((weak)) bool MtNetRequestController::isMove(s32 req_id) {
     return {};
 }
 
-__attribute__((weak)) void MtNetRequestController::end(MtNetRequest* req) {
-    DDON_STUB("MtNetRequestController::end")
-    /* stub */
+void MtNetRequestController::end(MtNetRequest* req) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            ::abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        if (req != nullptr) {
+            req->mStatus = 3;
+            if (mpListener != nullptr) {
+                mpListener->endRequest(req);
+            }
+            if (req->mIsMove) {
+                if (req->mIsFinalize) {
+                    mIsNeedFinalize = false;
+                } else {
+                    mIsNeedFinalize = true;
+                }
+            }
+            if (mIsThreadSafe) {
+                mLockCount = mLockCount - 1;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    ::abort();
+                }
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = t0;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    ::abort();
+                }
+            }
+        }
+    } else {
+        if (req != nullptr) {
+            req->mStatus = 3;
+            if (mpListener != nullptr) {
+                mpListener->endRequest(req);
+            }
+            if (req->mIsMove) {
+                if (req->mIsFinalize) {
+                    mIsNeedFinalize = false;
+                } else {
+                    mIsNeedFinalize = true;
+                }
+            }
+        }
+        if (mIsThreadSafe) {
+            mLockCount = mLockCount - 1;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                ::abort();
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool MtNetRequestController::isExist() {

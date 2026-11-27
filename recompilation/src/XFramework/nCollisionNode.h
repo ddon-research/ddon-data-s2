@@ -31,9 +31,9 @@ class MtPropertyList;
 class MtStream;
 class MtString;
 class MtVector3;
-namespace nCollision { class cGeometryExpansion; }
 class rGeometry2;
 class uGeometry2;
+class uGeometry3;
 class uModel;
 
 // Declarations
@@ -41,6 +41,7 @@ namespace nCollision { class cCollisionNode; }
 namespace nCollision { class cCollisionNodeGroup; }
 namespace nCollision { class cCollisionNodeObject; }
 namespace nCollision { class cGeometry; }
+namespace nCollision { class cGeometryExpansion; }
 namespace nCollision { class cGeometryJointGroup; }
 namespace nCollision { class cMotionSequenceSupport; }
 namespace nCollision { class cObjectBase; }
@@ -246,6 +247,7 @@ namespace nCollision {
     {
         friend class ::rGeometry2;
         friend class ::uGeometry2;
+        friend class ::uGeometry3;
     public:
         class MyDTI;
     public:
@@ -580,6 +582,71 @@ namespace nCollision {
 }  // namespace nCollision
 
 namespace nCollision {
+    class cGeometryExpansion : public nCollision::cGeometry
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        cGeometryExpansion();
+        virtual ~cGeometryExpansion();
+        virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+        virtual bool load(MtDataReader& r, MtStream& in);  // vtable slot 6
+        virtual bool save(MtDataWriter& w, MtStream& out);  // vtable slot 7
+        virtual void move();  // vtable slot 8
+        virtual void copy(const nCollision::cObjectBase& src);  // vtable slot 9
+        void setAttribute(u32 NewAttribute);
+        u32 getAttribute() const;
+        bool isTargetAttribute(u32 TargetAttributeParam) const;
+        bool isEqualUserID(u32 TargetUserID) const;
+        void setUserID(u32 NewUserID);
+        u32 getUserID() const;
+        void setUserPtrByDTI(const MtDTI& NewUserObjectDTI);
+        void setUserPtr(MtObject* pNewUserPtr);
+        MtObject* getUserPtr() const;
+        void unregistUserPtr();
+        void setAutoDeleteUserPtr(bool FlgNextAutoDeleteUserPtr);
+        bool isAutoDeleteUserPtr() const;
+        nCollision::cGeometryExpansion& operator=(const nCollision::cGeometryExpansion&);
+        void* memAlloc(size_t);
+        void memFree(void*);
+        size_t memSize(void*);
+    protected:
+        bool loadUserPtr(MtDataReader& r, MtStream& in);
+        uintptr getUserPtrAddr();
+    protected:
+        u32 mAttribute;  // offset: 0x40
+        u32 mUserID;  // offset: 0x44
+        MtObject* mpUserPtr;  // offset: 0x48
+        bool mFlgAutoDeleteUserPtr;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+        static const u32 DEFAULT_ATTRIBUTE = 4294967295;
+        static const u32 DEFAULT_USER_ID = 4294967295;
+        static const u16 VERSION = 1;
+    };
+}  // namespace nCollision
+
+namespace nCollision {
     class cGeometryJointGroup : public nCollision::cCollisionNode
     {
     public:
@@ -716,6 +783,10 @@ inline void* nCollision::cGeometry::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void* nCollision::cGeometryExpansion::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nCollision::cGeometryJointGroup::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -737,4 +808,44 @@ inline nCollision::cMotionSequenceSupport::cMotionSequenceSupport() {
 
 inline void* nCollision::cObjectBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nCollision::cCollisionNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNode::DTI)->memFree(p_addr);
+}
+
+inline void nCollision::cCollisionNodeGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNodeGroup::DTI)->memFree(p_addr);
+}
+
+inline void nCollision::cCollisionNodeObject::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNodeObject::DTI)->memFree(p_addr);
+}
+
+inline void nCollision::cGeometry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cGeometry::DTI)->memFree(p_addr);
+}
+
+inline void nCollision::cGeometryExpansion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryExpansion::DTI)->memFree(p_addr);
+}
+
+inline void nCollision::cGeometryJointGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI)->memFree(p_addr);
+}
+
+inline void* nCollision::cMotionSequenceSupport::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nCollision::cMotionSequenceSupport::DTI)->memAlloc(sz, align, ::nCollision::cMotionSequenceSupport::DTI.::MtDTI::mID);
+}
+
+inline void nCollision::cMotionSequenceSupport::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cMotionSequenceSupport::DTI)->memFree(p_addr);
+}
+
+inline void nCollision::cObjectBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCollision::cObjectBase::DTI)->memFree(p_addr);
 }

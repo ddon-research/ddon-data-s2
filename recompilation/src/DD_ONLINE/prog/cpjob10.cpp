@@ -14,6 +14,7 @@
 #include "cEfcHandle.h"
 #include "cHitNode.h"
 #include "cHumanAction.h"
+#include "cJob10Action.h"
 #include "cNetGameServer.h"
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
@@ -173,16 +174,8 @@ const MtDTI& cpJob10::getDTI() const {
     return cpJob10::DTI;
 }
 
-inline MtAllocator* cpJob10::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJob10::DTI);
-}
-
 void* cpJob10::operator new(size_t sz, u32 align) {
     return cpJob10::getAllocator()->memAlloc(sz, align, cpJob10::DTI.getID());
-}
-
-inline void cpJob10::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob10::DTI)->memFree(p_addr);
 }
 
 cpJob10::cpJob10() {
@@ -385,9 +378,13 @@ __attribute__((weak)) void cpJob10::makeShlDamageAttackInfo(cHitInfoAfter* pHitI
     /* stub */
 }
 
-__attribute__((weak)) void cpJob10::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpJob10::applyWorldOffset")
-    /* stub */
+void cpJob10::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mCS04AimPos.x = offset.x + mCS04AimPos.x;
+    mCS04AimPos.y = offset.y + mCS04AimPos.y;
+    mCS04AimPos.z = offset.z + mCS04AimPos.z;
+    mCs08ShlPos.x = offset.x + mCs08ShlPos.x;
+    mCs08ShlPos.y = offset.y + mCs08ShlPos.y;
+    mCs08ShlPos.z = offset.z + mCs08ShlPos.z;
 }
 
 __attribute__((weak)) void cpJob10::callbackReqEnchant() {
@@ -405,9 +402,22 @@ __attribute__((weak)) void cpJob10::BoostBoostProc() {
     /* stub */
 }
 
-__attribute__((weak)) void cpJob10::reqBoostMode(cpJob10::BOOST_MODE mode) {
-    DDON_STUB("cpJob10::reqBoostMode")
-    /* stub */
+void cpJob10::reqBoostMode(cpJob10::BOOST_MODE mode) {
+    cSpiritManager* t0 = mpSpiritMgr;
+    if (static_cast<unsigned int>(mode - 1) <= 1) {
+        if (t0->mpStateNow->getSpiritState() != cpJob10::cSpiritManager::SPIRIT_STATE_BOOST) {
+            t0->mpStateNow = static_cast<cSpiritManager::cSpiritState*>(&t0->mStateBoost);
+            (&t0->mStateBoost)->init();
+            t0->mpStateNow->setBoostMode(mode);
+        }
+    } else {
+        if (mode == BOOST_MODE_NORMAL) {
+            if (t0->mpStateNow->getSpiritState() != cpJob10::cSpiritManager::SPIRIT_STATE_NORMAL) {
+                t0->mpStateNow = static_cast<cSpiritManager::cSpiritState*>(&t0->mStateNormal);
+                (&t0->mStateNormal)->init();
+            }
+        }
+    }
 }
 
 bool cpJob10::isBoosting() {
@@ -901,9 +911,34 @@ f32 cpJob10::getCs08PreShlChargeFrameMax() const {
     }
 }
 
-__attribute__((weak)) void cpJob10::generateShlCs08(u32 skillLv) {
-    DDON_STUB("cpJob10::generateShlCs08")
-    /* stub */
+void cpJob10::generateShlCs08(u32 skillLv) {
+    static const u32 levelMultiply[11] = {
+        0,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        10,
+    };
+    const f32 min = mpHuman->getJobAdjustParam(39u);
+    const f32 max = mpHuman->getJobAdjustParam(40u);
+    const unsigned int t0 = levelMultiply[skillLv];
+    mCs08ContinueFrameMax = min + (((max - min) * static_cast<float>(t0)) / 10.0f);
+    if (mCs08ChargeRateCache == 1.0f) {
+        const f32 bonusMin = mpHuman->getJobAdjustParam(69u);
+        const f32 bonusMax = mpHuman->getJobAdjustParam(70u);
+        mCs08ContinueFrameMax = mCs08ContinueFrameMax + (bonusMin + (((bonusMax - bonusMin) * static_cast<float>(t0)) / 10.0f));
+        mCs08ContinueFrame = 0.0f;
+        mHsCs08Shl = true;
+    } else {
+        mCs08ContinueFrame = 0.0f;
+        mHsCs08Shl = true;
+    }
 }
 
 __attribute__((weak)) void cpJob10::updateCs08() {
@@ -948,14 +983,6 @@ __attribute__((weak)) MtObject* cpJob10::MyDTI::newInstance() const {
 
 const MtDTI& cpJob10::cSpiritManager::getDTI() const {
     return cpJob10::cSpiritManager::DTI;
-}
-
-inline void* cpJob10::cSpiritManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::DTI)->memAlloc(sz, align, cpJob10::cSpiritManager::DTI.getID());
-}
-
-inline void cpJob10::cSpiritManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cpJob10::cSpiritManager::addSpirit(f32 addval, f32 rate) {
@@ -1031,14 +1058,6 @@ const MtDTI& cpJob10::cSpiritManager::cSpiritStateNormal::getDTI() const {
     return cpJob10::cSpiritManager::cSpiritStateNormal::DTI;
 }
 
-inline void* cpJob10::cSpiritManager::cSpiritStateNormal::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritStateNormal::DTI)->memAlloc(sz, align, cpJob10::cSpiritManager::cSpiritStateNormal::DTI.getID());
-}
-
-inline void cpJob10::cSpiritManager::cSpiritStateNormal::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritStateNormal::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cpJob10::cSpiritManager::cSpiritStateNormal::attack(f32 addval) {
     DDON_STUB("cpJob10::cSpiritManager::cSpiritStateNormal::attack")
     /* stub */
@@ -1078,14 +1097,6 @@ const MtDTI& cpJob10::cSpiritManager::cSpiritState::getDTI() const {
     return cpJob10::cSpiritManager::cSpiritState::DTI;
 }
 
-inline void* cpJob10::cSpiritManager::cSpiritState::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritState::DTI)->memAlloc(sz, align, cpJob10::cSpiritManager::cSpiritState::DTI.getID());
-}
-
-inline void cpJob10::cSpiritManager::cSpiritState::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritState::DTI)->memFree(p_addr);
-}
-
 cpJob10::cSpiritManager::SPIRIT_STATE cpJob10::cSpiritManager::cSpiritState::getSpiritState() const {
     return cpJob10::cSpiritManager::SPIRIT_STATE_NORMAL;
 }
@@ -1116,14 +1127,6 @@ MtObject* cpJob10::cSpiritManager::cSpiritState::MyDTI::newInstance() const {
 
 const MtDTI& cpJob10::cSpiritManager::cSpiritStateBoost::getDTI() const {
     return cpJob10::cSpiritManager::cSpiritStateBoost::DTI;
-}
-
-inline void* cpJob10::cSpiritManager::cSpiritStateBoost::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritStateBoost::DTI)->memAlloc(sz, align, cpJob10::cSpiritManager::cSpiritStateBoost::DTI.getID());
-}
-
-inline void cpJob10::cSpiritManager::cSpiritStateBoost::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob10::cSpiritManager::cSpiritStateBoost::DTI)->memFree(p_addr);
 }
 
 cpJob10::cSpiritManager::SPIRIT_STATE cpJob10::cSpiritManager::cSpiritStateBoost::getSpiritState() const {

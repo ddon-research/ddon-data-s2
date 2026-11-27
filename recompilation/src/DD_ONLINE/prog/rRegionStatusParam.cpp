@@ -25,104 +25,6 @@ const MtDTI& cChildRegionStatusParam::getDTI() const {
     return cChildRegionStatusParam::DTI;
 }
 
-inline void* cChildRegionStatusParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cChildRegionStatusParam::DTI)->memAlloc(sz, align, cChildRegionStatusParam::DTI.getID());
-}
-
-inline void cChildRegionStatusParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cChildRegionStatusParam::DTI)->memFree(p_addr);
-}
-
-cChildRegionStatusParam::cChildRegionStatusParam() {
-    mParentNo[1] = 0;
-    mNo = 0;
-    mParentNo[0] = 0;
-    mAttackTolerance[0] = 1.0f;
-    mAttackTolerance[1] = 1.0f;
-    mAttackTolerance[2] = 1.0f;
-    mAttackTolerance[3] = 1.0f;
-    mMagicTolerance[0] = 1.0f;
-    mMagicTolerance[1] = 1.0f;
-    mMagicTolerance[2] = 1.0f;
-    mMagicTolerance[3] = 1.0f;
-    mMagicTolerance[4] = 1.0f;
-    mMagicTolerance[5] = 1.0f;
-    mMagicTolerance[6] = 1.0f;
-    mShrinkAdj = 1.0f;
-    mBlowAdj = 1.0f;
-    mDownAdj = 1.0f;
-    mOcdAdj = 1.0f;
-    mShrinkDamageRatePhys[0] = 1.0f;
-    mShrinkDamageRatePhys[1] = 1.0f;
-    mShrinkDamageRatePhys[2] = 1.0f;
-    mShrinkDamageRatePhys[3] = 1.0f;
-    mShrinkDamageRateMagic[0] = 1.0f;
-    mShrinkDamageRateMagic[1] = 1.0f;
-    mShrinkDamageRateMagic[2] = 1.0f;
-    mShrinkDamageRateMagic[3] = 1.0f;
-    mShrinkDamageRateMagic[4] = 1.0f;
-    mShrinkDamageRateMagic[5] = 1.0f;
-    mShrinkDamageRateMagic[6] = 1.0f;
-    mBlowDamageRatePhys[0] = 1.0f;
-    mBlowDamageRatePhys[1] = 1.0f;
-    mBlowDamageRatePhys[2] = 1.0f;
-    mBlowDamageRatePhys[3] = 1.0f;
-    mBlowDamageRateMagic[0] = 1.0f;
-    mBlowDamageRateMagic[1] = 1.0f;
-    mBlowDamageRateMagic[2] = 1.0f;
-    mBlowDamageRateMagic[3] = 1.0f;
-    mBlowDamageRateMagic[4] = 1.0f;
-    mBlowDamageRateMagic[5] = 1.0f;
-    mBlowDamageRateMagic[6] = 1.0f;
-    mDownDamageRatePhys[0] = 1.0f;
-    mDownDamageRatePhys[1] = 1.0f;
-    mDownDamageRatePhys[2] = 1.0f;
-    mDownDamageRatePhys[3] = 1.0f;
-    mDownDamageRateMagic[0] = 1.0f;
-    mDownDamageRateMagic[1] = 1.0f;
-    mDownDamageRateMagic[2] = 1.0f;
-    mDownDamageRateMagic[3] = 1.0f;
-    mDownDamageRateMagic[4] = 1.0f;
-    mDownDamageRateMagic[5] = 1.0f;
-    mDownDamageRateMagic[6] = 1.0f;
-    mRageShrinkAdj = 1.0f;
-    mShakeAdjPhys[0] = 1.0f;
-    mShakeAdjPhys[1] = 1.0f;
-    mShakeAdjPhys[2] = 1.0f;
-    mShakeAdjPhys[3] = 1.0f;
-    mShakeAdjMagic[0] = 1.0f;
-    mShakeAdjMagic[1] = 1.0f;
-    mShakeAdjMagic[2] = 1.0f;
-    mShakeAdjMagic[3] = 1.0f;
-    mShakeAdjMagic[4] = 1.0f;
-    mShakeAdjMagic[5] = 1.0f;
-    mShakeAdjMagic[6] = 1.0f;
-    mShakeAdjShake = 1.0f;
-    mHitStopAdj = 1.0f;
-    mHitSlowAdj = 1.0f;
-    mHitStopDefenceAttr = 0;
-    mSurface = 0;
-    mIsClimbBonus = false;
-    mIsDownWeakRegion = false;
-    mCorePointType = 0;
-    mCorePointID = -1;
-    mCoreJointNo = -1;
-    mCoreJointOffset = MtVector3::Zero;
-    mCoreEpvIndex = -1;
-    mCoreEpvElementNo = -1;
-    mAttackReactionType[0] = 1;
-    mAttackReactionType[1] = 1;
-    mAttackReactionType[2] = 1;
-    mAttackReactionType[3] = 1;
-    mIsElementWeakRegion[6] = false;
-    mIsElementWeakRegion[4] = false;
-    mIsElementWeakRegion[5] = false;
-    mIsElementWeakRegion[0] = false;
-    mIsElementWeakRegion[1] = false;
-    mIsElementWeakRegion[2] = false;
-    mIsElementWeakRegion[3] = false;
-}
-
 inline cChildRegionStatusParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cChildRegionStatusParam::MyDTI cChildRegionStatusParam::DTI("cChildRegionStatusParam", &::MtObject::DTI, 352ul, 0u, 0u);
@@ -133,10 +35,6 @@ MtObject* cChildRegionStatusParam::MyDTI::newInstance() const {
 
 const MtDTI& cChildRegionStatusParamList::getDTI() const {
     return cChildRegionStatusParamList::DTI;
-}
-
-inline void cChildRegionStatusParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cChildRegionStatusParamList::DTI)->memFree(p_addr);
 }
 
 cChildRegionStatusParamList::~cChildRegionStatusParamList() {
@@ -159,10 +57,6 @@ const MtDTI& cParentRegionStatusParam::getDTI() const {
     return cParentRegionStatusParam::DTI;
 }
 
-inline void cParentRegionStatusParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cParentRegionStatusParam::DTI)->memFree(p_addr);
-}
-
 cParentRegionStatusParam::~cParentRegionStatusParam() {
     if (mpBreakInfo == nullptr) {
         return;
@@ -181,14 +75,6 @@ __attribute__((weak)) MtObject* cParentRegionStatusParam::MyDTI::newInstance() c
 
 const MtDTI& rChildRegionStatusParam::getDTI() const {
     return rChildRegionStatusParam::DTI;
-}
-
-void* rChildRegionStatusParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rChildRegionStatusParam::DTI)->memAlloc(sz, align, rChildRegionStatusParam::DTI.getID());
-}
-
-inline void rChildRegionStatusParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rChildRegionStatusParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rChildRegionStatusParam::loadData(MtDataReader& in, cChildRegionStatusParam* pData) {
@@ -276,14 +162,6 @@ const MtDTI& rChildRegionStatusParamList::getDTI() const {
     return rChildRegionStatusParamList::DTI;
 }
 
-inline void* rChildRegionStatusParamList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rChildRegionStatusParamList::DTI)->memAlloc(sz, align, rChildRegionStatusParamList::DTI.getID());
-}
-
-inline void rChildRegionStatusParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rChildRegionStatusParamList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool rChildRegionStatusParamList::loadData(MtDataReader& in, cChildRegionStatusParamList* pData) {
     if (pData->mpChildRegion != nullptr && pData->mpChildRegion->loadRoot(in)) {
         nDDOIO::readData(in, pData->mStatusNo);
@@ -312,14 +190,6 @@ MtObject* rChildRegionStatusParamList::MyDTI::newInstance() const {
 
 const MtDTI& rParentRegionStatusParam::getDTI() const {
     return rParentRegionStatusParam::DTI;
-}
-
-inline void* rParentRegionStatusParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rParentRegionStatusParam::DTI)->memAlloc(sz, align, rParentRegionStatusParam::DTI.getID());
-}
-
-inline void rParentRegionStatusParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rParentRegionStatusParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rParentRegionStatusParam::loadData(MtDataReader& in, cParentRegionStatusParam* pData) {

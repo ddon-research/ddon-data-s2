@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cQuestFunctionManagerBAse.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -11,14 +9,6 @@
 
 const MtDTI& cQuestFunctionManagerBase::getDTI() const {
     return cQuestFunctionManagerBase::DTI;
-}
-
-inline void* cQuestFunctionManagerBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestFunctionManagerBase::DTI)->memAlloc(sz, align, cQuestFunctionManagerBase::DTI.getID());
-}
-
-inline void cQuestFunctionManagerBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestFunctionManagerBase::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cQuestFunctionManagerBase::release() {

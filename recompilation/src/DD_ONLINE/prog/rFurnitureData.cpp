@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rFurnitureData.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -20,26 +18,6 @@ extern template __attribute__((noinline)) void rTbl2<cFurnitureData>::allocData(
 
 const MtDTI& cFurnitureData::getDTI() const {
     return cFurnitureData::DTI;
-}
-
-inline void* cFurnitureData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cFurnitureData::DTI)->memAlloc(sz, align, cFurnitureData::DTI.getID());
-}
-
-inline void cFurnitureData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFurnitureData::DTI)->memFree(p_addr);
-}
-
-cFurnitureData::cFurnitureData() {
-    mOmId = 0;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mAngle.x = MtVector3::Zero.x;
-    mAngle.y = MtVector3::Zero.y;
-    mAngle.z = MtVector3::Zero.z;
-    mAngle.pad_ = 0.0f;
 }
 
 cFurnitureData::~cFurnitureData() {
@@ -61,14 +39,6 @@ MtObject* cFurnitureData::MyDTI::newInstance() const {
 
 const MtDTI& rFurnitureData::getDTI() const {
     return rFurnitureData::DTI;
-}
-
-inline void* rFurnitureData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFurnitureData::DTI)->memAlloc(sz, align, rFurnitureData::DTI.getID());
-}
-
-inline void rFurnitureData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFurnitureData::DTI)->memFree(p_addr);
 }
 
 bool rFurnitureData::loadData(MtDataReader& in, cFurnitureData* pData) {

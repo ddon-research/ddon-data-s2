@@ -31,6 +31,7 @@ class MtVector3;
 class cDraw;
 namespace nDraw { class OcclusionQuery; }
 namespace nDraw { class Texture; }
+class uPointShadow;
 class uShadow;
 
 // Declarations
@@ -52,6 +53,7 @@ using uintptr = __uintptr_t;
 
 class sShadow : public cSystem
 {
+    friend class uPointShadow;
     friend class uShadow;
 public:
     enum RESOURCE_TYPE
@@ -547,6 +549,7 @@ private:
 
 class cShadowPriorityState : public MtObject
 {
+    friend class sShadow;
 public:
     enum MESSAGE
     {
@@ -669,4 +672,32 @@ inline sShadow::Node::Node() {
     this->mpState[1] = nullptr;
     this->mpState[0] = nullptr;
     this->mpShadow = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sShadow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShadow::DTI)->memFree(p_addr);
+}
+
+inline void sShadow::ResourceGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShadow::ResourceGroup::DTI)->memFree(p_addr);
+}
+
+inline void sShadow::Resource::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShadow::Resource::DTI)->memFree(p_addr);
+}
+
+inline void sShadow::ViewConsistentResource::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShadow::ViewConsistentResource::DTI)->memFree(p_addr);
+}
+
+inline void* sShadow::Node::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sShadow::Node::DTI)->memAlloc(sz, align, ::sShadow::Node::DTI.::MtDTI::mID);
+}
+
+inline void sShadow::Node::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sShadow::Node::DTI)->memFree(p_addr);
 }

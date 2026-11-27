@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
@@ -19,16 +18,8 @@ const MtDTI& cpPivotCtrl::getDTI() const {
     return cpPivotCtrl::DTI;
 }
 
-inline MtAllocator* cpPivotCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpPivotCtrl::DTI);
-}
-
 void* cpPivotCtrl::operator new(size_t sz, u32 align) {
     return cpPivotCtrl::getAllocator()->memAlloc(sz, align, cpPivotCtrl::DTI.getID());
-}
-
-inline void cpPivotCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpPivotCtrl::DTI)->memFree(p_addr);
 }
 
 cpPivotCtrl::cpPivotCtrl() {
@@ -63,9 +54,16 @@ void cpPivotCtrl::updatePtr() {
     mpModel = nullptr;
 }
 
-__attribute__((weak)) void cpPivotCtrl::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpPivotCtrl::applyWorldOffset")
-    /* stub */
+void cpPivotCtrl::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mOrgPos.x = offset.x + mOrgPos.x;
+    mOrgPos.y = offset.y + mOrgPos.y;
+    mOrgPos.z = offset.z + mOrgPos.z;
+    mOrgPosModel.x = offset.x + mOrgPosModel.x;
+    mOrgPosModel.y = offset.y + mOrgPosModel.y;
+    mOrgPosModel.z = offset.z + mOrgPosModel.z;
+    mPivotPos.x = offset.x + mPivotPos.x;
+    mPivotPos.y = offset.y + mPivotPos.y;
+    mPivotPos.z = offset.z + mPivotPos.z;
 }
 
 __attribute__((weak)) void cpPivotCtrl::setActive(bool active) {

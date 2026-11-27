@@ -13,6 +13,7 @@ class MtAllocator;
 class MtDTI;
 class MtPropertyList;
 class MtVector3;
+class cpEnemyLocalShel;
 class kTHINKDATA;
 class rkThinkData;
 
@@ -28,6 +29,7 @@ namespace cThinkMgrName { struct kTHINKRETSET_CHK; }
 namespace cThinkMgrName { struct kTHINKTIMER; }
 namespace cThinkMgrName { struct kTHINK_ADD_IDX; }
 namespace cThinkMgrName { struct kTHINK_FREE_WORK; }
+namespace cThinkMgrName { namespace cSyncFlagCtrlName { template <typename T> class cSyncFlagCtrl; } }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -367,6 +369,26 @@ namespace cThinkMgrName {
         u8 work_c;  // offset: 0x2
         u8 work_d;  // offset: 0x3
     };
+}  // namespace cThinkMgrName
+
+namespace cThinkMgrName {
+    namespace cSyncFlagCtrlName {
+        template <typename T>
+        class cSyncFlagCtrl
+        {
+            friend class ::cpEnemyLocalShel;
+        public:
+            cSyncFlagCtrl();
+            ~cSyncFlagCtrl();
+            void onSyncFlag(T flag);
+            void copySyncFlagtoOld();
+            void clrSyncCheckFlg(bool copyOldFlag);
+            bool checkOnSyncFlagOld(T checkSyncFlag);
+        private:
+            T mSyncFlag;  // offset: 0x0
+            T mSyncFlagOld;  // offset: 0x4
+        };
+    }  // namespace cSyncFlagCtrlName
 }  // namespace cThinkMgrName
 
 namespace cThinkMgrName {
@@ -768,4 +790,69 @@ inline cThinkMgrName::cThinkTblList::cThinkTblList() {
     this->mtblListNum = 0;
     this->mpThinkTblRes = nullptr;
     this->mpThinkTblList = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cThinkMgrName::cTargetLink::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cTargetLink::DTI)->memAlloc(sz, align, ::cThinkMgrName::cTargetLink::DTI.::MtDTI::getID());
+}
+
+inline void cThinkMgrName::cTargetLink::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cTargetLink::DTI)->memFree(p_addr);
+}
+
+inline void cThinkMgrName::cThinkMgr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgr::DTI)->memFree(p_addr);
+}
+
+inline void* cThinkMgrName::cThinkMgrTargetData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgrTargetData::DTI)->memAlloc(sz, align, ::cThinkMgrName::cThinkMgrTargetData::DTI.::MtDTI::getID());
+}
+
+inline void cThinkMgrName::cThinkMgrTargetData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgrTargetData::DTI)->memFree(p_addr);
+}
+
+inline cThinkMgrName::cThinkMgrTargetData::cThinkMgrTargetData() {
+    this->mMyPos.x = ::MtVector3::Zero.x;
+    this->mMyPos.y = ::MtVector3::Zero.y;
+    this->mMyPos.z = ::MtVector3::Zero.z;
+    this->mMyPos.pad_ = 0.0f;
+    this->mTargetPos.x = ::MtVector3::Zero.x;
+    this->mTargetPos.y = ::MtVector3::Zero.y;
+    this->mTargetPos.z = ::MtVector3::Zero.z;
+    this->mYLength = 0.0f;
+    this->mAngle = 0.0f;
+    this->mXyzLength = 0.0f;
+    this->mXzLength = 0.0f;
+    this->mTargetPos.pad_ = 0.0f;
+    this->mTargetAngleY = 0.0f;
+    this->mMotState = 0;
+    this->mPriority = 0.0f;
+    this->mId = 0;
+    this->mStatusBefore = 0;
+    this->mStatus = 0;
+    this->mIsTargetDataAll = 0;
+    this->mIsTargetType = 0;
+    this->mTargetId = 0;
+    this->mpTargetChar = nullptr;
+    this->mTargetHandlingTypeThink = 1;
+    this->mTargetHandlingType = 1;
+    this->mLinkID = 0;
+    this->mLinkIdx = 0;
+}
+
+inline void cThinkMgrName::cThinkMgrTargetMgr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgrTargetMgr::DTI)->memFree(p_addr);
+}
+
+inline void* cThinkMgrName::cThinkTblList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkTblList::DTI)->memAlloc(sz, align, ::cThinkMgrName::cThinkTblList::DTI.::MtDTI::getID());
+}
+
+inline void cThinkMgrName::cThinkTblList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkTblList::DTI)->memFree(p_addr);
 }

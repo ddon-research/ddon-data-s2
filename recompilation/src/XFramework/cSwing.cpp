@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cSwing.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
@@ -20,14 +19,6 @@
 
 const MtDTI& cSwing::getDTI() const {
     return cSwing::DTI;
-}
-
-inline void* cSwing::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSwing::DTI)->memAlloc(sz, align, cSwing::DTI.mID);
-}
-
-inline void cSwing::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSwing::DTI)->memFree(p_addr);
 }
 
 cSwing::cSwing() {
@@ -169,14 +160,58 @@ __attribute__((weak)) void cSwingModel::setup(cDraw* pdraw, const MtAABB& aabb) 
     /* stub */
 }
 
-__attribute__((weak)) void cSwingModel::initContext(cSwingModel::SWING_CONTEXT& context) {
-    DDON_STUB("cSwingModel::initContext")
-    /* stub */
+void cSwingModel::initContext(cSwingModel::SWING_CONTEXT& context) {
+    context.p_depth_bias_texture = nullptr;
+    context.state[1].use_high_precision = false;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&context) + 73) = 0;
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(&context) + 77) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&context) + 79) = 0;
+    context.state[1].current_base = 0;
+    context.state[1].current_stride = 0;
+    context.state[1].p_current_quant = nullptr;
+    context.state[1].p_quant = nullptr;
+    context.state[1].p_vb = nullptr;
+    context.state[0].use_high_precision = false;
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(&context) + 33) = 0;
+    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(&context) + 37) = 0;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(&context) + 39) = 0;
+    context.state[0].current_base = 0;
+    context.state[0].current_stride = 0;
+    context.state[0].p_current_quant = nullptr;
+    context.state[0].p_quant = nullptr;
+    context.state[0].p_vb = nullptr;
+    rSwingModel* p_swing = mpSwing;
+    if (p_swing != nullptr) {
+        context.state[0].p_vb = p_swing->mpVertexBuffer;
+        context.state[0].p_quant = p_swing->mpPrimQuantInfo;
+        context.state[0].use_high_precision = p_swing->mHighPrecisionMode;
+        rSwingModel* p_after_swing = mpAfterSwing;
+        if (p_after_swing != nullptr) {
+            context.state[1].p_vb = p_after_swing->mpVertexBuffer;
+            context.state[1].p_quant = p_after_swing->mpPrimQuantInfo;
+            context.state[1].use_high_precision = p_after_swing->mHighPrecisionMode;
+        }
+    } else {
+        rSwingModel* p_after_swing = mpAfterSwing;
+        if (p_after_swing != nullptr) {
+            context.state[1].p_vb = p_after_swing->mpVertexBuffer;
+            context.state[1].p_quant = p_after_swing->mpPrimQuantInfo;
+            context.state[1].use_high_precision = p_after_swing->mHighPrecisionMode;
+        }
+    }
 }
 
-__attribute__((weak)) void cSwingModel::updateQuant(cSwingModel::SWING_CONTEXT& context, u32 prim) {
-    DDON_STUB("cSwingModel::updateQuant")
-    /* stub */
+void cSwingModel::updateQuant(cSwingModel::SWING_CONTEXT& context, u32 prim) {
+    if (context.state[0].p_quant != nullptr) {
+        context.state[0].p_current_quant = &context.state[0].p_quant[prim];
+    } else {
+        context.state[0].p_current_quant = nullptr;
+    }
+    if (context.state[1].p_quant != nullptr) {
+        context.state[1].p_current_quant = &context.state[1].p_quant[prim];
+    } else {
+        context.state[1].p_current_quant = nullptr;
+    }
 }
 
 __attribute__((weak)) void cSwingModel::apply(cDraw* p_draw, cSwingModel::SWING_CONTEXT& context) {

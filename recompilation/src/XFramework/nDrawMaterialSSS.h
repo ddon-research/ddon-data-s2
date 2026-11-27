@@ -93,3 +93,11 @@ namespace nDraw {
 inline void* nDraw::MaterialSSS::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nDraw::MaterialSSS::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::MaterialSSS::DTI)->memFree(p_addr);
+}

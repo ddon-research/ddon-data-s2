@@ -29,6 +29,7 @@
 #include "sUnitManager.h"
 #include "../../XFramework/uBaseModel.h"
 #include "uCnsWeapon.h"
+#include "uDDOActorModelPl.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "../../XFramework/uModel.h"
@@ -38,10 +39,6 @@
 
 const MtDTI& uWeapon::getDTI() const {
     return uWeapon::DTI;
-}
-
-inline void uWeapon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uWeapon::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uWeapon::~uWeapon() {
@@ -189,9 +186,8 @@ inline uWeapon::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id
 
 uWeapon::MyDTI uWeapon::DTI("uWeapon", &::uDDOModel::DTI, 9696ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uWeapon::MyDTI::newInstance() const {
-    DDON_STUB("uWeapon::MyDTI::newInstance")
-    return nullptr;
+MtObject* uWeapon::MyDTI::newInstance() const {
+    return new (16u) uWeapon;
 }
 
 template MtTypedArray<uCnsWeapon>::~MtTypedArray();

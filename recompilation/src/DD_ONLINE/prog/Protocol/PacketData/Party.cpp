@@ -17,10 +17,6 @@ const MtDTI& CDataPartyListInfo::getDTI() const {
     return CDataPartyListInfo::DTI;
 }
 
-inline MtAllocator* CDataPartyListInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPartyListInfo::DTI);
-}
-
 void* CDataPartyListInfo::operator new(size_t sz, u32 align) {
     return CDataPartyListInfo::getAllocator()->memAlloc(sz, align, CDataPartyListInfo::DTI.getID());
 }
@@ -39,10 +35,6 @@ MtObject* CDataPartyListInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataPartyMember::getDTI() const {
     return CDataPartyMember::DTI;
-}
-
-inline MtAllocator* CDataPartyMember::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPartyMember::DTI);
 }
 
 void* CDataPartyMember::operator new(size_t sz, u32 align) {
@@ -66,10 +58,6 @@ const MtDTI& CDataPartyMemberMaxNum::getDTI() const {
     return CDataPartyMemberMaxNum::DTI;
 }
 
-inline MtAllocator* CDataPartyMemberMaxNum::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPartyMemberMaxNum::DTI);
-}
-
 void* CDataPartyMemberMaxNum::operator new(size_t sz, u32 align) {
     return CDataPartyMemberMaxNum::getAllocator()->memAlloc(sz, align, CDataPartyMemberMaxNum::DTI.getID());
 }
@@ -90,27 +78,12 @@ const MtDTI& CDataPartyMemberMinimum::getDTI() const {
     return CDataPartyMemberMinimum::DTI;
 }
 
-inline MtAllocator* CDataPartyMemberMinimum::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPartyMemberMinimum::DTI);
-}
-
 void* CDataPartyMemberMinimum::operator new(size_t sz, u32 align) {
     return CDataPartyMemberMinimum::getAllocator()->memAlloc(sz, align, CDataPartyMemberMinimum::DTI.getID());
 }
 
 __attribute__((weak)) void CDataPartyMemberMinimum::operator delete(void* p_addr) {
     CDataPartyMemberMinimum::getAllocator()->memFree(p_addr);
-}
-
-CDataPartyMemberMinimum::CDataPartyMemberMinimum() {
-    m_ucMemberType = 0;
-    m_CommunityCharacterBaseInfo.m_wstrClanName.value = nullptr;
-    m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
-    m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
-    m_bIsLeader = false;
-    m_bIsPawn = false;
-    m_nMemberIndex = 0;
-    m_unPawnId = 0;
 }
 
 inline CDataPartyMemberMinimum::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

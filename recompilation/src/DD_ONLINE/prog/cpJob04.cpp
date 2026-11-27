@@ -180,16 +180,8 @@ const MtDTI& cpJob04::getDTI() const {
     return cpJob04::DTI;
 }
 
-inline MtAllocator* cpJob04::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJob04::DTI);
-}
-
 void* cpJob04::operator new(size_t sz, u32 align) {
     return cpJob04::getAllocator()->memAlloc(sz, align, cpJob04::DTI.getID());
-}
-
-inline void cpJob04::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob04::DTI)->memFree(p_addr);
 }
 
 cpJob04::cpJob04() {

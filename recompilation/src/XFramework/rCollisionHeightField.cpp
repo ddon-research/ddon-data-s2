@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCollisionHeightField.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
@@ -11,6 +10,7 @@
 #include "../MT/MtPrimitive3D.h"
 #include "cGridCollision.h"
 #include "cResource.h"
+#include "nPhysicsThread.h"
 #include "sMain.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -18,14 +18,6 @@
 
 const MtDTI& rCollisionHeightField::getDTI() const {
     return rCollisionHeightField::DTI;
-}
-
-inline void* rCollisionHeightField::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCollisionHeightField::DTI)->memAlloc(sz, align, rCollisionHeightField::DTI.mID);
-}
-
-inline void rCollisionHeightField::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCollisionHeightField::DTI)->memFree(p_addr);
 }
 
 rCollisionHeightField::~rCollisionHeightField() {

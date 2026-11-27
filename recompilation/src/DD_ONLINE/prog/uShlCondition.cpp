@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -19,14 +18,6 @@
 
 const MtDTI& cShlConditionInfo::getDTI() const {
     return cShlConditionInfo::DTI;
-}
-
-inline MtAllocator* cShlConditionInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cShlConditionInfo::DTI);
-}
-
-inline void* cShlConditionInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlConditionInfo::DTI)->memAlloc(sz, align, cShlConditionInfo::DTI.getID());
 }
 
 __attribute__((weak)) void cShlConditionInfo::operator delete(void* p_addr) {

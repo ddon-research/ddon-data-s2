@@ -20,14 +20,6 @@ const MtDTI& rFieldAreaList::getDTI() const {
     return rFieldAreaList::DTI;
 }
 
-inline void* rFieldAreaList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memAlloc(sz, align, rFieldAreaList::DTI.getID());
-}
-
-inline void rFieldAreaList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldAreaList::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 rFieldAreaList::getDispFieldAreaNum(u32 landId, u32 areaId) const {
     DDON_STUB("rFieldAreaList::getDispFieldAreaNum")
     return {};
@@ -280,12 +272,6 @@ MT_CTSTR rFieldAreaList::getExt() const {
     return "fal";
 }
 
-inline rFieldAreaList::rFieldAreaList() {
-    mpArray = nullptr;
-    mArrayNum = 0;
-    setAttribute(22u);
-}
-
 rFieldAreaList::~rFieldAreaList() {
     if (mpArray == nullptr) {
         return;
@@ -366,10 +352,6 @@ MtObject* rFieldAreaList::MyDTI::newInstance() const {
 
 const MtDTI& rFieldAreaList::cFieldAreaInfo::getDTI() const {
     return rFieldAreaList::cFieldAreaInfo::DTI;
-}
-
-inline void rFieldAreaList::cFieldAreaInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldAreaList::cFieldAreaInfo::DTI)->memFree(p_addr);
 }
 
 const rFieldAreaList::cFieldAreaInfo::StageNoArray& rFieldAreaList::cFieldAreaInfo::getStageNoList() const {
@@ -460,20 +442,8 @@ const MtDTI& rFieldAreaList::cFieldAreaInfo::cStageNo::getDTI() const {
     return rFieldAreaList::cFieldAreaInfo::cStageNo::DTI;
 }
 
-void* rFieldAreaList::cFieldAreaInfo::cStageNo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memAlloc(sz, align, rFieldAreaList::cFieldAreaInfo::cStageNo::DTI.getID());
-}
-
-inline void rFieldAreaList::cFieldAreaInfo::cStageNo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memFree(p_addr);
-}
-
 void rFieldAreaList::cFieldAreaInfo::cStageNo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mStageNo", &mStageNo, 0u, 0u);
-}
-
-void rFieldAreaList::cFieldAreaInfo::cStageNo::load(MtDataReader& r) {
-    mStageNo = r.readS32();
 }
 
 inline rFieldAreaList::cFieldAreaInfo::cStageNo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

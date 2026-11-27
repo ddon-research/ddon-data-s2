@@ -177,3 +177,39 @@ inline void* cFurniture::operator new(size_t sz, void* p_addr) {
 inline void* cFurniture::Info::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cFurniture::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cFurniture::DTI);
+}
+
+inline void cFurniture::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFurniture::DTI)->memFree(p_addr);
+}
+
+inline void* cFurniture::Info::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFurniture::Info::DTI)->memAlloc(sz, align, ::cFurniture::Info::DTI.::MtDTI::getID());
+}
+
+inline void cFurniture::Info::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFurniture::Info::DTI)->memFree(p_addr);
+}
+
+inline cFurniture::Info::Info() {
+    this->mLayoutId = 0;
+    this->mOnOff = false;
+    this->mItemId = 0;
+    this->mOmId = 0;
+    this->mpOmCtrl = nullptr;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mAngle.x = ::MtVector3::Zero.x;
+    this->mAngle.y = ::MtVector3::Zero.y;
+    this->mAngle.z = ::MtVector3::Zero.z;
+    this->mAngle.pad_ = 0.0f;
+}

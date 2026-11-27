@@ -141,3 +141,11 @@ inline u32 uCnsLookAt::getDirection() {
 inline u32 uCnsLookAt::getUpvector() {
     return this->mUp;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uCnsLookAt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsLookAt::DTI)->memFree(p_addr);
+}

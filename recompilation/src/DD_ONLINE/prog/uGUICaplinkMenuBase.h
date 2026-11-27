@@ -203,3 +203,19 @@ inline void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, void* p_addr)
 inline uGUICaplinkMenuBase::cCmdVal::cCmdVal() {
     this->mVal = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUICaplinkMenuBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkMenuBase::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkMenuBase::cCmdVal::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkMenuBase::cCmdVal::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkMenuBase::cCmdVal::DTI)->memAlloc(sz, align, ::uGUICaplinkMenuBase::cCmdVal::DTI.::MtDTI::getID());
+}

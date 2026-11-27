@@ -1364,3 +1364,71 @@ inline sCaplinkManager::cChatJoin::cChatJoin() {
     this->mChatId = 0;
     this->mIsJoin = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cCaplinkContext.h"
+#include "../../XFramework/cWebsocketClient.h"
+
+inline MtAllocator* sCaplinkManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sCaplinkManager::DTI);
+}
+
+inline void sCaplinkManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::DTI)->memFree(p_addr);
+}
+
+inline void sCaplinkManager::updateWebsocket() {
+    if (!this->mWebsocketListener.mIsRegistDevice) {
+        return;
+    }
+    if (this->mpCaplink->mpWsClient == nullptr) {
+        return;
+    }
+    if (this->mpCaplink->mpWsClient->mWsState != static_cast<cWebsocketClient::wsState>(4)) {
+        return;
+    }
+    if (!this->mpCaplink->::nCaplink::Object::wsRegistDevice()) {
+        return;
+    }
+    this->mWebsocketListener.mIsRegistDevice = false;
+}
+
+inline void sCaplinkManager::initFriendTagFree() {
+    this->mFriendTagFreeAns.::nCaplink::ContextListener::init();
+    this->mFriendTagFreeAns.mTotal = 0;
+    this->mFriendTagFreeAns.mLimmit = 0;
+}
+
+inline void* sCaplinkManager::cProfile::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cProfile::DTI)->memAlloc(sz, align, ::sCaplinkManager::cProfile::DTI.::MtDTI::getID());
+}
+
+inline void sCaplinkManager::cProfile::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cProfile::DTI)->memFree(p_addr);
+}
+
+inline void sCaplinkManager::cIconUrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cIconUrl::DTI)->memFree(p_addr);
+}
+
+inline void sCaplinkManager::cProfIconLoader::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cProfIconLoader::DTI)->memFree(p_addr);
+}
+
+inline void sCaplinkManager::cContentData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cContentData::DTI)->memFree(p_addr);
+}
+
+inline void sCaplinkManager::cGroupChatData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cGroupChatData::DTI)->memFree(p_addr);
+}
+
+inline void* sCaplinkManager::cChatJoin::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cChatJoin::DTI)->memAlloc(sz, align, ::sCaplinkManager::cChatJoin::DTI.::MtDTI::getID());
+}
+
+inline void sCaplinkManager::cChatJoin::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCaplinkManager::cChatJoin::DTI)->memFree(p_addr);
+}

@@ -133,3 +133,19 @@ inline void cHumanEnemyCustomSkill::operator delete[](void* p_addr) {
 inline void* cHumanEnemyCustomSkill::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cHumanEnemyCustomSkill::DTI)->memAlloc(sz, align, ::cHumanEnemyCustomSkill::DTI.::MtDTI::getID());
 }
+
+inline void* cHumanEnemyCustomSkill::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHumanEnemyCustomSkill::DTI)->memAlloc(sz, align, ::cHumanEnemyCustomSkill::DTI.::MtDTI::getID());
+}
+
+inline void cHumanEnemyCustomSkill::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHumanEnemyCustomSkill::DTI)->memFree(p_addr);
+}
+
+inline void* rHumanEnemyCustomSkill::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rHumanEnemyCustomSkill::DTI)->memAlloc(sz, align, ::rHumanEnemyCustomSkill::DTI.::MtDTI::getID());
+}
+
+inline void rHumanEnemyCustomSkill::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rHumanEnemyCustomSkill::DTI)->memFree(p_addr);
+}

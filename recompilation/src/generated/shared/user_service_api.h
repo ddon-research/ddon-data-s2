@@ -3,9 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-// Declarations
-struct SceUserServiceLoginUserIdList;
-
 enum SceUserServiceUserColor
 {
     SCE_USER_SERVICE_USER_COLOR_BLUE = 0,
@@ -13,6 +10,9 @@ enum SceUserServiceUserColor
     SCE_USER_SERVICE_USER_COLOR_GREEN = 2,
     SCE_USER_SERVICE_USER_COLOR_PINK = 3,
 };
+
+// Declarations
+struct SceUserServiceLoginUserIdList;
 
 // Type aliases from DWARF
 using __int32_t = int;

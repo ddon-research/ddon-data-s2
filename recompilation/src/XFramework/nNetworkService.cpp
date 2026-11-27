@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "nNetworkService.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetContext.h"
@@ -22,10 +21,6 @@
 
 const MtDTI& nNetwork::Context::getDTI() const {
     return nNetwork::Context::DTI;
-}
-
-inline void nNetwork::Context::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Context::DTI)->memFree(p_addr);
 }
 
 nNetwork::Context::Context() {

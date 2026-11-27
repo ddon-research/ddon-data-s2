@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rOcdParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cOcdParamRes.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& rOcdImmuneParamRes::getDTI() const {
     return rOcdImmuneParamRes::DTI;
-}
-
-inline void* rOcdImmuneParamRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOcdImmuneParamRes::DTI)->memAlloc(sz, align, rOcdImmuneParamRes::DTI.getID());
-}
-
-inline void rOcdImmuneParamRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOcdImmuneParamRes::DTI)->memFree(p_addr);
 }
 
 bool rOcdImmuneParamRes::loadData(MtDataReader& in, cOcdImmuneParamRes* pData) {
@@ -50,14 +40,6 @@ MtObject* rOcdImmuneParamRes::MyDTI::newInstance() const {
 
 const MtDTI& rOcdStatusParamRes::getDTI() const {
     return rOcdStatusParamRes::DTI;
-}
-
-inline void* rOcdStatusParamRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOcdStatusParamRes::DTI)->memAlloc(sz, align, rOcdStatusParamRes::DTI.getID());
-}
-
-inline void rOcdStatusParamRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOcdStatusParamRes::DTI)->memFree(p_addr);
 }
 
 bool rOcdStatusParamRes::loadData(MtDataReader& in, cOcdStatusParamRes* pData) {

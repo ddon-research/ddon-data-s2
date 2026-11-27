@@ -14,10 +14,6 @@ const MtDTI& nNetwork::SessionListener::getDTI() const {
     return nNetwork::SessionListener::DTI;
 }
 
-inline void* nNetwork::SessionListener::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::SessionListener::DTI)->memAlloc(sz, align, ::nNetwork::SessionListener::DTI.mID);
-}
-
 __attribute__((weak)) void nNetwork::SessionListener::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(::nNetwork::SessionListener::DTI)->memFree(p_addr);
 }

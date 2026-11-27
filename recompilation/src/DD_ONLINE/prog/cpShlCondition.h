@@ -209,3 +209,31 @@ inline void* cpShlCondition::operator new(size_t sz, void* p_addr) {
 inline void* cpShlCustomCondition::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamCompCondition::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamCompCondition::DTI)->memAlloc(sz, align, ::cShlParamCompCondition::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamCompCondition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamCompCondition::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamCompCustomCondition::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamCompCustomCondition::DTI)->memAlloc(sz, align, ::cShlParamCompCustomCondition::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamCompCustomCondition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamCompCustomCondition::DTI)->memFree(p_addr);
+}
+
+inline void cpShlCondition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlCondition::DTI)->memFree(p_addr);
+}
+
+inline void cpShlCustomCondition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlCustomCondition::DTI)->memFree(p_addr);
+}

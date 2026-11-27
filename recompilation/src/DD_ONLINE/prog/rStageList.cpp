@@ -19,21 +19,6 @@ const MtDTI& rStageList::getDTI() const {
     return rStageList::DTI;
 }
 
-inline void* rStageList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageList::DTI)->memAlloc(sz, align, rStageList::DTI.getID());
-}
-
-inline void rStageList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageList::DTI)->memFree(p_addr);
-}
-
-inline rStageList::rStageList() {
-    setAttribute(18u);
-    this->cResource::clear();
-    mpArrayInfo = nullptr;
-    mArrayInfoNum = 0;
-}
-
 rStageList::~rStageList() {
     destruct();
 }
@@ -173,14 +158,6 @@ MtObject* rStageList::MyDTI::newInstance() const {
 
 const MtDTI& rStageList::Info::getDTI() const {
     return rStageList::Info::DTI;
-}
-
-inline void* rStageList::Info::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageList::Info::DTI)->memAlloc(sz, align, rStageList::Info::DTI.getID());
-}
-
-inline void rStageList::Info::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageList::Info::DTI)->memFree(p_addr);
 }
 
 void rStageList::Info::createProperty(MtPropertyList& s) {

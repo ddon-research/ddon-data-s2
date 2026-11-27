@@ -96,3 +96,15 @@ public:
 inline void* cpWorkRate::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpWorkRate::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpWorkRate::DTI);
+}
+
+inline void cpWorkRate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpWorkRate::DTI)->memFree(p_addr);
+}

@@ -20,16 +20,8 @@ const MtDTI& sAIPawnNotice::getDTI() const {
     return sAIPawnNotice::DTI;
 }
 
-inline MtAllocator* sAIPawnNotice::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sAIPawnNotice::DTI);
-}
-
 void* sAIPawnNotice::operator new(size_t sz, u32 align) {
     return sAIPawnNotice::getAllocator()->memAlloc(sz, align, sAIPawnNotice::DTI.getID());
-}
-
-inline void sAIPawnNotice::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sAIPawnNotice::DTI)->memFree(p_addr);
 }
 
 sAIPawnNotice::sAIPawnNotice() {

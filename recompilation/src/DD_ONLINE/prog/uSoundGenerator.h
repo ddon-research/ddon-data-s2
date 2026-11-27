@@ -587,3 +587,85 @@ inline uSoundGenerator::cGeneratorGroupManager::cGeneratorGroupManager() {
 inline void* uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cZoneContents.h"
+
+inline void* cSoundGeneratorLayoutInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundGeneratorLayoutInfo::DTI)->memAlloc(sz, align, ::cSoundGeneratorLayoutInfo::DTI.::MtDTI::getID());
+}
+
+inline void cSoundGeneratorLayoutInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundGeneratorLayoutInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cSoundGeneratorListener::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundGeneratorListener::DTI)->memAlloc(sz, align, ::cSoundGeneratorListener::DTI.::MtDTI::getID());
+}
+
+inline void cSoundGeneratorListener::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundGeneratorListener::DTI)->memFree(p_addr);
+}
+
+inline void nSoundGenerator::cBaseContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cBaseContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundGenerator::cCategory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cCategory::DTI)->memFree(p_addr);
+}
+
+inline nSoundGenerator::cCategory::cCategory() {
+    this->::cZoneContents::setCategoryName("SoundGenerator");
+    this->::cZoneContents::setExtendObjectDTI(::cSoundGeneratorLayoutInfo::DTI);
+    this->::cZoneContents::setBroadPhaseSearchMode(2u);
+    this->::cZoneContents::setAttribute(0x10000u, true);
+}
+
+inline void nSoundGenerator::cFreeWorkContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cFreeWorkContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundGenerator::cSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cSeContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundGenerator::cSeqSeContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cSeqSeContents::DTI)->memFree(p_addr);
+}
+
+inline void nSoundGenerator::cStreamContents::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSoundGenerator::cStreamContents::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uSoundGenerator::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uSoundGenerator::DTI);
+}
+
+inline void uSoundGenerator::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundGenerator::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundGenerator::cGeneratorGroupManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundGenerator::cGeneratorGroupManager::DTI)->memAlloc(sz, align, ::uSoundGenerator::cGeneratorGroupManager::DTI.::MtDTI::getID());
+}
+
+inline void uSoundGenerator::cGeneratorGroupManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundGenerator::cGeneratorGroupManager::DTI)->memFree(p_addr);
+}
+
+inline void* uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI)->memAlloc(sz, align, ::uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI.::MtDTI::getID());
+}
+
+inline void uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::DTI)->memFree(p_addr);
+}
+
+inline uSoundGenerator::cGeneratorGroupManager::cSoundPlayInfomation::cSoundPlayInfomation() {
+    this->mRequestPos = ::MtVector3::Zero;
+    this->mLayoutUniqueId = -1;
+    this->mpUSequenceSe = nullptr;
+}

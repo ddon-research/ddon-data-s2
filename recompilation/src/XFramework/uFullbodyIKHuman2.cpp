@@ -33,10 +33,6 @@ void* uFullbodyIKHuman2::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uFullbodyIKHuman2::DTI)->memAlloc(sz, align, uFullbodyIKHuman2::DTI.mID);
 }
 
-inline void uFullbodyIKHuman2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFullbodyIKHuman2::DTI)->memFree(p_addr);
-}
-
 uFullbodyIKHuman2::uFullbodyIKHuman2() {
     DDON_STUB("uFullbodyIKHuman2::uFullbodyIKHuman2")
     /* stub */
@@ -350,9 +346,160 @@ __attribute__((weak)) uFullbodyIKHuman2::FBIK_JOINT uFullbodyIKHuman2::getFBIKJo
     return JntNo;
 }
 
-__attribute__((weak)) uFullbodyIKHuman2::Node* uFullbodyIKHuman2::getNode(uFullbodyIKHuman2::FBIK_JOINT JointNo) {
-    DDON_STUB("uFullbodyIKHuman2::getNode")
-    return nullptr;
+uFullbodyIKHuman2::Node* uFullbodyIKHuman2::getNode(uFullbodyIKHuman2::FBIK_JOINT JointNo) {
+    if (static_cast<int>(JointNo) <= 254) {
+        if (static_cast<int>(JointNo) <= 9) {
+            switch (JointNo) {
+                case JT_CENTER:
+                {
+                    return &mNode[0];
+                }
+                case JT_UPPER_BODY:
+                {
+                    return &mNode[22];
+                }
+                case JT_CHEST:
+                {
+                    return &mNode[24];
+                }
+                case JT_LOWER_BODY:
+                {
+                    return &mNode[23];
+                }
+                default:
+                {
+                    return &mNode[26];
+                }
+            }
+        } else {
+            if (static_cast<int>(JointNo) <= 19) {
+                switch (static_cast<unsigned int>(JointNo - 10)) {
+                    case 0:
+                    {
+                        return &mNode[15];
+                    }
+                    case 1:
+                    {
+                        return &mNode[1];
+                    }
+                    case 2:
+                    {
+                        return &mNode[2];
+                    }
+                    case 3:
+                    {
+                        return &mNode[3];
+                    }
+                    default:
+                    {
+                        return &mNode[26];
+                    }
+                }
+            } else {
+                if (static_cast<int>(JointNo) <= 29) {
+                    switch (static_cast<unsigned int>(JointNo - 20)) {
+                        case 0:
+                        {
+                            return &mNode[16];
+                        }
+                        case 1:
+                        {
+                            return &mNode[4];
+                        }
+                        case 2:
+                        {
+                            return &mNode[5];
+                        }
+                        case 3:
+                        {
+                            return &mNode[6];
+                        }
+                        default:
+                        {
+                            return &mNode[26];
+                        }
+                    }
+                } else {
+                    if (static_cast<int>(JointNo) <= 39) {
+                        if (JointNo != JT_RIGHT_THIGH) {
+                            if (JointNo == JT_RIGHT_KNEE) {
+                                return &mNode[8];
+                            } else {
+                                if (JointNo == JT_RIGHT_FOOT) {
+                                    return &mNode[9];
+                                } else {
+                                    return &mNode[26];
+                                }
+                            }
+                        } else {
+                            return &mNode[7];
+                        }
+                    } else {
+                        if (static_cast<int>(JointNo) <= 49) {
+                            if (JointNo != JT_LEFT_THIGH) {
+                                if (JointNo == JT_LEFT_KNEE) {
+                                    return &mNode[11];
+                                } else {
+                                    if (JointNo == JT_LEFT_FOOT) {
+                                        return &mNode[12];
+                                    } else {
+                                        return &mNode[26];
+                                    }
+                                }
+                            } else {
+                                return &mNode[10];
+                            }
+                        } else {
+                            if (static_cast<int>(JointNo) <= 59) {
+                                if (JointNo == JT_NECK) {
+                                    return &mNode[14];
+                                } else {
+                                    if (JointNo == JT_HEAD) {
+                                        return &mNode[13];
+                                    } else {
+                                        return &mNode[26];
+                                    }
+                                }
+                            } else {
+                                switch (static_cast<unsigned int>(JointNo - 60)) {
+                                    case 0:
+                                    {
+                                        return &mNode[17];
+                                    }
+                                    case 1:
+                                    {
+                                        return &mNode[18];
+                                    }
+                                    case 2:
+                                    {
+                                        return &mNode[19];
+                                    }
+                                    case 3:
+                                    {
+                                        return &mNode[20];
+                                    }
+                                    case 4:
+                                    {
+                                        return &mNode[21];
+                                    }
+                                    case 10:
+                                    {
+                                        return &mNode[25];
+                                    }
+                                    default:
+                                    {
+                                        return &mNode[26];
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        return &mNode[26];
+    }
 }
 
 __attribute__((weak)) void uFullbodyIKHuman2::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
@@ -470,10 +617,6 @@ const MtDTI& uFullbodyIKHuman2::Node::getDTI() const {
     return uFullbodyIKHuman2::Node::DTI;
 }
 
-inline void uFullbodyIKHuman2::Node::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFullbodyIKHuman2::Node::DTI)->memFree(p_addr);
-}
-
 void uFullbodyIKHuman2::Node::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mActive", &mActive, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mBlend", &mBlend, 0u, 0u);
@@ -499,17 +642,12 @@ inline uFullbodyIKHuman2::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, siz
 
 uFullbodyIKHuman2::Node::MyDTI uFullbodyIKHuman2::Node::DTI("uFullbodyIKHuman2::Node", &::MtObject::DTI, 272ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uFullbodyIKHuman2::Node::MyDTI::newInstance() const {
-    DDON_STUB("uFullbodyIKHuman2::Node::MyDTI::newInstance")
-    return nullptr;
+MtObject* uFullbodyIKHuman2::Node::MyDTI::newInstance() const {
+    return new (16u) uFullbodyIKHuman2::Node;
 }
 
 const MtDTI& uFullbodyIKHuman2::uCnsUpVectorCalc::getDTI() const {
     return uFullbodyIKHuman2::uCnsUpVectorCalc::DTI;
-}
-
-inline void uFullbodyIKHuman2::uCnsUpVectorCalc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFullbodyIKHuman2::uCnsUpVectorCalc::DTI)->memFree(p_addr);
 }
 
 uFullbodyIKHuman2::uCnsUpVectorCalc::~uCnsUpVectorCalc() {
@@ -569,10 +707,6 @@ __attribute__((weak)) MtObject* uFullbodyIKHuman2::uCnsUpVectorCalc::MyDTI::newI
 
 const MtDTI& uFullbodyIKHuman2::uCnsFBIKMatrix::getDTI() const {
     return uFullbodyIKHuman2::uCnsFBIKMatrix::DTI;
-}
-
-inline void uFullbodyIKHuman2::uCnsFBIKMatrix::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFullbodyIKHuman2::uCnsFBIKMatrix::DTI)->memFree(p_addr);
 }
 
 uFullbodyIKHuman2::uCnsFBIKMatrix::~uCnsFBIKMatrix() {

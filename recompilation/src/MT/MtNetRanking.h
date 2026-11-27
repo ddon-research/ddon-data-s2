@@ -332,3 +332,15 @@ inline MtNetRanking::Listener::Listener() {
 inline void* MtNetRanking::Score::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void MtNetRanking::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtNetRanking::DTI)->memFree(p_addr);
+}
+
+inline void MtNetRanking::Score::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtNetRanking::Score::DTI)->memFree(p_addr);
+}

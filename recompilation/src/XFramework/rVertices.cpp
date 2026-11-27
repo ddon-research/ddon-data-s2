@@ -24,14 +24,6 @@ const MtDTI& rVertices::getDTI() const {
     return rVertices::DTI;
 }
 
-inline void* rVertices::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rVertices::DTI)->memAlloc(sz, align, rVertices::DTI.mID);
-}
-
-inline void rVertices::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rVertices::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rVertices::getExt() const {
     return "vts";
 }

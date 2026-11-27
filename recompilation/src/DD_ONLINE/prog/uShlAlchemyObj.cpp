@@ -38,10 +38,6 @@ const MtDTI& cShlParamAlchemyObj::getDTI() const {
     return cShlParamAlchemyObj::DTI;
 }
 
-inline void* cShlParamAlchemyObj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamAlchemyObj::DTI)->memAlloc(sz, align, cShlParamAlchemyObj::DTI.getID());
-}
-
 inline void cShlParamAlchemyObj::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamAlchemyObj::DTI)->memFree(p_addr);
 }
@@ -120,14 +116,6 @@ const MtDTI& uShlAlchemyObj::getDTI() const {
     return uShlAlchemyObj::DTI;
 }
 
-inline void uShlAlchemyObj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlAlchemyObj::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamAlchemyObj* uShlAlchemyObj::getShlParam() const {
-    return static_cast<const cShlParamAlchemyObj*>(mpShlParam2);
-}
-
 uShlAlchemyObj::uShlAlchemyObj() {
     DDON_STUB("uShlAlchemyObj::uShlAlchemyObj")
     /* stub */
@@ -172,9 +160,11 @@ __attribute__((weak)) void uShlAlchemyObj::callbackDamage(cHitInfo* pInfo) {
     /* stub */
 }
 
-__attribute__((weak)) void uShlAlchemyObj::requestAngle(const MtQuaternion& quat) {
-    DDON_STUB("uShlAlchemyObj::requestAngle")
-    /* stub */
+void uShlAlchemyObj::requestAngle(const MtQuaternion& quat) {
+    mQuat.x = quat.x;
+    mQuat.y = quat.y;
+    mQuat.z = quat.z;
+    mQuat.w = quat.w;
 }
 
 __attribute__((weak)) void uShlAlchemyObj::progKillRequest() {
@@ -194,9 +184,11 @@ void uShlAlchemyObj::updateEfcHandle() {
     mpEfcAreaHandle = nullptr;
 }
 
-__attribute__((weak)) void uShlAlchemyObj::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlAlchemyObj::applyWorldOffset")
-    /* stub */
+void uShlAlchemyObj::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlBase::applyWorldOffset(offset, absolute_offset);
+    mFuwaMove.mPos.x = offset.x + mFuwaMove.mPos.x;
+    mFuwaMove.mPos.y = offset.y + mFuwaMove.mPos.y;
+    mFuwaMove.mPos.z = offset.z + mFuwaMove.mPos.z;
 }
 
 __attribute__((weak)) void uShlAlchemyObj::requestActiveEffectCore() {

@@ -18,6 +18,7 @@
 #include "rModel.h"
 #include "rTexture.h"
 #include "sCamera.h"
+#include "sGrass.h"
 #include "sMain.h"
 #include "sRender.h"
 #include "sScene.h"
@@ -184,8 +185,8 @@ __attribute__((weak)) void cInstancingDynamic::culling(cDraw* pdraw, u32& list_n
 }
 
 __attribute__((weak)) u32 cInstancingDynamic::getInstancingSize(cDraw* pdraw) {
-    DDON_STUB("cInstancingDynamic::getInstancingSize")
-    return {};
+    const bool fade_enable = mUseLodFade && ((reinterpret_cast<const cDraw::CONTEXT*>(reinterpret_cast<const char*>(pdraw) + 0x108)->drawmode & 1u) != 0);
+    return getInstanceNum() * (fade_enable ? 12u : 4u);
 }
 
 MtVector4 cInstancingDynamic::getInstanceColor(u32 index, f32 fade) {

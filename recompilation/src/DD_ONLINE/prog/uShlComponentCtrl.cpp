@@ -26,10 +26,6 @@ const MtDTI& cShlParamComponentCtrl::getDTI() const {
     return cShlParamComponentCtrl::DTI;
 }
 
-inline void cShlParamComponentCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamComponentCtrl::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamComponentCtrl::getShlDTI() const {
     return uShlComponentCtrl::DTI;
 }
@@ -68,10 +64,6 @@ const MtDTI& uShlComponentCtrl::getDTI() const {
     return uShlComponentCtrl::DTI;
 }
 
-inline void uShlComponentCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlComponentCtrl::DTI)->memFree(p_addr);
-}
-
 uShlComponentCtrl::~uShlComponentCtrl() {
     if (mShlComponent.mLength != 0) {
         u32 v0_0 = mShlComponent.mLength;
@@ -105,9 +97,14 @@ __attribute__((weak)) void uShlComponentCtrl::initSub() {
     /* stub */
 }
 
-__attribute__((weak)) void uShlComponentCtrl::updateSub() {
-    DDON_STUB("uShlComponentCtrl::updateSub")
-    /* stub */
+void uShlComponentCtrl::updateSub() {
+    u32 i = 0;
+    if (mShlComponent.mLength != 0) {
+        do {
+            static_cast<cpShlBase*>(mShlComponent.getBuffer()[static_cast<int>(i)])->updateSub();
+            i += 1u;
+        } while (i < mShlComponent.mLength);
+    }
 }
 
 __attribute__((weak)) void uShlComponentCtrl::setCollisionSub(s32 seqNo, s32 groupNo, s32 atckNo, s32 shared_uid) {
@@ -120,14 +117,27 @@ __attribute__((weak)) u32 uShlComponentCtrl::getCollisionIndex() const {
     return {};
 }
 
-__attribute__((weak)) void uShlComponentCtrl::kill() {
-    DDON_STUB("uShlComponentCtrl::kill")
-    /* stub */
+void uShlComponentCtrl::kill() {
+    if (mShlComponent.mLength == 0) {
+        this->uShlBase::kill();
+        return;
+    }
+    u32 i = 0;
+    do {
+        static_cast<cpShlBase*>(mShlComponent.getBuffer()[static_cast<int>(i)])->kill();
+        i += 1u;
+    } while (i < mShlComponent.mLength);
+    this->uShlBase::kill();
 }
 
-__attribute__((weak)) void uShlComponentCtrl::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
-    DDON_STUB("uShlComponentCtrl::callbackReplaceHitInfo_Atk")
-    /* stub */
+void uShlComponentCtrl::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
+    u32 i = 0;
+    if (mShlComponent.mLength != 0) {
+        do {
+            static_cast<cpShlBase*>(mShlComponent.getBuffer()[static_cast<int>(i)])->callbackReplaceHitInfo_Atk(pHitInfo);
+            i += 1u;
+        } while (i < mShlComponent.mLength);
+    }
 }
 
 void uShlComponentCtrl::setEffectEpvTimer(f32 timer) {

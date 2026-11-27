@@ -153,3 +153,14 @@ inline void* CDataGameSetting::operator new(size_t sz, void* p_addr) {
 inline void* CDataLoginSetting::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataGameSetting::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameSetting::DTI);
+}
+
+inline MtAllocator* CDataLoginSetting::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLoginSetting::DTI);
+}

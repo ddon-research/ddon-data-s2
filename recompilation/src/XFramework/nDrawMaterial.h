@@ -638,3 +638,15 @@ inline void nDraw::Material::setStencilRef(u8 ref) {
 inline nDraw::Animation* nDraw::Material::getAnimationData() const {
     return this->mpAnimation;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nDraw::Animation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::Animation::DTI)->memFree(p_addr);
+}
+
+inline void nDraw::CBuffer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::CBuffer::DTI)->memFree(p_addr);
+}

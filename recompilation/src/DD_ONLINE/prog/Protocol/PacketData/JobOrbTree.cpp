@@ -5,7 +5,6 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -14,10 +13,6 @@
 
 const MtDTI& CDataJobOrbDevoteElement::getDTI() const {
     return CDataJobOrbDevoteElement::DTI;
-}
-
-inline MtAllocator* CDataJobOrbDevoteElement::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataJobOrbDevoteElement::DTI);
 }
 
 void* CDataJobOrbDevoteElement::operator new(size_t sz, u32 align) {
@@ -38,10 +33,6 @@ MtObject* CDataJobOrbDevoteElement::MyDTI::newInstance() const {
 
 const MtDTI& CDataJobOrbTreeStatus::getDTI() const {
     return CDataJobOrbTreeStatus::DTI;
-}
-
-inline MtAllocator* CDataJobOrbTreeStatus::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataJobOrbTreeStatus::DTI);
 }
 
 void* CDataJobOrbTreeStatus::operator new(size_t sz, u32 align) {

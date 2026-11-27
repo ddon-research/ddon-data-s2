@@ -186,8 +186,16 @@ inline void* rMsgSet::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline u32 rMsgSet::getMsgGroupNum() {
+    return this->mArray.::MtArray::length();
+}
+
 inline void* rMsgSet::cMsgGroup::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline u32 rMsgSet::cMsgGroup::getMsgDataNum() {
+    return this->mMsgData.::MtArray::length();
 }
 
 inline u32 rMsgSet::cMsgGroup::getNpcId() {
@@ -230,9 +238,9 @@ inline u32 rMsgSet::cMsgData::getSetMotionNo() {
     return this->mSetMotion;
 }
 
-inline u32 rMsgSet::getMsgGroupNum() {
-    return mArray.length();
-}
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 inline rMsgSet::cMsgGroup::cMsgGroup(u32 GroupSerial, u32 GroupType, u32 NpcId, u32 GrpNameSerial, bool NameDispOff) {
     mGroupSerial = GroupSerial;
@@ -243,6 +251,27 @@ inline rMsgSet::cMsgGroup::cMsgGroup(u32 GroupSerial, u32 GroupType, u32 NpcId, 
     mMsgData.setAutoDelete(true);
 }
 
-inline u32 rMsgSet::cMsgGroup::getMsgDataNum() {
-    return mMsgData.length();
+inline void* rMsgSet::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMsgSet::DTI)->memAlloc(sz, align, ::rMsgSet::DTI.::MtDTI::getID());
+}
+
+inline void rMsgSet::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMsgSet::DTI)->memFree(p_addr);
+}
+
+inline rMsgSet::rMsgSet() {
+    this->::cResource::setAttribute(22u);
+    this->mArray.::MtArray::mAutoDelete = true;
+    this->mpNativeMsgGroupArray = nullptr;
+    this->mNativeMsgGroupArrayNum = 0;
+    this->mpNativeMsgDataArray = nullptr;
+    this->mNativeMsgDataArrayNum = 0;
+}
+
+inline void rMsgSet::cMsgGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMsgSet::cMsgGroup::DTI)->memFree(p_addr);
+}
+
+inline void rMsgSet::cMsgData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMsgSet::cMsgData::DTI)->memFree(p_addr);
 }

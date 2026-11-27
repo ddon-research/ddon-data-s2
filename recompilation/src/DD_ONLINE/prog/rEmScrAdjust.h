@@ -133,3 +133,19 @@ inline void cEmScrAdjust::operator delete[](void* p_addr) {
 inline void* cEmScrAdjust::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmScrAdjust::DTI)->memAlloc(sz, align, ::cEmScrAdjust::DTI.::MtDTI::getID());
 }
+
+inline void* cEmScrAdjust::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmScrAdjust::DTI)->memAlloc(sz, align, ::cEmScrAdjust::DTI.::MtDTI::getID());
+}
+
+inline void cEmScrAdjust::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmScrAdjust::DTI)->memFree(p_addr);
+}
+
+inline void* rEmScrAdjust::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmScrAdjust::DTI)->memAlloc(sz, align, ::rEmScrAdjust::DTI.::MtDTI::getID());
+}
+
+inline void rEmScrAdjust::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmScrAdjust::DTI)->memFree(p_addr);
+}

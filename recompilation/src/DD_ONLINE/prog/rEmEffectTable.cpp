@@ -11,7 +11,6 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
-#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTable.h"
 #ifndef DDON_STUB
@@ -20,14 +19,6 @@
 
 const MtDTI& cEmEffectTable::getDTI() const {
     return cEmEffectTable::DTI;
-}
-
-inline void* cEmEffectTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmEffectTable::DTI)->memAlloc(sz, align, cEmEffectTable::DTI.getID());
-}
-
-inline void cEmEffectTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmEffectTable::DTI)->memFree(p_addr);
 }
 
 void cEmEffectTable::createProperty(MtPropertyList& s) {
@@ -52,18 +43,6 @@ MtObject* cEmEffectTable::MyDTI::newInstance() const {
 
 const MtDTI& rEmEffectTable::getDTI() const {
     return rEmEffectTable::DTI;
-}
-
-inline void* rEmEffectTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmEffectTable::DTI)->memAlloc(sz, align, rEmEffectTable::DTI.getID());
-}
-
-inline void rEmEffectTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmEffectTable::DTI)->memFree(p_addr);
-}
-
-inline rEmEffectTable::rEmEffectTable() {
-    setAttribute(16u);
 }
 
 const MtDTI& rEmEffectTable::getDataDTI() {

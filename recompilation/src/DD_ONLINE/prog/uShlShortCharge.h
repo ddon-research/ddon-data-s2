@@ -109,3 +109,19 @@ inline void* uShlShortCharge::operator new(size_t sz, void* p_addr) {
 
 inline uShlShortCharge::uShlShortCharge() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamShortCharge::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamShortCharge::DTI)->memAlloc(sz, align, ::cShlParamShortCharge::DTI.::MtDTI::getID());
+}
+
+inline void* uShlShortCharge::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlShortCharge::DTI)->memAlloc(sz, align, ::uShlShortCharge::DTI.::MtDTI::getID());
+}
+
+inline void uShlShortCharge::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlShortCharge::DTI)->memFree(p_addr);
+}

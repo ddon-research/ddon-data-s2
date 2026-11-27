@@ -32,10 +32,6 @@ const MtDTI& cStaminaCtrl::getDTI() const {
     return cStaminaCtrl::DTI;
 }
 
-inline void cStaminaCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStaminaCtrl::DTI)->memFree(p_addr);
-}
-
 cStaminaCtrl::cStaminaCtrl() {
     DDON_STUB("cStaminaCtrl::cStaminaCtrl")
     /* stub */

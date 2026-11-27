@@ -7,11 +7,6 @@
 class MtAllocator;
 class MtDTI;
 
-// Declarations
-namespace MtMemoryAllocator { class MemoryCfg; }
-namespace MtMemoryAllocator { class Initializer; }
-namespace MtMemoryAllocator { class AllocatorFactory; }
-
 namespace MtMemoryAllocator {
     enum AllocatorType
     {
@@ -32,6 +27,11 @@ namespace MtMemoryAllocator {
         UNKNOWN_ALLOCATOR = 2147483647,
     };
 }  // namespace MtMemoryAllocator
+
+// Declarations
+namespace MtMemoryAllocator { class MemoryCfg; }
+namespace MtMemoryAllocator { class Initializer; }
+namespace MtMemoryAllocator { class AllocatorFactory; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;

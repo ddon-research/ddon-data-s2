@@ -49,16 +49,8 @@ const MtDTI& uGUIPopDetail01::getDTI() const {
     return uGUIPopDetail01::DTI;
 }
 
-inline MtAllocator* uGUIPopDetail01::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopDetail01::DTI);
-}
-
 void* uGUIPopDetail01::operator new(size_t sz, u32 align) {
     return uGUIPopDetail01::getAllocator()->memAlloc(sz, align, uGUIPopDetail01::DTI.getID());
-}
-
-inline void uGUIPopDetail01::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIPopDetail01::~uGUIPopDetail01() {
@@ -221,8 +213,18 @@ void uGUIPopDetail01::setCompereEquipData(cEquipData& source) {
 }
 
 __attribute__((weak)) void uGUIPopDetail01::setContext(cContextInstHm* pContext, bool isSetupEquip) {
-    DDON_STUB("uGUIPopDetail01::setContext")
-    /* stub */
+    mpContext = pContext;
+    if (mpContext) {
+        if (isSetupEquip) {
+            mEquipData.init();
+            mEquipData.copyEquipData(const_cast<cEquipData*>(&cContextInterface::getContextEquipConst(mpContext)));
+        }
+        if (cContextInterface::getHumanType(mpContext)) {
+            mMockupModel = MOCKUP_MODEL_PAWN_CONTEXT;
+            return;
+        }
+    }
+    mMockupModel = MOCKUP_MODEL_PLAYER;
 }
 
 __attribute__((weak)) void uGUIPopDetail01::initMockUp() {
@@ -400,10 +402,6 @@ const MtDTI& uGUIPopDetail01::cDupParam::getDTI() const {
     return uGUIPopDetail01::cDupParam::DTI;
 }
 
-inline void uGUIPopDetail01::cDupParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cDupParam::DTI)->memFree(p_addr);
-}
-
 inline uGUIPopDetail01::cDupParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPopDetail01::cDupParam::MyDTI uGUIPopDetail01::cDupParam::DTI("uGUIPopDetail01::cDupParam", &::MtObject::DTI, 80ul, 0u, 0u);
@@ -415,10 +413,6 @@ __attribute__((weak)) MtObject* uGUIPopDetail01::cDupParam::MyDTI::newInstance()
 
 const MtDTI& uGUIPopDetail01::cDupCraftParam::getDTI() const {
     return uGUIPopDetail01::cDupCraftParam::DTI;
-}
-
-inline void uGUIPopDetail01::cDupCraftParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cDupCraftParam::DTI)->memFree(p_addr);
 }
 
 inline uGUIPopDetail01::cDupCraftParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -434,10 +428,6 @@ const MtDTI& uGUIPopDetail01::cPartsBase::getDTI() const {
     return uGUIPopDetail01::cPartsBase::DTI;
 }
 
-inline void uGUIPopDetail01::cPartsBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsBase::DTI)->memFree(p_addr);
-}
-
 inline uGUIPopDetail01::cPartsBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPopDetail01::cPartsBase::MyDTI uGUIPopDetail01::cPartsBase::DTI("uGUIPopDetail01::cPartsBase", &::MtObject::DTI, 48ul, 0u, 0u);
@@ -451,25 +441,20 @@ const MtDTI& uGUIPopDetail01::cPartsCraft::getDTI() const {
     return uGUIPopDetail01::cPartsCraft::DTI;
 }
 
-inline void uGUIPopDetail01::cPartsCraft::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsCraft::DTI)->memFree(p_addr);
-}
-
 inline uGUIPopDetail01::cPartsCraft::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPopDetail01::cPartsCraft::MyDTI uGUIPopDetail01::cPartsCraft::DTI("uGUIPopDetail01::cPartsCraft", &::uGUIPopDetail01::cPartsBase::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* uGUIPopDetail01::cPartsCraft::MyDTI::newInstance() const {
-    DDON_STUB("uGUIPopDetail01::cPartsCraft::MyDTI::newInstance")
-    return nullptr;
+    uGUIPopDetail01::cPartsCraft* t1 = static_cast<uGUIPopDetail01::cPartsCraft*>(MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsCraft::DTI)->memAlloc(sizeof(uGUIPopDetail01::cPartsCraft), 16u, uGUIPopDetail01::cPartsCraft::DTI.getID()));
+    new (&t1->mInst) uGUIBase::cSupportBase();
+    reinterpret_cast<cGUIInstNull**>(static_cast<uGUIBase::cSupportBase*>(&t1->mInst) + 1)[1] = nullptr;
+    reinterpret_cast<cGUIInstNull**>(static_cast<uGUIBase::cSupportBase*>(&t1->mInst) + 1)[0] = nullptr;
+    return new (t1) uGUIPopDetail01::cPartsCraft(*t1);
 }
 
 const MtDTI& uGUIPopDetail01::cPartsParam::getDTI() const {
     return uGUIPopDetail01::cPartsParam::DTI;
-}
-
-inline void uGUIPopDetail01::cPartsParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsParam::DTI)->memFree(p_addr);
 }
 
 inline uGUIPopDetail01::cPartsParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -485,10 +470,6 @@ const MtDTI& uGUIPopDetail01::cPartsItemRank::getDTI() const {
     return uGUIPopDetail01::cPartsItemRank::DTI;
 }
 
-inline void uGUIPopDetail01::cPartsItemRank::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsItemRank::DTI)->memFree(p_addr);
-}
-
 inline uGUIPopDetail01::cPartsItemRank::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPopDetail01::cPartsItemRank::MyDTI uGUIPopDetail01::cPartsItemRank::DTI("uGUIPopDetail01::cPartsItemRank", &::uGUIPopDetail01::cPartsBase::DTI, 48ul, 0u, 0u);
@@ -500,10 +481,6 @@ __attribute__((weak)) MtObject* uGUIPopDetail01::cPartsItemRank::MyDTI::newInsta
 
 const MtDTI& uGUIPopDetail01::cPartsStatus::getDTI() const {
     return uGUIPopDetail01::cPartsStatus::DTI;
-}
-
-inline void uGUIPopDetail01::cPartsStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsStatus::DTI)->memFree(p_addr);
 }
 
 inline uGUIPopDetail01::cPartsStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -519,10 +496,6 @@ const MtDTI& uGUIPopDetail01::cPartsCaption::getDTI() const {
     return uGUIPopDetail01::cPartsCaption::DTI;
 }
 
-inline void uGUIPopDetail01::cPartsCaption::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsCaption::DTI)->memFree(p_addr);
-}
-
 inline uGUIPopDetail01::cPartsCaption::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPopDetail01::cPartsCaption::MyDTI uGUIPopDetail01::cPartsCaption::DTI("uGUIPopDetail01::cPartsCaption", &::uGUIPopDetail01::cPartsBase::DTI, 48ul, 0u, 0u);
@@ -536,10 +509,6 @@ const MtDTI& uGUIPopDetail01::cPartsFooter::getDTI() const {
     return uGUIPopDetail01::cPartsFooter::DTI;
 }
 
-inline void uGUIPopDetail01::cPartsFooter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsFooter::DTI)->memFree(p_addr);
-}
-
 inline uGUIPopDetail01::cPartsFooter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPopDetail01::cPartsFooter::MyDTI uGUIPopDetail01::cPartsFooter::DTI("uGUIPopDetail01::cPartsFooter", &::uGUIPopDetail01::cPartsBase::DTI, 48ul, 0u, 0u);
@@ -551,10 +520,6 @@ __attribute__((weak)) MtObject* uGUIPopDetail01::cPartsFooter::MyDTI::newInstanc
 
 const MtDTI& uGUIPopDetail01::cPartsJob::getDTI() const {
     return uGUIPopDetail01::cPartsJob::DTI;
-}
-
-inline void uGUIPopDetail01::cPartsJob::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopDetail01::cPartsJob::DTI)->memFree(p_addr);
 }
 
 inline uGUIPopDetail01::cPartsJob::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

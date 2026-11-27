@@ -12,6 +12,7 @@
 #include "cContextInstance.h"
 #include "cContextInterface.h"
 #include "cEquipData.h"
+#include "cOcdGoodStatusHuman.h"
 #include "cOcdParamRes.h"
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
@@ -45,10 +46,6 @@
 
 const MtDTI& cContextPlayerInfo::getDTI() const {
     return cContextPlayerInfo::DTI;
-}
-
-inline void cContextPlayerInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContextPlayerInfo::DTI)->memFree(p_addr);
 }
 
 cContextPlayerInfo::cContextPlayerInfo() {
@@ -208,14 +205,35 @@ void cContextPlayerInfo::setAbilityLevelUp(nAbility::ABILITY_ID id, s32 lv) {
     calcStatus(mCurrentJob_pri);
 }
 
-__attribute__((weak)) bool cContextPlayerInfo::getAbility(nAbility::ABILITY_SLOT slot, nAbility::ABILITY_ID& id, s32& lv) const {
-    DDON_STUB("cContextPlayerInfo::getAbility")
-    return {};
+bool cContextPlayerInfo::getAbility(nAbility::ABILITY_SLOT slot, nAbility::ABILITY_ID& id, s32& lv) const {
+    if (static_cast<int>(slot) > 0) {
+        if (static_cast<unsigned int>(slot - 1) <= 9) {
+            if (mAbilityInfoList.elems[static_cast<unsigned int>(slot - 1)].isEnable()) {
+                if (mAbilityInfoList.elems[static_cast<unsigned int>(slot - 1)].mIsUsed) {
+                    id = mAbilityInfoList.elems[static_cast<unsigned int>(slot - 1)].mAbilityId;
+                    lv = mAbilityInfoList.elems[static_cast<unsigned int>(slot - 1)].mLevel;
+                    return true;
+                }
+            }
+            id = nAbility::ABILITY_ID_NONE;
+            lv = 1;
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) bool cContextPlayerInfo::removeAbility(nAbility::ABILITY_SLOT slot) {
-    DDON_STUB("cContextPlayerInfo::removeAbility")
-    return {};
+bool cContextPlayerInfo::removeAbility(nAbility::ABILITY_SLOT slot) {
+    if (static_cast<int>(slot) > 0) {
+        if (static_cast<unsigned int>(slot - 1) <= 9) {
+            if (mAbilityInfoList.elems[static_cast<unsigned int>(slot - 1)].isUsed()) {
+                mAbilityInfoList.elems[static_cast<unsigned int>(slot - 1)].mLevel = 0;
+                mAbilityInfoList.elems[static_cast<unsigned int>(slot - 1)].mAbilityId = nAbility::ABILITY_ID_NONE;
+                mAbilityInfoList.elems[static_cast<unsigned int>(slot - 1)].mIsUsed = false;
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool cContextPlayerInfo::checkAbility(nAbility::ABILITY_ID id, s32& lv, s32& val, u32 index) const {
@@ -482,54 +500,132 @@ nHuman::WEIGHT_TYPE cContextPlayerInfo::getWeightType(const f32 weight) {
     return nHuman::WEIGHT_OVER;
 }
 
-__attribute__((weak)) u32 cContextPlayerInfo::getAttackUI() const {
-    DDON_STUB("cContextPlayerInfo::getAttackUI")
-    return {};
+u32 cContextPlayerInfo::getAttackUI() const {
+    if (mCurrentJob_pri != 0) {
+        if (mCurrentJob_pri != 0xFF) {
+            if (mCurrentJob_pri <= 10) {
+                return mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].getAtk();
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 cContextPlayerInfo::getMgcAttackUI() const {
-    DDON_STUB("cContextPlayerInfo::getMgcAttackUI")
-    return {};
+u32 cContextPlayerInfo::getMgcAttackUI() const {
+    if (mCurrentJob_pri != 0) {
+        if (mCurrentJob_pri != 0xFF) {
+            if (mCurrentJob_pri <= 10) {
+                return mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].getMAtk();
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) u32 cContextPlayerInfo::getDefenseTotal() const {
-    DDON_STUB("cContextPlayerInfo::getDefenseTotal")
-    return {};
+    switch (mCurrentJob_pri) {
+    case nHuman::JOB_ID_ERROR:
+    case nHuman::JOB_ID_NONE:
+        return 0;
+    default:
+        break;
+    }
+    if (mCurrentJob_pri > nHuman::JOB_ID_NUM) {
+        return 0;
+    }
+    u32 t1 = mCurrentJob_pri - nHuman::JOB_ID_TOP;
+    if (t1 >= nHuman::JOB_ID_NUM) {
+        t1 = 0;
+    }
+    const u32 t2 = mFinalJobInfoList.elems[t1].mDef_pri;
+    return t2 + cContextInterface::getContextEquip(mpOwnerContext).mStDefense;
 }
 
-__attribute__((weak)) u32 cContextPlayerInfo::getMgcDefenseTotal() const {
-    DDON_STUB("cContextPlayerInfo::getMgcDefenseTotal")
-    return {};
+u32 cContextPlayerInfo::getMgcDefenseTotal() const {
+    if (mCurrentJob_pri != 0) {
+        if (mCurrentJob_pri != 0xFF) {
+            if (mCurrentJob_pri <= 10) {
+                u32 t0 = mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].getMDef();
+                return t0 + cContextInterface::getContextEquip(mpOwnerContext).mStMagicDefense;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 cContextPlayerInfo::getStrengthTotal() const {
-    DDON_STUB("cContextPlayerInfo::getStrengthTotal")
-    return {};
+u32 cContextPlayerInfo::getStrengthTotal() const {
+    if (mCurrentJob_pri != 0) {
+        if (mCurrentJob_pri != 0xFF) {
+            if (mCurrentJob_pri <= 10) {
+                u32 t0 = mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].getStrength();
+                return t0 + cContextInterface::getContextEquip(mpOwnerContext).mStPowerRev;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 cContextPlayerInfo::getDownPowerTotal() const {
-    DDON_STUB("cContextPlayerInfo::getDownPowerTotal")
-    return {};
+u32 cContextPlayerInfo::getDownPowerTotal() const {
+    if (mCurrentJob_pri != 0) {
+        if (mCurrentJob_pri != 0xFF) {
+            if (mCurrentJob_pri <= 10) {
+                u32 t0 = mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].getDownPower();
+                return t0 + cContextInterface::getContextEquip(mpOwnerContext).mStChanceNum;
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 cContextPlayerInfo::getShakePowerTotal() const {
-    DDON_STUB("cContextPlayerInfo::getShakePowerTotal")
-    return {};
+u32 cContextPlayerInfo::getShakePowerTotal() const {
+    if (mCurrentJob_pri != 0) {
+        if (mCurrentJob_pri != 0xFF) {
+            if (mCurrentJob_pri <= 10) {
+                return mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].getShakePower();
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) u32 cContextPlayerInfo::getStanPowerTotal() const {
-    DDON_STUB("cContextPlayerInfo::getStanPowerTotal")
-    return {};
+    switch (mCurrentJob_pri) {
+    case 0:
+    case 0xFF:
+        return 0;
+    default:
+        break;
+    }
+    if (mCurrentJob_pri > 10) {
+        return 0;
+    }
+    const u32 t1 = mFinalJobInfoList.elems[
+        (static_cast<u32>(mCurrentJob_pri - 1) > 9u)
+            ? 0u
+            : static_cast<u32>(mCurrentJob_pri - 1)].mStanPower_pri;
+    return t1 + cContextInterface::getContextEquip(mpOwnerContext).mKindParamU16[23];
 }
 
-__attribute__((weak)) u32 cContextPlayerInfo::getConstitutionTotal() const {
-    DDON_STUB("cContextPlayerInfo::getConstitutionTotal")
-    return {};
+u32 cContextPlayerInfo::getConstitutionTotal() const {
+    if (mCurrentJob_pri != 0) {
+        if (mCurrentJob_pri != 0xFF) {
+            if (mCurrentJob_pri <= 10) {
+                return mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].getConstitution();
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 cContextPlayerInfo::getGutsTotal() const {
-    DDON_STUB("cContextPlayerInfo::getGutsTotal")
-    return {};
+u32 cContextPlayerInfo::getGutsTotal() const {
+    if (mCurrentJob_pri != 0) {
+        if (mCurrentJob_pri != 0xFF) {
+            if (mCurrentJob_pri <= 10) {
+                return mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].getGuts();
+            }
+        }
+    }
+    return 0;
 }
 
 __attribute__((weak)) s16 cContextPlayerInfo::getFireResistTotal() const {
@@ -553,8 +649,16 @@ __attribute__((weak)) s16 cContextPlayerInfo::getHolyResistTotal() const {
 }
 
 __attribute__((weak)) s16 cContextPlayerInfo::getDarkResistTotal() const {
-    DDON_STUB("cContextPlayerInfo::getDarkResistTotal")
-    return {};
+    switch (mCurrentJob_pri) {
+    case 0:
+    case 0xFF:
+        return 0;
+    default:
+        if (mCurrentJob_pri <= 10) {
+            return static_cast<s16>(static_cast<unsigned long>(mFinalJobInfoList.elems[(static_cast<unsigned int>(mCurrentJob_pri - 1) <= 9) ? static_cast<unsigned int>(mCurrentJob_pri - 1) : 0u].mDarkResist_pri) + static_cast<unsigned long>(cContextInterface::getContextEquip(mpOwnerContext).mKindParamS16[4]));
+        }
+        return 0;
+    }
 }
 
 s16 cContextPlayerInfo::getSpreadResistTotal() const {
@@ -910,14 +1014,6 @@ const MtDTI& cContextPlayerInfo::cAbility::getDTI() const {
     return cContextPlayerInfo::cAbility::DTI;
 }
 
-inline void* cContextPlayerInfo::cAbility::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cContextPlayerInfo::cAbility::DTI)->memAlloc(sz, align, cContextPlayerInfo::cAbility::DTI.getID());
-}
-
-inline void cContextPlayerInfo::cAbility::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContextPlayerInfo::cAbility::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cContextPlayerInfo::cAbility::createProperty(MtPropertyList& s) {
 }
 
@@ -931,14 +1027,6 @@ MtObject* cContextPlayerInfo::cAbility::MyDTI::newInstance() const {
 
 const MtDTI& rJobBaseParam::getDTI() const {
     return rJobBaseParam::DTI;
-}
-
-inline void* rJobBaseParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rJobBaseParam::DTI)->memAlloc(sz, align, rJobBaseParam::DTI.getID());
-}
-
-inline void rJobBaseParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rJobBaseParam::DTI)->memFree(p_addr);
 }
 
 bool rJobBaseParam::loadData(MtDataReader& in, nJobParam::cJobInfo* pData) {

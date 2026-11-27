@@ -162,3 +162,28 @@ inline rSoundSubMixerSet::BasicSubMixers::BasicSubMixers() {
     this->mpResource1 = nullptr;
     this->mpResource0 = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rSoundSubMixerSet::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundSubMixerSet::DTI)->memAlloc(sz, align, ::rSoundSubMixerSet::DTI.::MtDTI::getID());
+}
+
+inline void rSoundSubMixerSet::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSubMixerSet::DTI)->memFree(p_addr);
+}
+
+inline rSoundSubMixerSet::rSoundSubMixerSet() {
+    this->::cResource::setAttribute(18u);
+    this->mSubMixerLists.mAutoDelete = true;
+}
+
+inline void* rSoundSubMixerSet::BasicSubMixers::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundSubMixerSet::BasicSubMixers::DTI)->memAlloc(sz, align, ::rSoundSubMixerSet::BasicSubMixers::DTI.::MtDTI::getID());
+}
+
+inline void rSoundSubMixerSet::BasicSubMixers::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSubMixerSet::BasicSubMixers::DTI)->memFree(p_addr);
+}

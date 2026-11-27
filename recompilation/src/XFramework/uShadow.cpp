@@ -2,6 +2,7 @@
 #include <new>
 #include "uShadow.h"
 #include "../MT/MtAllocator.h"
+#include "../MT/MtCollision.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
@@ -13,6 +14,7 @@
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtRandom.h"
 #include "cDraw.h"
+#include "cLightVolume.h"
 #include "cUnit.h"
 #include "nDrawRasterizerState.h"
 #include "nDrawResource.h"
@@ -21,19 +23,287 @@
 #include "sShadow.h"
 #include "sUnit.h"
 #include "uFilter.h"
+#include "uLight.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+const MtDTI& uPointShadow::getDTI() const {
+    return uPointShadow::DTI;
+}
+
+uPointShadow::uPointShadow() {
+    DDON_STUB("uPointShadow::uPointShadow")
+    /* stub */
+}
+
+uPointShadow::~uPointShadow() {
+    if (mSharedTexture.mRenderTarget != nullptr) {
+        mSharedTexture.mRenderTarget->release();
+        mSharedTexture.mRenderTarget = nullptr;
+    }
+    if (mSharedTexture.mDepthStencil != nullptr) {
+        mSharedTexture.mDepthStencil->release();
+        mSharedTexture.mDepthStencil = nullptr;
+    }
+    if ((sShadow::mpInstance) == nullptr) {
+        return;
+    }
+    (sShadow::mpInstance)->sShadow::detach(static_cast<uShadow*>(this));
+}
+
+__attribute__((weak)) void uPointShadow::moveAfter() {
+    DDON_STUB("uPointShadow::moveAfter")
+    /* stub */
+}
+
+void uPointShadow::createProperty(MtPropertyList& s) {
+    createCommonProperty(s);
+    s << MtProperty(static_cast<MtObject*>(this), "mShadowDistanceBias", &mShadowDistanceBias, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mLightPos", &mLightPos, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mTargetLightEnable", &mTargetLightEnable, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mpTargetLight", reinterpret_cast<MtObject* *>(&mpTargetLight), 16u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "NearClipDistance", reinterpret_cast<MT_MFUNC>(&::uShadow::getNearClipDistance), reinterpret_cast<MT_MFUNC>(&::uShadow::setNearClipDistance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "LimitRangeEnable", reinterpret_cast<MT_MFUNC>(&::uShadow::isLimitRangeEnable), reinterpret_cast<MT_MFUNC>(&::uShadow::setLimitRangeEnable), 130u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "mRangeOBB", &mRangeOBB, 2u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRangeOBB.extent", &mRangeOBB.extent, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "mRangeOBB.coord", &mRangeOBB.coord, 0u, 0u);
+}
+
+MtUI* uPointShadow::createUI(MtProperty& prop) {
+    return this->cUnit::createUI(prop);
+}
+
+__attribute__((weak)) void uPointShadow::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    DDON_STUB("uPointShadow::applyWorldOffset")
+    /* stub */
+}
+
+__attribute__((weak)) bool uPointShadow::isShadowed(const MtSphere& boundary) const {
+    DDON_STUB("uPointShadow::isShadowed")
+    return {};
+}
+
+bool uPointShadow::getLimitRangeOBB(MtOBB* obb) const {
+    if (mLimitRangeEnable) {
+        if (obb != nullptr) {
+            obb->extent.x = mRangeOBB.extent.x;
+            obb->extent.y = mRangeOBB.extent.y;
+            obb->extent.z = mRangeOBB.extent.z;
+            obb->extent.pad_ = 0.0f;
+            obb->coord.m[0].x = mRangeOBB.coord.m[0].x;
+            obb->coord.m[0].y = mRangeOBB.coord.m[0].y;
+            obb->coord.m[0].z = mRangeOBB.coord.m[0].z;
+            obb->coord.m[0].w = mRangeOBB.coord.m[0].w;
+            obb->coord.m[1].x = mRangeOBB.coord.m[1].x;
+            obb->coord.m[1].y = mRangeOBB.coord.m[1].y;
+            obb->coord.m[1].z = mRangeOBB.coord.m[1].z;
+            obb->coord.m[1].w = mRangeOBB.coord.m[1].w;
+            obb->coord.m[2].x = mRangeOBB.coord.m[2].x;
+            obb->coord.m[2].y = mRangeOBB.coord.m[2].y;
+            obb->coord.m[2].z = mRangeOBB.coord.m[2].z;
+            obb->coord.m[2].w = mRangeOBB.coord.m[2].w;
+            obb->coord.m[3].x = mRangeOBB.coord.m[3].x;
+            obb->coord.m[3].y = mRangeOBB.coord.m[3].y;
+            obb->coord.m[3].z = mRangeOBB.coord.m[3].z;
+            obb->coord.m[3].w = mRangeOBB.coord.m[3].w;
+            return true;
+        }
+    }
+    return false;
+}
+
+void uPointShadow::setLimitRangeOBB(const MtOBB& obb) {
+    mRangeOBB.extent.x = obb.extent.x;
+    mRangeOBB.extent.y = obb.extent.y;
+    mRangeOBB.extent.z = obb.extent.z;
+    mRangeOBB.extent.pad_ = 0.0f;
+    mRangeOBB.coord.m[0].x = obb.coord.m[0].x;
+    mRangeOBB.coord.m[0].y = obb.coord.m[0].y;
+    mRangeOBB.coord.m[0].z = obb.coord.m[0].z;
+    mRangeOBB.coord.m[0].w = obb.coord.m[0].w;
+    mRangeOBB.coord.m[1].x = obb.coord.m[1].x;
+    mRangeOBB.coord.m[1].y = obb.coord.m[1].y;
+    mRangeOBB.coord.m[1].z = obb.coord.m[1].z;
+    mRangeOBB.coord.m[1].w = obb.coord.m[1].w;
+    mRangeOBB.coord.m[2].x = obb.coord.m[2].x;
+    mRangeOBB.coord.m[2].y = obb.coord.m[2].y;
+    mRangeOBB.coord.m[2].z = obb.coord.m[2].z;
+    mRangeOBB.coord.m[2].w = obb.coord.m[2].w;
+    mRangeOBB.coord.m[3].x = obb.coord.m[3].x;
+    mRangeOBB.coord.m[3].y = obb.coord.m[3].y;
+    mRangeOBB.coord.m[3].z = obb.coord.m[3].z;
+    mRangeOBB.coord.m[3].w = obb.coord.m[3].w;
+}
+
+__attribute__((weak)) MtSphere uPointShadow::getBoundingSphere() const {
+    DDON_STUB("uPointShadow::getBoundingSphere")
+    __builtin_unreachable();
+}
+
+MtVector3 uPointShadow::getLightPos(uPointLight* pLight) {
+    return pLight->mWPos;
+}
+
+__attribute__((weak)) void uPointShadow::allocateShadowMap(u32 shadowMapType, u32 mapSize, nDraw::Texture* * depthMap, nDraw::Texture* * tempMap, nDraw::Texture* * depthStencil, bool cache, sShadow::SharedTexture& sharedTexture, u32& rt_offset, u32& ds_offset, bool scratch, u32& rtOffsetScratch, u32& dsOffsetScratch) {
+    DDON_STUB("uPointShadow::allocateShadowMap")
+    /* stub */
+}
+
+__attribute__((weak)) void uPointShadow::drawPoint(cDraw* pdraw) {
+    if (mpDepthMap == nullptr) {
+        return;
+    }
+    if (!mDrawEnable) {
+        return;
+    }
+    if (mShadowMapCacheEnable) {
+        if (!mValidShadowMapCache) {
+            drawCasterPoint(pdraw, mpDepthMapCache, mpDepthStencilCache, true, uShadow::ShadowMap::DrawModeStaticOnly);
+        }
+        drawCasterPoint(pdraw, mpDepthMap, mpDepthStencil, false, uShadow::ShadowMap::DrawModeDynamicOnly);
+    } else {
+        drawCasterPoint(pdraw, mpDepthMap, mpDepthStencil, true, uShadow::ShadowMap::DrawModeNormal);
+    }
+    fillMargin(pdraw);
+    if (mShadowMapType == 1) {
+        drawCubeBlur(pdraw);
+    }
+    drawReceiver(pdraw);
+}
+
+__attribute__((weak)) void uPointShadow::makeMarginVertices(void* vertices, const MtRect& pos, const MtRect& tex) {
+    DDON_STUB("uPointShadow::makeMarginVertices")
+    /* stub */
+}
+
+__attribute__((weak)) void uPointShadow::fillMargin(cDraw* pdraw) {
+    DDON_STUB("uPointShadow::fillMargin")
+    /* stub */
+}
+
+__attribute__((weak)) void uPointShadow::drawCubeBlur(cDraw* pdraw) {
+    DDON_STUB("uPointShadow::drawCubeBlur")
+    /* stub */
+}
+
+__attribute__((weak)) void uPointShadow::drawCasterPoint(cDraw* pdraw, nDraw::Texture* pDepth, nDraw::Texture* pDepthStencil, bool clear, uShadow::ShadowMap::DrawMode drawMode) {
+    DDON_STUB("uPointShadow::drawCasterPoint")
+    /* stub */
+}
+
+__attribute__((weak)) void uPointShadow::restoreShadowMapFromCache(cDraw* pdraw, const MtRect& srcRect) {
+    DDON_STUB("uPointShadow::restoreShadowMapFromCache")
+    /* stub */
+}
+
+__attribute__((weak)) void uPointShadow::createShadowMap() {
+    DDON_STUB("uPointShadow::createShadowMap")
+    /* stub */
+}
+
+void uPointShadow::releaseShadowMapSub() {
+    if (mSharedTexture.mRenderTarget != nullptr) {
+        mSharedTexture.mRenderTarget->release();
+        mSharedTexture.mRenderTarget = nullptr;
+    }
+    if (mSharedTexture.mDepthStencil == nullptr) {
+        return;
+    }
+    mSharedTexture.mDepthStencil->release();
+    mSharedTexture.mDepthStencil = nullptr;
+}
+
+void uPointShadow::drawSub(cDraw* pdraw) {
+    if (mManagedType != 0) {
+        if ((sShadow::mpInstance) != nullptr) {
+            (sShadow::mpInstance)->sShadow::issueOcclusionQuery(pdraw, static_cast<const uShadow*>(this));
+        }
+    }
+    drawPoint(pdraw);
+}
+
+__attribute__((weak)) void uPointShadow::setupCasterDrawContext(cDraw* pdraw) {
+    DDON_STUB("uPointShadow::setupCasterDrawContext")
+    /* stub */
+}
+
+__attribute__((weak)) bool uPointShadow::getBoundingVolume(cConvexBoundingVolume* * volume) const {
+    DDON_STUB("uPointShadow::getBoundingVolume")
+    return {};
+}
+
+__attribute__((weak)) void uPointShadow::beginBranchCaster(cDraw* pdraw, uShadow::ShadowMap& shadowMap) {
+    DDON_STUB("uPointShadow::beginBranchCaster")
+    /* stub */
+}
+
+__attribute__((weak)) bool uPointShadow::checkValidShadowMapCacheSub() {
+    DDON_STUB("uPointShadow::checkValidShadowMapCacheSub")
+    return {};
+}
+
+void uPointShadow::setupViewIndependentReceiveState(uShadow::ShadowViewIndependentReceiveState& state) const {
+    state.FShadowReceive = 0xF2B906EB;
+    state.FShadowReceiveRT = 0xF2B906EB;
+    state.FShadowMultiReceiveRT = 0x20870790;
+    state.FShadowLightFace = 0x2DA0E6D3;
+    if (mMappedToLight) {
+        if (mManagedType != 0) {
+            state.FShadowReceiveAttn = 0x94B586B1;
+        } else {
+            state.FShadowReceiveAttn = 0x8187A6B0;
+        }
+    } else {
+        if (mManagedType != 0) {
+            state.FShadowReceiveAttn = 0x1990D6B4;
+        } else {
+            state.FShadowReceiveAttn = 0xC6BF76B3;
+        }
+    }
+    if (mShadowMapType == 0) {
+        if (mPCFType != 2) {
+            if (mPCFType == 1) {
+                state.FShadowFilterPoint = 0xF2EB16CF;
+            } else {
+                if (mPCFType == 0) {
+                    state.FShadowFilterPoint = 0xA74106CE;
+                } else {
+                    state.FShadowFilterPoint = 0x510566BD;
+                }
+            }
+        } else {
+            state.FShadowFilterPoint = 0x4AD976D0;
+        }
+    } else {
+        if (mShadowMapType == 1) {
+            state.FShadowFilterPoint = 0xCC4116D1;
+        } else {
+            state.FShadowFilterPoint = 0xA74106CE;
+        }
+    }
+    state.SSShadowVariance = 0x93BBF17B;
+}
+
+__attribute__((weak)) void uPointShadow::setupViewDependentReceiveState(cDraw* pdraw, uShadow::ShadowReceiveParam& param, bool enableFrustum) {
+    DDON_STUB("uPointShadow::setupViewDependentReceiveState")
+    /* stub */
+}
+
+inline uPointShadow::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+uPointShadow::MyDTI uPointShadow::DTI("uPointShadow", &::uShadow::DTI, 752ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* uPointShadow::MyDTI::newInstance() const {
+    DDON_STUB("uPointShadow::MyDTI::newInstance")
+    return nullptr;
+}
 
 __attribute__((weak)) void uShadow::usage() {
 }
 
 const MtDTI& uShadow::getDTI() const {
     return uShadow::DTI;
-}
-
-inline void uShadow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShadow::DTI)->memFree(p_addr);
 }
 
 uShadow::uShadow() {
@@ -451,7 +721,7 @@ __attribute__((weak)) void uShadow::reflectSystemValueUpdateShadowViewDistance()
     /* stub */
 }
 
-void uShadow::createCommonProperty(MtPropertyList& s) {
+__attribute__((weak)) void uShadow::createCommonProperty(MtPropertyList& s) {
     this->cUnit::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mShadowGroup", &mShadowGroup, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "mShadowMapType", reinterpret_cast<MT_MFUNC>(&::uShadow::getShadowMapType), reinterpret_cast<MT_MFUNC>(&::uShadow::setShadowMapType), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
@@ -645,10 +915,6 @@ const MtDTI& uShadow::cHardwareDispCtrlShadow::getDTI() const {
 
 void* uShadow::cHardwareDispCtrlShadow::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uShadow::cHardwareDispCtrlShadow::DTI)->memAlloc(sz, align, uShadow::cHardwareDispCtrlShadow::DTI.mID);
-}
-
-inline void uShadow::cHardwareDispCtrlShadow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShadow::cHardwareDispCtrlShadow::DTI)->memFree(p_addr);
 }
 
 void uShadow::cHardwareDispCtrlShadow::update() {

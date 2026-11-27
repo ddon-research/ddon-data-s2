@@ -16,10 +16,6 @@ const MtDTI& CDataGachaDrawGroupInfo::getDTI() const {
     return CDataGachaDrawGroupInfo::DTI;
 }
 
-inline MtAllocator* CDataGachaDrawGroupInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGachaDrawGroupInfo::DTI);
-}
-
 void* CDataGachaDrawGroupInfo::operator new(size_t sz, u32 align) {
     return CDataGachaDrawGroupInfo::getAllocator()->memAlloc(sz, align, CDataGachaDrawGroupInfo::DTI.getID());
 }
@@ -40,10 +36,6 @@ const MtDTI& CDataGachaDrawInfo::getDTI() const {
     return CDataGachaDrawInfo::DTI;
 }
 
-inline MtAllocator* CDataGachaDrawInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGachaDrawInfo::DTI);
-}
-
 void* CDataGachaDrawInfo::operator new(size_t sz, u32 align) {
     return CDataGachaDrawInfo::getAllocator()->memAlloc(sz, align, CDataGachaDrawInfo::DTI.getID());
 }
@@ -62,10 +54,6 @@ MtObject* CDataGachaDrawInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataGachaInfo::getDTI() const {
     return CDataGachaInfo::DTI;
-}
-
-inline MtAllocator* CDataGachaInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGachaInfo::DTI);
 }
 
 void* CDataGachaInfo::operator new(size_t sz, u32 align) {
@@ -89,10 +77,6 @@ const MtDTI& CDataGachaItemInfo::getDTI() const {
     return CDataGachaItemInfo::DTI;
 }
 
-inline MtAllocator* CDataGachaItemInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGachaItemInfo::DTI);
-}
-
 void* CDataGachaItemInfo::operator new(size_t sz, u32 align) {
     return CDataGachaItemInfo::getAllocator()->memAlloc(sz, align, CDataGachaItemInfo::DTI.getID());
 }
@@ -111,10 +95,6 @@ MtObject* CDataGachaItemInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataGachaSettlementInfo::getDTI() const {
     return CDataGachaSettlementInfo::DTI;
-}
-
-inline MtAllocator* CDataGachaSettlementInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGachaSettlementInfo::DTI);
 }
 
 void* CDataGachaSettlementInfo::operator new(size_t sz, u32 align) {

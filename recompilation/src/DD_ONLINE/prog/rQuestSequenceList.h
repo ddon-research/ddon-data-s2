@@ -125,3 +125,19 @@ inline void cQuestSequence::operator delete[](void* p_addr) {
 inline void* cQuestSequence::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cQuestSequence::DTI)->memAlloc(sz, align, ::cQuestSequence::DTI.::MtDTI::getID());
 }
+
+inline void* cQuestSequence::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestSequence::DTI)->memAlloc(sz, align, ::cQuestSequence::DTI.::MtDTI::getID());
+}
+
+inline void cQuestSequence::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestSequence::DTI)->memFree(p_addr);
+}
+
+inline void* rQuestSequenceList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rQuestSequenceList::DTI)->memAlloc(sz, align, ::rQuestSequenceList::DTI.::MtDTI::getID());
+}
+
+inline void rQuestSequenceList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rQuestSequenceList::DTI)->memFree(p_addr);
+}

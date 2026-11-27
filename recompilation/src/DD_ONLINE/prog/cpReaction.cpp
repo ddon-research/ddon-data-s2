@@ -35,16 +35,8 @@ const MtDTI& cpReaction::getDTI() const {
     return cpReaction::DTI;
 }
 
-inline MtAllocator* cpReaction::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpReaction::DTI);
-}
-
 void* cpReaction::operator new(size_t sz, u32 align) {
     return cpReaction::getAllocator()->memAlloc(sz, align, cpReaction::DTI.getID());
-}
-
-inline void cpReaction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpReaction::DTI)->memFree(p_addr);
 }
 
 cpReaction::cpReaction() {
@@ -441,14 +433,6 @@ MtObject* cpReaction::MyDTI::newInstance() const {
 
 const MtDTI& cpReaction::cTriggerFree::getDTI() const {
     return cpReaction::cTriggerFree::DTI;
-}
-
-inline void* cpReaction::cTriggerFree::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpReaction::cTriggerFree::DTI)->memAlloc(sz, align, cpReaction::cTriggerFree::DTI.getID());
-}
-
-inline void cpReaction::cTriggerFree::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpReaction::cTriggerFree::DTI)->memFree(p_addr);
 }
 
 inline cpReaction::cTriggerFree::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

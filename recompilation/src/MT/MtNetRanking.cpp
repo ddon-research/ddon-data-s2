@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <stdlib.h>
 #include "MtNetRanking.h"
 #include "MtAllocator.h"
 #include "MtDTI.h"
@@ -14,6 +16,7 @@
 #include "MtObject.h"
 #include "MtProperty.h"
 #include "MtPropertyList.h"
+#include "MtSynchronize.h"
 #include "../generated/shared/_rtc.h"
 #include "../generated/shared/np_npid.h"
 #include "../generated/shared/np_ranking.h"
@@ -27,10 +30,6 @@ const MtDTI& MtNetRanking::getDTI() const {
 
 void* MtNetRanking::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtNetRanking::DTI)->memAlloc(sz, align, MtNetRanking::DTI.mID);
-}
-
-inline void MtNetRanking::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtNetRanking::DTI)->memFree(p_addr);
 }
 
 MtNetRanking::MtNetRanking() {
@@ -53,14 +52,42 @@ void MtNetRanking::createProperty(MtPropertyList& s) {
     this->MtNetObject::createProperty(s);
 }
 
-__attribute__((weak)) void MtNetRanking::addListener(MtNetRanking::Listener* listener) {
-    DDON_STUB("MtNetRanking::addListener")
-    /* stub */
+void MtNetRanking::addListener(MtNetRanking::Listener* listener) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        mpListener = listener;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        mpListener = listener;
+    }
 }
 
-__attribute__((weak)) void MtNetRanking::removeListener(MtNetRanking::Listener* listener) {
-    DDON_STUB("MtNetRanking::removeListener")
-    /* stub */
+void MtNetRanking::removeListener(MtNetRanking::Listener* listener) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        mpListener = nullptr;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        mpListener = nullptr;
+    }
 }
 
 __attribute__((weak)) void MtNetRanking::move() {
@@ -245,10 +272,6 @@ MtUI* MtNetRanking::ScoreList::createUI(MtProperty& prop) {
 
 const MtDTI& MtNetRanking::Score::getDTI() const {
     return MtNetRanking::Score::DTI;
-}
-
-inline void MtNetRanking::Score::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtNetRanking::Score::DTI)->memFree(p_addr);
 }
 
 MtNetRanking::Score::~Score() {

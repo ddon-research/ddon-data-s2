@@ -94,3 +94,15 @@ inline void* sZoneUnitCtrl::operator new(size_t sz, void* p_addr) {
 inline sZoneUnitCtrl* sZoneUnitCtrl::getInstance() {
     return ::sZoneUnitCtrl::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sZoneUnitCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sZoneUnitCtrl::DTI);
+}
+
+inline void sZoneUnitCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sZoneUnitCtrl::DTI)->memFree(p_addr);
+}

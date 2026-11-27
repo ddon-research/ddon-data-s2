@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "rGrass.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
@@ -28,10 +27,6 @@
 
 const MtDTI& rGrass::getDTI() const {
     return rGrass::DTI;
-}
-
-inline void rGrass::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGrass::DTI)->memFree(p_addr);
 }
 
 rGrass::rGrass() {
@@ -178,10 +173,6 @@ __attribute__((weak)) MtObject* rGrass::MyDTI::newInstance() const {
 
 const MtDTI& rGrass::cCluster::getDTI() const {
     return rGrass::cCluster::DTI;
-}
-
-inline void rGrass::cCluster::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGrass::cCluster::DTI)->memFree(p_addr);
 }
 
 rGrass::cCluster::~cCluster() {
@@ -552,10 +543,6 @@ __attribute__((weak)) MtObject* rGrass::cSetting::MyDTI::newInstance() const {
 
 const MtDTI& rGrass::cChainGrass::getDTI() const {
     return rGrass::cChainGrass::DTI;
-}
-
-inline void rGrass::cChainGrass::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGrass::cChainGrass::DTI)->memFree(p_addr);
 }
 
 void rGrass::cChainGrass::createProperty(MtPropertyList& s) {

@@ -14,6 +14,7 @@
 #include "cDraw.h"
 #include "cResource.h"
 #include "cUnit.h"
+#include "nDrawBlendState.h"
 #include "nDrawResource.h"
 #include "nDrawTexture.h"
 #include "rTexture.h"
@@ -29,10 +30,6 @@
 
 const MtDTI& uBloomFilter::getDTI() const {
     return uBloomFilter::DTI;
-}
-
-inline void uBloomFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uBloomFilter::DTI)->memFree(p_addr);
 }
 
 uBloomFilter::~uBloomFilter() {
@@ -169,16 +166,13 @@ bool uBloomFilter::BloomParam::isTexturesCreated() const {
 }
 
 __attribute__((weak)) void uBloomFilter::BloomParam::setAttenuation(f32 StartZ, f32 EndZ) {
-    DDON_STUB("uBloomFilter::BloomParam::setAttenuation")
-    /* stub */
+    mStartZ = StartZ;
+    mEndZ = EndZ;
+    mAttenuationEnable = (*reinterpret_cast<u32*>(&mStartZ) | *reinterpret_cast<u32*>(&mEndZ)) != 0;
 }
 
 const MtDTI& uColorCorrectFilter::getDTI() const {
     return uColorCorrectFilter::DTI;
-}
-
-inline void uColorCorrectFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uColorCorrectFilter::DTI)->memFree(p_addr);
 }
 
 uColorCorrectFilter::uColorCorrectFilter() {
@@ -265,10 +259,6 @@ const MtDTI& uColorCorrectFilter::Corrector::getDTI() const {
     return uColorCorrectFilter::Corrector::DTI;
 }
 
-inline void uColorCorrectFilter::Corrector::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uColorCorrectFilter::Corrector::DTI)->memFree(p_addr);
-}
-
 MtUI* uColorCorrectFilter::Corrector::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
@@ -341,10 +331,6 @@ __attribute__((weak)) void uColorCorrectFilter::ColorCorrectParam::updateMatrix(
 
 const MtDTI& uDOFFilter::getDTI() const {
     return uDOFFilter::DTI;
-}
-
-inline void uDOFFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uDOFFilter::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uDOFFilter::~uDOFFilter() {
@@ -531,10 +517,6 @@ const MtDTI& uFilter::getDTI() const {
     return uFilter::DTI;
 }
 
-inline void uFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFilter::DTI)->memFree(p_addr);
-}
-
 uFilter::uFilter() {
     mDrawMode = 1;
     mPass = 5;
@@ -605,10 +587,6 @@ MtObject* uFilter::MyDTI::newInstance() const {
 
 const MtDTI& uGodRaysFilter::getDTI() const {
     return uGodRaysFilter::DTI;
-}
-
-inline void uGodRaysFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGodRaysFilter::DTI)->memFree(p_addr);
 }
 
 uGodRaysFilter::uGodRaysFilter() {
@@ -722,8 +700,10 @@ bool uGodRaysFilter::isShadow() {
 }
 
 __attribute__((weak)) void uGodRaysFilter::setShadow(bool b) {
-    DDON_STUB("uGodRaysFilter::setShadow")
-    /* stub */
+    if (mParam.mShadow ? !b : b) {
+        mUpdate = true;
+    }
+    mParam.mShadow = b;
 }
 
 bool uGodRaysFilter::isUsePoint() {
@@ -798,9 +778,53 @@ __attribute__((weak)) MtObject* uGodRaysFilter::MyDTI::newInstance() const {
     return nullptr;
 }
 
-__attribute__((weak)) void uGodRaysFilter::GodRaysParam::init() {
-    DDON_STUB("uGodRaysFilter::GodRaysParam::init")
-    /* stub */
+void uGodRaysFilter::GodRaysParam::init() {
+    mColor.x = MtVector4::One.x;
+    mColor.y = MtVector4::One.y;
+    mColor.z = MtVector4::One.z;
+    mColor.w = MtVector4::One.w;
+    mDirection.x = MtVector3::AxisY.x;
+    mDirection.y = MtVector3::AxisY.y;
+    mDirection.z = MtVector3::AxisY.z;
+    mDirection.pad_ = 0.0f;
+    mPoint.x = MtVector3::Zero.x;
+    mPoint.y = MtVector3::Zero.y;
+    mPoint.z = MtVector3::Zero.z;
+    mPoint.pad_ = 0.0f;
+    mMaskRadius = 1000.0f;
+    mMaskWeight = 1.0f;
+    mDecay = 0.9f;
+    mThreshold = 0.0f;
+    mGamma = 1.0f;
+    mDirectionLength = 10000.0f;
+    mShadowFactor = 0.0f;
+    mShadowThreshold = 1.0f;
+    mStartZ = 10000.0f;
+    mEndZ = 20000.0f;
+    mScale = 1.0f;
+    mpOcclusionFactor = nullptr;
+    mpTempTexture = nullptr;
+    mpFinal = nullptr;
+    mpBlur[4] = nullptr;
+    mpBlur[3] = nullptr;
+    mpBlur[2] = nullptr;
+    mpBlur[1] = nullptr;
+    mpBlur[0] = nullptr;
+    mOcclusionSphereRadius = 0.5f;
+    mMode = 2;
+    mQuality = 1;
+    mIterativeNum = 3;
+    mUsePoint = 0;
+    mUseLDR = 0;
+    mCutoff = 1;
+    mShadow = 0;
+    mGray = 0;
+    mCullingEnable = 0;
+    mScreenAttenuateFlag = 0;
+    mOcclusionAlphaEnable = 0;
+    mOcclusionBlurWidthEnable = 0;
+    mOcclusionBlurWidthOffset = 1.0f;
+    mOcclusionBlurWidthScale = 0.0f;
 }
 
 __attribute__((weak)) void uGodRaysFilter::GodRaysParam::update(const uGodRaysFilter::GodRaysParam& Param) {
@@ -873,10 +897,6 @@ const MtDTI& uMotionBlurFilter::getDTI() const {
 
 void* uMotionBlurFilter::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uMotionBlurFilter::DTI)->memAlloc(sz, align, uMotionBlurFilter::DTI.mID);
-}
-
-inline void uMotionBlurFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uMotionBlurFilter::DTI)->memFree(p_addr);
 }
 
 uMotionBlurFilter::uMotionBlurFilter() {
@@ -962,10 +982,6 @@ __attribute__((weak)) MtObject* uMotionBlurFilter::MyDTI::newInstance() const {
 
 const MtDTI& uRadialBlurFilter::getDTI() const {
     return uRadialBlurFilter::DTI;
-}
-
-inline void uRadialBlurFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uRadialBlurFilter::DTI)->memFree(p_addr);
 }
 
 uRadialBlurFilter::~uRadialBlurFilter() {

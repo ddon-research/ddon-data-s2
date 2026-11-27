@@ -231,3 +231,15 @@ inline rSoundBank::rSoundBank() {
     this->mBusNum = 0;
     this->mpBusArray = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rSoundBank::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundBank::DTI)->memAlloc(sz, align, ::rSoundBank::DTI.::MtDTI::mID);
+}
+
+inline void rSoundBank::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundBank::DTI)->memFree(p_addr);
+}

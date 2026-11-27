@@ -284,3 +284,24 @@ inline void* rDDOModelMontage::operator new(size_t sz, void* p_addr) {
 inline u32 rDDOModelMontage::getModelType() {
     return this->mpHeader->modelType;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* rDDOModelMontage::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rDDOModelMontage::DTI);
+}
+
+inline void* rDDOModelMontage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDDOModelMontage::DTI)->memAlloc(sz, align, ::rDDOModelMontage::DTI.::MtDTI::getID());
+}
+
+inline void rDDOModelMontage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDDOModelMontage::DTI)->memFree(p_addr);
+}
+
+inline rDDOModelMontage::rDDOModelMontage() {
+    this->::cResource::setAttribute(16u);
+    this->mpHeader = nullptr;
+}

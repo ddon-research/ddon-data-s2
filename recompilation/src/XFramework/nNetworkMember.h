@@ -16,6 +16,8 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 namespace nNetwork { class SessionDatabase; }
+namespace nNetwork { class SessionDriver; }
+namespace nNetwork { class VoiceChat; }
 
 // Declarations
 namespace nNetwork { class Member; }
@@ -35,6 +37,8 @@ namespace nNetwork {
     class Member : public ::MtObject
     {
         friend class nNetwork::SessionDatabase;
+        friend class nNetwork::SessionDriver;
+        friend class nNetwork::VoiceChat;
     public:
         enum
         {
@@ -170,4 +174,12 @@ inline void nNetwork::Member::setMute(bool f) {
 
 inline void nNetwork::Member::setRestrict(bool f) {
     this->mConfiguration = !f ? (this->mConfiguration & 0xFFFFFFBFu) : (this->mConfiguration | 64u);
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::Member::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::Member::DTI)->memFree(p_addr);
 }

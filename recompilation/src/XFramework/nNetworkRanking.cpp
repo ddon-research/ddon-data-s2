@@ -27,10 +27,6 @@ void* nNetwork::nRanking::Object::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::nRanking::Object::DTI)->memAlloc(sz, align, ::nNetwork::nRanking::Object::DTI.mID);
 }
 
-inline void nNetwork::nRanking::Object::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::nRanking::Object::DTI)->memFree(p_addr);
-}
-
 nNetwork::nRanking::Object::Object() {
     DDON_STUB("nNetwork::nRanking::Object::Object")
     /* stub */
@@ -126,9 +122,14 @@ void nNetwork::nRanking::Object::DriverListener::onNtcFinalize() {
     mpParent->mbFinal = true;
 }
 
-__attribute__((weak)) void nNetwork::nRanking::Object::DriverListener::onNtcDrop(MtNetError* err) {
-    DDON_STUB("nNetwork::nRanking::Object::DriverListener::onNtcDrop")
-    /* stub */
+void nNetwork::nRanking::Object::DriverListener::onNtcDrop(MtNetError* err) {
+    (::sNetwork::mpInstance)->::sNetwork::procError(err);
+    nNetwork::nRanking::Object* v0_10 = mpParent;
+    for (unsigned int i0_3 = 0; i0_3 != 16; i0_3 = i0_3 + 1u) {
+        if (v0_10->mpListener[i0_3] != nullptr) {
+            v0_10->mpListener[i0_3]->onDrop(err);
+        }
+    }
 }
 
 __attribute__((weak)) void nNetwork::nRanking::Object::DriverListener::onAnsUpdateSucceed(u32 req_seq) {
@@ -163,10 +164,6 @@ __attribute__((weak)) void nNetwork::nRanking::Object::DriverListener::onAnsGetA
 
 const MtDTI& nNetwork::nRanking::Object::StateBase::getDTI() const {
     return nNetwork::nRanking::Object::StateBase::DTI;
-}
-
-inline void nNetwork::nRanking::Object::StateBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::nRanking::Object::StateBase::DTI)->memFree(p_addr);
 }
 
 inline nNetwork::nRanking::Object::StateBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

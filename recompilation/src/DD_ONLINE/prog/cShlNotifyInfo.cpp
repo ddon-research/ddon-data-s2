@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cShlNotifyInfo.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cpObjCollision.h"
 #include "rAttackParam.h"
@@ -18,13 +16,16 @@ const MtDTI& cShlNotifyInfo::getDTI() const {
     return cShlNotifyInfo::DTI;
 }
 
-inline void cShlNotifyInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlNotifyInfo::DTI)->memFree(p_addr);
-}
-
 cShlNotifyInfo::cShlNotifyInfo() {
-    DDON_STUB("cShlNotifyInfo::cShlNotifyInfo")
-    /* stub */
+    mpDfdGeom = nullptr;
+    mpAtkGeom = nullptr;
+    mpDfdModel = nullptr;
+    mpAtkModel = nullptr;
+    mpAttackParam = nullptr;
+    mHitPos.x = MtVector3::Zero.x;
+    mHitPos.y = MtVector3::Zero.y;
+    mHitPos.z = MtVector3::Zero.z;
+    mHitPos.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void cShlNotifyInfo::createParam(cHitInfo* pHitInfo) {
@@ -36,8 +37,7 @@ inline cShlNotifyInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 cShlNotifyInfo::MyDTI cShlNotifyInfo::DTI("cShlNotifyInfo", &::MtObject::DTI, 64ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cShlNotifyInfo::MyDTI::newInstance() const {
-    DDON_STUB("cShlNotifyInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cShlNotifyInfo::MyDTI::newInstance() const {
+    return new (16u) cShlNotifyInfo;
 }
 

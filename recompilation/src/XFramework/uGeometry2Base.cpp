@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uGeometry2Base.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "cUnit.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -11,10 +9,6 @@
 
 const MtDTI& uGeometry2Base::getDTI() const {
     return uGeometry2Base::DTI;
-}
-
-inline void uGeometry2Base::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGeometry2Base::DTI)->memFree(p_addr);
 }
 
 uGeometry2Base::uGeometry2Base() {

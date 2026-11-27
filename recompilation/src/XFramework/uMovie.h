@@ -273,3 +273,15 @@ inline rMovie* uMovie::getMovie() {
 inline rRenderTargetTexture* uMovie::getRenderTarget() const {
     return this->mpMovieTexture;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* uMovie::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uMovie::DTI)->memAlloc(sz, align, ::uMovie::DTI.::MtDTI::mID);
+}
+
+inline void uMovie::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uMovie::DTI)->memFree(p_addr);
+}

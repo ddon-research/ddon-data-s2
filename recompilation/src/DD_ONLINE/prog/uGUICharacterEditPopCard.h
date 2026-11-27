@@ -143,3 +143,21 @@ inline void uGUICharacterEditPopCard::evInputPutDownOpen() {
     }
     this->mRefPulldown.mState = static_cast<uGUIBase::cReferenceUIPullDown::STATE>(1);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+
+inline MtAllocator* uGUICharacterEditPopCard::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICharacterEditPopCard::DTI);
+}
+
+inline void uGUICharacterEditPopCard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICharacterEditPopCard::DTI)->memFree(p_addr);
+}
+
+inline void uGUICharacterEditPopCard::evInputDecideBottun() {
+    static_cast<sGUIExt*>(::sGUI::mpInstance)->::sGUIExt::requestSE(0u, 4u);
+}

@@ -83,3 +83,15 @@ inline void* uLargeEnemyCamera::operator new(size_t sz, void* p_addr) {
 inline bool uLargeEnemyCamera::isLargeCamera() {
     return this->mIsLargeCamera;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uLargeEnemyCamera::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uLargeEnemyCamera::DTI);
+}
+
+inline void uLargeEnemyCamera::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uLargeEnemyCamera::DTI)->memFree(p_addr);
+}

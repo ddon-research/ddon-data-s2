@@ -488,9 +488,54 @@ inline void uEnemy::addGuardCnt() {
     this->mContinuousGuardTimer = 90.0f;
 }
 
+inline void uEnemy::clrGuardCnt() {
+    this->mContinuousGuardCnt = 0;
+    this->mContinuousGuardTimer = 0.0f;
+}
+
+inline void uEnemy::updateContinuousGuard() {
+    this->mContinuousGuardTimer = this->mContinuousGuardTimer - this->::cUnit::mDeltaTime;
+    if (0.0f > this->mContinuousGuardTimer) {
+        this->mContinuousGuardCnt = 0;
+        this->mContinuousGuardTimer = 0.0f;
+    }
+}
+
+inline void uEnemy::resetReqPartsAllOff() {
+    this->mIsReqPartsAllOff = false;
+}
+
 inline void uEnemy::resetShakeChanceTime() {
     this->mShakeChanceInfo[0].mIsActive = false;
     this->mShakeChanceInfo[0].mTimer = 0.0f;
     this->mShakeChanceInfo[1].mIsActive = false;
     this->mShakeChanceInfo[1].mTimer = 0.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cCharParamEnemy.h"
+#include "cpDDMrlMgr.h"
+#include "rCharParamEnemy.h"
+
+inline void uEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uEnemy::DTI)->memFree(p_addr);
+}
+
+inline void uEnemy::setupEnchantMode() {
+    if (this->mpCharParamEnemy == nullptr) {
+        return;
+    }
+    if (this->mpCharParamEnemy->mpCharParamEnemy == nullptr) {
+        return;
+    }
+    if (!this->mpCharParamEnemy->mpCharParamEnemy->mIsUseEnchant) {
+        return;
+    }
+    if ((this->mpCharParamEnemy->mpCharParamEnemy->mEnchantType - 2u) <= 4u) {
+        if (this->::uDDOModel::mpDDMrlMgr != nullptr) {
+            this->::uDDOModel::mpDDMrlMgr->::cpDDMrlMgr::requestElementEmMode(this->mpCharParamEnemy->mpCharParamEnemy->mEnchantType);
+        }
+    }
 }

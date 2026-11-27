@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cpComponent.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -14,10 +12,6 @@
 
 const MtDTI& cpComponent::getDTI() const {
     return cpComponent::DTI;
-}
-
-inline void* cpComponent::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpComponent::DTI)->memAlloc(sz, align, cpComponent::DTI.getID());
 }
 
 cpComponent::cpComponent() {

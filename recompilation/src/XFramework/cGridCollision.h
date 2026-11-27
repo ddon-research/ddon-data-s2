@@ -561,3 +561,11 @@ bool cGridCollision::saveCore(IO_CLASS& out, const bool FlgEnableEndianChange) {
     }
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cGridCollision::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGridCollision::DTI)->memFree(p_addr);
+}

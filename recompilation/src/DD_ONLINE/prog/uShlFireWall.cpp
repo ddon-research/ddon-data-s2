@@ -23,10 +23,6 @@ const MtDTI& cShlParamFireWallCtrl::getDTI() const {
     return cShlParamFireWallCtrl::DTI;
 }
 
-inline void* cShlParamFireWallCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamFireWallCtrl::DTI)->memAlloc(sz, align, cShlParamFireWallCtrl::DTI.getID());
-}
-
 inline void cShlParamFireWallCtrl::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamFireWallCtrl::DTI)->memFree(p_addr);
 }
@@ -82,14 +78,6 @@ MtObject* cShlParamFireWallCtrl::MyDTI::newInstance() const {
 
 const MtDTI& uShlFireWallCtrl::getDTI() const {
     return uShlFireWallCtrl::DTI;
-}
-
-inline void uShlFireWallCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlFireWallCtrl::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamFireWallCtrl* uShlFireWallCtrl::getShlParam() const {
-    return static_cast<const cShlParamFireWallCtrl*>(mpShlParam2);
 }
 
 uShlFireWallCtrl::~uShlFireWallCtrl() {

@@ -2,9 +2,7 @@
 #include <new>
 #include <string.h>
 #include "cGameDataCache.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "nDDOUtility.h"
 #include "sFlag.h"
@@ -14,14 +12,6 @@
 
 const MtDTI& nLayout::cGameDataCache::getDTI() const {
     return nLayout::cGameDataCache::DTI;
-}
-
-inline void* nLayout::cGameDataCache::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nLayout::cGameDataCache::DTI)->memAlloc(sz, align, ::nLayout::cGameDataCache::DTI.getID());
-}
-
-inline void nLayout::cGameDataCache::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nLayout::cGameDataCache::DTI)->memFree(p_addr);
 }
 
 nLayout::cGameDataCache::cGameDataCache() {

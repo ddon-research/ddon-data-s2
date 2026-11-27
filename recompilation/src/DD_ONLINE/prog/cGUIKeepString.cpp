@@ -3,7 +3,6 @@
 #include "cGUIKeepString.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #ifndef DDON_STUB
@@ -12,10 +11,6 @@
 
 const MtDTI& cGUIKeepString::getDTI() const {
     return cGUIKeepString::DTI;
-}
-
-inline MtAllocator* cGUIKeepString::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGUIKeepString::DTI);
 }
 
 void* cGUIKeepString::operator new(size_t sz, u32 align) {

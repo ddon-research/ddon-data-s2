@@ -15,28 +15,6 @@ class MtDTI;
 class MtObject;
 class MtString;
 
-// Declarations
-class CDataC2SChangeCharacterEquipInfo;
-class CDataChangeEquipJobItem;
-class CDataCharacterItemSlotInfo;
-class CDataEquipElementParam;
-class CDataEquipItemInfo;
-class CDataEquipJobItem;
-class CDataEquipPreset;
-class CDataFurnitureLayoutData;
-class CDataGameItemStorage;
-class CDataGameItemStorageInfo;
-class CDataItemEquipElement;
-class CDataItemList;
-class CDataItemUIDList;
-class CDataItemUpdateResult;
-class CDataJewelryEquipLimit;
-class CDataMoveItemUIDFromTo;
-class CDataPresetEquipInfo;
-class CDataS2CCharacterEquipInfo;
-class CDataS2CPawnEquipInfo;
-class CDataStorageItemUIDList;
-
 namespace nItem {
     enum E_STORAGE_TYPE
     {
@@ -84,6 +62,30 @@ namespace nItem {
         STORAGE_TYPE_GROUP_ALL_USABLE = 224,
     };
 }  // namespace nItem
+
+// Declarations
+class CDataC2SChangeCharacterEquipInfo;
+class CDataChangeEquipJobItem;
+class CDataCharacterItemSlotInfo;
+class CDataEquipBindNotice;
+class CDataEquipElementParam;
+class CDataEquipItemInfo;
+class CDataEquipJobItem;
+class CDataEquipPreset;
+class CDataFurnitureLayout;
+class CDataFurnitureLayoutData;
+class CDataGameItemStorage;
+class CDataGameItemStorageInfo;
+class CDataItemEquipElement;
+class CDataItemList;
+class CDataItemUIDList;
+class CDataItemUpdateResult;
+class CDataJewelryEquipLimit;
+class CDataMoveItemUIDFromTo;
+class CDataPresetEquipInfo;
+class CDataS2CCharacterEquipInfo;
+class CDataS2CPawnEquipInfo;
+class CDataStorageItemUIDList;
 
 // Type aliases from DWARF
 using CGameItemStorage = CDataGameItemStorage;
@@ -198,6 +200,43 @@ public:
     static MyDTI DTI;
 };
 
+class CDataEquipBindNotice : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataEquipBindNotice();
+    explicit CDataEquipBindNotice(const char*, b8, u8, u16, u32, u32);
+public:
+    MtString m_wstrUID;  // offset: 0x8
+    b8 m_bBind;  // offset: 0x10
+    u8 m_ucStorageType;  // offset: 0x11
+    u16 m_usSlotNo;  // offset: 0x12
+    u32 m_unEquipCharacterID;  // offset: 0x14
+    u32 m_unEquipPawnID;  // offset: 0x18
+    static MyDTI DTI;
+};
+
 class CDataEquipElementParam : public CPacketDataBase
 {
 public:
@@ -298,6 +337,40 @@ public:
 public:
     u32 m_unJobItemID;  // offset: 0x8
     u8 m_ucEquipSlotNo;  // offset: 0xc
+    static MyDTI DTI;
+};
+
+class CDataFurnitureLayout : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataFurnitureLayout();
+    explicit CDataFurnitureLayout(u32, u32, u8);
+public:
+    u32 m_unItemID;  // offset: 0x8
+    u32 m_unOmID;  // offset: 0xc
+    u8 m_ucLayoutID;  // offset: 0x10
     static MyDTI DTI;
 };
 
@@ -813,6 +886,18 @@ inline CDataCharacterItemSlotInfo::CDataCharacterItemSlotInfo() {
     this->m_usSlotMax = 0;
 }
 
+inline void* CDataEquipBindNotice::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataEquipBindNotice::CDataEquipBindNotice() {
+    this->m_unEquipPawnID = 0;
+    this->m_bBind = false;
+    this->m_ucStorageType = 0;
+    this->m_usSlotNo = 0;
+    this->m_unEquipCharacterID = 0;
+}
+
 inline void* CDataEquipElementParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -850,6 +935,16 @@ inline void* CDataEquipPreset::operator new(size_t sz, void* p_addr) {
 inline CDataEquipPreset::CDataEquipPreset() {
     this->m_unPresetNo = 0;
     this->m_ucJob = 0;
+}
+
+inline void* CDataFurnitureLayout::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataFurnitureLayout::CDataFurnitureLayout() {
+    this->m_unItemID = 0;
+    this->m_unOmID = 0;
+    this->m_ucLayoutID = 0;
 }
 
 inline void* CDataFurnitureLayoutData::operator new(size_t sz, void* p_addr) {
@@ -974,4 +1069,95 @@ inline CDataStorageItemUIDList::CDataStorageItemUIDList() {
     this->m_unNum = 0;
     this->m_ucStorageType = 0;
     this->m_usSlotNo = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataC2SChangeCharacterEquipInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataC2SChangeCharacterEquipInfo::DTI);
+}
+
+inline MtAllocator* CDataChangeEquipJobItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataChangeEquipJobItem::DTI);
+}
+
+inline MtAllocator* CDataCharacterItemSlotInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterItemSlotInfo::DTI);
+}
+
+inline MtAllocator* CDataEquipBindNotice::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEquipBindNotice::DTI);
+}
+
+inline MtAllocator* CDataEquipElementParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEquipElementParam::DTI);
+}
+
+inline MtAllocator* CDataEquipItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEquipItemInfo::DTI);
+}
+
+inline MtAllocator* CDataEquipJobItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEquipJobItem::DTI);
+}
+
+inline MtAllocator* CDataEquipPreset::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEquipPreset::DTI);
+}
+
+inline MtAllocator* CDataFurnitureLayout::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataFurnitureLayout::DTI);
+}
+
+inline MtAllocator* CDataFurnitureLayoutData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataFurnitureLayoutData::DTI);
+}
+
+inline MtAllocator* CDataGameItemStorage::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameItemStorage::DTI);
+}
+
+inline MtAllocator* CDataGameItemStorageInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGameItemStorageInfo::DTI);
+}
+
+inline MtAllocator* CDataItemEquipElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataItemEquipElement::DTI);
+}
+
+inline MtAllocator* CDataItemList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataItemList::DTI);
+}
+
+inline MtAllocator* CDataItemUIDList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataItemUIDList::DTI);
+}
+
+inline MtAllocator* CDataItemUpdateResult::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataItemUpdateResult::DTI);
+}
+
+inline MtAllocator* CDataJewelryEquipLimit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJewelryEquipLimit::DTI);
+}
+
+inline MtAllocator* CDataMoveItemUIDFromTo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMoveItemUIDFromTo::DTI);
+}
+
+inline MtAllocator* CDataPresetEquipInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPresetEquipInfo::DTI);
+}
+
+inline MtAllocator* CDataS2CCharacterEquipInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataS2CCharacterEquipInfo::DTI);
+}
+
+inline MtAllocator* CDataS2CPawnEquipInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataS2CPawnEquipInfo::DTI);
+}
+
+inline MtAllocator* CDataStorageItemUIDList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStorageItemUIDList::DTI);
 }

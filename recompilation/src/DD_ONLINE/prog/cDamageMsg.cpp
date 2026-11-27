@@ -25,10 +25,6 @@ const MtDTI& cDamageMsg::getDTI() const {
     return cDamageMsg::DTI;
 }
 
-inline MtAllocator* cDamageMsg::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cDamageMsg::DTI);
-}
-
 void* cDamageMsg::operator new(size_t sz, u32 align) {
     return cDamageMsg::getAllocator()->memAlloc(sz, align, cDamageMsg::DTI.getID());
 }
@@ -60,7 +56,7 @@ void cDamageMsg::makeInfoFromHitNode(const cHitInfo* pHitInfo) {
                         if (pHitInfo->mpDfdNode->getCollNodeRes() == nullptr) {
                             mData.mDfdNodeUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);
                         } else {
-                            mData.mDfdNodeUID = sObjCollision::getInstance()->makeParamUID(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpDfdNode->getCollNodeRes()) + 144), static_cast<unsigned int>(static_cast<unsigned long>(pHitInfo->mpDfdGeom->mpSrcGeom->mIndex) | static_cast<unsigned long>(pHitInfo->mpDfdNode->getCollNode()->mIndex * 65536)));
+                            mData.mDfdNodeUID = sObjCollision::getInstance()->makeParamUID(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pHitInfo->mpDfdNode->getCollNodeRes()) + 144), static_cast<unsigned int>(static_cast<unsigned long>(pHitInfo->mpDfdGeom->mpSrcGeom->mIndex) | static_cast<unsigned long>(static_cast<long>(pHitInfo->mpDfdNode->getCollNode()->mIndex) * 65536)));
                         }
                     } else {
                         mData.mDfdNodeUID = sObjCollision::getInstance()->makeParamUID(0u, 0u);

@@ -23,10 +23,6 @@ class MtVector3;
 class cShlParamBase;
 class uDDOModel;
 
-// Declarations
-class cShlParamMultiLock;
-class uShlEmMultiLock;
-
 namespace nShlEmMultiLock {
     enum SHL_SET_LOCATE
     {
@@ -36,6 +32,10 @@ namespace nShlEmMultiLock {
         LOCATE_MAX = 3,
     };
 }  // namespace nShlEmMultiLock
+
+// Declarations
+class cShlParamMultiLock;
+class uShlEmMultiLock;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -319,4 +319,63 @@ inline uShlEmMultiLock::cTargetList::cTargetList() {
 
 inline u32 uShlEmMultiLock::cTargetList::getPrio() const {
     return this->mPrio;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamMultiLock::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamMultiLock::DTI)->memAlloc(sz, align, ::cShlParamMultiLock::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamMultiLock::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamMultiLock::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamMultiLock::cRangePointTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamMultiLock::cRangePointTbl::DTI)->memAlloc(sz, align, ::cShlParamMultiLock::cRangePointTbl::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamMultiLock::cRangePointTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamMultiLock::cRangePointTbl::DTI)->memFree(p_addr);
+}
+
+inline void cShlParamMultiLock::cShootCtrlParamMultiLock::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamMultiLock::cShootCtrlParamMultiLock::DTI)->memFree(p_addr);
+}
+
+inline void* uShlEmMultiLock::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlEmMultiLock::DTI)->memAlloc(sz, align, ::uShlEmMultiLock::DTI.::MtDTI::getID());
+}
+
+inline void uShlEmMultiLock::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlEmMultiLock::DTI)->memFree(p_addr);
+}
+
+inline uShlEmMultiLock::uShlEmMultiLock() {
+    this->mNoCalcTgtDir = false;
+    this->mIsBlind = false;
+    this->mShlSetNumGrp[4] = 0;
+    this->mShlSetNumGrp[5] = 0;
+    this->mShlSetNumGrp[2] = 0;
+    this->mShlSetNumGrp[3] = 0;
+    this->mShlSetNumGrp[0] = 0;
+    this->mShlSetNumGrp[1] = 0;
+    this->mLockNum = 1;
+    this->mBaseVec = ::MtVector3::Zero;
+    this->mTmpTargetArray.::MtArray::mpArray = nullptr;
+    this->mTmpTargetArray.::MtArray::mBufsiz = 0;
+    this->mTmpTargetArray.::MtArray::mLength = 0;
+    this->mTargetArray.::MtArray::mpArray = nullptr;
+    this->mTargetArray.::MtArray::mLength = 0;
+    this->mTargetArray.::MtArray::mBufsiz = 0;
+}
+
+inline void* uShlEmMultiLock::cTargetList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlEmMultiLock::cTargetList::DTI)->memAlloc(sz, align, ::uShlEmMultiLock::cTargetList::DTI.::MtDTI::getID());
+}
+
+inline void uShlEmMultiLock::cTargetList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlEmMultiLock::cTargetList::DTI)->memFree(p_addr);
 }

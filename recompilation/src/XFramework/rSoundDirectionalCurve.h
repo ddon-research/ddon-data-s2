@@ -186,3 +186,19 @@ inline void* rSoundDirectionalCurveXml::Curve::operator new(size_t sz, void* p_a
 inline void* rSoundDirectionalCurveXml::Element::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rSoundDirectionalCurveXml::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalCurveXml::DTI)->memFree(p_addr);
+}
+
+inline void rSoundDirectionalCurveXml::Curve::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalCurveXml::Curve::DTI)->memFree(p_addr);
+}
+
+inline void rSoundDirectionalCurveXml::Element::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundDirectionalCurveXml::Element::DTI)->memFree(p_addr);
+}

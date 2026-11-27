@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cStateMachineBase.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -70,14 +69,6 @@ bool cStateMachineBase::StateBase::processRemoteCallDefault(cRemoteCall& call, b
 
 const MtDTI& cStateMachineBase::StateBase::getDTI() const {
     return cStateMachineBase::StateBase::DTI;
-}
-
-inline void* cStateMachineBase::StateBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStateMachineBase::StateBase::DTI)->memAlloc(sz, align, cStateMachineBase::StateBase::DTI.mID);
-}
-
-inline void cStateMachineBase::StateBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStateMachineBase::StateBase::DTI)->memFree(p_addr);
 }
 
 cStateMachineBase::StateBase::StateBase() {

@@ -40,10 +40,6 @@ const MtDTI& cShlParamConstErosion::getDTI() const {
     return cShlParamConstErosion::DTI;
 }
 
-inline void* cShlParamConstErosion::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamConstErosion::DTI)->memAlloc(sz, align, cShlParamConstErosion::DTI.getID());
-}
-
 inline void cShlParamConstErosion::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamConstErosion::DTI)->memFree(p_addr);
 }
@@ -127,10 +123,6 @@ const MtDTI& cShlParamMgcArrowErosionCtrl::getDTI() const {
     return cShlParamMgcArrowErosionCtrl::DTI;
 }
 
-inline void* cShlParamMgcArrowErosionCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamMgcArrowErosionCtrl::DTI)->memAlloc(sz, align, cShlParamMgcArrowErosionCtrl::DTI.getID());
-}
-
 inline void cShlParamMgcArrowErosionCtrl::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamMgcArrowErosionCtrl::DTI)->memFree(p_addr);
 }
@@ -168,18 +160,6 @@ MtObject* cShlParamMgcArrowErosionCtrl::MyDTI::newInstance() const {
 
 const MtDTI& uShlConstErosion::getDTI() const {
     return uShlConstErosion::DTI;
-}
-
-inline void* uShlConstErosion::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlConstErosion::DTI)->memAlloc(sz, align, uShlConstErosion::DTI.getID());
-}
-
-inline void uShlConstErosion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlConstErosion::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamConstErosion* uShlConstErosion::getShlParam() const {
-    return static_cast<const cShlParamConstErosion*>(mpShlParam2);
 }
 
 void uShlConstErosion::setup() {
@@ -250,26 +230,6 @@ const MtDTI& uShlMgcArrowErosion::getDTI() const {
     return uShlMgcArrowErosion::DTI;
 }
 
-inline void* uShlMgcArrowErosion::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlMgcArrowErosion::DTI)->memAlloc(sz, align, uShlMgcArrowErosion::DTI.getID());
-}
-
-inline void uShlMgcArrowErosion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlMgcArrowErosion::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamMgcArrowErosion* uShlMgcArrowErosion::getShlParam() const {
-    return static_cast<const cShlParamMgcArrowErosion*>(mpShlParam2);
-}
-
-inline uShlMgcArrowErosion::uShlMgcArrowErosion() {
-    mpShlCtrl = nullptr;
-    mFlgHitAttackTest = false;
-    mLandEffectTimer = 0.0f;
-    mOldEffectPos = MtVector3::Zero;
-    mLandEffectCount = 0;
-}
-
 __attribute__((weak)) void uShlMgcArrowErosion::setup() {
     DDON_STUB("uShlMgcArrowErosion::setup")
     /* stub */
@@ -337,9 +297,11 @@ __attribute__((weak)) void uShlMgcArrowErosion::callbackAttack(cHitInfo* pInfo) 
     /* stub */
 }
 
-__attribute__((weak)) void uShlMgcArrowErosion::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlMgcArrowErosion::applyWorldOffset")
-    /* stub */
+void uShlMgcArrowErosion::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlHoming::applyWorldOffset(offset, absolute_offset);
+    mOldEffectPos.x = offset.x + mOldEffectPos.x;
+    mOldEffectPos.y = offset.y + mOldEffectPos.y;
+    mOldEffectPos.z = offset.z + mOldEffectPos.z;
 }
 
 __attribute__((weak)) void uShlMgcArrowErosion::updateLandEffect() {
@@ -357,18 +319,6 @@ MtObject* uShlMgcArrowErosion::MyDTI::newInstance() const {
 
 const MtDTI& uShlMgcArrowErosionCtrl::getDTI() const {
     return uShlMgcArrowErosionCtrl::DTI;
-}
-
-inline void* uShlMgcArrowErosionCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlMgcArrowErosionCtrl::DTI)->memAlloc(sz, align, uShlMgcArrowErosionCtrl::DTI.getID());
-}
-
-inline void uShlMgcArrowErosionCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlMgcArrowErosionCtrl::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamMgcArrowErosionCtrl* uShlMgcArrowErosionCtrl::getShlParam() const {
-    return static_cast<const cShlParamMgcArrowErosionCtrl*>(mpShlParam2);
 }
 
 void uShlMgcArrowErosionCtrl::setup() {

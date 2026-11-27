@@ -32,10 +32,6 @@ void* sGpuParticle::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sGpuParticle::DTI)->memAlloc(sz, align, sGpuParticle::DTI.mID);
 }
 
-inline void sGpuParticle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGpuParticle::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void sGpuParticle::begin() {
     DDON_STUB("sGpuParticle::begin")
     /* stub */
@@ -141,8 +137,8 @@ sGpuParticle::MyDTI sGpuParticle::DTI("sGpuParticle", &::cSystem::DTI, 288ul, 0u
 sGpuParticle* sGpuParticle::mpInstance;
 
 __attribute__((weak)) MtObject* sGpuParticle::MyDTI::newInstance() const {
-    DDON_STUB("sGpuParticle::MyDTI::newInstance")
-    return nullptr;
+    // workaround
+    return new (16u) sGpuParticle(u32{}, u32{});
 }
 
 s32 sGpuParticle::Context::setTexture(cDraw* p_draw, rTexture* p_tex, const MtPoint& base_pos, u32 size, u32 row_num, u32 total_num) {

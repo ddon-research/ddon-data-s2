@@ -12,12 +12,28 @@
 #define DDON_STUB(name)
 #endif
 
-const MtDTI& CDataAbilityLevelParam::getDTI() const {
-    return CDataAbilityLevelParam::DTI;
+const MtDTI& CDataAbilityLevelBaseParam::getDTI() const {
+    return CDataAbilityLevelBaseParam::DTI;
 }
 
-inline MtAllocator* CDataAbilityLevelParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAbilityLevelParam::DTI);
+void* CDataAbilityLevelBaseParam::operator new(size_t sz, u32 align) {
+    return CDataAbilityLevelBaseParam::getAllocator()->memAlloc(sz, align, CDataAbilityLevelBaseParam::DTI.getID());
+}
+
+__attribute__((weak)) void CDataAbilityLevelBaseParam::operator delete(void* p_addr) {
+    CDataAbilityLevelBaseParam::getAllocator()->memFree(p_addr);
+}
+
+inline CDataAbilityLevelBaseParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataAbilityLevelBaseParam::MyDTI CDataAbilityLevelBaseParam::DTI("CDataAbilityLevelBaseParam", &::CPacketDataBase::DTI, 16ul, 0u, 0u);
+
+MtObject* CDataAbilityLevelBaseParam::MyDTI::newInstance() const {
+    return new (16u) CDataAbilityLevelBaseParam;
+}
+
+const MtDTI& CDataAbilityLevelParam::getDTI() const {
+    return CDataAbilityLevelParam::DTI;
 }
 
 void* CDataAbilityLevelParam::operator new(size_t sz, u32 align) {
@@ -38,10 +54,6 @@ MtObject* CDataAbilityLevelParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataAbilityParam::getDTI() const {
     return CDataAbilityParam::DTI;
-}
-
-inline MtAllocator* CDataAbilityParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataAbilityParam::DTI);
 }
 
 void* CDataAbilityParam::operator new(size_t sz, u32 align) {
@@ -65,10 +77,6 @@ const MtDTI& CDataLearnNormalSkillParam::getDTI() const {
     return CDataLearnNormalSkillParam::DTI;
 }
 
-inline MtAllocator* CDataLearnNormalSkillParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataLearnNormalSkillParam::DTI);
-}
-
 void* CDataLearnNormalSkillParam::operator new(size_t sz, u32 align) {
     return CDataLearnNormalSkillParam::getAllocator()->memAlloc(sz, align, CDataLearnNormalSkillParam::DTI.getID());
 }
@@ -87,10 +95,6 @@ MtObject* CDataLearnNormalSkillParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataLearnedAcquirementParam::getDTI() const {
     return CDataLearnedAcquirementParam::DTI;
-}
-
-inline MtAllocator* CDataLearnedAcquirementParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataLearnedAcquirementParam::DTI);
 }
 
 void* CDataLearnedAcquirementParam::operator new(size_t sz, u32 align) {
@@ -113,10 +117,6 @@ const MtDTI& CDataNormalSkillParam::getDTI() const {
     return CDataNormalSkillParam::DTI;
 }
 
-inline MtAllocator* CDataNormalSkillParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataNormalSkillParam::DTI);
-}
-
 void* CDataNormalSkillParam::operator new(size_t sz, u32 align) {
     return CDataNormalSkillParam::getAllocator()->memAlloc(sz, align, CDataNormalSkillParam::DTI.getID());
 }
@@ -135,10 +135,6 @@ MtObject* CDataNormalSkillParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataPresetAbilityParam::getDTI() const {
     return CDataPresetAbilityParam::DTI;
-}
-
-inline MtAllocator* CDataPresetAbilityParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPresetAbilityParam::DTI);
 }
 
 void* CDataPresetAbilityParam::operator new(size_t sz, u32 align) {
@@ -161,10 +157,6 @@ const MtDTI& CDataReleaseAcquirementParam::getDTI() const {
     return CDataReleaseAcquirementParam::DTI;
 }
 
-inline MtAllocator* CDataReleaseAcquirementParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataReleaseAcquirementParam::DTI);
-}
-
 void* CDataReleaseAcquirementParam::operator new(size_t sz, u32 align) {
     return CDataReleaseAcquirementParam::getAllocator()->memAlloc(sz, align, CDataReleaseAcquirementParam::DTI.getID());
 }
@@ -185,10 +177,6 @@ const MtDTI& CDataSetAcquirementParam::getDTI() const {
     return CDataSetAcquirementParam::DTI;
 }
 
-inline MtAllocator* CDataSetAcquirementParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSetAcquirementParam::DTI);
-}
-
 void* CDataSetAcquirementParam::operator new(size_t sz, u32 align) {
     return CDataSetAcquirementParam::getAllocator()->memAlloc(sz, align, CDataSetAcquirementParam::DTI.getID());
 }
@@ -205,12 +193,28 @@ MtObject* CDataSetAcquirementParam::MyDTI::newInstance() const {
     return new (16u) CDataSetAcquirementParam;
 }
 
-const MtDTI& CDataSkillLevelParam::getDTI() const {
-    return CDataSkillLevelParam::DTI;
+const MtDTI& CDataSkillLevelBaseParam::getDTI() const {
+    return CDataSkillLevelBaseParam::DTI;
 }
 
-inline MtAllocator* CDataSkillLevelParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSkillLevelParam::DTI);
+void* CDataSkillLevelBaseParam::operator new(size_t sz, u32 align) {
+    return CDataSkillLevelBaseParam::getAllocator()->memAlloc(sz, align, CDataSkillLevelBaseParam::DTI.getID());
+}
+
+__attribute__((weak)) void CDataSkillLevelBaseParam::operator delete(void* p_addr) {
+    CDataSkillLevelBaseParam::getAllocator()->memFree(p_addr);
+}
+
+inline CDataSkillLevelBaseParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataSkillLevelBaseParam::MyDTI CDataSkillLevelBaseParam::DTI("CDataSkillLevelBaseParam", &::CPacketDataBase::DTI, 24ul, 0u, 0u);
+
+MtObject* CDataSkillLevelBaseParam::MyDTI::newInstance() const {
+    return new (16u) CDataSkillLevelBaseParam;
+}
+
+const MtDTI& CDataSkillLevelParam::getDTI() const {
+    return CDataSkillLevelParam::DTI;
 }
 
 void* CDataSkillLevelParam::operator new(size_t sz, u32 align) {
@@ -231,10 +235,6 @@ MtObject* CDataSkillLevelParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataSkillParam::getDTI() const {
     return CDataSkillParam::DTI;
-}
-
-inline MtAllocator* CDataSkillParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSkillParam::DTI);
 }
 
 void* CDataSkillParam::operator new(size_t sz, u32 align) {

@@ -32,10 +32,6 @@ const MtDTI& cEvaluationName::cEvaluation::getDTI() const {
     return cEvaluationName::cEvaluation::DTI;
 }
 
-inline void cEvaluationName::cEvaluation::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluation::DTI)->memFree(p_addr);
-}
-
 cEvaluationName::cEvaluation::cEvaluation() {
     DDON_STUB("cEvaluationName::cEvaluation::cEvaluation")
     /* stub */
@@ -155,8 +151,17 @@ __attribute__((weak)) bool cEvaluationName::cEvaluation::addEvaluation(uDDOModel
 }
 
 __attribute__((weak)) bool cEvaluationName::cEvaluation::addEvaluationLimitHeight(uDDOModel* pObjModel, u32 category, f32 addValue, f32 decValue, bool scription, bool isPlHosei, f32 neverAdd, bool ignoreAbility, f32 height) {
-    DDON_STUB("cEvaluationName::cEvaluation::addEvaluationLimitHeight")
-    return {};
+    if (!mpMyObj || !pObjModel) {
+        return false;
+    }
+    
+    f32 heightDif = pObjModel->mWmat.m[3].y - mpMyObj->mWmat.m[3].y;
+    reinterpret_cast<u32&>(heightDif) &= 0x7fffffffu;
+    
+    if (height >= heightDif) {
+        return addEvaluation(pObjModel, category, addValue, decValue, scription, isPlHosei, neverAdd, ignoreAbility);
+    }
+    return false;
 }
 
 void cEvaluationName::cEvaluation::updatePtr() {
@@ -299,10 +304,6 @@ const MtDTI& cEvaluationName::cEvaluationData::getDTI() const {
     return cEvaluationName::cEvaluationData::DTI;
 }
 
-inline void cEvaluationName::cEvaluationData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluationData::DTI)->memFree(p_addr);
-}
-
 cEvaluationName::cEvaluationData::~cEvaluationData() {
 }
 
@@ -324,14 +325,6 @@ __attribute__((weak)) MtObject* cEvaluationName::cEvaluationData::MyDTI::newInst
 
 const MtDTI& cEvaluationName::cEvaluationPoint::getDTI() const {
     return cEvaluationName::cEvaluationPoint::DTI;
-}
-
-inline void* cEvaluationName::cEvaluationPoint::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluationPoint::DTI)->memAlloc(sz, align, ::cEvaluationName::cEvaluationPoint::DTI.getID());
-}
-
-inline void cEvaluationName::cEvaluationPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluationPoint::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cEvaluationName::cEvaluationPoint::createProperty(MtPropertyList& s) {

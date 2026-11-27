@@ -549,3 +549,59 @@ inline uShlMgcArrowErosionCtrl::uShlMgcArrowErosionCtrl() {
 inline bool uShlMgcArrowErosionCtrl::searchFuncAttack(cpLockOn::cLockOnTarget* pLockOnTarget) {
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamConstErosion::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamConstErosion::DTI)->memAlloc(sz, align, ::cShlParamConstErosion::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamMgcArrowErosionCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamMgcArrowErosionCtrl::DTI)->memAlloc(sz, align, ::cShlParamMgcArrowErosionCtrl::DTI.::MtDTI::getID());
+}
+
+inline void* uShlConstErosion::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlConstErosion::DTI)->memAlloc(sz, align, ::uShlConstErosion::DTI.::MtDTI::getID());
+}
+
+inline void uShlConstErosion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlConstErosion::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamConstErosion* uShlConstErosion::getShlParam() const {
+    return static_cast<const cShlParamConstErosion*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void* uShlMgcArrowErosion::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlMgcArrowErosion::DTI)->memAlloc(sz, align, ::uShlMgcArrowErosion::DTI.::MtDTI::getID());
+}
+
+inline void uShlMgcArrowErosion::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlMgcArrowErosion::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamMgcArrowErosion* uShlMgcArrowErosion::getShlParam() const {
+    return static_cast<const cShlParamMgcArrowErosion*>(this->::uShlBase::mpShlParam2);
+}
+
+inline uShlMgcArrowErosion::uShlMgcArrowErosion() {
+    this->mpShlCtrl = nullptr;
+    this->mFlgHitAttackTest = false;
+    this->mLandEffectTimer = 0.0f;
+    this->mOldEffectPos = ::MtVector3::Zero;
+    this->mLandEffectCount = 0;
+}
+
+inline void* uShlMgcArrowErosionCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlMgcArrowErosionCtrl::DTI)->memAlloc(sz, align, ::uShlMgcArrowErosionCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uShlMgcArrowErosionCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlMgcArrowErosionCtrl::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamMgcArrowErosionCtrl* uShlMgcArrowErosionCtrl::getShlParam() const {
+    return static_cast<const cShlParamMgcArrowErosionCtrl*>(this->::uShlBase::mpShlParam2);
+}

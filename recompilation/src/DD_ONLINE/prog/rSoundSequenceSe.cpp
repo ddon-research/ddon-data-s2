@@ -21,23 +21,6 @@ const MtDTI& rSoundSequenceSe::getDTI() const {
     return rSoundSequenceSe::DTI;
 }
 
-inline void* rSoundSequenceSe::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundSequenceSe::DTI)->memAlloc(sz, align, rSoundSequenceSe::DTI.getID());
-}
-
-inline void rSoundSequenceSe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSequenceSe::DTI)->memFree(p_addr);
-}
-
-inline rSoundSequenceSe::rSoundSequenceSe() {
-    setAttribute(22u);
-    mHeader.Magic = 0x52515353;
-    mHeader.Version = 1;
-    mpRequest = nullptr;
-    mPauseStatus = 0;
-    mSeqSe.mAutoDelete = true;
-}
-
 __attribute__((noinline)) rSoundSequenceSe::~rSoundSequenceSe() {
     if (mSeqSe.mLength != 0) {
         u32 v0_0 = mSeqSe.mLength;
@@ -136,14 +119,6 @@ const MtDTI& rSoundSequenceSe::SequenceSe::getDTI() const {
     return rSoundSequenceSe::SequenceSe::DTI;
 }
 
-inline void* rSoundSequenceSe::SequenceSe::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundSequenceSe::SequenceSe::DTI)->memAlloc(sz, align, rSoundSequenceSe::SequenceSe::DTI.getID());
-}
-
-inline void rSoundSequenceSe::SequenceSe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSequenceSe::SequenceSe::DTI)->memFree(p_addr);
-}
-
 rSoundSequenceSe::SequenceSe::~SequenceSe() {
     if (mCommand.mLength != 0) {
         u32 v0_0 = mCommand.mLength;
@@ -200,10 +175,6 @@ MtObject* rSoundSequenceSe::SequenceSe::MyDTI::newInstance() const {
 
 const MtDTI& rSoundSequenceSe::SequenceSe::Command::getDTI() const {
     return rSoundSequenceSe::SequenceSe::Command::DTI;
-}
-
-inline void rSoundSequenceSe::SequenceSe::Command::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSequenceSe::SequenceSe::Command::DTI)->memFree(p_addr);
 }
 
 rSoundSequenceSe::SequenceSe::Command::~Command() {

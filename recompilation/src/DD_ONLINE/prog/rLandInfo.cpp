@@ -20,20 +20,8 @@ const MtDTI& rLandInfo::getDTI() const {
     return rLandInfo::DTI;
 }
 
-inline void* rLandInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLandInfo::DTI)->memAlloc(sz, align, rLandInfo::DTI.getID());
-}
-
-inline void rLandInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLandInfo::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rLandInfo::getExt() const {
     return "lai";
-}
-
-inline rLandInfo::rLandInfo() {
-    setAttribute(22u);
 }
 
 rLandInfo::~rLandInfo() {
@@ -106,14 +94,6 @@ const MtDTI& rLandInfo::cLandInfo::getDTI() const {
     return rLandInfo::cLandInfo::DTI;
 }
 
-void* rLandInfo::cLandInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLandInfo::cLandInfo::DTI)->memAlloc(sz, align, rLandInfo::cLandInfo::DTI.getID());
-}
-
-inline void rLandInfo::cLandInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLandInfo::cLandInfo::DTI)->memFree(p_addr);
-}
-
 rLandInfo::cLandInfo::~cLandInfo() {
     if (mAreaArray.mLength != 0) {
         u32 v0_0 = mAreaArray.mLength;
@@ -157,14 +137,6 @@ MtObject* rLandInfo::cLandInfo::MyDTI::newInstance() const {
 
 const MtDTI& rLandInfo::cLandInfo::cLandAreaInfo::getDTI() const {
     return rLandInfo::cLandInfo::cLandAreaInfo::DTI;
-}
-
-void* rLandInfo::cLandInfo::cLandAreaInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLandInfo::cLandInfo::cLandAreaInfo::DTI)->memAlloc(sz, align, rLandInfo::cLandInfo::cLandAreaInfo::DTI.getID());
-}
-
-inline void rLandInfo::cLandInfo::cLandAreaInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLandInfo::cLandInfo::cLandAreaInfo::DTI)->memFree(p_addr);
 }
 
 rLandInfo::cLandInfo::cLandAreaInfo::~cLandAreaInfo() {

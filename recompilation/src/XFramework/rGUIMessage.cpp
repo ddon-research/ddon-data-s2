@@ -18,14 +18,6 @@ const MtDTI& rGUIMessage::getDTI() const {
     return rGUIMessage::DTI;
 }
 
-inline void* rGUIMessage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rGUIMessage::DTI)->memAlloc(sz, align, rGUIMessage::DTI.mID);
-}
-
-inline void rGUIMessage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGUIMessage::DTI)->memFree(p_addr);
-}
-
 inline rGUIMessage::rGUIMessage() {
     mVersion = 0x10302;
     mLanguageId = 0xFFFFFFFF;

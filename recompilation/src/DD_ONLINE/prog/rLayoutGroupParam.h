@@ -909,9 +909,18 @@ inline void* cGroupParam::cUnitData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline cGroupParam::cUnitData::cUnitData() {
+    this->isBelong = false;
+    this->pDti = nullptr;
+}
+
 inline void* rLayoutGroupParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 inline cGroupParam::cID::cID() {
     // unproven
@@ -929,4 +938,77 @@ inline cGroupParam::stLoadCondition::stLoadCondition() {
 
 inline cGroupParam::stSetCondition::stSetCondition() {
     mSetCondition = 0;
+}
+
+inline MtAllocator* cGroupParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGroupParam::DTI);
+}
+
+inline void cGroupParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGroupParam::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cGroupParam::cLifeArea::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGroupParam::cLifeArea::DTI);
+}
+
+inline void cGroupParam::cLifeArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGroupParam::cLifeArea::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cGroupParam::cID::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGroupParam::cID::DTI);
+}
+
+inline void cGroupParam::cID::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGroupParam::cID::DTI)->memFree(p_addr);
+}
+
+inline void* cGroupParam::EmSetInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGroupParam::EmSetInfo::DTI)->memAlloc(sz, align, ::cGroupParam::EmSetInfo::DTI.::MtDTI::getID());
+}
+
+inline void cGroupParam::EmSetInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGroupParam::EmSetInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cGroupParam::OmSetInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGroupParam::OmSetInfo::DTI)->memAlloc(sz, align, ::cGroupParam::OmSetInfo::DTI.::MtDTI::getID());
+}
+
+inline void cGroupParam::OmSetInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGroupParam::OmSetInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cGroupParam::DropItemInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGroupParam::DropItemInfo::DTI)->memAlloc(sz, align, ::cGroupParam::DropItemInfo::DTI.::MtDTI::getID());
+}
+
+inline void cGroupParam::DropItemInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGroupParam::DropItemInfo::DTI)->memFree(p_addr);
+}
+
+inline cGroupParam::DropItemInfo::DropItemInfo() {
+    this->mMdlType = 0;
+    this->mDropId = 0;
+    this->mSetType = 0;
+    this->mID = 0;
+    this->mStatus = 0;
+    this->mDropPos.x = ::MtVector3::Zero.x;
+    this->mDropPos.y = ::MtVector3::Zero.y;
+    this->mDropPos.z = ::MtVector3::Zero.z;
+    this->mDropPos.pad_ = 0.0f;
+    this->mpOmControl = nullptr;
+}
+
+inline void* cGroupParam::cUnitData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGroupParam::cUnitData::DTI)->memAlloc(sz, align, ::cGroupParam::cUnitData::DTI.::MtDTI::getID());
+}
+
+inline void* rLayoutGroupParamList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLayoutGroupParamList::DTI)->memAlloc(sz, align, ::rLayoutGroupParamList::DTI.::MtDTI::getID());
+}
+
+inline void rLayoutGroupParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLayoutGroupParamList::DTI)->memFree(p_addr);
 }

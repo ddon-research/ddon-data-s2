@@ -44,10 +44,6 @@ const MtDTI& uGUIUseItemBase::getDTI() const {
     return uGUIUseItemBase::DTI;
 }
 
-inline void uGUIUseItemBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIUseItemBase::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIUseItemBase::~uGUIUseItemBase() {
     if (mIsEndShareUnitUse) {
         if (mpShareUnit != nullptr) {
@@ -592,14 +588,6 @@ const MtDTI& uGUIUseItemBase::cEquipInfo::getDTI() const {
     return uGUIUseItemBase::cEquipInfo::DTI;
 }
 
-inline void* uGUIUseItemBase::cEquipInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIUseItemBase::cEquipInfo::DTI)->memAlloc(sz, align, uGUIUseItemBase::cEquipInfo::DTI.getID());
-}
-
-inline void uGUIUseItemBase::cEquipInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIUseItemBase::cEquipInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUIUseItemBase::cEquipInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIUseItemBase::cEquipInfo::MyDTI uGUIUseItemBase::cEquipInfo::DTI("uGUIUseItemBase::cEquipInfo", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -610,14 +598,6 @@ MtObject* uGUIUseItemBase::cEquipInfo::MyDTI::newInstance() const {
 
 const MtDTI& uGUIUseItemBase::cGetItemInfo::getDTI() const {
     return uGUIUseItemBase::cGetItemInfo::DTI;
-}
-
-inline MtAllocator* uGUIUseItemBase::cGetItemInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIUseItemBase::cGetItemInfo::DTI);
-}
-
-inline void* uGUIUseItemBase::cGetItemInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIUseItemBase::cGetItemInfo::DTI)->memAlloc(sz, align, uGUIUseItemBase::cGetItemInfo::DTI.getID());
 }
 
 __attribute__((weak)) void uGUIUseItemBase::cGetItemInfo::operator delete(void* p_addr) {

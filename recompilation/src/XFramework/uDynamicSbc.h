@@ -219,3 +219,11 @@ inline u32 uDynamicSbc::getSbcGroup() const {
 inline void uDynamicSbc::setSbcGroup(u8 GroupIndex) {
     this->mScrFilter.::nCollision::cScrCommonFilter::setScrGroup(GroupIndex);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uDynamicSbc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uDynamicSbc::DTI)->memFree(p_addr);
+}

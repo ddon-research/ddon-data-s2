@@ -21,25 +21,8 @@ const MtDTI& rMsgSet::getDTI() const {
     return rMsgSet::DTI;
 }
 
-inline void* rMsgSet::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMsgSet::DTI)->memAlloc(sz, align, rMsgSet::DTI.getID());
-}
-
-inline void rMsgSet::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMsgSet::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rMsgSet::getExt() const {
     return "mss";
-}
-
-inline rMsgSet::rMsgSet() {
-    setAttribute(22u);
-    mArray.mAutoDelete = true;
-    mpNativeMsgGroupArray = nullptr;
-    mNativeMsgGroupArrayNum = 0;
-    mpNativeMsgDataArray = nullptr;
-    mNativeMsgDataArrayNum = 0;
 }
 
 rMsgSet::~rMsgSet() {
@@ -220,10 +203,6 @@ const MtDTI& rMsgSet::cMsgGroup::getDTI() const {
     return rMsgSet::cMsgGroup::DTI;
 }
 
-inline void rMsgSet::cMsgGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMsgSet::cMsgGroup::DTI)->memFree(p_addr);
-}
-
 rMsgSet::cMsgGroup::~cMsgGroup() {
     if (mMsgData.mAutoDelete) {
         u32 v3_0;
@@ -335,10 +314,6 @@ const MtDTI& rMsgSet::cMsgData::getDTI() const {
     return rMsgSet::cMsgData::DTI;
 }
 
-inline void rMsgSet::cMsgData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMsgSet::cMsgData::DTI)->memFree(p_addr);
-}
-
 rMsgSet::cMsgData::~cMsgData() {
 }
 
@@ -367,7 +342,7 @@ bool rMsgSet::cMsgData::load(MtDataReader& r) {
     return true;
 }
 
-bool rMsgSet::cMsgData::save(MtDataWriter& w) {
+__attribute__((weak)) bool rMsgSet::cMsgData::save(MtDataWriter& w) {
     w.writeU32(mMsgSerial);
     w.writeU32(mGmdIndex);
     w.writeU32(mMsgType);

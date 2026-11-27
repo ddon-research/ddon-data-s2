@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmWeakSafe.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "rTbl2.h"
 #ifndef DDON_STUB
@@ -14,21 +12,6 @@
 
 const MtDTI& cEmWeakSafe::getDTI() const {
     return cEmWeakSafe::DTI;
-}
-
-inline void* cEmWeakSafe::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmWeakSafe::DTI)->memAlloc(sz, align, cEmWeakSafe::DTI.getID());
-}
-
-inline void cEmWeakSafe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmWeakSafe::DTI)->memFree(p_addr);
-}
-
-cEmWeakSafe::cEmWeakSafe() {
-    mParentJntNo = -1;
-    mKeepSphereRad = 5.0f;
-    mSafeJntNo = 0;
-    mOffset = MtVector3::Zero;
 }
 
 inline cEmWeakSafe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -41,14 +24,6 @@ MtObject* cEmWeakSafe::MyDTI::newInstance() const {
 
 const MtDTI& rEmWeakSafe::getDTI() const {
     return rEmWeakSafe::DTI;
-}
-
-inline void* rEmWeakSafe::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmWeakSafe::DTI)->memAlloc(sz, align, rEmWeakSafe::DTI.getID());
-}
-
-inline void rEmWeakSafe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmWeakSafe::DTI)->memFree(p_addr);
 }
 
 bool rEmWeakSafe::loadData(MtDataReader& in, cEmWeakSafe* pData) {

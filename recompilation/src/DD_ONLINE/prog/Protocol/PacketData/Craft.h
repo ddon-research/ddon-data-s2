@@ -15,22 +15,6 @@ class MtDTI;
 class MtObject;
 class MtString;
 
-// Declarations
-class CDataCraftColorant;
-class CDataCraftElement;
-class CDataCraftMaterial;
-class CDataCraftPawnInfo;
-class CDataCraftPawnList;
-class CDataCraftProduct;
-class CDataCraftProductInfo;
-class CDataCraftProgress;
-class CDataCraftSkillAnalyzeResult;
-class CDataCraftSkillRate;
-class CDataCraftSupportPawnID;
-class CDataCraftTimeSaveCost;
-class CDataCurrentEquipInfo;
-class CDataEquipSlot;
-
 namespace nCraft {
     enum E_CRAFT_RECIPE_CATEGORY_TYPE
     {
@@ -77,6 +61,25 @@ namespace nCraft {
         CRAFT_TYPE_COLOR = 4,
     };
 }  // namespace nCraft
+
+// Declarations
+class CDataCraftColorant;
+class CDataCraftElement;
+class CDataCraftMaterial;
+class CDataCraftPawnInfo;
+class CDataCraftPawnList;
+class CDataCraftProduct;
+class CDataCraftProductInfo;
+class CDataCraftProgress;
+class CDataCraftSkillAnalyzeResult;
+class CDataCraftSkillRate;
+class CDataCraftSupportPawnID;
+class CDataCraftTimeSaveCost;
+class CDataCurrentEquipInfo;
+class CDataEquipSlot;
+class CDataMDataCraftGradeupRecipe;
+class CDataMDataCraftMaterial;
+class CDataMDataCraftRecipe;
 
 // Type aliases from DWARF
 using CCraftPawnInfo = CDataCraftPawnInfo;
@@ -540,6 +543,81 @@ public:
     static MyDTI DTI;
 };
 
+class CDataMDataCraftMaterial : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataMDataCraftMaterial();
+    explicit CDataMDataCraftMaterial(u32, u32, u32);
+public:
+    u32 m_unItemID;  // offset: 0x8
+    u32 m_unNum;  // offset: 0xc
+    u32 m_unSortNo;  // offset: 0x10
+    static MyDTI DTI;
+};
+
+class CDataMDataCraftRecipe : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataMDataCraftRecipe();
+    explicit CDataMDataCraftRecipe(u32, u32, u32, u32, u32, u32, u32, s32, b8, const MtTypedArray<CDataMDataCraftMaterial>&);
+public:
+    u32 m_unRecipeID;  // offset: 0x8
+    u32 m_unItemID;  // offset: 0xc
+    u32 m_unTime;  // offset: 0x10
+    u32 m_unNum;  // offset: 0x14
+    u32 m_unCost;  // offset: 0x18
+    u32 m_unExp;  // offset: 0x1c
+    u32 m_unNeedRank;  // offset: 0x20
+    s32 m_nNpcAct;  // offset: 0x24
+    b8 m_bIsHide;  // offset: 0x28
+    MtTypedArray<CDataMDataCraftMaterial> m_CraftMaterialList;  // offset: 0x30
+    static MyDTI DTI;
+};
+
 class CDataCurrentEquipInfo : public CPacketDataBase
 {
 public:
@@ -570,6 +648,43 @@ public:
 public:
     MtString m_wstrItemUID;  // offset: 0x8
     CEquipSlot m_EquipSlot;  // offset: 0x10
+    static MyDTI DTI;
+};
+
+class CDataMDataCraftGradeupRecipe : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataMDataCraftGradeupRecipe();
+    explicit CDataMDataCraftGradeupRecipe(u32, u32, u32, u32, u32, const MtTypedArray<CDataMDataCraftMaterial>&);
+public:
+    u32 m_unRecipeID;  // offset: 0x8
+    u32 m_unItemID;  // offset: 0xc
+    u32 m_unGradeupItemID;  // offset: 0x10
+    u32 m_unCost;  // offset: 0x14
+    u32 m_unExp;  // offset: 0x18
+    MtTypedArray<CDataMDataCraftMaterial> m_CraftMaterialList;  // offset: 0x20
     static MyDTI DTI;
 };
 
@@ -710,4 +825,114 @@ inline CDataEquipSlot::CDataEquipSlot() {
     this->m_ucEquipSlotNo = 0;
     this->m_unCharacterId = 0;
     this->m_unPawnId = 0;
+}
+
+inline void* CDataMDataCraftGradeupRecipe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* CDataMDataCraftMaterial::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataMDataCraftMaterial::CDataMDataCraftMaterial() {
+    this->m_unItemID = 0;
+    this->m_unNum = 0;
+    this->m_unSortNo = 0;
+}
+
+inline void* CDataMDataCraftRecipe::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataCraftColorant::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftColorant::DTI);
+}
+
+inline MtAllocator* CDataCraftElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftElement::DTI);
+}
+
+inline MtAllocator* CDataCraftMaterial::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftMaterial::DTI);
+}
+
+inline MtAllocator* CDataCraftPawnInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftPawnInfo::DTI);
+}
+
+inline MtAllocator* CDataCraftPawnList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftPawnList::DTI);
+}
+
+inline MtAllocator* CDataCraftProduct::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftProduct::DTI);
+}
+
+inline void* CDataCraftProduct::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftProduct::DTI)->memAlloc(sz, align, ::CDataCraftProduct::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataCraftProductInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftProductInfo::DTI);
+}
+
+inline void* CDataCraftProductInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftProductInfo::DTI)->memAlloc(sz, align, ::CDataCraftProductInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataCraftProgress::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftProgress::DTI);
+}
+
+inline MtAllocator* CDataCraftSkillAnalyzeResult::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftSkillAnalyzeResult::DTI);
+}
+
+inline MtAllocator* CDataCraftSkillRate::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftSkillRate::DTI);
+}
+
+inline MtAllocator* CDataCraftSupportPawnID::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftSupportPawnID::DTI);
+}
+
+inline void CDataCraftSupportPawnID::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::CDataCraftSupportPawnID::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* CDataCraftTimeSaveCost::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCraftTimeSaveCost::DTI);
+}
+
+inline MtAllocator* CDataCurrentEquipInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCurrentEquipInfo::DTI);
+}
+
+inline void* CDataCurrentEquipInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataCurrentEquipInfo::DTI)->memAlloc(sz, align, ::CDataCurrentEquipInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataEquipSlot::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEquipSlot::DTI);
+}
+
+inline void* CDataEquipSlot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataEquipSlot::DTI)->memAlloc(sz, align, ::CDataEquipSlot::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataMDataCraftGradeupRecipe::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMDataCraftGradeupRecipe::DTI);
+}
+
+inline MtAllocator* CDataMDataCraftMaterial::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMDataCraftMaterial::DTI);
+}
+
+inline MtAllocator* CDataMDataCraftRecipe::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMDataCraftRecipe::DTI);
 }

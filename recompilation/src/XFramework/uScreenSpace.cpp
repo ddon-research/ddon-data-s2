@@ -38,10 +38,6 @@ void* uScreenSpace::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uScreenSpace::DTI)->memAlloc(sz, align, uScreenSpace::DTI.mID);
 }
 
-inline void uScreenSpace::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uScreenSpace::DTI)->memFree(p_addr);
-}
-
 uScreenSpace::~uScreenSpace() {
     DDON_STUB("uScreenSpace::~uScreenSpace")
     /* stub */

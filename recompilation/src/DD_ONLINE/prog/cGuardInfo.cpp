@@ -3,7 +3,6 @@
 #include "cGuardInfo.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cBlowShrinkDmInfo.h"
 #include "nObjCollision.h"
@@ -15,16 +14,8 @@ const MtDTI& cGuardInfo::getDTI() const {
     return cGuardInfo::DTI;
 }
 
-inline MtAllocator* cGuardInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGuardInfo::DTI);
-}
-
 void* cGuardInfo::operator new(size_t sz, u32 align) {
     return cGuardInfo::getAllocator()->memAlloc(sz, align, cGuardInfo::DTI.getID());
-}
-
-inline void cGuardInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGuardInfo::DTI)->memFree(p_addr);
 }
 
 cGuardInfo::cGuardInfo() {

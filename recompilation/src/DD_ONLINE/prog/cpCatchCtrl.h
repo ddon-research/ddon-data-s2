@@ -23,6 +23,7 @@ class cHitInfo;
 class rCatchInfoParam;
 class rCaughtInfoParam;
 class uDDOModel;
+class uOmModel;
 
 // Declarations
 class cCatchInfo;
@@ -141,6 +142,7 @@ public:
 class cpCatchCtrl : public cpComponent
 {
     friend class uDDOModel;
+    friend class uOmModel;
 public:
     class MyDTI;
 public:
@@ -274,4 +276,48 @@ inline u32 cpCatchCtrl::getCatchUid() {
 
 inline u32 cpCatchCtrl::getCaughtUid() {
     return this->mCaughtInfo.mCatchUid;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCatchInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCatchInfo::DTI)->memAlloc(sz, align, ::cCatchInfo::DTI.::MtDTI::getID());
+}
+
+inline void cCatchInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCatchInfo::DTI)->memFree(p_addr);
+}
+
+inline cCatchInfo::cCatchInfo() {
+    this->mCatchType = 0;
+    this->mReleaseType = 0;
+    this->mCatchUid = 0;
+    this->mJointNo = 0xFF;
+    this->mHitPos = ::MtVector3::Zero;
+}
+
+inline void* cCaughtInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaughtInfo::DTI)->memAlloc(sz, align, ::cCaughtInfo::DTI.::MtDTI::getID());
+}
+
+inline void cCaughtInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCaughtInfo::DTI)->memFree(p_addr);
+}
+
+inline cCaughtInfo::cCaughtInfo() {
+    this->mCatchType = 0;
+    this->mEscapeType = 0;
+    this->mCatchUid = 0;
+    this->mJointNo = 0xFF;
+    this->mHitPos = ::MtVector3::Zero;
+}
+
+inline MtAllocator* cpCatchCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpCatchCtrl::DTI);
+}
+
+inline void cpCatchCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpCatchCtrl::DTI)->memFree(p_addr);
 }

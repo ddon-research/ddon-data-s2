@@ -264,3 +264,11 @@ inline void cWind::setSpeedAmpRate(f32 AmpRate) {
         }
     }
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cWind::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWind::DTI)->memFree(p_addr);
+}

@@ -39,10 +39,6 @@ const MtDTI& rStageInfo::getDTI() const {
     return rStageInfo::DTI;
 }
 
-inline void rStageInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rStageInfo::~rStageInfo() {
     clear();
 }
@@ -599,14 +595,6 @@ static auto ddon_emit_0x01ab3a50 __attribute__((used)) = &rStageInfo::getSndZone
 
 static auto ddon_emit_0x01ab3ad0 __attribute__((used)) = &rStageInfo::getSndZoneTrigger;
 
-rScheduler* rStageInfo::getEffectSchdl() {
-    return mprEffectSchdl.mpPtr;
-}
-
-rScheduler* rStageInfo::getLanternSchdl() {
-    return mprLanternSchdl.mpPtr;
-}
-
 __attribute__((weak)) void rStageInfo::setZoneIndoorScr(rZone* p) {
     DDON_STUB("rStageInfo::setZoneIndoorScr")
     /* stub */
@@ -619,22 +607,6 @@ void rStageInfo::setAnotherMapName(const MtString& inputName) {
 
 MT_CTSTR rStageInfo::getAnotherMapName() const {
     return &mAnotherMapName[0];
-}
-
-rWeatherStageInfo* rStageInfo::getWeatherStageInfo() {
-    return mpWeatherStageInfo.mpPtr;
-}
-
-rWeatherParamInfoTbl* rStageInfo::getWeatherParamInfoTbl() {
-    return mpWeatherParamInfoTbl.mpPtr;
-}
-
-rWeatherParamEfcInfo* rStageInfo::getWeatherParamEfcInfo() {
-    return mpWeatherParamEfcInfo.mpPtr;
-}
-
-rWeatherEffectParam* rStageInfo::getWep() {
-    return mpWep.mpPtr;
 }
 
 rZone* rStageInfo::getZone(nStage::STG_ZONE type) {
@@ -655,10 +627,6 @@ rZone* rStageInfo::getZoneUnitCtrl(ZONE_UNIT_CTRL_TYPE type) {
     } else {
         return nullptr;
     }
-}
-
-rZone* rStageInfo::getZoneStatus() {
-    return mpZoneStatus.mpPtr;
 }
 
 inline rStageInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

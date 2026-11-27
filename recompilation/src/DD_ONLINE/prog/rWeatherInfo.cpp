@@ -39,10 +39,6 @@ const MtDTI& cWeatherCloudModel::getDTI() const {
     return cWeatherCloudModel::DTI;
 }
 
-inline void cWeatherCloudModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherCloudModel::DTI)->memFree(p_addr);
-}
-
 cWeatherCloudModel::~cWeatherCloudModel() {
 }
 
@@ -76,17 +72,22 @@ const MtDTI& cWeatherFogInfo::getDTI() const {
     return cWeatherFogInfo::DTI;
 }
 
-inline void* cWeatherFogInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWeatherFogInfo::DTI)->memAlloc(sz, align, cWeatherFogInfo::DTI.getID());
-}
-
-inline void cWeatherFogInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherFogInfo::DTI)->memFree(p_addr);
-}
-
-__attribute__((weak)) void cWeatherFogInfo::lerp(cWeatherFogInfo* pDst, const cWeatherFogInfo& a, const cWeatherFogInfo& b, f32 rate) {
-    DDON_STUB("cWeatherFogInfo::lerp")
-    /* stub */
+void cWeatherFogInfo::lerp(cWeatherFogInfo* pDst, const cWeatherFogInfo& a, const cWeatherFogInfo& b, f32 rate) {
+    if (pDst == nullptr) {
+        return;
+    }
+    pDst->mTime = nDDOMath::lerp(a.mTime, b.mTime, rate);
+    const f32 t0 = a.mColor.y;
+    const f32 t1 = b.mColor.y;
+    const f32 t2 = a.mColor.z;
+    const f32 t3 = b.mColor.z;
+    pDst->mColor.x = (a.mColor.x * (1.0f - rate)) + (b.mColor.x * rate);
+    pDst->mColor.y = (t0 * (1.0f - rate)) + (t1 * rate);
+    pDst->mColor.z = (t2 * (1.0f - rate)) + (t3 * rate);
+    pDst->mColor.pad_ = 0.0f;
+    pDst->mExponentDensity = nDDOMath::lerp(a.mExponentDensity, b.mExponentDensity, rate);
+    pDst->mStart = nDDOMath::lerp(a.mStart, b.mStart, rate);
+    pDst->mEnd = nDDOMath::lerp(a.mEnd, b.mEnd, rate);
 }
 
 inline cWeatherFogInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -99,10 +100,6 @@ MtObject* cWeatherFogInfo::MyDTI::newInstance() const {
 
 const MtDTI& cWeatherInfo::getDTI() const {
     return cWeatherInfo::DTI;
-}
-
-inline void cWeatherInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherInfo::DTI)->memFree(p_addr);
 }
 
 cWeatherInfo::cWeatherInfo() {
@@ -127,14 +124,6 @@ const MtDTI& cWeatherParam::getDTI() const {
     return cWeatherParam::DTI;
 }
 
-inline void* cWeatherParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWeatherParam::DTI)->memAlloc(sz, align, cWeatherParam::DTI.getID());
-}
-
-inline void cWeatherParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherParam::DTI)->memFree(p_addr);
-}
-
 cWeatherParam::cWeatherParam() {
     mSunColor.x = 21.6f;
     mSunColor.y = 23.49f;
@@ -156,9 +145,75 @@ cWeatherParam::cWeatherParam() {
     mFogDensity = 1.0f;
 }
 
-__attribute__((weak)) void cWeatherParam::lerp(cWeatherParam* pDst, const cWeatherParam& a, const cWeatherParam& b, f32 rate) {
-    DDON_STUB("cWeatherParam::lerp")
-    /* stub */
+void cWeatherParam::lerp(cWeatherParam* pDst, const cWeatherParam& a, const cWeatherParam& b, f32 rate) {
+    if (0.0f >= rate) {
+        pDst->mSunColor.x = a.mSunColor.x;
+        pDst->mSunColor.y = a.mSunColor.y;
+        pDst->mSunColor.z = a.mSunColor.z;
+        pDst->mSunColor.pad_ = 0.0f;
+        pDst->mMieScattering.x = a.mMieScattering.x;
+        pDst->mMieScattering.y = a.mMieScattering.y;
+        pDst->mMieScattering.z = a.mMieScattering.z;
+        pDst->mMieScattering.pad_ = 0.0f;
+        pDst->mMieDensity = a.mMieDensity;
+        pDst->mCloudHeight = a.mCloudHeight;
+        pDst->mCloudiness = a.mCloudiness;
+        pDst->mCloudThickness = a.mCloudThickness;
+        pDst->mEnvMapBaseScale = a.mEnvMapBaseScale;
+        pDst->mFogDensity = a.mFogDensity;
+        pDst->mCloudScattering = a.mCloudScattering;
+        pDst->mCloudEccentricity = a.mCloudEccentricity;
+        pDst->mMoonLRate = a.mMoonLRate;
+        pDst->mSunIntensityRate = a.mSunIntensityRate;
+    } else {
+        if (1.0f > rate) {
+            const f32 t0 = a.mSunColor.y;
+            const f32 t1 = b.mSunColor.y;
+            const f32 t2 = a.mSunColor.z;
+            const f32 t3 = b.mSunColor.z;
+            pDst->mSunColor.x = (a.mSunColor.x * (1.0f - rate)) + (b.mSunColor.x * rate);
+            pDst->mSunColor.y = (t0 * (1.0f - rate)) + (t1 * rate);
+            pDst->mSunColor.z = (t2 * (1.0f - rate)) + (t3 * rate);
+            pDst->mSunColor.pad_ = 0.0f;
+            const f32 t4 = a.mMieScattering.y;
+            const f32 t5 = b.mMieScattering.y;
+            const f32 t6 = a.mMieScattering.z;
+            const f32 t7 = b.mMieScattering.z;
+            pDst->mMieScattering.x = (a.mMieScattering.x * (1.0f - rate)) + (b.mMieScattering.x * rate);
+            pDst->mMieScattering.y = (t4 * (1.0f - rate)) + (t5 * rate);
+            pDst->mMieScattering.z = (t6 * (1.0f - rate)) + (t7 * rate);
+            pDst->mMieScattering.pad_ = 0.0f;
+            pDst->mMieDensity = nDDOMath::lerp(a.mMieDensity, b.mMieDensity, rate);
+            pDst->mCloudHeight = nDDOMath::lerp(a.mCloudHeight, b.mCloudHeight, rate);
+            pDst->mCloudiness = nDDOMath::lerp(a.mCloudiness, b.mCloudiness, rate);
+            pDst->mCloudThickness = nDDOMath::lerp(a.mCloudThickness, b.mCloudThickness, rate);
+            pDst->mCloudScattering = nDDOMath::lerp(a.mCloudScattering, b.mCloudScattering, rate);
+            pDst->mCloudEccentricity = nDDOMath::lerp(a.mCloudEccentricity, b.mCloudEccentricity, rate);
+            pDst->mSunIntensityRate = nDDOMath::lerp(a.mSunIntensityRate, b.mSunIntensityRate, rate);
+            pDst->mEnvMapBaseScale = nDDOMath::lerp(a.mEnvMapBaseScale, b.mEnvMapBaseScale, rate);
+            pDst->mFogDensity = nDDOMath::lerp(a.mFogDensity, b.mFogDensity, rate);
+            pDst->mMoonLRate = nDDOMath::lerp(a.mMoonLRate, b.mMoonLRate, rate);
+        } else {
+            pDst->mSunColor.x = b.mSunColor.x;
+            pDst->mSunColor.y = b.mSunColor.y;
+            pDst->mSunColor.z = b.mSunColor.z;
+            pDst->mSunColor.pad_ = 0.0f;
+            pDst->mMieScattering.x = b.mMieScattering.x;
+            pDst->mMieScattering.y = b.mMieScattering.y;
+            pDst->mMieScattering.z = b.mMieScattering.z;
+            pDst->mMieScattering.pad_ = 0.0f;
+            pDst->mMieDensity = b.mMieDensity;
+            pDst->mCloudHeight = b.mCloudHeight;
+            pDst->mCloudiness = b.mCloudiness;
+            pDst->mCloudThickness = b.mCloudThickness;
+            pDst->mEnvMapBaseScale = b.mEnvMapBaseScale;
+            pDst->mFogDensity = b.mFogDensity;
+            pDst->mCloudScattering = b.mCloudScattering;
+            pDst->mCloudEccentricity = b.mCloudEccentricity;
+            pDst->mMoonLRate = b.mMoonLRate;
+            pDst->mSunIntensityRate = b.mSunIntensityRate;
+        }
+    }
 }
 
 __attribute__((weak)) void cWeatherParam::setupDefault(cWeatherParam* pDst) {
@@ -178,10 +233,6 @@ const MtDTI& cWeatherParamEfcInfo::getDTI() const {
     return cWeatherParamEfcInfo::DTI;
 }
 
-inline void cWeatherParamEfcInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherParamEfcInfo::DTI)->memFree(p_addr);
-}
-
 cWeatherParamEfcInfo::~cWeatherParamEfcInfo() {
 }
 
@@ -197,10 +248,6 @@ const MtDTI& cWeatherParamInfo::getDTI() const {
     return cWeatherParamInfo::DTI;
 }
 
-inline void cWeatherParamInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherParamInfo::DTI)->memFree(p_addr);
-}
-
 cWeatherParamInfo::~cWeatherParamInfo() {
 }
 
@@ -214,14 +261,6 @@ __attribute__((weak)) MtObject* cWeatherParamInfo::MyDTI::newInstance() const {
 
 const MtDTI& rWeatherFogInfo::getDTI() const {
     return rWeatherFogInfo::DTI;
-}
-
-inline void* rWeatherFogInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWeatherFogInfo::DTI)->memAlloc(sz, align, rWeatherFogInfo::DTI.getID());
-}
-
-inline void rWeatherFogInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWeatherFogInfo::DTI)->memFree(p_addr);
 }
 
 bool rWeatherFogInfo::loadData(MtDataReader& in, cWeatherFogInfo* pData) {
@@ -251,14 +290,6 @@ MtObject* rWeatherFogInfo::MyDTI::newInstance() const {
 
 const MtDTI& rWeatherInfoTbl::getDTI() const {
     return rWeatherInfoTbl::DTI;
-}
-
-inline void* rWeatherInfoTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWeatherInfoTbl::DTI)->memAlloc(sz, align, rWeatherInfoTbl::DTI.getID());
-}
-
-inline void rWeatherInfoTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWeatherInfoTbl::DTI)->memFree(p_addr);
 }
 
 bool rWeatherInfoTbl::loadData(MtDataReader& in, cWeatherInfo* pData) {
@@ -293,14 +324,6 @@ const MtDTI& rWeatherParamEfcInfo::getDTI() const {
     return rWeatherParamEfcInfo::DTI;
 }
 
-inline void* rWeatherParamEfcInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWeatherParamEfcInfo::DTI)->memAlloc(sz, align, rWeatherParamEfcInfo::DTI.getID());
-}
-
-inline void rWeatherParamEfcInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWeatherParamEfcInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool rWeatherParamEfcInfo::loadData(MtDataReader& in, cWeatherParamEfcInfo* pData) {
     nDDOIO::readData(in, pData->mWeatherID);
     char t0[64];
@@ -332,14 +355,6 @@ MtObject* rWeatherParamEfcInfo::MyDTI::newInstance() const {
 
 const MtDTI& rWeatherParamInfoTbl::getDTI() const {
     return rWeatherParamInfoTbl::DTI;
-}
-
-inline void* rWeatherParamInfoTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWeatherParamInfoTbl::DTI)->memAlloc(sz, align, rWeatherParamInfoTbl::DTI.getID());
-}
-
-inline void rWeatherParamInfoTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWeatherParamInfoTbl::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rWeatherParamInfoTbl::loadData(MtDataReader& in, cWeatherParamInfo* pData) {
@@ -388,10 +403,6 @@ MtObject* rWeatherParamInfoTbl::MyDTI::newInstance() const {
 
 const MtDTI& rWeatherStageInfo::getDTI() const {
     return rWeatherStageInfo::DTI;
-}
-
-inline void rWeatherStageInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWeatherStageInfo::DTI)->memFree(p_addr);
 }
 
 rWeatherStageInfo::~rWeatherStageInfo() {

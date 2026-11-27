@@ -176,3 +176,19 @@ inline rGUIMapSetting::rGUIMapSetting()
     mOffsetPosX = 0.0f;
     mFoundationScale = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void rGUIMapSetting::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGUIMapSetting::DTI)->memFree(p_addr);
+}
+
+inline void* rGUIMapSetting::cData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rGUIMapSetting::cData::DTI)->memAlloc(sz, align, ::rGUIMapSetting::cData::DTI.::MtDTI::getID());
+}
+
+inline void rGUIMapSetting::cData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGUIMapSetting::cData::DTI)->memFree(p_addr);
+}

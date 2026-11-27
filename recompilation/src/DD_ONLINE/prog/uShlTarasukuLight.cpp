@@ -38,8 +38,38 @@ void cShlParamTarasukuLight::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) void cShlParamTarasukuLight::copy(const cShlParamBase* pParamBase) {
-    DDON_STUB("cShlParamTarasukuLight::copy")
-    /* stub */
+    const cShlParamTarasukuLight* pParam = static_cast<const cShlParamTarasukuLight*>(pParamBase);
+    
+    cShlParamSpeed::copy(pParamBase);
+    isSpecifyTargetPos = pParam->isSpecifyTargetPos;
+    hmgRad = pParam->hmgRad;
+    hmgRadFrame = pParam->hmgRadFrame;
+    hmgBgnDist = pParam->hmgBgnDist;
+    hmgEndTargetDist = pParam->hmgEndTargetDist;
+    hmgEndRad = pParam->hmgEndRad;
+    hmgEndFrame = pParam->hmgEndFrame;
+    hmgEndWaitHmgRad = pParam->hmgEndWaitHmgRad;
+    hmgEndWaitSpdMax = pParam->hmgEndWaitSpdMax;
+    hmgEndWaitEndFrame = pParam->hmgEndWaitEndFrame;
+    hmgEndHmgRad = pParam->hmgEndHmgRad;
+    hmgEndSpdMax = pParam->hmgEndSpdMax;
+    hmgType = pParam->hmgType;
+    hmInitSpd = pParam->hmInitSpd;
+    hmAccel = pParam->hmAccel;
+    hmMaxSpped = pParam->hmMaxSpped;
+    hmHmgRad = pParam->hmHmgRad;
+    hmEndTargetDist = pParam->hmEndTargetDist;
+    hmEndRad = pParam->hmEndRad;
+    hmRotate = pParam->hmRotate;
+    hmIsRotateRndFlip = pParam->hmIsRotateRndFlip;
+    seNoHoming = pParam->seNoHoming;
+    homingSeDeg = pParam->homingSeDeg;
+    
+    if (hmgEndFrame <= 0.0f)
+        hmgEndFrame = -1.0f;
+    
+    mOffsetY = pParam->mOffsetY;
+    mGroundLength = pParam->mGroundLength;
 }
 
 inline cShlParamTarasukuLight::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -52,18 +82,6 @@ __attribute__((weak)) MtObject* cShlParamTarasukuLight::MyDTI::newInstance() con
 
 const MtDTI& uShlTarasukuLight::getDTI() const {
     return uShlTarasukuLight::DTI;
-}
-
-inline void* uShlTarasukuLight::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlTarasukuLight::DTI)->memAlloc(sz, align, uShlTarasukuLight::DTI.getID());
-}
-
-inline void uShlTarasukuLight::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlTarasukuLight::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamTarasukuLight* uShlTarasukuLight::getShlParam() const {
-    return static_cast<const cShlParamTarasukuLight*>(mpShlParam2);
 }
 
 uShlTarasukuLight::~uShlTarasukuLight() {

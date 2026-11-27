@@ -17,16 +17,8 @@ const MtDTI& cpMotionHistory::getDTI() const {
     return cpMotionHistory::DTI;
 }
 
-inline MtAllocator* cpMotionHistory::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpMotionHistory::DTI);
-}
-
 void* cpMotionHistory::operator new(size_t sz, u32 align) {
     return cpMotionHistory::getAllocator()->memAlloc(sz, align, cpMotionHistory::DTI.getID());
-}
-
-inline void cpMotionHistory::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpMotionHistory::DTI)->memFree(p_addr);
 }
 
 cpMotionHistory::cpMotionHistory() {
@@ -71,9 +63,39 @@ __attribute__((weak)) void cpMotionHistory::calcHistoryBlend() {
     /* stub */
 }
 
-__attribute__((weak)) void cpMotionHistory::setMotionHistory() {
-    DDON_STUB("cpMotionHistory::setMotionHistory")
-    /* stub */
+void cpMotionHistory::setMotionHistory() {
+    if (mpParentUnit != nullptr) {
+        if (mIsSetHistory) {
+            if (mpParentUnit->mBlendNum < (mHistoryMotTypeNum + mBaseMotTypeStartNo)) {
+            } else {
+                if (mpParentUnit->mBlendNum < (mHistoryMotTypeNum + mHistoryMotTypeStartNo)) {
+                } else {
+                    if (mHistoryMotTypeNum != 0) {
+                        for (u32 ix = 0; ix <= 3u; ix += 1u) {
+                            mHistoryMotData[ix].motNo = 0xFFFF;
+                            u32 t0 = mBaseMotTypeStartNo;
+                            if ((ix + t0) > 7u) {
+                                break;
+                            } else {
+                                uDDOModel* t1 = mpParentUnit;
+                                if (t1->mMotion[ix + t0].mMotionNo != 0xFFFF) {
+                                    mHistoryMotData[ix].motNo = t1->mMotion[ix + t0].mMotionNo;
+                                    mHistoryMotData[ix].frame = t1->mMotion[ix + t0].getFrame();
+                                    mHistoryMotData[ix].frameMax = t1->mMotion[ix + t0].getFrameMax();
+                                    mHistoryMotData[ix].speed = t1->mMotion[ix + t0].mSpeed;
+                                    mHistoryMotData[ix].attr = t1->mMotion[ix + t0].getAttr();
+                                    mHistoryMotData[ix].blendRate = t1->mMotion[ix + t0].getBlendRate();
+                                }
+                                if ((ix + 1u) >= mHistoryMotTypeNum) {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpMotionHistory::setHistoryBlendMotion() {

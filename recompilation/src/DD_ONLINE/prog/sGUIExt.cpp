@@ -12,7 +12,7 @@
 #include "Protocol/PacketData/JobMaster.h"
 #include "Protocol/PacketData/JobOrbTree.h"
 #include "../../MT/MtAllocator.h"
-#include "../../MT/MtCharset.h"
+#include "../../MT/MtCharSet.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
@@ -29,8 +29,11 @@
 #include "Protocol/UserSession/S2C.h"
 #include "Protocol/PacketData/Skill.h"
 #include "Protocol/PacketData/Stage.h"
+#include "aCharacterEdit.h"
 #include "aGame.h"
+#include "aInit.h"
 #include "aStage.h"
+#include "aTitle.h"
 #include "cAcquirementData.h"
 #include "cArcLoader.h"
 #include "../../XFramework/cArea.h"
@@ -130,6 +133,7 @@
 #include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
 #include "../../XFramework/sRender.h"
+#include "sReward.h"
 #include "../../XFramework/sSavedata.h"
 #include "sSavedataExt.h"
 #include "sSetManager.h"
@@ -247,16 +251,8 @@ const MtDTI& sGUIExt::getDTI() const {
     return sGUIExt::DTI;
 }
 
-inline MtAllocator* sGUIExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sGUIExt::DTI);
-}
-
 void* sGUIExt::operator new(size_t sz, u32 align) {
     return sGUIExt::getAllocator()->memAlloc(sz, align, sGUIExt::DTI.getID());
-}
-
-inline void sGUIExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) sGUIExt::~sGUIExt() {
@@ -1059,8 +1055,13 @@ __attribute__((weak)) MT_CTSTR sGUIExt::getAbilityName(u32 ability_id) {
 }
 
 __attribute__((weak)) MT_CTSTR sGUIExt::getAbilityExplain(rGUIMessage* pRes, u32 ability_id) {
-    DDON_STUB("sGUIExt::getAbilityExplain")
-    return {};
+    const cGUIExtNetMgr::BasicAbilityInfo& info = static_cast<sGUIExt*>(sGUI::getInstance())->mNetMgr.getAbilityParam(ability_id);
+    if (pRes != nullptr) {
+        if (info.mMsgIndex < pRes->mMessageNum) {
+            return pRes->getMessage(info.mMsgIndex);
+        }
+    }
+    return "";
 }
 
 MT_CTSTR sGUIExt::getStageName(u32 uMsgId) {
@@ -1244,7 +1245,7 @@ u32 sGUIExt::getCharacterEditMode() {
                 }
             } else {
                 uCharacterEdit* pEdit = static_cast<uCharacterEdit*>(v0_3);
-                v2_8 = static_cast<uCharacterEdit*>(v0_3)->getEdit();
+                v2_8 = pEdit->getEdit();
                 return static_cast<u32>(v2_8);
             }
         }
@@ -1262,8 +1263,19 @@ void sGUIExt::deleteTelop() {
 }
 
 __attribute__((weak)) void sGUIExt::createTelopFSM(MT_CTSTR name, MT_CTSTR msg, f32 fTimer) {
-    DDON_STUB("sGUIExt::createTelopFSM")
-    /* stub */
+    if (mpGUITelop != nullptr) {
+        mpGUITelop->kill();
+        mpGUITelop = nullptr;
+    }
+    mpGUITelop = new (16u) uGUITelop;
+    sUnit::getInstance()->addBottom(LINE_18, mpGUITelop, sUnitExt::GPT_UI_SUB);
+    if (mpGUITelop != nullptr) {
+        mpGUITelop->mEndType = uGUIBase::ENDTYPE_EXIT;
+        mpGUITelop->setType(uGUITelop::TYPE_FSM);
+        mpGUITelop->setNameNpc(name, 0u);
+        mpGUITelop->setMessage(msg, 0u);
+        mpGUITelop->setCntSkipChk(fTimer, 0u);
+    }
 }
 
 void sGUIExt::addTelopFSM(MT_CTSTR name, MT_CTSTR msg, f32 fTimer) {
@@ -2377,7 +2389,7 @@ void sGUIExt::loadCaplinkProfileIcon() {
             if (v0_8->mIconUrl.mpArray[i0_3] == nullptr) {
                 v1_0 = v0_0;
             } else {
-                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_8->mIconUrl.mpArray[i0_3]) + 276)) != 6) {
+                if (static_cast<sCaplinkManager::cIconUrl*>(v0_8->mIconUrl.mpArray[i0_3])->mCategory != 6) {
                     v1_0 = v0_0;
                 } else {
                     getCaplinkIcon(i0_3);
@@ -2416,7 +2428,7 @@ void sGUIExt::loadCaplinkTrophyIcon() {
             if (v0_8->mIconUrl.mpArray[i0_3] == nullptr) {
                 v1_0 = v0_0;
             } else {
-                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(v0_8->mIconUrl.mpArray[i0_3]) + 278)) != 81) {
+                if (static_cast<sCaplinkManager::cIconUrl*>(v0_8->mIconUrl.mpArray[i0_3])->mType != 81) {
                     v1_0 = v0_0;
                 } else {
                     getCaplinkIcon(i0_3);
@@ -3995,8 +4007,24 @@ void sGUIExt::endTextHud() {
 }
 
 __attribute__((weak)) void sGUIExt::createHudCustomSkillPallet() {
-    DDON_STUB("sGUIExt::createHudCustomSkillPallet")
-    /* stub */
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    if (mpGUIHudCustomSkillPallet != nullptr) {
+        mpGUIHudCustomSkillPallet->kill();
+        mpGUIHudCustomSkillPallet = nullptr;
+    }
+    mpGUIHudCustomSkillPallet = new (16u) uGUIHudCustomSkillPallet();
+    if (mpGUIHudCustomSkillPallet != nullptr) {
+        sUnit::getInstance()->addBottom(static_cast<MOVE_LINE>(sUnitExt::ML_UI_AREA1), mpGUIHudCustomSkillPallet, sUnitExt::GPT_UI_SUB);
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
 }
 
 void sGUIExt::deleteHudCustomSkillPallet() {
@@ -4165,8 +4193,25 @@ void sGUIExt::clearGainInfoQueue() {
 }
 
 __attribute__((weak)) void sGUIExt::createSystemMsg(MT_CTSTR msg, u32 errType, u32 baseInitFlags) {
-    DDON_STUB("sGUIExt::createSystemMsg")
-    /* stub */
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->kill();
+        mpGUISystemMsg = nullptr;
+    }
+    if ((mpGUISystemMsg = new (16u) uGUISystemMsg(errType, baseInitFlags, false)) != nullptr) {
+        mpGUISystemMsg->setText(msg, -1);
+        sUnit::getInstance()->addBottom(LINE_17, static_cast<cUnit*>(mpGUISystemMsg), sUnitExt::GPT_UI_NOSTOP);
+    }
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+        abort();
+    }
 }
 
 void sGUIExt::createSystemMsg(MT_CTSTR msg, u32 errType) {
@@ -5872,8 +5917,47 @@ __attribute__((weak)) void sGUIExt::analyzeTagKeyCustom(cGUIMessageAnalyzer* pAn
 }
 
 __attribute__((weak)) void sGUIExt::analyzeTagKeyCustomText(cGUIMessageAnalyzer* pAnalyzer, MT_CTSTR pParam, u8 actPltType) {
-    DDON_STUB("sGUIExt::analyzeTagKeyCustomText")
-    /* stub */
+    nGUIExt::StringKeyName key_name;
+    
+    if (pParam != nullptr) {
+        if (*pParam != '\0') {
+            const nKeyCustom::KB_CUSTOM key_custom =
+                sInputManager::getInstance()->getCustomKeyIdFromTagParam(pParam);
+            if (key_custom != 0) {
+                if (actPltType == 1) {
+                    cGUIUtility::getKeyText(
+                        key_name, key_custom,
+                        static_cast<cGUIUtility::ICON_TAG_OUT_TYPE>(0),
+                        static_cast<cGUIUtility::ICON_TAG_JOINT_TYPE>(1), 0);
+                } else if (actPltType == 0) {
+                    cGUIUtility::getPadText(
+                        key_name, key_custom,
+                        static_cast<cGUIUtility::ICON_TAG_OUT_TYPE>(0),
+                        static_cast<cGUIUtility::ICON_TAG_JOINT_TYPE>(1), 0);
+                }
+            }
+        }
+    
+        const u32 key_name_length = *reinterpret_cast<const u32*>(&key_name);
+        if (key_name_length != 0) {
+            pAnalyzer->analyzeMessage(
+                reinterpret_cast<MT_CTSTR>(&key_name) + sizeof(u32),
+                key_name_length);
+            return;
+        }
+    }
+    
+    const auto* t1 = static_cast<const sGUIExt*>(sGUI::getInstance())->mpMsgKeyName;
+    
+    MT_CTSTR t2 = "";
+    if (t1 != nullptr) {
+        const auto* t3 = t1->getIndex(0x17);
+        if (t3 != nullptr) {
+            t2 = t1->getMessage(*reinterpret_cast<const u32*>(t3) & 0x7fffffffu);
+        }
+    }
+    const MT_CTSTR blank_name = t2;
+    pAnalyzer->analyzeMessage(blank_name, static_cast<u32>(strlen(blank_name)));
 }
 
 __attribute__((weak)) void sGUIExt::sortPrioHandleDistCam(u32 uPrioGrp) {
@@ -6096,41 +6180,6 @@ const MtDTI& sGUIExt::cMousePointer::getDTI() const {
     return sGUIExt::cMousePointer::DTI;
 }
 
-inline void* sGUIExt::cMousePointer::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sGUIExt::cMousePointer::DTI)->memAlloc(sz, align, sGUIExt::cMousePointer::DTI.getID());
-}
-
-inline void sGUIExt::cMousePointer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cMousePointer::DTI)->memFree(p_addr);
-}
-
-inline sGUIExt::cMousePointer::cMousePointer() {
-    mTimeDblClick = 0.0f;
-    mpGUIMOC = nullptr;
-    mpGUI = nullptr;
-    mTimeDisable = 300.0f;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mPosOld.x = mPos.x;
-    mPosOld.y = mPos.y;
-    mPosOld.z = mPos.z;
-    mPosOld.pad_ = 0.0f;
-    mPosDrag.x = mPosOld.x;
-    mPosDrag.y = mPosOld.y;
-    mPosDrag.z = mPosOld.z;
-    mMsgDragRev = 0;
-    mMove.y = 0.0f;
-    mMsg = 0;
-    mPosDrag.pad_ = 0.0f;
-    mMove.x = 0.0f;
-    mIsMouseMode = false;
-    mIsActiveMouse = false;
-    mAnmTypeReq = 0;
-    mAnmTypeReqPrio = 0;
-}
-
 sGUIExt::cMousePointer::~cMousePointer() {
 }
 
@@ -6188,14 +6237,6 @@ const MtDTI& sGUIExt::cPrioHandle::getDTI() const {
     return sGUIExt::cPrioHandle::DTI;
 }
 
-inline void* sGUIExt::cPrioHandle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sGUIExt::cPrioHandle::DTI)->memAlloc(sz, align, sGUIExt::cPrioHandle::DTI.getID());
-}
-
-inline void sGUIExt::cPrioHandle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cPrioHandle::DTI)->memFree(p_addr);
-}
-
 sGUIExt::cPrioHandle::~cPrioHandle() {
 }
 
@@ -6216,10 +6257,6 @@ const MtDTI& sGUIExt::cRatingEmoteInfo::getDTI() const {
     return sGUIExt::cRatingEmoteInfo::DTI;
 }
 
-inline void sGUIExt::cRatingEmoteInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cRatingEmoteInfo::DTI)->memFree(p_addr);
-}
-
 inline sGUIExt::cRatingEmoteInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sGUIExt::cRatingEmoteInfo::MyDTI sGUIExt::cRatingEmoteInfo::DTI("sGUIExt::cRatingEmoteInfo", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -6231,10 +6268,6 @@ __attribute__((weak)) MtObject* sGUIExt::cRatingEmoteInfo::MyDTI::newInstance() 
 
 const MtDTI& sGUIExt::cChat::getDTI() const {
     return sGUIExt::cChat::DTI;
-}
-
-inline void sGUIExt::cChat::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cChat::DTI)->memFree(p_addr);
 }
 
 sGUIExt::cChat::~cChat() {
@@ -6305,14 +6338,6 @@ const MtDTI& sGUIExt::cSEPlayer::getDTI() const {
     return sGUIExt::cSEPlayer::DTI;
 }
 
-inline void* sGUIExt::cSEPlayer::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sGUIExt::cSEPlayer::DTI)->memAlloc(sz, align, sGUIExt::cSEPlayer::DTI.getID());
-}
-
-inline void sGUIExt::cSEPlayer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cSEPlayer::DTI)->memFree(p_addr);
-}
-
 sGUIExt::cSEPlayer::~cSEPlayer() {
     if (mpRes == nullptr) {
         return;
@@ -6340,10 +6365,6 @@ __attribute__((weak)) void sGUIExt::stInfomation::reset() {
 
 const MtDTI& sGUIExt::cDivItemIcon::getDTI() const {
     return sGUIExt::cDivItemIcon::DTI;
-}
-
-inline void sGUIExt::cDivItemIcon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cDivItemIcon::DTI)->memFree(p_addr);
 }
 
 sGUIExt::cDivItemIcon::~cDivItemIcon() {
@@ -6403,10 +6424,6 @@ __attribute__((weak)) void sGUIExt::cDivItemIcon::cItemIcon::loadTexture() {
 
 const MtDTI& sGUIExt::cMap::getDTI() const {
     return sGUIExt::cMap::DTI;
-}
-
-inline void sGUIExt::cMap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cMap::DTI)->memFree(p_addr);
 }
 
 sGUIExt::cMap::cMap() {
@@ -6613,8 +6630,14 @@ u32 sGUIExt::cMap::getGridIdx(u32 uRows, u32 uCols, s32 sFloor) {
     return 0xFFFFFFFF;
 }
 
-__attribute__((weak)) rTexture* sGUIExt::cMap::getGridTexture(u32 uIdx) {
-    DDON_STUB("sGUIExt::cMap::getGridTexture")
+rTexture* sGUIExt::cMap::getGridTexture(u32 uIdx) {
+    if (uIdx != 0xFFFFFFFFu) {
+        if (uIdx < mMapGrid.mLength) {
+            if (uIdx <= 8191u) {
+                return static_cast<cMapGrid*>(mMapGrid.mpArray[uIdx])->mpTexture;
+            }
+        }
+    }
     return nullptr;
 }
 
@@ -6842,10 +6865,10 @@ bool sGUIExt::cMap::addMarkerSave(sGUIExt::cMap::cMarkerSave* addMarker) {
 
 void sGUIExt::cMap::actionMarkerSaveByIndex(u32 Idx) {
     if (Idx < mMarkerSaveArray.mLength) {
-        if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMarkerSaveArray.mpArray[Idx]) + 52)) == 0) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMarkerSaveArray.mpArray[Idx]) + 52) = 1;
-            if (static_cast<int>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMarkerSaveArray.mpArray[Idx]) + 64)) > 0) {
-                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mMarkerSaveArray.mpArray[Idx]) + 64));
+        if (static_cast<cMarkerSave*>(mMarkerSaveArray.mpArray[Idx])->mMode == 0) {
+            static_cast<cMarkerSave*>(mMarkerSaveArray.mpArray[Idx])->mMode = 1;
+            if (static_cast<cMarkerSave*>(mMarkerSaveArray.mpArray[Idx])->mSE_ID > 0) {
+                static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, static_cast<u32>(static_cast<cMarkerSave*>(mMarkerSaveArray.mpArray[Idx])->mSE_ID));
             }
         }
     }
@@ -6940,16 +6963,8 @@ const MtDTI& sGUIExt::cMap::cMarkerSave::getDTI() const {
     return sGUIExt::cMap::cMarkerSave::DTI;
 }
 
-inline MtAllocator* sGUIExt::cMap::cMarkerSave::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sGUIExt::cMap::cMarkerSave::DTI);
-}
-
 void* sGUIExt::cMap::cMarkerSave::operator new(size_t sz, u32 align) {
     return sGUIExt::cMap::cMarkerSave::getAllocator()->memAlloc(sz, align, sGUIExt::cMap::cMarkerSave::DTI.getID());
-}
-
-inline void sGUIExt::cMap::cMarkerSave::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cMap::cMarkerSave::DTI)->memFree(p_addr);
 }
 
 sGUIExt::cMap::cMarkerSave::cMarkerSave() {
@@ -6981,10 +6996,6 @@ MtObject* sGUIExt::cMap::cMarkerSave::MyDTI::newInstance() const {
 
 const MtDTI& sGUIExt::cSCM::getDTI() const {
     return sGUIExt::cSCM::DTI;
-}
-
-inline void sGUIExt::cSCM::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cSCM::DTI)->memFree(p_addr);
 }
 
 sGUIExt::cSCM::cSCM() {
@@ -7219,10 +7230,6 @@ __attribute__((weak)) MtObject* sGUIExt::cSCM::MyDTI::newInstance() const {
 
 const MtDTI& sGUIExt::cChatMacro::getDTI() const {
     return sGUIExt::cChatMacro::DTI;
-}
-
-inline void sGUIExt::cChatMacro::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cChatMacro::DTI)->memFree(p_addr);
 }
 
 sGUIExt::cChatMacro::cChatMacro() {
@@ -7712,10 +7719,6 @@ const MtDTI& sGUIExt::cJpegDecode::getDTI() const {
     return sGUIExt::cJpegDecode::DTI;
 }
 
-inline void sGUIExt::cJpegDecode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cJpegDecode::DTI)->memFree(p_addr);
-}
-
 sGUIExt::cJpegDecode::~cJpegDecode() {
     DDON_STUB("sGUIExt::cJpegDecode::~cJpegDecode")
     /* stub */
@@ -7747,14 +7750,6 @@ __attribute__((weak)) void sGUIExt::cLifeGaugeWork::update(s32 index) {
 
 const MtDTI& sGUIExt::cWardInfo::getDTI() const {
     return sGUIExt::cWardInfo::DTI;
-}
-
-inline void* sGUIExt::cWardInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sGUIExt::cWardInfo::DTI)->memAlloc(sz, align, sGUIExt::cWardInfo::DTI.getID());
-}
-
-inline void sGUIExt::cWardInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cWardInfo::DTI)->memFree(p_addr);
 }
 
 inline sGUIExt::cWardInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -7822,10 +7817,6 @@ const MtDTI& sGUIExt::cSameWardInfo::getDTI() const {
     return sGUIExt::cSameWardInfo::DTI;
 }
 
-inline void sGUIExt::cSameWardInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cSameWardInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void sGUIExt::cSameWardInfo::setWardMap(MT_CTSTR srcStr, MT_CTSTR dstStr) {
     DDON_STUB("sGUIExt::cSameWardInfo::setWardMap")
     /* stub */
@@ -7844,14 +7835,6 @@ const MtDTI& sGUIExt::cReplaceWardMap::getDTI() const {
     return sGUIExt::cReplaceWardMap::DTI;
 }
 
-inline void* sGUIExt::cReplaceWardMap::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sGUIExt::cReplaceWardMap::DTI)->memAlloc(sz, align, sGUIExt::cReplaceWardMap::DTI.getID());
-}
-
-inline void sGUIExt::cReplaceWardMap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cReplaceWardMap::DTI)->memFree(p_addr);
-}
-
 inline sGUIExt::cReplaceWardMap::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sGUIExt::cReplaceWardMap::MyDTI sGUIExt::cReplaceWardMap::DTI("sGUIExt::cReplaceWardMap", &::MtObject::DTI, 32ul, 0u, 0u);
@@ -7862,10 +7845,6 @@ MtObject* sGUIExt::cReplaceWardMap::MyDTI::newInstance() const {
 
 const MtDTI& sGUIExt::cDlTicket::getDTI() const {
     return sGUIExt::cDlTicket::DTI;
-}
-
-inline void sGUIExt::cDlTicket::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cDlTicket::DTI)->memFree(p_addr);
 }
 
 inline sGUIExt::cDlTicket::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -7879,14 +7858,6 @@ __attribute__((weak)) MtObject* sGUIExt::cDlTicket::MyDTI::newInstance() const {
 
 const MtDTI& sGUIExt::cItemTmp::getDTI() const {
     return sGUIExt::cItemTmp::DTI;
-}
-
-inline void* sGUIExt::cItemTmp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sGUIExt::cItemTmp::DTI)->memAlloc(sz, align, sGUIExt::cItemTmp::DTI.getID());
-}
-
-inline void sGUIExt::cItemTmp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUIExt::cItemTmp::DTI)->memFree(p_addr);
 }
 
 inline sGUIExt::cItemTmp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

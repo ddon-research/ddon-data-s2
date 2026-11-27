@@ -21,14 +21,6 @@ const MtDTI& rStageAdjoinList::getDTI() const {
     return rStageAdjoinList::DTI;
 }
 
-inline void* rStageAdjoinList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageAdjoinList::DTI)->memAlloc(sz, align, rStageAdjoinList::DTI.getID());
-}
-
-inline void rStageAdjoinList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageAdjoinList::DTI)->memFree(p_addr);
-}
-
 rStageAdjoinList::cAdjoinInfo* rStageAdjoinList::getNextStageAdjoinInfo(s32 destinationStageNo) const {
     if (mAdjoinInfo.mLength != 0) {
         unsigned int i2 = 0;
@@ -54,11 +46,6 @@ rStageAdjoinList::cJumpPosition* rStageAdjoinList::getJumpPosition(u32 index) co
 
 MT_CTSTR rStageAdjoinList::getExt() const {
     return "sal";
-}
-
-inline rStageAdjoinList::rStageAdjoinList() {
-    setAttribute(22u);
-    mStageNo = 0;
 }
 
 __attribute__((noinline)) rStageAdjoinList::~rStageAdjoinList() {
@@ -165,14 +152,6 @@ const MtDTI& rStageAdjoinList::cAdjoinInfo::getDTI() const {
     return rStageAdjoinList::cAdjoinInfo::DTI;
 }
 
-void* rStageAdjoinList::cAdjoinInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageAdjoinList::cAdjoinInfo::DTI)->memAlloc(sz, align, rStageAdjoinList::cAdjoinInfo::DTI.getID());
-}
-
-inline void rStageAdjoinList::cAdjoinInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageAdjoinList::cAdjoinInfo::DTI)->memFree(p_addr);
-}
-
 rStageAdjoinList::cAdjoinInfo::~cAdjoinInfo() {
     if (mIndex.mLength != 0) {
         u32 v0_0 = mIndex.mLength;
@@ -220,16 +199,8 @@ const MtDTI& rStageAdjoinList::cAdjoinInfo::cIndex::getDTI() const {
     return rStageAdjoinList::cAdjoinInfo::cIndex::DTI;
 }
 
-inline void rStageAdjoinList::cAdjoinInfo::cIndex::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageAdjoinList::cAdjoinInfo::cIndex::DTI)->memFree(p_addr);
-}
-
 void rStageAdjoinList::cAdjoinInfo::cIndex::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
-}
-
-void rStageAdjoinList::cAdjoinInfo::cIndex::load(MtDataReader& r) {
-    mIndex = r.readU16();
 }
 
 inline rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -242,14 +213,6 @@ MtObject* rStageAdjoinList::cAdjoinInfo::cIndex::MyDTI::newInstance() const {
 
 const MtDTI& rStageAdjoinList::cJumpPosition::getDTI() const {
     return rStageAdjoinList::cJumpPosition::DTI;
-}
-
-void* rStageAdjoinList::cJumpPosition::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageAdjoinList::cJumpPosition::DTI)->memAlloc(sz, align, rStageAdjoinList::cJumpPosition::DTI.getID());
-}
-
-inline void rStageAdjoinList::cJumpPosition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageAdjoinList::cJumpPosition::DTI)->memFree(p_addr);
 }
 
 rStageAdjoinList::cJumpPosition::~cJumpPosition() {

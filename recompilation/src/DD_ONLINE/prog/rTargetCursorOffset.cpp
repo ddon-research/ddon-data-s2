@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rTargetCursorOffset.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cUIObject.h"
 #include "rTbl2.h"
@@ -15,20 +13,6 @@
 
 const MtDTI& cTargetCursorOffset::getDTI() const {
     return cTargetCursorOffset::DTI;
-}
-
-inline void* cTargetCursorOffset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cTargetCursorOffset::DTI)->memAlloc(sz, align, cTargetCursorOffset::DTI.getID());
-}
-
-inline void cTargetCursorOffset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cTargetCursorOffset::DTI)->memFree(p_addr);
-}
-
-cTargetCursorOffset::cTargetCursorOffset() {
-    mId = 0;
-    mJointNo = -1;
-    mOffsetFromJoint = MtVector3::Zero;
 }
 
 inline cTargetCursorOffset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -41,14 +25,6 @@ MtObject* cTargetCursorOffset::MyDTI::newInstance() const {
 
 const MtDTI& rTargetCursorOffset::getDTI() const {
     return rTargetCursorOffset::DTI;
-}
-
-inline void* rTargetCursorOffset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTargetCursorOffset::DTI)->memAlloc(sz, align, rTargetCursorOffset::DTI.getID());
-}
-
-inline void rTargetCursorOffset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTargetCursorOffset::DTI)->memFree(p_addr);
 }
 
 bool rTargetCursorOffset::loadData(MtDataReader& in, cTargetCursorOffset* pData) {

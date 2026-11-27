@@ -86,3 +86,11 @@ namespace nShlStick {
 inline void* nShlStick::cStickObjectCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void nShlStick::cStickObjectCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nShlStick::cStickObjectCtrl::DTI)->memFree(p_addr);
+}

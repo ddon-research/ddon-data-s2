@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSoundDirectionalCurve.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -19,10 +18,6 @@ __attribute__((weak)) void rSoundDirectionalCurveXml::usage() {
 
 const MtDTI& rSoundDirectionalCurveXml::getDTI() const {
     return rSoundDirectionalCurveXml::DTI;
-}
-
-inline void rSoundDirectionalCurveXml::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundDirectionalCurveXml::DTI)->memFree(p_addr);
 }
 
 rSoundDirectionalCurveXml::rSoundDirectionalCurveXml() {
@@ -76,10 +71,6 @@ const MtDTI& rSoundDirectionalCurveXml::Curve::getDTI() const {
     return rSoundDirectionalCurveXml::Curve::DTI;
 }
 
-inline void rSoundDirectionalCurveXml::Curve::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundDirectionalCurveXml::Curve::DTI)->memFree(p_addr);
-}
-
 rSoundDirectionalCurveXml::Curve::~Curve() {
     DDON_STUB("rSoundDirectionalCurveXml::Curve::~Curve")
     /* stub */
@@ -103,10 +94,6 @@ __attribute__((weak)) MtObject* rSoundDirectionalCurveXml::Curve::MyDTI::newInst
 
 const MtDTI& rSoundDirectionalCurveXml::Element::getDTI() const {
     return rSoundDirectionalCurveXml::Element::DTI;
-}
-
-inline void rSoundDirectionalCurveXml::Element::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundDirectionalCurveXml::Element::DTI)->memFree(p_addr);
 }
 
 rSoundDirectionalCurveXml::Element::~Element() {

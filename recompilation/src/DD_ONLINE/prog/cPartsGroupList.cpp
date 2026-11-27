@@ -23,16 +23,8 @@ const MtDTI& cPartsGroupList::getDTI() const {
     return cPartsGroupList::DTI;
 }
 
-inline MtAllocator* cPartsGroupList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cPartsGroupList::DTI);
-}
-
 void* cPartsGroupList::operator new(size_t sz, u32 align) {
     return cPartsGroupList::getAllocator()->memAlloc(sz, align, cPartsGroupList::DTI.getID());
-}
-
-inline void cPartsGroupList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPartsGroupList::DTI)->memFree(p_addr);
 }
 
 cPartsGroupList::cPartsGroupList() {

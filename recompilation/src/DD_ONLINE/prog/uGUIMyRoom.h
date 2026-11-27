@@ -604,3 +604,50 @@ inline u32 uGUIMyRoomPopup::cList::cInfo::getListIndex() const {
 inline void* uGUIMyRoomPopup::cList::cItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIMyRoom::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMyRoom::DTI);
+}
+
+inline void uGUIMyRoom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMyRoom::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMyRoom::setupRefrences() {
+    this->mCloseButton.::uGUIBase::cReferenceUICloseBtn::setup(static_cast<uGUIBase*>(this), this->getInstance(262u, false), static_cast<uGUIBase::cReferenceUICloseBtn::CloseFunc>(&::uGUIMyRoom::evCtrlCancel));
+    this->mButtonGuide.::uGUIBase::cReferenceUIBtnGuide::setup(static_cast<uGUIBase*>(this), this->getInstance(319u, false), 0.0f);
+}
+
+inline void* uGUIMyRoom::cList::cItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMyRoom::cList::cItem::DTI)->memAlloc(sz, align, ::uGUIMyRoom::cList::cItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMyRoom::cList::cItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMyRoom::cList::cItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMyRoomBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMyRoomBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIMyRoomPopup::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMyRoomPopup::DTI);
+}
+
+inline void uGUIMyRoomPopup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMyRoomPopup::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMyRoomPopup::cList::resetDisp() {
+    this->mScrollList.::uGUIBase::cScrollList::setupList(this->mMaskHeight, this->mMaskHeight, false);
+    this->mScrollList.::uGUIBase::cScrollCtrl::setSliderPos(this->mScrollList.::uGUIBase::cScrollCtrl::getSliderPos(), true);
+    this->mScrollList.::uGUIBase::cScrollList::setListPos(true);
+}
+
+inline void uGUIMyRoomPopup::cList::cItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMyRoomPopup::cList::cItem::DTI)->memFree(p_addr);
+}

@@ -79,3 +79,15 @@ public:
 inline void* cObjHitCache::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cObjHitCache::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cObjHitCache::DTI)->memAlloc(sz, align, ::cObjHitCache::DTI.::MtDTI::getID());
+}
+
+inline void cObjHitCache::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cObjHitCache::DTI)->memFree(p_addr);
+}

@@ -1,7 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uScrollCollisionGeometryGroupModel.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtCollisionUtil.h"
 #include "../MT/MtDTI.h"
@@ -11,6 +11,7 @@
 #include "../MT/MtPropertyList.h"
 #include "cResource.h"
 #include "cUnit.h"
+#include "rGeometry2Group.h"
 #include "sUnit.h"
 #include "uGeometry2Group.h"
 #include "uModel.h"
@@ -27,13 +28,42 @@ const MtDTI& uScrollCollisionGeometryGroupModel::getDTI() const {
     return uScrollCollisionGeometryGroupModel::DTI;
 }
 
-inline void uScrollCollisionGeometryGroupModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uScrollCollisionGeometryGroupModel::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uScrollCollisionGeometryGroupModel::~uScrollCollisionGeometryGroupModel() {
-    DDON_STUB("uScrollCollisionGeometryGroupModel::~uScrollCollisionGeometryGroupModel")
-    /* stub */
+    if (mpRGeometryGroup != nullptr) {
+        mpRGeometryGroup->release();
+        mpRGeometryGroup = nullptr;
+    }
+    if (mpGeometryGroupUnit_Inside != nullptr) {
+        delete mpGeometryGroupUnit_Inside;
+        mpGeometryGroupUnit_Inside = nullptr;
+    }
+    if (mGeometryUnitArray.mAutoDelete) {
+        u32 v3_0;
+        if (mGeometryUnitArray.mLength != 0) {
+            u32 v0_0 = mGeometryUnitArray.mLength;
+            unsigned int i0_3 = 0;
+            u32 v1_0;
+            for (;;) {
+                if (mGeometryUnitArray.mpArray[i0_3] == nullptr) {
+                    v1_0 = v0_0;
+                } else {
+                    delete mGeometryUnitArray.mpArray[i0_3];
+                    v1_0 = mGeometryUnitArray.mLength;
+                }
+                if ((i0_3 + 1u) < v1_0) {
+                    v0_0 = v1_0;
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+            v3_0 = v1_0;
+        } else {
+            v3_0 = 0;
+        }
+        memset(static_cast<void*>(mGeometryUnitArray.mpArray), 0, static_cast<size_t>(v3_0) * 8);
+    }
+    mGeometryUnitArray.mLength = 0;
 }
 
 void uScrollCollisionGeometryGroupModel::createProperty(MtPropertyList& s) {

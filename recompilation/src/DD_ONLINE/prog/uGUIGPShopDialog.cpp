@@ -38,16 +38,8 @@ const MtDTI& uGUIGPShopDialog::getDTI() const {
     return uGUIGPShopDialog::DTI;
 }
 
-inline MtAllocator* uGUIGPShopDialog::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGPShopDialog::DTI);
-}
-
 void* uGUIGPShopDialog::operator new(size_t sz, u32 align) {
     return uGUIGPShopDialog::getAllocator()->memAlloc(sz, align, uGUIGPShopDialog::DTI.getID());
-}
-
-inline void uGUIGPShopDialog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShopDialog::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIGPShopDialog::~uGUIGPShopDialog() {
@@ -356,19 +348,6 @@ __attribute__((weak)) void uGUIGPShopDialog::updateEventCodeLine() {
     /* stub */
 }
 
-inline void uGUIGPShopDialog::updateConfirmCaution(bool IsDisp) {
-    if (mpGSCaution != nullptr) {
-        mpGSCaution->setVisible(false);
-    }
-    if (mpGSCautionTxt != nullptr) {
-        mpGSCautionTxt->setVisible(false);
-    }
-    if (mpCaution == nullptr) {
-        return;
-    }
-    mpCaution->setVisible(false);
-}
-
 __attribute__((weak)) void uGUIGPShopDialog::updateScrollLimitListDisp(uGUIBase::cScrollListItemBase* pDispItem, uGUIBase::cScrollListInfoBase* pListItem, u32 Index) {
     DDON_STUB("uGUIGPShopDialog::updateScrollLimitListDisp")
     /* stub */
@@ -401,9 +380,955 @@ void uGUIGPShopDialog::updateScrollHistoryListHide(uGUIBase::cScrollListItemBase
     pdisp->mpInst->setVisible(false);
 }
 
-__attribute__((weak)) void uGUIGPShopDialog::setType(u32 Type) {
-    DDON_STUB("uGUIGPShopDialog::setType")
-    /* stub */
+void uGUIGPShopDialog::setType(u32 Type) {
+    switch (Type) {
+        case 0:
+        {
+            if (mType == 4) {
+                setPlayingFlow(getFlow(43u), true);
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateEventCode);
+                updateEventCodeLine();
+                play(0.0f);
+                mType = Type;
+            }
+            break;
+        }
+        case 1:
+        {
+            if (mType != 0) {
+                setPlayingFlow(getFlow(44u), true);
+                if (mpGSConfirm == nullptr) {
+                    if (mpGSCaution == nullptr) {
+                        if (mpGSCautionTxt == nullptr) {
+                            if (mpCaution == nullptr) {
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                mpCaution->setVisible(false);
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            mpGSCautionTxt->setVisible(false);
+                            if (mpCaution == nullptr) {
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                mpCaution->setVisible(false);
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        mpGSCaution->setVisible(false);
+                        if (mpGSCautionTxt == nullptr) {
+                            if (mpCaution == nullptr) {
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                mpCaution->setVisible(false);
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            mpGSCautionTxt->setVisible(false);
+                            if (mpCaution == nullptr) {
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                mpCaution->setVisible(false);
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    mpGSConfirm->setSequenceId(4u);
+                    if (mpGSCaution == nullptr) {
+                        if (mpGSCautionTxt == nullptr) {
+                            if (mpCaution == nullptr) {
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                mpCaution->setVisible(false);
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            mpGSCautionTxt->setVisible(false);
+                            if (mpCaution == nullptr) {
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                mpCaution->setVisible(false);
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    } else {
+                        mpGSCaution->setVisible(false);
+                        if (mpGSCautionTxt == nullptr) {
+                            if (mpCaution == nullptr) {
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                mpCaution->setVisible(false);
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            mpGSCautionTxt->setVisible(false);
+                            if (mpCaution == nullptr) {
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            } else {
+                                mpCaution->setVisible(false);
+                                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateGoldStone);
+                                if (mIsGoldStoneRequest) {
+                                    play(0.0f);
+                                    mType = Type;
+                                    if (Type != 0) {
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                        mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                    }
+                                } else {
+                                    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatusRsv = 206;
+                                        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    } else {
+                                        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::initConfirmRequestServer);
+                                        mServerCommandStatus = 206;
+                                        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::initConfirmCallBack);
+                                        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                        mServerRno = 0;
+                                        mServerResult = 0;
+                                        play(0.0f);
+                                        mType = Type;
+                                        if (Type != 0) {
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        case 2:
+        {
+            if (mType != 0) {
+                setPlayingFlow(getFlow(45u), true);
+                if (mpLimitExplain == nullptr) {
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateLimit);
+                    if (mLimitScrollbar.mpVCtrl == nullptr) {
+                        if (mIsLimitRequest) {
+                            play(0.0f);
+                            mType = Type;
+                            if (Type != 0) {
+                                mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                            }
+                        } else {
+                            if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::limitRequestServer);
+                                mServerCommandStatusRsv = 206;
+                                mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::limitCallBack);
+                                mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                play(0.0f);
+                                mType = Type;
+                                if (Type != 0) {
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                }
+                            } else {
+                                mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::limitRequestServer);
+                                mServerCommandStatus = 206;
+                                mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::limitCallBack);
+                                mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                mServerRno = 0;
+                                mServerResult = 0;
+                                play(0.0f);
+                                mType = Type;
+                                if (Type != 0) {
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                }
+                            }
+                        }
+                    } else {
+                        mLimitScrollbar.mpVCtrl->setCurrentPos(0, false);
+                        if (mIsLimitRequest) {
+                            play(0.0f);
+                            mType = Type;
+                            if (Type != 0) {
+                                mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                            }
+                        } else {
+                            if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::limitRequestServer);
+                                mServerCommandStatusRsv = 206;
+                                mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::limitCallBack);
+                                mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                play(0.0f);
+                                mType = Type;
+                                if (Type != 0) {
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                }
+                            } else {
+                                mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::limitRequestServer);
+                                mServerCommandStatus = 206;
+                                mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::limitCallBack);
+                                mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                mServerRno = 0;
+                                mServerResult = 0;
+                                play(0.0f);
+                                mType = Type;
+                                if (Type != 0) {
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    mpLimitExplain->setSequenceId(4u);
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateLimit);
+                    if (mLimitScrollbar.mpVCtrl == nullptr) {
+                        if (mIsLimitRequest) {
+                            play(0.0f);
+                            mType = Type;
+                            if (Type != 0) {
+                                mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                            }
+                        } else {
+                            if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::limitRequestServer);
+                                mServerCommandStatusRsv = 206;
+                                mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::limitCallBack);
+                                mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                play(0.0f);
+                                mType = Type;
+                                if (Type != 0) {
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                }
+                            } else {
+                                mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::limitRequestServer);
+                                mServerCommandStatus = 206;
+                                mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::limitCallBack);
+                                mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                mServerRno = 0;
+                                mServerResult = 0;
+                                play(0.0f);
+                                mType = Type;
+                                if (Type != 0) {
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                }
+                            }
+                        }
+                    } else {
+                        mLimitScrollbar.mpVCtrl->setCurrentPos(0, false);
+                        if (mIsLimitRequest) {
+                            play(0.0f);
+                            mType = Type;
+                            if (Type != 0) {
+                                mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                            }
+                        } else {
+                            if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                                mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::limitRequestServer);
+                                mServerCommandStatusRsv = 206;
+                                mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::limitCallBack);
+                                mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                play(0.0f);
+                                mType = Type;
+                                if (Type != 0) {
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                }
+                            } else {
+                                mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::limitRequestServer);
+                                mServerCommandStatus = 206;
+                                mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::limitCallBack);
+                                mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                                mServerRno = 0;
+                                mServerResult = 0;
+                                play(0.0f);
+                                mType = Type;
+                                if (Type != 0) {
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                    mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        case 3:
+        {
+            if (mType != 0) {
+                setPlayingFlow(getFlow(48u), true);
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateHistory);
+                if (mHistoryScrollbar.mpVCtrl == nullptr) {
+                    if (mIsHistoryRequest) {
+                        play(0.0f);
+                        mType = Type;
+                        if (Type != 0) {
+                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                        }
+                    } else {
+                        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::historyRequestServer);
+                            mServerCommandStatusRsv = 205;
+                            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::historyCallBack);
+                            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                            play(0.0f);
+                            mType = Type;
+                            if (Type != 0) {
+                                mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                            }
+                        } else {
+                            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::historyRequestServer);
+                            mServerCommandStatus = 205;
+                            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::historyCallBack);
+                            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                            mServerRno = 0;
+                            mServerResult = 0;
+                            play(0.0f);
+                            mType = Type;
+                            if (Type != 0) {
+                                mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                            }
+                        }
+                    }
+                } else {
+                    mHistoryScrollbar.mpVCtrl->setCurrentPos(0, false);
+                    if (mIsHistoryRequest) {
+                        play(0.0f);
+                        mType = Type;
+                        if (Type != 0) {
+                            mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                            mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                            mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                        }
+                    } else {
+                        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::historyRequestServer);
+                            mServerCommandStatusRsv = 205;
+                            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::historyCallBack);
+                            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                            play(0.0f);
+                            mType = Type;
+                            if (Type != 0) {
+                                mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                            }
+                        } else {
+                            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGPShopDialog::historyRequestServer);
+                            mServerCommandStatus = 205;
+                            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGPShopDialog::historyCallBack);
+                            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                            mServerRno = 0;
+                            mServerResult = 0;
+                            play(0.0f);
+                            mType = Type;
+                            if (Type != 0) {
+                                mTab.uGUIBase::cReferenceUITab::setFocus(0u, (Type & 0xFFFFFFFEu) != 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(1u, Type == 2, true);
+                                mTab.uGUIBase::cReferenceUITab::setFocus(2u, Type == 3, true);
+                            }
+                        }
+                    }
+                }
+            }
+            break;
+        }
+        default:
+        {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGPShopDialog::updateWait);
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIGPShopDialog::startGPShop() {
@@ -438,14 +1363,6 @@ const MtDTI& uGUIGPShopDialog::cScrollLimitDispList::getDTI() const {
     return uGUIGPShopDialog::cScrollLimitDispList::DTI;
 }
 
-inline void* uGUIGPShopDialog::cScrollLimitDispList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollLimitDispList::DTI)->memAlloc(sz, align, uGUIGPShopDialog::cScrollLimitDispList::DTI.getID());
-}
-
-inline void uGUIGPShopDialog::cScrollLimitDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollLimitDispList::DTI)->memFree(p_addr);
-}
-
 inline uGUIGPShopDialog::cScrollLimitDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIGPShopDialog::cScrollLimitDispList::MyDTI uGUIGPShopDialog::cScrollLimitDispList::DTI("uGUIGPShopDialog::cScrollLimitDispList", &::uGUIBase::cScrollListItemBase::DTI, 120ul, 0u, 0u);
@@ -456,14 +1373,6 @@ MtObject* uGUIGPShopDialog::cScrollLimitDispList::MyDTI::newInstance() const {
 
 const MtDTI& uGUIGPShopDialog::cScrollHistoryDispList::getDTI() const {
     return uGUIGPShopDialog::cScrollHistoryDispList::DTI;
-}
-
-inline void* uGUIGPShopDialog::cScrollHistoryDispList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollHistoryDispList::DTI)->memAlloc(sz, align, uGUIGPShopDialog::cScrollHistoryDispList::DTI.getID());
-}
-
-inline void uGUIGPShopDialog::cScrollHistoryDispList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGPShopDialog::cScrollHistoryDispList::DTI)->memFree(p_addr);
 }
 
 inline uGUIGPShopDialog::cScrollHistoryDispList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -161,3 +161,15 @@ private:
 inline void* cStateMachineBase::StateBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* cStateMachineBase::StateBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStateMachineBase::StateBase::DTI)->memAlloc(sz, align, ::cStateMachineBase::StateBase::DTI.::MtDTI::mID);
+}
+
+inline void cStateMachineBase::StateBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStateMachineBase::StateBase::DTI)->memFree(p_addr);
+}

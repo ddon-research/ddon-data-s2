@@ -70,3 +70,15 @@ inline void* rRenderTargetTexture::operator new(size_t sz, void* p_addr) {
 inline rRenderTargetTexture::rRenderTargetTexture() {
     this->::cResource::mAttr = 16;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rRenderTargetTexture::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rRenderTargetTexture::DTI)->memAlloc(sz, align, ::rRenderTargetTexture::DTI.::MtDTI::mID);
+}
+
+inline void rRenderTargetTexture::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rRenderTargetTexture::DTI)->memFree(p_addr);
+}

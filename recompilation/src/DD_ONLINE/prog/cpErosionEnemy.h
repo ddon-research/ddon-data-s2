@@ -358,3 +358,87 @@ inline void* cpErosionSuperEnemy::operator new(size_t sz, void* p_addr) {
 inline rSoundRequest* cpErosionSuperEnemy::getErosionSuperSoundRes() const {
     return this->mpErosionSuperSoundRes;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+#include "cpObjCollision.h"
+#include "../../XFramework/sEffect.h"
+#include "sEffectExt.h"
+#include "uCharacter.h"
+#include "uEnemy.h"
+
+inline void* cTentacleInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cTentacleInfo::DTI)->memAlloc(sz, align, ::cTentacleInfo::DTI.::MtDTI::getID());
+}
+
+inline void cTentacleInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cTentacleInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cpErosionEnemy::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpErosionEnemy::DTI);
+}
+
+inline void cpErosionEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpErosionEnemy::DTI)->memFree(p_addr);
+}
+
+inline void cpErosionEnemy::releaseErosionRegionRes() {
+    if (this->mpErosionRegionRes == nullptr) {
+        return;
+    }
+    this->mpErosionRegionRes->::cResource::release();
+    this->mpErosionRegionRes = nullptr;
+}
+
+inline void cpErosionEnemy::killErosionCheckNode() {
+    if (this->mpErosionCheckNode != nullptr) {
+        this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mGuardComponent.mpObjCollision->::cpObjCollisionBase::killNode(this->mpErosionCheckNode);
+    }
+    this->mpErosionCheckNode = nullptr;
+}
+
+inline void cpErosionEnemy::setupRandomErosionTimer() {
+    if (this->mErosionTimerState == static_cast<nErosionEnemy::EROSION_TIMER_STATE>(2)) {
+        return;
+    }
+    this->mErosionRegenerateTimer = this->mErosionRandomCtrl.::cEmRandomCtrl::makeRandomErosionTime(this->mErosionRegenerateTimer, this->::cpErosionEnemyBase::mpEnemy);
+}
+
+inline MtAllocator* cpErosionSuperEnemy::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpErosionSuperEnemy::DTI);
+}
+
+inline void cpErosionSuperEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpErosionSuperEnemy::DTI)->memFree(p_addr);
+}
+
+inline void cpErosionSuperEnemy::activeCameraEffect() {
+    if (this->mEfcCameraAdded) {
+        return;
+    }
+    if (this->::cpErosionEnemyBase::mpEnemy == nullptr) {
+        return;
+    }
+    if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mUnitId & 2u) == 0) {
+        return;
+    }
+    static_cast<sEffectExt*>(::sEffect::mpInstance)->::sEffectExt::addOnceRequestEffectTypeSuperErosionCamData(&this->mEfcCameraHandleArray, static_cast<uEnemy*>(this->::cpErosionEnemyBase::mpEnemy));
+    this->mEfcCameraAdded = true;
+}
+
+inline void cpErosionSuperEnemy::disactiveCameraEffect() {
+    if (!this->mEfcCameraAdded) {
+        return;
+    }
+    if (this->::cpErosionEnemyBase::mpEnemy == nullptr) {
+        return;
+    }
+    if ((this->::cpErosionEnemyBase::mpEnemy->::uDDOModel::mUnitId & 2u) == 0) {
+        return;
+    }
+    static_cast<sEffectExt*>(::sEffect::mpInstance)->::sEffectExt::relOnceRequestEffectTypeSuperErosionCamData(&this->mEfcCameraHandleArray, static_cast<uEnemy*>(this->::cpErosionEnemyBase::mpEnemy));
+    this->mEfcCameraAdded = false;
+}

@@ -2,11 +2,9 @@
 #include <new>
 #include "uControlNpc.h"
 #include "Protocol/PacketData/Common.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -43,11 +41,13 @@
 #include "sGame.h"
 #include "../../XFramework/sMain.h"
 #include "sMenu.h"
+#include "sMyRoom.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sNpcManager.h"
 #include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
+#include "sReward.h"
 #include "uControl.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
@@ -61,70 +61,6 @@
 
 const MtDTI& uControlNpc::getDTI() const {
     return uControlNpc::DTI;
-}
-
-inline void* uControlNpc::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uControlNpc::DTI)->memAlloc(sz, align, uControlNpc::DTI.getID());
-}
-
-inline void uControlNpc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uControlNpc::DTI)->memFree(p_addr);
-}
-
-inline uControlNpc::uControlNpc() {
-    mGitk = 0;
-    mUniqueId = 0;
-    mUnitId = 0;
-    mIsDisp = false;
-    mNpcId = -1;
-    mClothType = 0;
-    mIsFsmEventNpc = false;
-    mDefNPCMotCategory = 0;
-    mDefNPCMotNo = -1;
-    mDefTurnType = 0;
-    mThinkIndex = 0;
-    mJobLv = 0;
-    mIsForceDispOff = false;
-    mPawnId = 0xFFFFFFFF;
-    mMyPawnSlotNo = 0xFFFFFFFF;
-    mRentalPawnSlotNo = 0xFFFFFFFF;
-    mIsPawnData = false;
-    mIsEquip = true;
-    mRnoGetPawnData = 0;
-    mNpcItem = 0;
-    mIsScrAdjOff = false;
-    mIsAttend = false;
-    mIsDispWepMain = true;
-    mIsDispWepSub = true;
-    mIsDisableTouchAction = false;
-    mDisableLedgerFinger = false;
-    mJobId = 0;
-    mFinger = 0xFF;
-    mVoiceType = 0;
-    mUnitType = 0;
-    mUnitTypeParam = 0;
-    mIsEditData = false;
-    mIsSetup = false;
-    mIsNpcInfo = false;
-    mSex = 0;
-    mIsForceListTalk = false;
-    mIsInvincible = true;
-    mIsNpcArc = true;
-    mLantern = 0;
-    mIsSetupPawn = false;
-    mPlDistCalcTime = sMain::getInstance()->getFps() / 3.0f;
-    mPlDistCalcTimer = 0.0f;
-    mMasterChangeCheckTimer = 0.0f;
-    mIsEnableTalkAct = false;
-    mIsDispElseQuestTalk = true;
-    mIsEyeClose = false;
-    mIsDispMiniMap = false;
-    mIsUseJobParamEx = false;
-    mPlDistance = 0.0f;
-    mBaseRot = 0.0f;
-    mWepAtk = 0.0f;
-    mWepMAtk = 0.0f;
-    mIsSelfDeleteContextInst = true;
 }
 
 __attribute__((noinline)) uControlNpc::~uControlNpc() {

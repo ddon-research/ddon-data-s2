@@ -195,3 +195,15 @@ inline void cEfcHandle::setOwner(cUnit* pOwner) {
 inline void cEfcHandle::addRef() {
     this->mRefCount = this->mRefCount + 1u;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cEfcHandle::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cEfcHandle::DTI);
+}
+
+inline void cEfcHandle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEfcHandle::DTI)->memFree(p_addr);
+}

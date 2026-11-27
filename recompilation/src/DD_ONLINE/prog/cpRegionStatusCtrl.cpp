@@ -3,7 +3,6 @@
 #include "cpRegionStatusCtrl.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cChildRegionStatus.h"
 #include "../../XFramework/cResource.h"
@@ -22,16 +21,8 @@ const MtDTI& cpRegionStatusCtrl::getDTI() const {
     return cpRegionStatusCtrl::DTI;
 }
 
-inline MtAllocator* cpRegionStatusCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpRegionStatusCtrl::DTI);
-}
-
 void* cpRegionStatusCtrl::operator new(size_t sz, u32 align) {
     return cpRegionStatusCtrl::getAllocator()->memAlloc(sz, align, cpRegionStatusCtrl::DTI.getID());
-}
-
-inline void cpRegionStatusCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpRegionStatusCtrl::DTI)->memFree(p_addr);
 }
 
 cpRegionStatusCtrl::cpRegionStatusCtrl() {

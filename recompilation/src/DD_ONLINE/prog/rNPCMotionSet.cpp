@@ -16,34 +16,6 @@ const MtDTI& rNPCMotionSet::getDTI() const {
     return rNPCMotionSet::DTI;
 }
 
-inline void* rNPCMotionSet::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNPCMotionSet::DTI)->memAlloc(sz, align, rNPCMotionSet::DTI.getID());
-}
-
-inline void rNPCMotionSet::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNPCMotionSet::DTI)->memFree(p_addr);
-}
-
-inline rNPCMotionSet::rNPCMotionSet() {
-    setAttribute(18u);
-    mArrayNum[6] = 0;
-    mArrayNum[7] = 0;
-    mArrayNum[4] = 0;
-    mArrayNum[5] = 0;
-    mArrayNum[2] = 0;
-    mArrayNum[3] = 0;
-    mArrayNum[0] = 0;
-    mArrayNum[1] = 0;
-    mpArray[7] = nullptr;
-    mpArray[6] = nullptr;
-    mpArray[5] = nullptr;
-    mpArray[4] = nullptr;
-    mpArray[3] = nullptr;
-    mpArray[2] = nullptr;
-    mpArray[1] = nullptr;
-    mpArray[0] = nullptr;
-}
-
 rNPCMotionSet::~rNPCMotionSet() {
     unsigned int i0_8 = 0;
     unsigned int i1_3;
@@ -209,14 +181,6 @@ const MtDTI& rNPCMotionSet::InfoBinary::getDTI() const {
     return rNPCMotionSet::InfoBinary::DTI;
 }
 
-inline void* rNPCMotionSet::InfoBinary::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNPCMotionSet::InfoBinary::DTI)->memAlloc(sz, align, rNPCMotionSet::InfoBinary::DTI.getID());
-}
-
-inline void rNPCMotionSet::InfoBinary::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNPCMotionSet::InfoBinary::DTI)->memFree(p_addr);
-}
-
 rNPCMotionSet::InfoBinary::~InfoBinary() {
     for (u32 i = 0; i < mMotListNum; ++i) {
         mpMotList[i].~MotDataBinary();
@@ -226,8 +190,13 @@ rNPCMotionSet::InfoBinary::~InfoBinary() {
 }
 
 __attribute__((weak)) u32 rNPCMotionSet::InfoBinary::getMotionNo(u32 idx) {
-    DDON_STUB("rNPCMotionSet::InfoBinary::getMotionNo")
-    return {};
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr && data->mMotionNo >= 0) {
+            return (static_cast<u32>(data->mBankNo) << 8) | static_cast<u32>(data->mMotionNo);
+        }
+    }
+    return 0xffffffffu;
 }
 
 u8 rNPCMotionSet::InfoBinary::getProbability(u32 idx) {
@@ -352,14 +321,6 @@ MtObject* rNPCMotionSet::InfoBinary::MyDTI::newInstance() const {
 
 const MtDTI& rNPCMotionSet::InfoBinary::MotDataBinary::getDTI() const {
     return rNPCMotionSet::InfoBinary::MotDataBinary::DTI;
-}
-
-inline void* rNPCMotionSet::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNPCMotionSet::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, rNPCMotionSet::InfoBinary::MotDataBinary::DTI.getID());
-}
-
-inline void rNPCMotionSet::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNPCMotionSet::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
 }
 
 inline rNPCMotionSet::InfoBinary::MotDataBinary::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

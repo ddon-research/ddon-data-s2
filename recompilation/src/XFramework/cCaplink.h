@@ -339,3 +339,11 @@ inline void* nCaplink::Object::operator new(size_t sz, void* p_addr) {
 inline bool nCaplink::Object::getRetry() {
     return this->mRetry;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nCaplink::Object::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nCaplink::Object::DTI)->memFree(p_addr);
+}

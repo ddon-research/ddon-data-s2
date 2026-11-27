@@ -21,19 +21,13 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 class MtString;
+class cCraftParam;
 class cItemParam;
 class cOmControl;
 class uGUIBase;
 class uGUIItemBase01;
 class uGUIPick01;
 class uGUIUseItemBase;
-
-// Declarations
-namespace nGUIItem { class cItem; }
-namespace nGUIItem { class cItemList; }
-namespace nGUIItem { struct cLoadCategory; }
-namespace nGUIItem { struct cLoadOption; }
-namespace nGUIItem { struct cSwitchStorage; }
 
 namespace nGUIItem {
     enum EQUIP_INFO
@@ -65,6 +59,14 @@ namespace nGUIItem {
     };
 }  // namespace nGUIItem
 
+// Declarations
+struct ElementList;
+namespace nGUIItem { class cItem; }
+namespace nGUIItem { class cItemList; }
+namespace nGUIItem { struct cLoadCategory; }
+namespace nGUIItem { struct cLoadOption; }
+namespace nGUIItem { struct cSwitchStorage; }
+
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
@@ -77,6 +79,15 @@ using s8 = signed char;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u64 = __uint64_t;
+
+struct ElementList
+{
+public:
+    ElementList(const cCraftParam& craftParam);
+    void add(u32 itemId);
+public:
+    nDDOUtility::cArray<unsigned int, 4> mItemIds;  // offset: 0x0
+};
 
 namespace nGUIItem {
     class cItem : public ::cUIObject
@@ -368,4 +379,16 @@ inline u32 nGUIItem::cItemList::getWaitFlag() {
 
 inline MoveItemUIDFromToVec& nGUIItem::cItemList::getItemList() {
     return this->mItemList;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* nGUIItem::cItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nGUIItem::cItem::DTI)->memAlloc(sz, align, ::nGUIItem::cItem::DTI.::MtDTI::getID());
+}
+
+inline void nGUIItem::cItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nGUIItem::cItemList::DTI)->memFree(p_addr);
 }

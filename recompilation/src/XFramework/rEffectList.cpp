@@ -38,14 +38,6 @@ const MtDTI& rEffectList::getDTI() const {
 __attribute__((weak)) void rEffectList::usage() {
 }
 
-inline void* rEffectList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectList::DTI)->memAlloc(sz, align, rEffectList::DTI.mID);
-}
-
-inline void rEffectList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectList::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rEffectList::getExt() const {
     return "efl";
 }

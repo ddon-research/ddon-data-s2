@@ -308,3 +308,31 @@ inline cEditValue::cEditValue() {
 inline f32 cEditValue::getValue() const {
     return this->mValue;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cEditParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cEditParam::DTI);
+}
+
+inline void cEditParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEditParam::DTI)->memFree(p_addr);
+}
+
+inline void* cEditUserData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEditUserData::DTI)->memAlloc(sz, align, ::cEditUserData::DTI.::MtDTI::getID());
+}
+
+inline void cEditUserData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEditUserData::DTI)->memFree(p_addr);
+}
+
+inline void* cEditValue::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEditValue::DTI)->memAlloc(sz, align, ::cEditValue::DTI.::MtDTI::getID());
+}
+
+inline void cEditValue::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEditValue::DTI)->memFree(p_addr);
+}

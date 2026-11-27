@@ -21,6 +21,24 @@ class MtDTI;
 class MtObject;
 class MtString;
 
+namespace nClan {
+    enum E_CLAN_PERMISSION
+    {
+        CLAN_PERMISSION_NONE = 0,
+        CLAN_PERMISSION_JOIN_REQUEST_OK = 1,
+        CLAN_PERMISSION_JOIN_REQUEST_NG = 2,
+        CLAN_PERMISSION_SCOUT_ENTRY_INVITE = 3,
+        CLAN_PERMISSION_MEMBER_KICK = 4,
+        CLAN_PERMISSION_MASTER_NEGOTIATE = 5,
+        CLAN_PERMISSION_STATUS_CHANGE = 6,
+        CLAN_PERMISSION_POSITION_SET = 7,
+        CLAN_PERMISSION_INVITE = 8,
+        CLAN_PERMISSION_SHOP_BUY = 9,
+        CLAN_PERMISSION_CONCIERGE_CHANGE = 10,
+        CLAN_PERMISSION_BASE_RELEASE = 11,
+    };
+}  // namespace nClan
+
 // Declarations
 class CDataBattleResultInfo;
 class CDataClanConciergeInfo;
@@ -49,24 +67,6 @@ class CDataClanUserParam;
 class CDataClanValueInfo;
 class CDataPawnExpeditionClanSallySpotInfo;
 class CDataPawnExpeditionInformation;
-
-namespace nClan {
-    enum E_CLAN_PERMISSION
-    {
-        CLAN_PERMISSION_NONE = 0,
-        CLAN_PERMISSION_JOIN_REQUEST_OK = 1,
-        CLAN_PERMISSION_JOIN_REQUEST_NG = 2,
-        CLAN_PERMISSION_SCOUT_ENTRY_INVITE = 3,
-        CLAN_PERMISSION_MEMBER_KICK = 4,
-        CLAN_PERMISSION_MASTER_NEGOTIATE = 5,
-        CLAN_PERMISSION_STATUS_CHANGE = 6,
-        CLAN_PERMISSION_POSITION_SET = 7,
-        CLAN_PERMISSION_INVITE = 8,
-        CLAN_PERMISSION_SHOP_BUY = 9,
-        CLAN_PERMISSION_CONCIERGE_CHANGE = 10,
-        CLAN_PERMISSION_BASE_RELEASE = 11,
-    };
-}  // namespace nClan
 
 // Type aliases from DWARF
 using CCharacterListElement = CDataCharacterListElement;
@@ -1267,4 +1267,198 @@ inline CDataPawnExpeditionInformation::CDataPawnExpeditionInformation() {
     this->m_ucSallyStatus = 0;
     this->m_ucGoldenSallyPrice = 0;
     this->m_ucChargeSallyPrice = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataBattleResultInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataBattleResultInfo::DTI);
+}
+
+inline void* CDataBattleResultInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataBattleResultInfo::DTI)->memAlloc(sz, align, ::CDataBattleResultInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanConciergeInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanConciergeInfo::DTI);
+}
+
+inline void* CDataClanConciergeInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanConciergeInfo::DTI)->memAlloc(sz, align, ::CDataClanConciergeInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanConciergeNpc::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanConciergeNpc::DTI);
+}
+
+inline MtAllocator* CDataClanDungeonInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanDungeonInfo::DTI);
+}
+
+inline void* CDataClanDungeonInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanDungeonInfo::DTI)->memAlloc(sz, align, ::CDataClanDungeonInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanFunctionInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanFunctionInfo::DTI);
+}
+
+inline void* CDataClanFunctionInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanFunctionInfo::DTI)->memAlloc(sz, align, ::CDataClanFunctionInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanHistoryElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanHistoryElement::DTI);
+}
+
+inline CDataClanHistoryElement::CDataClanHistoryElement() {
+    this->m_llDate = 0;
+    this->m_ucType = 0;
+    this->m_unValue3 = 0;
+    this->m_unValue1 = 0;
+    this->m_unValue2 = 0;
+    this->m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* CDataClanJoinRequest::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanJoinRequest::DTI);
+}
+
+inline CDataClanJoinRequest::CDataClanJoinRequest() {
+    this->m_unClanID = 0;
+    this->m_llCreated = 0;
+    this->m_CommunityCharacterBaseInfo.m_wstrClanName.value = nullptr;
+    this->m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* CDataClanMemberInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanMemberInfo::DTI);
+}
+
+inline MtAllocator* CDataClanParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanParam::DTI);
+}
+
+inline MtAllocator* CDataClanPartnerPawnInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanPartnerPawnInfo::DTI);
+}
+
+inline void* CDataClanPartnerPawnInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanPartnerPawnInfo::DTI)->memAlloc(sz, align, ::CDataClanPartnerPawnInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanScoutEntryInviteInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanScoutEntryInviteInfo::DTI);
+}
+
+inline CDataClanScoutEntryInviteInfo::CDataClanScoutEntryInviteInfo() {
+    this->m_unID = 0;
+    this->m_unClanID = 0;
+    this->m_llCreated = 0;
+    this->m_BaseInfo.m_wstrClanName.value = nullptr;
+    this->m_BaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_BaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* CDataClanScoutEntryParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanScoutEntryParam::DTI);
+}
+
+inline void* CDataClanScoutEntryParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanScoutEntryParam::DTI)->memAlloc(sz, align, ::CDataClanScoutEntryParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanScoutEntrySearchResult::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanScoutEntrySearchResult::DTI);
+}
+
+inline MtAllocator* CDataClanSearchParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanSearchParam::DTI);
+}
+
+inline void* CDataClanSearchParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanSearchParam::DTI)->memAlloc(sz, align, ::CDataClanSearchParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanSearchResult::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanSearchResult::DTI);
+}
+
+inline CDataClanSearchResult::CDataClanSearchResult() {
+    this->m_unClanID = 0;
+    this->m_ucEmblemMarkType = 0;
+    this->m_ucEmblemBaseType = 0;
+    this->m_ucEmblemBaseMainColor = 0;
+    this->m_ucEmblemBaseSubColor = 0;
+    this->m_unMasterCharacterID = 0;
+    this->m_usLv = 0;
+    this->m_usMemberNum = 0;
+    this->m_unMotto = 0;
+    this->m_llCreated = 0;
+    this->m_MasterCharacterName.m_wstrLastName.value = nullptr;
+    this->m_MasterCharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* CDataClanServerParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanServerParam::DTI);
+}
+
+inline MtAllocator* CDataClanShopBuffInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanShopBuffInfo::DTI);
+}
+
+inline MtAllocator* CDataClanShopBuffItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanShopBuffItem::DTI);
+}
+
+inline MtAllocator* CDataClanShopConciergeItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanShopConciergeItem::DTI);
+}
+
+inline MtAllocator* CDataClanShopFunctionInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanShopFunctionInfo::DTI);
+}
+
+inline MtAllocator* CDataClanShopFunctionItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanShopFunctionItem::DTI);
+}
+
+inline MtAllocator* CDataClanShopInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanShopInfo::DTI);
+}
+
+inline void* CDataClanShopInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanShopInfo::DTI)->memAlloc(sz, align, ::CDataClanShopInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanShopLineupName::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanShopLineupName::DTI);
+}
+
+inline MtAllocator* CDataClanUserParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanUserParam::DTI);
+}
+
+inline void* CDataClanUserParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanUserParam::DTI)->memAlloc(sz, align, ::CDataClanUserParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataClanValueInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataClanValueInfo::DTI);
+}
+
+inline MtAllocator* CDataPawnExpeditionClanSallySpotInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnExpeditionClanSallySpotInfo::DTI);
+}
+
+inline MtAllocator* CDataPawnExpeditionInformation::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnExpeditionInformation::DTI);
+}
+
+inline void* CDataPawnExpeditionInformation::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnExpeditionInformation::DTI)->memAlloc(sz, align, ::CDataPawnExpeditionInformation::DTI.::MtDTI::getID());
 }

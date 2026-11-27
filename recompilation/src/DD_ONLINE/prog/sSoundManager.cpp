@@ -45,6 +45,7 @@
 #include "../../XFramework/uBaseModel.h"
 #include "uCharacter.h"
 #include "uControl.h"
+#include "uControlNpc.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
@@ -89,8 +90,66 @@ __attribute__((weak)) void sSoundManager::clear_222() {
 }
 
 __attribute__((weak)) void sSoundManager::move_222() {
-    DDON_STUB("sSoundManager::move_222")
-    /* stub */
+    if (mIsEm_222) {
+        if (sPlayerManager::getInstance()->getMyPlayer() != nullptr) {
+            if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isSplitSbc(sPlayerManager::getInstance()->getMyPlayer()->mPos)) {
+                u32 t0 = getEmState();
+                if (mEmState[0] != t0) {
+                    mEmState[3] = mEmState[2];
+                    mEmState[2] = mEmState[1];
+                    mEmState[1] = mEmState[0];
+                    mEmState[0] = t0;
+                }
+            }
+        }
+    }
+    updateBtlState();
+    if (mIsBtl_222) {
+        updateBtl();
+    }
+    if (mIsStage_222) {
+        updateStg();
+    }
+    if (mIsFsm_222) {
+        updateFsm();
+    }
+    if (mIsQuest_222) {
+        updateQuest();
+    }
+    if (mIsEvent_222) {
+        if (sPlayerManager::getInstance()->getMyPlayer() != nullptr) {
+            if (static_cast<aStage*>(sArea::getInstance()->mpArea[2])->isSplitSbc(sPlayerManager::getInstance()->getMyPlayer()->mPos)) {
+                if (mEventState[0] != 0) {
+                    mEventState[3] = mEventState[2];
+                    mEventState[2] = mEventState[1];
+                    mEventState[1] = mEventState[0];
+                    mEventState[0] = 0;
+                }
+            }
+        }
+    }
+    if (mpMusicNpc != nullptr) {
+        if (!mpMusicNpc->isEnable()) {
+            mpMusicNpc = nullptr;
+        }
+    }
+    u32 num = mEmSetState.mLength;
+    if (num != 0) {
+        for (unsigned int i7_1 = 0;;) {
+            if (mEmSetState.getBuffer()[static_cast<int>(i7_1)] != nullptr) {
+                if (static_cast<cEmSetState*>(mEmSetState.getBuffer()[static_cast<int>(i7_1)])->mpuChr != nullptr) {
+                    if (!static_cast<cEmSetState*>(mEmSetState.getBuffer()[static_cast<int>(i7_1)])->mpuChr->isEnable()) {
+                        static_cast<cEmSetState*>(mEmSetState.getBuffer()[static_cast<int>(i7_1)])->mpuChr = nullptr;
+                    }
+                }
+            }
+            if (num != (i7_1 + 1u)) {
+                i7_1 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sSoundManager::stopBtl() {
@@ -106,20 +165,6 @@ __attribute__((weak)) void sSoundManager::updateBtl() {
 __attribute__((weak)) void sSoundManager::updateBtlBGMTemp() {
     DDON_STUB("sSoundManager::updateBtlBGMTemp")
     /* stub */
-}
-
-inline void sSoundManager::setBtlStqr(rSoundStreamRequest* pr) {
-    if (pr == mprBtl) {
-        return;
-    }
-    if (mprBtl != nullptr) {
-        mprBtl->release();
-        mprBtl = nullptr;
-    }
-    if (pr != nullptr) {
-        pr->addRef();
-    }
-    mprBtl = pr;
 }
 
 void sSoundManager::resumeBtl(rSoundStreamRequest* prBtl, u32 reqNo) {
@@ -269,8 +314,12 @@ u32 sSoundManager::getBattleInfoNum() const {
     return mEmSetState.mLength;
 }
 
-__attribute__((weak)) const uDDOModel* sSoundManager::getBattleInfoUnit(u32 index) const {
-    DDON_STUB("sSoundManager::getBattleInfoUnit")
+const uDDOModel* sSoundManager::getBattleInfoUnit(u32 index) const {
+    if (index < mEmSetStateBtl.mLength) {
+        if (mEmSetStateBtl.mpArray[index] != nullptr) {
+            return mEmSetStateBtl[index]->mpuChr;
+        }
+    }
     return nullptr;
 }
 
@@ -358,20 +407,6 @@ __attribute__((weak)) void sSoundManager::updateStgBGMTemp() {
 __attribute__((weak)) void sSoundManager::releaseStg() {
     DDON_STUB("sSoundManager::releaseStg")
     /* stub */
-}
-
-inline void sSoundManager::setStgStqr(rSoundStreamRequest* pr) {
-    if (pr == mprStg) {
-        return;
-    }
-    if (mprStg != nullptr) {
-        mprStg->release();
-        mprStg = nullptr;
-    }
-    if (pr != nullptr) {
-        pr->addRef();
-    }
-    mprStg = pr;
 }
 
 void sSoundManager::reqAreaChg() {
@@ -534,21 +569,6 @@ void sSoundManager::resumeCycle(rSoundStreamRequest* prStg, u32 reqNo) {
     }
 }
 
-inline void sSoundManager::flushCycle() {
-    if (mprCyclePause == nullptr) {
-        return;
-    }
-    if (mCycleReqNoPause == 0xFFFFFFFFu) {
-        return;
-    }
-    mbCyclePause = false;
-    mbCyclePauseNoBgm = false;
-    mprCyclePause->release();
-    mprCyclePause = nullptr;
-    mCycleReqNoPause = 0xFFFFFFFF;
-    mCyclePausePos = 0;
-}
-
 __attribute__((weak)) void sSoundManager::updateFsm() {
     DDON_STUB("sSoundManager::updateFsm")
     /* stub */
@@ -658,20 +678,6 @@ __attribute__((weak)) void sSoundManager::endQuestReq(bool isNotNormal) {
     /* stub */
 }
 
-inline void sSoundManager::setQuestStqr(rSoundStreamRequest* pr) {
-    if (pr == mprQuest) {
-        return;
-    }
-    if (mprQuest != nullptr) {
-        mprQuest->release();
-        mprQuest = nullptr;
-    }
-    if (pr != nullptr) {
-        pr->addRef();
-    }
-    mprQuest = pr;
-}
-
 inline void sSoundManager::updateEvent() {
     if ((sPlayerManager::mpInstance)->mpMyPlayer == nullptr) {
         return;
@@ -777,34 +783,6 @@ void sSoundManager::endJukeBox() {
     mIsJukeBoxChg = false;
 }
 
-inline void sSoundManager::setBarStqr(rSoundStreamRequest* pr) {
-    if (pr == mprBar) {
-        return;
-    }
-    if (mprBar != nullptr) {
-        mprBar->release();
-        mprBar = nullptr;
-    }
-    if (pr != nullptr) {
-        pr->addRef();
-    }
-    mprBar = pr;
-}
-
-inline void sSoundManager::setBaseStqr(rSoundStreamRequest* pr) {
-    if (pr == mprBase) {
-        return;
-    }
-    if (mprBase != nullptr) {
-        mprBase->release();
-        mprBase = nullptr;
-    }
-    if (pr != nullptr) {
-        pr->addRef();
-    }
-    mprBase = pr;
-}
-
 void sSoundManager::setCycleZone(bool v) {
     if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
@@ -900,16 +878,8 @@ const MtDTI& sSoundManager::getDTI() const {
     return sSoundManager::DTI;
 }
 
-inline MtAllocator* sSoundManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sSoundManager::DTI);
-}
-
 void* sSoundManager::operator new(size_t sz, u32 align) {
     return sSoundManager::getAllocator()->memAlloc(sz, align, sSoundManager::DTI.getID());
-}
-
-inline void sSoundManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSoundManager::DTI)->memFree(p_addr);
 }
 
 sSoundManager::sSoundManager() {
@@ -926,9 +896,11 @@ void sSoundManager::createProperty(MtPropertyList& s) {
     this->cSystem::createProperty(s);
 }
 
-__attribute__((weak)) void sSoundManager::init() {
-    DDON_STUB("sSoundManager::init")
-    /* stub */
+void sSoundManager::init() {
+    mAmbType = sWeatherManager::WEATHER_PHASE_DAY;
+    mFadeOutSpd = 2000;
+    mpMusicNpc = nullptr;
+    clear_222();
 }
 
 __attribute__((weak)) void sSoundManager::reset() {
@@ -948,14 +920,6 @@ sSoundManager* sSoundManager::mpInstance;
 
 const MtDTI& sSoundManager::cEmSetState::getDTI() const {
     return sSoundManager::cEmSetState::DTI;
-}
-
-inline void* sSoundManager::cEmSetState::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sSoundManager::cEmSetState::DTI)->memAlloc(sz, align, sSoundManager::cEmSetState::DTI.getID());
-}
-
-inline void sSoundManager::cEmSetState::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSoundManager::cEmSetState::DTI)->memFree(p_addr);
 }
 
 sSoundManager::cEmSetState::~cEmSetState() {

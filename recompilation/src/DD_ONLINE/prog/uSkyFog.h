@@ -172,3 +172,39 @@ inline void* cCommonSkyFogData::operator new(size_t sz, void* p_addr) {
 inline void* cDayNightColorFogParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCommonSkyFogData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCommonSkyFogData::DTI);
+}
+
+inline void* cCommonSkyFogData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCommonSkyFogData::DTI)->memAlloc(sz, align, ::cCommonSkyFogData::DTI.::MtDTI::getID());
+}
+
+inline cCommonSkyFogData::cCommonSkyFogData() {
+    this->mIsEnable = false;
+    this->mColor.x = ::MtVector3::One.x;
+    this->mColor.y = ::MtVector3::One.y;
+    this->mColor.z = ::MtVector3::One.z;
+    this->mColor.pad_ = 0.0f;
+    this->mIntensity = 1.0f;
+    this->mDensity = 1.0f;
+    this->mExponentDensity = 1.0f;
+    this->mStart = 1000.0f;
+    this->mEnd = 3000.0f;
+    this->mSupplementFrame = 30.0f;
+    this->mKind = 0;
+    this->mId = 0;
+}
+
+inline void* cDayNightColorFogParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDayNightColorFogParam::DTI)->memAlloc(sz, align, ::cDayNightColorFogParam::DTI.::MtDTI::getID());
+}
+
+inline void cDayNightColorFogParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cDayNightColorFogParam::DTI)->memFree(p_addr);
+}

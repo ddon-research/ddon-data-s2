@@ -22,10 +22,6 @@ const MtDTI& cAIPawnSkillParamNode::getDTI() const {
     return cAIPawnSkillParamNode::DTI;
 }
 
-inline void cAIPawnSkillParamNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIPawnSkillParamNode::DTI)->memFree(p_addr);
-}
-
 cAIPawnSkillParamNode::~cAIPawnSkillParamNode() {
 }
 
@@ -78,14 +74,6 @@ __attribute__((weak)) MtObject* cAIPawnSkillParamNode::MyDTI::newInstance() cons
 
 const MtDTI& rAIPawnSkillParamTbl::getDTI() const {
     return rAIPawnSkillParamTbl::DTI;
-}
-
-inline void* rAIPawnSkillParamTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAIPawnSkillParamTbl::DTI)->memAlloc(sz, align, rAIPawnSkillParamTbl::DTI.getID());
-}
-
-inline void rAIPawnSkillParamTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIPawnSkillParamTbl::DTI)->memFree(p_addr);
 }
 
 rAIPawnSkillParamTbl::~rAIPawnSkillParamTbl() {

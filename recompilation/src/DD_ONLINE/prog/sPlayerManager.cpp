@@ -39,6 +39,7 @@
 #include "sContextManager.h"
 #include "sGame.h"
 #include "../../XFramework/sMain.h"
+#include "sMyRoom.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sUnitExt.h"
@@ -55,16 +56,8 @@ const MtDTI& sPlayerManager::getDTI() const {
     return sPlayerManager::DTI;
 }
 
-inline MtAllocator* sPlayerManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sPlayerManager::DTI);
-}
-
 void* sPlayerManager::operator new(size_t sz, u32 align) {
     return sPlayerManager::getAllocator()->memAlloc(sz, align, sPlayerManager::DTI.getID());
-}
-
-inline void sPlayerManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sPlayerManager::DTI)->memFree(p_addr);
 }
 
 sPlayerManager::sPlayerManager() {

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rNpcCustomSkill.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cNpcCustomSkill::getDTI() const {
     return cNpcCustomSkill::DTI;
-}
-
-inline void* cNpcCustomSkill::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cNpcCustomSkill::DTI)->memAlloc(sz, align, cNpcCustomSkill::DTI.getID());
-}
-
-inline void cNpcCustomSkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNpcCustomSkill::DTI)->memFree(p_addr);
 }
 
 void cNpcCustomSkill::createProperty(MtPropertyList& s) {
@@ -48,14 +38,6 @@ MtObject* cNpcCustomSkill::MyDTI::newInstance() const {
 
 const MtDTI& rNpcCustomSkill::getDTI() const {
     return rNpcCustomSkill::DTI;
-}
-
-inline void* rNpcCustomSkill::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNpcCustomSkill::DTI)->memAlloc(sz, align, rNpcCustomSkill::DTI.getID());
-}
-
-inline void rNpcCustomSkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcCustomSkill::DTI)->memFree(p_addr);
 }
 
 bool rNpcCustomSkill::loadData(MtDataReader& in, cNpcCustomSkill* pData) {

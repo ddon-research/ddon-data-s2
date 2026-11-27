@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEnemyStatusChange.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cEnemyStatusChange::getDTI() const {
     return cEnemyStatusChange::DTI;
-}
-
-inline void* cEnemyStatusChange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEnemyStatusChange::DTI)->memAlloc(sz, align, cEnemyStatusChange::DTI.getID());
-}
-
-inline void cEnemyStatusChange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEnemyStatusChange::DTI)->memFree(p_addr);
 }
 
 bool cEnemyStatusChange::IsTypeCheckMaster(u32 type, u32 changeStatus) {
@@ -67,14 +57,6 @@ MtObject* cEnemyStatusChange::MyDTI::newInstance() const {
 
 const MtDTI& rEnemyStatusChange::getDTI() const {
     return rEnemyStatusChange::DTI;
-}
-
-inline void* rEnemyStatusChange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEnemyStatusChange::DTI)->memAlloc(sz, align, rEnemyStatusChange::DTI.getID());
-}
-
-inline void rEnemyStatusChange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEnemyStatusChange::DTI)->memFree(p_addr);
 }
 
 bool rEnemyStatusChange::loadData(MtDataReader& in, cEnemyStatusChange* pData) {

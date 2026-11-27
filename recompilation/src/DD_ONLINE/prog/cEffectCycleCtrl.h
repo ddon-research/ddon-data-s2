@@ -15,11 +15,6 @@ class MtPropertyList;
 class cEfcHandle;
 class uDDOModel;
 
-// Declarations
-class cCyclePartInfo;
-class cCyclePartReqInfo;
-class cEffectCycleCtrl;
-
 namespace nEffectCycle {
     enum CYCLE_PART_KILL_PAHSE
     {
@@ -49,6 +44,11 @@ namespace nEffectCycle {
         PART_TYPE_EFFCT_CALL = 2,
     };
 }  // namespace nEffectCycle
+
+// Declarations
+class cCyclePartInfo;
+class cCyclePartReqInfo;
+class cEffectCycleCtrl;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -264,4 +264,47 @@ inline cCyclePartReqInfo::cCyclePartReqInfo() {
 
 inline void* cEffectCycleCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uDDOModel.h"
+
+inline void* cCyclePartInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCyclePartInfo::DTI)->memAlloc(sz, align, ::cCyclePartInfo::DTI.::MtDTI::getID());
+}
+
+inline void cCyclePartInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCyclePartInfo::DTI)->memFree(p_addr);
+}
+
+inline void cCyclePartInfo::getInfoFromReq(cCyclePartReqInfo& reqInfo) {
+    this->mEffLoopTimer = reqInfo.mEffLoopTime;
+    this->mEffLoopTimerMax = this->mEffLoopTimer;
+    this->mEpvIndex = reqInfo.mEpvIndex;
+    this->mEpvElement = reqInfo.mEpvElement;
+    this->mIsEffect = reqInfo.mIsEffect;
+    this->mEpvFinishIndex = reqInfo.mEpvFinishIndex;
+    this->mEpvFinishElement = reqInfo.mEpvFinishElement;
+    this->mIsEndEffect = reqInfo.mIsEndEffect;
+    this->mOutLineIndex = reqInfo.mOutLineIndex;
+    this->mIsOutLine = reqInfo.mIsOutLine;
+    this->mPartType = reqInfo.mPartType;
+}
+
+inline void cCyclePartInfo::callOutLine() {
+    this->mpModel->::uDDOModel::requestOutline(static_cast<u32>(this->mOutLineIndex));
+}
+
+inline void* cCyclePartReqInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCyclePartReqInfo::DTI)->memAlloc(sz, align, ::cCyclePartReqInfo::DTI.::MtDTI::getID());
+}
+
+inline void cCyclePartReqInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCyclePartReqInfo::DTI)->memFree(p_addr);
+}
+
+inline void cEffectCycleCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEffectCycleCtrl::DTI)->memFree(p_addr);
 }

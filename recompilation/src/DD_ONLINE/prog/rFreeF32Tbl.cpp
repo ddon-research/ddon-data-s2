@@ -16,19 +16,6 @@ const MtDTI& rFreeF32Tbl::getDTI() const {
     return rFreeF32Tbl::DTI;
 }
 
-inline void* rFreeF32Tbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFreeF32Tbl::DTI)->memAlloc(sz, align, rFreeF32Tbl::DTI.getID());
-}
-
-inline void rFreeF32Tbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFreeF32Tbl::DTI)->memFree(p_addr);
-}
-
-inline rFreeF32Tbl::rFreeF32Tbl() {
-    setAttribute(16u);
-    mpHeader = nullptr;
-}
-
 rFreeF32Tbl::~rFreeF32Tbl() {
     if (mpHeader == nullptr) {
         return;

@@ -20,19 +20,6 @@ const MtDTI& cZoneListenerEffect::getDTI() const {
     return cZoneListenerEffect::DTI;
 }
 
-inline void* cZoneListenerEffect::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneListenerEffect::DTI)->memAlloc(sz, align, cZoneListenerEffect::DTI.getID());
-}
-
-inline void cZoneListenerEffect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneListenerEffect::DTI)->memFree(p_addr);
-}
-
-inline cZoneListenerEffect::cZoneListenerEffect() {
-    mbHited = false;
-    mCheckPos = MtVector3::Zero;
-}
-
 MtVector3 cZoneListenerEffect::myPos() {
     return mCheckPos;
 }
@@ -47,10 +34,6 @@ MtObject* cZoneListenerEffect::MyDTI::newInstance() const {
 
 const MtDTI& cZoneListenerEffectColor::getDTI() const {
     return cZoneListenerEffectColor::DTI;
-}
-
-inline void cZoneListenerEffectColor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneListenerEffectColor::DTI)->memFree(p_addr);
 }
 
 cZoneListenerEffectColor::cZoneListenerEffectColor() {
@@ -112,10 +95,6 @@ const MtDTI& cZoneListenerEffectEFL::getDTI() const {
     return cZoneListenerEffectEFL::DTI;
 }
 
-inline void cZoneListenerEffectEFL::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneListenerEffectEFL::DTI)->memFree(p_addr);
-}
-
 cZoneListenerEffectEFL::cZoneListenerEffectEFL() {
     DDON_STUB("cZoneListenerEffectEFL::cZoneListenerEffectEFL")
     /* stub */
@@ -139,9 +118,18 @@ MtVector3 cZoneListenerEffectEFL::myPos() {
     return mCheckPos;
 }
 
-__attribute__((weak)) void cZoneListenerEffectEFL::resetParam() {
-    DDON_STUB("cZoneListenerEffectEFL::resetParam")
-    /* stub */
+void cZoneListenerEffectEFL::resetParam() {
+    mpElement = nullptr;
+    mCheckPos.x = MtVector3::Zero.x;
+    mCheckPos.y = MtVector3::Zero.y;
+    mCheckPos.z = MtVector3::Zero.z;
+    mCheckPos.pad_ = 0.0f;
+    for (u32 i = 0; i != 32; i = i + 1u) {
+        if (mpResourceSet[i] != nullptr) {
+            delete mpResourceSet[i];
+            mpResourceSet[i] = nullptr;
+        }
+    }
 }
 
 s32 cZoneListenerEffectEFL::getLayoutIndex() const {

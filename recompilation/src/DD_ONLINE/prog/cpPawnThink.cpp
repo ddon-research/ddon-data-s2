@@ -108,16 +108,8 @@ const MtDTI& cpPawnThink::getDTI() const {
     return cpPawnThink::DTI;
 }
 
-inline MtAllocator* cpPawnThink::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpPawnThink::DTI);
-}
-
 void* cpPawnThink::operator new(size_t sz, u32 align) {
     return cpPawnThink::getAllocator()->memAlloc(sz, align, cpPawnThink::DTI.getID());
-}
-
-inline void cpPawnThink::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpPawnThink::DTI)->memFree(p_addr);
 }
 
 cpPawnThink::cpPawnThink() {

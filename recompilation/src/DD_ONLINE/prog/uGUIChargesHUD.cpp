@@ -3,7 +3,7 @@
 #include "uGUIChargesHUD.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
+#include "../../MT/MtObject.h"
 #include "../../XFramework/cGUIInstance.h"
 #include "../../XFramework/cGUIObject.h"
 #include "../../XFramework/cResource.h"
@@ -20,16 +20,15 @@ const MtDTI& uGUIChargesHUD::getDTI() const {
     return uGUIChargesHUD::DTI;
 }
 
-inline MtAllocator* uGUIChargesHUD::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIChargesHUD::DTI);
-}
-
 void* uGUIChargesHUD::operator new(size_t sz, u32 align) {
     return uGUIChargesHUD::getAllocator()->memAlloc(sz, align, uGUIChargesHUD::DTI.getID());
 }
 
-inline void uGUIChargesHUD::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIChargesHUD::DTI)->memFree(p_addr);
+uGUIChargesHUD::uGUIChargesHUD() : uGUIBase(0u, false), mpGUIRes(static_cast<rGUI*>(nullptr)) {
+    mIsUseEffect = false;
+    mBaseF = mBaseF | 32u;
+    mEndType = 1;
+    setArcTag(rArchiveListArray::convTagId("uGUIChargesHUD"), 0u, false);
 }
 
 uGUIChargesHUD::~uGUIChargesHUD() {
@@ -132,8 +131,7 @@ inline uGUIChargesHUD::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size,
 
 uGUIChargesHUD::MyDTI uGUIChargesHUD::DTI("uGUIChargesHUD", &::uGUIBase::DTI, 2960ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIChargesHUD::MyDTI::newInstance() const {
-    DDON_STUB("uGUIChargesHUD::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIChargesHUD::MyDTI::newInstance() const {
+    return new (16u) uGUIChargesHUD;
 }
 

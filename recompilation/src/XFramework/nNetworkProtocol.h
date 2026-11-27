@@ -263,3 +263,47 @@ inline void* nNetwork::ProtocolStandard::operator new(size_t sz, void* p_addr) {
 inline void* nNetwork::ProtocolStandard::Queue::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline nNetwork::ProtocolStandard::Queue::Queue() {
+    this->mHeadSequence = 1;
+    this->mTailSequence = 1;
+    this->mSendSequence = 0;
+    this->mRecvSequence = 0;
+    this->mAckTime = 0;
+    this->mCutoff = 0;
+    this->mSmoothedSpace = 512;
+    this->mSmoothedUnrel = 256;
+    this->mCutoffTime = 0;
+    this->mTotal[14] = 0;
+    this->mTotal[15] = 0;
+    this->mTotal[12] = 0;
+    this->mTotal[13] = 0;
+    this->mTotal[10] = 0;
+    this->mTotal[11] = 0;
+    this->mTotal[8] = 0;
+    this->mTotal[9] = 0;
+    this->mTotal[6] = 0;
+    this->mTotal[7] = 0;
+    this->mTotal[4] = 0;
+    this->mTotal[5] = 0;
+    this->mTotal[2] = 0;
+    this->mTotal[3] = 0;
+    this->mTotal[0] = 0;
+    this->mTotal[1] = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::ProtocolStandard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::ProtocolStandard::DTI)->memFree(p_addr);
+}
+
+inline void* nNetwork::ProtocolStandard::Queue::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::ProtocolStandard::Queue::DTI)->memAlloc(sz, align, ::nNetwork::ProtocolStandard::Queue::DTI.::MtDTI::mID);
+}
+
+inline void nNetwork::ProtocolStandard::Queue::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::ProtocolStandard::Queue::DTI)->memFree(p_addr);
+}

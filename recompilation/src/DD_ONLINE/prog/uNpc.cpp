@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uNpc.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "aStage.h"
@@ -38,8 +36,11 @@
 #include "cpObjCollision.h"
 #include "cpPathFinding.h"
 #include "cpPawnThink.h"
+#include "cpRootComponent.h"
 #include "cpScrCollision.h"
 #include "cpTalk.h"
+#include "cpTalkPawn.h"
+#include "cpWaypoint.h"
 #include "../../generated/shared/nDDOModel.h"
 #include "nDDOUtility.h"
 #include "nNpc.h"
@@ -179,10 +180,6 @@ const MtDTI& uNpc::getDTI() const {
     return uNpc::DTI;
 }
 
-inline void* uNpc::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uNpc::DTI)->memAlloc(sz, align, uNpc::DTI.getID());
-}
-
 u32 uNpc::getNpcId() const {
     if (mpNpc != nullptr) {
         return mpNpc->getNpcId();
@@ -272,9 +269,26 @@ __attribute__((weak)) void uNpc::setHeadCtrl(s16 headCtrl) {
     /* stub */
 }
 
-__attribute__((weak)) void uNpc::setTouch(uDDOModel* pUnit, bool isTouchSave) {
-    DDON_STUB("uNpc::setTouch")
-    /* stub */
+void uNpc::setTouch(uDDOModel* pUnit, bool isTouchSave) {
+    this->uHuman::setTouch(pUnit, isTouchSave);
+    if (pUnit == nullptr) {
+        return;
+    }
+    cpComponent* t2 = mComponentMgr.getRootComponent();
+    if (t2 == nullptr) {
+        return;
+    }
+    nDDOModel::TOUCH_TYPE t3 = mTouchType;
+    if (t3 != nDDOModel::TOUCH_NPC) {
+        return;
+    }
+    cpTalk* pCp = static_cast<cpTalk*>(t2->find(cpTalk::DTI, true, true));
+    if (pCp == nullptr) {
+        return;
+    }
+    unsigned long t5 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pCp) + 0);
+    unsigned long t6 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t5) + 144);
+    pCp->setTouch(pUnit);
 }
 
 void uNpc::requestReleaseTouch(uDDOModel* pRelease, nDDOModel::TOUCH_RELEASE_TYPE type) {
@@ -384,9 +398,13 @@ void uNpc::controlLantern(const uControlNpc* pCtrl) {
     }
 }
 
-__attribute__((weak)) u32 uNpc::trace(MtVector3& TargetPos, MtVector3& DestPos, f32& DestDir) {
-    DDON_STUB("uNpc::trace")
-    return {};
+u32 uNpc::trace(MtVector3& TargetPos, MtVector3& DestPos, f32& DestDir) {
+    cpPathFinding* pPathFinding = static_cast<cpPathFinding*>(mComponentMgr.getRootComponent()->find(cpPathFinding::DTI, true, true));
+    if (pPathFinding != nullptr) {
+        return pPathFinding->trace(TargetPos, DestPos, DestDir);
+    } else {
+        return 0;
+    }
 }
 
 void uNpc::setInvincible(bool IsInvincible) {
@@ -425,9 +443,26 @@ __attribute__((weak)) void uNpc::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void uNpc::update() {
-    DDON_STUB("uNpc::update")
-    /* stub */
+void uNpc::update() {
+    if (getCtrl() != nullptr) {
+        if (static_cast<uControlNpc*>(getCtrl())->isInvincible()) {
+            cpComponent* v0_3 = mComponentMgr.getRootComponent()->find(cpInvincibleCtrl::DTI, true, true);
+            const MtDTI& t0 = v0_3->getDTI();
+            MT_CTSTR v0_1 = cpInvincibleCtrl::DTI.mName;
+            for (const MtDTI* v0_0 = &t0;;) {
+                if (v0_1 == v0_0->mName) {
+                    static_cast<cpInvincibleCtrl*>(v0_3)->setInvType(nObjCollision::INV_TYPE_NO_DAMAGE_NPC);
+                    return;
+                } else {
+                    if (v0_0->mpParent != nullptr) {
+                        v0_0 = v0_0->mpParent;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uNpc::move() {
@@ -454,9 +489,47 @@ __attribute__((weak)) void uNpc::changeThinkToPlayer() {
     /* stub */
 }
 
-__attribute__((weak)) void uNpc::changeThinkToEnemy() {
-    DDON_STUB("uNpc::changeThinkToEnemy")
-    /* stub */
+void uNpc::changeThinkToEnemy() {
+    cpPawnThink* p_pt = static_cast<cpPawnThink*>(mComponentMgr.getRootComponent()->find(cpPawnThink::DTI, true, true));
+    cpAISensor* p_sensor = reinterpret_cast<cpAISensor*>(p_pt);
+    cpWaypoint* pWaypointCp = reinterpret_cast<cpWaypoint*>(p_pt);
+    if (p_pt == nullptr) {
+        return;
+    }
+    cpComponent* t0 = mComponentMgr.getRootComponent()->find(cpAISensor::DTI, true, true);
+    if (t0 == nullptr) {
+        return;
+    }
+    p_pt->setActive(true);
+    t0->setActive(true);
+    p_pt->setModeHumanEnemy(getThinkData());
+    cpComponent* t1 = mComponentMgr.getRootComponent()->find(cpWaypoint::DTI, true, true);
+    if (t1 != nullptr) {
+        static_cast<cpWaypoint*>(t1)->setGoalPointNo(-1, -1, -1);
+        t1->setActive(false);
+    }
+    if (getScrCollisionPtr() != nullptr) {
+        getScrCollisionPtr()->mFilter = 0x20070808;
+        cpObjCollisionBase* t2 = getObjCollisionPtr();
+        if (t2 != nullptr) {
+            t2->mHitGroup = 1;
+            t2->mPushGroup = 0;
+            t2->killNode(15u, 1u);
+            getObjCollisionPtr()->killNode(15u, 10u);
+            getObjCollisionPtr()->createNodeFromIndex(15u, 1, false, 0xFFFFFFFFu);
+        }
+        setGpCategory(2);
+    } else {
+        cpObjCollisionBase* t2 = getObjCollisionPtr();
+        if (t2 != nullptr) {
+            t2->mHitGroup = 1;
+            t2->mPushGroup = 0;
+            t2->killNode(15u, 1u);
+            getObjCollisionPtr()->killNode(15u, 10u);
+            getObjCollisionPtr()->createNodeFromIndex(15u, 1, false, 0xFFFFFFFFu);
+        }
+        setGpCategory(2);
+    }
 }
 
 void uNpc::setCheckedCollisionBtl() {

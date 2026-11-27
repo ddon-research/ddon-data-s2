@@ -23,14 +23,6 @@ const MtDTI& cQuestGroup::getDTI() const {
     return cQuestGroup::DTI;
 }
 
-inline void* cQuestGroup::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestGroup::DTI)->memAlloc(sz, align, cQuestGroup::DTI.getID());
-}
-
-inline void cQuestGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestGroup::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) cQuestGroup::~cQuestGroup() {
     mQusetSet.deleteAll(true);
 }
@@ -63,10 +55,6 @@ const MtDTI& cQuestSet::getDTI() const {
     return cQuestSet::DTI;
 }
 
-inline void* cQuestSet::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestSet::DTI)->memAlloc(sz, align, cQuestSet::DTI.getID());
-}
-
 cQuestSet::~cQuestSet() {
     if (mpSetInfo == nullptr) {
         return;
@@ -93,14 +81,6 @@ MtObject* cQuestSet::MyDTI::newInstance() const {
 
 const MtDTI& cQuestStage::getDTI() const {
     return cQuestStage::DTI;
-}
-
-inline void* cQuestStage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestStage::DTI)->memAlloc(sz, align, cQuestStage::DTI.getID());
-}
-
-inline void cQuestStage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestStage::DTI)->memFree(p_addr);
 }
 
 cQuestStage::~cQuestStage() {
@@ -146,19 +126,6 @@ MtObject* cQuestStage::MyDTI::newInstance() const {
 
 const MtDTI& rQuestList::getDTI() const {
     return rQuestList::DTI;
-}
-
-inline void* rQuestList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rQuestList::DTI)->memAlloc(sz, align, rQuestList::DTI.getID());
-}
-
-inline void rQuestList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rQuestList::DTI)->memFree(p_addr);
-}
-
-inline rQuestList::rQuestList() {
-    setAttribute(22u);
-    mbNoDelete = false;
 }
 
 rQuestList::~rQuestList() {

@@ -43,16 +43,8 @@ const MtDTI& uGUICaplinkTalk::getDTI() const {
     return uGUICaplinkTalk::DTI;
 }
 
-inline MtAllocator* uGUICaplinkTalk::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkTalk::DTI);
-}
-
 void* uGUICaplinkTalk::operator new(size_t sz, u32 align) {
     return uGUICaplinkTalk::getAllocator()->memAlloc(sz, align, uGUICaplinkTalk::DTI.getID());
-}
-
-inline void uGUICaplinkTalk::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTalk::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkTalk::~uGUICaplinkTalk() {

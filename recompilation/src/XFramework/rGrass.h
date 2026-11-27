@@ -429,3 +429,19 @@ inline rGrass::cChainGrass::cChainGrass() : mDirection(0.32f, 0.95f, 0.08f) {
     mPower = 24.0f;
     mTheta = 0.1f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rGrass::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGrass::DTI)->memFree(p_addr);
+}
+
+inline void rGrass::cCluster::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGrass::cCluster::DTI)->memFree(p_addr);
+}
+
+inline void rGrass::cChainGrass::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGrass::cChainGrass::DTI)->memFree(p_addr);
+}

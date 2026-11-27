@@ -145,3 +145,19 @@ inline void* uGUIMouseOverCursor::operator new(size_t sz, void* p_addr) {
 inline void* uGUIMouseOverCursor::cMOC::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIMouseOverCursor::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMouseOverCursor::DTI);
+}
+
+inline void uGUIMouseOverCursor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMouseOverCursor::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMouseOverCursor::cMOC::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMouseOverCursor::cMOC::DTI)->memFree(p_addr);
+}

@@ -19,16 +19,8 @@ const MtDTI& sPadExt::getDTI() const {
     return sPadExt::DTI;
 }
 
-inline MtAllocator* sPadExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sPadExt::DTI);
-}
-
 void* sPadExt::operator new(size_t sz, u32 align) {
     return sPadExt::getAllocator()->memAlloc(sz, align, sPadExt::DTI.getID());
-}
-
-inline void sPadExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sPadExt::DTI)->memFree(p_addr);
 }
 
 sPadExt::~sPadExt() {
@@ -166,10 +158,6 @@ __attribute__((weak)) MtObject* sPadExt::MyDTI::newInstance() const {
 
 const MtDTI& sPadExt::cPadInfo::getDTI() const {
     return sPadExt::cPadInfo::DTI;
-}
-
-inline void sPadExt::cPadInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sPadExt::cPadInfo::DTI)->memFree(p_addr);
 }
 
 sPadExt::cPadInfo::cPadInfo() {

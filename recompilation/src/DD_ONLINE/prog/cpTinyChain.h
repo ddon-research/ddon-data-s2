@@ -92,3 +92,15 @@ inline void* cpTinyChain::operator new(size_t sz, void* p_addr) {
 inline void cpTinyChain::setBlendSpeedCain(f32 blendSpeed) {
     this->mBlendSpeedChain = blendSpeed;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpTinyChain::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpTinyChain::DTI);
+}
+
+inline void cpTinyChain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpTinyChain::DTI)->memFree(p_addr);
+}

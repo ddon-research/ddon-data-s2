@@ -17,10 +17,6 @@ void* nDraw::OcclusionQuery::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::OcclusionQuery::DTI)->memAlloc(sz, align, ::nDraw::OcclusionQuery::DTI.mID);
 }
 
-inline void nDraw::OcclusionQuery::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::OcclusionQuery::DTI)->memFree(p_addr);
-}
-
 u32 nDraw::OcclusionQuery::get(s32* frame) {
     return 0xFFFFFFFF;
 }
@@ -39,10 +35,6 @@ __attribute__((weak)) MtObject* nDraw::OcclusionQuery::MyDTI::newInstance() cons
 
 const MtDTI& nDraw::Query::getDTI() const {
     return nDraw::Query::DTI;
-}
-
-inline void nDraw::Query::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::Query::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void nDraw::Query::suspend() {

@@ -189,3 +189,19 @@ inline void* uMockUpModel::operator new(size_t sz, void* p_addr) {
 inline void uMockUpModel::updateBodyReq() {
     this->mUpdateBodyReq = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uMockUpModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uMockUpModel::DTI)->memFree(p_addr);
+}
+
+inline void uMockUpModel::initEquipData() {
+    this->mEquipData.::cEquipData::init();
+}
+
+inline void uMockUpModel::setEquipData(const cEquipData& equip_data) {
+    this->mEquipData = equip_data;
+}

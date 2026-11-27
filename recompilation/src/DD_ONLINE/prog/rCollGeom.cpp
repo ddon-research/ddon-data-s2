@@ -5,7 +5,6 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -21,10 +20,6 @@ extern template __attribute__((noinline)) void rTbl2<cCollGeom>::allocData(unsig
 
 const MtDTI& cCollGeom::getDTI() const {
     return cCollGeom::DTI;
-}
-
-inline void cCollGeom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCollGeom::DTI)->memFree(p_addr);
 }
 
 void cCollGeom::createProperty(MtPropertyList& s) {
@@ -59,16 +54,8 @@ const MtDTI& rCollGeom::getDTI() const {
     return rCollGeom::DTI;
 }
 
-inline MtAllocator* rCollGeom::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rCollGeom::DTI);
-}
-
 void* rCollGeom::operator new(size_t sz, u32 align) {
     return rCollGeom::getAllocator()->memAlloc(sz, align, rCollGeom::DTI.getID());
-}
-
-inline void rCollGeom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCollGeom::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rCollGeom::loadData(MtDataReader& in, cCollGeom* pData) {

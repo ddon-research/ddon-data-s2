@@ -35,16 +35,8 @@ const MtDTI& uGUIMapMini::getDTI() const {
     return uGUIMapMini::DTI;
 }
 
-inline MtAllocator* uGUIMapMini::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMapMini::DTI);
-}
-
 void* uGUIMapMini::operator new(size_t sz, u32 align) {
     return uGUIMapMini::getAllocator()->memAlloc(sz, align, uGUIMapMini::DTI.getID());
-}
-
-inline void uGUIMapMini::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMapMini::DTI)->memFree(p_addr);
 }
 
 uGUIMapMini::uGUIMapMini() {

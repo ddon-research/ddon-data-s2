@@ -122,3 +122,19 @@ inline void cPushRate::operator delete[](void* p_addr) {
 inline void* cPushRate::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPushRate::DTI)->memAlloc(sz, align, ::cPushRate::DTI.::MtDTI::getID());
 }
+
+inline void* cPushRate::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPushRate::DTI)->memAlloc(sz, align, ::cPushRate::DTI.::MtDTI::getID());
+}
+
+inline void cPushRate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPushRate::DTI)->memFree(p_addr);
+}
+
+inline void* rPushRate::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPushRate::DTI)->memAlloc(sz, align, ::rPushRate::DTI.::MtDTI::getID());
+}
+
+inline void rPushRate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPushRate::DTI)->memFree(p_addr);
+}

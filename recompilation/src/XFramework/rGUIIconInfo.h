@@ -82,3 +82,15 @@ inline rGUIIconInfo::rGUIIconInfo() {
     this->mpNameBuffer = nullptr;
     this->mpIconInfo = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rGUIIconInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memAlloc(sz, align, ::rGUIIconInfo::DTI.::MtDTI::mID);
+}
+
+inline void rGUIIconInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGUIIconInfo::DTI)->memFree(p_addr);
+}

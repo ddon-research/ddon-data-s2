@@ -1234,6 +1234,10 @@ inline u32 cSetInfoOmWarp::getDataNum() {
     return 3;
 }
 
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
 inline cSetInfoOmBadStatus::cSetInfoOmBadStatus() {
     mBadRadius = 10.0f;
     mBadHeight = 10.0f;
@@ -1354,4 +1358,92 @@ inline void* cSetInfoOmWarp::operator new(size_t sz, u32 align) {
 
 inline void* cSetInfoOmWall::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cSetInfoOmWall::DTI)->memAlloc(sz, align, cSetInfoOmWall::DTI.getID());
+}
+
+inline void* cSetInfoOm::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOm::DTI)->memAlloc(sz, align, ::cSetInfoOm::DTI.::MtDTI::getID());
+}
+
+inline void cSetInfoOm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSetInfoOm::DTI)->memFree(p_addr);
+}
+
+inline void* cSetInfoOmBlock::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmBlock::DTI)->memAlloc(sz, align, ::cSetInfoOmBlock::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmBoard::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmBoard::DTI)->memAlloc(sz, align, ::cSetInfoOmBoard::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmBowlOfLife::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmBowlOfLife::DTI)->memAlloc(sz, align, ::cSetInfoOmBowlOfLife::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmBreakTarget::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmBreakTarget::DTI)->memAlloc(sz, align, ::cSetInfoOmBreakTarget::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmCtrl::DTI)->memAlloc(sz, align, ::cSetInfoOmCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cSetInfoOmCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSetInfoOmCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cSetInfoOmCtrl::cLinkParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmCtrl::cLinkParam::DTI)->memAlloc(sz, align, ::cSetInfoOmCtrl::cLinkParam::DTI.::MtDTI::getID());
+}
+
+inline void cSetInfoOmCtrl::cLinkParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSetInfoOmCtrl::cLinkParam::DTI)->memFree(p_addr);
+}
+
+inline void* cSetInfoOmElfSW::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmElfSW::DTI)->memAlloc(sz, align, ::cSetInfoOmElfSW::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmEx::DTI)->memAlloc(sz, align, ::cSetInfoOmEx::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmFall::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmFall::DTI)->memAlloc(sz, align, ::cSetInfoOmFall::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmGather::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmGather::DTI)->memAlloc(sz, align, ::cSetInfoOmGather::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmHakuryuu::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmHakuryuu::DTI)->memAlloc(sz, align, ::cSetInfoOmHakuryuu::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmHeal::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmHeal::DTI)->memAlloc(sz, align, ::cSetInfoOmHeal::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmLadder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmLadder::DTI)->memAlloc(sz, align, ::cSetInfoOmLadder::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmLever::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmLever::DTI)->memAlloc(sz, align, ::cSetInfoOmLever::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmOldDoor::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmOldDoor::DTI)->memAlloc(sz, align, ::cSetInfoOmOldDoor::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmRange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmRange::DTI)->memAlloc(sz, align, ::cSetInfoOmRange::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmText::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmText::DTI)->memAlloc(sz, align, ::cSetInfoOmText::DTI.::MtDTI::getID());
+}
+
+inline void* cSetInfoOmTreasureBox::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoOmTreasureBox::DTI)->memAlloc(sz, align, ::cSetInfoOmTreasureBox::DTI.::MtDTI::getID());
 }

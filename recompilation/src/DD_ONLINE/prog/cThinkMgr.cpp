@@ -21,14 +21,6 @@ const MtDTI& cThinkMgrName::cTargetLink::getDTI() const {
     return cThinkMgrName::cTargetLink::DTI;
 }
 
-inline void* cThinkMgrName::cTargetLink::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cTargetLink::DTI)->memAlloc(sz, align, ::cThinkMgrName::cTargetLink::DTI.getID());
-}
-
-inline void cThinkMgrName::cTargetLink::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cTargetLink::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cThinkMgrName::cTargetLink::createProperty(MtPropertyList& s) {
 }
 
@@ -42,10 +34,6 @@ MtObject* cThinkMgrName::cTargetLink::MyDTI::newInstance() const {
 
 const MtDTI& cThinkMgrName::cThinkMgr::getDTI() const {
     return cThinkMgrName::cThinkMgr::DTI;
-}
-
-inline void cThinkMgrName::cThinkMgr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgr::DTI)->memFree(p_addr);
 }
 
 cThinkMgrName::cThinkMgr::cThinkMgr() {
@@ -173,43 +161,6 @@ const MtDTI& cThinkMgrName::cThinkMgrTargetData::getDTI() const {
     return cThinkMgrName::cThinkMgrTargetData::DTI;
 }
 
-inline void* cThinkMgrName::cThinkMgrTargetData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgrTargetData::DTI)->memAlloc(sz, align, ::cThinkMgrName::cThinkMgrTargetData::DTI.getID());
-}
-
-inline void cThinkMgrName::cThinkMgrTargetData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgrTargetData::DTI)->memFree(p_addr);
-}
-
-cThinkMgrName::cThinkMgrTargetData::cThinkMgrTargetData() {
-    mMyPos.x = ::MtVector3::Zero.x;
-    mMyPos.y = ::MtVector3::Zero.y;
-    mMyPos.z = ::MtVector3::Zero.z;
-    mMyPos.pad_ = 0.0f;
-    mTargetPos.x = ::MtVector3::Zero.x;
-    mTargetPos.y = ::MtVector3::Zero.y;
-    mTargetPos.z = ::MtVector3::Zero.z;
-    mYLength = 0.0f;
-    mAngle = 0.0f;
-    mXyzLength = 0.0f;
-    mXzLength = 0.0f;
-    mTargetPos.pad_ = 0.0f;
-    mTargetAngleY = 0.0f;
-    mMotState = 0;
-    mPriority = 0.0f;
-    mId = 0;
-    mStatusBefore = 0;
-    mStatus = 0;
-    this->mIsTargetDataAll = 0;
-    mIsTargetType = 0;
-    mTargetId = 0;
-    mpTargetChar = nullptr;
-    mTargetHandlingTypeThink = 1;
-    mTargetHandlingType = 1;
-    mLinkID = 0;
-    mLinkIdx = 0;
-}
-
 __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetData::createProperty(MtPropertyList& s) {
 }
 
@@ -270,10 +221,6 @@ MtObject* cThinkMgrName::cThinkMgrTargetData::MyDTI::newInstance() const {
 
 const MtDTI& cThinkMgrName::cThinkMgrTargetMgr::getDTI() const {
     return cThinkMgrName::cThinkMgrTargetMgr::DTI;
-}
-
-inline void cThinkMgrName::cThinkMgrTargetMgr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkMgrTargetMgr::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cThinkMgrName::cThinkMgrTargetMgr::createProperty(MtPropertyList& s) {
@@ -348,14 +295,6 @@ __attribute__((weak)) MtObject* cThinkMgrName::cThinkMgrTargetMgr::MyDTI::newIns
 
 const MtDTI& cThinkMgrName::cThinkTblList::getDTI() const {
     return cThinkMgrName::cThinkTblList::DTI;
-}
-
-inline void* cThinkMgrName::cThinkTblList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkTblList::DTI)->memAlloc(sz, align, ::cThinkMgrName::cThinkTblList::DTI.getID());
-}
-
-inline void cThinkMgrName::cThinkTblList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cThinkMgrName::cThinkTblList::DTI)->memFree(p_addr);
 }
 
 cThinkMgrName::cThinkTblList::~cThinkTblList() {

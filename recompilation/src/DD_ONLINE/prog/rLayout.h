@@ -270,3 +270,57 @@ inline void* rLayout::operator new(size_t sz, void* p_addr) {
 inline void* rLayout::SetInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rLayout::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLayout::DTI)->memAlloc(sz, align, ::rLayout::DTI.::MtDTI::getID());
+}
+
+inline void rLayout::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLayout::DTI)->memFree(p_addr);
+}
+
+inline rLayout::rLayout() {
+    this->::cResource::setAttribute(22u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+    this->mLotType = static_cast<rLayout::TYPE>(0);
+    this->mSetInfoNeedNums[20] = 0;
+    this->mSetInfoNeedNums[21] = 0;
+    this->mSetInfoNeedNums[18] = 0;
+    this->mSetInfoNeedNums[19] = 0;
+    this->mSetInfoNeedNums[16] = 0;
+    this->mSetInfoNeedNums[17] = 0;
+    this->mSetInfoNeedNums[14] = 0;
+    this->mSetInfoNeedNums[15] = 0;
+    this->mSetInfoNeedNums[12] = 0;
+    this->mSetInfoNeedNums[13] = 0;
+    this->mSetInfoNeedNums[10] = 0;
+    this->mSetInfoNeedNums[11] = 0;
+    this->mSetInfoNeedNums[8] = 0;
+    this->mSetInfoNeedNums[9] = 0;
+    this->mSetInfoNeedNums[6] = 0;
+    this->mSetInfoNeedNums[7] = 0;
+    this->mSetInfoNeedNums[4] = 0;
+    this->mSetInfoNeedNums[5] = 0;
+    this->mSetInfoNeedNums[2] = 0;
+    this->mSetInfoNeedNums[3] = 0;
+    this->mSetInfoNeedNums[0] = 0;
+    this->mSetInfoNeedNums[1] = 0;
+    this->mpSetInfoBuffer = nullptr;
+    this->mSetInfoSingleNewArray.mAutoDelete = true;
+}
+
+inline void rLayout::SetInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLayout::SetInfo::DTI)->memFree(p_addr);
+}
+
+inline rLayout::SetInfo::SetInfo() {
+    this->mID = 0;
+    this->mLayoutID.mLayoutID = 0x3FFFFFF;
+    this->mSplitID.mSplitID = 0;
+    this->mpInfo = nullptr;
+}

@@ -41,16 +41,8 @@ const MtDTI& sChat::getDTI() const {
     return sChat::DTI;
 }
 
-inline MtAllocator* sChat::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sChat::DTI);
-}
-
 void* sChat::operator new(size_t sz, u32 align) {
     return sChat::getAllocator()->memAlloc(sz, align, sChat::DTI.getID());
-}
-
-inline void sChat::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sChat::DTI)->memFree(p_addr);
 }
 
 sChat::sChat() {

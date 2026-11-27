@@ -3,7 +3,6 @@
 #include "cArcLoader.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/rArchive.h"
@@ -16,10 +15,6 @@
 
 const MtDTI& cArcLoaderBase::getDTI() const {
     return cArcLoaderBase::DTI;
-}
-
-inline MtAllocator* cArcLoaderBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cArcLoaderBase::DTI);
 }
 
 void* cArcLoaderBase::operator new(size_t sz, u32 align) {

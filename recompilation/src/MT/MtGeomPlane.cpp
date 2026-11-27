@@ -21,10 +21,6 @@ void* MtGeomPlane::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomPlane::DTI)->memAlloc(sz, align, MtGeomPlane::DTI.mID);
 }
 
-inline void MtGeomPlane::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomPlane::DTI)->memFree(p_addr);
-}
-
 void MtGeomPlane::load(MtDataReader& fin) {
     mPlane.normal.x = fin.readF32();
     mPlane.normal.y = fin.readF32();
@@ -60,10 +56,6 @@ __attribute__((weak)) MtObject* MtGeomPlane::MyDTI::newInstance() const {
 
 const MtDTI& MtGeomPlaneXZ::getDTI() const {
     return MtGeomPlaneXZ::DTI;
-}
-
-inline void MtGeomPlaneXZ::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomPlaneXZ::DTI)->memFree(p_addr);
 }
 
 void MtGeomPlaneXZ::load(MtDataReader& fin) {

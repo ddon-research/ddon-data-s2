@@ -9,6 +9,7 @@
 #include "../../MT/MtPrimitive3D.h"
 #include "cActList.h"
 #include "cDelegate.h"
+#include "cState.h"
 #include "cpActionManager.h"
 #include "cpActionRequest.h"
 #include "cpComponent.h"
@@ -33,16 +34,8 @@ const MtDTI& cpCheckWallCliff::getDTI() const {
     return cpCheckWallCliff::DTI;
 }
 
-inline MtAllocator* cpCheckWallCliff::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpCheckWallCliff::DTI);
-}
-
 void* cpCheckWallCliff::operator new(size_t sz, u32 align) {
     return cpCheckWallCliff::getAllocator()->memAlloc(sz, align, cpCheckWallCliff::DTI.getID());
-}
-
-inline void cpCheckWallCliff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpCheckWallCliff::DTI)->memFree(p_addr);
 }
 
 cpCheckWallCliff::cpCheckWallCliff() {
@@ -66,36 +59,35 @@ void cpCheckWallCliff::update() {
 }
 
 __attribute__((weak)) void cpCheckWallCliff::compMoveAfter() {
-    DDON_STUB("cpCheckWallCliff::compMoveAfter")
-    /* stub */
+    moveCheckCliff2();
+    
+    const MtVector4 t1 = mpModel->mWmat.m[3];
+    if ((mpModel->mIsPlayer || mpModel->mIsPawn) && (mpModel->mObjStatus & 1) == 0) {
+        return;
+    }
+    
+    mFallPreventionPosList.elems[3] = mFallPreventionPosList.elems[2];
+    mFallPreventionPosList.elems[2] = mFallPreventionPosList.elems[1];
+    mFallPreventionPosList.elems[1] = mFallPreventionPosList.elems[0];
+    mFallPreventionPosList.elems[0] = MtVector3(t1.x, t1.y, t1.z);
 }
 
-__attribute__((weak)) void cpCheckWallCliff::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpCheckWallCliff::applyWorldOffset")
-    /* stub */
-}
-
-void cpCheckWallCliff::resetPos(const MtVector3& pos) {
-    mFallPreventionPosList.elems[0].x = pos.x;
-    mFallPreventionPosList.elems[0].y = pos.y;
-    mFallPreventionPosList.elems[0].z = pos.z;
-    mFallPreventionPosList.elems[0].pad_ = 0.0f;
-    mFallPreventionPosList.elems[1].x = pos.x;
-    mFallPreventionPosList.elems[1].y = pos.y;
-    mFallPreventionPosList.elems[1].z = pos.z;
-    mFallPreventionPosList.elems[1].pad_ = 0.0f;
-    mFallPreventionPosList.elems[2].x = pos.x;
-    mFallPreventionPosList.elems[2].y = pos.y;
-    mFallPreventionPosList.elems[2].z = pos.z;
-    mFallPreventionPosList.elems[2].pad_ = 0.0f;
-    mFallPreventionPosList.elems[3].x = pos.x;
-    mFallPreventionPosList.elems[3].y = pos.y;
-    mFallPreventionPosList.elems[3].z = pos.z;
-    mFallPreventionPosList.elems[3].pad_ = 0.0f;
-    mFallPreventionCorrectPos.x = pos.x;
-    mFallPreventionCorrectPos.y = pos.y;
-    mFallPreventionCorrectPos.z = pos.z;
-    mFallPreventionCorrectPos.pad_ = 0.0f;
+void cpCheckWallCliff::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mFallPreventionPosList.elems[0].x = offset.x + mFallPreventionPosList.elems[0].x;
+    mFallPreventionPosList.elems[0].y = offset.y + mFallPreventionPosList.elems[0].y;
+    mFallPreventionPosList.elems[0].z = offset.z + mFallPreventionPosList.elems[0].z;
+    mFallPreventionPosList.elems[1].x = offset.x + mFallPreventionPosList.elems[1].x;
+    mFallPreventionPosList.elems[1].y = offset.y + mFallPreventionPosList.elems[1].y;
+    mFallPreventionPosList.elems[1].z = offset.z + mFallPreventionPosList.elems[1].z;
+    mFallPreventionPosList.elems[2].x = offset.x + mFallPreventionPosList.elems[2].x;
+    mFallPreventionPosList.elems[2].y = offset.y + mFallPreventionPosList.elems[2].y;
+    mFallPreventionPosList.elems[2].z = offset.z + mFallPreventionPosList.elems[2].z;
+    mFallPreventionPosList.elems[3].x = offset.x + mFallPreventionPosList.elems[3].x;
+    mFallPreventionPosList.elems[3].y = offset.y + mFallPreventionPosList.elems[3].y;
+    mFallPreventionPosList.elems[3].z = offset.z + mFallPreventionPosList.elems[3].z;
+    mFallPreventionCorrectPos.x = offset.x + mFallPreventionCorrectPos.x;
+    mFallPreventionCorrectPos.y = offset.y + mFallPreventionCorrectPos.y;
+    mFallPreventionCorrectPos.z = offset.z + mFallPreventionCorrectPos.z;
 }
 
 __attribute__((weak)) void cpCheckWallCliff::moveCheckWall() {

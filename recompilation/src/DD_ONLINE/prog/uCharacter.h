@@ -432,3 +432,18 @@ inline u32 uCharacter::getNamedNo() {
 inline const cAttackParam* uCharacter::stDmActColParam::getAttackParam() const {
     return this->mpAttackParam;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uCharacter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCharacter::DTI)->memFree(p_addr);
+}
+
+inline void uCharacter::setCheatCheckOldPos(const MtVector3& NewValue) {
+    this->mCheatCheckOldPos.x = NewValue.x;
+    this->mCheatCheckOldPos.y = NewValue.y;
+    this->mCheatCheckOldPos.z = NewValue.z;
+    this->mCheatCheckOldPos.pad_ = 0.0f;
+}

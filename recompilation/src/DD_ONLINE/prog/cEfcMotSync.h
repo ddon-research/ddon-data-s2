@@ -155,3 +155,23 @@ inline void* cEfcMotSync::operator new(size_t sz, void* p_addr) {
 inline void* cEfcMotSync::SyncManageFactor::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cEfcMotSync::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cEfcMotSync::DTI);
+}
+
+inline void cEfcMotSync::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEfcMotSync::DTI)->memFree(p_addr);
+}
+
+inline void cEfcMotSync::SyncManageFactor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
+}
+
+inline void cEfcMotSync::SyncManageFactor::operator delete[](void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
+}

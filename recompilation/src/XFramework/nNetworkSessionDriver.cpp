@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nNetworkSessionDriver.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetDevice.h"
@@ -14,6 +13,7 @@
 #include "nNetworkConnect.h"
 #include "nNetworkDatabase.h"
 #include "nNetworkMatch.h"
+#include "nNetworkMember.h"
 #include "nNetworkSession.h"
 #include "nNetworkTagChecker.h"
 #include "nNetworkUtil.h"
@@ -24,10 +24,6 @@
 
 const MtDTI& nNetwork::SessionDriver::getDTI() const {
     return nNetwork::SessionDriver::DTI;
-}
-
-inline void nNetwork::SessionDriver::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::SessionDriver::DTI)->memFree(p_addr);
 }
 
 nNetwork::SessionDriver::SessionDriver() {
@@ -53,9 +49,11 @@ __attribute__((weak)) void nNetwork::SessionDriver::move() {
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::SessionDriver::setup(nNetwork::Session* parent) {
-    DDON_STUB("nNetwork::SessionDriver::setup")
-    /* stub */
+void nNetwork::SessionDriver::setup(nNetwork::Session* parent) {
+    mpParent = parent;
+    mReceiver.mpObject = static_cast<MtObject*>(this);
+    mReceiver.mpCallback = &::nNetwork::SessionDriver::receiveCore;
+    parent->mCallback.set(1, static_cast<nNetwork::ReceiverBase*>(&mReceiver), false, true);
 }
 
 void nNetwork::SessionDriver::removeDriver() {
@@ -108,9 +106,15 @@ void nNetwork::SessionDriver::onNtcMemberJoin(s32 index, MtNetSession::Member* m
     mpParent->onJoinMember(index, member);
 }
 
-__attribute__((weak)) void nNetwork::SessionDriver::onNtcMemberLeave(s32 index, MtNetSession::Member* member) {
-    DDON_STUB("nNetwork::SessionDriver::onNtcMemberLeave")
-    /* stub */
+void nNetwork::SessionDriver::onNtcMemberLeave(s32 index, MtNetSession::Member* member) {
+    if (mpParent->mpDatabase->mSelfIndex != index) {
+        mpParent->mTagChecker.onLeaveMember(index, member);
+        mpParent->onLeaveMember(index, member);
+        nNetwork::Connect* t0 = mpParent->mpConnect;
+        t0->removeRoute((::sNetwork::mpInstance)->::sNetwork::getSessionDatabase()->mMemberList[index].mRouteIndex, static_cast<MtNetError*>(nullptr));
+        mpParent->mpDatabase->deleteMemberData(index, member);
+        mpParent->mpDatabase->updateSessionInfo(mpDriver, false, false);
+    }
 }
 
 void nNetwork::SessionDriver::onNtcHostChange(s32 index, MtNetSession::Member* member) {

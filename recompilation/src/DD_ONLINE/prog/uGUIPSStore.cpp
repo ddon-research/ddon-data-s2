@@ -38,16 +38,8 @@ const MtDTI& uGUIPSStore::getDTI() const {
     return uGUIPSStore::DTI;
 }
 
-inline MtAllocator* uGUIPSStore::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPSStore::DTI);
-}
-
 void* uGUIPSStore::operator new(size_t sz, u32 align) {
     return uGUIPSStore::getAllocator()->memAlloc(sz, align, uGUIPSStore::DTI.getID());
-}
-
-inline void uGUIPSStore::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPSStore::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIPSStore::~uGUIPSStore() {
@@ -549,24 +541,155 @@ void uGUIPSStore::psstoreEventShiftHistory() {
     }
 }
 
-__attribute__((weak)) void uGUIPSStore::checkRequestList() {
-    DDON_STUB("uGUIPSStore::checkRequestList")
-    /* stub */
+void uGUIPSStore::checkRequestList() {
+    s32 posIndex = mCategoryCtrlMgr.getCurrentPos(0u);
+    if (posIndex == 1) {
+        if (!mIsGetHistoryItems) {
+            mHistoryScrlList.clear();
+            if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIPSStore::requestServerHistoryList);
+                mServerCommandStatusRsv = 490;
+                mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIPSStore::initHisotryCallback);
+                mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            } else {
+                mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIPSStore::requestServerHistoryList);
+                mServerCommandStatus = 490;
+                mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIPSStore::initHisotryCallback);
+                mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                mServerRno = 0;
+                mServerResult = 0;
+            }
+        }
+    } else {
+        if (posIndex == 0) {
+            if (!mIsGetStationItems) {
+                mStationScrlList.clear();
+                if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+                    mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIPSStore::requestServerStationList);
+                    mServerCommandStatusRsv = 488;
+                    mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIPSStore::initStationCallback);
+                    mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                } else {
+                    mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIPSStore::requestServerStationList);
+                    mServerCommandStatus = 488;
+                    mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIPSStore::initStationCallback);
+                    mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+                    mServerRno = 0;
+                    mServerResult = 0;
+                }
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uGUIPSStore::initStationCallback() {
-    DDON_STUB("uGUIPSStore::initStationCallback")
-    /* stub */
+void uGUIPSStore::initStationCallback() {
+    DLCLineupBoughtVec* pStationItems = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDLCLineupBoughts();
+    if (pStationItems != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->mIsNoUseDLC = pStationItems->mLength != 0;
+        mIsGetStationItems = true;
+        cGUIInstAnimation* t0 = mpStationScrollBar;
+        cGUIInstance* t1 = getInstance(27u, false);
+        cGUIObject* t2 = getObjectFromId(25u, 3u);
+        mStationScrlList.mpOwner = static_cast<uGUIBase*>(this);
+        mStationScrlList.mpSetupFunc = static_cast<cScrollList::SetupFunc>(&::uGUIPSStore::updateStationItemDisp);
+        mStationScrlList.mpHideFunc = static_cast<cScrollList::HideFunc>(&::uGUIPSStore::updateStationItemHide);
+        mStationScrlList.mBar.setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t0), t2);
+        mStationScrlList.mpInstNullScroll = static_cast<cGUIInstNull*>(t1);
+        if (t0 != nullptr) {
+            t0->setVisible(false);
+        }
+        setupStationScrollInfo();
+        setFlow(static_cast<s32>(mDlcFlow));
+    } else {
+        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIPSStore::requestServerStationList);
+            mServerCommandStatusRsv = 488;
+            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIPSStore::initStationCallback);
+            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        } else {
+            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIPSStore::requestServerStationList);
+            mServerCommandStatus = 488;
+            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIPSStore::initStationCallback);
+            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            mServerRno = 0;
+            mServerResult = 0;
+        }
+    }
 }
 
-__attribute__((weak)) void uGUIPSStore::initHisotryCallback() {
-    DDON_STUB("uGUIPSStore::initHisotryCallback")
-    /* stub */
+void uGUIPSStore::initHisotryCallback() {
+    DLCLineupHistoryVec* pHisotryItems = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDLCLineupHistorys();
+    if (pHisotryItems != nullptr) {
+        mIsGetHistoryItems = true;
+        cGUIInstAnimation* t0 = mpHistoryScrollBar;
+        cGUIInstance* t1 = getInstance(60u, false);
+        cGUIObject* t2 = getObjectFromId(59u, 3u);
+        mHistoryScrlList.mpOwner = static_cast<uGUIBase*>(this);
+        mHistoryScrlList.mpSetupFunc = static_cast<cScrollList::SetupFunc>(&::uGUIPSStore::updateHistoryItemDisp);
+        mHistoryScrlList.mpHideFunc = static_cast<cScrollList::HideFunc>(&::uGUIPSStore::updateHistoryItemHide);
+        mHistoryScrlList.mBar.setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t0), t2);
+        mHistoryScrlList.mpInstNullScroll = static_cast<cGUIInstNull*>(t1);
+        if (t0 != nullptr) {
+            t0->setVisible(false);
+        }
+        setupHistoryScrollInfo();
+        setFlow(static_cast<s32>(mDlcFlow));
+    } else {
+        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIPSStore::requestServerStationList);
+            mServerCommandStatusRsv = 488;
+            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIPSStore::initStationCallback);
+            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        } else {
+            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIPSStore::requestServerStationList);
+            mServerCommandStatus = 488;
+            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIPSStore::initStationCallback);
+            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            mServerRno = 0;
+            mServerResult = 0;
+        }
+    }
 }
 
-__attribute__((weak)) void uGUIPSStore::initRequestCallback() {
-    DDON_STUB("uGUIPSStore::initRequestCallback")
-    /* stub */
+void uGUIPSStore::initRequestCallback() {
+    cGUIInstAnimation* t0 = mpStationScrollBar;
+    cGUIInstance* t1 = getInstance(27u, false);
+    cGUIObject* t2 = getObjectFromId(25u, 3u);
+    mStationScrlList.mpOwner = static_cast<uGUIBase*>(this);
+    mStationScrlList.mpSetupFunc = static_cast<cScrollList::SetupFunc>(&::uGUIPSStore::updateStationItemDisp);
+    mStationScrlList.mpHideFunc = static_cast<cScrollList::HideFunc>(&::uGUIPSStore::updateStationItemHide);
+    mStationScrlList.mBar.setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t0), t2);
+    mStationScrlList.mpInstNullScroll = static_cast<cGUIInstNull*>(t1);
+    if (t0 != nullptr) {
+        t0->setVisible(false);
+        setupStationScrollInfo();
+        cGUIInstAnimation* t3 = mpHistoryScrollBar;
+        cGUIInstance* t4 = getInstance(60u, false);
+        cGUIObject* t5 = getObjectFromId(59u, 3u);
+        mHistoryScrlList.mpOwner = static_cast<uGUIBase*>(this);
+        mHistoryScrlList.mpSetupFunc = static_cast<cScrollList::SetupFunc>(&::uGUIPSStore::updateHistoryItemDisp);
+        mHistoryScrlList.mpHideFunc = static_cast<cScrollList::HideFunc>(&::uGUIPSStore::updateHistoryItemHide);
+        mHistoryScrlList.mBar.setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t3), t5);
+        mHistoryScrlList.mpInstNullScroll = static_cast<cGUIInstNull*>(t4);
+        if (t3 != nullptr) {
+            t3->setVisible(false);
+        }
+        setupHistoryScrollInfo();
+    } else {
+        setupStationScrollInfo();
+        cGUIInstAnimation* t3 = mpHistoryScrollBar;
+        cGUIInstance* t4 = getInstance(60u, false);
+        cGUIObject* t5 = getObjectFromId(59u, 3u);
+        mHistoryScrlList.mpOwner = static_cast<uGUIBase*>(this);
+        mHistoryScrlList.mpSetupFunc = static_cast<cScrollList::SetupFunc>(&::uGUIPSStore::updateHistoryItemDisp);
+        mHistoryScrlList.mpHideFunc = static_cast<cScrollList::HideFunc>(&::uGUIPSStore::updateHistoryItemHide);
+        mHistoryScrlList.mBar.setup(static_cast<uGUIBase*>(this), static_cast<cGUIInstance*>(t3), t5);
+        mHistoryScrlList.mpInstNullScroll = static_cast<cGUIInstNull*>(t4);
+        if (t3 != nullptr) {
+            t3->setVisible(false);
+        }
+        setupHistoryScrollInfo();
+    }
 }
 
 __attribute__((weak)) void uGUIPSStore::itemUseCallback() {
@@ -604,14 +727,6 @@ const MtDTI& uGUIPSStore::cStationListItem::getDTI() const {
     return uGUIPSStore::cStationListItem::DTI;
 }
 
-inline void* uGUIPSStore::cStationListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIPSStore::cStationListItem::DTI)->memAlloc(sz, align, uGUIPSStore::cStationListItem::DTI.getID());
-}
-
-inline void uGUIPSStore::cStationListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPSStore::cStationListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIPSStore::cStationListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPSStore::cStationListItem::MyDTI uGUIPSStore::cStationListItem::DTI("uGUIPSStore::cStationListItem", &::uGUIBase::cScrollListItemBase::DTI, 136ul, 0u, 0u);
@@ -624,14 +739,6 @@ const MtDTI& uGUIPSStore::cHistoryListItem::getDTI() const {
     return uGUIPSStore::cHistoryListItem::DTI;
 }
 
-inline void* uGUIPSStore::cHistoryListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIPSStore::cHistoryListItem::DTI)->memAlloc(sz, align, uGUIPSStore::cHistoryListItem::DTI.getID());
-}
-
-inline void uGUIPSStore::cHistoryListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPSStore::cHistoryListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIPSStore::cHistoryListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPSStore::cHistoryListItem::MyDTI uGUIPSStore::cHistoryListItem::DTI("uGUIPSStore::cHistoryListItem", &::uGUIBase::cScrollListItemBase::DTI, 120ul, 0u, 0u);
@@ -642,10 +749,6 @@ MtObject* uGUIPSStore::cHistoryListItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUIPSStore::cStationListInfo::getDTI() const {
     return uGUIPSStore::cStationListInfo::DTI;
-}
-
-inline void uGUIPSStore::cStationListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPSStore::cStationListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIPSStore::cStationListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

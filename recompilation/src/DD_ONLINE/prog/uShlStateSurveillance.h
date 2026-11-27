@@ -172,3 +172,28 @@ inline uShlStateSurveillance::cStateSurveillanceInfo::cStateSurveillanceInfo() {
     this->mCheckObjStatus = 0;
     this->mResultCallSeNo = -1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void cShlParamStateSurveillance::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamStateSurveillance::DTI)->memFree(p_addr);
+}
+
+inline void uShlStateSurveillance::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlStateSurveillance::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamStateSurveillance* uShlStateSurveillance::getShlParam() const {
+    return static_cast<const cShlParamStateSurveillance*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void* uShlStateSurveillance::cStateSurveillanceInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlStateSurveillance::cStateSurveillanceInfo::DTI)->memAlloc(sz, align, ::uShlStateSurveillance::cStateSurveillanceInfo::DTI.::MtDTI::getID());
+}
+
+inline void uShlStateSurveillance::cStateSurveillanceInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlStateSurveillance::cStateSurveillanceInfo::DTI)->memFree(p_addr);
+}

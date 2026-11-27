@@ -174,3 +174,30 @@ inline bool rStageList::Info::save(MtDataWriter& w) {
     nDDOIO::writeData(w, this->mVersion);
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rStageList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageList::DTI)->memAlloc(sz, align, ::rStageList::DTI.::MtDTI::getID());
+}
+
+inline void rStageList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageList::DTI)->memFree(p_addr);
+}
+
+inline rStageList::rStageList() {
+    this->::cResource::setAttribute(18u);
+    this->::cResource::clear();
+    this->mpArrayInfo = nullptr;
+    this->mArrayInfoNum = 0;
+}
+
+inline void* rStageList::Info::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageList::Info::DTI)->memAlloc(sz, align, ::rStageList::Info::DTI.::MtDTI::getID());
+}
+
+inline void rStageList::Info::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageList::Info::DTI)->memFree(p_addr);
+}

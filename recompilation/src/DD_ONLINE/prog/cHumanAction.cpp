@@ -8,6 +8,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtRandom.h"
+#include "cActList.h"
 #include "cAction.h"
 #include "cComponentManager.h"
 #include "cContextInterface.h"
@@ -40,6 +41,7 @@
 #include "sShlManager.h"
 #include "sWorldOffset.h"
 #include "uCameraBase.h"
+#include "uControl.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
@@ -51,10 +53,6 @@
 
 const MtDTI& cHumanActBase::getDTI() const {
     return cHumanActBase::DTI;
-}
-
-inline void cHumanActBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHumanActBase::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cHumanActBase::init() {
@@ -244,17 +242,215 @@ inline cHumanActBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 cHumanActBase::MyDTI cHumanActBase::DTI("cHumanActBase", &::cAction::DTI, 72ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cHumanActBase::MyDTI::newInstance() const {
-    DDON_STUB("cHumanActBase::MyDTI::newInstance")
+MtObject* cHumanActBase::MyDTI::newInstance() const {
+    return new (16u) cHumanActBase;
+}
+
+const MtDTI& cHumanActEmotionBase::getDTI() const {
+    return cHumanActEmotionBase::DTI;
+}
+
+void cHumanActEmotionBase::init() {
+    this->cHumanActBase::init();
+    mIntervalTime = 60.0f;
+}
+
+__attribute__((weak)) void cHumanActEmotionBase::move() {
+    DDON_STUB("cHumanActEmotionBase::move")
+    /* stub */
+}
+
+__attribute__((weak)) void cHumanActEmotionBase::final() {
+    DDON_STUB("cHumanActEmotionBase::final")
+    /* stub */
+}
+
+void cHumanActEmotionBase::setEmotionFingerMot() {
+    u32 emoNo = mpParam->getMotNo0();
+    const MtDTI& t0 = getDTI();
+    MT_CTSTR v0_1 = cHumanActEmotionLoopEnd::DTI.mName;
+    const MtDTI* v0_0 = &t0;
+    const MtDTI* v1_0;
+    MT_CTSTR v1_1;
+    for (;;) {
+        if (v0_1 == v0_0->mName) {
+            cpActionManager* t2 = mpHuman->getActMgrPtr();
+            const cActParam* t3 = t2->getActParam(t2->getActionNoOld());
+            if (t3 != nullptr) {
+                mpHuman->setDDOMotion(MOT_BLEND3, ((t3->getUParam0() + 1u) & 0xFFFFF1FFu) | 3072u, false, 0u, -1.0f, 0.0f, 1.0f);
+            } else {
+                mpHuman->setDDOMotion(MOT_BLEND3, (emoNo & 0xFFFFF1FFu) | 3072u, false, 0u, -1.0f, 0.0f, 1.0f);
+            }
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                const MtDTI& t1 = getDTI();
+                v1_1 = cHumanActEmotionLoopEndNoIK::DTI.mName;
+                v1_0 = &t1;
+                break;
+            }
+        }
+    }
+    for (;;) {
+        if (v1_1 != v1_0->mName) {
+            if (v1_0->mpParent == nullptr) {
+                mpHuman->setDDOMotion(MOT_BLEND3, (emoNo & 0xFFFFF1FFu) | 3072u, false, 0u, -1.0f, 0.0f, 1.0f);
+                return;
+            } else {
+                v1_0 = v1_0->mpParent;
+            }
+        } else {
+            break;
+        }
+    }
+    cpActionManager* t2 = mpHuman->getActMgrPtr();
+    const cActParam* t3 = t2->getActParam(t2->getActionNoOld());
+    if (t3 != nullptr) {
+        mpHuman->setDDOMotion(MOT_BLEND3, ((t3->getUParam0() + 1u) & 0xFFFFF1FFu) | 3072u, false, 0u, -1.0f, 0.0f, 1.0f);
+    } else {
+        mpHuman->setDDOMotion(MOT_BLEND3, (emoNo & 0xFFFFF1FFu) | 3072u, false, 0u, -1.0f, 0.0f, 1.0f);
+    }
+}
+
+inline cHumanActEmotionBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cHumanActEmotionBase::MyDTI cHumanActEmotionBase::DTI("cHumanActEmotionBase", &::cHumanActBase::DTI, 72ul, 0u, 0u);
+
+MtObject* cHumanActEmotionBase::MyDTI::newInstance() const {
+    return new (16u) cHumanActEmotionBase;
+}
+
+const MtDTI& cHumanActEmotionLoop::getDTI() const {
+    return cHumanActEmotionLoop::DTI;
+}
+
+void cHumanActEmotionLoop::init() {
+    this->cHumanActBase::init();
+    mIntervalTime = 60.0f;
+    if (mpParam->getMotNo0() == 1610) {
+        if (mpHuman->mSex != 0) {
+            mpModel->setDDOMotion(MOT_BASE, 1613u, false, 0u, 10.0f, 0.0f, 1.0f);
+        } else {
+            mpModel->setDDOMotion(MOT_BASE, 1610u, false, 0u, 10.0f, 0.0f, 1.0f);
+        }
+    } else {
+        mpModel->setDDOMotion(MOT_BASE, mpParam->getMotNo0(), false, 0u, 10.0f, 0.0f, 1.0f);
+    }
+    setEmotionFingerMot();
+}
+
+void cHumanActEmotionLoop::move() {
+    this->cHumanActEmotionBase::move();
+    mpModel->mObjStatus = 1;
+    if (mpActMgr->getActionNo() != 287) {
+        return;
+    }
+    if (mpHuman->mSex == 0) {
+        return;
+    }
+    mpHuman->calcSetSitEmoHandPos();
+}
+
+__attribute__((weak)) void cHumanActEmotionLoop::final() {
+    DDON_STUB("cHumanActEmotionLoop::final")
+    /* stub */
+}
+
+inline cHumanActEmotionLoop::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cHumanActEmotionLoop::MyDTI cHumanActEmotionLoop::DTI("cHumanActEmotionLoop", &::cHumanActEmotionBase::DTI, 72ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cHumanActEmotionLoop::MyDTI::newInstance() const {
+    DDON_STUB("cHumanActEmotionLoop::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cHumanActEmotionLoopEnd::getDTI() const {
+    return cHumanActEmotionLoopEnd::DTI;
+}
+
+void cHumanActEmotionLoopEnd::init() {
+    this->cHumanActBase::init();
+    mIntervalTime = 60.0f;
+    cpActionManager* t0 = mpHuman->getActMgrPtr();
+    const cActParam* pAct = t0->getActParam(t0->getActionNoOld());
+    if (pAct == nullptr) {
+        return;
+    }
+    mpModel->setDDOMotion(MOT_BASE, pAct->getUParam0() + 1u, true, 0u, -1.0f, 0.0f, 1.0f);
+    setEmotionFingerMot();
+}
+
+void cHumanActEmotionLoopEnd::move() {
+    this->cHumanActEmotionBase::move();
+    mpModel->mObjStatus = 1;
+    if (!isActionMotionEnd(MOT_BASE)) {
+        return;
+    }
+    endAction();
+}
+
+inline cHumanActEmotionLoopEnd::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cHumanActEmotionLoopEnd::MyDTI cHumanActEmotionLoopEnd::DTI("cHumanActEmotionLoopEnd", &::cHumanActEmotionBase::DTI, 72ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cHumanActEmotionLoopEnd::MyDTI::newInstance() const {
+    DDON_STUB("cHumanActEmotionLoopEnd::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& cHumanActEmotionLoopEndNoIK::getDTI() const {
+    return cHumanActEmotionLoopEndNoIK::DTI;
+}
+
+void cHumanActEmotionLoopEndNoIK::init() {
+    this->cHumanActBase::init();
+    mIntervalTime = 60.0f;
+    cpActionManager* t0 = mpHuman->getActMgrPtr();
+    const cActParam* pAct = t0->getActParam(t0->getActionNoOld());
+    if (pAct == nullptr) {
+        return;
+    }
+    u32 motNo = pAct->getUParam0();
+    if (motNo == 1610) {
+        if (mpHuman->mSex != 0) {
+            mpModel->setDDOMotion(MOT_BASE, 1614u, true, 0u, -1.0f, 0.0f, 1.0f);
+        } else {
+            mpModel->setDDOMotion(MOT_BASE, 1611u, true, 0u, -1.0f, 0.0f, 1.0f);
+        }
+    } else {
+        mpModel->setDDOMotion(MOT_BASE, motNo + 1u, true, 0u, -1.0f, 0.0f, 1.0f);
+    }
+    setEmotionFingerMot();
+}
+
+void cHumanActEmotionLoopEndNoIK::move() {
+    this->cHumanActEmotionBase::move();
+    mpModel->mObjStatus = 1;
+    if (mpHuman->getMotionNo(0u) == 1614) {
+        if (mpHuman->mSex != 0) {
+            mpHuman->calcSetSitEmoHandPos();
+        }
+    }
+    if (!isActionMotionEnd(MOT_BASE)) {
+        return;
+    }
+    endAction();
+}
+
+inline cHumanActEmotionLoopEndNoIK::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+cHumanActEmotionLoopEndNoIK::MyDTI cHumanActEmotionLoopEndNoIK::DTI("cHumanActEmotionLoopEndNoIK", &::cHumanActEmotionBase::DTI, 72ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* cHumanActEmotionLoopEndNoIK::MyDTI::newInstance() const {
+    DDON_STUB("cHumanActEmotionLoopEndNoIK::MyDTI::newInstance")
     return nullptr;
 }
 
 const MtDTI& cHumanActSetNpcMotMyRoom::getDTI() const {
     return cHumanActSetNpcMotMyRoom::DTI;
-}
-
-inline void cHumanActSetNpcMotMyRoom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHumanActSetNpcMotMyRoom::DTI)->memFree(p_addr);
 }
 
 u32 cHumanActSetNpcMotMyRoom::getEmotion() const {
@@ -297,17 +493,12 @@ inline cHumanActSetNpcMotMyRoom::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, si
 
 cHumanActSetNpcMotMyRoom::MyDTI cHumanActSetNpcMotMyRoom::DTI("cHumanActSetNpcMotMyRoom", &::cHumanActBase::DTI, 96ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cHumanActSetNpcMotMyRoom::MyDTI::newInstance() const {
-    DDON_STUB("cHumanActSetNpcMotMyRoom::MyDTI::newInstance")
-    return nullptr;
+MtObject* cHumanActSetNpcMotMyRoom::MyDTI::newInstance() const {
+    return new (16u) cHumanActSetNpcMotMyRoom;
 }
 
 const MtDTI& cHumanActSetNpcMotion::getDTI() const {
     return cHumanActSetNpcMotion::DTI;
-}
-
-inline void cHumanActSetNpcMotion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHumanActSetNpcMotion::DTI)->memFree(p_addr);
 }
 
 u32 cHumanActSetNpcMotion::getCategory() const {

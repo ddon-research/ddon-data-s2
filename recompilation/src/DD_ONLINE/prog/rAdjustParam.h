@@ -117,3 +117,19 @@ inline void cAdjustParam::operator delete[](void* p_addr) {
 inline void* cAdjustParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAdjustParam::DTI)->memAlloc(sz, align, ::cAdjustParam::DTI.::MtDTI::getID());
 }
+
+inline void* cAdjustParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAdjustParam::DTI)->memAlloc(sz, align, ::cAdjustParam::DTI.::MtDTI::getID());
+}
+
+inline void cAdjustParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAdjustParam::DTI)->memFree(p_addr);
+}
+
+inline void* rAdjustParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAdjustParam::DTI)->memAlloc(sz, align, ::rAdjustParam::DTI.::MtDTI::getID());
+}
+
+inline void rAdjustParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAdjustParam::DTI)->memFree(p_addr);
+}

@@ -24,16 +24,8 @@ const MtDTI& cpWallMaria::getDTI() const {
     return cpWallMaria::DTI;
 }
 
-inline MtAllocator* cpWallMaria::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpWallMaria::DTI);
-}
-
 void* cpWallMaria::operator new(size_t sz, u32 align) {
     return cpWallMaria::getAllocator()->memAlloc(sz, align, cpWallMaria::DTI.getID());
-}
-
-inline void cpWallMaria::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpWallMaria::DTI)->memFree(p_addr);
 }
 
 cpWallMaria::cpWallMaria() {
@@ -63,22 +55,15 @@ void cpWallMaria::updatePtr() {
     this->cpComponent::updatePtr();
 }
 
-__attribute__((weak)) void cpWallMaria::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpWallMaria::applyWorldOffset")
-    /* stub */
+void cpWallMaria::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mOldPos.x = offset.x + mOldPos.x;
+    mOldPos.y = offset.y + mOldPos.y;
+    mOldPos.z = offset.z + mOldPos.z;
 }
 
 void cpWallMaria::setOwner(MtObject* pOwner) {
     mpOwner = pOwner;
     mpModel = static_cast<uDDOModel*>(pOwner);
-}
-
-inline void cpWallMaria::offWallMaria() {
-    mIsEnableWallMaria = false;
-    mPushVel.x = MtVector3::Zero.x;
-    mPushVel.y = MtVector3::Zero.y;
-    mPushVel.z = MtVector3::Zero.z;
-    mPushVel.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void cpWallMaria::setResource(rEmWeakSafe* pRes) {

@@ -120,3 +120,15 @@ inline rCameraList::rCameraList() {
     this->::cResource::mAttr = 18;
     this->mpHdr = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rCameraList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCameraList::DTI)->memAlloc(sz, align, ::rCameraList::DTI.::MtDTI::mID);
+}
+
+inline void rCameraList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCameraList::DTI)->memFree(p_addr);
+}

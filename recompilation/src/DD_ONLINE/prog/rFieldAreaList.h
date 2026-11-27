@@ -198,3 +198,38 @@ inline void nDDOIO::writeMtArray<rFieldAreaList::cFieldAreaInfo::cStageNo>(MtDat
         ar[i]->save(w);
     }
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rFieldAreaList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFieldAreaList::DTI)->memAlloc(sz, align, ::rFieldAreaList::DTI.::MtDTI::getID());
+}
+
+inline void rFieldAreaList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldAreaList::DTI)->memFree(p_addr);
+}
+
+inline rFieldAreaList::rFieldAreaList() {
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+    this->::cResource::setAttribute(22u);
+}
+
+inline void rFieldAreaList::cFieldAreaInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldAreaList::cFieldAreaInfo::DTI)->memFree(p_addr);
+}
+
+inline void* rFieldAreaList::cFieldAreaInfo::cStageNo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memAlloc(sz, align, ::rFieldAreaList::cFieldAreaInfo::cStageNo::DTI.::MtDTI::getID());
+}
+
+inline void rFieldAreaList::cFieldAreaInfo::cStageNo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldAreaList::cFieldAreaInfo::cStageNo::DTI)->memFree(p_addr);
+}
+
+inline void rFieldAreaList::cFieldAreaInfo::cStageNo::load(MtDataReader& r) {
+    this->mStageNo = r.readS32();
+}

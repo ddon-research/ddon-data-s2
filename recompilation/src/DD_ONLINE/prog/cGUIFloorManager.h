@@ -46,6 +46,7 @@ public:
 public:
     class cParam : public MtObject
     {
+        friend class cGUIFloorManager;
     public:
         class MyDTI;
     public:
@@ -172,4 +173,24 @@ inline rGUIMapSetting* cGUIFloorManager::cParam::getResource() {
 
 inline s32 cGUIFloorManager::cParam::getFloorGroupNo() {
     return this->mFloorGroupNo;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cGUIFloorManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGUIFloorManager::DTI);
+}
+
+inline void cGUIFloorManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIFloorManager::DTI)->memFree(p_addr);
+}
+
+inline void* cGUIFloorManager::cParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGUIFloorManager::cParam::DTI)->memAlloc(sz, align, ::cGUIFloorManager::cParam::DTI.::MtDTI::getID());
+}
+
+inline void cGUIFloorManager::cParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIFloorManager::cParam::DTI)->memFree(p_addr);
 }

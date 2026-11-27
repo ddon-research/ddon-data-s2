@@ -256,3 +256,28 @@ inline void* uShlJob08CS12Npc::operator new(size_t sz, void* p_addr) {
 
 inline uShlJob08CS12Npc::uShlJob08CS12Npc() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* uShlHoming::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlHoming::DTI)->memAlloc(sz, align, ::uShlHoming::DTI.::MtDTI::getID());
+}
+
+inline void uShlHoming::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlHoming::DTI)->memFree(p_addr);
+}
+
+inline void* uShlJob08CS12Npc::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlJob08CS12Npc::DTI)->memAlloc(sz, align, ::uShlJob08CS12Npc::DTI.::MtDTI::getID());
+}
+
+inline void uShlJob08CS12Npc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlJob08CS12Npc::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamJob08CS12Npc* uShlJob08CS12Npc::getShlParam() const {
+    return static_cast<const cShlParamJob08CS12Npc*>(this->::uShlBase::mpShlParam2);
+}

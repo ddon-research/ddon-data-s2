@@ -164,3 +164,23 @@ inline cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::cCycleContentsTask
     this->mpTask = nullptr;
     this->mNoticeType = static_cast<nQuest::CYCLE_CONTENTS_NOTICE_TYPE>(0);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCycleQuestSubCategoryManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCycleQuestSubCategoryManager::DTI);
+}
+
+inline void cCycleQuestSubCategoryManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCycleQuestSubCategoryManager::DTI)->memFree(p_addr);
+}
+
+inline void* cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI)->memAlloc(sz, align, ::cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI.::MtDTI::getID());
+}
+
+inline void cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI)->memFree(p_addr);
+}

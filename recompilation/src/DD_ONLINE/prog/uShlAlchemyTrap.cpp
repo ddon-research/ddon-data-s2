@@ -26,10 +26,6 @@ const MtDTI& cShlParamAlchemyTrap::getDTI() const {
     return cShlParamAlchemyTrap::DTI;
 }
 
-inline void cShlParamAlchemyTrap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamAlchemyTrap::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamAlchemyTrap::getShlDTI() const {
     return uShlAlchemyTrap::DTI;
 }
@@ -90,7 +86,7 @@ void cShlParamAlchemyTrap::copy(const cShlParamBase* pParamBase) {
     mCheckCount[8] = pParam->mCheckCount[8];
     mCheckCount[9] = pParam->mCheckCount[9];
     mTurnTarget = pParam->mTurnTarget;
-    copyList(static_cast<const cShlParamAlchemyTrap*>(pParamBase));
+    copyList(pParam);
 }
 
 __attribute__((weak)) void cShlParamAlchemyTrap::copyList(const cShlParamAlchemyTrap* pParam) {
@@ -110,14 +106,6 @@ const MtDTI& cShlParamAlchemyTrap::cTrapAttackShlInfo::getDTI() const {
     return cShlParamAlchemyTrap::cTrapAttackShlInfo::DTI;
 }
 
-inline void* cShlParamAlchemyTrap::cTrapAttackShlInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamAlchemyTrap::cTrapAttackShlInfo::DTI)->memAlloc(sz, align, cShlParamAlchemyTrap::cTrapAttackShlInfo::DTI.getID());
-}
-
-inline void cShlParamAlchemyTrap::cTrapAttackShlInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamAlchemyTrap::cTrapAttackShlInfo::DTI)->memFree(p_addr);
-}
-
 void cShlParamAlchemyTrap::cTrapAttackShlInfo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mCheckDisMin", &mCheckDisMin, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mCheckDisMax", &mCheckDisMax, 0u, 0u);
@@ -135,10 +123,6 @@ MtObject* cShlParamAlchemyTrap::cTrapAttackShlInfo::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamAlchemyTrapAttack::getDTI() const {
     return cShlParamAlchemyTrapAttack::DTI;
-}
-
-inline void* cShlParamAlchemyTrapAttack::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamAlchemyTrapAttack::DTI)->memAlloc(sz, align, cShlParamAlchemyTrapAttack::DTI.getID());
 }
 
 MtDTI& cShlParamAlchemyTrapAttack::getShlDTI() const {
@@ -169,14 +153,6 @@ MtObject* cShlParamAlchemyTrapAttack::MyDTI::newInstance() const {
 
 const MtDTI& uShlAlchemyTrap::getDTI() const {
     return uShlAlchemyTrap::DTI;
-}
-
-inline void* uShlAlchemyTrap::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlAlchemyTrap::DTI)->memAlloc(sz, align, uShlAlchemyTrap::DTI.getID());
-}
-
-inline void uShlAlchemyTrap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlAlchemyTrap::DTI)->memFree(p_addr);
 }
 
 uShlAlchemyTrap::~uShlAlchemyTrap() {
@@ -223,14 +199,6 @@ const MtDTI& uShlAlchemyTrapAttack::getDTI() const {
     return uShlAlchemyTrapAttack::DTI;
 }
 
-inline void* uShlAlchemyTrapAttack::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlAlchemyTrapAttack::DTI)->memAlloc(sz, align, uShlAlchemyTrapAttack::DTI.getID());
-}
-
-inline void uShlAlchemyTrapAttack::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlAlchemyTrapAttack::DTI)->memFree(p_addr);
-}
-
 uShlAlchemyTrapAttack::uShlAlchemyTrapAttack() {
     mKnockBackPos = MtVector3::Zero;
     mFlgNextTrap = false;
@@ -244,9 +212,11 @@ __attribute__((weak)) void uShlAlchemyTrapAttack::callbackReplaceHitInfo_Atk(cHi
     /* stub */
 }
 
-__attribute__((weak)) void uShlAlchemyTrapAttack::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlAlchemyTrapAttack::applyWorldOffset")
-    /* stub */
+void uShlAlchemyTrapAttack::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlBase::applyWorldOffset(offset, absolute_offset);
+    mKnockBackPos.x = offset.x + mKnockBackPos.x;
+    mKnockBackPos.y = offset.y + mKnockBackPos.y;
+    mKnockBackPos.z = offset.z + mKnockBackPos.z;
 }
 
 inline uShlAlchemyTrapAttack::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

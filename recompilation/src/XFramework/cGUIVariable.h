@@ -280,3 +280,15 @@ inline void cGUIVariable::setLoopValue(bool v) {
         this->mAttr = this->mAttr & 65533u;
     }
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cGUIVarFloat::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIVarFloat::DTI)->memFree(p_addr);
+}
+
+inline void cGUIVarInt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIVarInt::DTI)->memFree(p_addr);
+}

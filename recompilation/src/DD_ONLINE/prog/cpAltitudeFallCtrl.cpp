@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
+#include "cCharParamEnemy.h"
 #include "cContextPlayerInfo.h"
 #include "cDelegate.h"
 #include "cpActionRequest.h"
@@ -25,16 +26,8 @@ const MtDTI& cpAltitudeFallCtrl::getDTI() const {
     return cpAltitudeFallCtrl::DTI;
 }
 
-inline MtAllocator* cpAltitudeFallCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpAltitudeFallCtrl::DTI);
-}
-
 void* cpAltitudeFallCtrl::operator new(size_t sz, u32 align) {
     return cpAltitudeFallCtrl::getAllocator()->memAlloc(sz, align, cpAltitudeFallCtrl::DTI.getID());
-}
-
-inline void cpAltitudeFallCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpAltitudeFallCtrl::DTI)->memFree(p_addr);
 }
 
 cpAltitudeFallCtrl::cpAltitudeFallCtrl() {
@@ -61,9 +54,12 @@ __attribute__((weak)) void cpAltitudeFallCtrl::after() {
     /* stub */
 }
 
-__attribute__((weak)) void cpAltitudeFallCtrl::setCharParamEnemy(cCharParamEnemy* pParam) {
-    DDON_STUB("cpAltitudeFallCtrl::setCharParamEnemy")
-    /* stub */
+void cpAltitudeFallCtrl::setCharParamEnemy(cCharParamEnemy* pParam) {
+    if (pParam != nullptr) {
+        mDamageHeight = -pParam->mFallDamageCheckHeight;
+    } else {
+        mDamageHeight = -1000.0f;
+    }
 }
 
 __attribute__((weak)) void cpAltitudeFallCtrl::callbackHitLand() {

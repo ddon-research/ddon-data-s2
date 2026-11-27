@@ -118,3 +118,19 @@ inline void cOcdElectricParam::operator delete[](void* p_addr) {
 inline void* cOcdElectricParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cOcdElectricParam::DTI)->memAlloc(sz, align, ::cOcdElectricParam::DTI.::MtDTI::getID());
 }
+
+inline void* cOcdElectricParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdElectricParam::DTI)->memAlloc(sz, align, ::cOcdElectricParam::DTI.::MtDTI::getID());
+}
+
+inline void cOcdElectricParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdElectricParam::DTI)->memFree(p_addr);
+}
+
+inline void* rOcdElectricParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOcdElectricParam::DTI)->memAlloc(sz, align, ::rOcdElectricParam::DTI.::MtDTI::getID());
+}
+
+inline void rOcdElectricParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOcdElectricParam::DTI)->memFree(p_addr);
+}

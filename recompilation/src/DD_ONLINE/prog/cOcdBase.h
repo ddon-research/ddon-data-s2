@@ -468,3 +468,27 @@ inline void cOcdStatusParam::setActiveTimeMaxPrivate(f32 NewValue) {
 inline void cOcdStatusParam::setFreeParam0Private(f32 NewValue) {
     this->mFreeParam0 = NewValue;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cOcdBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdBase::DTI)->memFree(p_addr);
+}
+
+inline void* cOcdImmuneParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdImmuneParam::DTI)->memAlloc(sz, align, ::cOcdImmuneParam::DTI.::MtDTI::getID());
+}
+
+inline void cOcdImmuneParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdImmuneParam::DTI)->memFree(p_addr);
+}
+
+inline void* cOcdStatusParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdStatusParam::DTI)->memAlloc(sz, align, ::cOcdStatusParam::DTI.::MtDTI::getID());
+}
+
+inline void cOcdStatusParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdStatusParam::DTI)->memFree(p_addr);
+}

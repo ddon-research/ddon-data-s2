@@ -22,16 +22,8 @@ const MtDTI& cpHeadCtrl::getDTI() const {
     return cpHeadCtrl::DTI;
 }
 
-inline MtAllocator* cpHeadCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpHeadCtrl::DTI);
-}
-
 void* cpHeadCtrl::operator new(size_t sz, u32 align) {
     return cpHeadCtrl::getAllocator()->memAlloc(sz, align, cpHeadCtrl::DTI.getID());
-}
-
-inline void cpHeadCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpHeadCtrl::DTI)->memFree(p_addr);
 }
 
 cpHeadCtrl::cpHeadCtrl() {
@@ -61,17 +53,64 @@ cpHeadCtrl::cpHeadCtrl() {
 }
 
 __attribute__((noinline)) cpHeadCtrl::~cpHeadCtrl() {
-    DDON_STUB("cpHeadCtrl::~cpHeadCtrl")
-    /* stub */
+    if (mCnsHeadCtrlArray.mLength != 0) {
+        u32 v0_0 = mCnsHeadCtrlArray.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mCnsHeadCtrlArray.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                static_cast<uCnsHeadCtrl*>(mCnsHeadCtrlArray.mpArray[i0_3])->remove();
+                v1_0 = mCnsHeadCtrlArray.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+        if (v1_0 != 0) {
+            u32 v3_0 = v1_0;
+            unsigned int i3_3 = 0;
+            u32 v4_0;
+            for (;;) {
+                if (mCnsHeadCtrlArray.mpArray[i3_3] == nullptr) {
+                    v4_0 = v3_0;
+                } else {
+                    delete mCnsHeadCtrlArray.mpArray[i3_3];
+                    v4_0 = mCnsHeadCtrlArray.mLength;
+                }
+                if ((i3_3 + 1u) < v4_0) {
+                    v3_0 = v4_0;
+                    i3_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mCnsHeadCtrlArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCnsHeadCtrlArray.mpArray));
+    }
+    mCnsHeadCtrlArray.mpArray = nullptr;
+    mCnsHeadCtrlArray.mBufsiz = 0;
+    mCnsHeadCtrlArray.mLength = 0;
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
+    }
 }
 
 void cpHeadCtrl::setup() {
     this->cpComponent::setup();
 }
 
-__attribute__((weak)) void cpHeadCtrl::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpHeadCtrl::applyWorldOffset")
-    /* stub */
+void cpHeadCtrl::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mTargetPos.x = offset.x + mTargetPos.x;
+    mTargetPos.y = offset.y + mTargetPos.y;
+    mTargetPos.z = offset.z + mTargetPos.z;
 }
 
 void cpHeadCtrl::setOwner(MtObject* pOwner) {

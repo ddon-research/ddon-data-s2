@@ -110,3 +110,15 @@ public:
 inline void* sSceneExt::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sSceneExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sSceneExt::DTI);
+}
+
+inline void sSceneExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSceneExt::DTI)->memFree(p_addr);
+}

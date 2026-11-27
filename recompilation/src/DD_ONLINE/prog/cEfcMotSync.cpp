@@ -19,16 +19,8 @@ const MtDTI& cEfcMotSync::getDTI() const {
     return cEfcMotSync::DTI;
 }
 
-inline MtAllocator* cEfcMotSync::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cEfcMotSync::DTI);
-}
-
 void* cEfcMotSync::operator new(size_t sz, u32 align) {
     return cEfcMotSync::getAllocator()->memAlloc(sz, align, cEfcMotSync::DTI.getID());
-}
-
-inline void cEfcMotSync::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEfcMotSync::DTI)->memFree(p_addr);
 }
 
 cEfcMotSync::cEfcMotSync() {
@@ -64,14 +56,6 @@ MtObject* cEfcMotSync::MyDTI::newInstance() const {
 
 const MtDTI& cEfcMotSync::SyncManageFactor::getDTI() const {
     return cEfcMotSync::SyncManageFactor::DTI;
-}
-
-inline void cEfcMotSync::SyncManageFactor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
-}
-
-inline void cEfcMotSync::SyncManageFactor::operator delete[](void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEfcMotSync::SyncManageFactor::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cEfcMotSync::SyncManageFactor::createProperty(MtPropertyList& s) {

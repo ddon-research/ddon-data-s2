@@ -19,10 +19,6 @@ void* cPrimBuffer::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cPrimBuffer::DTI)->memAlloc(sz, align, cPrimBuffer::DTI.mID);
 }
 
-inline void cPrimBuffer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrimBuffer::DTI)->memFree(p_addr);
-}
-
 cPrimBuffer::cPrimBuffer() {
     mWriteSize = 0;
     mVBSize = 0;

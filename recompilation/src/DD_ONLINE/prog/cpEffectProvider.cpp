@@ -4,7 +4,6 @@
 #include "cpEffectProvider.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -22,16 +21,8 @@ const MtDTI& cpEffectProvider::getDTI() const {
     return cpEffectProvider::DTI;
 }
 
-inline MtAllocator* cpEffectProvider::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpEffectProvider::DTI);
-}
-
 void* cpEffectProvider::operator new(size_t sz, u32 align) {
     return cpEffectProvider::getAllocator()->memAlloc(sz, align, cpEffectProvider::DTI.getID());
-}
-
-inline void cpEffectProvider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpEffectProvider::DTI)->memFree(p_addr);
 }
 
 cpEffectProvider::cpEffectProvider() {

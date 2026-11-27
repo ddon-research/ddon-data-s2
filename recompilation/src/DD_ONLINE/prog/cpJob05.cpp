@@ -132,16 +132,8 @@ const MtDTI& cpJob05::getDTI() const {
     return cpJob05::DTI;
 }
 
-inline MtAllocator* cpJob05::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJob05::DTI);
-}
-
 void* cpJob05::operator new(size_t sz, u32 align) {
     return cpJob05::getAllocator()->memAlloc(sz, align, cpJob05::DTI.getID());
-}
-
-inline void cpJob05::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob05::DTI)->memFree(p_addr);
 }
 
 cpJob05::~cpJob05() {
@@ -196,8 +188,30 @@ void cpJob05::updatePtr() {
 }
 
 __attribute__((weak)) void cpJob05::init() {
-    DDON_STUB("cpJob05::init")
-    /* stub */
+    cContextInterface& pCon = mpHuman->mContextInterface;
+    switch (static_cast<u16>((cContextInterface::getCustomWork(pCon.mpContextInstance, pCon.mpContextCharacter) >> 8) & 7)) {
+    case 0:
+        mEnchantType = nDDOGame::ELEMENT_TYPE_FIRE;
+        break;
+    case 1:
+        mEnchantType = nDDOGame::ELEMENT_TYPE_ICE;
+        break;
+    case 2:
+        mEnchantType = nDDOGame::ELEMENT_TYPE_THUNDER;
+        break;
+    case 3:
+        mEnchantType = nDDOGame::ELEMENT_TYPE_HOLY;
+        break;
+    case 4:
+        mEnchantType = nDDOGame::ELEMENT_TYPE_DARK;
+        break;
+    default:
+        mEnchantType = nDDOGame::ELEMENT_TYPE_FIRE;
+        break;
+    }
+    resetGuardCharge();
+    addGuardCharge(cContextInterface::getFJobWork0(pCon.mpContextInstance), true);
+    cContextInterface::setElementGuardTime(pCon.mpContextInstance, 0.0f);
 }
 
 __attribute__((weak)) void cpJob05::setupJobData() {
@@ -436,15 +450,6 @@ __attribute__((weak)) void cpJob05::setupSaintWall(nHuman::HM_SKILL_LV SkillLv, 
     /* stub */
 }
 
-inline void cpJob05::setTransActTimer(f32 timer) {
-    mTransActTimer = timer;
-    if (timer > 0.0f) {
-        if (mpHuman->mGuardComponent.mpInput != nullptr) {
-            mpHuman->mGuardComponent.mpInput->startupCheckCommand();
-        }
-    }
-}
-
 void cpJob05::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
     if (mpHuman == nullptr) {
         return;
@@ -492,14 +497,6 @@ __attribute__((weak)) MtObject* cpJob05::MyDTI::newInstance() const {
 
 const MtDTI& cpJob05::ForceGaugeInfo::getDTI() const {
     return cpJob05::ForceGaugeInfo::DTI;
-}
-
-inline void* cpJob05::ForceGaugeInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJob05::ForceGaugeInfo::DTI)->memAlloc(sz, align, cpJob05::ForceGaugeInfo::DTI.getID());
-}
-
-inline void cpJob05::ForceGaugeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob05::ForceGaugeInfo::DTI)->memFree(p_addr);
 }
 
 inline cpJob05::ForceGaugeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

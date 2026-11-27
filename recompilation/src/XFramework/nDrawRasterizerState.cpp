@@ -19,10 +19,6 @@ void* nDraw::RasterizerState::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::RasterizerState::DTI)->memAlloc(sz, align, ::nDraw::RasterizerState::DTI.mID);
 }
 
-inline void nDraw::RasterizerState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::RasterizerState::DTI)->memFree(p_addr);
-}
-
 nDraw::RasterizerState::RasterizerState(const nDraw::RASTERIZER_DESC* pdesc) {
     DDON_STUB("nDraw::RasterizerState::RasterizerState")
     /* stub */

@@ -131,3 +131,19 @@ inline void cNpcConstItem::operator delete[](void* p_addr) {
 inline void* cNpcConstItem::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cNpcConstItem::DTI)->memAlloc(sz, align, ::cNpcConstItem::DTI.::MtDTI::getID());
 }
+
+inline void* cNpcConstItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcConstItem::DTI)->memAlloc(sz, align, ::cNpcConstItem::DTI.::MtDTI::getID());
+}
+
+inline void cNpcConstItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcConstItem::DTI)->memFree(p_addr);
+}
+
+inline void* rNpcConstItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNpcConstItem::DTI)->memAlloc(sz, align, ::rNpcConstItem::DTI.::MtDTI::getID());
+}
+
+inline void rNpcConstItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcConstItem::DTI)->memFree(p_addr);
+}

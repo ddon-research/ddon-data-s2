@@ -136,3 +136,15 @@ inline cCharacterEditColorDef::cCharacterEditColorDef() {
     mColor.w = 1.0f;
     mUIColor = MtColor::White;
 }
+
+inline void cCharacterEditColorDef::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditColorDef::DTI)->memFree(p_addr);
+}
+
+inline void* rCharacterEditColorDef::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCharacterEditColorDef::DTI)->memAlloc(sz, align, ::rCharacterEditColorDef::DTI.::MtDTI::getID());
+}
+
+inline void rCharacterEditColorDef::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCharacterEditColorDef::DTI)->memFree(p_addr);
+}

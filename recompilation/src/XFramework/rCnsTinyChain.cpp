@@ -16,10 +16,6 @@ const MtDTI& rCnsTinyChain::getDTI() const {
     return rCnsTinyChain::DTI;
 }
 
-inline void rCnsTinyChain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(p_addr);
-}
-
 rCnsTinyChain::~rCnsTinyChain() {
     if (mpChainGroup != nullptr) {
         MtMemoryAllocator::getAllocator(rCnsTinyChain::DTI)->memFree(static_cast<void*>(mpChainGroup));

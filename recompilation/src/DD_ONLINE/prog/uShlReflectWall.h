@@ -121,3 +121,20 @@ inline uShlReflectWall::uShlReflectWall() {
 inline void uShlReflectWall::setWallReflectCnt(u32 cnt) {
     this->mWallReflectCnt = cnt;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* uShlReflectWall::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlReflectWall::DTI)->memAlloc(sz, align, ::uShlReflectWall::DTI.::MtDTI::getID());
+}
+
+inline void uShlReflectWall::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlReflectWall::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamReflectWall* uShlReflectWall::getShlParam() const {
+    return static_cast<const cShlParamReflectWall*>(this->::uShlBase::mpShlParam2);
+}

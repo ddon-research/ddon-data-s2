@@ -203,3 +203,48 @@ inline cCamExParamTps2::cCamExParamTps2() {
 inline void* cCamImpTps::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline cCamImpTps::cCamImpTps() {
+    this->mpParamTps = nullptr;
+    this->mIsResetAngle = false;
+    this->mIsResetAngleDetail = false;
+    this->mIsRecoilMoveX = false;
+    this->mMaxSpeedFrameX = 0.0f;
+    this->mMaxSpeedFrameY = 0.0f;
+    this->mResetDetailAngX = 0.0f;
+    this->mResetDetailAngY = 0.0f;
+    this->mRecoilScaleX = 1.0f;
+    this->mRecoilFrameX = 5.0f;
+    this->mRecoilFrameMaxX = 5.0f;
+    this->mIsRecoilMoveY = false;
+    this->mRecoilScaleY = 1.0f;
+    this->mRecoilFrameY = 5.0f;
+    this->mRecoilFrameMaxY = 5.0f;
+    this->mFirstInter = false;
+    this->mIsLargeCamera = false;
+    this->mResetAngY = 0.0f;
+    this->mInitAngY = 0.0f;
+    this->mResetAngX = 0.0f;
+    this->mRecoilValueX = 0.0f;
+    this->mRecoilValueY = 0.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCamExParamTps::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamTps::DTI);
+}
+
+inline MtAllocator* cCamExParamTps2::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamTps2::DTI);
+}
+
+inline void* cCamImpTps::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCamImpTps::DTI)->memAlloc(sz, align, ::cCamImpTps::DTI.::MtDTI::getID());
+}
+
+inline void cCamImpTps::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpTps::DTI)->memFree(p_addr);
+}

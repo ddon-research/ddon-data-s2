@@ -20,6 +20,7 @@ class MtRect;
 class MtUI;
 class MtVector3;
 class cCamExParam;
+class cOpeningMovie;
 class rCameraParamList;
 class rCameraQuakeList;
 class rLargeCameraParam;
@@ -46,6 +47,7 @@ using uintptr = __uintptr_t;
 
 class sCameraExt : public sCamera
 {
+    friend class cOpeningMovie;
 public:
     enum FREE_CAMERA_TYPE
     {
@@ -228,4 +230,20 @@ inline void sCameraExt::setRateFix() {
 
 inline void sCameraExt::resetRateFix() {
     this->mRateFix = false;
+}
+
+inline f32 sCameraExt::getCameraOffsetX() const {
+    return this->mCameraOffsetX;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sCameraExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sCameraExt::DTI);
+}
+
+inline void sCameraExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCameraExt::DTI)->memFree(p_addr);
 }

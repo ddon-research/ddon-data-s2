@@ -3,10 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-// Declarations
-namespace nDraw { struct OBJECT_INFO; }
-namespace nDraw { struct SHADER_STATE; }
-
 namespace nDraw {
     enum COMPARISON_FUNC
     {
@@ -141,6 +137,10 @@ namespace nDraw {
         PT_5_CONTROL_POINT_PATCHLIST = 15,
     };
 }  // namespace nDraw
+
+// Declarations
+namespace nDraw { struct OBJECT_INFO; }
+namespace nDraw { struct SHADER_STATE; }
 
 // Type aliases from DWARF
 using __uint64_t = long unsigned int;

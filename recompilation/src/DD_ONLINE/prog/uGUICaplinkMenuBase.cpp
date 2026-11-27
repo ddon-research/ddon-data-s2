@@ -13,6 +13,8 @@
 #include "../../XFramework/cCaplinkChatGroupCreate.h"
 #include "../../XFramework/cCaplinkContext.h"
 #include "../../XFramework/cCaplinkDataDef.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
 #include "cGUIUtility.h"
 #include "cUIObject.h"
 #include "../../XFramework/cUnit.h"
@@ -21,7 +23,6 @@
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "../../XFramework/sUnit.h"
-#include "../../XFramework/uCoord.h"
 #include "../../XFramework/uGUI.h"
 #include "uGUIBase.h"
 #include "uGUICaplinkFilter.h"
@@ -37,10 +38,6 @@
 
 const MtDTI& uGUICaplinkMenuBase::getDTI() const {
     return uGUICaplinkMenuBase::DTI;
-}
-
-inline void uGUICaplinkMenuBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkMenuBase::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkMenuBase::~uGUICaplinkMenuBase() {
@@ -381,9 +378,21 @@ void uGUICaplinkMenuBase::setOwnerChatInfo(s32 id_type, MT_CTSTR id) {
     mpOwner->setChatInfo(id_type, id);
 }
 
-__attribute__((weak)) void uGUICaplinkMenuBase::callPointer() {
-    DDON_STUB("uGUICaplinkMenuBase::callPointer")
-    /* stub */
+void uGUICaplinkMenuBase::callPointer() {
+    if (mpInstNullPointer != nullptr) {
+        sGUI* spill80 = sGUI::getInstance();
+        MtVector2 frame64(uGUIBase::getInstanceScreenPos(static_cast<cGUIInstance*>(mpInstNullPointer), mPos));
+        u32 t0 = getBasePointerPriority();
+        u32 t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getPrioGrpFromIssueIdx(mPrioIssueIdx);
+        static_cast<sGUIExt*>(spill80)->setPointerPosReq(static_cast<uGUIBase*>(this), frame64, t0, t1, static_cast<const MtVector2*>(nullptr));
+    } else {
+        if (mpObjNullPointer != nullptr) {
+            sGUI* t2 = sGUI::getInstance();
+            MtVector2 frame72(getObjectScreenPos(static_cast<cGUIObject*>(mpObjNullPointer), mPos));
+            u32 t3 = getBasePointerPriority();
+            static_cast<sGUIExt*>(t2)->setPointerPosReq(static_cast<uGUIBase*>(this), frame72, t3, static_cast<sGUIExt*>(sGUI::getInstance())->getPrioGrpFromIssueIdx(mPrioIssueIdx), static_cast<const MtVector2*>(nullptr));
+        }
+    }
 }
 
 inline uGUICaplinkMenuBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -397,14 +406,6 @@ __attribute__((weak)) MtObject* uGUICaplinkMenuBase::MyDTI::newInstance() const 
 
 const MtDTI& uGUICaplinkMenuBase::cCmdVal::getDTI() const {
     return uGUICaplinkMenuBase::cCmdVal::DTI;
-}
-
-inline void uGUICaplinkMenuBase::cCmdVal::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkMenuBase::cCmdVal::DTI)->memFree(p_addr);
-}
-
-inline void* uGUICaplinkMenuBase::cCmdVal::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkMenuBase::cCmdVal::DTI)->memAlloc(sz, align, uGUICaplinkMenuBase::cCmdVal::DTI.getID());
 }
 
 inline uGUICaplinkMenuBase::cCmdVal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

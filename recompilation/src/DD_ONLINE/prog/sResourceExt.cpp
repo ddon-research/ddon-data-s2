@@ -19,16 +19,8 @@ const MtDTI& sResourceExt::getDTI() const {
     return sResourceExt::DTI;
 }
 
-inline MtAllocator* sResourceExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sResourceExt::DTI);
-}
-
 void* sResourceExt::operator new(size_t sz, u32 align) {
     return sResourceExt::getAllocator()->memAlloc(sz, align, sResourceExt::DTI.getID());
-}
-
-inline void sResourceExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sResourceExt::DTI)->memFree(p_addr);
 }
 
 sResourceExt::sResourceExt(u32 ringbufsize) : sResource(ringbufsize) {

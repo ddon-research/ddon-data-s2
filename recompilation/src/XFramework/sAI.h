@@ -17,6 +17,7 @@ class MtPropertyList;
 class MtString;
 class MtUI;
 class MtVector3;
+class cAIFSM;
 class cAIService;
 class cAITask;
 class cFSMCore;
@@ -40,6 +41,7 @@ using u64 = __uint64_t;
 
 class sAI : public cSystem
 {
+    friend class cAIFSM;
     friend class cAIService;
     friend class cFSMCore;
     friend class uStagePartsMdl;
@@ -140,4 +142,12 @@ inline void* sAI::operator new(size_t sz, void* p_addr) {
 
 inline sAI* sAI::getInstance() {
     return ::sAI::mpInstance;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sAI::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sAI::DTI)->memFree(p_addr);
 }

@@ -8,11 +8,6 @@ namespace sce { namespace Json { class Array; } }
 namespace sce { namespace Json { class Object; } }
 namespace sce { namespace Json { struct RootParam; } }
 
-// Declarations
-namespace sce { namespace Json { class MemAllocator; } }
-namespace sce { namespace Json { class String; } }
-namespace sce { namespace Json { class Value; } }
-
 namespace sce {
 namespace Json {
     enum ValueType
@@ -28,6 +23,11 @@ namespace Json {
     };
 }  // namespace Json
 }  // namespace sce
+
+// Declarations
+namespace sce { namespace Json { class MemAllocator; } }
+namespace sce { namespace Json { class String; } }
+namespace sce { namespace Json { class Value; } }
 
 // Type aliases from DWARF
 using _Sizet = long unsigned int;

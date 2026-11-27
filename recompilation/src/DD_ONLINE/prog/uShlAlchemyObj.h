@@ -190,3 +190,19 @@ inline cShlParamAlchemyObj::cShlParamAlchemyObj() {
 inline void* uShlAlchemyObj::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamAlchemyObj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyObj::DTI)->memAlloc(sz, align, ::cShlParamAlchemyObj::DTI.::MtDTI::getID());
+}
+
+inline void uShlAlchemyObj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlAlchemyObj::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamAlchemyObj* uShlAlchemyObj::getShlParam() const {
+    return static_cast<const cShlParamAlchemyObj*>(this->::uShlBase::mpShlParam2);
+}

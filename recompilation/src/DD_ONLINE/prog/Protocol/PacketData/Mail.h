@@ -389,3 +389,47 @@ inline void* CDataMailTextInfo::operator new(size_t sz, void* p_addr) {
 
 inline CDataMailTextInfo::CDataMailTextInfo() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataMailAttachmentInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailAttachmentInfo::DTI);
+}
+
+inline MtAllocator* CDataMailAttachmentList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailAttachmentList::DTI);
+}
+
+inline void* CDataMailAttachmentList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailAttachmentList::DTI)->memAlloc(sz, align, ::CDataMailAttachmentList::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataMailGPInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailGPInfo::DTI);
+}
+
+inline MtAllocator* CDataMailInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailInfo::DTI);
+}
+
+inline MtAllocator* CDataMailItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailItemInfo::DTI);
+}
+
+inline MtAllocator* CDataMailLegendPawnInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailLegendPawnInfo::DTI);
+}
+
+inline MtAllocator* CDataMailOptionCourseInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailOptionCourseInfo::DTI);
+}
+
+inline MtAllocator* CDataMailTextInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailTextInfo::DTI);
+}
+
+inline void* CDataMailTextInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataMailTextInfo::DTI)->memAlloc(sz, align, ::CDataMailTextInfo::DTI.::MtDTI::getID());
+}

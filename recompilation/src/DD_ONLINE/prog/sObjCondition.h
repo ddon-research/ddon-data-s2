@@ -127,3 +127,15 @@ inline void* sObjCondition::operator new(size_t sz, void* p_addr) {
 inline sObjCondition* sObjCondition::getInstance() {
     return ::sObjCondition::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sObjCondition::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sObjCondition::DTI);
+}
+
+inline void sObjCondition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sObjCondition::DTI)->memFree(p_addr);
+}

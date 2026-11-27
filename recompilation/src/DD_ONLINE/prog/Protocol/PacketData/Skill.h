@@ -16,6 +16,7 @@ class MtObject;
 class MtString;
 
 // Declarations
+class CDataAbilityLevelBaseParam;
 class CDataAbilityLevelParam;
 class CDataAbilityParam;
 class CDataLearnNormalSkillParam;
@@ -24,6 +25,7 @@ class CDataNormalSkillParam;
 class CDataPresetAbilityParam;
 class CDataReleaseAcquirementParam;
 class CDataSetAcquirementParam;
+class CDataSkillLevelBaseParam;
 class CDataSkillLevelParam;
 class CDataSkillParam;
 
@@ -36,6 +38,39 @@ using b8 = bool;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+class CDataAbilityLevelBaseParam : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataAbilityLevelBaseParam();
+    explicit CDataAbilityLevelBaseParam(u32, u8);
+public:
+    u32 m_unAbilityNo;  // offset: 0x8
+    u8 m_ucAbilityLv;  // offset: 0xc
+    static MyDTI DTI;
+};
 
 class CDataAbilityLevelParam : public CPacketDataBase
 {
@@ -285,6 +320,40 @@ public:
     static MyDTI DTI;
 };
 
+class CDataSkillLevelBaseParam : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataSkillLevelBaseParam();
+    explicit CDataSkillLevelBaseParam(u8, u32, u8);
+public:
+    u8 m_ucJob;  // offset: 0x8
+    u32 m_unSkillNo;  // offset: 0xc
+    u8 m_ucSkillLv;  // offset: 0x10
+    static MyDTI DTI;
+};
+
 class CDataSkillLevelParam : public CPacketDataBase
 {
 public:
@@ -389,6 +458,15 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataAbilityLevelBaseParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataAbilityLevelBaseParam::CDataAbilityLevelBaseParam() {
+    this->m_unAbilityNo = 0;
+    this->m_ucAbilityLv = 0;
+}
+
 inline void* CDataAbilityLevelParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -467,6 +545,16 @@ inline CDataSetAcquirementParam::CDataSetAcquirementParam() {
     this->m_ucAcquirementLv = 0;
 }
 
+inline void* CDataSkillLevelBaseParam::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataSkillLevelBaseParam::CDataSkillLevelBaseParam() {
+    this->m_ucJob = 0;
+    this->m_unSkillNo = 0;
+    this->m_ucSkillLv = 0;
+}
+
 inline void* CDataSkillLevelParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -486,4 +574,55 @@ inline CDataSkillParam::CDataSkillParam() {
     this->m_unSkillNo = 0;
     this->m_ucJob = 0;
     this->m_ucType = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataAbilityLevelBaseParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAbilityLevelBaseParam::DTI);
+}
+
+inline MtAllocator* CDataAbilityLevelParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAbilityLevelParam::DTI);
+}
+
+inline MtAllocator* CDataAbilityParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAbilityParam::DTI);
+}
+
+inline MtAllocator* CDataLearnNormalSkillParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLearnNormalSkillParam::DTI);
+}
+
+inline MtAllocator* CDataLearnedAcquirementParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLearnedAcquirementParam::DTI);
+}
+
+inline MtAllocator* CDataNormalSkillParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataNormalSkillParam::DTI);
+}
+
+inline MtAllocator* CDataPresetAbilityParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPresetAbilityParam::DTI);
+}
+
+inline MtAllocator* CDataReleaseAcquirementParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataReleaseAcquirementParam::DTI);
+}
+
+inline MtAllocator* CDataSetAcquirementParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSetAcquirementParam::DTI);
+}
+
+inline MtAllocator* CDataSkillLevelBaseParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSkillLevelBaseParam::DTI);
+}
+
+inline MtAllocator* CDataSkillLevelParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSkillLevelParam::DTI);
+}
+
+inline MtAllocator* CDataSkillParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSkillParam::DTI);
 }

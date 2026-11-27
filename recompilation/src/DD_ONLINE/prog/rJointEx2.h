@@ -142,3 +142,31 @@ inline void cJointEx2::operator delete[](void* p_addr) {
 inline void* cJointEx2::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cJointEx2::DTI)->memAlloc(sz, align, ::cJointEx2::DTI.::MtDTI::getID());
 }
+
+inline void* cJointEx2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cJointEx2::DTI)->memAlloc(sz, align, ::cJointEx2::DTI.::MtDTI::getID());
+}
+
+inline void cJointEx2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cJointEx2::DTI)->memFree(p_addr);
+}
+
+inline cJointEx2::cJointEx2() {
+    this->mJntNo = 0;
+    this->mRefJntNo = 0;
+    this->mAxis = 7;
+    this->mRate = 0.5f;
+    this->mTwistRate = 0.0f;
+    this->mRotAdd = ::MtVector3::Zero;
+    this->mLimitAxis = 0;
+    this->mLimitMin = 0.0f;
+    this->mLimitMax = 0.0f;
+}
+
+inline void* rJointEx2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rJointEx2::DTI)->memAlloc(sz, align, ::rJointEx2::DTI.::MtDTI::getID());
+}
+
+inline void rJointEx2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rJointEx2::DTI)->memFree(p_addr);
+}

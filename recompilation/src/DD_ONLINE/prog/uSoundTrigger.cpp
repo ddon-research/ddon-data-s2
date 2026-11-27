@@ -105,39 +105,6 @@ const MtDTI& cSoundTriggerLayoutInfo::getDTI() const {
     return cSoundTriggerLayoutInfo::DTI;
 }
 
-inline void* cSoundTriggerLayoutInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSoundTriggerLayoutInfo::DTI)->memAlloc(sz, align, cSoundTriggerLayoutInfo::DTI.getID());
-}
-
-inline void cSoundTriggerLayoutInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundTriggerLayoutInfo::DTI)->memFree(p_addr);
-}
-
-inline cSoundTriggerLayoutInfo::cSoundTriggerLayoutInfo() {
-    mPanelType = 0;
-    mpUSequenceSe[1] = nullptr;
-    mpUSequenceSe[0] = nullptr;
-    mPanelNormal[0].x = MtVector3::Zero.x;
-    mPanelNormal[0].y = MtVector3::Zero.y;
-    mPanelNormal[0].z = MtVector3::Zero.z;
-    mPanelNormal[0].pad_ = 0.0f;
-    mPanelNormal[1].x = MtVector3::Zero.x;
-    mPanelNormal[1].y = MtVector3::Zero.y;
-    mPanelNormal[1].z = MtVector3::Zero.z;
-    mPanelNormal[1].pad_ = 0.0f;
-    mContentsIndex[10] = -1;
-    mContentsIndex[8] = -1;
-    mContentsIndex[9] = -1;
-    mContentsIndex[6] = -1;
-    mContentsIndex[7] = -1;
-    mContentsIndex[4] = -1;
-    mContentsIndex[5] = -1;
-    mContentsIndex[2] = -1;
-    mContentsIndex[3] = -1;
-    mContentsIndex[0] = -1;
-    mContentsIndex[1] = -1;
-}
-
 cSoundTriggerLayoutInfo::~cSoundTriggerLayoutInfo() {
     if (mpUSequenceSe[0] != nullptr) {
         mpUSequenceSe[0]->kill();
@@ -214,14 +181,6 @@ const MtDTI& cSoundTriggerListener::getDTI() const {
     return cSoundTriggerListener::DTI;
 }
 
-inline void* cSoundTriggerListener::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSoundTriggerListener::DTI)->memAlloc(sz, align, cSoundTriggerListener::DTI.getID());
-}
-
-inline void cSoundTriggerListener::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundTriggerListener::DTI)->memFree(p_addr);
-}
-
 cSoundTriggerListener::~cSoundTriggerListener() {
 }
 
@@ -261,10 +220,6 @@ const MtDTI& nSoundTrigger::cBaseContents::getDTI() const {
     return nSoundTrigger::cBaseContents::DTI;
 }
 
-inline void nSoundTrigger::cBaseContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cBaseContents::DTI)->memFree(p_addr);
-}
-
 nSoundTrigger::cBaseContents::~cBaseContents() {
 }
 
@@ -287,10 +242,6 @@ __attribute__((weak)) MtObject* nSoundTrigger::cBaseContents::MyDTI::newInstance
 
 const MtDTI& nSoundTrigger::cCategory::getDTI() const {
     return nSoundTrigger::cCategory::DTI;
-}
-
-inline void nSoundTrigger::cCategory::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cCategory::DTI)->memFree(p_addr);
 }
 
 nSoundTrigger::cCategory::cCategory() {
@@ -321,10 +272,6 @@ MtObject* nSoundTrigger::cCategory::MyDTI::newInstance() const {
 
 const MtDTI& nSoundTrigger::cCurveSetContents::getDTI() const {
     return nSoundTrigger::cCurveSetContents::DTI;
-}
-
-inline void nSoundTrigger::cCurveSetContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cCurveSetContents::DTI)->memFree(p_addr);
 }
 
 nSoundTrigger::cCurveSetContents::~cCurveSetContents() {
@@ -374,10 +321,6 @@ const MtDTI& nSoundTrigger::cDirectionalSetContents::getDTI() const {
     return nSoundTrigger::cDirectionalSetContents::DTI;
 }
 
-inline void nSoundTrigger::cDirectionalSetContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cDirectionalSetContents::DTI)->memFree(p_addr);
-}
-
 nSoundTrigger::cDirectionalSetContents::~cDirectionalSetContents() {
     if (mpDirectionalSetA != nullptr) {
         mpDirectionalSetA->release();
@@ -423,10 +366,6 @@ __attribute__((weak)) MtObject* nSoundTrigger::cDirectionalSetContents::MyDTI::n
 
 const MtDTI& nSoundTrigger::cEQContents::getDTI() const {
     return nSoundTrigger::cEQContents::DTI;
-}
-
-inline void nSoundTrigger::cEQContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cEQContents::DTI)->memFree(p_addr);
 }
 
 nSoundTrigger::cEQContents::~cEQContents() {
@@ -480,10 +419,6 @@ const MtDTI& nSoundTrigger::cFreeWorkContents::getDTI() const {
     return nSoundTrigger::cFreeWorkContents::DTI;
 }
 
-inline void nSoundTrigger::cFreeWorkContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cFreeWorkContents::DTI)->memFree(p_addr);
-}
-
 nSoundTrigger::cFreeWorkContents::~cFreeWorkContents() {
 }
 
@@ -531,10 +466,6 @@ const MtDTI& nSoundTrigger::cPlaySeqSeContents::getDTI() const {
     return nSoundTrigger::cPlaySeqSeContents::DTI;
 }
 
-inline void nSoundTrigger::cPlaySeqSeContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cPlaySeqSeContents::DTI)->memFree(p_addr);
-}
-
 nSoundTrigger::cPlaySeqSeContents::~cPlaySeqSeContents() {
     if (mpSequenceSeA != nullptr) {
         mpSequenceSeA->release();
@@ -580,10 +511,6 @@ __attribute__((weak)) MtObject* nSoundTrigger::cPlaySeqSeContents::MyDTI::newIns
 
 const MtDTI& nSoundTrigger::cReverbContents::getDTI() const {
     return nSoundTrigger::cReverbContents::DTI;
-}
-
-inline void nSoundTrigger::cReverbContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cReverbContents::DTI)->memFree(p_addr);
 }
 
 nSoundTrigger::cReverbContents::~cReverbContents() {
@@ -638,10 +565,6 @@ const MtDTI& nSoundTrigger::cSeContents::getDTI() const {
     return nSoundTrigger::cSeContents::DTI;
 }
 
-inline void nSoundTrigger::cSeContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cSeContents::DTI)->memFree(p_addr);
-}
-
 nSoundTrigger::cSeContents::~cSeContents() {
     if (mpRequestA != nullptr) {
         mpRequestA->release();
@@ -690,10 +613,6 @@ const MtDTI& nSoundTrigger::cStopSeqSeContents::getDTI() const {
     return nSoundTrigger::cStopSeqSeContents::DTI;
 }
 
-inline void nSoundTrigger::cStopSeqSeContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cStopSeqSeContents::DTI)->memFree(p_addr);
-}
-
 nSoundTrigger::cStopSeqSeContents::~cStopSeqSeContents() {
 }
 
@@ -734,10 +653,6 @@ __attribute__((weak)) MtObject* nSoundTrigger::cStopSeqSeContents::MyDTI::newIns
 
 const MtDTI& nSoundTrigger::cStreamContents::getDTI() const {
     return nSoundTrigger::cStreamContents::DTI;
-}
-
-inline void nSoundTrigger::cStreamContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cStreamContents::DTI)->memFree(p_addr);
 }
 
 nSoundTrigger::cStreamContents::~cStreamContents() {
@@ -786,10 +701,6 @@ __attribute__((weak)) MtObject* nSoundTrigger::cStreamContents::MyDTI::newInstan
 
 const MtDTI& nSoundTrigger::cSubMixerContents::getDTI() const {
     return nSoundTrigger::cSubMixerContents::DTI;
-}
-
-inline void nSoundTrigger::cSubMixerContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundTrigger::cSubMixerContents::DTI)->memFree(p_addr);
 }
 
 nSoundTrigger::cSubMixerContents::~cSubMixerContents() {
@@ -841,16 +752,8 @@ const MtDTI& uSoundTrigger::getDTI() const {
     return uSoundTrigger::DTI;
 }
 
-inline MtAllocator* uSoundTrigger::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uSoundTrigger::DTI);
-}
-
 void* uSoundTrigger::operator new(size_t sz, u32 align) {
     return uSoundTrigger::getAllocator()->memAlloc(sz, align, uSoundTrigger::DTI.getID());
-}
-
-inline void uSoundTrigger::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundTrigger::DTI)->memFree(p_addr);
 }
 
 uSoundTrigger::uSoundTrigger() {
@@ -999,8 +902,25 @@ __attribute__((weak)) void uSoundTrigger::stopSequenceSeFlow(nSoundTrigger::cSto
 }
 
 __attribute__((weak)) void uSoundTrigger::requestStream(rSoundStreamRequest* pRequest, u32 reqNo, s32 free0, s32 free1, s32 free2) {
-    DDON_STUB("uSoundTrigger::requestStream")
-    /* stub */
+    if (free0 == 4) {
+        if (free2 == 0) {
+            mbCalledCycleBGM = true;
+            sSoundManager::getInstance()->setCycleZone(true);
+        } else {
+            mbCalledCycleBGM = false;
+            sSoundManager::getInstance()->setCycleZone(false);
+        }
+    } else if (free0 == 3) {
+        if (free2 == 0) {
+            mbCalledBaseBGM = true;
+            sSoundManager::getInstance()->startBaseReq(pRequest, reqNo, static_cast<u32>(reinterpret_cast<uintptr>(this)));
+        } else {
+            mbCalledBaseBGM = false;
+            sSoundManager::getInstance()->endBaseReq(pRequest, reqNo, static_cast<u32>(reinterpret_cast<uintptr>(this)));
+        }
+    } else {
+        static_cast<sSoundExt*>(sSound::getInstance())->requestStream(pRequest, reqNo, reinterpret_cast<uintptr>(this), nullptr, nullptr);
+    }
 }
 
 inline uSoundTrigger::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1014,14 +934,6 @@ __attribute__((weak)) MtObject* uSoundTrigger::MyDTI::newInstance() const {
 
 const MtDTI& uSoundTrigger::cTriggerGroupManager::getDTI() const {
     return uSoundTrigger::cTriggerGroupManager::DTI;
-}
-
-inline void* uSoundTrigger::cTriggerGroupManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uSoundTrigger::cTriggerGroupManager::DTI)->memAlloc(sz, align, uSoundTrigger::cTriggerGroupManager::DTI.getID());
-}
-
-inline void uSoundTrigger::cTriggerGroupManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundTrigger::cTriggerGroupManager::DTI)->memFree(p_addr);
 }
 
 uSoundTrigger::cTriggerGroupManager::~cTriggerGroupManager() {

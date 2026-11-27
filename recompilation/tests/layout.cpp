@@ -218,6 +218,7 @@
 #include "../src/DD_ONLINE/prog/rkThinkData.h"
 #include "../src/DD_ONLINE/prog/sEffectExt.h"
 #include "../src/DD_ONLINE/prog/sIMEPS4.h"
+#include "../src/DD_ONLINE/prog/sInputText.h"
 #include "../src/DD_ONLINE/prog/sKeyboardInterface.h"
 #include "../src/DD_ONLINE/prog/sLightExt.h"
 #include "../src/DD_ONLINE/prog/uGUIInputText.h"
@@ -549,8 +550,10 @@ static_assert(sizeof(::rZone) == 256, "rZone: DWARF's byte_size is 256");
 static_assert(sizeof(::rkThinkData) == 1656, "rkThinkData: DWARF's byte_size is 1656");
 static_assert(sizeof(::nIMEPS4::CandidateDispInfo) == 1136, "nIMEPS4::CandidateDispInfo: DWARF's byte_size is 1136");
 static_assert(sizeof(::nInputText::CandidateList) == 1136, "nInputText::CandidateList: DWARF's byte_size is 1136");
+static_assert(sizeof(::nInputText::Context) == 21712, "nInputText::Context: DWARF's byte_size is 21712");
 static_assert(sizeof(::nInputText::ConvertInfo) == 10312, "nInputText::ConvertInfo: DWARF's byte_size is 10312");
 static_assert(sizeof(::nInputText::cUnicodeString) == 10248, "nInputText::cUnicodeString: DWARF's byte_size is 10248");
+static_assert(sizeof(::sInputText) == 65200, "sInputText: DWARF's byte_size is 65200");
 static_assert(sizeof(::sKeyboardInterface) == 18744, "sKeyboardInterface: DWARF's byte_size is 18744");
 static_assert(sizeof(::uGUIInputText) == 39344, "uGUIInputText: DWARF's byte_size is 39344");
 static_assert(sizeof(::uGUIPopCnvWnd) == 27136, "uGUIPopCnvWnd: DWARF's byte_size is 27136");

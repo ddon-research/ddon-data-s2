@@ -18,10 +18,6 @@ const MtDTI& rSoundSimpleCurve::getDTI() const {
     return rSoundSimpleCurve::DTI;
 }
 
-inline void rSoundSimpleCurve::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSimpleCurve::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rSoundSimpleCurve::~rSoundSimpleCurve() {
     if (mElementArray.mLength != 0) {
         u32 v0_0 = mElementArray.mLength;
@@ -112,14 +108,6 @@ __attribute__((weak)) MtObject* rSoundSimpleCurve::MyDTI::newInstance() const {
 
 const MtDTI& rSoundSimpleCurve::Element::getDTI() const {
     return rSoundSimpleCurve::Element::DTI;
-}
-
-inline void* rSoundSimpleCurve::Element::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundSimpleCurve::Element::DTI)->memAlloc(sz, align, rSoundSimpleCurve::Element::DTI.getID());
-}
-
-inline void rSoundSimpleCurve::Element::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSimpleCurve::Element::DTI)->memFree(p_addr);
 }
 
 rSoundSimpleCurve::Element::~Element() {

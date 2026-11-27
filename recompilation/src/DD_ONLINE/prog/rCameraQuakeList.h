@@ -156,3 +156,51 @@ inline void* rCameraQuakeList::operator new(size_t sz, void* p_addr) {
 inline void cQuakeParam::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cQuakeParam::DTI)->memFree(p_addr);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cQuakeParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuakeParam::DTI)->memAlloc(sz, align, ::cQuakeParam::DTI.::MtDTI::getID());
+}
+
+inline cQuakeParam::cQuakeParam() {
+    this->mTailTime = 0.0f;
+    this->mHeadTime = 0.0f;
+    this->mMainTime = 0.0f;
+    this->mMagnitude.x = ::MtVector3::Zero.x;
+    this->mMagnitude.y = ::MtVector3::Zero.y;
+    this->mMagnitude.z = ::MtVector3::Zero.z;
+    this->mMagnitude.pad_ = 0.0f;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mbAsync = false;
+    this->mBalance = 0.0f;
+    this->mPeriod = 0.0f;
+    this->mRoll = 0.0f;
+    this->mSpread = 0.0f;
+    this->mDamping = 0.0f;
+    this->mPos.pad_ = 0.0f;
+    this->mRadius = 0.0f;
+    this->mCamera1QuakeTime = 0.1f;
+    this->mTarget1QuakeTime = 0.1f;
+    this->mRoll1QuakeTime = 0.1f;
+    this->mRandDrop = 0.5f;
+    this->mHeadCurve = 1;
+    this->mTailCurve = 1;
+}
+
+inline void* rCameraQuakeList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCameraQuakeList::DTI)->memAlloc(sz, align, ::rCameraQuakeList::DTI.::MtDTI::getID());
+}
+
+inline void rCameraQuakeList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCameraQuakeList::DTI)->memFree(p_addr);
+}
+
+inline rCameraQuakeList::rCameraQuakeList() {
+    this->::cResource::setAttribute(18u);
+    this->mQuakeList.mAutoDelete = true;
+}

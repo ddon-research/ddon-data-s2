@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCaughtDamageRateTbl.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cCaughtDamageRate::getDTI() const {
     return cCaughtDamageRate::DTI;
-}
-
-inline void* cCaughtDamageRate::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCaughtDamageRate::DTI)->memAlloc(sz, align, cCaughtDamageRate::DTI.getID());
-}
-
-inline void cCaughtDamageRate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCaughtDamageRate::DTI)->memFree(p_addr);
 }
 
 void cCaughtDamageRate::createProperty(MtPropertyList& proplist) {
@@ -39,14 +29,6 @@ MtObject* cCaughtDamageRate::MyDTI::newInstance() const {
 
 const MtDTI& rCaughtDamageRateTbl::getDTI() const {
     return rCaughtDamageRateTbl::DTI;
-}
-
-inline void* rCaughtDamageRateTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCaughtDamageRateTbl::DTI)->memAlloc(sz, align, rCaughtDamageRateTbl::DTI.getID());
-}
-
-inline void rCaughtDamageRateTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCaughtDamageRateTbl::DTI)->memFree(p_addr);
 }
 
 bool rCaughtDamageRateTbl::loadData(MtDataReader& in, cCaughtDamageRate* pData) {

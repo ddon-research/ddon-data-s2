@@ -31,6 +31,7 @@ using u32 = unsigned int;
 
 class cpLegCtrl : public cpComponent
 {
+    friend class uCharacter;
 public:
     enum LEG_IK_QUALITY
     {
@@ -128,4 +129,16 @@ inline void* cpLegCtrl::operator new(size_t sz, void* p_addr) {
 
 inline void cpLegCtrl::setIKCtrl(cpIKCtrl* pIKCtrl) {
     this->mpIKCtrl = pIKCtrl;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpLegCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpLegCtrl::DTI);
+}
+
+inline void cpLegCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpLegCtrl::DTI)->memFree(p_addr);
 }

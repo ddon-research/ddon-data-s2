@@ -129,3 +129,11 @@ inline void* cZoneContents::operator new(size_t sz, void* p_addr) {
 inline bool cZoneContents::isUse() const {
     return this->mFlgUse;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* cZoneContents::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneContents::DTI)->memAlloc(sz, align, ::cZoneContents::DTI.::MtDTI::mID);
+}

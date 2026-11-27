@@ -2,18 +2,18 @@
 
 ## What it is
 
-1387 headers and 1324 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where it could be rendered.
+1551 headers and 1487 units reconstructed from DWARF and the ELF: every class's declaration, layout and virtual table as DWARF records them, and each method's body where it could be rendered.
 
-- **Reconstructed:** 48373 methods have a body, of the 65418 the bundle defines (49775 with code in the ELF, 15496 inline with none of their own, 147 derived saves):
-  - 24312 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 5329 rendered bodies marked approximate;
-  - 793 recorded bodies, written apart from the rendered ones and proven equal to the ELF by the same recompile;
-  - 164 recorded bodies the recompile does not prove, kept because every file of their resource loads (and saves back byte for byte where it saves) with them;
+- **Reconstructed:** 54558 methods have a body, of the 72425 the bundle defines (54663 with code in the ELF, 17615 inline with none of their own, 147 derived saves):
+  - 26907 bodies rendered from the ELF and proven equal to it by recompiling with the game's own compiler release (SDK 2.500), and 6376 rendered bodies marked approximate;
+  - 890 recorded bodies, written apart from the rendered ones and proven equal to the ELF by the same recompile;
+  - 158 recorded bodies the recompile does not prove, kept because every file of their resource loads (and saves back byte for byte where it saves) with them;
   - 47 instances of recorded generics and 3 recorded inline bodies with the ELF's copy;
-  - 2082 empty bodies, where the ELF's is a single `ret`;
-  - 15496 inline bodies with no code of their own, checked where they are inlined;
+  - 2415 empty bodies, where the ELF's is a single `ret`;
+  - 17615 inline bodies with no code of their own, checked where they are inlined;
   - 147 saves derived by inverting a root's load, for roots whose game code has none (the bundle's `derived/`, which this project does not ship).
-- **Not written:** 459 instances of generics no unit writes.
-- **Stubs:** 16586 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
+- **Not written:** 555 instances of generics no unit writes.
+- **Stubs:** 17312 bodies are stubs: they start with `DDON_STUB("Q::f")`, a macro that is empty unless a build defines it (a test host can record which stubs a run reached).
 
 The reconstruction's notes (its inferences, rulings, addresses, refusals and oracle verdicts) are stripped; only comments a reader of the source needs stay (file sections, member offsets, vtable slots, namespace ends, stub markers).
 
@@ -48,6 +48,8 @@ The reconstruction's notes (its inferences, rulings, addresses, refusals and ora
 - `src/generated/shared/dataformats.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/dataformats.h
 - `src/generated/shared/depthrendertarget.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/depthrendertarget.h
 - `src/generated/shared/depthrendertarget.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/depthrendertarget.h
+- `src/generated/shared/directory.cpp`: no class with a decl_file
+- `src/generated/shared/directory.h`: no class with a decl_file
 - `src/generated/shared/dispatchcommandbuffer.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/dispatchcommandbuffer.h
 - `src/generated/shared/dispatchcommandbuffer.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/dispatchcommandbuffer.h
 - `src/generated/shared/dispatchdraw.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/dispatchdraw.h
@@ -61,6 +63,7 @@ The reconstruction's notes (its inferences, rulings, addresses, refusals and ora
 - `src/generated/shared/ime_types.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/libime/ime_types.h
 - `src/generated/shared/json2.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h
 - `src/generated/shared/json2.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/json2.h
+- `src/generated/shared/libsha256.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/libsha256.h
 - `src/generated/shared/lwcue_base.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/lwcue_base.h
 - `src/generated/shared/lwcue_base.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/lwcue_base.h
 - `src/generated/shared/lwcue_graphics.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnmx/lwcue_graphics.h
@@ -70,6 +73,7 @@ The reconstruction's notes (its inferences, rulings, addresses, refusals and ora
 - `src/generated/shared/mouse.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/mouse.h
 - `src/generated/shared/nAbility.h`: no class with a decl_file
 - `src/generated/shared/nAction.h`: no class with a decl_file
+- `src/generated/shared/nCameraGame.cpp`: no class with a decl_file
 - `src/generated/shared/nCameraGame.h`: no class with a decl_file
 - `src/generated/shared/nCatch.h`: no class with a decl_file
 - `src/generated/shared/nCollisionDefine.h`: no class with a decl_file
@@ -107,10 +111,12 @@ The reconstruction's notes (its inferences, rulings, addresses, refusals and ora
 - `src/generated/shared/ngs2_system.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/ngs2/ngs2_system.h
 - `src/generated/shared/np_auth.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_auth.h
 - `src/generated/shared/np_common.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_common.h
+- `src/generated/shared/np_matching2.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_matching2.h
 - `src/generated/shared/np_npid.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_npid.h
 - `src/generated/shared/np_party.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_party.h
 - `src/generated/shared/np_ranking.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_ranking.h
 - `src/generated/shared/np_trophy.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/np/np_trophy.h
+- `src/generated/shared/np_webapi.h`: no class with a decl_file
 - `src/generated/shared/regs.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/regs.h
 - `src/generated/shared/regs.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/regs.h
 - `src/generated/shared/rendertarget.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/rendertarget.h
@@ -118,6 +124,9 @@ The reconstruction's notes (its inferences, rulings, addresses, refusals and ora
 - `src/generated/shared/sampler.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/sampler.h
 - `src/generated/shared/sampler.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/sampler.h
 - `src/generated/shared/save_data.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/save_data.h
+- `src/generated/shared/sceavplayer_ex.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/sceavplayer_ex.h
+- `src/generated/shared/str.cpp`: no class with a decl_file
+- `src/generated/shared/str.h`: no class with a decl_file
 - `src/generated/shared/texture.cpp`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/texture.h
 - `src/generated/shared/texture.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include_common/gnm/texture.h
 - `src/generated/shared/user_service_api.h`: declared outside the sources: C:/Program Files (x86)/SCE/ORBIS SDKs/2.500/target/include/user_service/user_service_api.h

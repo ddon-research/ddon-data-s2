@@ -16,16 +16,8 @@ const MtDTI& cChildRegionStatus::getDTI() const {
     return cChildRegionStatus::DTI;
 }
 
-inline MtAllocator* cChildRegionStatus::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cChildRegionStatus::DTI);
-}
-
 void* cChildRegionStatus::operator new(size_t sz, u32 align) {
     return cChildRegionStatus::getAllocator()->memAlloc(sz, align, cChildRegionStatus::DTI.getID());
-}
-
-inline void cChildRegionStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cChildRegionStatus::DTI)->memFree(p_addr);
 }
 
 cChildRegionStatus::cChildRegionStatus() {

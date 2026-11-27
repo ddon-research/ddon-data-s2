@@ -3,9 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-// Declarations
-namespace nRegionStatus { struct stCorePointSlaveMsg; }
-
 namespace nRegionStatus {
     enum CORE_POINT_TYPE
     {
@@ -37,6 +34,17 @@ namespace nRegionStatus {
         ENDURANCE_CURE_RATE_RAGE = 1,
         ENDURANCE_CURE_RATE_ELECT = 2,
         ENDURANCE_CURE_RATE_TYPE_NUM = 3,
+    };
+}  // namespace nRegionStatus
+
+namespace nRegionStatus {
+    enum HIT_STOP_DEFFENCE_ATTR
+    {
+        HIT_STOP_DEFFECE_ATTR_NORMAL = 0,
+        HIT_STOP_DEFFECE_ATTR_HIT_STOP_NONE = 1,
+        HIT_STOP_DEFFECE_ATTR_HIT_SLOW_NONE = 2,
+        HIT_STOP_DEFFECE_ATTR_HIT_STOP_SLOW_NONE = 3,
+        HIT_STOP_DEFENCE_ATTR_NUM = 4,
     };
 }  // namespace nRegionStatus
 
@@ -94,6 +102,23 @@ namespace nRegionStatus {
 }  // namespace nRegionStatus
 
 namespace nRegionStatus {
+    enum REGION_C_STATUS_PRIO
+    {
+        REGION_C_STATUS_PRIO_NONE = 1,
+        REGION_C_STATUS_PRIO_SETUP = 1,
+        REGION_C_STATUS_PRIO_SCRIPT = 1000,
+        REGION_C_STATUS_PRIO_NORMAL = 500,
+        REGION_C_STATUS_PRIO_RAGE = 800,
+        REGION_C_STATUS_PRIO_SHAKED = 801,
+        REGION_C_STATUS_PRIO_CHANCE_DOWN = 802,
+        REGION_C_STATUS_PRIO_OCD = 600,
+        REGION_C_STATUS_PRIO_ORIGINAL1 = 901,
+        REGION_C_STATUS_PRIO_ORIGINAL2 = 900,
+        REGION_C_STATUS_PRIO_INVALID = 0,
+    };
+}  // namespace nRegionStatus
+
+namespace nRegionStatus {
     enum REGION_C_STATUS_TYPE
     {
         REGION_C_STATUS_NONE = 0,
@@ -125,10 +150,37 @@ namespace nRegionStatus {
     };
 }  // namespace nRegionStatus
 
+namespace nRegionStatus {
+    enum RESION_SURFACE_TYPE
+    {
+        SURFACE_INIT = 0,
+        SURFACE_LIQUID = 0,
+        SURFACE_MEAT = 1,
+        SURFACE_BONE = 2,
+        SURFACE_WOOD = 3,
+        SURFACE_STONE = 4,
+        SURFACE_IRON = 5,
+        SURFACE_SMOKE = 6,
+        SURFACE_GOLD = 7,
+        SURFACE_WEEK1 = 8,
+        SURFACE_WEEK2 = 9,
+        SURFACE_ICE = 10,
+        SURFACE_EROSION = 11,
+        SURFACE_NUM = 12,
+    };
+}  // namespace nRegionStatus
+
+// Declarations
+namespace nRegionStatus { struct stCorePointSlaveMsg; }
+
 // Type aliases from DWARF
 using u16 = unsigned short;
 
 namespace nRegionStatus {
+
+    // Forward declarations
+    struct stCorePointSlaveMsg;
+
     struct stCorePointSlaveMsg
     {
     public:
@@ -140,4 +192,8 @@ namespace nRegionStatus {
         u16 mActiveTimer;  // offset: 0x2
         bool mIsStandby;  // offset: 0x4
     };
+
+    bool isCorePointErosion(CORE_POINT_TYPE type);
+    bool isCorePointErosionTentacle(CORE_POINT_TYPE type);
+
 }  // namespace nRegionStatus

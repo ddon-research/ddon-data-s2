@@ -39,14 +39,6 @@ const MtDTI& cQuestUnitGroup::getDTI() const {
     return cQuestUnitGroup::DTI;
 }
 
-inline void* cQuestUnitGroup::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestUnitGroup::DTI)->memAlloc(sz, align, cQuestUnitGroup::DTI.getID());
-}
-
-inline void cQuestUnitGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestUnitGroup::DTI)->memFree(p_addr);
-}
-
 cQuestUnitGroup::~cQuestUnitGroup() {
     release();
 }
@@ -147,22 +139,11 @@ const MtDTI& cQuestUnitManager::getDTI() const {
     return cQuestUnitManager::DTI;
 }
 
-inline MtAllocator* cQuestUnitManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cQuestUnitManager::DTI);
-}
-
 void* cQuestUnitManager::operator new(size_t sz, u32 align) {
     return cQuestUnitManager::getAllocator()->memAlloc(sz, align, cQuestUnitManager::DTI.getID());
 }
 
-inline void cQuestUnitManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestUnitManager::DTI)->memFree(p_addr);
-}
-
-cQuestUnitManager::cQuestUnitManager() {
-    mQuestId = 0;
-    mStageNo = -1;
-    mpQuestList = nullptr;
+cQuestUnitManager::cQuestUnitManager() : mQuestId(0u), mStageNo(-1), mpQuestList(static_cast<rQuestList*>(nullptr)) {
 }
 
 cQuestUnitManager::~cQuestUnitManager() {

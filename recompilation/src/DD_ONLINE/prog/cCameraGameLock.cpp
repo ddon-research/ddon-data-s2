@@ -38,10 +38,6 @@ const MtDTI& cCamExParamLock::getDTI() const {
     return cCamExParamLock::DTI;
 }
 
-inline MtAllocator* cCamExParamLock::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamExParamLock::DTI);
-}
-
 void* cCamExParamLock::operator new(size_t sz, u32 align) {
     return cCamExParamLock::getAllocator()->memAlloc(sz, align, cCamExParamLock::DTI.getID());
 }
@@ -103,10 +99,6 @@ const MtDTI& cCamImpLock::getDTI() const {
     return cCamImpLock::DTI;
 }
 
-inline void cCamImpLock::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpLock::DTI)->memFree(p_addr);
-}
-
 cCamImpLock::~cCamImpLock() {
     DDON_STUB("cCamImpLock::~cCamImpLock")
     /* stub */
@@ -144,9 +136,16 @@ nCameraGame::CAMERA_TYPE cCamImpLock::getType() const {
 __attribute__((weak)) void cCamImpLock::createProperty(MtPropertyList& s) {
 }
 
-__attribute__((weak)) void cCamImpLock::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cCamImpLock::applyWorldOffset")
-    /* stub */
+void cCamImpLock::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mLockOnPos.x = offset.x + mLockOnPos.x;
+    mLockOnPos.y = offset.y + mLockOnPos.y;
+    mLockOnPos.z = offset.z + mLockOnPos.z;
+    mLockOnPosInit.x = offset.x + mLockOnPosInit.x;
+    mLockOnPosInit.y = offset.y + mLockOnPosInit.y;
+    mLockOnPosInit.z = offset.z + mLockOnPosInit.z;
+    mInterLockPos.mNow.x = offset.x + mInterLockPos.mNow.x;
+    mInterLockPos.mNow.y = offset.y + mInterLockPos.mNow.y;
+    mInterLockPos.mNow.z = offset.z + mInterLockPos.mNow.z;
 }
 
 __attribute__((weak)) void cCamImpLock::calcTargetPos() {

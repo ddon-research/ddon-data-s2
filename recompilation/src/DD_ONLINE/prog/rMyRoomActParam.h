@@ -160,3 +160,40 @@ inline void cMyRoomActParam::operator delete[](void* p_addr) {
 inline void* cMyRoomActParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cMyRoomActParam::DTI)->memAlloc(sz, align, ::cMyRoomActParam::DTI.::MtDTI::getID());
 }
+
+inline void* cMyRoomActParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMyRoomActParam::DTI)->memAlloc(sz, align, ::cMyRoomActParam::DTI.::MtDTI::getID());
+}
+
+inline void cMyRoomActParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMyRoomActParam::DTI)->memFree(p_addr);
+}
+
+inline cMyRoomActParam::cMyRoomActParam() {
+    this->mWaypoint = 0;
+    this->mPos = ::MtVector3::Zero;
+    this->mAngleY = 0.0f;
+    this->mNpcMotNo = 0;
+    this->mStartIdx = 0;
+    this->mNeedOM = 0;
+    this->mNeedOM4 = 0;
+    this->mNeedOM5 = 0;
+    this->mNeedOM2 = 0;
+    this->mNeedOM3 = 0;
+    this->mMessage = -1;
+    this->mCondition = 0;
+    this->mLinkActNo = -1;
+    this->mLinkActLv = 1;
+    this->mChangeEquip = -1;
+    this->mIsGriffin = false;
+    this->mIsNotAvoid = false;
+    this->mIsSingle = false;
+}
+
+inline void* rMyRoomActParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMyRoomActParam::DTI)->memAlloc(sz, align, ::rMyRoomActParam::DTI.::MtDTI::getID());
+}
+
+inline void rMyRoomActParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMyRoomActParam::DTI)->memFree(p_addr);
+}

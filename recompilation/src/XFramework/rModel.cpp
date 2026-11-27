@@ -32,14 +32,6 @@ const MtDTI& rModel::getDTI() const {
     return rModel::DTI;
 }
 
-inline void* rModel::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rModel::DTI)->memAlloc(sz, align, rModel::DTI.mID);
-}
-
-inline void rModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rModel::DTI)->memFree(p_addr);
-}
-
 inline rModel::rModel() : mRCNInfo() {
     mAttr = 16;
     mJointInfo = nullptr;

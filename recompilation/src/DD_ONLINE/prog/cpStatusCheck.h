@@ -87,3 +87,15 @@ inline void* cpStatusCheck::operator new(size_t sz, void* p_addr) {
 
 inline cpStatusCheck::cResult_info::cResult_info() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpStatusCheck::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpStatusCheck::DTI);
+}
+
+inline void cpStatusCheck::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpStatusCheck::DTI)->memFree(p_addr);
+}

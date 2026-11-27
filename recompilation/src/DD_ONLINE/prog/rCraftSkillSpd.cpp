@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCraftSkillSpd.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cCraftSkillSpdData::getDTI() const {
     return cCraftSkillSpdData::DTI;
-}
-
-inline void* cCraftSkillSpdData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCraftSkillSpdData::DTI)->memAlloc(sz, align, cCraftSkillSpdData::DTI.getID());
-}
-
-inline void cCraftSkillSpdData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftSkillSpdData::DTI)->memFree(p_addr);
 }
 
 void cCraftSkillSpdData::createProperty(MtPropertyList& s) {
@@ -52,14 +42,6 @@ MtObject* cCraftSkillSpdData::MyDTI::newInstance() const {
 
 const MtDTI& rCraftSkillSpd::getDTI() const {
     return rCraftSkillSpd::DTI;
-}
-
-inline void* rCraftSkillSpd::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCraftSkillSpd::DTI)->memAlloc(sz, align, rCraftSkillSpd::DTI.getID());
-}
-
-inline void rCraftSkillSpd::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCraftSkillSpd::DTI)->memFree(p_addr);
 }
 
 bool rCraftSkillSpd::loadData(MtDataReader& in, cCraftSkillSpdData* pData) {

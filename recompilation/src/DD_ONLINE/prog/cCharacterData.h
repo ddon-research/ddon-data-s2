@@ -46,6 +46,8 @@ class sChat;
 class sGUIExt;
 class sGame;
 class sNetworkExt;
+class sTutorialGuide;
+class uCharacterSelect;
 class uGUIEngageInfo;
 class uGUIMapMini;
 class uGUIOption;
@@ -81,6 +83,8 @@ class cCharacterData : public MtObject
     friend class sGUIExt;
     friend class sGame;
     friend class sNetworkExt;
+    friend class sTutorialGuide;
+    friend class uCharacterSelect;
     friend class uGUIEngageInfo;
     friend class uGUIMapMini;
     friend class uGUIOption;
@@ -1094,4 +1098,21 @@ inline u32 cCharacterData::getValidInfo() const {
 
 inline void cCharacterData::stPawnData::setLv(u16 lv) {
     this->mLv = 1;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cNetSerializer.h"
+
+inline MtAllocator* cCharacterData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterData::DTI);
+}
+
+inline void cCharacterData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterData::DTI)->memFree(p_addr);
+}
+
+inline void cCharacterData::serializeQuestEtcF(BitWriter& w) const {
+    w.::BitWriter::writeU32(this->mCharData.mQuestEtcF);
 }

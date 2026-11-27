@@ -26,16 +26,8 @@ const MtDTI& uStageCraftPawnCtrl::getDTI() const {
     return uStageCraftPawnCtrl::DTI;
 }
 
-inline MtAllocator* uStageCraftPawnCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uStageCraftPawnCtrl::DTI);
-}
-
 void* uStageCraftPawnCtrl::operator new(size_t sz, u32 align) {
     return uStageCraftPawnCtrl::getAllocator()->memAlloc(sz, align, uStageCraftPawnCtrl::DTI.getID());
-}
-
-inline void uStageCraftPawnCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uStageCraftPawnCtrl::DTI)->memFree(p_addr);
 }
 
 uStageCraftPawnCtrl::uStageCraftPawnCtrl() {

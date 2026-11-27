@@ -211,7 +211,7 @@ public:
     virtual bool loadResource();  // vtable slot 76
     virtual void setup();  // vtable slot 6
     virtual void kill();  // vtable slot 16
-    void setMode(u32 mode);
+    void setMode(u32 mode = 1);
     void setText(MT_CTSTR pText, MT_CTSTR pAnalyze0, s32 val0, MT_CTSTR pAnalyze1, s32 val1);
     void setDefaultPos(u32 pos = 1);
     void setItemList(const MtTypedArray<cItemParam>& item_list);
@@ -271,8 +271,16 @@ inline void* uGUIPopListDialog::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void uGUIPopListDialog::setMode(u32 mode) {
+    this->mMode = 1;
+}
+
 inline void uGUIPopListDialog::setDefaultPos(u32 pos) {
     this->mDefaultPos = 1;
+}
+
+inline uGUIPopListDialog::SELECT_ID uGUIPopListDialog::getSelect() {
+    return this->mSelect;
 }
 
 inline void uGUIPopListDialog::eventCancel() {
@@ -293,4 +301,28 @@ inline uGUIPopListDialog::cListItem::cListItem() {
 
 inline void* uGUIPopListDialog::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopListDialog::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::DTI);
+}
+
+inline void uGUIPopListDialog::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIPopListDialog::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::cListItem::DTI)->memAlloc(sz, align, ::uGUIPopListDialog::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIPopListDialog::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopListDialog::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopListDialog::cListInfo::DTI)->memFree(p_addr);
 }

@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rAreaMasterSpotData.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cUIObject.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -22,14 +20,6 @@ const MtDTI& cAreaMasterRankData::getDTI() const {
     return cAreaMasterRankData::DTI;
 }
 
-inline void* cAreaMasterRankData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAreaMasterRankData::DTI)->memAlloc(sz, align, cAreaMasterRankData::DTI.getID());
-}
-
-inline void cAreaMasterRankData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAreaMasterRankData::DTI)->memFree(p_addr);
-}
-
 inline cAreaMasterRankData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAreaMasterRankData::MyDTI cAreaMasterRankData::DTI("cAreaMasterRankData", &::cUIResource::DTI, 24ul, 0u, 0u);
@@ -40,14 +30,6 @@ MtObject* cAreaMasterRankData::MyDTI::newInstance() const {
 
 const MtDTI& cAreaMasterSpotData::getDTI() const {
     return cAreaMasterSpotData::DTI;
-}
-
-inline void* cAreaMasterSpotData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAreaMasterSpotData::DTI)->memAlloc(sz, align, cAreaMasterSpotData::DTI.getID());
-}
-
-inline void cAreaMasterSpotData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAreaMasterSpotData::DTI)->memFree(p_addr);
 }
 
 inline cAreaMasterSpotData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -62,14 +44,6 @@ const MtDTI& cAreaMasterSpotDetailData::getDTI() const {
     return cAreaMasterSpotDetailData::DTI;
 }
 
-inline void* cAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, cAreaMasterSpotDetailData::DTI.getID());
-}
-
-inline void cAreaMasterSpotDetailData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAreaMasterSpotDetailData::DTI)->memFree(p_addr);
-}
-
 inline cAreaMasterSpotDetailData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAreaMasterSpotDetailData::MyDTI cAreaMasterSpotDetailData::DTI("cAreaMasterSpotDetailData", &::cUIResource::DTI, 80ul, 0u, 0u);
@@ -80,14 +54,6 @@ MtObject* cAreaMasterSpotDetailData::MyDTI::newInstance() const {
 
 const MtDTI& cSpotEnemyData::getDTI() const {
     return cSpotEnemyData::DTI;
-}
-
-void* cSpotEnemyData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSpotEnemyData::DTI)->memAlloc(sz, align, cSpotEnemyData::DTI.getID());
-}
-
-inline void cSpotEnemyData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSpotEnemyData::DTI)->memFree(p_addr);
 }
 
 inline cSpotEnemyData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -102,14 +68,6 @@ const MtDTI& cSpotItemData::getDTI() const {
     return cSpotItemData::DTI;
 }
 
-void* cSpotItemData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSpotItemData::DTI)->memAlloc(sz, align, cSpotItemData::DTI.getID());
-}
-
-inline void cSpotItemData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSpotItemData::DTI)->memFree(p_addr);
-}
-
 inline cSpotItemData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cSpotItemData::MyDTI cSpotItemData::DTI("cSpotItemData", &::cUIResource::DTI, 16ul, 0u, 0u);
@@ -120,14 +78,6 @@ MtObject* cSpotItemData::MyDTI::newInstance() const {
 
 const MtDTI& rAreaMasterRankData::getDTI() const {
     return rAreaMasterRankData::DTI;
-}
-
-inline void* rAreaMasterRankData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaMasterRankData::DTI)->memAlloc(sz, align, rAreaMasterRankData::DTI.getID());
-}
-
-inline void rAreaMasterRankData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaMasterRankData::DTI)->memFree(p_addr);
 }
 
 bool rAreaMasterRankData::loadData(MtDataReader& r, cAreaMasterRankData* pData) {
@@ -155,14 +105,6 @@ MtObject* rAreaMasterRankData::MyDTI::newInstance() const {
 
 const MtDTI& rAreaMasterSpotData::getDTI() const {
     return rAreaMasterSpotData::DTI;
-}
-
-inline void* rAreaMasterSpotData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaMasterSpotData::DTI)->memAlloc(sz, align, rAreaMasterSpotData::DTI.getID());
-}
-
-inline void rAreaMasterSpotData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaMasterSpotData::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rAreaMasterSpotData::loadData(MtDataReader& r, cAreaMasterSpotData* pData) {
@@ -199,14 +141,6 @@ MtObject* rAreaMasterSpotData::MyDTI::newInstance() const {
 
 const MtDTI& rAreaMasterSpotDetailData::getDTI() const {
     return rAreaMasterSpotDetailData::DTI;
-}
-
-inline void* rAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, rAreaMasterSpotDetailData::DTI.getID());
-}
-
-inline void rAreaMasterSpotDetailData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAreaMasterSpotDetailData::DTI)->memFree(p_addr);
 }
 
 bool rAreaMasterSpotDetailData::loadData(MtDataReader& r, cAreaMasterSpotDetailData* pData) {

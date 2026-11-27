@@ -186,3 +186,37 @@ private:
 inline void* uGUIRetry::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "uGUISystemMsg.h"
+
+inline MtAllocator* uGUIRetry::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIRetry::DTI);
+}
+
+inline void uGUIRetry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRetry::DTI)->memFree(p_addr);
+}
+
+inline void uGUIRetry::updateDialog() {
+    if (this->mpGUISystemMsg != nullptr) {
+        if (this->mpGUISystemMsg->::uGUIBase::mResult == static_cast<uGUIBase::GUI_RESULT>(1)) {
+            this->mDialogResult = 1;
+            if (this->mpGUISystemMsg->::uGUISystemMsg::getChoicePos(-1) == 0) {
+                this->mDialogResult = 0;
+            }
+            if (this->mpGUISystemMsg != nullptr) {
+                this->mpGUISystemMsg->::uGUIBase::mEndType = 0;
+                this->mpGUISystemMsg->end();
+            }
+            this->mpGUISystemMsg = nullptr;
+            static_cast<sGUIExt*>(::sGUI::mpInstance)->::sGUIExt::reqWindowActive(static_cast<uGUIBase*>(this));
+        }
+    } else {
+        this->mDialogResult = 1;
+    }
+}

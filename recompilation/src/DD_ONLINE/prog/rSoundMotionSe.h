@@ -224,3 +224,28 @@ inline rSoundMotionSe::cSoundMotionSeData::cSoundMotionSeData() {
 inline MtAllocator* rSoundMotionSe::getAllocator() {
     return MtMemoryAllocator::getAllocator(DTI);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rSoundMotionSe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundMotionSe::DTI)->memAlloc(sz, align, ::rSoundMotionSe::DTI.::MtDTI::getID());
+}
+
+inline void rSoundMotionSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundMotionSe::DTI)->memFree(p_addr);
+}
+
+inline rSoundMotionSe::rSoundMotionSe() {
+    this->::cResource::setAttribute(18u);
+    this->mHeader.Magic = 0x45534D;
+    this->mHeader.Version = 9;
+    this->mpIDToIndexTbl = nullptr;
+    this->mIDToIndexTblNum = 0;
+    this->mMotionSe.::MtArray::mAutoDelete = true;
+}
+
+inline void rSoundMotionSe::cSoundMotionSeData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundMotionSe::cSoundMotionSeData::DTI)->memFree(p_addr);
+}

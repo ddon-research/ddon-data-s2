@@ -335,3 +335,86 @@ inline void* uGUIGaugeNpcBase::operator new(size_t sz, void* p_addr) {
 inline void* uGUITouchTargetSelector::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "sPlayerManager.h"
+#include "uPlayer.h"
+
+inline MtAllocator* uGUIGaugeNpc::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeNpc::DTI);
+}
+
+inline void uGUIGaugeNpc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGaugeNpc::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGaugeNpc::updateTargetIcon() {
+    if ((::sPlayerManager::mpInstance)->mpMyPlayer != nullptr) {
+        if ((::sPlayerManager::mpInstance)->mpMyPlayer->::uDDOModel::mpTouchTarget == nullptr) {
+            if (!(::sPlayerManager::mpInstance)->mpMyPlayer->mIsTargetIconOff) {
+                if ((::sPlayerManager::mpInstance)->mpMyPlayer->::uHuman::mpTouchSelectTarget != this->::uGUIGaugeNpcBase::mpUnit) {
+                    if (this->mIsDrawTargetIcon) {
+                        this->mIsDrawTargetIcon = false;
+                    }
+                } else {
+                    if (!this->mIsDrawTargetIcon) {
+                        this->mIsDrawTargetIcon = true;
+                    }
+                }
+            } else {
+                if (this->::uGUIGaugeNpcBase::mpUnit != nullptr) {
+                    if (this->mIsDrawTargetIcon) {
+                        this->mIsDrawTargetIcon = false;
+                    }
+                } else {
+                    if (!this->mIsDrawTargetIcon) {
+                        this->mIsDrawTargetIcon = true;
+                    }
+                }
+            }
+        } else {
+            if (this->::uGUIGaugeNpcBase::mpUnit != nullptr) {
+                if (this->mIsDrawTargetIcon) {
+                    this->mIsDrawTargetIcon = false;
+                }
+            } else {
+                if (!this->mIsDrawTargetIcon) {
+                    this->mIsDrawTargetIcon = true;
+                }
+            }
+        }
+    } else {
+        if (this->::uGUIGaugeNpcBase::mpUnit != nullptr) {
+            if (this->mIsDrawTargetIcon) {
+                this->mIsDrawTargetIcon = false;
+            }
+        } else {
+            if (!this->mIsDrawTargetIcon) {
+                this->mIsDrawTargetIcon = true;
+            }
+        }
+    }
+    if (this->::uGUIGaugeNpcBase::mpINST_target == nullptr) {
+        return;
+    }
+    this->::uGUIGaugeNpcBase::mpINST_target->::cGUIInstance::setVisible(false);
+    if (this->::uGUIGaugeNpcBase::mpINST_target == nullptr) {
+        return;
+    }
+    this->::uGUIGaugeNpcBase::mpINST_target->::cGUIInstance::setExecute(false);
+}
+
+inline void uGUIGaugeNpcBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGaugeNpcBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUITouchTargetSelector::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUITouchTargetSelector::DTI);
+}
+
+inline void uGUITouchTargetSelector::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUITouchTargetSelector::DTI)->memFree(p_addr);
+}

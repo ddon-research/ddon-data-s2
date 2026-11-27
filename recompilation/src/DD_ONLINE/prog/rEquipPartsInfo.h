@@ -93,3 +93,24 @@ protected:
 inline void* rEquipPartsInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* rEquipPartsInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rEquipPartsInfo::DTI);
+}
+
+inline void* rEquipPartsInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEquipPartsInfo::DTI)->memAlloc(sz, align, ::rEquipPartsInfo::DTI.::MtDTI::getID());
+}
+
+inline void rEquipPartsInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEquipPartsInfo::DTI)->memFree(p_addr);
+}
+
+inline rEquipPartsInfo::rEquipPartsInfo() {
+    this->::cResource::setAttribute(16u);
+    this->mpHeader = nullptr;
+}

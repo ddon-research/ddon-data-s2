@@ -23,16 +23,8 @@ const MtDTI& cpWorkRate::getDTI() const {
     return cpWorkRate::DTI;
 }
 
-inline MtAllocator* cpWorkRate::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpWorkRate::DTI);
-}
-
 void* cpWorkRate::operator new(size_t sz, u32 align) {
     return cpWorkRate::getAllocator()->memAlloc(sz, align, cpWorkRate::DTI.getID());
-}
-
-inline void cpWorkRate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpWorkRate::DTI)->memFree(p_addr);
 }
 
 cpWorkRate::cpWorkRate() {

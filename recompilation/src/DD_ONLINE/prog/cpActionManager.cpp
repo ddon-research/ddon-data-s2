@@ -26,16 +26,8 @@ const MtDTI& cpActionManager::getDTI() const {
     return cpActionManager::DTI;
 }
 
-inline MtAllocator* cpActionManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpActionManager::DTI);
-}
-
 void* cpActionManager::operator new(size_t sz, u32 align) {
     return cpActionManager::getAllocator()->memAlloc(sz, align, cpActionManager::DTI.getID());
-}
-
-inline void cpActionManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpActionManager::DTI)->memFree(p_addr);
 }
 
 cpActionManager::cpActionManager() {
@@ -130,9 +122,10 @@ void cpActionManager::compMoveAfter() {
     mpAction->moveAfter();
 }
 
-__attribute__((weak)) void cpActionManager::setActionList(u32 bank, const cActList* pTbl, rActionParam* pActionParamRes) {
-    DDON_STUB("cpActionManager::setActionList")
-    /* stub */
+void cpActionManager::setActionList(u32 bank, const cActList* pTbl, rActionParam* pActionParamRes) {
+    if (bank <= 15u) {
+        mpActList[bank] = pTbl;
+    }
 }
 
 __attribute__((weak)) void cpActionManager::callPreInit(u32 actNo) {

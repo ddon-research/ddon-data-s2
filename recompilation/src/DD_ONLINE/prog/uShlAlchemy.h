@@ -361,6 +361,46 @@ inline void* uShlAlchemyCS03::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline bool uShlAlchemyCS03::canDamageAlchemy() {
+    return this->mFlgDamageAlchemy;
+}
+
 inline void uShlAlchemyCS03::requestDeleteDamageAlchemy() {
     this->mRequestDeleteDamageAlchemy = true;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamAlchemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamAlchemy::DTI)->memAlloc(sz, align, ::cShlParamAlchemy::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamAlchemyCS03::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyCS03::DTI)->memAlloc(sz, align, ::cShlParamAlchemyCS03::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamAlchemyCS03::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyCS03::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamAlchemyCS03::cDamageAlchemyValueInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI)->memAlloc(sz, align, ::cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamAlchemyCS03::cDamageAlchemyValueInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uShlAlchemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlAlchemy::DTI)->memAlloc(sz, align, ::uShlAlchemy::DTI.::MtDTI::getID());
+}
+
+inline void uShlAlchemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlAlchemy::DTI)->memFree(p_addr);
+}
+
+inline void uShlAlchemyCS03::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlAlchemyCS03::DTI)->memFree(p_addr);
 }

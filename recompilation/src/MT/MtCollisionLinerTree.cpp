@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "MtCollisionLinerTree.h"
-#include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMath.h"
 #include "MtMemory.h"
@@ -13,14 +12,6 @@
 
 const MtDTI& MtCollisionUtil::MtLinerTree::getDTI() const {
     return MtCollisionUtil::MtLinerTree::DTI;
-}
-
-inline void* MtCollisionUtil::MtLinerTree::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtLinerTree::DTI.mID);
-}
-
-inline void MtCollisionUtil::MtLinerTree::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::DTI)->memFree(p_addr);
 }
 
 MtCollisionUtil::MtLinerTree::MtLinerTree() {
@@ -48,8 +39,7 @@ MtCollisionUtil::MtLinerTree::MtLinerTree() {
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 176) = 0;
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 168) = 0;
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 160) = 0;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 152) = 0;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 144) = 0;
+    mpCallbackStatusChange = static_cast<MtCollisionUtil::MT_FUNC_PTR_32>(0);
     mpCallbackOwner = nullptr;
 }
 
@@ -147,14 +137,6 @@ MtObject* MtCollisionUtil::MtLinerTree::MyDTI::newInstance() const {
 
 const MtDTI& MtCollisionUtil::MtLinerTree::cRegistReserveInfo::getDTI() const {
     return MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI;
-}
-
-inline void* MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI.mID);
-}
-
-inline void MtCollisionUtil::MtLinerTree::cRegistReserveInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtLinerTree::cRegistReserveInfo::DTI)->memFree(p_addr);
 }
 
 MtCollisionUtil::MtLinerTree::cRegistReserveInfo::~cRegistReserveInfo() {

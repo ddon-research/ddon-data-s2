@@ -19,21 +19,6 @@ const MtDTI& rSoundBossBgm::getDTI() const {
     return rSoundBossBgm::DTI;
 }
 
-inline void* rSoundBossBgm::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundBossBgm::DTI)->memAlloc(sz, align, rSoundBossBgm::DTI.getID());
-}
-
-inline void rSoundBossBgm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundBossBgm::DTI)->memFree(p_addr);
-}
-
-inline rSoundBossBgm::rSoundBossBgm() {
-    setAttribute(22u);
-    this->cResource::clear();
-    mpArrayData = nullptr;
-    mArrayDataNum = 0;
-}
-
 rSoundBossBgm::~rSoundBossBgm() {
     unsigned int i3 = 0;
     if (mArrayDataNum != 0) {
@@ -129,14 +114,6 @@ MtObject* rSoundBossBgm::MyDTI::newInstance() const {
 
 const MtDTI& rSoundBossBgm::cSoundBossBgm::getDTI() const {
     return rSoundBossBgm::cSoundBossBgm::DTI;
-}
-
-inline void* rSoundBossBgm::cSoundBossBgm::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundBossBgm::cSoundBossBgm::DTI)->memAlloc(sz, align, rSoundBossBgm::cSoundBossBgm::DTI.getID());
-}
-
-inline void rSoundBossBgm::cSoundBossBgm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundBossBgm::cSoundBossBgm::DTI)->memFree(p_addr);
 }
 
 rSoundBossBgm::cSoundBossBgm::~cSoundBossBgm() {

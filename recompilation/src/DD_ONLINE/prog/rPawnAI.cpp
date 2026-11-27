@@ -18,7 +18,6 @@
 #include "cGeneralPoint.h"
 #include "cItemParam.h"
 #include "cPawnActInterface.h"
-#include "../../XFramework/cResource.h"
 #include "cpJob05.h"
 #include "cpOcdCtrl.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -47,14 +46,6 @@ const MtDTI& cPawnAIActInter::getDTI() const {
     return cPawnAIActInter::DTI;
 }
 
-void* cPawnAIActInter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnAIActInter::DTI)->memAlloc(sz, align, cPawnAIActInter::DTI.getID());
-}
-
-inline void cPawnAIActInter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnAIActInter::DTI)->memFree(p_addr);
-}
-
 cPawnAIActInter::~cPawnAIActInter() {
     DDON_STUB("cPawnAIActInter::~cPawnAIActInter")
     /* stub */
@@ -70,10 +61,6 @@ MtObject* cPawnAIActInter::MyDTI::newInstance() const {
 
 const MtDTI& cPawnAIAction::getDTI() const {
     return cPawnAIAction::DTI;
-}
-
-inline void cPawnAIAction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnAIAction::DTI)->memFree(p_addr);
 }
 
 cPawnAIAction::~cPawnAIAction() {
@@ -244,18 +231,6 @@ __attribute__((weak)) MtObject* cPawnAIAction::MyDTI::newInstance() const {
 
 const MtDTI& rPawnAIAction::getDTI() const {
     return rPawnAIAction::DTI;
-}
-
-inline void* rPawnAIAction::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPawnAIAction::DTI)->memAlloc(sz, align, rPawnAIAction::DTI.getID());
-}
-
-inline void rPawnAIAction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPawnAIAction::DTI)->memFree(p_addr);
-}
-
-inline rPawnAIAction::rPawnAIAction() {
-    setAttribute(16u);
 }
 
 rPawnAIAction::~rPawnAIAction() {

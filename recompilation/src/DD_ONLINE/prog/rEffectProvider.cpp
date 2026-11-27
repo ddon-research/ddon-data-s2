@@ -23,18 +23,6 @@ const MtDTI& rEffectProvider::getDTI() const {
     return rEffectProvider::DTI;
 }
 
-inline void* rEffectProvider::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectProvider::DTI)->memAlloc(sz, align, rEffectProvider::DTI.getID());
-}
-
-inline void rEffectProvider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::DTI)->memFree(p_addr);
-}
-
-inline rEffectProvider::rEffectProvider() {
-    setAttribute(18u);
-}
-
 rEffectProvider::~rEffectProvider() {
 }
 
@@ -352,14 +340,6 @@ const MtDTI& rEffectProvider::INFO_PROV::getDTI() const {
     return rEffectProvider::INFO_PROV::DTI;
 }
 
-inline void* rEffectProvider::INFO_PROV::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectProvider::INFO_PROV::DTI)->memAlloc(sz, align, rEffectProvider::INFO_PROV::DTI.getID());
-}
-
-inline void rEffectProvider::INFO_PROV::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::INFO_PROV::DTI)->memFree(p_addr);
-}
-
 inline rEffectProvider::INFO_PROV::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rEffectProvider::INFO_PROV::MyDTI rEffectProvider::INFO_PROV::DTI("rEffectProvider::INFO_PROV", &::MtObject::DTI, 64ul, 0u, 0u);
@@ -370,14 +350,6 @@ MtObject* rEffectProvider::INFO_PROV::MyDTI::newInstance() const {
 
 const MtDTI& rEffectProvider::INFO_EFFECT::getDTI() const {
     return rEffectProvider::INFO_EFFECT::DTI;
-}
-
-inline void* rEffectProvider::INFO_EFFECT::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectProvider::INFO_EFFECT::DTI)->memAlloc(sz, align, rEffectProvider::INFO_EFFECT::DTI.getID());
-}
-
-inline void rEffectProvider::INFO_EFFECT::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::INFO_EFFECT::DTI)->memFree(p_addr);
 }
 
 rEffectProvider::INFO_EFFECT::~INFO_EFFECT() {
@@ -447,14 +419,6 @@ const MtDTI& rEffectProvider::INFO_BASE::getDTI() const {
     return rEffectProvider::INFO_BASE::DTI;
 }
 
-inline void* rEffectProvider::INFO_BASE::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectProvider::INFO_BASE::DTI)->memAlloc(sz, align, rEffectProvider::INFO_BASE::DTI.getID());
-}
-
-inline void rEffectProvider::INFO_BASE::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::INFO_BASE::DTI)->memFree(p_addr);
-}
-
 bool rEffectProvider::INFO_BASE::toNative(rEffectProvider::INFO_BASE* pInfo) {
     return false;
 }
@@ -473,14 +437,6 @@ MtObject* rEffectProvider::INFO_BASE::MyDTI::newInstance() const {
 
 const MtDTI& rEffectProvider::EffectIndex::getDTI() const {
     return rEffectProvider::EffectIndex::DTI;
-}
-
-inline void* rEffectProvider::EffectIndex::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectProvider::EffectIndex::DTI)->memAlloc(sz, align, rEffectProvider::EffectIndex::DTI.getID());
-}
-
-inline void rEffectProvider::EffectIndex::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::EffectIndex::DTI)->memFree(p_addr);
 }
 
 rEffectProvider::EffectIndex::~EffectIndex() {
@@ -506,10 +462,6 @@ MtObject* rEffectProvider::EffectIndex::MyDTI::newInstance() const {
 
 const MtDTI& rEffectProvider::EffectElement::getDTI() const {
     return rEffectProvider::EffectElement::DTI;
-}
-
-inline void rEffectProvider::EffectElement::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::EffectElement::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rEffectProvider::EffectElement::~EffectElement() {
@@ -566,10 +518,6 @@ const MtDTI& rEffectProvider::EffectParam::getDTI() const {
     return rEffectProvider::EffectParam::DTI;
 }
 
-inline void rEffectProvider::EffectParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::EffectParam::DTI)->memFree(p_addr);
-}
-
 rEffectProvider::EffectParam::~EffectParam() {
 }
 
@@ -585,14 +533,6 @@ const MtDTI& rEffectProvider::EffectMotSyncParam::getDTI() const {
     return rEffectProvider::EffectMotSyncParam::DTI;
 }
 
-inline void* rEffectProvider::EffectMotSyncParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectProvider::EffectMotSyncParam::DTI)->memAlloc(sz, align, rEffectProvider::EffectMotSyncParam::DTI.getID());
-}
-
-inline void rEffectProvider::EffectMotSyncParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::EffectMotSyncParam::DTI)->memFree(p_addr);
-}
-
 inline rEffectProvider::EffectMotSyncParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rEffectProvider::EffectMotSyncParam::MyDTI rEffectProvider::EffectMotSyncParam::DTI("rEffectProvider::EffectMotSyncParam", &::MtObject::DTI, 40ul, 0u, 0u);
@@ -603,14 +543,6 @@ MtObject* rEffectProvider::EffectMotSyncParam::MyDTI::newInstance() const {
 
 const MtDTI& rEffectProvider::EffectEventParam::getDTI() const {
     return rEffectProvider::EffectEventParam::DTI;
-}
-
-inline void* rEffectProvider::EffectEventParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectProvider::EffectEventParam::DTI)->memAlloc(sz, align, rEffectProvider::EffectEventParam::DTI.getID());
-}
-
-inline void rEffectProvider::EffectEventParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectProvider::EffectEventParam::DTI)->memFree(p_addr);
 }
 
 inline rEffectProvider::EffectEventParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

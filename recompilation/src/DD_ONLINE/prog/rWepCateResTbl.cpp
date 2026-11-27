@@ -56,14 +56,6 @@ const MtDTI& rWepCateResTbl::getDTI() const {
     return rWepCateResTbl::DTI;
 }
 
-inline void* rWepCateResTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWepCateResTbl::DTI)->memAlloc(sz, align, rWepCateResTbl::DTI.getID());
-}
-
-inline void rWepCateResTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWepCateResTbl::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool rWepCateResTbl::loadData(MtDataReader& in, cWepCateResTbl* pData) {
     nDDOIO::readData(in, pData->mCategory);
     nDDOIO::readData(in, pData->mArcTag);

@@ -31,16 +31,8 @@ const MtDTI& uGUIRetrySelect::getDTI() const {
     return uGUIRetrySelect::DTI;
 }
 
-inline MtAllocator* uGUIRetrySelect::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIRetrySelect::DTI);
-}
-
 void* uGUIRetrySelect::operator new(size_t sz, u32 align) {
     return uGUIRetrySelect::getAllocator()->memAlloc(sz, align, uGUIRetrySelect::DTI.getID());
-}
-
-inline void uGUIRetrySelect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRetrySelect::DTI)->memFree(p_addr);
 }
 
 uGUIRetrySelect::~uGUIRetrySelect() {

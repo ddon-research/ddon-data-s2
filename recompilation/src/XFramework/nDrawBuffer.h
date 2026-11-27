@@ -15,10 +15,6 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 
-// Declarations
-namespace nDraw { class Buffer; }
-namespace nDraw { struct MAPPED_TEXTURE; }
-
 namespace nDraw {
     enum MAP_TYPE
     {
@@ -42,6 +38,10 @@ namespace nDraw {
         USAGE_DISPLAYBUFFER = 6,
     };
 }  // namespace nDraw
+
+// Declarations
+namespace nDraw { class Buffer; }
+namespace nDraw { struct MAPPED_TEXTURE; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -123,4 +123,12 @@ inline nDraw::USAGE_TYPE nDraw::Buffer::getUsageType() const {
 
 inline u32 nDraw::Buffer::getBufferSize() const {
     return this->mBufSize;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nDraw::Buffer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::Buffer::DTI)->memFree(p_addr);
 }

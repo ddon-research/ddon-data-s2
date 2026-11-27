@@ -207,3 +207,15 @@ inline rEffectAnim::rEffectAnim() {
     *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116) = 0;
     this->::cResource::mAttr = 22;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rEffectAnim::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectAnim::DTI)->memAlloc(sz, align, ::rEffectAnim::DTI.::MtDTI::mID);
+}
+
+inline void rEffectAnim::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectAnim::DTI)->memFree(p_addr);
+}

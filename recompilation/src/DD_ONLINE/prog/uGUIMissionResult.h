@@ -486,3 +486,51 @@ inline uGUIMissionResult::cResultScrollItem::cResultScrollItem() {
 inline void* uGUIMissionResult::cResultScrollInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIMissionResult::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::DTI);
+}
+
+inline void uGUIMissionResult::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIMissionResult::cChargeEffectInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cChargeEffectInfo::DTI)->memAlloc(sz, align, ::uGUIMissionResult::cChargeEffectInfo::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMissionResult::cChargeEffectInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cChargeEffectInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIMissionResult::cPointList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cPointList::DTI)->memAlloc(sz, align, ::uGUIMissionResult::cPointList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMissionResult::cPointList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cPointList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIMissionResult::cItemList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cItemList::DTI)->memAlloc(sz, align, ::uGUIMissionResult::cItemList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMissionResult::cItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cItemList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIMissionResult::cResultScrollItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cResultScrollItem::DTI)->memAlloc(sz, align, ::uGUIMissionResult::cResultScrollItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMissionResult::cResultScrollItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cResultScrollItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMissionResult::cResultScrollInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMissionResult::cResultScrollInfo::DTI)->memFree(p_addr);
+}

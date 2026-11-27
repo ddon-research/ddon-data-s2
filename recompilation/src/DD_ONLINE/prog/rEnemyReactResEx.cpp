@@ -21,14 +21,6 @@ const MtDTI& cEnemyReactRes::getDTI() const {
     return cEnemyReactRes::DTI;
 }
 
-inline void* cEnemyReactRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEnemyReactRes::DTI)->memAlloc(sz, align, cEnemyReactRes::DTI.getID());
-}
-
-inline void cEnemyReactRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEnemyReactRes::DTI)->memFree(p_addr);
-}
-
 inline cEnemyReactRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cEnemyReactRes::MyDTI cEnemyReactRes::DTI("cEnemyReactRes", &::MtObject::DTI, 32ul, 0u, 0u);
@@ -39,10 +31,6 @@ MtObject* cEnemyReactRes::MyDTI::newInstance() const {
 
 const MtDTI& rEnemyReactResEx::getDTI() const {
     return rEnemyReactResEx::DTI;
-}
-
-inline void rEnemyReactResEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEnemyReactResEx::DTI)->memFree(p_addr);
 }
 
 rEnemyReactResEx::~rEnemyReactResEx() {

@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rAchievement.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cUIObject.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cAchievementData::getDTI() const {
     return cAchievementData::DTI;
-}
-
-inline void* cAchievementData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAchievementData::DTI)->memAlloc(sz, align, cAchievementData::DTI.getID());
-}
-
-inline void cAchievementData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAchievementData::DTI)->memFree(p_addr);
 }
 
 inline cAchievementData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -37,14 +27,6 @@ const MtDTI& cAchievementHeaderData::getDTI() const {
     return cAchievementHeaderData::DTI;
 }
 
-inline void* cAchievementHeaderData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAchievementHeaderData::DTI)->memAlloc(sz, align, cAchievementHeaderData::DTI.getID());
-}
-
-inline void cAchievementHeaderData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAchievementHeaderData::DTI)->memFree(p_addr);
-}
-
 inline cAchievementHeaderData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cAchievementHeaderData::MyDTI cAchievementHeaderData::DTI("cAchievementHeaderData", &::cUIResource::DTI, 16ul, 0u, 0u);
@@ -55,14 +37,6 @@ MtObject* cAchievementHeaderData::MyDTI::newInstance() const {
 
 const MtDTI& rAchievement::getDTI() const {
     return rAchievement::DTI;
-}
-
-inline void* rAchievement::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAchievement::DTI)->memAlloc(sz, align, rAchievement::DTI.getID());
-}
-
-inline void rAchievement::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAchievement::DTI)->memFree(p_addr);
 }
 
 bool rAchievement::loadData(MtDataReader& in, cAchievementData* pData) {
@@ -92,14 +66,6 @@ MtObject* rAchievement::MyDTI::newInstance() const {
 
 const MtDTI& rAchievementHeader::getDTI() const {
     return rAchievementHeader::DTI;
-}
-
-inline void* rAchievementHeader::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAchievementHeader::DTI)->memAlloc(sz, align, rAchievementHeader::DTI.getID());
-}
-
-inline void rAchievementHeader::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAchievementHeader::DTI)->memFree(p_addr);
 }
 
 bool rAchievementHeader::loadData(MtDataReader& in, cAchievementHeaderData* pData) {

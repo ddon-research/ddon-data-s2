@@ -179,3 +179,37 @@ inline rTblMenuComm::cData::cData() {
     this->mId2 = 0xFFFFFFFF;
     this->mVoiceId = 0xFFFFFFFF;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rTblMenuComm::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTblMenuComm::DTI)->memAlloc(sz, align, ::rTblMenuComm::DTI.::MtDTI::getID());
+}
+
+inline void rTblMenuComm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuComm::DTI)->memFree(p_addr);
+}
+
+inline rTblMenuComm::rTblMenuComm() {
+    this->::cResource::setAttribute(18u);
+    this->mResourceType = 0;
+    this->mArray.::MtArray::mAutoDelete = true;
+}
+
+inline void* rTblMenuComm::cDataList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTblMenuComm::cDataList::DTI)->memAlloc(sz, align, ::rTblMenuComm::cDataList::DTI.::MtDTI::getID());
+}
+
+inline void rTblMenuComm::cDataList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuComm::cDataList::DTI)->memFree(p_addr);
+}
+
+inline void* rTblMenuComm::cData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTblMenuComm::cData::DTI)->memAlloc(sz, align, ::rTblMenuComm::cData::DTI.::MtDTI::getID());
+}
+
+inline void rTblMenuComm::cData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTblMenuComm::cData::DTI)->memFree(p_addr);
+}

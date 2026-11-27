@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "cDraw.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
@@ -12,7 +11,6 @@
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "nDraw.h"
-#include "nDrawIndexBuffer.h"
 #include "nDrawMaterial.h"
 #include "nDrawResource.h"
 #include "sMain.h"
@@ -50,10 +48,6 @@ extern const SO_HANDLE ALPHATEST_FUNCTION_TABLE[8] = {
 
 const MtDTI& cDraw::getDTI() const {
     return cDraw::DTI;
-}
-
-inline void cDraw::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDraw::DTI)->memFree(p_addr);
 }
 
 cDraw::cDraw() {
@@ -201,15 +195,6 @@ __attribute__((weak)) void cDraw::setViewports(u32 count, const MtRect* viewport
     /* stub */
 }
 
-void cDraw::setIndexBuffer(nDraw::IndexBuffer* pibuf, u32 offset) {
-    if (pibuf == mContext.gstate.pibuf) {
-        return;
-    }
-    pibuf->mRefFrame = (nDraw::Resource::mProtectFrame) + (nDraw::Resource::mRenderFrame);
-    mContext.gstate.pibuf = pibuf;
-    mContext.gstate.modified = 1;
-}
-
 __attribute__((weak)) void cDraw::setTransparency(f32 v) {
     DDON_STUB("cDraw::setTransparency")
     /* stub */
@@ -236,8 +221,24 @@ __attribute__((weak)) void cDraw::resolve(const MtRect& src, const MtPoint& dest
 }
 
 __attribute__((weak)) void cDraw::beginQuery(nDraw::Query* pquery) {
-    DDON_STUB("cDraw::beginQuery")
-    /* stub */
+    reinterpret_cast<nDraw::Resource*>(pquery)->mRefFrame =
+        nDraw::Resource::mRenderFrame + nDraw::Resource::mProtectFrame;
+    
+    u8* t1 = mpBuffer;
+    if (t1 + sizeof(CMD_QUERY) > mpBufferEnd) {
+        mpBuffer = t1 = static_cast<u8*>(sRender::mpInstance->sRender::allocDrawBuffer(4096u));
+        mpBufferEnd = t1 ? t1 + 4096u : t1;
+    }
+    mpBuffer = t1 + sizeof(CMD_QUERY);
+    CMD_QUERY* pq = reinterpret_cast<CMD_QUERY*>(t1);
+    pq->type = CMD::T_QUERY;
+    pq->mode = CMD_QUERY::MODE_BEGIN;
+    pq->pquery = pquery;
+    
+    TAG* t2 = &mTags[mTagNum++];
+    t2->pass = mContext.pass;
+    t2->pri = mContext.priority + mContext.pri_ofs;
+    t2->pcmd = pq;
 }
 
 __attribute__((weak)) void cDraw::endQuery(nDraw::Query* pquery) {

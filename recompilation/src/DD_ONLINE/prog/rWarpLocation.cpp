@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rWarpLocation.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cUIObject.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -16,14 +14,6 @@ const MtDTI& cWarpLocation::getDTI() const {
     return cWarpLocation::DTI;
 }
 
-inline void* cWarpLocation::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWarpLocation::DTI)->memAlloc(sz, align, cWarpLocation::DTI.getID());
-}
-
-inline void cWarpLocation::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWarpLocation::DTI)->memFree(p_addr);
-}
-
 inline cWarpLocation::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cWarpLocation::MyDTI cWarpLocation::DTI("cWarpLocation", &::cUIResource::DTI, 40ul, 0u, 0u);
@@ -34,14 +24,6 @@ MtObject* cWarpLocation::MyDTI::newInstance() const {
 
 const MtDTI& rWarpLocation::getDTI() const {
     return rWarpLocation::DTI;
-}
-
-inline void* rWarpLocation::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWarpLocation::DTI)->memAlloc(sz, align, rWarpLocation::DTI.getID());
-}
-
-inline void rWarpLocation::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWarpLocation::DTI)->memFree(p_addr);
 }
 
 bool rWarpLocation::loadData(MtDataReader& in, cWarpLocation* pData) {

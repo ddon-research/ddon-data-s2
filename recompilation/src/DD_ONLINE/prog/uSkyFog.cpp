@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -19,32 +18,8 @@ const MtDTI& cCommonSkyFogData::getDTI() const {
     return cCommonSkyFogData::DTI;
 }
 
-inline MtAllocator* cCommonSkyFogData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCommonSkyFogData::DTI);
-}
-
-inline void* cCommonSkyFogData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCommonSkyFogData::DTI)->memAlloc(sz, align, cCommonSkyFogData::DTI.getID());
-}
-
 __attribute__((weak)) void cCommonSkyFogData::operator delete(void* p_addr) {
     cCommonSkyFogData::getAllocator()->memFree(p_addr);
-}
-
-cCommonSkyFogData::cCommonSkyFogData() {
-    mIsEnable = false;
-    mColor.x = MtVector3::One.x;
-    mColor.y = MtVector3::One.y;
-    mColor.z = MtVector3::One.z;
-    mColor.pad_ = 0.0f;
-    mIntensity = 1.0f;
-    mDensity = 1.0f;
-    mExponentDensity = 1.0f;
-    mStart = 1000.0f;
-    mEnd = 3000.0f;
-    mSupplementFrame = 30.0f;
-    mKind = 0;
-    mId = 0;
 }
 
 void cCommonSkyFogData::init() {
@@ -93,14 +68,6 @@ MtObject* cCommonSkyFogData::MyDTI::newInstance() const {
 
 const MtDTI& cDayNightColorFogParam::getDTI() const {
     return cDayNightColorFogParam::DTI;
-}
-
-inline void* cDayNightColorFogParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDayNightColorFogParam::DTI)->memAlloc(sz, align, cDayNightColorFogParam::DTI.getID());
-}
-
-inline void cDayNightColorFogParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDayNightColorFogParam::DTI)->memFree(p_addr);
 }
 
 cDayNightColorFogParam::cDayNightColorFogParam() {

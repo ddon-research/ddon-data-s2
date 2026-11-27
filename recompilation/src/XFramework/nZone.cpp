@@ -56,10 +56,6 @@ void* nZone::ShapeInfoAABB::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void nZone::ShapeInfoAABB::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoAABB::DTI)->memFree(p_addr);
-}
-
 nZone::ShapeInfoAABB::ShapeInfoAABB() {
     mAABB.minpos = MtVector3(-50.0f, 0.0f, -50.0f);
     mAABB.maxpos = MtVector3(50.0f, 100.0f, 50.0f);
@@ -95,9 +91,13 @@ __attribute__((weak)) bool nZone::ShapeInfoAABB::copy(const nZone::ShapeInfoBase
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoAABB::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoAABB::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoAABB::applyWorldOffset(const MtVector3& offset) {
+    mAABB.minpos.x = offset.x + mAABB.minpos.x;
+    mAABB.minpos.y = offset.y + mAABB.minpos.y;
+    mAABB.minpos.z = offset.z + mAABB.minpos.z;
+    mAABB.maxpos.x = offset.x + mAABB.maxpos.x;
+    mAABB.maxpos.y = offset.y + mAABB.maxpos.y;
+    mAABB.maxpos.z = offset.z + mAABB.maxpos.z;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoAABB::getShapeType() const {
@@ -267,9 +267,17 @@ __attribute__((weak)) MtSphere nZone::ShapeInfoAABB::getBoundingSphere() const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoAABB::getCenterPos() const {
-    DDON_STUB("nZone::ShapeInfoAABB::getCenterPos")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoAABB::getCenterPos() const {
+    MtVector3 result;
+    const f32 t0 = mAABB.minpos.y;
+    const f32 t1 = mAABB.maxpos.y;
+    const f32 t2 = mAABB.minpos.z;
+    const f32 t3 = mAABB.maxpos.z;
+    result.x = 0.5f * (mAABB.minpos.x + mAABB.maxpos.x);
+    result.y = 0.5f * (t0 + t1);
+    result.z = 0.5f * (t2 + t3);
+    result.pad_ = 0.0f;
+    return result;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoAABB::setCenterPos(const MtVector3& pos) {
@@ -277,9 +285,13 @@ __attribute__((weak)) void nZone::ShapeInfoAABB::setCenterPos(const MtVector3& p
     /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoAABB::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoAABB::movePosition")
-    /* stub */
+void nZone::ShapeInfoAABB::movePosition(const MtVector3& AddPos) {
+    mAABB.minpos.x = AddPos.x + mAABB.minpos.x;
+    mAABB.minpos.y = AddPos.y + mAABB.minpos.y;
+    mAABB.minpos.z = AddPos.z + mAABB.minpos.z;
+    mAABB.maxpos.x = AddPos.x + mAABB.maxpos.x;
+    mAABB.maxpos.y = AddPos.y + mAABB.maxpos.y;
+    mAABB.maxpos.z = AddPos.z + mAABB.maxpos.z;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoAABB::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -536,10 +548,6 @@ void* nZone::ShapeInfoArea::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void nZone::ShapeInfoArea::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoArea::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) nZone::ShapeInfoArea::ShapeInfoArea() {
     mHeight = 100.0f;
     mBottom = 0.0f;
@@ -570,9 +578,23 @@ __attribute__((weak)) bool nZone::ShapeInfoArea::copy(const nZone::ShapeInfoBase
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoArea::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoArea::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoArea::applyWorldOffset(const MtVector3& offset) {
+    mVertex[0].x = offset.x + mVertex[0].x;
+    mVertex[0].y = offset.y + mVertex[0].y;
+    mVertex[0].z = offset.z + mVertex[0].z;
+    mVertex[1].x = offset.x + mVertex[1].x;
+    mVertex[1].y = offset.y + mVertex[1].y;
+    mVertex[1].z = offset.z + mVertex[1].z;
+    mVertex[2].x = offset.x + mVertex[2].x;
+    mVertex[2].y = offset.y + mVertex[2].y;
+    mVertex[2].z = offset.z + mVertex[2].z;
+    mVertex[3].x = offset.x + mVertex[3].x;
+    mVertex[3].y = offset.y + mVertex[3].y;
+    mVertex[3].z = offset.z + mVertex[3].z;
+    mConcaveCrossPos.x = offset.x + mConcaveCrossPos.x;
+    mConcaveCrossPos.y = offset.y + mConcaveCrossPos.y;
+    mConcaveCrossPos.z = offset.z + mConcaveCrossPos.z;
+    mBottom = offset.y + mBottom;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoArea::getShapeType() const {
@@ -604,28 +626,294 @@ __attribute__((weak)) bool nZone::ShapeInfoArea::getClosest(const MtVector3& pos
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoArea::loadBinary(MtDataReader& r) {
-    mDecay = r.readF32();
-    mIsNativeData = (r.readU8() == 1);
-    mHeight = r.readF32();
-    mBottom = r.readF32();
-    r.read(mVertex, sizeof(mVertex));
-    r.read(&mConcaveCrossPos, sizeof(mConcaveCrossPos));
-    mFlgConvex = (r.readU8() != 0);
-    mConcaveStatus = r.readU32();
-    repairHeightAndBottom();
+void nZone::ShapeInfoArea::loadBinary(MtDataReader& r) {
+    f32 t0 = r.readF32();
+    mDecay = t0;
+    u32 t1 = r.mSeekPt;
+    u32 t2 = r.mBufsiz;
+    if (t1 >= t2) {
+        if (r.refill()) {
+            u32 t4 = r.mSeekPt;
+            u8* t5 = r.mBuffer;
+            u8 t6 = t5[r.mSeekPt];
+            r.mSeekPt = t4 + 1u;
+            mIsNativeData = t6 == 1;
+            f32 t7 = r.readF32();
+            mHeight = t7;
+            f32 t8 = r.readF32();
+            mBottom = t8;
+            r.read(static_cast<void*>(&mVertex[0]), 64u);
+            r.read(static_cast<void*>(&mConcaveCrossPos), 16u);
+            u32 t11 = r.mSeekPt;
+            u32 t12 = r.mBufsiz;
+            if (t11 >= t12) {
+                if (r.refill()) {
+                    u32 t14 = r.mSeekPt;
+                    u8* t15 = r.mBuffer;
+                    u8 t16 = t15[r.mSeekPt];
+                    r.mSeekPt = t14 + 1u;
+                    mFlgConvex = t16 != 0;
+                    u32 t17 = r.readU32();
+                    mConcaveStatus = t17;
+                    f32 t18 = mHeight;
+                    if (t18 >= 0.0f) {
+                    } else {
+                        f32 t19 = mBottom;
+                        mBottom = t18 + t19;
+                        mHeight = -t18;
+                        mVertex[0].y = mBottom;
+                        mVertex[1].y = mVertex[0].y;
+                        mVertex[2].y = mVertex[1].y;
+                        mVertex[3].y = mVertex[2].y;
+                    }
+                } else {
+                    mFlgConvex = false;
+                    u32 t17 = r.readU32();
+                    mConcaveStatus = t17;
+                    f32 t18 = mHeight;
+                    if (t18 >= 0.0f) {
+                    } else {
+                        f32 t19 = mBottom;
+                        mBottom = t18 + t19;
+                        mHeight = -t18;
+                        mVertex[0].y = mBottom;
+                        mVertex[1].y = mVertex[0].y;
+                        mVertex[2].y = mVertex[1].y;
+                        mVertex[3].y = mVertex[2].y;
+                    }
+                }
+            } else {
+                u8* t15 = r.mBuffer;
+                u8 t16 = t15[r.mSeekPt];
+                r.mSeekPt = t11 + 1u;
+                mFlgConvex = t16 != 0;
+                u32 t17 = r.readU32();
+                mConcaveStatus = t17;
+                f32 t18 = mHeight;
+                if (t18 >= 0.0f) {
+                } else {
+                    f32 t19 = mBottom;
+                    mBottom = t18 + t19;
+                    mHeight = -t18;
+                    mVertex[0].y = mBottom;
+                    mVertex[1].y = mVertex[0].y;
+                    mVertex[2].y = mVertex[1].y;
+                    mVertex[3].y = mVertex[2].y;
+                }
+            }
+        } else {
+            mIsNativeData = false;
+            f32 t7 = r.readF32();
+            mHeight = t7;
+            f32 t8 = r.readF32();
+            mBottom = t8;
+            r.read(static_cast<void*>(&mVertex[0]), 64u);
+            r.read(static_cast<void*>(&mConcaveCrossPos), 16u);
+            u32 t11 = r.mSeekPt;
+            u32 t12 = r.mBufsiz;
+            if (t11 >= t12) {
+                if (r.refill()) {
+                    u32 t14 = r.mSeekPt;
+                    u8* t15 = r.mBuffer;
+                    u8 t16 = t15[r.mSeekPt];
+                    r.mSeekPt = t14 + 1u;
+                    mFlgConvex = t16 != 0;
+                    u32 t17 = r.readU32();
+                    mConcaveStatus = t17;
+                    f32 t18 = mHeight;
+                    if (t18 >= 0.0f) {
+                    } else {
+                        f32 t19 = mBottom;
+                        mBottom = t18 + t19;
+                        mHeight = -t18;
+                        mVertex[0].y = mBottom;
+                        mVertex[1].y = mVertex[0].y;
+                        mVertex[2].y = mVertex[1].y;
+                        mVertex[3].y = mVertex[2].y;
+                    }
+                } else {
+                    mFlgConvex = false;
+                    u32 t17 = r.readU32();
+                    mConcaveStatus = t17;
+                    f32 t18 = mHeight;
+                    if (t18 >= 0.0f) {
+                    } else {
+                        f32 t19 = mBottom;
+                        mBottom = t18 + t19;
+                        mHeight = -t18;
+                        mVertex[0].y = mBottom;
+                        mVertex[1].y = mVertex[0].y;
+                        mVertex[2].y = mVertex[1].y;
+                        mVertex[3].y = mVertex[2].y;
+                    }
+                }
+            } else {
+                u8* t15 = r.mBuffer;
+                u8 t16 = t15[r.mSeekPt];
+                r.mSeekPt = t11 + 1u;
+                mFlgConvex = t16 != 0;
+                u32 t17 = r.readU32();
+                mConcaveStatus = t17;
+                f32 t18 = mHeight;
+                if (t18 >= 0.0f) {
+                } else {
+                    f32 t19 = mBottom;
+                    mBottom = t18 + t19;
+                    mHeight = -t18;
+                    mVertex[0].y = mBottom;
+                    mVertex[1].y = mVertex[0].y;
+                    mVertex[2].y = mVertex[1].y;
+                    mVertex[3].y = mVertex[2].y;
+                }
+            }
+        }
+    } else {
+        u8* t5 = r.mBuffer;
+        u8 t6 = t5[r.mSeekPt];
+        r.mSeekPt = t1 + 1u;
+        mIsNativeData = t6 == 1;
+        f32 t7 = r.readF32();
+        mHeight = t7;
+        f32 t8 = r.readF32();
+        mBottom = t8;
+        r.read(static_cast<void*>(&mVertex[0]), 64u);
+        r.read(static_cast<void*>(&mConcaveCrossPos), 16u);
+        u32 t11 = r.mSeekPt;
+        u32 t12 = r.mBufsiz;
+        if (t11 >= t12) {
+            if (r.refill()) {
+                u32 t14 = r.mSeekPt;
+                u8* t15 = r.mBuffer;
+                u8 t16 = t15[r.mSeekPt];
+                r.mSeekPt = t14 + 1u;
+                mFlgConvex = t16 != 0;
+                u32 t17 = r.readU32();
+                mConcaveStatus = t17;
+                f32 t18 = mHeight;
+                if (t18 >= 0.0f) {
+                } else {
+                    f32 t19 = mBottom;
+                    mBottom = t18 + t19;
+                    mHeight = -t18;
+                    mVertex[0].y = mBottom;
+                    mVertex[1].y = mVertex[0].y;
+                    mVertex[2].y = mVertex[1].y;
+                    mVertex[3].y = mVertex[2].y;
+                }
+            } else {
+                mFlgConvex = false;
+                u32 t17 = r.readU32();
+                mConcaveStatus = t17;
+                f32 t18 = mHeight;
+                if (t18 >= 0.0f) {
+                } else {
+                    f32 t19 = mBottom;
+                    mBottom = t18 + t19;
+                    mHeight = -t18;
+                    mVertex[0].y = mBottom;
+                    mVertex[1].y = mVertex[0].y;
+                    mVertex[2].y = mVertex[1].y;
+                    mVertex[3].y = mVertex[2].y;
+                }
+            }
+        } else {
+            u8* t15 = r.mBuffer;
+            u8 t16 = t15[r.mSeekPt];
+            r.mSeekPt = t11 + 1u;
+            mFlgConvex = t16 != 0;
+            u32 t17 = r.readU32();
+            mConcaveStatus = t17;
+            f32 t18 = mHeight;
+            if (t18 >= 0.0f) {
+            } else {
+                f32 t19 = mBottom;
+                mBottom = t18 + t19;
+                mHeight = -t18;
+                mVertex[0].y = mBottom;
+                mVertex[1].y = mVertex[0].y;
+                mVertex[2].y = mVertex[1].y;
+                mVertex[3].y = mVertex[2].y;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void nZone::ShapeInfoArea::saveBinary(MtDataWriter& w) {
-    repairHeightAndBottom();
-    w.writeF32(mDecay);
-    w.writeU8(static_cast<u8>(mIsNativeData));
-    w.writeF32(mHeight);
-    w.writeF32(mBottom);
-    w.write(mVertex, sizeof(mVertex));
-    w.write(&mConcaveCrossPos, sizeof(mConcaveCrossPos));
-    w.writeU8(static_cast<u8>(mFlgConvex));
-    w.writeU32(mConcaveStatus);
+void nZone::ShapeInfoArea::saveBinary(MtDataWriter& w) {
+    f32 t0 = mHeight;
+    if (t0 >= 0.0f) {
+        w.writeF32(mDecay);
+        bool t2 = mIsNativeData;
+        if (w.mSeekPt >= w.mBufsiz) {
+            w.flush();
+            w.mBuffer[w.mSeekPt] = static_cast<u8>(t2);
+            w.mSeekPt = w.mSeekPt + 1u;
+            w.writeF32(mHeight);
+            w.writeF32(mBottom);
+            w.write(static_cast<const void*>(&mVertex[0]), 64u);
+            w.write(static_cast<const void*>(&mConcaveCrossPos), 16u);
+            bool t3 = mFlgConvex;
+            if (w.mSeekPt >= w.mBufsiz) {
+                w.flush();
+            }
+            w.mBuffer[w.mSeekPt] = static_cast<u8>(t3);
+            w.mSeekPt = w.mSeekPt + 1u;
+            w.writeU32(mConcaveStatus);
+        } else {
+            w.mBuffer[w.mSeekPt] = static_cast<u8>(t2);
+            w.mSeekPt = w.mSeekPt + 1u;
+            w.writeF32(mHeight);
+            w.writeF32(mBottom);
+            w.write(static_cast<const void*>(&mVertex[0]), 64u);
+            w.write(static_cast<const void*>(&mConcaveCrossPos), 16u);
+            bool t3 = mFlgConvex;
+            if (w.mSeekPt >= w.mBufsiz) {
+                w.flush();
+            }
+            w.mBuffer[w.mSeekPt] = static_cast<u8>(t3);
+            w.mSeekPt = w.mSeekPt + 1u;
+            w.writeU32(mConcaveStatus);
+        }
+    } else {
+        f32 t1 = mBottom;
+        mBottom = t0 + t1;
+        mHeight = -t0;
+        mVertex[0].y = mBottom;
+        mVertex[1].y = mVertex[0].y;
+        mVertex[2].y = mVertex[1].y;
+        mVertex[3].y = mVertex[2].y;
+        w.writeF32(mDecay);
+        bool t2 = mIsNativeData;
+        if (w.mSeekPt >= w.mBufsiz) {
+            w.flush();
+            w.mBuffer[w.mSeekPt] = static_cast<u8>(t2);
+            w.mSeekPt = w.mSeekPt + 1u;
+            w.writeF32(mHeight);
+            w.writeF32(mBottom);
+            w.write(static_cast<const void*>(&mVertex[0]), 64u);
+            w.write(static_cast<const void*>(&mConcaveCrossPos), 16u);
+            bool t3 = mFlgConvex;
+            if (w.mSeekPt >= w.mBufsiz) {
+                w.flush();
+            }
+            w.mBuffer[w.mSeekPt] = static_cast<u8>(t3);
+            w.mSeekPt = w.mSeekPt + 1u;
+            w.writeU32(mConcaveStatus);
+        } else {
+            w.mBuffer[w.mSeekPt] = static_cast<u8>(t2);
+            w.mSeekPt = w.mSeekPt + 1u;
+            w.writeF32(mHeight);
+            w.writeF32(mBottom);
+            w.write(static_cast<const void*>(&mVertex[0]), 64u);
+            w.write(static_cast<const void*>(&mConcaveCrossPos), 16u);
+            bool t3 = mFlgConvex;
+            if (w.mSeekPt >= w.mBufsiz) {
+                w.flush();
+            }
+            w.mBuffer[w.mSeekPt] = static_cast<u8>(t3);
+            w.mSeekPt = w.mSeekPt + 1u;
+            w.writeU32(mConcaveStatus);
+        }
+    }
 }
 
 bool nZone::ShapeInfoArea::isGetAABB() const {
@@ -660,9 +948,23 @@ __attribute__((weak)) void nZone::ShapeInfoArea::setCenterPos(const MtVector3& p
     /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoArea::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoArea::movePosition")
-    /* stub */
+void nZone::ShapeInfoArea::movePosition(const MtVector3& AddPos) {
+    mVertex[0].x = AddPos.x + mVertex[0].x;
+    mVertex[0].y = AddPos.y + mVertex[0].y;
+    mVertex[0].z = AddPos.z + mVertex[0].z;
+    mVertex[1].x = AddPos.x + mVertex[1].x;
+    mVertex[1].y = AddPos.y + mVertex[1].y;
+    mVertex[1].z = AddPos.z + mVertex[1].z;
+    mVertex[2].x = AddPos.x + mVertex[2].x;
+    mVertex[2].y = AddPos.y + mVertex[2].y;
+    mVertex[2].z = AddPos.z + mVertex[2].z;
+    mVertex[3].x = AddPos.x + mVertex[3].x;
+    mVertex[3].y = AddPos.y + mVertex[3].y;
+    mVertex[3].z = AddPos.z + mVertex[3].z;
+    mConcaveCrossPos.x = AddPos.x + mConcaveCrossPos.x;
+    mConcaveCrossPos.y = AddPos.y + mConcaveCrossPos.y;
+    mConcaveCrossPos.z = AddPos.z + mConcaveCrossPos.z;
+    mBottom = AddPos.y + mBottom;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoArea::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -701,8 +1003,9 @@ __attribute__((weak)) void nZone::ShapeInfoArea::mulMatrix(nZone::ShapeInfoBase&
 }
 
 __attribute__((weak)) void nZone::ShapeInfoArea::mulMatrixByRotTransXYZ(const MtVector3& RotateRadianXYZ, const MtVector3& Translate) {
-    DDON_STUB("nZone::ShapeInfoArea::mulMatrixByRotTransXYZ")
-    /* stub */
+    MtMatrix mat;
+    mat.setRotTransXYZ(MtVector3(0.0f, RotateRadianXYZ.y, 0.0f), Translate);
+    mulMatrix(mat);
 }
 
 __attribute__((weak)) void nZone::ShapeInfoArea::mulMatrixByRotTransXYZ(nZone::ShapeInfoBase& OutputShape, const MtVector3& RotateRadianXYZ, const MtVector3& Translate) const {
@@ -868,10 +1171,6 @@ const MtDTI& nZone::ShapeInfoBase::getDTI() const {
     return nZone::ShapeInfoBase::DTI;
 }
 
-inline void nZone::ShapeInfoBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoBase::DTI)->memFree(p_addr);
-}
-
 nZone::ShapeInfoBase::~ShapeInfoBase() {
 }
 
@@ -985,8 +1284,9 @@ __attribute__((weak)) void nZone::ShapeInfoBase::mulMatrixByRotTransXYZ(const Mt
 }
 
 __attribute__((weak)) void nZone::ShapeInfoBase::mulMatrixByRotTransXYZ(nZone::ShapeInfoBase& OutputShape, const MtVector3& RotateRadianXYZ, const MtVector3& Translate) const {
-    DDON_STUB("nZone::ShapeInfoBase::mulMatrixByRotTransXYZ")
-    /* stub */
+    MtMatrix mat;
+    mat.setRotTransXYZ(RotateRadianXYZ, Translate);
+    mulMatrix(OutputShape, mat);
 }
 
 __attribute__((weak)) void nZone::ShapeInfoBase::mulMatrixByRotTransQuaternion(const MtQuaternion& qt, const MtVector3& Translate) {
@@ -1020,10 +1320,6 @@ void* nZone::ShapeInfoCapsule::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCapsule::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoCapsule::DTI.mID);
 }
 
-inline void nZone::ShapeInfoCapsule::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCapsule::DTI)->memFree(p_addr);
-}
-
 nZone::ShapeInfoCapsule::ShapeInfoCapsule() {
     mCapsule.p0 = MtVector3(-50.0f, 50.0f, 0.0f);
     mCapsule.p1 = MtVector3(50.0f, 50.0f, 0.0f);
@@ -1043,9 +1339,13 @@ __attribute__((weak)) bool nZone::ShapeInfoCapsule::copy(const nZone::ShapeInfoB
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoCapsule::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoCapsule::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoCapsule::applyWorldOffset(const MtVector3& offset) {
+    mCapsule.p0.x = offset.x + mCapsule.p0.x;
+    mCapsule.p0.y = offset.y + mCapsule.p0.y;
+    mCapsule.p0.z = offset.z + mCapsule.p0.z;
+    mCapsule.p1.x = offset.x + mCapsule.p1.x;
+    mCapsule.p1.y = offset.y + mCapsule.p1.y;
+    mCapsule.p1.z = offset.z + mCapsule.p1.z;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoCapsule::getShapeType() const {
@@ -1138,9 +1438,13 @@ __attribute__((weak)) void nZone::ShapeInfoCapsule::setCenterPos(const MtVector3
     /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoCapsule::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoCapsule::movePosition")
-    /* stub */
+void nZone::ShapeInfoCapsule::movePosition(const MtVector3& AddPos) {
+    mCapsule.p0.x = AddPos.x + mCapsule.p0.x;
+    mCapsule.p0.y = AddPos.y + mCapsule.p0.y;
+    mCapsule.p0.z = AddPos.z + mCapsule.p0.z;
+    mCapsule.p1.x = AddPos.x + mCapsule.p1.x;
+    mCapsule.p1.y = AddPos.y + mCapsule.p1.y;
+    mCapsule.p1.z = AddPos.z + mCapsule.p1.z;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoCapsule::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -1194,10 +1498,6 @@ void* nZone::ShapeInfoCone::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void nZone::ShapeInfoCone::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCone::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) nZone::ShapeInfoCone::ShapeInfoCone() {
     mHeight = 100.0f;
     mTopRadius = 100.0f;
@@ -1221,9 +1521,10 @@ __attribute__((weak)) bool nZone::ShapeInfoCone::copy(const nZone::ShapeInfoBase
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoCone::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoCone::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoCone::applyWorldOffset(const MtVector3& offset) {
+    mPos.x = offset.x + mPos.x;
+    mPos.y = offset.y + mPos.y;
+    mPos.z = offset.z + mPos.z;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoCone::getShapeType() const {
@@ -1341,9 +1642,10 @@ __attribute__((weak)) void nZone::ShapeInfoCone::setCenterPos(const MtVector3& p
     /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoCone::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoCone::movePosition")
-    /* stub */
+void nZone::ShapeInfoCone::movePosition(const MtVector3& AddPos) {
+    mPos.x = AddPos.x + mPos.x;
+    mPos.y = AddPos.y + mPos.y;
+    mPos.z = AddPos.z + mPos.z;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoCone::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -1394,10 +1696,6 @@ void* nZone::ShapeInfoCylinder::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void nZone::ShapeInfoCylinder::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoCylinder::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) nZone::ShapeInfoCylinder::ShapeInfoCylinder() {
     mCylinder.p0 = MtVector3(0.0f, 100.0f, 0.0f);
     mCylinder.p1 = MtVector3::Zero;
@@ -1420,9 +1718,19 @@ __attribute__((weak)) bool nZone::ShapeInfoCylinder::copy(const nZone::ShapeInfo
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoCylinder::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoCylinder::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoCylinder::applyWorldOffset(const MtVector3& offset) {
+    const f32 t0 = offset.y;
+    const f32 t1 = offset.z;
+    mCylinder.p0.x = offset.x + mCylinder.p0.x;
+    mCylinder.p0.y = t0 + mCylinder.p0.y;
+    mCylinder.p0.z = t1 + mCylinder.p0.z;
+    mCylinder.p0.pad_ = 0.0f;
+    const f32 t2 = offset.y;
+    const f32 t3 = offset.z;
+    mCylinder.p1.x = offset.x + mCylinder.p1.x;
+    mCylinder.p1.y = t2 + mCylinder.p1.y;
+    mCylinder.p1.z = t3 + mCylinder.p1.z;
+    mCylinder.p1.pad_ = 0.0f;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoCylinder::getShapeType() const {
@@ -1516,9 +1824,19 @@ __attribute__((weak)) void nZone::ShapeInfoCylinder::setCenterPos(const MtVector
     /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoCylinder::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoCylinder::movePosition")
-    /* stub */
+void nZone::ShapeInfoCylinder::movePosition(const MtVector3& AddPos) {
+    const f32 t0 = AddPos.y;
+    const f32 t1 = AddPos.z;
+    mCylinder.p0.x = AddPos.x + mCylinder.p0.x;
+    mCylinder.p0.y = t0 + mCylinder.p0.y;
+    mCylinder.p0.z = t1 + mCylinder.p0.z;
+    mCylinder.p0.pad_ = 0.0f;
+    const f32 t2 = AddPos.y;
+    const f32 t3 = AddPos.z;
+    mCylinder.p1.x = AddPos.x + mCylinder.p1.x;
+    mCylinder.p1.y = t2 + mCylinder.p1.y;
+    mCylinder.p1.z = t3 + mCylinder.p1.z;
+    mCylinder.p1.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoCylinder::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -1547,8 +1865,26 @@ __attribute__((weak)) void nZone::ShapeInfoCylinder::mulMatrix(nZone::ShapeInfoB
 }
 
 __attribute__((weak)) f32 nZone::ShapeInfoCylinder::calcWeight(const MtVector3& pos) const {
-    DDON_STUB("nZone::ShapeInfoCylinder::calcWeight")
-    return {};
+    if (!(mDecay >= 1.0f)) {
+        MtLineSegment ls(mCylinder.p0, mCylinder.p1);
+        f32 lenSq = MtCollision::sqrDistance(ls, pos, nullptr);
+        f32 radiusSq = mCylinder.r * mCylinder.r;
+        if (!(lenSq >= radiusSq)) {
+            f32 decayRadiusSq = mCylinder.r * mDecay;
+            decayRadiusSq *= decayRadiusSq;
+            if (lenSq <= decayRadiusSq) {
+                return 1.0f;
+            }
+            lenSq = __builtin_sqrtf(lenSq);
+            decayRadiusSq = __builtin_sqrtf(decayRadiusSq);
+            radiusSq = __builtin_sqrtf(radiusSq);
+            const f32 ret = 1.0f - (lenSq - decayRadiusSq) / (radiusSq - decayRadiusSq);
+            return ret;
+        }
+        return 0.0f;
+    }
+    f32 ret = isHit(pos) ? 1.0f : 0.0f;
+    return ret;
 }
 
 inline nZone::ShapeInfoCylinder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1561,10 +1897,6 @@ __attribute__((weak)) MtObject* nZone::ShapeInfoCylinder::MyDTI::newInstance() c
 
 const MtDTI& nZone::ShapeInfoGlobal::getDTI() const {
     return nZone::ShapeInfoGlobal::DTI;
-}
-
-inline void nZone::ShapeInfoGlobal::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoGlobal::DTI)->memFree(p_addr);
 }
 
 nZone::ShapeInfoGlobal::~ShapeInfoGlobal() {
@@ -1622,10 +1954,6 @@ const MtDTI& nZone::ShapeInfoLine::getDTI() const {
     return nZone::ShapeInfoLine::DTI;
 }
 
-inline void nZone::ShapeInfoLine::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoLine::DTI)->memFree(p_addr);
-}
-
 nZone::ShapeInfoLine::~ShapeInfoLine() {
 }
 
@@ -1640,9 +1968,13 @@ __attribute__((weak)) bool nZone::ShapeInfoLine::copy(const nZone::ShapeInfoBase
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoLine::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoLine::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoLine::applyWorldOffset(const MtVector3& offset) {
+    mLineSegment.p0.x = offset.x + mLineSegment.p0.x;
+    mLineSegment.p0.y = offset.y + mLineSegment.p0.y;
+    mLineSegment.p0.z = offset.z + mLineSegment.p0.z;
+    mLineSegment.p1.x = offset.x + mLineSegment.p1.x;
+    mLineSegment.p1.y = offset.y + mLineSegment.p1.y;
+    mLineSegment.p1.z = offset.z + mLineSegment.p1.z;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoLine::getShapeType() const {
@@ -1725,9 +2057,13 @@ __attribute__((weak)) MtSphere nZone::ShapeInfoLine::getBoundingSphere() const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoLine::getCenterPos() const {
-    DDON_STUB("nZone::ShapeInfoLine::getCenterPos")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoLine::getCenterPos() const {
+    MtVector3 result;
+    result.pad_ = 0.0f;
+    result.x = (0.5f * mLineSegment.p0.x) + (0.5f * mLineSegment.p1.x);
+    result.y = (0.5f * mLineSegment.p0.y) + (0.5f * mLineSegment.p1.y);
+    result.z = (0.5f * mLineSegment.p0.z) + (0.5f * mLineSegment.p1.z);
+    return result;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoLine::setCenterPos(const MtVector3& pos) {
@@ -1735,9 +2071,13 @@ __attribute__((weak)) void nZone::ShapeInfoLine::setCenterPos(const MtVector3& p
     /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoLine::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoLine::movePosition")
-    /* stub */
+void nZone::ShapeInfoLine::movePosition(const MtVector3& AddPos) {
+    mLineSegment.p0.x = AddPos.x + mLineSegment.p0.x;
+    mLineSegment.p0.y = AddPos.y + mLineSegment.p0.y;
+    mLineSegment.p0.z = AddPos.z + mLineSegment.p0.z;
+    mLineSegment.p1.x = AddPos.x + mLineSegment.p1.x;
+    mLineSegment.p1.y = AddPos.y + mLineSegment.p1.y;
+    mLineSegment.p1.z = AddPos.z + mLineSegment.p1.z;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoLine::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -1755,9 +2095,31 @@ __attribute__((weak)) void nZone::ShapeInfoLine::rotation(nZone::ShapeInfoBase& 
     /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoLine::mulMatrix(const MtMatrix& MulMatrix) {
-    DDON_STUB("nZone::ShapeInfoLine::mulMatrix")
-    /* stub */
+void nZone::ShapeInfoLine::mulMatrix(const MtMatrix& MulMatrix) {
+    f32 t0 = mLineSegment.p0.x;
+    f32 t1 = mLineSegment.p0.y;
+    const f32 t2 = MulMatrix.m[0].x;
+    const f32 t3 = MulMatrix.m[0].y;
+    const f32 t4 = MulMatrix.m[1].x;
+    const f32 t5 = MulMatrix.m[2].x;
+    const f32 t6 = MulMatrix.m[1].y;
+    const f32 t7 = MulMatrix.m[2].y;
+    const f32 t8 = MulMatrix.m[0].z;
+    const f32 t9 = MulMatrix.m[1].z;
+    const f32 t10 = MulMatrix.m[2].z;
+    f32 t11 = mLineSegment.p1.x;
+    f32 t12 = mLineSegment.p1.y;
+    const f32 t13 = MulMatrix.m[3].x;
+    const f32 t14 = MulMatrix.m[3].y;
+    const f32 t15 = MulMatrix.m[3].z;
+    mLineSegment.p0.x = t13 + (((t0 * t2) + (t1 * t4)) + (t5 * mLineSegment.p0.z));
+    mLineSegment.p0.y = t14 + (((t0 * t3) + (t1 * t6)) + (mLineSegment.p0.z * t7));
+    mLineSegment.p0.z = t15 + (((t0 * t8) + (t1 * t9)) + (mLineSegment.p0.z * t10));
+    mLineSegment.p0.pad_ = 0.0f;
+    mLineSegment.p1.x = t13 + (((t2 * t11) + (t4 * t12)) + (t5 * mLineSegment.p1.z));
+    mLineSegment.p1.y = t14 + (((t3 * t11) + (t6 * t12)) + (t7 * mLineSegment.p1.z));
+    mLineSegment.p1.z = t15 + (((t8 * t11) + (t9 * t12)) + (t10 * mLineSegment.p1.z));
+    mLineSegment.p1.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoLine::mulMatrix(nZone::ShapeInfoBase& OutputShape, const MtMatrix& MulMatrix) const {
@@ -1783,10 +2145,6 @@ void* nZone::ShapeInfoOBB::operator new(size_t sz, u32 align) {
 
 void* nZone::ShapeInfoOBB::operator new(size_t sz, void* p_addr) {
     return p_addr;
-}
-
-inline void nZone::ShapeInfoOBB::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoOBB::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) nZone::ShapeInfoOBB::ShapeInfoOBB() {
@@ -2064,10 +2422,6 @@ void* nZone::ShapeInfoPanel::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPanel::DTI)->memAlloc(sz, align, ::nZone::ShapeInfoPanel::DTI.mID);
 }
 
-inline void nZone::ShapeInfoPanel::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPanel::DTI)->memFree(p_addr);
-}
-
 nZone::ShapeInfoPanel::ShapeInfoPanel() {
     mVertex[0] = MtVector3(50.0f, 0.0f, 50.0f);
     mVertex[1] = MtVector3(50.0f, 0.0f, -50.0f);
@@ -2090,9 +2444,19 @@ __attribute__((weak)) bool nZone::ShapeInfoPanel::copy(const nZone::ShapeInfoBas
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoPanel::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoPanel::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoPanel::applyWorldOffset(const MtVector3& offset) {
+    mVertex[0].x = offset.x + mVertex[0].x;
+    mVertex[0].y = offset.y + mVertex[0].y;
+    mVertex[0].z = offset.z + mVertex[0].z;
+    mVertex[1].x = offset.x + mVertex[1].x;
+    mVertex[1].y = offset.y + mVertex[1].y;
+    mVertex[1].z = offset.z + mVertex[1].z;
+    mVertex[2].x = offset.x + mVertex[2].x;
+    mVertex[2].y = offset.y + mVertex[2].y;
+    mVertex[2].z = offset.z + mVertex[2].z;
+    mVertex[3].x = offset.x + mVertex[3].x;
+    mVertex[3].y = offset.y + mVertex[3].y;
+    mVertex[3].z = offset.z + mVertex[3].z;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoPanel::getShapeType() const {
@@ -2179,9 +2543,13 @@ __attribute__((weak)) MtSphere nZone::ShapeInfoPanel::getBoundingSphere() const 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 nZone::ShapeInfoPanel::getCenterPos() const {
-    DDON_STUB("nZone::ShapeInfoPanel::getCenterPos")
-    __builtin_unreachable();
+MtVector3 nZone::ShapeInfoPanel::getCenterPos() const {
+    MtVector3 result;
+    result.pad_ = 0.0f;
+    result.x = (0.5f * mVertex[1].x) + (0.5f * mVertex[3].x);
+    result.y = (0.5f * mVertex[1].y) + (0.5f * mVertex[3].y);
+    result.z = (0.5f * mVertex[1].z) + (0.5f * mVertex[3].z);
+    return result;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoPanel::setCenterPos(const MtVector3& pos) {
@@ -2189,9 +2557,31 @@ __attribute__((weak)) void nZone::ShapeInfoPanel::setCenterPos(const MtVector3& 
     /* stub */
 }
 
-__attribute__((weak)) void nZone::ShapeInfoPanel::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoPanel::movePosition")
-    /* stub */
+void nZone::ShapeInfoPanel::movePosition(const MtVector3& AddPos) {
+    const f32 t0 = AddPos.y;
+    const f32 t1 = AddPos.z;
+    mVertex[0].x = mVertex[0].x + AddPos.x;
+    mVertex[0].y = mVertex[0].y + t0;
+    mVertex[0].z = mVertex[0].z + t1;
+    mVertex[0].pad_ = 0.0f;
+    const f32 t2 = AddPos.y;
+    const f32 t3 = AddPos.z;
+    mVertex[1].x = mVertex[1].x + AddPos.x;
+    mVertex[1].y = mVertex[1].y + t2;
+    mVertex[1].z = mVertex[1].z + t3;
+    mVertex[1].pad_ = 0.0f;
+    const f32 t4 = AddPos.y;
+    const f32 t5 = AddPos.z;
+    mVertex[2].x = mVertex[2].x + AddPos.x;
+    mVertex[2].y = mVertex[2].y + t4;
+    mVertex[2].z = mVertex[2].z + t5;
+    mVertex[2].pad_ = 0.0f;
+    const f32 t6 = AddPos.y;
+    const f32 t7 = AddPos.z;
+    mVertex[3].x = mVertex[3].x + AddPos.x;
+    mVertex[3].y = mVertex[3].y + t6;
+    mVertex[3].z = mVertex[3].z + t7;
+    mVertex[3].pad_ = 0.0f;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoPanel::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -2279,10 +2669,6 @@ const MtDTI& nZone::ShapeInfoPoint::getDTI() const {
     return nZone::ShapeInfoPoint::DTI;
 }
 
-inline void nZone::ShapeInfoPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoPoint::DTI)->memFree(p_addr);
-}
-
 nZone::ShapeInfoPoint::~ShapeInfoPoint() {
 }
 
@@ -2296,9 +2682,10 @@ __attribute__((weak)) bool nZone::ShapeInfoPoint::copy(const nZone::ShapeInfoBas
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoPoint::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoPoint::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoPoint::applyWorldOffset(const MtVector3& offset) {
+    mPos.x = offset.x + mPos.x;
+    mPos.y = offset.y + mPos.y;
+    mPos.z = offset.z + mPos.z;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoPoint::getShapeType() const {
@@ -2384,9 +2771,10 @@ void nZone::ShapeInfoPoint::setCenterPos(const MtVector3& pos) {
     mPos.pad_ = 0.0f;
 }
 
-__attribute__((weak)) void nZone::ShapeInfoPoint::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoPoint::movePosition")
-    /* stub */
+void nZone::ShapeInfoPoint::movePosition(const MtVector3& AddPos) {
+    mPos.x = AddPos.x + mPos.x;
+    mPos.y = AddPos.y + mPos.y;
+    mPos.z = AddPos.z + mPos.z;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoPoint::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -2424,10 +2812,6 @@ void* nZone::ShapeInfoSphere::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void nZone::ShapeInfoSphere::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::ShapeInfoSphere::DTI)->memFree(p_addr);
-}
-
 nZone::ShapeInfoSphere::ShapeInfoSphere() {
     mSphere.pos = MtFloat3A(0.0f, 50.0f, 0.0f);
     mSphere.r = 50.0f;
@@ -2446,9 +2830,12 @@ __attribute__((weak)) bool nZone::ShapeInfoSphere::copy(const nZone::ShapeInfoBa
     return {};
 }
 
-__attribute__((weak)) void nZone::ShapeInfoSphere::applyWorldOffset(const MtVector3& offset) {
-    DDON_STUB("nZone::ShapeInfoSphere::applyWorldOffset")
-    /* stub */
+void nZone::ShapeInfoSphere::applyWorldOffset(const MtVector3& offset) {
+    const f32 t0 = offset.y;
+    const f32 t1 = offset.z;
+    mSphere.pos.x = mSphere.pos.x + offset.x;
+    mSphere.pos.y = mSphere.pos.y + t0;
+    mSphere.pos.z = mSphere.pos.z + t1;
 }
 
 nZone::ShapeInfoBase::SHAPE_TYPE nZone::ShapeInfoSphere::getShapeType() const {
@@ -2548,9 +2935,12 @@ void nZone::ShapeInfoSphere::setCenterPos(const MtVector3& pos) {
     mSphere.pos.z = pos.z;
 }
 
-__attribute__((weak)) void nZone::ShapeInfoSphere::movePosition(const MtVector3& AddPos) {
-    DDON_STUB("nZone::ShapeInfoSphere::movePosition")
-    /* stub */
+void nZone::ShapeInfoSphere::movePosition(const MtVector3& AddPos) {
+    const f32 t0 = AddPos.y;
+    const f32 t1 = AddPos.z;
+    mSphere.pos.x = mSphere.pos.x + AddPos.x;
+    mSphere.pos.y = mSphere.pos.y + t0;
+    mSphere.pos.z = mSphere.pos.z + t1;
 }
 
 __attribute__((weak)) void nZone::ShapeInfoSphere::movePosition(nZone::ShapeInfoBase& OutputShape, const MtVector3& AddPos) const {
@@ -2597,10 +2987,6 @@ void* nZone::cContentsPool::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::DTI)->memAlloc(sz, align, ::nZone::cContentsPool::DTI.mID);
 }
 
-inline void nZone::cContentsPool::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) nZone::cContentsPool::cContentsPool() {
     mContentsListArray.setAutoDelete(true);
     mFlgNativeData = false;
@@ -2641,13 +3027,13 @@ bool nZone::cContentsPool::load(MtDataReader& r) {
     return sz.deserializeBinary(r, static_cast<u16>(0), static_cast<MtObject*>(&mContentsListArray), ::MtSerializer::MODE_STATE) != nullptr;
 }
 
-__attribute__((weak)) bool nZone::cContentsPool::save(MtDataWriter& w) {
-    ::MtSerializer sz(65536);
-    const bool FlgAutoDelete = mContentsListArray.mAutoDelete;
+bool nZone::cContentsPool::save(MtDataWriter& w) {
+    MtSerializer sz(65536);
+    bool t0 = mContentsListArray.mAutoDelete;
     mContentsListArray.mAutoDelete = false;
-    const bool ret = sz.serializeBinary(w, static_cast<u16>(0), &mContentsListArray, ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
-    mContentsListArray.mAutoDelete = FlgAutoDelete;
-    return ret;
+    bool t1 = sz.serializeBinary(w, static_cast<u16>(0), static_cast<MtObject*>(&mContentsListArray), ::MtSerializer::MODE_STATE, static_cast<const MtDTI*>(nullptr));
+    mContentsListArray.mAutoDelete = t0;
+    return t1;
 }
 
 void nZone::cContentsPool::clearContents() {
@@ -2710,10 +3096,6 @@ __attribute__((weak)) MtObject* nZone::cContentsPool::MyDTI::newInstance() const
 
 const MtDTI& nZone::cContentsPool::cContentsList::getDTI() const {
     return nZone::cContentsPool::cContentsList::DTI;
-}
-
-inline void nZone::cContentsPool::cContentsList::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nZone::cContentsPool::cContentsList::DTI)->memFree(p_addr);
 }
 
 nZone::cContentsPool::cContentsList::~cContentsList() {

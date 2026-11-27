@@ -13,6 +13,7 @@
 #include "../DD_ONLINE/prog/cAreaReleaseManager.h"
 #include "../DD_ONLINE/prog/cControl.h"
 #include "../DD_ONLINE/prog/cCraftRecipe.h"
+#include "../DD_ONLINE/prog/cCycle04QuestManager.h"
 #include "../DD_ONLINE/prog/cCycleQuestManagerBase.h"
 #include "../DD_ONLINE/prog/cCycleQuestSubCategoryManager.h"
 #include "../DD_ONLINE/prog/cDDMaterialCtrl.h"
@@ -23,8 +24,10 @@
 #include "../DD_ONLINE/prog/cLightQuestManager.h"
 #include "../DD_ONLINE/prog/cPawnQuestManager.h"
 #include "../DD_ONLINE/prog/cPlayPointInfo.h"
+#include "../DD_ONLINE/prog/cQuestMarkerManager.h"
 #include "../DD_ONLINE/prog/cQuestPhaseEvent.h"
 #include "../DD_ONLINE/prog/cQuestResourceLoadManager.h"
+#include "../DD_ONLINE/prog/cQuestResourceManager.h"
 #include "../DD_ONLINE/prog/cQuestTask.h"
 #include "../DD_ONLINE/prog/cQuestTaskParam.h"
 #include "../DD_ONLINE/prog/cStageCtrl.h"
@@ -35,6 +38,7 @@
 #include "../DD_ONLINE/prog/cpLockOn.h"
 #include "../DD_ONLINE/prog/cpReaction.h"
 #include "../DD_ONLINE/prog/cpShlShotCtrl.h"
+#include "../DD_ONLINE/prog/cpWaypoint.h"
 #include "../DD_ONLINE/prog/nFurnitureMenuFlow.h"
 #include "../DD_ONLINE/prog/nMarker.h"
 #include "../DD_ONLINE/prog/nQuest.h"
@@ -60,6 +64,7 @@
 #include "../DD_ONLINE/prog/rMsgSet.h"
 #include "../DD_ONLINE/prog/rNpcLedgerList.h"
 #include "../DD_ONLINE/prog/rOmKey.h"
+#include "../DD_ONLINE/prog/rOmLoadList.h"
 #include "../DD_ONLINE/prog/rPawnQuestTalk.h"
 #include "../DD_ONLINE/prog/rPriorityThink.h"
 #include "../DD_ONLINE/prog/rQuestMarkerInfo.h"
@@ -98,6 +103,7 @@
 #include "../DD_ONLINE/prog/sObjCollision.h"
 #include "../DD_ONLINE/prog/sOmManager.h"
 #include "../DD_ONLINE/prog/sQuestManagerExt.h"
+#include "../DD_ONLINE/prog/sReward.h"
 #include "../DD_ONLINE/prog/sSetManager.h"
 #include "../DD_ONLINE/prog/sShlManager.h"
 #include "../DD_ONLINE/prog/sSoundExt.h"
@@ -106,14 +112,17 @@
 #include "../DD_ONLINE/prog/sTutorialGuide.h"
 #include "../DD_ONLINE/prog/sUnitManager.h"
 #include "../DD_ONLINE/prog/uGUIBase.h"
+#include "../DD_ONLINE/prog/uGUIBazaarItemSearch.h"
 #include "../DD_ONLINE/prog/uGUICaplinkFriendList.h"
 #include "../DD_ONLINE/prog/uGUICaplinkMenuBase.h"
 #include "../DD_ONLINE/prog/uGUICharaEditPartsWrap.h"
 #include "../DD_ONLINE/prog/uGUICharacterEdit.h"
+#include "../DD_ONLINE/prog/uGUICharacterSelect.h"
 #include "../DD_ONLINE/prog/uGUICommunityList.h"
 #include "../DD_ONLINE/prog/uGUICredit.h"
 #include "../DD_ONLINE/prog/uGUIEntryBoard.h"
 #include "../DD_ONLINE/prog/uGUIEntryBoardInfo.h"
+#include "../DD_ONLINE/prog/uGUIFreeGroupChat.h"
 #include "../DD_ONLINE/prog/uGUIGiveAndTake.h"
 #include "../DD_ONLINE/prog/uGUIItem01.h"
 #include "../DD_ONLINE/prog/uGUIJobSelect.h"
@@ -129,8 +138,10 @@
 #include "../DD_ONLINE/prog/uGUIPopDetail01.h"
 #include "../DD_ONLINE/prog/uGUIPopFilter.h"
 #include "../DD_ONLINE/prog/uGUIPopListDialog.h"
+#include "../DD_ONLINE/prog/uGUIPopPartyList.h"
 #include "../DD_ONLINE/prog/uGUIQuestDelivery.h"
 #include "../DD_ONLINE/prog/uGUIRimWarp.h"
+#include "../DD_ONLINE/prog/uGUIServerSelect.h"
 #include "../DD_ONLINE/prog/uGUISkill.h"
 #include "../DD_ONLINE/prog/uGUISystemMsg.h"
 #include "../DD_ONLINE/prog/uGUIsMenuBase.h"
@@ -282,14 +293,6 @@ const MtDTI& MtMap::getDTI() const {
     return MtMap::DTI;
 }
 
-inline void* MtMap::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(MtMap::DTI)->memAlloc(sz, align, MtMap::DTI.mID);
-}
-
-inline void MtMap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtMap::DTI)->memFree(p_addr);
-}
-
 inline MtMap::MtMap() {
     memset(static_cast<void*>(&mpHashTable[0]), 0, 18441ul);
 }
@@ -378,10 +381,6 @@ MtObject* MtMap::MyDTI::newInstance() const {
 
 const MtDTI& MtTree::getDTI() const {
     return MtTree::DTI;
-}
-
-inline void* MtTree::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(MtTree::DTI)->memAlloc(sz, align, MtTree::DTI.mID);
 }
 
 MtTree::MtTree() {

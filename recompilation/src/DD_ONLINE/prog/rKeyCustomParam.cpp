@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rKeyCustomParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "../../generated/shared/nKeyCustom.h"
@@ -16,14 +14,6 @@ const MtDTI& cKeyCustomParam::getDTI() const {
     return cKeyCustomParam::DTI;
 }
 
-inline void* cKeyCustomParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cKeyCustomParam::DTI)->memAlloc(sz, align, cKeyCustomParam::DTI.getID());
-}
-
-inline void cKeyCustomParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cKeyCustomParam::DTI)->memFree(p_addr);
-}
-
 inline cKeyCustomParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cKeyCustomParam::MyDTI cKeyCustomParam::DTI("cKeyCustomParam", &::MtObject::DTI, 40ul, 0u, 0u);
@@ -34,14 +24,6 @@ MtObject* cKeyCustomParam::MyDTI::newInstance() const {
 
 const MtDTI& rKeyCustomParam::getDTI() const {
     return rKeyCustomParam::DTI;
-}
-
-inline void* rKeyCustomParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rKeyCustomParam::DTI)->memAlloc(sz, align, rKeyCustomParam::DTI.getID());
-}
-
-inline void rKeyCustomParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rKeyCustomParam::DTI)->memFree(p_addr);
 }
 
 bool rKeyCustomParam::loadData(MtDataReader& in, cKeyCustomParam* pData) {

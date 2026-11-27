@@ -207,3 +207,31 @@ inline cCharParamEnemy::cGuardCounter::cGuardCounter() {
     this->mTimes = 0;
     this->mPercent = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCharParamEnemy::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::DTI);
+}
+
+inline void cCharParamEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::DTI)->memFree(p_addr);
+}
+
+inline void* cCharParamEnemy::cJumpAttackSpeed::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::cJumpAttackSpeed::DTI)->memAlloc(sz, align, ::cCharParamEnemy::cJumpAttackSpeed::DTI.::MtDTI::getID());
+}
+
+inline void cCharParamEnemy::cJumpAttackSpeed::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::cJumpAttackSpeed::DTI)->memFree(p_addr);
+}
+
+inline void* cCharParamEnemy::cGuardCounter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::cGuardCounter::DTI)->memAlloc(sz, align, ::cCharParamEnemy::cGuardCounter::DTI.::MtDTI::getID());
+}
+
+inline void cCharParamEnemy::cGuardCounter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharParamEnemy::cGuardCounter::DTI)->memFree(p_addr);
+}

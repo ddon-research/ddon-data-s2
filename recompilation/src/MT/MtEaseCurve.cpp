@@ -5,9 +5,8 @@
 #define DDON_STUB(name)
 #endif
 
-__attribute__((weak)) f32 MtEaseCurve::easeIn(f32 t) const {
-    DDON_STUB("MtEaseCurve::easeIn")
-    return {};
+f32 MtEaseCurve::easeIn(f32 t) const {
+    return ((t * (p1 * 3.0f)) + ((1.0f + ((p1 * 3.0f) - (3.0f * p2))) * (t * (t * t)))) + (((p1 * -6.0f) + (3.0f * p2)) * (t * t));
 }
 
 alignas(4) unsigned char MtEaseCurve_Smooth_bytes[8] __asm__("_ZN11MtEaseCurve6SmoothE") = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0x3f};

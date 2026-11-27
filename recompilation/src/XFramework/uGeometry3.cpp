@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uGeometry3.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -22,10 +21,6 @@ __attribute__((weak)) void uGeometry3::usage() {
 
 const MtDTI& uGeometry3::getDTI() const {
     return uGeometry3::DTI;
-}
-
-inline void uGeometry3::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGeometry3::DTI)->memFree(p_addr);
 }
 
 uGeometry3::~uGeometry3() {
@@ -175,8 +170,57 @@ void uGeometry3::setUseGroupIndex(u32 NewGroupIndex) {
 }
 
 __attribute__((weak)) void uGeometry3::setGeometryToColliderNode(sCollision::Node* pTargetNode) {
-    DDON_STUB("uGeometry3::setGeometryToColliderNode")
-    /* stub */
+    if (pTargetNode == nullptr) {
+        return;
+    } else {
+        const u32 SrcGeometryNum = mGeometryGroup.mGeometryArray.mLength;
+        if (SrcGeometryNum < pTargetNode->mGeometryArray.mLength) {
+            u32 v0_3 = pTargetNode->mGeometryArray.mLength - SrcGeometryNum;
+            for (u32 v0_4 = pTargetNode->mGeometryArray.mLength;;) {
+                pTargetNode->eraseGeometry(v0_4 - 1u, true);
+                if ((v0_3 - 1u) == 0) {
+                    break;
+                } else {
+                    v0_3 += 0xFFFFFFFFu;
+                    v0_4 = pTargetNode->mGeometryArray.mLength;
+                }
+            }
+        }
+    }
+    if (mGeometryGroup.mGeometryArray.mLength != 0) {
+        for (unsigned int i2_3 = 0;;) {
+            nCollision::cGeometry* t0 = mGeometryGroup.getGeometryClass(i2_3);
+            if (t0 != nullptr) {
+                MtGeomConvex* t1 = mGeometryGroup.getAttachGeometryFromIndex(i2_3);
+                if (t1 != nullptr) {
+                    if (pTargetNode->setGeometry(t1, i2_3, false) != 0xFFFFFFFFu) {
+                        nCollision::cGeometry* t2 = pTargetNode->getGeometryClass(i2_3);
+                        if (t2 != nullptr) {
+                            if (mUserPtrUseMode == 2) {
+                                static_cast<nCollision::cGeometryExpansion*>(t2)->setUserPtr(mGeometryGroup.getGeometryFreeObject(i2_3));
+                            } else {
+                                if (mUserPtrUseMode == 0) {
+                                    static_cast<nCollision::cGeometryExpansion*>(t2)->setUserPtr(static_cast<MtObject*>(t0));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (mGeometryGroup.mGeometryArray.mLength != (i2_3 + 1u)) {
+                i2_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mUserPtrUseMode == 2) {
+        pTargetNode->setUserDataPtr(mGeometryGroup.getFreeObject());
+    } else {
+        if (mUserPtrUseMode == 0) {
+            pTargetNode->setUserDataPtr(static_cast<MtObject*>(&mGeometryGroup));
+        }
+    }
 }
 
 void uGeometry3::setResourceForUI(cResource* pRGeometry) {

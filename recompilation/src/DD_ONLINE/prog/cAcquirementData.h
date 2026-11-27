@@ -141,3 +141,15 @@ inline void* cAcquirement::cNormalSkillData::operator new(size_t sz, void* p_add
 inline void* cAcquirement::cSkillDataBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cAcquirement::cNormalSkillData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cAcquirement::cNormalSkillData::DTI);
+}
+
+inline void cAcquirement::cNormalSkillData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAcquirement::cNormalSkillData::DTI)->memFree(p_addr);
+}

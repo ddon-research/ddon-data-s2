@@ -46,10 +46,6 @@ const MtDTI& uGUIEntryBoardInfo::getDTI() const {
     return uGUIEntryBoardInfo::DTI;
 }
 
-inline void uGUIEntryBoardInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIEntryBoardInfo::DTI)->memFree(p_addr);
-}
-
 uGUIEntryBoardInfo::~uGUIEntryBoardInfo() {
     DDON_STUB("uGUIEntryBoardInfo::~uGUIEntryBoardInfo")
     /* stub */
@@ -115,8 +111,7 @@ bool uGUIEntryBoardInfo::setProc(uGUIEntryBoardInfo::PR proc, bool force) {
             }
         }
     }
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2056) = 0;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 2048) = 745;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIEntryBoardInfo::updateInit);
     return true;
 }
 
@@ -202,8 +197,8 @@ __attribute__((weak)) void uGUIEntryBoardInfo::moveEvent() {
 u32 uGUIEntryBoardInfo::evCtrlClick(cControl::Message* msg) {
     if (mProc == PR_SELECT) {
         if (mpVCtrl != nullptr) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos]) + 1052)) != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos]) + 1056)) != 0) {
+            if (static_cast<cData*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos])->mCharacterId != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+                if (static_cast<cData*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos])->mbValid) {
                     if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
                         if (!sQuestManagerExt::getInstance()->mEntrySolo) {
                             setInputEvent(66u);
@@ -239,8 +234,8 @@ u32 uGUIEntryBoardInfo::evCtrlClick(cControl::Message* msg) {
 u32 uGUIEntryBoardInfo::evCtrlDecide(cControl::Message* msg) {
     if (mProc == PR_SELECT) {
         if (mpVCtrl != nullptr) {
-            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos]) + 1052)) != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos]) + 1056)) != 0) {
+            if (static_cast<cData*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos])->mCharacterId != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+                if (static_cast<cData*>(mDataArray.getBuffer()[mpVCtrl->mCurrentPos])->mbValid) {
                     if (sQuestManagerExt::getInstance()->mNowCallEntryBoardContentsType == nNetSv::CONTENT_TYPE_END) {
                         if (!sQuestManagerExt::getInstance()->mEntrySolo) {
                             setInputEvent(66u);
@@ -291,10 +286,6 @@ __attribute__((weak)) MtObject* uGUIEntryBoardInfo::MyDTI::newInstance() const {
 
 const MtDTI& uGUIEntryBoardInfo::cData::getDTI() const {
     return uGUIEntryBoardInfo::cData::DTI;
-}
-
-inline void uGUIEntryBoardInfo::cData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIEntryBoardInfo::cData::DTI)->memFree(p_addr);
 }
 
 inline uGUIEntryBoardInfo::cData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

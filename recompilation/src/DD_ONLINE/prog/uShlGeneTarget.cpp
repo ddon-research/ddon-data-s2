@@ -21,14 +21,6 @@ const MtDTI& cShlParamGeneTarget::getDTI() const {
     return cShlParamGeneTarget::DTI;
 }
 
-inline void* cShlParamGeneTarget::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamGeneTarget::DTI)->memAlloc(sz, align, cShlParamGeneTarget::DTI.getID());
-}
-
-inline void cShlParamGeneTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamGeneTarget::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamGeneTarget::getShlDTI() const {
     return uShlGeneTarget::DTI;
 }
@@ -101,14 +93,6 @@ const MtDTI& cShlParamGeneTarget::cShootCtrlParamGeneTarget::getDTI() const {
     return cShlParamGeneTarget::cShootCtrlParamGeneTarget::DTI;
 }
 
-inline void* cShlParamGeneTarget::cShootCtrlParamGeneTarget::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamGeneTarget::cShootCtrlParamGeneTarget::DTI)->memAlloc(sz, align, cShlParamGeneTarget::cShootCtrlParamGeneTarget::DTI.getID());
-}
-
-inline void cShlParamGeneTarget::cShootCtrlParamGeneTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamGeneTarget::cShootCtrlParamGeneTarget::DTI)->memFree(p_addr);
-}
-
 void cShlParamGeneTarget::cShootCtrlParamGeneTarget::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "waitFrame", &waitFrame, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "shlNo", &shlNo, 0u, 0u);
@@ -127,18 +111,6 @@ MtObject* cShlParamGeneTarget::cShootCtrlParamGeneTarget::MyDTI::newInstance() c
 
 const MtDTI& uShlGeneTarget::getDTI() const {
     return uShlGeneTarget::DTI;
-}
-
-inline void* uShlGeneTarget::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlGeneTarget::DTI)->memAlloc(sz, align, uShlGeneTarget::DTI.getID());
-}
-
-inline void uShlGeneTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlGeneTarget::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamGeneTarget* uShlGeneTarget::getShlParam() const {
-    return static_cast<const cShlParamGeneTarget*>(mpShlParam2);
 }
 
 uShlGeneTarget::~uShlGeneTarget() {

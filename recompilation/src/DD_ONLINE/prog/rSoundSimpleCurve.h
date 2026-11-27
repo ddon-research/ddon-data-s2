@@ -144,3 +144,19 @@ inline rSoundSimpleCurve::Element::Element() {
     this->mX = 0.0f;
     this->mY = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void rSoundSimpleCurve::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::DTI)->memFree(p_addr);
+}
+
+inline void* rSoundSimpleCurve::Element::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::Element::DTI)->memAlloc(sz, align, ::rSoundSimpleCurve::Element::DTI.::MtDTI::getID());
+}
+
+inline void rSoundSimpleCurve::Element::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSimpleCurve::Element::DTI)->memFree(p_addr);
+}

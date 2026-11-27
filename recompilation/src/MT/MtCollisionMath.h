@@ -339,18 +339,6 @@ namespace MtCollisionUtil {
     };
 }  // namespace MtCollisionUtil
 
-inline MtCollisionUtil::MtSoaVector1::MtSoaVector1() {
-}
-
-inline MtCollisionUtil::MtSoaVector3::MtSoaVector3() {
-}
-
-inline MtCollisionUtil::MtVectorU4::MtVectorU4() {
-}
-
-inline MtCollisionUtil::MtVectorU43::MtVectorU43() {
-}
-
 inline MtCollisionUtil::MtSoaVector1::MtSoaVector1(const MtCollisionUtil::MtSoaVector1& src) {
     this->v = src.v;
 }
@@ -364,4 +352,16 @@ inline MtCollisionUtil::MtSoaVector3::MtSoaVector3(const MtCollisionUtil::MtSoaV
     this->x = src.x;
     this->y = src.y;
     this->z = src.z;
+}
+
+inline MtCollisionUtil::MtSoaVector1::MtSoaVector1() {
+}
+
+inline MtCollisionUtil::MtSoaVector3::MtSoaVector3() {
+}
+
+inline MtCollisionUtil::MtVectorU4::MtVectorU4() {
+}
+
+inline MtCollisionUtil::MtVectorU43::MtVectorU43() {
 }

@@ -33,14 +33,6 @@ const MtDTI& cIndoorSkyFogParam::getDTI() const {
     return cIndoorSkyFogParam::DTI;
 }
 
-inline void* cIndoorSkyFogParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cIndoorSkyFogParam::DTI)->memAlloc(sz, align, cIndoorSkyFogParam::DTI.getID());
-}
-
-inline void cIndoorSkyFogParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cIndoorSkyFogParam::DTI)->memFree(p_addr);
-}
-
 cIndoorSkyFogParam::cIndoorSkyFogParam() {
     mWeatherId = 0;
     mIntensity = 1.0f;
@@ -83,14 +75,6 @@ const MtDTI& cZoneIndoorGrassOff::getDTI() const {
     return cZoneIndoorGrassOff::DTI;
 }
 
-inline void* cZoneIndoorGrassOff::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneIndoorGrassOff::DTI)->memAlloc(sz, align, cZoneIndoorGrassOff::DTI.getID());
-}
-
-inline void cZoneIndoorGrassOff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneIndoorGrassOff::DTI)->memFree(p_addr);
-}
-
 inline cZoneIndoorGrassOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cZoneIndoorGrassOff::MyDTI cZoneIndoorGrassOff::DTI("cZoneIndoorGrassOff", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
@@ -101,10 +85,6 @@ MtObject* cZoneIndoorGrassOff::MyDTI::newInstance() const {
 
 const MtDTI& cZoneIndoorLight::getDTI() const {
     return cZoneIndoorLight::DTI;
-}
-
-inline void cZoneIndoorLight::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneIndoorLight::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cZoneIndoorLight::~cZoneIndoorLight() {
@@ -197,14 +177,6 @@ const MtDTI& cZoneIndoorScrlEfcOff::getDTI() const {
     return cZoneIndoorScrlEfcOff::DTI;
 }
 
-inline void* cZoneIndoorScrlEfcOff::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneIndoorScrlEfcOff::DTI)->memAlloc(sz, align, cZoneIndoorScrlEfcOff::DTI.getID());
-}
-
-inline void cZoneIndoorScrlEfcOff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneIndoorScrlEfcOff::DTI)->memFree(p_addr);
-}
-
 inline cZoneIndoorScrlEfcOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cZoneIndoorScrlEfcOff::MyDTI cZoneIndoorScrlEfcOff::DTI("cZoneIndoorScrlEfcOff", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
@@ -217,14 +189,6 @@ const MtDTI& cZoneIndoorWeatherEffectOff::getDTI() const {
     return cZoneIndoorWeatherEffectOff::DTI;
 }
 
-inline void* cZoneIndoorWeatherEffectOff::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneIndoorWeatherEffectOff::DTI)->memAlloc(sz, align, cZoneIndoorWeatherEffectOff::DTI.getID());
-}
-
-inline void cZoneIndoorWeatherEffectOff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneIndoorWeatherEffectOff::DTI)->memFree(p_addr);
-}
-
 inline cZoneIndoorWeatherEffectOff::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cZoneIndoorWeatherEffectOff::MyDTI cZoneIndoorWeatherEffectOff::DTI("cZoneIndoorWeatherEffectOff", &::nSoundTrigger::cCategory::DTI, 32ul, 0u, 0u);
@@ -235,14 +199,6 @@ MtObject* cZoneIndoorWeatherEffectOff::MyDTI::newInstance() const {
 
 const MtDTI& cZoneIndoorWindCtrl::getDTI() const {
     return cZoneIndoorWindCtrl::DTI;
-}
-
-inline void* cZoneIndoorWindCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneIndoorWindCtrl::DTI)->memAlloc(sz, align, cZoneIndoorWindCtrl::DTI.getID());
-}
-
-inline void cZoneIndoorWindCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneIndoorWindCtrl::DTI)->memFree(p_addr);
 }
 
 inline cZoneIndoorWindCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

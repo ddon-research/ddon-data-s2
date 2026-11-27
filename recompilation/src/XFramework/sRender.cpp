@@ -1,6 +1,10 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_kernel.h>
 #include <_pthread.h>
+#include <content_export.h>
+#include <kernel.h>
+#include <libsysmodule.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -31,6 +35,8 @@
 #include "nDrawScene.h"
 #include "nDrawTexture.h"
 #include "nDrawVertexBuffer.h"
+#include "nPrim.h"
+#include "nSyncPoint.h"
 #include "../generated/shared/regs.h"
 #include "../generated/shared/rendertarget.h"
 #include "sApp.h"
@@ -38,6 +44,7 @@
 #include "sMain.h"
 #include "sScene.h"
 #include "sShader2.h"
+#include "sToolBase.h"
 #include "sUnit.h"
 #include "../generated/shared/sampler.h"
 #ifndef DDON_STUB
@@ -46,10 +53,6 @@
 
 const MtDTI& sRender::getDTI() const {
     return sRender::DTI;
-}
-
-inline void sRender::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sRender::DTI)->memFree(p_addr);
 }
 
 sRender::sRender(u32 rendermode_flags, u32 cmdbufsize, u32 ringbufsize, u32 tempvertexbufsize, u32 tempindexbufsize, nDraw::HDR_TYPE hdrtype, nDraw::ANTIALIAS_TYPE aatype, u32 scene_flags) {
@@ -370,8 +373,19 @@ __attribute__((weak)) void sRender::copyRegion(cDraw* pdraw, const MtRect& dst_r
     /* stub */
 }
 
-__attribute__((weak)) void* sRender::rendering(void* pArg) {
-    DDON_STUB("sRender::rendering")
+void* sRender::rendering(void* pArg) {
+    for (;;) {
+        sceKernelWaitSema((sRender::mpInstance)->mRenderEvent, 1, static_cast<SceKernelUseconds*>(nullptr));
+        sceKernelCancelSema((sRender::mpInstance)->mRenderEvent, -1, static_cast<int*>(nullptr));
+        if ((sRender::mpInstance)->mExit) {
+            break;
+        } else {
+            (sRender::mpInstance)->sRender::beginRendering();
+            (sRender::mpInstance)->sRender::execute2(0u);
+            (sRender::mpInstance)->sRender::endRendering();
+            sceKernelSignalSema((sRender::mpInstance)->mSyncEvent, 1);
+        }
+    }
     return nullptr;
 }
 
@@ -713,8 +727,17 @@ __attribute__((weak)) u32 sRender::serializeTagsRecursive(u32 cur_index, cDraw::
     return {};
 }
 
-__attribute__((weak)) void* sRender::renderingSub(void* pArg) {
-    DDON_STUB("sRender::renderingSub")
+void* sRender::renderingSub(void* pArg) {
+    const u64 wakeup_bit = 1ul << static_cast<unsigned long>(static_cast<unsigned char>((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pArg) + 28)) * 2u) & 63);
+    for (const u64 sleep_bit = 1ul << static_cast<unsigned long>(static_cast<unsigned char>(((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pArg) + 28)) * 2u) + 1u) & 63);;) {
+        sceKernelWaitEventFlag((sRender::mpInstance)->mParallelExecuteEventFlag, wakeup_bit, 33u, static_cast<uint64_t*>(nullptr), static_cast<SceKernelUseconds*>(nullptr));
+        if ((sRender::mpInstance)->mExit) {
+            break;
+        } else {
+            (sRender::mpInstance)->sRender::execute2(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(pArg) + 28));
+            sceKernelSetEventFlag((sRender::mpInstance)->mParallelExecuteEventFlag, sleep_bit);
+        }
+    }
     return nullptr;
 }
 
@@ -785,9 +808,24 @@ bool sRender::endScreenShot() {
     return true;
 }
 
-__attribute__((weak)) void sRender::destroyPhotoExport() {
-    DDON_STUB("sRender::destroyPhotoExport")
-    /* stub */
+void sRender::destroyPhotoExport() {
+    if (mpExportThread != nullptr) {
+        for (PhotoExportThread* v0_4 = mpExportThread;;) {
+            if (v0_4->getStatus() == MtThread::TERMINATED) {
+                break;
+            } else {
+                sceKernelUsleep(1000u);
+                v0_4 = mpExportThread;
+            }
+        }
+        if (mpExportThread != nullptr) {
+            delete mpExportThread;
+            mpExportThread = nullptr;
+        }
+    }
+    sceContentExportTerm();
+    sceSysmoduleUnloadModule(static_cast<uint16_t>(139));
+    sceSysmoduleUnloadModule(static_cast<uint16_t>(166));
 }
 
 __attribute__((weak)) void sRender::setPhotoExportTriggerFromMemory(void* pdata, u32 size) {

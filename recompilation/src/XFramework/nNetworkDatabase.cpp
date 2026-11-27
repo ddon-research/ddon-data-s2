@@ -26,10 +26,6 @@ void* nNetwork::SessionDatabase::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::SessionDatabase::DTI)->memAlloc(sz, align, ::nNetwork::SessionDatabase::DTI.mID);
 }
 
-inline void nNetwork::SessionDatabase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::SessionDatabase::DTI)->memFree(p_addr);
-}
-
 nNetwork::SessionDatabase::SessionDatabase() {
     DDON_STUB("nNetwork::SessionDatabase::SessionDatabase")
     /* stub */
@@ -68,14 +64,22 @@ __attribute__((weak)) s32 nNetwork::SessionDatabase::findRoute(const MtNetUnique
     return {};
 }
 
-__attribute__((weak)) s32 nNetwork::SessionDatabase::findRoute(u32 key) const {
-    DDON_STUB("nNetwork::SessionDatabase::findRoute")
-    return {};
+s32 nNetwork::SessionDatabase::findRoute(u32 key) const {
+    for (s32 route_index = 0; route_index <= 15; route_index += 1) {
+        if (mRouteList[route_index].mRouteKey == key) {
+            return route_index;
+        }
+    }
+    return -1;
 }
 
-__attribute__((weak)) s32 nNetwork::SessionDatabase::findDirect(s32 peer_id) const {
-    DDON_STUB("nNetwork::SessionDatabase::findDirect")
-    return {};
+s32 nNetwork::SessionDatabase::findDirect(s32 peer_id) const {
+    for (s32 route_index = 0; route_index <= 15; route_index += 1) {
+        if (mRouteList[route_index].mPeerId == peer_id) {
+            return route_index;
+        }
+    }
+    return -1;
 }
 
 __attribute__((weak)) void nNetwork::SessionDatabase::setSelfData(s32 member_index, MtNetSession::Member* member) {
@@ -202,14 +206,16 @@ __attribute__((weak)) void nNetwork::SessionDatabase::setSearchResult(MtNetSessi
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::SessionDatabase::setBinary(s32 session_index, MtNetSessionInfo::Binary* binary) {
-    DDON_STUB("nNetwork::SessionDatabase::setBinary")
-    /* stub */
+void nNetwork::SessionDatabase::setBinary(s32 session_index, MtNetSessionInfo::Binary* binary) {
+    mSearchResultListPtr.mResult[static_cast<unsigned int>(session_index)].setBinary(binary);
 }
 
-__attribute__((weak)) void nNetwork::SessionDatabase::setPing(s32 session_index, MtNetSession::Ping* ping) {
-    DDON_STUB("nNetwork::SessionDatabase::setPing")
-    /* stub */
+void nNetwork::SessionDatabase::setPing(s32 session_index, MtNetSession::Ping* ping) {
+    if (ping != nullptr) {
+        mSearchResultListPtr.mResult[static_cast<unsigned int>(session_index)].mPing.mRtt = ping->mRtt;
+    } else {
+        mSearchResultListPtr.mResult[static_cast<unsigned int>(session_index)].mPing.mRtt = 0;
+    }
 }
 
 __attribute__((weak)) void nNetwork::SessionDatabase::updateSessionInfo(MtNetSession* ps, bool update_binary, bool update_slot) {

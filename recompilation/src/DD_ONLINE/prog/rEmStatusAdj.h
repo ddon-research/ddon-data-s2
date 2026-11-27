@@ -126,3 +126,19 @@ inline void cEmStatusAdj::operator delete[](void* p_addr) {
 inline void* cEmStatusAdj::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmStatusAdj::DTI)->memAlloc(sz, align, ::cEmStatusAdj::DTI.::MtDTI::getID());
 }
+
+inline void* cEmStatusAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmStatusAdj::DTI)->memAlloc(sz, align, ::cEmStatusAdj::DTI.::MtDTI::getID());
+}
+
+inline void cEmStatusAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmStatusAdj::DTI)->memFree(p_addr);
+}
+
+inline void* rEmStatusAdj::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmStatusAdj::DTI)->memAlloc(sz, align, ::rEmStatusAdj::DTI.::MtDTI::getID());
+}
+
+inline void rEmStatusAdj::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmStatusAdj::DTI)->memFree(p_addr);
+}

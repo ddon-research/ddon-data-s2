@@ -546,3 +546,39 @@ inline void* uGUIRimWarp::cListInfo::operator new(size_t sz, void* p_addr) {
 inline void* uGUIRimWarp::cHeaderInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIRimWarp::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::DTI);
+}
+
+inline void uGUIRimWarp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIRimWarp::cHeaderItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cHeaderItem::DTI)->memAlloc(sz, align, ::uGUIRimWarp::cHeaderItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIRimWarp::cHeaderItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cHeaderItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIRimWarp::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cListItem::DTI)->memAlloc(sz, align, ::uGUIRimWarp::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIRimWarp::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIRimWarp::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cListInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIRimWarp::cHeaderInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRimWarp::cHeaderInfo::DTI)->memFree(p_addr);
+}

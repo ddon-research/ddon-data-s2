@@ -23,6 +23,7 @@ class MtStream;
 class MtString;
 class MtUI;
 class cEquipData;
+class cGUIUtility;
 namespace nGUIItem { class cItem; }
 class sCraftManager;
 class sItemManager;
@@ -993,6 +994,7 @@ public:
     class rItemParam : public MtObject
     {
         friend class cEquipData;
+        friend class cGUIUtility;
         friend class nGUIItem::cItem;
         friend class rItemList;
         friend class sCraftManager;
@@ -1545,4 +1547,83 @@ inline rItemList::rProtectorParam::rProtectorParam() {
 
 inline void* rItemList::rEquipParamS32::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rItemList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rItemList::DTI)->memAlloc(sz, align, ::rItemList::DTI.::MtDTI::getID());
+}
+
+inline void rItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::DTI)->memFree(p_addr);
+}
+
+inline rItemList::rItemList() {
+    this->::cResource::setAttribute(22u);
+    this->::cResource::clear();
+    this->mpItemList = nullptr;
+    this->mArrayDataNum = 0;
+    this->mpParamList = nullptr;
+    this->mArrayParamDataNum = 0;
+    this->mpVsParamList = nullptr;
+    this->mArrayVsParamDataNum = 0;
+    this->mpWeaponParamList = nullptr;
+    this->mArrayWeaponParamDataNum = 0;
+    this->mpProtectParamList = nullptr;
+    this->mArrayProtectParamDataNum = 0;
+    this->mpEquipParamS8List = nullptr;
+    this->mArrayEquipParamS8DataNum = 0;
+    this->mMaxId = 0;
+    this->mpIndexTbl = nullptr;
+}
+
+inline void rItemList::rItemParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::rItemParam::DTI)->memFree(p_addr);
+}
+
+inline void rItemList::rParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::rParam::DTI)->memFree(p_addr);
+}
+
+inline void* rItemList::rVsEnemyParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rItemList::rVsEnemyParam::DTI)->memAlloc(sz, align, ::rItemList::rVsEnemyParam::DTI.::MtDTI::getID());
+}
+
+inline void rItemList::rVsEnemyParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::rVsEnemyParam::DTI)->memFree(p_addr);
+}
+
+inline void* rItemList::rWeaponParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rItemList::rWeaponParam::DTI)->memAlloc(sz, align, ::rItemList::rWeaponParam::DTI.::MtDTI::getID());
+}
+
+inline void rItemList::rWeaponParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::rWeaponParam::DTI)->memFree(p_addr);
+}
+
+inline void rItemList::rEquipParamS8::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::rEquipParamS8::DTI)->memFree(p_addr);
+}
+
+inline void* rItemList::rItemParamXml::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rItemList::rItemParamXml::DTI)->memAlloc(sz, align, ::rItemList::rItemParamXml::DTI.::MtDTI::getID());
+}
+
+inline void rItemList::rItemParamXml::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::rItemParamXml::DTI)->memFree(p_addr);
+}
+
+inline void* rItemList::rProtectorParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rItemList::rProtectorParam::DTI)->memAlloc(sz, align, ::rItemList::rProtectorParam::DTI.::MtDTI::getID());
+}
+
+inline void rItemList::rProtectorParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::rProtectorParam::DTI)->memFree(p_addr);
+}
+
+inline void rItemList::rEquipParamS32::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rItemList::rEquipParamS32::DTI)->memFree(p_addr);
 }

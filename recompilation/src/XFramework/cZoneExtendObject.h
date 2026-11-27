@@ -75,3 +75,11 @@ inline void cZoneExtendObject::registerOwner(nZone::cLayoutElement* pOwner) {
 inline nZone::cLayoutElement* cZoneExtendObject::getOwner() {
     return this->mpOwner;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cZoneExtendObject::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneExtendObject::DTI)->memFree(p_addr);
+}

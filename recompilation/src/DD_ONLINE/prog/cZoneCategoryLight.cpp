@@ -31,10 +31,6 @@ const MtDTI& cZoneCategoryDayNightColorFog::getDTI() const {
     return cZoneCategoryDayNightColorFog::DTI;
 }
 
-inline void cZoneCategoryDayNightColorFog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneCategoryDayNightColorFog::DTI)->memFree(p_addr);
-}
-
 u32 cZoneCategoryDayNightColorFog::getCategoryType() const {
     return 2;
 }
@@ -57,10 +53,6 @@ const MtDTI& cZoneCategoryDayNightHemiSphere::getDTI() const {
     return cZoneCategoryDayNightHemiSphere::DTI;
 }
 
-inline void cZoneCategoryDayNightHemiSphere::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneCategoryDayNightHemiSphere::DTI)->memFree(p_addr);
-}
-
 u32 cZoneCategoryDayNightHemiSphere::getCategoryType() const {
     return 1;
 }
@@ -81,19 +73,6 @@ __attribute__((weak)) MtObject* cZoneCategoryDayNightHemiSphere::MyDTI::newInsta
 
 const MtDTI& cZoneCategoryLight::getDTI() const {
     return cZoneCategoryLight::DTI;
-}
-
-inline void* cZoneCategoryLight::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneCategoryLight::DTI)->memAlloc(sz, align, cZoneCategoryLight::DTI.getID());
-}
-
-inline void cZoneCategoryLight::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneCategoryLight::DTI)->memFree(p_addr);
-}
-
-inline cZoneCategoryLight::cZoneCategoryLight() {
-    setAttribute(32768u, true);
-    setAttribute(0x10000u, true);
 }
 
 u32 cZoneCategoryLight::getCategoryType() const {

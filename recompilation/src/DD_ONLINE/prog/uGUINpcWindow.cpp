@@ -32,16 +32,8 @@ const MtDTI& uGUINpcWindow::getDTI() const {
     return uGUINpcWindow::DTI;
 }
 
-inline MtAllocator* uGUINpcWindow::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUINpcWindow::DTI);
-}
-
 void* uGUINpcWindow::operator new(size_t sz, u32 align) {
     return uGUINpcWindow::getAllocator()->memAlloc(sz, align, uGUINpcWindow::DTI.getID());
-}
-
-inline void uGUINpcWindow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUINpcWindow::DTI)->memFree(p_addr);
 }
 
 uGUINpcWindow::~uGUINpcWindow() {
@@ -152,9 +144,52 @@ __attribute__((weak)) void uGUINpcWindow::setNpcName(MT_CTSTR name) {
     /* stub */
 }
 
-__attribute__((weak)) MtVector2 uGUINpcWindow::getChoiceWindowPos() {
-    DDON_STUB("uGUINpcWindow::getChoiceWindowPos")
-    __builtin_unreachable();
+MtVector2 uGUINpcWindow::getChoiceWindowPos() {
+    MtVector2 vRet;
+    vRet.x = 0.0f;
+    vRet.y = 0.0f;
+    if (mpInstNullChoice != nullptr) {
+        const MtDTI& t0 = mpInstNullChoice->getDTI();
+        MT_CTSTR v0_1 = cGUIInstNull::DTI.mName;
+        const MtDTI* v0_0 = &t0;
+        const MtDTI* v2_0;
+        for (;;) {
+            if (v0_1 != v0_0->mName) {
+                if (v0_0->mpParent != nullptr) {
+                    v0_0 = v0_0->mpParent;
+                } else {
+                    break;
+                }
+            } else {
+                f32 v2_9 = static_cast<cGUIInstNull*>(mpInstNullChoice)->mPosition.x;
+                f32 v2_10 = static_cast<cGUIInstNull*>(mpInstNullChoice)->mPosition.y;
+                vRet.x = v2_9;
+                vRet.y = v2_10;
+                if (mpInstNull != nullptr) {
+                    const MtDTI& t1 = mpInstNull->getDTI();
+                    MT_CTSTR v2_1 = cGUIInstNull::DTI.mName;
+                    v2_0 = &t1;
+                    for (;;) {
+                        if (v2_1 != v2_0->mName) {
+                            if (v2_0->mpParent != nullptr) {
+                                v2_0 = v2_0->mpParent;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            f32 t2 = static_cast<cGUIInstNull*>(mpInstNull)->mPosition.y;
+                            vRet.x = mAlignmentPosition[((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpInstNull) + 144)) >> 8) & 15u].x + (static_cast<cGUIInstNull*>(mpInstNull)->mPosition.x + v2_9);
+                            vRet.y = mAlignmentPosition[((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpInstNull) + 144)) >> 8) & 15u].y + (t2 + v2_10);
+                            goto loop_ca9618_end;
+                        }
+                    }
+                }
+                break;
+            }
+        }
+        loop_ca9618_end:;
+    }
+    return vRet;
 }
 
 bool uGUINpcWindow::isMessageWait() {

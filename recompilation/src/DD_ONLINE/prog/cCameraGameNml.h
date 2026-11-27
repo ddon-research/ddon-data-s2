@@ -211,3 +211,23 @@ inline cCamExParamNml2::cCamExParamNml2() {
 inline void* cCamImpNml::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCamExParamNml::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamNml::DTI);
+}
+
+inline MtAllocator* cCamExParamNml2::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamNml2::DTI);
+}
+
+inline MtAllocator* cCamImpNml::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamImpNml::DTI);
+}
+
+inline void cCamImpNml::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpNml::DTI)->memFree(p_addr);
+}

@@ -23,10 +23,6 @@ void* MtGeomCapsule::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomCapsule::DTI)->memAlloc(sz, align, MtGeomCapsule::DTI.mID);
 }
 
-inline void MtGeomCapsule::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomCapsule::DTI)->memFree(p_addr);
-}
-
 void MtGeomCapsule::load(MtDataReader& fin) {
     mCapsule.p0.x = fin.readF32();
     mCapsule.p1.x = fin.readF32();
@@ -225,9 +221,17 @@ __attribute__((weak)) MtVector3 MtGeomCapsule::getSupportConst(const MtVector3& 
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 MtGeomCapsule::getInternalPos() const {
-    DDON_STUB("MtGeomCapsule::getInternalPos")
-    __builtin_unreachable();
+MtVector3 MtGeomCapsule::getInternalPos() const {
+    MtVector3 result;
+    const f32 t0 = mCapsule.p0.y;
+    const f32 t1 = mCapsule.p1.y;
+    const f32 t2 = mCapsule.p1.z;
+    const f32 t3 = mCapsule.p0.z;
+    result.x = mCapsule.p0.x + (0.5f * (mCapsule.p1.x - mCapsule.p0.x));
+    result.y = t0 + (0.5f * (t1 - t0));
+    result.z = t3 + (0.5f * (t2 - t3));
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void MtGeomCapsule::setScale(f32 scale) {
@@ -240,9 +244,13 @@ void MtGeomCapsule::setScale(f32 scale) {
     mCapsule.r = mCapsule.r * scale;
 }
 
-__attribute__((weak)) void MtGeomCapsule::addPos(const MtVector3& pos) {
-    DDON_STUB("MtGeomCapsule::addPos")
-    /* stub */
+void MtGeomCapsule::addPos(const MtVector3& pos) {
+    mCapsule.p0.x = pos.x + mCapsule.p0.x;
+    mCapsule.p0.y = pos.y + mCapsule.p0.y;
+    mCapsule.p0.z = pos.z + mCapsule.p0.z;
+    mCapsule.p1.x = pos.x + mCapsule.p1.x;
+    mCapsule.p1.y = pos.y + mCapsule.p1.y;
+    mCapsule.p1.z = pos.z + mCapsule.p1.z;
 }
 
 inline MtGeomCapsule::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

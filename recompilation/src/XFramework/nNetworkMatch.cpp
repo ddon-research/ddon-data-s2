@@ -30,10 +30,6 @@ void* nNetwork::Match::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::Match::DTI)->memAlloc(sz, align, ::nNetwork::Match::DTI.mID);
 }
 
-inline void nNetwork::Match::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Match::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void nNetwork::Match::move() {
     DDON_STUB("nNetwork::Match::move")
     /* stub */

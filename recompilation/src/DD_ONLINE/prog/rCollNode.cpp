@@ -23,14 +23,6 @@ const MtDTI& cCollNode::getDTI() const {
     return cCollNode::DTI;
 }
 
-inline void* cCollNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCollNode::DTI)->memAlloc(sz, align, cCollNode::DTI.getID());
-}
-
-inline void cCollNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCollNode::DTI)->memFree(p_addr);
-}
-
 cCollNode::~cCollNode() {
     if (mpCollGeom == nullptr) {
         return;
@@ -60,16 +52,8 @@ const MtDTI& rCollNode::getDTI() const {
     return rCollNode::DTI;
 }
 
-inline MtAllocator* rCollNode::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rCollNode::DTI);
-}
-
 void* rCollNode::operator new(size_t sz, u32 align) {
     return rCollNode::getAllocator()->memAlloc(sz, align, rCollNode::DTI.getID());
-}
-
-inline void rCollNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCollNode::DTI)->memFree(p_addr);
 }
 
 rCollNode::~rCollNode() {

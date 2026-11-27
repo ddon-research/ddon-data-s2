@@ -41,16 +41,8 @@ const MtDTI& uGUIPhotoAlbum::getDTI() const {
     return uGUIPhotoAlbum::DTI;
 }
 
-inline MtAllocator* uGUIPhotoAlbum::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPhotoAlbum::DTI);
-}
-
 void* uGUIPhotoAlbum::operator new(size_t sz, u32 align) {
     return uGUIPhotoAlbum::getAllocator()->memAlloc(sz, align, uGUIPhotoAlbum::DTI.getID());
-}
-
-inline void uGUIPhotoAlbum::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPhotoAlbum::DTI)->memFree(p_addr);
 }
 
 uGUIPhotoAlbum::~uGUIPhotoAlbum() {

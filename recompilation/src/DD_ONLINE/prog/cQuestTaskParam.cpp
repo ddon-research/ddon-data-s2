@@ -19,10 +19,6 @@ const MtDTI& cQuestTaskParam::getDTI() const {
     return cQuestTaskParam::DTI;
 }
 
-inline void cQuestTaskParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTaskParam::DTI)->memFree(p_addr);
-}
-
 nQuest::QUEST_TYPE cQuestTaskParam::getQuestType() const {
     return static_cast<nQuest::QUEST_TYPE>(mQuestType);
 }
@@ -650,14 +646,6 @@ __attribute__((weak)) MtObject* cQuestTaskParam::MyDTI::newInstance() const {
 
 const MtDTI& cQuestTaskParam::cQuestPoint::getDTI() const {
     return cQuestTaskParam::cQuestPoint::DTI;
-}
-
-inline void* cQuestTaskParam::cQuestPoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestTaskParam::cQuestPoint::DTI)->memAlloc(sz, align, cQuestTaskParam::cQuestPoint::DTI.getID());
-}
-
-inline void cQuestTaskParam::cQuestPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTaskParam::cQuestPoint::DTI)->memFree(p_addr);
 }
 
 cQuestTaskParam::cQuestPoint::~cQuestPoint() {

@@ -44,6 +44,7 @@
 #include "sOmManager.h"
 #include "sPlayerManager.h"
 #include "sQuestManagerExt.h"
+#include "sReward.h"
 #include "sScreenShot.h"
 #include "sSetManager.h"
 #include "sShlManager.h"
@@ -59,18 +60,6 @@
 
 const MtDTI& aGame::getDTI() const {
     return aGame::DTI;
-}
-
-inline void* aGame::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(aGame::DTI)->memAlloc(sz, align, aGame::DTI.getID());
-}
-
-inline void aGame::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(aGame::DTI)->memFree(p_addr);
-}
-
-inline aGame::aGame() {
-    mArcTicket = sArchiveManager::INVALID_TICKET;
 }
 
 aGame::~aGame() {

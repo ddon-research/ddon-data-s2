@@ -20,10 +20,6 @@ void* MtGeomLineSweptSphere::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomLineSweptSphere::DTI)->memAlloc(sz, align, MtGeomLineSweptSphere::DTI.mID);
 }
 
-inline void MtGeomLineSweptSphere::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomLineSweptSphere::DTI)->memFree(p_addr);
-}
-
 MtGeomLineSweptSphere::~MtGeomLineSweptSphere() {
 }
 

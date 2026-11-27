@@ -23,10 +23,6 @@ void* MtGeomSphere::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomSphere::DTI)->memAlloc(sz, align, MtGeomSphere::DTI.mID);
 }
 
-inline void MtGeomSphere::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomSphere::DTI)->memFree(p_addr);
-}
-
 void MtGeomSphere::load(MtDataReader& fin) {
     mSphere.pos.x = fin.readF32();
     mSphere.pos.y = fin.readF32();
@@ -62,9 +58,11 @@ void MtGeomSphere::getBoundingAABB(MtAABB& aabb) const {
     aabb.maxpos.pad_ = 0.0f;
 }
 
-__attribute__((weak)) void MtGeomSphere::getBoundingSphere(MtSphere& sphere) const {
-    DDON_STUB("MtGeomSphere::getBoundingSphere")
-    /* stub */
+void MtGeomSphere::getBoundingSphere(MtSphere& sphere) const {
+    sphere.pos.x = mSphere.pos.x;
+    sphere.pos.y = mSphere.pos.y;
+    sphere.pos.z = mSphere.pos.z;
+    sphere.r = mSphere.r;
 }
 
 bool MtGeomSphere::isDegeneracy() const {
@@ -113,14 +111,12 @@ bool MtGeomSphere::isIntersect(const MtOBB& obb) const {
     return MtCollision::intersect(mSphere, obb);
 }
 
-__attribute__((weak)) bool MtGeomSphere::isIntersect(const MtPlane& plane) const {
-    DDON_STUB("MtGeomSphere::isIntersect")
-    return {};
+bool MtGeomSphere::isIntersect(const MtPlane& plane) const {
+    return mSphere.r >= __builtin_fabsf(plane.dist + (((mSphere.pos.x * plane.normal.x) + (mSphere.pos.y * plane.normal.y)) + (mSphere.pos.z * plane.normal.z)));
 }
 
-__attribute__((weak)) bool MtGeomSphere::isIntersect(const MtPlaneXZ& planeXZ) const {
-    DDON_STUB("MtGeomSphere::isIntersect")
-    return {};
+bool MtGeomSphere::isIntersect(const MtPlaneXZ& planeXZ) const {
+    return mSphere.r >= __builtin_fabsf(mSphere.pos.y + planeXZ.dist);
 }
 
 bool MtGeomSphere::isIntersect(const MtTriangle& tri) const {
@@ -246,9 +242,12 @@ __attribute__((weak)) void MtGeomSphere::setScale(f32 scale) {
     /* stub */
 }
 
-__attribute__((weak)) void MtGeomSphere::addPos(const MtVector3& pos) {
-    DDON_STUB("MtGeomSphere::addPos")
-    /* stub */
+void MtGeomSphere::addPos(const MtVector3& pos) {
+    const f32 t0 = pos.y;
+    const f32 t1 = pos.z;
+    mSphere.pos.x = mSphere.pos.x + pos.x;
+    mSphere.pos.y = mSphere.pos.y + t0;
+    mSphere.pos.z = mSphere.pos.z + t1;
 }
 
 inline MtGeomSphere::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

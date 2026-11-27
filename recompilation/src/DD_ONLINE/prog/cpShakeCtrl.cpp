@@ -15,7 +15,6 @@
 #include "cpOcdCtrl.h"
 #include "rShakeCtrl.h"
 #include "uCnsShakeCtrl.h"
-#include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
@@ -27,16 +26,8 @@ const MtDTI& cpShakeCtrl::getDTI() const {
     return cpShakeCtrl::DTI;
 }
 
-inline MtAllocator* cpShakeCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpShakeCtrl::DTI);
-}
-
 void* cpShakeCtrl::operator new(size_t sz, u32 align) {
     return cpShakeCtrl::getAllocator()->memAlloc(sz, align, cpShakeCtrl::DTI.getID());
-}
-
-inline void cpShakeCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShakeCtrl::DTI)->memFree(p_addr);
 }
 
 cpShakeCtrl::cpShakeCtrl() {
@@ -57,8 +48,71 @@ cpShakeCtrl::cpShakeCtrl() {
 }
 
 __attribute__((noinline)) cpShakeCtrl::~cpShakeCtrl() {
-    DDON_STUB("cpShakeCtrl::~cpShakeCtrl")
-    /* stub */
+    if (mCnsShakeCtrlArray.mLength != 0) {
+        u32 v0_0 = mCnsShakeCtrlArray.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mCnsShakeCtrlArray.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                static_cast<uCnsShakeCtrl*>(mCnsShakeCtrlArray.mpArray[i0_3])->remove();
+                v1_0 = mCnsShakeCtrlArray.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+        if (v1_0 != 0) {
+            u32 v3_0 = v1_0;
+            unsigned int i3_3 = 0;
+            u32 v4_0;
+            for (;;) {
+                if (mCnsShakeCtrlArray.mpArray[i3_3] == nullptr) {
+                    v4_0 = v3_0;
+                } else {
+                    delete mCnsShakeCtrlArray.mpArray[i3_3];
+                    v4_0 = mCnsShakeCtrlArray.mLength;
+                }
+                if ((i3_3 + 1u) < v4_0) {
+                    v3_0 = v4_0;
+                    i3_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    if (mCnsShakeCtrlArray.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mCnsShakeCtrlArray.mpArray));
+    }
+    mCnsShakeCtrlArray.mpArray = nullptr;
+    mCnsShakeCtrlArray.mBufsiz = 0;
+    mCnsShakeCtrlArray.mLength = 0;
+    if (mpResource != nullptr) {
+        mpResource->release();
+        mpResource = nullptr;
+    }
+    initShakeCtrl();
+    if (mpBank[0] != nullptr) {
+        mpBank[0]->cResource::release();
+        mpBank[0] = nullptr;
+    }
+    if (mpBank[1] != nullptr) {
+        mpBank[1]->cResource::release();
+        mpBank[1] = nullptr;
+    }
+    if (mpBank[2] != nullptr) {
+        mpBank[2]->cResource::release();
+        mpBank[2] = nullptr;
+    }
+    if (mpBank[3] != nullptr) {
+        mpBank[3]->cResource::release();
+        mpBank[3] = nullptr;
+    }
 }
 
 void cpShakeCtrl::setup() {
@@ -89,9 +143,65 @@ __attribute__((weak)) void cpShakeCtrl::initShakeCtrl() {
     /* stub */
 }
 
-__attribute__((weak)) void cpShakeCtrl::updateShakeCtrl() {
-    DDON_STUB("cpShakeCtrl::updateShakeCtrl")
-    /* stub */
+void cpShakeCtrl::updateShakeCtrl() {
+    if (mpModel != nullptr) {
+        u32 v2_0;
+        if (mCnsShakeCtrlArray.mLength == 0) {
+            v2_0 = 0;
+        } else {
+            u32 v0_0 = mCnsShakeCtrlArray.mLength;
+            unsigned int i0_3 = 0;
+            u32 v1_0;
+            for (;;) {
+                if (mCnsShakeCtrlArray.mpArray[i0_3] == nullptr) {
+                    v1_0 = v0_0;
+                } else {
+                    static_cast<uCnsShakeCtrl*>(mCnsShakeCtrlArray.mpArray[i0_3])->move();
+                    v1_0 = mCnsShakeCtrlArray.mLength;
+                }
+                if ((i0_3 + 1u) < v1_0) {
+                    v0_0 = v1_0;
+                    i0_3 += 1u;
+                } else {
+                    v2_0 = v1_0;
+                    break;
+                }
+            }
+        }
+        if (mpResource != nullptr) {
+            if (mpResource->getDataNum() != 0) {
+                for (unsigned int i3_3 = 0;;) {
+                    cShakeCtrl* t0 = mpResource->getData(i3_3);
+                    if (i3_3 < mCnsShakeCtrlArray.mLength) {
+                        if (mCnsShakeCtrlArray.mpArray[i3_3] != nullptr) {
+                            if (t0 != nullptr) {
+                                static_cast<uCnsShakeCtrl*>(mCnsShakeCtrlArray.mpArray[i3_3])->mpShakeCtrlData = t0;
+                            }
+                        }
+                    }
+                    if ((i3_3 + 1u) < mpResource->getDataNum()) {
+                        i3_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (v2_0 != 0) {
+                MtObject* * v6_1 = mCnsShakeCtrlArray.mpArray;
+                for (unsigned int i6_2 = 0;;) {
+                    if (v6_1[i6_2] != nullptr) {
+                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v6_1[i6_2]) + 216) = 0;
+                    }
+                    if ((i6_2 + 1u) < v2_0) {
+                        i6_2 = i6_2 + 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    }
 }
 
 void cpShakeCtrl::shake(u32 JntNo, const MtVector3& shakeDir, s32 ResourceNo) {
@@ -265,9 +375,26 @@ __attribute__((weak)) uCnsShakeCtrl* cpShakeCtrl::findNearestCnsShakeCtrl(s32 Jn
     return static_cast<uCnsShakeCtrl*>(v5_9);
 }
 
-__attribute__((weak)) void cpShakeCtrl::enableConstraint(bool enable) {
-    DDON_STUB("cpShakeCtrl::enableConstraint")
-    /* stub */
+void cpShakeCtrl::enableConstraint(bool enable) {
+    if (mCnsShakeCtrlArray.mLength != 0) {
+        u32 v0_0 = mCnsShakeCtrlArray.mLength;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mCnsShakeCtrlArray.mpArray[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                static_cast<uCnsShakeCtrl*>(mCnsShakeCtrlArray.mpArray[i0_3])->setConstraintEnable(enable);
+                v1_0 = mCnsShakeCtrlArray.mLength;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpShakeCtrl::shake(const cAttackParam* pAttackParam, const cCollGeom* pDfdGeom, uDDOModel* pAtkModel, uDDOModel* pDfdModel, bool force_shake, u32 ResourceNo) {

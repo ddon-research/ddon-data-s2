@@ -44,16 +44,8 @@ const MtDTI& uGUIPhoto::getDTI() const {
     return uGUIPhoto::DTI;
 }
 
-inline MtAllocator* uGUIPhoto::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPhoto::DTI);
-}
-
 void* uGUIPhoto::operator new(size_t sz, u32 align) {
     return uGUIPhoto::getAllocator()->memAlloc(sz, align, uGUIPhoto::DTI.getID());
-}
-
-inline void uGUIPhoto::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPhoto::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool uGUIPhoto::isNoStartPhoto() {

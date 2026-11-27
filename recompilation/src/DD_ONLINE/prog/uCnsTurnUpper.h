@@ -94,3 +94,15 @@ public:
 inline void* uCnsTurnUpper::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* uCnsTurnUpper::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uCnsTurnUpper::DTI)->memAlloc(sz, align, ::uCnsTurnUpper::DTI.::MtDTI::getID());
+}
+
+inline void uCnsTurnUpper::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsTurnUpper::DTI)->memFree(p_addr);
+}

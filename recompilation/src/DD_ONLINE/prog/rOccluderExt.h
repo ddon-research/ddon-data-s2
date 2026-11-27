@@ -76,3 +76,19 @@ public:
 inline void* rOccluderEx::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rOccluderEx::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOccluderEx::DTI)->memAlloc(sz, align, ::rOccluderEx::DTI.::MtDTI::getID());
+}
+
+inline void rOccluderEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOccluderEx::DTI)->memFree(p_addr);
+}
+
+inline rOccluderEx::rOccluderEx() {
+    this->::cResource::setAttribute(22u);
+}

@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "sPad.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
@@ -23,10 +22,6 @@
 
 const MtDTI& sPad::getDTI() const {
     return sPad::DTI;
-}
-
-inline void sPad::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sPad::DTI)->memFree(p_addr);
 }
 
 sPad::sPad(u32 PlatformAttribute) {
@@ -136,10 +131,6 @@ __attribute__((weak)) MtObject* sPad::MyDTI::newInstance() const {
 
 const MtDTI& sPad::Pad::getDTI() const {
     return sPad::Pad::DTI;
-}
-
-inline void sPad::Pad::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sPad::Pad::DTI)->memFree(p_addr);
 }
 
 sPad::Pad::~Pad() {

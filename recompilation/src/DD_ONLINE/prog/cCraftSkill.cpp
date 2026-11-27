@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cCraftSkill.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cCraftSkill::getDTI() const {
     return cCraftSkill::DTI;
-}
-
-inline void* cCraftSkill::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCraftSkill::DTI)->memAlloc(sz, align, cCraftSkill::DTI.getID());
-}
-
-inline void cCraftSkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftSkill::DTI)->memFree(p_addr);
 }
 
 cCraftSkill::cCraftSkill() {

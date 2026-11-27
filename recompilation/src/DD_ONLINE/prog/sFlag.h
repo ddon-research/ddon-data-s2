@@ -15,14 +15,17 @@ class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+class aLobby;
 class aStage;
 class cCycleQuestManagerBase;
 class cFSMBase;
+class cOpeningMovie;
 class cQuestTask;
 namespace nLayout { class cGameDataCache; }
 namespace nSessionManager { class cNetSessionManager; }
 class sTalkManager;
 class uCharacterEdit;
+class uCharacterSelect;
 
 // Declarations
 class sFlag;
@@ -40,15 +43,18 @@ namespace nDDOUtility { void requestOnTutorialFlg(s32 questTarget); }
 
 class sFlag : public cSystem
 {
+    friend class aLobby;
     friend class aStage;
     friend class cCycleQuestManagerBase;
     friend class cFSMBase;
+    friend class cOpeningMovie;
     friend class cQuestTask;
     friend void nDDOUtility::requestOnTutorialFlg(s32 questTarget);
     friend class nLayout::cGameDataCache;
     friend class nSessionManager::cNetSessionManager;
     friend class sTalkManager;
     friend class uCharacterEdit;
+    friend class uCharacterSelect;
 public:
     enum
     {
@@ -177,4 +183,16 @@ inline void* sFlag::operator new(size_t sz, void* p_addr) {
 
 inline sFlag* sFlag::getInstance() {
     return ::sFlag::mpInstance;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sFlag::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sFlag::DTI);
+}
+
+inline void sFlag::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sFlag::DTI)->memFree(p_addr);
 }

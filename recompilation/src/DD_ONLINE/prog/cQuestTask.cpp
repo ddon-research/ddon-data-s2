@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "cQuestTask.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -32,12 +33,16 @@
 #include "cPRTManager.h"
 #include "cPawnQuestManager.h"
 #include "cPlayPointInfo.h"
+#include "cQuestDeliverManager.h"
 #include "cQuestEventArg.h"
 #include "cQuestManagerBase.h"
+#include "cQuestMarkerManager.h"
+#include "cQuestMemoryPool.h"
 #include "cQuestPhaseManager.h"
 #include "cQuestPhaseState.h"
 #include "cQuestSvRequest.h"
 #include "cQuestSvRequestManager.h"
+#include "cQuestSyncDataManager.h"
 #include "cQuestTaskParam.h"
 #include "cScenario.h"
 #include "cTalkMsgData.h"
@@ -46,6 +51,7 @@
 #include "cpKeyCommand.h"
 #include "cpLayout.h"
 #include "cpOcdCtrl.h"
+#include "cpRootComponent.h"
 #include "nCastUtility.h"
 #include "nDDOUtility.h"
 #include "nLayout.h"
@@ -57,6 +63,7 @@
 #include "../../XFramework/sCamera.h"
 #include "sCameraExt.h"
 #include "sChat.h"
+#include "sClanKyoten.h"
 #include "sContextManager.h"
 #include "sControlManager.h"
 #include "sEnemyManager.h"
@@ -98,22 +105,9 @@ const MtDTI& cQuestPersonalData::getDTI() const {
     return cQuestPersonalData::DTI;
 }
 
-inline void cQuestPersonalData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPersonalData::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cQuestPersonalData::pushPurpose(u32 purposeNo) {
     DDON_STUB("cQuestPersonalData::pushPurpose")
     /* stub */
-}
-
-inline s32 cQuestPersonalData::getRequestDeliverProcessNo(uControl* pCtrl) const {
-    cQuestTask::cQuestProcess* pProcess = getDeliverProcess(pCtrl);
-    if (pProcess != nullptr) {
-        return pProcess->mProcessNo;
-    } else {
-        return 0;
-    }
 }
 
 __attribute__((weak)) bool cQuestPersonalData::isFlag(u32 flagNo) const {
@@ -341,14 +335,6 @@ const MtDTI& cQuestPersonalData::cQuestPurpose::getDTI() const {
     return cQuestPersonalData::cQuestPurpose::DTI;
 }
 
-inline void* cQuestPersonalData::cQuestPurpose::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestPersonalData::cQuestPurpose::DTI)->memAlloc(sz, align, cQuestPersonalData::cQuestPurpose::DTI.getID());
-}
-
-inline void cQuestPersonalData::cQuestPurpose::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPersonalData::cQuestPurpose::DTI)->memFree(p_addr);
-}
-
 cQuestPersonalData::cQuestPurpose::~cQuestPurpose() {
 }
 
@@ -365,14 +351,6 @@ MtObject* cQuestPersonalData::cQuestPurpose::MyDTI::newInstance() const {
 
 const MtDTI& cQuestPersonalData::cQuestFlag::getDTI() const {
     return cQuestPersonalData::cQuestFlag::DTI;
-}
-
-inline void* cQuestPersonalData::cQuestFlag::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestPersonalData::cQuestFlag::DTI)->memAlloc(sz, align, cQuestPersonalData::cQuestFlag::DTI.getID());
-}
-
-inline void cQuestPersonalData::cQuestFlag::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPersonalData::cQuestFlag::DTI)->memFree(p_addr);
 }
 
 cQuestPersonalData::cQuestFlag::~cQuestFlag() {
@@ -393,16 +371,8 @@ const MtDTI& cQuestTask::getDTI() const {
     return cQuestTask::DTI;
 }
 
-inline MtAllocator* cQuestTask::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cQuestTask::DTI);
-}
-
 void* cQuestTask::operator new(size_t sz, u32 align) {
     return cQuestTask::getAllocator()->memAlloc(sz, align, cQuestTask::DTI.getID());
-}
-
-inline void cQuestTask::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTask::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cQuestTask::setTaskParam(u32 baseLevel, const MtTypedArray<CDataQuestProcessState>& processList) {
@@ -1747,10 +1717,6 @@ const MtDTI& cQuestTask::cQuestOmTargetData::getDTI() const {
     return cQuestTask::cQuestOmTargetData::DTI;
 }
 
-inline void cQuestTask::cQuestOmTargetData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTask::cQuestOmTargetData::DTI)->memFree(p_addr);
-}
-
 inline cQuestTask::cQuestOmTargetData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cQuestTask::cQuestOmTargetData::MyDTI cQuestTask::cQuestOmTargetData::DTI("cQuestTask::cQuestOmTargetData", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -1762,14 +1728,6 @@ __attribute__((weak)) MtObject* cQuestTask::cQuestOmTargetData::MyDTI::newInstan
 
 const MtDTI& cQuestTask::cLayoutFlagInfo::getDTI() const {
     return cQuestTask::cLayoutFlagInfo::DTI;
-}
-
-inline void* cQuestTask::cLayoutFlagInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestTask::cLayoutFlagInfo::DTI)->memAlloc(sz, align, cQuestTask::cLayoutFlagInfo::DTI.getID());
-}
-
-inline void cQuestTask::cLayoutFlagInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTask::cLayoutFlagInfo::DTI)->memFree(p_addr);
 }
 
 cQuestTask::cLayoutFlagInfo::cLayoutFlagInfo(u32 flagNo, MtTypedArray<CDataQuestSetInfo>& setInfoList) {
@@ -1822,14 +1780,6 @@ const MtDTI& cQuestTask::cLayoutFlagInfo::cSetInfo::getDTI() const {
     return cQuestTask::cLayoutFlagInfo::cSetInfo::DTI;
 }
 
-inline void* cQuestTask::cLayoutFlagInfo::cSetInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestTask::cLayoutFlagInfo::cSetInfo::DTI)->memAlloc(sz, align, cQuestTask::cLayoutFlagInfo::cSetInfo::DTI.getID());
-}
-
-inline void cQuestTask::cLayoutFlagInfo::cSetInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTask::cLayoutFlagInfo::cSetInfo::DTI)->memFree(p_addr);
-}
-
 cQuestTask::cLayoutFlagInfo::cSetInfo::~cSetInfo() {
 }
 
@@ -1848,14 +1798,6 @@ MtObject* cQuestTask::cLayoutFlagInfo::cSetInfo::MyDTI::newInstance() const {
 
 const MtDTI& cQuestTask::cEnemyGroupInfo::getDTI() const {
     return cQuestTask::cEnemyGroupInfo::DTI;
-}
-
-inline void* cQuestTask::cEnemyGroupInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestTask::cEnemyGroupInfo::DTI)->memAlloc(sz, align, cQuestTask::cEnemyGroupInfo::DTI.getID());
-}
-
-inline void cQuestTask::cEnemyGroupInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTask::cEnemyGroupInfo::DTI)->memFree(p_addr);
 }
 
 cQuestTask::cEnemyGroupInfo::~cEnemyGroupInfo() {
@@ -1879,14 +1821,6 @@ const MtDTI& cQuestTask::cLeaderQuestProgress::getDTI() const {
     return cQuestTask::cLeaderQuestProgress::DTI;
 }
 
-inline void* cQuestTask::cLeaderQuestProgress::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestTask::cLeaderQuestProgress::DTI)->memAlloc(sz, align, cQuestTask::cLeaderQuestProgress::DTI.getID());
-}
-
-inline void cQuestTask::cLeaderQuestProgress::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTask::cLeaderQuestProgress::DTI)->memFree(p_addr);
-}
-
 cQuestTask::cLeaderQuestProgress::~cLeaderQuestProgress() {
 }
 
@@ -1900,14 +1834,6 @@ MtObject* cQuestTask::cLeaderQuestProgress::MyDTI::newInstance() const {
 
 const MtDTI& cQuestTask::cDeliveryItemInfo::getDTI() const {
     return cQuestTask::cDeliveryItemInfo::DTI;
-}
-
-inline void* cQuestTask::cDeliveryItemInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestTask::cDeliveryItemInfo::DTI)->memAlloc(sz, align, cQuestTask::cDeliveryItemInfo::DTI.getID());
-}
-
-inline void cQuestTask::cDeliveryItemInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTask::cDeliveryItemInfo::DTI)->memFree(p_addr);
 }
 
 cQuestTask::cDeliveryItemInfo::~cDeliveryItemInfo() {
@@ -1925,16 +1851,8 @@ const MtDTI& cQuestTask::cQuestProcess::getDTI() const {
     return cQuestTask::cQuestProcess::DTI;
 }
 
-inline MtAllocator* cQuestTask::cQuestProcess::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cQuestTask::cQuestProcess::DTI);
-}
-
 void* cQuestTask::cQuestProcess::operator new(size_t sz, u32 align) {
     return cQuestTask::cQuestProcess::getAllocator()->memAlloc(sz, align, cQuestTask::cQuestProcess::DTI.getID());
-}
-
-inline void cQuestTask::cQuestProcess::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestTask::cQuestProcess::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) const nQuest::cDeliverTargetInfo* cQuestTask::cQuestProcess::getDeliverTargetInfo() const {
@@ -2001,9 +1919,24 @@ __attribute__((weak)) void cQuestTask::cQuestProcess::moveQuestProgress() {
     /* stub */
 }
 
-__attribute__((weak)) void cQuestTask::cQuestProcess::moveError() {
-    DDON_STUB("cQuestTask::cQuestProcess::moveError")
-    /* stub */
+void cQuestTask::cQuestProcess::moveError() {
+    f32 t0 = getQuestTask()->mNextProgressTime;
+    f32 t1 = sMain::getInstance()->mDeltaTime;
+    getQuestTask()->mNextProgressTime = t0 - t1;
+    if (0.0f >= (t0 - t1)) {
+        getQuestTask()->mNextProgressTime = 0.0f;
+        cQuestManagerBase* t2 = sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_CYCLE_01);
+        nQuest::CYCLE_CONTENTS_NOTICE_TYPE t4 = static_cast<cCycleQuestManagerBase*>(t2)->getNoticeType(getQuestTask()->getScheduleId());
+        if (static_cast<unsigned int>(t4 - 1) > 4) {
+            cQuestManagerBase* t5 = sQuestManagerExt::getInstance()->getQuestManager(nQuest::QUEST_TYPE_CYCLE_04);
+            nQuest::CYCLE_CONTENTS_NOTICE_TYPE t7 = static_cast<cCycleQuestManagerBase*>(t5)->getNoticeType(getQuestTask()->getScheduleId());
+            if (static_cast<unsigned int>(t7 - 1) > 4) {
+                getQuestTask()->mErrorCode = 0;
+                getQuestTask()->getTaskParam().offTaskState(cQuestTaskParam::TASK_STATE_ERROR);
+                mStatus = 0;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cQuestTask::cQuestProcess::setupProcessStateBefore() {
@@ -2021,9 +1954,36 @@ __attribute__((weak)) void cQuestTask::cQuestProcess::finalCommand(const nQuest:
     /* stub */
 }
 
-__attribute__((weak)) void cQuestTask::cQuestProcess::copyResultCommandList(const QuestCommandVec& resultCommandList) {
-    DDON_STUB("cQuestTask::cQuestProcess::copyResultCommandList")
-    /* stub */
+void cQuestTask::cQuestProcess::copyResultCommandList(const QuestCommandVec& resultCommandList) {
+    if (resultCommandList.mLength != 0) {
+        for (u32 i = 0;;) {
+            nQuest::cQuestCommand* t0 = sQuestManagerExt::getInstance()->getQuestMemoryPool()->allocQuestCommand(mpParent);
+            if (t0 != nullptr) {
+                t0->copy(static_cast<const CDataQuestCommand*>(resultCommandList.mpArray[i]));
+                u32 t1 = mResultCommandList.mLength;
+                u32 t2 = mResultCommandList.mBufsiz;
+                if (t1 < t2) {
+                    mResultCommandList.mLength = t1 + 1u;
+                    mResultCommandList.mpArray[t1] = static_cast<MtObject*>(t0);
+                } else {
+                    void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t2 + 32u) * 8, 16u);
+                    memset(t3, 0, static_cast<size_t>(t2 + 32u) * 8);
+                    memcpy(t3, static_cast<const void*>(mResultCommandList.mpArray), static_cast<size_t>(mResultCommandList.mLength) * 8);
+                    MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mResultCommandList.mpArray));
+                    mResultCommandList.mpArray = static_cast<MtObject* *>(t3);
+                    mResultCommandList.mBufsiz = t2 + 32u;
+                    u32 t4 = mResultCommandList.mLength;
+                    mResultCommandList.mLength = t4 + 1u;
+                    mResultCommandList.mpArray[t4] = static_cast<MtObject*>(t0);
+                }
+            }
+            if (resultCommandList.mLength != (i + 1u)) {
+                i = i + 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cQuestTask::cQuestProcess::copyCheckCommandList(const QuestCommandVecVec& checkCommandList) {
@@ -2081,9 +2041,50 @@ __attribute__((weak)) void cQuestTask::cQuestProcess::updateDeliverItemInfo(u32 
     /* stub */
 }
 
-__attribute__((weak)) void cQuestTask::cQuestProcess::deleteCommandList(nQuest::QuestCommandGroupList& commandListVec) {
-    DDON_STUB("cQuestTask::cQuestProcess::deleteCommandList")
-    /* stub */
+void cQuestTask::cQuestProcess::deleteCommandList(nQuest::QuestCommandGroupList& commandListVec) {
+    const u32 cmdListNum = commandListVec.mLength;
+    if (cmdListNum != 0) {
+        unsigned int i0_8 = 0;
+        unsigned int i1_8;
+        MtObject* v3_3;
+        for (;;) {
+            MtObject* v1_3 = commandListVec.getBuffer()[static_cast<int>(i0_8)];
+            u32 v1_9 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_3) + 8);
+            if (v1_9 != 0) {
+                i1_8 = 0;
+                for (;;) {
+                    sQuestManagerExt::getInstance()->getQuestMemoryPool()->freeQuestCommand(static_cast<nQuest::cQuestCommand*>(static_cast<MtArray*>(v1_3)->getBuffer()[static_cast<int>(i1_8)]));
+                    if (v1_9 != (i1_8 + 1u)) {
+                        i1_8 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_3) + 24)) != 0) {
+                    MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(reinterpret_cast<void*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_3) + 24)));
+                }
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_3) + 24) = 0;
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v1_3) + 8) = 0;
+                v3_3 = commandListVec.getBuffer()[static_cast<int>(i0_8)];
+            } else {
+                v3_3 = v1_3;
+            }
+            if (v3_3 != nullptr) {
+                delete v3_3;
+                commandListVec.getBuffer()[static_cast<int>(i0_8)] = nullptr;
+            }
+            if (cmdListNum != (i0_8 + 1u)) {
+                i0_8 += 1u;
+            } else {
+                break;
+            }
+        }
+        if (commandListVec.mpArray != nullptr) {
+            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(commandListVec.mpArray));
+        }
+        commandListVec.mpArray = nullptr;
+        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(&commandListVec) + 8) = 0;
+    }
 }
 
 cQuestTask::cQuestProcess::cQuestProcess(cQuestTask* pParent) {
@@ -2426,9 +2427,42 @@ bool cQuestTask::cQuestProcess::checkIsEndResult(s32 param01, s32 param02, s32 p
     return false;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkNpcTalkAndOrderUi(s32 stageNo, s32 npcId, s32 noOrderGroupSerial, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkNpcTalkAndOrderUi")
-    return {};
+bool cQuestTask::cQuestProcess::checkNpcTalkAndOrderUi(s32 stageNo, s32 npcId, s32 noOrderGroupSerial, s32 param04) {
+    nQuest::cTalkData* pTalkData = getQuestTask()->getTalkData(static_cast<u32>(npcId));
+    if (pTalkData != nullptr) {
+        pTalkData->mIsDispOrderUI = true;
+        pTalkData->mNoOrderGroupSerial = static_cast<u32>(noOrderGroupSerial);
+        if (checkTalkNpc(stageNo, npcId, s32(), s32())) {
+            if (static_cast<sAreaExt*>(sArea::getInstance())->isStage() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) != static_cast<unsigned int>(stageNo))) {
+                return false;
+            }
+            sQuestManagerExt* t1 = sQuestManagerExt::getInstance();
+            bool t2 = t1->isOrderUIDecide(getQuestTask()->getScheduleId());
+            if (t2) {
+                pTalkData->mIsDispOrderUI = false;
+                return sQuestManagerExt::getInstance()->isBlankLeaderOrder();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        if (checkTalkNpc(stageNo, npcId, s32(), s32())) {
+            if (static_cast<sAreaExt*>(sArea::getInstance())->isStage() && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 176)) != static_cast<unsigned int>(stageNo))) {
+                return false;
+            }
+            sQuestManagerExt* t1 = sQuestManagerExt::getInstance();
+            bool t2 = t1->isOrderUIDecide(getQuestTask()->getScheduleId());
+            if (t2) {
+                return sQuestManagerExt::getInstance()->isBlankLeaderOrder();
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkNpcTouchAndOrderUi(s32 stageNo, s32 npcId, s32 noOrderGroupSerial, s32 param04) {
@@ -2813,8 +2847,14 @@ bool cQuestTask::cQuestProcess::checkNewTalkNpcWithoutMarker(s32 stageNo, s32 gr
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsTutorialQuestClear(s32 questId, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsTutorialQuestClear")
-    return {};
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLeaderCharacterId != static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mLobbyCharacterId) {
+        if (!getQuestTask()->isSoloQuest()) {
+            if (mIsLeaderOnly) {
+                return false;
+            }
+        }
+    }
+    return sQuestManagerExt::getInstance()->isClearedTutorialQuest(nQuest::QUEST_ID(static_cast<u32>(questId)));
 }
 
 __attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsMainQuestOrder(s32 questId, s32 param02, s32 param03, s32 param04) {
@@ -2921,9 +2961,53 @@ bool cQuestTask::cQuestProcess::checkDummyNotProgress(s32 param01, s32 param02, 
     return false;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkDieRaidBoss(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkDieRaidBoss")
-    return {};
+bool cQuestTask::cQuestProcess::checkDieRaidBoss(s32 param01, s32 param02, s32 param03, s32 param04) {
+    if (!sQuestManagerExt::getInstance()->isCycleContentsTimerZero()) {
+        u32 num = sEnemyManager::getInstance()->getUnitNum();
+        if (num != 0) {
+            sEnemyManager* v0_0 = sEnemyManager::getInstance();
+            u32 v0_1 = num;
+            for (unsigned int i0_3 = 1;;) {
+                if ((i0_3 - 1u) < v0_1) {
+                    MtObject* t0 = v0_0->mRefArray.getBuffer()[static_cast<int>(i0_3 - 1u)];
+                    if (t0 != nullptr) {
+                        if (static_cast<uCharacter*>(t0)->isRaidBoss()) {
+                            if (static_cast<uDDOModel*>(t0)->isDead()) {
+                                return true;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            if (i0_3 >= num) {
+                                break;
+                            } else {
+                                v0_0 = sEnemyManager::getInstance();
+                                v0_1 = sEnemyManager::getInstance()->mRefArray.mLength;
+                                i0_3 += 1u;
+                            }
+                        }
+                    } else {
+                        if (i0_3 >= num) {
+                            break;
+                        } else {
+                            v0_0 = sEnemyManager::getInstance();
+                            v0_1 = sEnemyManager::getInstance()->mRefArray.mLength;
+                            i0_3 += 1u;
+                        }
+                    }
+                } else {
+                    if (i0_3 >= num) {
+                        break;
+                    } else {
+                        v0_0 = sEnemyManager::getInstance();
+                        v0_1 = sEnemyManager::getInstance()->mRefArray.mLength;
+                        i0_3 += 1u;
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 bool cQuestTask::cQuestProcess::checkCycleTimerZero(s32 param01, s32 param02, s32 param03, s32 param04) {
@@ -3636,9 +3720,17 @@ bool cQuestTask::cQuestProcess::checkIsStageForMainQuest(s32 stageNo, s32 param0
     return false;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::checkIsReleasePawnExpedition(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::checkIsReleasePawnExpedition")
-    return {};
+bool cQuestTask::cQuestProcess::checkIsReleasePawnExpedition(s32 param01, s32 param02, s32 param03, s32 param04) {
+    if (static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
+        if (sArea::getInstance()->mpArea[2]->cArea::isInit()) {
+            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 324)) == 0xFFFFFFFFu) {
+                if (static_cast<sAreaExt*>(sArea::getInstance())->isClanBaseArea(static_cast<aStage*>(sArea::getInstance()->mpArea[2])->getStageNo())) {
+                    return sClanKyoten::getInstance()->isReleasePawnExpedition();
+                }
+            }
+        }
+    }
+    return false;
 }
 
 bool cQuestTask::cQuestProcess::checkOpenPpMode(s32 param01, s32 param02, s32 param03, s32 param04) {
@@ -4238,14 +4330,34 @@ bool cQuestTask::cQuestProcess::resultEventExecCont(s32 stageNo, s32 eventNo, s3
     return false;
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultPlPadOff(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultPlPadOff")
-    return {};
+bool cQuestTask::cQuestProcess::resultPlPadOff(s32 param01, s32 param02, s32 param03, s32 param04) {
+    uPlayer* pPl = sPlayerManager::getInstance()->getMyPlayer();
+    if (pPl != nullptr) {
+        cpKeyCommand* pKeyCommand = static_cast<cpKeyCommand*>(pPl->mComponentMgr.getRootComponent()->find(cpKeyCommand::DTI, true, true));
+        if (pKeyCommand != nullptr) {
+            pKeyCommand->setActiveCheckCommand(false, cpKeyCommand::CHECK_CMD_PRI_SYS);
+        }
+        sFlag::getInstance()->setFlag(4u, 11u, true, true, false);
+        return false;
+    } else {
+        sFlag::getInstance()->setFlag(4u, 11u, true, true, false);
+        return false;
+    }
 }
 
-__attribute__((weak)) bool cQuestTask::cQuestProcess::resultPlPadOn(s32 param01, s32 param02, s32 param03, s32 param04) {
-    DDON_STUB("cQuestTask::cQuestProcess::resultPlPadOn")
-    return {};
+bool cQuestTask::cQuestProcess::resultPlPadOn(s32 param01, s32 param02, s32 param03, s32 param04) {
+    uPlayer* pPl = sPlayerManager::getInstance()->getMyPlayer();
+    if (pPl != nullptr) {
+        cpKeyCommand* pKeyCommand = static_cast<cpKeyCommand*>(pPl->mComponentMgr.getRootComponent()->find(cpKeyCommand::DTI, true, true));
+        if (pKeyCommand != nullptr) {
+            pKeyCommand->setActiveCheckCommand(true, cpKeyCommand::CHECK_CMD_PRI_SYS);
+        }
+        sFlag::getInstance()->setFlag(4u, 11u, false, true, false);
+        return false;
+    } else {
+        sFlag::getInstance()->setFlag(4u, 11u, false, true, false);
+        return false;
+    }
 }
 
 bool cQuestTask::cQuestProcess::resultEnableGetSetQuestList(s32 param01, s32 param02, s32 param03, s32 param04) {

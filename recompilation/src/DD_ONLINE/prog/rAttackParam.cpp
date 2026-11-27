@@ -20,16 +20,8 @@ const MtDTI& cAttackParam::getDTI() const {
     return cAttackParam::DTI;
 }
 
-MtAllocator* cAttackParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cAttackParam::DTI);
-}
-
 void* cAttackParam::operator new(size_t sz, u32 align) {
     return cAttackParam::getAllocator()->memAlloc(sz, align, cAttackParam::DTI.getID());
-}
-
-inline void cAttackParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAttackParam::DTI)->memFree(p_addr);
 }
 
 cAttackParam::cAttackParam() {
@@ -130,9 +122,102 @@ cAttackParam::cAttackParam() {
     mDamageMin2 = 0;
 }
 
-__attribute__((weak)) void cAttackParam::copy(const cAttackParam& src) {
-    DDON_STUB("cAttackParam::copy")
-    /* stub */
+void cAttackParam::copy(const cAttackParam& src) {
+    mIndex = src.mIndex;
+    mPhysAttack2 = src.mPhysAttack2;
+    mPhysAttackRate = src.mPhysAttackRate;
+    mAttackType2 = src.mAttackType2;
+    mIsPhysAttackOnly = src.mIsPhysAttackOnly;
+    mMgcAttack2 = src.mMgcAttack2;
+    mElementType2 = src.mElementType2;
+    mWeaponBadStatusRate = src.mWeaponBadStatusRate;
+    mMgcAttackRate = src.mMgcAttackRate;
+    mElement = src.mElement;
+    mShrinkRate = src.mShrinkRate;
+    mShrinkType2 = src.mShrinkType2;
+    mBlowRate = src.mBlowRate;
+    mBlowType2 = src.mBlowType2;
+    mDownRate = src.mDownRate;
+    mShakesRate = src.mShakesRate;
+    mClimbAttackFlag2 = src.mClimbAttackFlag2;
+    mClimbBonusRate = src.mClimbBonusRate;
+    mClimbBonusRateShrink = src.mClimbBonusRateShrink;
+    mClimbBonusRateBlow = src.mClimbBonusRateBlow;
+    mClimbBonusRateShake = src.mClimbBonusRateShake;
+    mClimbBonusRateDown = src.mClimbBonusRateDown;
+    mHpUp = src.mHpUp;
+    mHpUpRate = src.mHpUpRate;
+    mStaminaUp = src.mStaminaUp;
+    mStaminaUpRate = src.mStaminaUpRate;
+    mSPReactionType2 = src.mSPReactionType2;
+    mWindReactionLv2 = src.mWindReactionLv2;
+    mWindReactionSpeedZ = src.mWindReactionSpeedZ;
+    mWindReactionAccelerateZ = src.mWindReactionAccelerateZ;
+    mWindReactionSpeedY = src.mWindReactionSpeedY;
+    mWindReactionGravityY = src.mWindReactionGravityY;
+    mRangeType2 = src.mRangeType2;
+    mAttackID = src.mAttackID;
+    mWork2 = src.mWork2;
+    mHitStopTime = src.mHitStopTime;
+    mHitSlowRate = src.mHitSlowRate;
+    mHitStopFlag2 = src.mHitStopFlag2;
+    mDamageAngle = src.mDamageAngle;
+    mDamageFlag = src.mDamageFlag;
+    mGroundShrinkLv2 = src.mGroundShrinkLv2;
+    mGroundShrinkSpeedZ = src.mGroundShrinkSpeedZ;
+    mGroundShrinkAccelerateZ = src.mGroundShrinkAccelerateZ;
+    mGroundShrinkSpeedY = src.mGroundShrinkSpeedY;
+    mGroundShrinkGravityY = src.mGroundShrinkGravityY;
+    mAirShrinkLv2 = src.mAirShrinkLv2;
+    mAirShrinkSpeedZ = src.mAirShrinkSpeedZ;
+    mAirShrinkAccelerateZ = src.mAirShrinkAccelerateZ;
+    mGroundBlowLv2 = src.mGroundBlowLv2;
+    mAirShrinkSpeedY = src.mAirShrinkSpeedY;
+    mAirShrinkGravityY = src.mAirShrinkGravityY;
+    mGroundBlowSpeedZ = src.mGroundBlowSpeedZ;
+    mGroundBlowAccelerateZ = src.mGroundBlowAccelerateZ;
+    mAirBlowLv2 = src.mAirBlowLv2;
+    mGroundBlowSpeedY = src.mGroundBlowSpeedY;
+    mGroundBlowGravityY = src.mGroundBlowGravityY;
+    mAirBlowSpeedZ = src.mAirBlowSpeedZ;
+    mAirBlowAccelerateZ = src.mAirBlowAccelerateZ;
+    mAirBlowSpeedY = src.mAirBlowSpeedY;
+    mAirBlowGravityY = src.mAirBlowGravityY;
+    mBadOcdUID_1 = src.mBadOcdUID_1;
+    mOcdEndurance_1 = src.mOcdEndurance_1;
+    mBadOcdUID_2 = src.mBadOcdUID_2;
+    mOcdEndurance_2 = src.mOcdEndurance_2;
+    mOcdEndurance_3 = src.mOcdEndurance_3;
+    mOcdEndurance_4 = src.mOcdEndurance_4;
+    mOcdEndurance_5 = src.mOcdEndurance_5;
+    mBadOcdUID_3 = src.mBadOcdUID_3;
+    mBadOcdUID_4 = src.mBadOcdUID_4;
+    mBadOcdUID_5 = src.mBadOcdUID_5;
+    mGoodStatusFlag = src.mGoodStatusFlag;
+    mBadStatusFlag2 = src.mBadStatusFlag2;
+    mGuardAngle = src.mGuardAngle;
+    mGuardFlag2 = src.mGuardFlag2;
+    mGuardActionRate = src.mGuardActionRate;
+    mGuardDefence2 = src.mGuardDefence2;
+    mGuardAttackerReaction2 = src.mGuardAttackerReaction2;
+    mMultiHit = src.mMultiHit;
+    mMultiHitResetTime2 = src.mMultiHitResetTime2;
+    mHitCollisionFlag2 = src.mHitCollisionFlag2;
+    mEffectType2 = src.mEffectType2;
+    mEffectAngle2 = src.mEffectAngle2;
+    mEffectFlag2 = src.mEffectFlag2;
+    mSeType2 = src.mSeType2;
+    mSeSize2 = src.mSeSize2;
+    mWepCategory2 = src.mWepCategory2;
+    mSeFlag2 = src.mSeFlag2;
+    mFlag3 = src.mFlag3;
+    mFlag2 = src.mFlag2;
+    mCatchType = src.mCatchType;
+    mCatchFlag2 = src.mCatchFlag2;
+    mCorePointDispTime2 = src.mCorePointDispTime2;
+    mAbilityAttackFlag = src.mAbilityAttackFlag;
+    mFreeBit = src.mFreeBit;
+    mDamageMin2 = src.mDamageMin2;
 }
 
 inline cAttackParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -147,16 +232,8 @@ const MtDTI& rAttackParam::getDTI() const {
     return rAttackParam::DTI;
 }
 
-inline MtAllocator* rAttackParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rAttackParam::DTI);
-}
-
 void* rAttackParam::operator new(size_t sz, u32 align) {
     return rAttackParam::getAllocator()->memAlloc(sz, align, rAttackParam::DTI.getID());
-}
-
-inline void rAttackParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAttackParam::DTI)->memFree(p_addr);
 }
 
 rAttackParam::~rAttackParam() {

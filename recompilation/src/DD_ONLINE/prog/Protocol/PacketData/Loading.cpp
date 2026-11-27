@@ -4,7 +4,6 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
@@ -14,10 +13,6 @@
 
 const MtDTI& CDataLoadingInfoSchedule::getDTI() const {
     return CDataLoadingInfoSchedule::DTI;
-}
-
-inline MtAllocator* CDataLoadingInfoSchedule::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataLoadingInfoSchedule::DTI);
 }
 
 void* CDataLoadingInfoSchedule::operator new(size_t sz, u32 align) {
@@ -38,14 +33,6 @@ MtObject* CDataLoadingInfoSchedule::MyDTI::newInstance() const {
 
 const MtDTI& CDataLoadingInfoSchedules::getDTI() const {
     return CDataLoadingInfoSchedules::DTI;
-}
-
-inline MtAllocator* CDataLoadingInfoSchedules::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataLoadingInfoSchedules::DTI);
-}
-
-inline void* CDataLoadingInfoSchedules::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataLoadingInfoSchedules::DTI)->memAlloc(sz, align, CDataLoadingInfoSchedules::DTI.getID());
 }
 
 __attribute__((weak)) void CDataLoadingInfoSchedules::operator delete(void* p_addr) {

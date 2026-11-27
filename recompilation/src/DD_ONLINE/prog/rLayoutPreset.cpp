@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rLayoutPreset.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -17,10 +15,6 @@
 
 const MtDTI& cLayoutPreset::getDTI() const {
     return cLayoutPreset::DTI;
-}
-
-inline void* cLayoutPreset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cLayoutPreset::DTI)->memAlloc(sz, align, cLayoutPreset::DTI.getID());
 }
 
 cLayoutPreset::~cLayoutPreset() {
@@ -46,10 +40,6 @@ MtObject* cLayoutPreset::MyDTI::newInstance() const {
 
 const MtDTI& rLayoutPreset::getDTI() const {
     return rLayoutPreset::DTI;
-}
-
-inline void* rLayoutPreset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLayoutPreset::DTI)->memAlloc(sz, align, rLayoutPreset::DTI.getID());
 }
 
 __attribute__((weak)) bool rLayoutPreset::loadData(MtDataReader& in, cLayoutPreset* pData) {

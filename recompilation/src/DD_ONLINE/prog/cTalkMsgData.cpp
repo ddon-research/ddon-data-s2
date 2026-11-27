@@ -24,16 +24,8 @@ const MtDTI& cTalkMsgData::getDTI() const {
     return cTalkMsgData::DTI;
 }
 
-inline MtAllocator* cTalkMsgData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cTalkMsgData::DTI);
-}
-
 void* cTalkMsgData::operator new(size_t sz, u32 align) {
     return cTalkMsgData::getAllocator()->memAlloc(sz, align, cTalkMsgData::DTI.getID());
-}
-
-inline void cTalkMsgData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cTalkMsgData::DTI)->memFree(p_addr);
 }
 
 cTalkMsgData::cTalkMsgData() {
@@ -135,14 +127,32 @@ void cTalkMsgData::setDispGrpSerialNo(u32 SerialNo) {
     }
 }
 
-__attribute__((weak)) bool cTalkMsgData::addDispPageNo() {
-    DDON_STUB("cTalkMsgData::addDispPageNo")
-    return {};
+bool cTalkMsgData::addDispPageNo() {
+    u32 t0 = mDispPageNo;
+    mDispPageNo = t0 + 1u;
+    if (mpMsgSetData != nullptr) {
+        rMsgSet::cMsgGroup* t1 = mpMsgSetData->getGroupData(mDispGrpNo);
+        if (t1 != nullptr) {
+            return (t0 + 1u) < t1->getMsgDataNum();
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
-__attribute__((weak)) u32 cTalkMsgData::getDispPageNum() {
-    DDON_STUB("cTalkMsgData::getDispPageNum")
-    return {};
+u32 cTalkMsgData::getDispPageNum() {
+    if (mpMsgSetData != nullptr) {
+        rMsgSet::cMsgGroup* pGrpData = mpMsgSetData->getGroupData(mDispGrpNo);
+        if (pGrpData != nullptr) {
+            return pGrpData->getMsgDataNum();
+        } else {
+            return 0;
+        }
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) u32 cTalkMsgData::getDispTime() {
@@ -196,9 +206,12 @@ MT_CTSTR cTalkMsgData::getMessage() {
     }
 }
 
-__attribute__((weak)) u32 cTalkMsgData::getGrpDataNum() {
-    DDON_STUB("cTalkMsgData::getGrpDataNum")
-    return {};
+u32 cTalkMsgData::getGrpDataNum() {
+    if (mpMsgSetData != nullptr) {
+        return mpMsgSetData->getMsgGroupNum();
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) void cTalkMsgData::setDispGrpNoFromGrpType(u32 GrpType, bool IsChkHistory, bool IsForceUseGrp) {
@@ -206,9 +219,64 @@ __attribute__((weak)) void cTalkMsgData::setDispGrpNoFromGrpType(u32 GrpType, bo
     /* stub */
 }
 
-__attribute__((weak)) bool cTalkMsgData::isExistGrpType(u32 GrpType, bool IsChkHistory) {
-    DDON_STUB("cTalkMsgData::isExistGrpType")
-    return {};
+bool cTalkMsgData::isExistGrpType(u32 GrpType, bool IsChkHistory) {
+    bool b1_0;
+    if (mpMsgSetData == nullptr) {
+        b1_0 = false;
+    } else {
+        s32 groupNum = mpMsgSetData->getMsgGroupNum();
+        if (groupNum > 0) {
+            int i0_3 = 0;
+            rMsgSet* v0_5 = mpMsgSetData;
+            s32 j;
+            for (;;) {
+                rMsgSet::cMsgGroup* t0 = v0_5->getGroupData(static_cast<u32>(i0_3));
+                if (t0 != nullptr) {
+                    if (t0->mGroupType != GrpType) {
+                        if ((i0_3 + 1) >= groupNum) {
+                            break;
+                        } else {
+                            i0_3 += 1;
+                            v0_5 = mpMsgSetData;
+                        }
+                    } else {
+                        if (!IsChkHistory) {
+                            b1_0 = true;
+                            return b1_0;
+                        } else {
+                            s32* v1_1 = mpDispedMsgNo;
+                            b1_0 = true;
+                            j = 0;
+                            for (;;) {
+                                if (v1_1[j] == i0_3) {
+                                    goto loop_583f44_end;
+                                } else {
+                                    if ((j + 1) < groupNum) {
+                                        j = j + 1;
+                                    } else {
+                                        return b1_0;
+                                    }
+                                }
+                            }
+                            break;
+                        }
+                    }
+                } else {
+                    if ((i0_3 + 1) >= groupNum) {
+                        break;
+                    } else {
+                        i0_3 += 1;
+                        v0_5 = mpMsgSetData;
+                    }
+                }
+            }
+            loop_583f44_end:;
+            b1_0 = false;
+        } else {
+            b1_0 = false;
+        }
+    }
+    return b1_0;
 }
 
 u32 cTalkMsgData::getTalkNpcId() {

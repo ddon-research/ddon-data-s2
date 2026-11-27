@@ -250,3 +250,31 @@ inline cFSMBase::cParamCallMessageFortDef_Common::cParamCallMessageFortDef_Commo
     this->mMsgNo2 = 0;
     this->::cFSMBase::cParamCallMessage::mIsUseSerial = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cFSMBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMBase::DTI)->memAlloc(sz, align, ::cFSMBase::DTI.::MtDTI::getID());
+}
+
+inline void cFSMBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMBase::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMBase::cParamCallMessage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMBase::cParamCallMessage::DTI)->memAlloc(sz, align, ::cFSMBase::cParamCallMessage::DTI.::MtDTI::getID());
+}
+
+inline void cFSMBase::cParamCallMessage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMBase::cParamCallMessage::DTI)->memFree(p_addr);
+}
+
+inline void* cFSMBase::cParamCallMessageFortDef_Common::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cFSMBase::cParamCallMessageFortDef_Common::DTI)->memAlloc(sz, align, ::cFSMBase::cParamCallMessageFortDef_Common::DTI.::MtDTI::getID());
+}
+
+inline void cFSMBase::cParamCallMessageFortDef_Common::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMBase::cParamCallMessageFortDef_Common::DTI)->memFree(p_addr);
+}

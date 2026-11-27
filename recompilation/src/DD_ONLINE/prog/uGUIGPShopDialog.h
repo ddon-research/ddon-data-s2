@@ -419,3 +419,46 @@ inline void* uGUIGPShopDialog::cScrollLimitItemList::operator new(size_t sz, voi
 inline void* uGUIGPShopDialog::cScrollHistoryItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+
+inline MtAllocator* uGUIGPShopDialog::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::DTI);
+}
+
+inline void uGUIGPShopDialog::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShopDialog::updateConfirmCaution(bool IsDisp) {
+    if (this->mpGSCaution != nullptr) {
+        this->mpGSCaution->::cGUIObject::setVisible(false);
+    }
+    if (this->mpGSCautionTxt != nullptr) {
+        this->mpGSCautionTxt->::cGUIObject::setVisible(false);
+    }
+    if (this->mpCaution == nullptr) {
+        return;
+    }
+    this->mpCaution->::cGUIInstance::setVisible(false);
+}
+
+inline void* uGUIGPShopDialog::cScrollLimitDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::cScrollLimitDispList::DTI)->memAlloc(sz, align, ::uGUIGPShopDialog::cScrollLimitDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIGPShopDialog::cScrollLimitDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::cScrollLimitDispList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIGPShopDialog::cScrollHistoryDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::cScrollHistoryDispList::DTI)->memAlloc(sz, align, ::uGUIGPShopDialog::cScrollHistoryDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIGPShopDialog::cScrollHistoryDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShopDialog::cScrollHistoryDispList::DTI)->memFree(p_addr);
+}

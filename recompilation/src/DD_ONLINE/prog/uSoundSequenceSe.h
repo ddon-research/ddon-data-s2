@@ -150,3 +150,22 @@ inline void* uSoundSequenceSe::operator new(size_t sz, void* p_addr) {
 inline rSoundSequenceSe* uSoundSequenceSe::getSequenceSe() {
     return this->mpSequenceSe;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uSoundSequenceSe::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uSoundSequenceSe::DTI);
+}
+
+inline void uSoundSequenceSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSoundSequenceSe::DTI)->memFree(p_addr);
+}
+
+inline void uSoundSequenceSe::setCallPos(const MtVector3& pos) {
+    this->mCallPos.x = pos.x;
+    this->mCallPos.y = pos.y;
+    this->mCallPos.z = pos.z;
+    this->mCallPos.pad_ = 0.0f;
+}

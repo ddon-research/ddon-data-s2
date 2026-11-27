@@ -118,3 +118,15 @@ inline cAITargetInfo::cAITargetInfo() {
 inline f32 cAITargetInfoArray::getMaxEvaluation() const {
     return this->mMaxEvaluation;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cAITargetInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAITargetInfo::DTI)->memAlloc(sz, align, ::cAITargetInfo::DTI.::MtDTI::getID());
+}
+
+inline void cAITargetInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAITargetInfo::DTI)->memFree(p_addr);
+}

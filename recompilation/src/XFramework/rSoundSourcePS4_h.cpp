@@ -21,10 +21,6 @@ const MtDTI& rSoundSourceAT9::getDTI() const {
     return rSoundSourceAT9::DTI;
 }
 
-inline void rSoundSourceAT9::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSourceAT9::DTI)->memFree(p_addr);
-}
-
 rSoundSourceAT9::~rSoundSourceAT9() {
 }
 
@@ -61,10 +57,6 @@ __attribute__((weak)) MtObject* rSoundSourceAT9::MyDTI::newInstance() const {
 
 const MtDTI& rSoundSourceStreamAT9::getDTI() const {
     return rSoundSourceStreamAT9::DTI;
-}
-
-inline void rSoundSourceStreamAT9::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSourceStreamAT9::DTI)->memFree(p_addr);
 }
 
 rSoundSourceStreamAT9::~rSoundSourceStreamAT9() {

@@ -39,10 +39,6 @@ const MtDTI& nCollision::cCollisionNode::getDTI() const {
     return nCollision::cCollisionNode::DTI;
 }
 
-inline void nCollision::cCollisionNode::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNode::DTI)->memFree(p_addr);
-}
-
 nCollision::cCollisionNode::cCollisionNode(const MtDTI* pEditGeometryDTI) {
     DDON_STUB("nCollision::cCollisionNode::cCollisionNode")
     /* stub */
@@ -314,10 +310,6 @@ void* nCollision::cCollisionNodeGroup::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNodeGroup::DTI)->memAlloc(sz, align, ::nCollision::cCollisionNodeGroup::DTI.mID);
 }
 
-inline void nCollision::cCollisionNodeGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNodeGroup::DTI)->memFree(p_addr);
-}
-
 nCollision::cCollisionNodeGroup::cCollisionNodeGroup() {
     DDON_STUB("nCollision::cCollisionNodeGroup::cCollisionNodeGroup")
     /* stub */
@@ -380,10 +372,6 @@ const MtDTI& nCollision::cCollisionNodeObject::getDTI() const {
     return nCollision::cCollisionNodeObject::DTI;
 }
 
-inline void nCollision::cCollisionNodeObject::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cCollisionNodeObject::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) nCollision::cCollisionNodeObject::~cCollisionNodeObject() {
     DDON_STUB("nCollision::cCollisionNodeObject::~cCollisionNodeObject")
     /* stub */
@@ -395,8 +383,31 @@ __attribute__((weak)) void nCollision::cCollisionNodeObject::createProperty(MtPr
 }
 
 __attribute__((weak)) bool nCollision::cCollisionNodeObject::load(MtDataReader& r, MtStream& in) {
-    DDON_STUB("nCollision::cCollisionNodeObject::load")
-    return {};
+    if (!nCollision::cCollisionNode::load(r, in)) {
+        return false;
+    }
+    if (mFlgAutoDeleteUserDataPtr) {
+        if (mpUserDataPtr != nullptr) {
+            delete mpUserDataPtr;
+            mpUserDataPtr = nullptr;
+        }
+    }
+    mpUserDataPtr = nullptr;
+    mAttribute = r.readU32();
+    mUserDataU32 = r.readU32();
+    mFlgAutoDeleteUserDataPtr = (r.readU8() != 0);
+    const u8 FlagSaveUsrPtr = r.readU8();
+    if (FlagSaveUsrPtr != 0) {
+        const MtDTI* pUserPtrDti = MtCollisionUtil::loadDTI(r);
+        if (pUserPtrDti == nullptr) {
+            return false;
+        }
+        mpUserDataPtr = pUserPtrDti->newInstance();
+        r.flush();
+        MtSerializer sz(0x10000);
+        return sz.deserializeBinary(in, VERSION, mpUserDataPtr, MtSerializer::MODE_STATE) != nullptr;
+    }
+    return true;
 }
 
 __attribute__((weak)) bool nCollision::cCollisionNodeObject::save(MtDataWriter& w, MtStream& out) {
@@ -486,10 +497,6 @@ __attribute__((weak)) MtObject* nCollision::cCollisionNodeObject::MyDTI::newInst
 
 const MtDTI& nCollision::cGeometry::getDTI() const {
     return nCollision::cGeometry::DTI;
-}
-
-inline void nCollision::cGeometry::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cGeometry::DTI)->memFree(p_addr);
 }
 
 nCollision::cGeometry::cGeometry() {
@@ -607,12 +614,81 @@ __attribute__((weak)) MtObject* nCollision::cGeometry::MyDTI::newInstance() cons
     return nullptr;
 }
 
-const MtDTI& nCollision::cGeometryJointGroup::getDTI() const {
-    return nCollision::cGeometryJointGroup::DTI;
+const MtDTI& nCollision::cGeometryExpansion::getDTI() const {
+    return nCollision::cGeometryExpansion::DTI;
 }
 
-inline void nCollision::cGeometryJointGroup::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cGeometryJointGroup::DTI)->memFree(p_addr);
+nCollision::cGeometryExpansion::~cGeometryExpansion() {
+    DDON_STUB("nCollision::cGeometryExpansion::~cGeometryExpansion")
+    /* stub */
+}
+
+__attribute__((weak)) void nCollision::cGeometryExpansion::createProperty(MtPropertyList& s) {
+    DDON_STUB("nCollision::cGeometryExpansion::createProperty")
+    /* stub */
+}
+
+__attribute__((weak)) bool nCollision::cGeometryExpansion::load(MtDataReader& r, MtStream& in) {
+    DDON_STUB("nCollision::cGeometryExpansion::load")
+    return {};
+}
+
+__attribute__((weak)) bool nCollision::cGeometryExpansion::save(MtDataWriter& w, MtStream& out) {
+    DDON_STUB("nCollision::cGeometryExpansion::save")
+    return {};
+}
+
+void nCollision::cGeometryExpansion::move() {
+    if (!mFlgActive) {
+        return;
+    }
+    updateBoundingAABB();
+}
+
+__attribute__((weak)) void nCollision::cGeometryExpansion::copy(const nCollision::cObjectBase& src) {
+    DDON_STUB("nCollision::cGeometryExpansion::copy")
+    /* stub */
+}
+
+__attribute__((weak)) void nCollision::cGeometryExpansion::setUserPtr(MtObject* pNewUserPtr) {
+    DDON_STUB("nCollision::cGeometryExpansion::setUserPtr")
+    /* stub */
+}
+
+bool nCollision::cGeometryExpansion::loadUserPtr(MtDataReader& r, MtStream& in) {
+    const u32 UserPtrDtiID = r.readU32();
+    if (UserPtrDtiID != 0) {
+        const MtDTI* pUserPtrDti = ::MtDTI::from(UserPtrDtiID);
+        if (pUserPtrDti != nullptr) {
+            if ((mpUserPtr = pUserPtrDti->newInstance()) != nullptr) {
+                r.flush();
+                MtSerializer sz(65536);
+                MtObject* t0 = sz.deserializeBinary(in, static_cast<u16>(1), mpUserPtr, ::MtSerializer::MODE_STATE);
+                return t0 != nullptr;
+            }
+        }
+        return false;
+    } else {
+        return true;
+    }
+}
+
+__attribute__((weak)) uintptr nCollision::cGeometryExpansion::getUserPtrAddr() {
+    DDON_STUB("nCollision::cGeometryExpansion::getUserPtrAddr")
+    return {};
+}
+
+inline nCollision::cGeometryExpansion::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+nCollision::cGeometryExpansion::MyDTI nCollision::cGeometryExpansion::DTI("nCollision::cGeometryExpansion", &::nCollision::cGeometry::DTI, 96ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* nCollision::cGeometryExpansion::MyDTI::newInstance() const {
+    DDON_STUB("nCollision::cGeometryExpansion::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& nCollision::cGeometryJointGroup::getDTI() const {
+    return nCollision::cGeometryJointGroup::DTI;
 }
 
 __attribute__((noinline)) nCollision::cGeometryJointGroup::~cGeometryJointGroup() {
@@ -722,14 +798,6 @@ const MtDTI& nCollision::cMotionSequenceSupport::getDTI() const {
     return nCollision::cMotionSequenceSupport::DTI;
 }
 
-inline void* nCollision::cMotionSequenceSupport::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nCollision::cMotionSequenceSupport::DTI)->memAlloc(sz, align, ::nCollision::cMotionSequenceSupport::DTI.mID);
-}
-
-inline void nCollision::cMotionSequenceSupport::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cMotionSequenceSupport::DTI)->memFree(p_addr);
-}
-
 nCollision::cMotionSequenceSupport::~cMotionSequenceSupport() {
 }
 
@@ -755,10 +823,6 @@ MtObject* nCollision::cMotionSequenceSupport::MyDTI::newInstance() const {
 
 const MtDTI& nCollision::cObjectBase::getDTI() const {
     return nCollision::cObjectBase::DTI;
-}
-
-inline void nCollision::cObjectBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cObjectBase::DTI)->memFree(p_addr);
 }
 
 nCollision::cObjectBase::~cObjectBase() {

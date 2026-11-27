@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cCraftPlusItem.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "rCraftQuality.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cCraftPlusItem::getDTI() const {
     return cCraftPlusItem::DTI;
-}
-
-inline void* cCraftPlusItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCraftPlusItem::DTI)->memAlloc(sz, align, cCraftPlusItem::DTI.getID());
-}
-
-inline void cCraftPlusItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftPlusItem::DTI)->memFree(p_addr);
 }
 
 cCraftPlusItem::cCraftPlusItem() {

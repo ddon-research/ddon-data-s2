@@ -126,3 +126,19 @@ inline void cBakeJoint::operator delete[](void* p_addr) {
 inline void* cBakeJoint::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cBakeJoint::DTI)->memAlloc(sz, align, ::cBakeJoint::DTI.::MtDTI::getID());
 }
+
+inline void* cBakeJoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cBakeJoint::DTI)->memAlloc(sz, align, ::cBakeJoint::DTI.::MtDTI::getID());
+}
+
+inline void cBakeJoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBakeJoint::DTI)->memFree(p_addr);
+}
+
+inline void* rBakeJoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rBakeJoint::DTI)->memAlloc(sz, align, ::rBakeJoint::DTI.::MtDTI::getID());
+}
+
+inline void rBakeJoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rBakeJoint::DTI)->memFree(p_addr);
+}

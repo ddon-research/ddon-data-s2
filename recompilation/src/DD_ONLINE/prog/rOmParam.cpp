@@ -11,7 +11,6 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "cResPath.h"
-#include "../../XFramework/cResource.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rCaughtInfoParam.h"
 #include "../../XFramework/rCollision.h"
@@ -76,18 +75,6 @@ __attribute__((weak)) MtObject* cOmParam::MyDTI::newInstance() const {
 
 const MtDTI& rOmParam::getDTI() const {
     return rOmParam::DTI;
-}
-
-inline void* rOmParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOmParam::DTI)->memAlloc(sz, align, rOmParam::DTI.getID());
-}
-
-inline void rOmParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOmParam::DTI)->memFree(p_addr);
-}
-
-inline rOmParam::rOmParam() {
-    setAttribute(16u);
 }
 
 const MtDTI& rOmParam::getDataDTI() {

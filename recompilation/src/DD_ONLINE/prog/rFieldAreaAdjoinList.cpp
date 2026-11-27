@@ -21,14 +21,6 @@ const MtDTI& rFieldAreaAdjoinList::getDTI() const {
     return rFieldAreaAdjoinList::DTI;
 }
 
-inline void* rFieldAreaAdjoinList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::DTI)->memAlloc(sz, align, rFieldAreaAdjoinList::DTI.getID());
-}
-
-inline void rFieldAreaAdjoinList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::DTI)->memFree(p_addr);
-}
-
 s16 rFieldAreaAdjoinList::getFieldAreaId() const {
     return mFieldAreaId;
 }
@@ -67,13 +59,6 @@ __attribute__((weak)) u32 rFieldAreaAdjoinList::getNextStageAdjoinInfoNum(s32 de
 
 MT_CTSTR rFieldAreaAdjoinList::getExt() const {
     return "faa";
-}
-
-inline rFieldAreaAdjoinList::rFieldAreaAdjoinList() {
-    mpArray = nullptr;
-    mArrayNum = 0;
-    mFieldAreaId = -1;
-    setAttribute(22u);
 }
 
 rFieldAreaAdjoinList::~rFieldAreaAdjoinList() {
@@ -156,14 +141,6 @@ const MtDTI& rFieldAreaAdjoinList::cAdjoinInfo::getDTI() const {
     return rFieldAreaAdjoinList::cAdjoinInfo::DTI;
 }
 
-inline void* rFieldAreaAdjoinList::cAdjoinInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::DTI)->memAlloc(sz, align, rFieldAreaAdjoinList::cAdjoinInfo::DTI.getID());
-}
-
-inline void rFieldAreaAdjoinList::cAdjoinInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::DTI)->memFree(p_addr);
-}
-
 rFieldAreaAdjoinList::cAdjoinInfo::~cAdjoinInfo() {
     if (mPositions.mLength != 0) {
         u32 v0_0 = mPositions.mLength;
@@ -209,10 +186,6 @@ MtObject* rFieldAreaAdjoinList::cAdjoinInfo::MyDTI::newInstance() const {
 
 const MtDTI& rFieldAreaAdjoinList::cAdjoinInfo::cVector3::getDTI() const {
     return rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI;
-}
-
-inline void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rFieldAreaAdjoinList::cAdjoinInfo::cVector3::DTI)->memFree(p_addr);
 }
 
 void rFieldAreaAdjoinList::cAdjoinInfo::cVector3::createProperty(MtPropertyList& s) {

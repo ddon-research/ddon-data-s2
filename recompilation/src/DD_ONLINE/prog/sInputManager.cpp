@@ -58,16 +58,8 @@ const MtDTI& sInputManager::getDTI() const {
     return sInputManager::DTI;
 }
 
-inline MtAllocator* sInputManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sInputManager::DTI);
-}
-
 void* sInputManager::operator new(size_t sz, u32 align) {
     return sInputManager::getAllocator()->memAlloc(sz, align, sInputManager::DTI.getID());
-}
-
-inline void sInputManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sInputManager::DTI)->memFree(p_addr);
 }
 
 sInputManager::sInputManager() {
@@ -358,74 +350,14 @@ __attribute__((weak)) void sInputManager::editDefault(cKeyCustomManager& cmn) {
     /* stub */
 }
 
-void sInputManager::editCancel(cKeyCustomManager& cmn, u32 categoryNo, nKeyCustom::KB_CUSTOM kb) {
-    if (mThreadSafe || (cSystem::mJobSafe)) {
-        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-            abort();
-        }
-    }
-    if (mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb] != nullptr) {
-        if (cmn.mCustomArray.mpArray[kb] != nullptr) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 24) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 24);
-            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 8);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 16) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 16);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 8) = t0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 28) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 28);
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 36) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 36);
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-        } else {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-    }
+__attribute__((weak)) void sInputManager::editCancel(cKeyCustomManager& cmn, u32 categoryNo, nKeyCustom::KB_CUSTOM kb) {
+    DDON_STUB("sInputManager::editCancel")
+    /* stub */
 }
 
-void sInputManager::editDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CUSTOM kb) {
-    if (mThreadSafe || (cSystem::mJobSafe)) {
-        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
-            abort();
-        }
-    }
-    if (mCommonKeyDefaultManager.mCustomArray.mpArray[kb] != nullptr) {
-        if (cmn.mCustomArray.mpArray[kb] != nullptr) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 24) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 24);
-            unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 8);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 16) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 16);
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 8) = t0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 28) = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 28);
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 36) = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 36);
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-        } else {
-            if (mThreadSafe || (cSystem::mJobSafe)) {
-                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                    abort();
-                }
-            }
-        }
-    } else {
-        if (mThreadSafe || (cSystem::mJobSafe)) {
-            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
-                abort();
-            }
-        }
-    }
+__attribute__((weak)) void sInputManager::editDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CUSTOM kb) {
+    DDON_STUB("sInputManager::editDefault")
+    /* stub */
 }
 
 bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCustom::KB_CUSTOM kb) {
@@ -436,14 +368,14 @@ bool sInputManager::editCompare(cKeyCustomManager& cmn, u32 categoryNo, nKeyCust
     }
     if (mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb] != nullptr) {
         if (cmn.mCustomArray.mpArray[kb] != nullptr) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 8)) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 8))) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 9)) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 9))) {
-                    if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 10)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 10))) {
-                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 12)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 12))) {
-                            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 14)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 14))) {
-                                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 16)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 16))) {
-                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 20)) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 20))) {
-                                        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 24);
+            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 8)) == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mJobId) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 9)) == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mKbcIndex) {
+                    if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 10)) == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mKbmFlag) {
+                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 12)) == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mKey) {
+                            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 14)) == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mBtn) {
+                                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 16)) == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mPadFlag) {
+                                    if (static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mPad == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 20))) {
+                                        u32 t0 = static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mPad2;
                                         unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyCustomManager[categoryNo].mCustomArray.mpArray[kb]) + 24);
                                         if (mThreadSafe || (cSystem::mJobSafe)) {
                                             int t2 = scePthreadMutexUnlock(&mCS.mCSection);
@@ -563,15 +495,15 @@ bool sInputManager::editCompareDefault(cKeyCustomManager& cmn, nKeyCustom::KB_CU
     }
     if (mCommonKeyDefaultManager.mCustomArray.mpArray[kb] != nullptr) {
         if (cmn.mCustomArray.mpArray[kb] != nullptr) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 8)) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 8))) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 9)) == (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 9))) {
-                    if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 10)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 10))) {
-                        if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 12)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 12))) {
-                            if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 14)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 14))) {
-                                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 16)) == (*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 16))) {
-                                    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 20)) == (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 20))) {
-                                        unsigned int t0 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(cmn.mCustomArray.mpArray[kb]) + 24);
-                                        unsigned int t1 = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb]) + 24);
+            if (static_cast<cKeyCustom*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb])->mSt.mJobId == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mJobId) {
+                if (static_cast<cKeyCustom*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb])->mSt.mKbcIndex == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mKbcIndex) {
+                    if (static_cast<cKeyCustom*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb])->mSt.mKbmFlag == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mKbmFlag) {
+                        if (static_cast<cKeyCustom*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb])->mSt.mKey == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mKey) {
+                            if (static_cast<cKeyCustom*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb])->mSt.mBtn == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mBtn) {
+                                if (static_cast<cKeyCustom*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb])->mSt.mPadFlag == static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mPadFlag) {
+                                    if (static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mPad == static_cast<cKeyCustom*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb])->mSt.mPad) {
+                                        u32 t0 = static_cast<cKeyCustom*>(cmn.mCustomArray.mpArray[kb])->mSt.mPad2;
+                                        u32 t1 = static_cast<cKeyCustom*>(mCommonKeyDefaultManager.mCustomArray.mpArray[kb])->mSt.mPad2;
                                         if (mThreadSafe || (cSystem::mJobSafe)) {
                                             int t2 = scePthreadMutexUnlock(&mCS.mCSection);
                                             if (t2 != 0) {

@@ -3,7 +3,6 @@
 #include "sVibrationExt.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/rVibration.h"
@@ -21,16 +20,8 @@ const MtDTI& sVibrationExt::getDTI() const {
     return sVibrationExt::DTI;
 }
 
-inline MtAllocator* sVibrationExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sVibrationExt::DTI);
-}
-
 void* sVibrationExt::operator new(size_t sz, u32 align) {
     return sVibrationExt::getAllocator()->memAlloc(sz, align, sVibrationExt::DTI.getID());
-}
-
-inline void sVibrationExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sVibrationExt::DTI)->memFree(p_addr);
 }
 
 sVibrationExt::sVibrationExt() {

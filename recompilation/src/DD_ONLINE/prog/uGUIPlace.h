@@ -100,3 +100,15 @@ public:
 inline void* uGUIPlace::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPlace::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPlace::DTI);
+}
+
+inline void uGUIPlace::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPlace::DTI)->memFree(p_addr);
+}

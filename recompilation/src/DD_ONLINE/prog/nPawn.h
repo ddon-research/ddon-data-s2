@@ -82,3 +82,15 @@ inline cPawnEnableArea::cPawnEnableArea() {
     this->mMaxY = 300.0f;
     this->mRadius = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cPawnEnableArea::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cPawnEnableArea::DTI);
+}
+
+inline void* cPawnEnableArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPawnEnableArea::DTI)->memAlloc(sz, align, ::cPawnEnableArea::DTI.::MtDTI::getID());
+}

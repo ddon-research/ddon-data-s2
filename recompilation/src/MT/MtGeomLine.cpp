@@ -23,10 +23,6 @@ void* MtGeomLine::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomLine::DTI)->memAlloc(sz, align, MtGeomLine::DTI.mID);
 }
 
-inline void MtGeomLine::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomLine::DTI)->memFree(p_addr);
-}
-
 void MtGeomLine::load(MtDataReader& fin) {
     mLine.from.x = fin.readF32();
     mLine.dir.x = fin.readF32();
@@ -172,13 +168,44 @@ __attribute__((weak)) bool MtGeomLine::getClosest(const MtRay& ray, MtContact* p
 }
 
 __attribute__((weak)) bool MtGeomLine::getClosest(const MtLineSegment& ls, MtContact* pContact) const {
-    DDON_STUB("MtGeomLine::getClosest")
-    return {};
+    f32 t;
+    const f32 t1 = MtCollision::sqrDistance(ls, mLine, nullptr, &t, 0.001f);
+    if (pContact != nullptr) {
+        const bool ret = 1.1920929e-7f > t1;
+        const f32 t2 = t;
+        pContact->pos.x = MtVector3::Zero.x;
+        pContact->pos.y = MtVector3::Zero.y;
+        pContact->pos.z = MtVector3::Zero.z;
+        pContact->pos.pad_ = 0.0f;
+        pContact->normal.x = MtVector3::Zero.x;
+        pContact->normal.y = MtVector3::Zero.y;
+        pContact->normal.z = MtVector3::Zero.z;
+        pContact->normal.pad_ = 0.0f;
+        pContact->distance = 0.0f;
+        pContact->toi = t2;
+        pContact->bFind = ret;
+    }
+    return 1.1920929e-7f > t1;
 }
 
 __attribute__((weak)) bool MtGeomLine::getClosest(const MtSphere& sphere, MtContact* pContact) const {
-    DDON_STUB("MtGeomLine::getClosest")
-    return {};
+    f32 t;
+    bool ret = MtCollision::closest(sphere, mLine, nullptr, &t);
+    if (pContact) {
+        const f32 t1 = t;
+        pContact->pos.x = MtVector3::Zero.x;
+        pContact->pos.y = MtVector3::Zero.y;
+        pContact->pos.z = MtVector3::Zero.z;
+        pContact->pos.pad_ = 0.0f;
+        pContact->normal.x = MtVector3::Zero.x;
+        pContact->normal.y = MtVector3::Zero.y;
+        pContact->normal.z = MtVector3::Zero.z;
+        pContact->normal.pad_ = 0.0f;
+        pContact->distance = 0.0f;
+        pContact->toi = t1;
+        pContact->bFind = ret;
+    }
+    return ret;
 }
 
 __attribute__((weak)) bool MtGeomLine::getClosest(const MtCapsule& capsule, MtContact* pContact) const {

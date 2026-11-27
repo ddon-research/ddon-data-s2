@@ -234,3 +234,11 @@ inline u32 cCraftRecipe::cCraftRecipeList::getBagType() const {
 inline u32 cCraftRecipe::cCraftRecipeList::getType() const {
     return this->mType;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cCraftRecipe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftRecipe::DTI)->memFree(p_addr);
+}

@@ -61,8 +61,8 @@ namespace nNetMsgData { namespace Head { void freeData(stMsgHead* pData); } }
 
 class MtMemory
 {
-    friend class rZone;
 
+    friend class rZone;
     friend class MtCipher;
     friend class MtDataReader;
     friend class MtDataWriter;

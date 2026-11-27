@@ -3,7 +3,6 @@
 #include "uGUIRankUp.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIInstance.h"
@@ -25,16 +24,8 @@ const MtDTI& uGUIRankUp::getDTI() const {
     return uGUIRankUp::DTI;
 }
 
-inline MtAllocator* uGUIRankUp::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIRankUp::DTI);
-}
-
 void* uGUIRankUp::operator new(size_t sz, u32 align) {
     return uGUIRankUp::getAllocator()->memAlloc(sz, align, uGUIRankUp::DTI.getID());
-}
-
-inline void uGUIRankUp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIRankUp::DTI)->memFree(p_addr);
 }
 
 uGUIRankUp::uGUIRankUp() : uGUIBase(0u, false) {

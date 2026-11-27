@@ -3,7 +3,6 @@
 #include "cSplitBase.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -24,16 +23,8 @@ const MtDTI& cSplitArc::getDTI() const {
     return cSplitArc::DTI;
 }
 
-inline MtAllocator* cSplitArc::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cSplitArc::DTI);
-}
-
 void* cSplitArc::operator new(size_t sz, u32 align) {
     return cSplitArc::getAllocator()->memAlloc(sz, align, cSplitArc::DTI.getID());
-}
-
-inline void cSplitArc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSplitArc::DTI)->memFree(p_addr);
 }
 
 cSplitArc::cSplitArc() {
@@ -65,14 +56,6 @@ const MtDTI& cSplitBase::getDTI() const {
     return cSplitBase::DTI;
 }
 
-inline void* cSplitBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSplitBase::DTI)->memAlloc(sz, align, cSplitBase::DTI.getID());
-}
-
-inline void cSplitBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSplitBase::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cSplitBase::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mStatus", &mStatus, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "M(z)", &mIdZ, 1u, 0u);
@@ -91,16 +74,8 @@ const MtDTI& cSplitLot::getDTI() const {
     return cSplitLot::DTI;
 }
 
-inline MtAllocator* cSplitLot::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cSplitLot::DTI);
-}
-
 void* cSplitLot::operator new(size_t sz, u32 align) {
     return cSplitLot::getAllocator()->memAlloc(sz, align, cSplitLot::DTI.getID());
-}
-
-inline void cSplitLot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSplitLot::DTI)->memFree(p_addr);
 }
 
 cSplitLot::cSplitLot() {

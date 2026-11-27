@@ -5,7 +5,6 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
@@ -38,16 +37,8 @@ const MtDTI& uGUILoading::getDTI() const {
     return uGUILoading::DTI;
 }
 
-inline MtAllocator* uGUILoading::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUILoading::DTI);
-}
-
 void* uGUILoading::operator new(size_t sz, u32 align) {
     return uGUILoading::getAllocator()->memAlloc(sz, align, uGUILoading::DTI.getID());
-}
-
-inline void uGUILoading::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUILoading::DTI)->memFree(p_addr);
 }
 
 uGUILoading::uGUILoading() : uGUIBase(0u, false) {
@@ -143,13 +134,6 @@ void uGUILoading::updateInit() {
 __attribute__((weak)) void uGUILoading::updateWait() {
     DDON_STUB("uGUILoading::updateWait")
     /* stub */
-}
-
-inline void uGUILoading::updateDisp() {
-    if (mpInstNullBase == nullptr) {
-        return;
-    }
-    mpInstNullBase->setVisible(mEnable);
 }
 
 __attribute__((weak)) void uGUILoading::adjustScale() {

@@ -17,10 +17,6 @@ class MtPropertyList;
 class cTalkState;
 namespace nCharacterData { struct stCharacterName; }
 
-// Declarations
-namespace nTalk { class cSelectData; }
-namespace nTalk { class cSelectMember; }
-
 namespace nTalk {
     enum TALK_STATE
     {
@@ -95,6 +91,10 @@ namespace nTalk {
         TALK_STATE_NUM = 66,
     };
 }  // namespace nTalk
+
+// Declarations
+namespace nTalk { class cSelectData; }
+namespace nTalk { class cSelectMember; }
 
 // Type aliases from DWARF
 using CHAR_NAME = nCharacterData::stCharacterName;
@@ -226,4 +226,24 @@ inline void* nTalk::cSelectMember::operator new(size_t sz, void* p_addr) {
 inline nTalk::cSelectMember::cSelectMember() : mName() {
     this->mSlot = 0;
     this->mPawnId = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* nTalk::cSelectData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nTalk::cSelectData::DTI);
+}
+
+inline void nTalk::cSelectData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nTalk::cSelectData::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nTalk::cSelectMember::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nTalk::cSelectMember::DTI);
+}
+
+inline void nTalk::cSelectMember::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nTalk::cSelectMember::DTI)->memFree(p_addr);
 }

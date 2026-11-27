@@ -118,3 +118,15 @@ inline void* cAIRouteInfo::operator new(size_t sz, void* p_addr) {
 inline void* cAIRouteInfoParts::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cAIRouteInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIRouteInfo::DTI)->memFree(p_addr);
+}
+
+inline void cAIRouteInfoParts::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIRouteInfoParts::DTI)->memFree(p_addr);
+}

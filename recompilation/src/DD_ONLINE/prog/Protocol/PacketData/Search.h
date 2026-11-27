@@ -231,3 +231,39 @@ inline CDataQuickMatchSearchParameter::CDataQuickMatchSearchParameter() {
     this->m_unObjectiveType1 = 0;
     this->m_unObjectiveType2 = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataCharacterSearchParameter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterSearchParameter::DTI);
+}
+
+inline void* CDataCharacterSearchParameter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterSearchParameter::DTI)->memAlloc(sz, align, ::CDataCharacterSearchParameter::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataPartySearchParameter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartySearchParameter::DTI);
+}
+
+inline void* CDataPartySearchParameter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartySearchParameter::DTI)->memAlloc(sz, align, ::CDataPartySearchParameter::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataPawnSearchParameter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnSearchParameter::DTI);
+}
+
+inline void* CDataPawnSearchParameter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataPawnSearchParameter::DTI)->memAlloc(sz, align, ::CDataPawnSearchParameter::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataQuickMatchSearchParameter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuickMatchSearchParameter::DTI);
+}
+
+inline void* CDataQuickMatchSearchParameter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuickMatchSearchParameter::DTI)->memAlloc(sz, align, ::CDataQuickMatchSearchParameter::DTI.::MtDTI::getID());
+}

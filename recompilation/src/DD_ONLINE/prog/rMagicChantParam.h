@@ -242,3 +242,15 @@ inline cMagicChantParam::cMagicChantParam() {
     this->mIsNoChantSe = false;
     this->mAddHealHate = 0.0f;
 }
+
+inline void cMagicChantParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMagicChantParam::DTI)->memFree(p_addr);
+}
+
+inline void* rMagicChantParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMagicChantParam::DTI)->memAlloc(sz, align, ::rMagicChantParam::DTI.::MtDTI::getID());
+}
+
+inline void rMagicChantParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMagicChantParam::DTI)->memFree(p_addr);
+}

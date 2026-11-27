@@ -80,3 +80,10 @@ public:
 inline void* uOmSwingModel::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uOmSwingModel::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uOmSwingModel::DTI);
+}

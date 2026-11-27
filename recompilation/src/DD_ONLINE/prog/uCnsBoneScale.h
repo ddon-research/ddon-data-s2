@@ -20,6 +20,7 @@ class MtUI;
 class MtVector3;
 class cDraw;
 class cResource;
+class uEnemy;
 class uModel;
 
 // Declarations
@@ -36,6 +37,7 @@ using u32 = unsigned int;
 
 class cCnsBoneScaleCtrl : public MtObject
 {
+    friend class uEnemy;
 public:
     class MyDTI;
 public:
@@ -135,6 +137,35 @@ inline void* cCnsBoneScaleCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline bool cCnsBoneScaleCtrl::isEnable() {
+    return this->mbEnable;
+}
+
 inline void* uCnsBoneScale::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCnsBoneScaleCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCnsBoneScaleCtrl::DTI)->memAlloc(sz, align, ::cCnsBoneScaleCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cCnsBoneScaleCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCnsBoneScaleCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* uCnsBoneScale::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uCnsBoneScale::DTI)->memAlloc(sz, align, ::uCnsBoneScale::DTI.::MtDTI::getID());
+}
+
+inline void uCnsBoneScale::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsBoneScale::DTI)->memFree(p_addr);
+}
+
+inline uCnsBoneScale::uCnsBoneScale() {
+    this->mJoint = 0;
+    this->mScl = ::MtVector3::One;
 }

@@ -142,18 +142,6 @@ const MtDTI& uShlJob08CS13::getDTI() const {
     return uShlJob08CS13::DTI;
 }
 
-inline void* uShlJob08CS13::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlJob08CS13::DTI)->memAlloc(sz, align, uShlJob08CS13::DTI.getID());
-}
-
-inline void uShlJob08CS13::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlJob08CS13::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamJob08CS13* uShlJob08CS13::getShlParam() const {
-    return static_cast<const cShlParamJob08CS13*>(mpShlParam2);
-}
-
 uShlJob08CS13::~uShlJob08CS13() {
     DDON_STUB("uShlJob08CS13::~uShlJob08CS13")
     /* stub */
@@ -194,18 +182,6 @@ MtObject* uShlJob08CS13::MyDTI::newInstance() const {
 
 const MtDTI& uShlMgcArrow::getDTI() const {
     return uShlMgcArrow::DTI;
-}
-
-inline void* uShlMgcArrow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlMgcArrow::DTI)->memAlloc(sz, align, uShlMgcArrow::DTI.getID());
-}
-
-inline void uShlMgcArrow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlMgcArrow::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamMgcArrow* uShlMgcArrow::getShlParam() const {
-    return static_cast<const cShlParamMgcArrow*>(mpShlParam2);
 }
 
 uShlMgcArrow::~uShlMgcArrow() {

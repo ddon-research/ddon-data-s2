@@ -76,3 +76,15 @@ public:
 inline void* sRemoteProcedureExt::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sRemoteProcedureExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sRemoteProcedureExt::DTI);
+}
+
+inline void sRemoteProcedureExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sRemoteProcedureExt::DTI)->memFree(p_addr);
+}

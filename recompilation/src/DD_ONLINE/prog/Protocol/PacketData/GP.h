@@ -24,12 +24,15 @@ class CDataGPCourseEffectParam;
 class CDataGPCourseInfo;
 class CDataGPCourseValid;
 class CDataGPDetail;
+class CDataGPEditVoiceBuyHistory;
 class CDataGPPeriod;
 class CDataGPShopBuyHistoryElement;
 class CDataGPShopDisplayLineup;
 class CDataGPShopDisplayType;
 class CDataGPShopLineupElementBase;
 class CDataGPShopLineupElementCourse;
+class CDataGPShopLineupElementItem;
+class CDataGPShopLineupElementPawn;
 
 // Type aliases from DWARF
 using CGPShopLineupElementBase = CDataGPShopLineupElementBase;
@@ -265,6 +268,40 @@ public:
     static MyDTI DTI;
 };
 
+class CDataGPEditVoiceBuyHistory : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataGPEditVoiceBuyHistory();
+    explicit CDataGPEditVoiceBuyHistory(u32, const char*, u64);
+public:
+    u32 m_unVoiceID;  // offset: 0x8
+    MtString m_wstrName;  // offset: 0x10
+    u64 m_ullAcquisitionTime;  // offset: 0x18
+    static MyDTI DTI;
+};
+
 class CDataGPPeriod : public CPacketDataBase
 {
 public:
@@ -482,6 +519,70 @@ public:
     static MyDTI DTI;
 };
 
+class CDataGPShopLineupElementItem : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataGPShopLineupElementItem();
+    explicit CDataGPShopLineupElementItem(const CGPShopLineupElementBase&);
+public:
+    CGPShopLineupElementBase m_Base;  // offset: 0x8
+    static MyDTI DTI;
+};
+
+class CDataGPShopLineupElementPawn : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataGPShopLineupElementPawn();
+    explicit CDataGPShopLineupElementPawn(const CGPShopLineupElementBase&);
+public:
+    CGPShopLineupElementBase m_Base;  // offset: 0x8
+    static MyDTI DTI;
+};
+
 inline void* CDataCAPtoGPChangeElement::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -538,6 +639,15 @@ inline void* CDataGPDetail::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void* CDataGPEditVoiceBuyHistory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataGPEditVoiceBuyHistory::CDataGPEditVoiceBuyHistory() {
+    this->m_unVoiceID = 0;
+    this->m_ullAcquisitionTime = 0;
+}
+
 inline void* CDataGPPeriod::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -589,4 +699,86 @@ inline void* CDataGPShopLineupElementCourse::operator new(size_t sz, void* p_add
 }
 
 inline CDataGPShopLineupElementCourse::CDataGPShopLineupElementCourse() {
+}
+
+inline void* CDataGPShopLineupElementItem::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataGPShopLineupElementItem::CDataGPShopLineupElementItem() {
+}
+
+inline void* CDataGPShopLineupElementPawn::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataGPShopLineupElementPawn::CDataGPShopLineupElementPawn() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataCAPtoGPChangeElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCAPtoGPChangeElement::DTI);
+}
+
+inline MtAllocator* CDataGPCourseAvailable::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPCourseAvailable::DTI);
+}
+
+inline MtAllocator* CDataGPCourseEffectParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPCourseEffectParam::DTI);
+}
+
+inline MtAllocator* CDataGPCourseInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPCourseInfo::DTI);
+}
+
+inline MtAllocator* CDataGPCourseValid::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPCourseValid::DTI);
+}
+
+inline MtAllocator* CDataGPDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPDetail::DTI);
+}
+
+inline MtAllocator* CDataGPEditVoiceBuyHistory::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPEditVoiceBuyHistory::DTI);
+}
+
+inline MtAllocator* CDataGPPeriod::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPPeriod::DTI);
+}
+
+inline MtAllocator* CDataGPShopBuyHistoryElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPShopBuyHistoryElement::DTI);
+}
+
+inline MtAllocator* CDataGPShopDisplayLineup::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPShopDisplayLineup::DTI);
+}
+
+inline MtAllocator* CDataGPShopDisplayType::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPShopDisplayType::DTI);
+}
+
+inline MtAllocator* CDataGPShopLineupElementBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPShopLineupElementBase::DTI);
+}
+
+inline void* CDataGPShopLineupElementBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPShopLineupElementBase::DTI)->memAlloc(sz, align, ::CDataGPShopLineupElementBase::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataGPShopLineupElementCourse::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPShopLineupElementCourse::DTI);
+}
+
+inline MtAllocator* CDataGPShopLineupElementItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPShopLineupElementItem::DTI);
+}
+
+inline MtAllocator* CDataGPShopLineupElementPawn::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGPShopLineupElementPawn::DTI);
 }

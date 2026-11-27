@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rMotionFilter.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cMotionFilter::getDTI() const {
     return cMotionFilter::DTI;
-}
-
-inline void* cMotionFilter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMotionFilter::DTI)->memAlloc(sz, align, cMotionFilter::DTI.getID());
-}
-
-inline void cMotionFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMotionFilter::DTI)->memFree(p_addr);
 }
 
 inline cMotionFilter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,14 +23,6 @@ MtObject* cMotionFilter::MyDTI::newInstance() const {
 
 const MtDTI& rMotionFilter::getDTI() const {
     return rMotionFilter::DTI;
-}
-
-inline void* rMotionFilter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMotionFilter::DTI)->memAlloc(sz, align, rMotionFilter::DTI.getID());
-}
-
-inline void rMotionFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMotionFilter::DTI)->memFree(p_addr);
 }
 
 bool rMotionFilter::loadData(MtDataReader& r, cMotionFilter* pData) {

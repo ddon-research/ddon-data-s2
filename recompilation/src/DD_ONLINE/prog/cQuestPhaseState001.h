@@ -121,3 +121,15 @@ inline cQuestPhaseState001::cQuestPhaseState001() {
     this->mDivideStageNo = 0;
     this->mDivideStartPosNo = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cQuestPhaseState001::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseState001::DTI)->memAlloc(sz, align, ::cQuestPhaseState001::DTI.::MtDTI::getID());
+}
+
+inline void cQuestPhaseState001::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPhaseState001::DTI)->memFree(p_addr);
+}

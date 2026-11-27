@@ -24,37 +24,6 @@ const MtDTI& cQuakeParam::getDTI() const {
     return cQuakeParam::DTI;
 }
 
-inline void* cQuakeParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuakeParam::DTI)->memAlloc(sz, align, cQuakeParam::DTI.getID());
-}
-
-inline cQuakeParam::cQuakeParam() {
-    mTailTime = 0.0f;
-    mHeadTime = 0.0f;
-    mMainTime = 0.0f;
-    mMagnitude.x = MtVector3::Zero.x;
-    mMagnitude.y = MtVector3::Zero.y;
-    mMagnitude.z = MtVector3::Zero.z;
-    mMagnitude.pad_ = 0.0f;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mbAsync = false;
-    mBalance = 0.0f;
-    mPeriod = 0.0f;
-    mRoll = 0.0f;
-    mSpread = 0.0f;
-    mDamping = 0.0f;
-    mPos.pad_ = 0.0f;
-    mRadius = 0.0f;
-    mCamera1QuakeTime = 0.1f;
-    mTarget1QuakeTime = 0.1f;
-    mRoll1QuakeTime = 0.1f;
-    mRandDrop = 0.5f;
-    mHeadCurve = 1;
-    mTailCurve = 1;
-}
-
 cQuakeParam::~cQuakeParam() {
 }
 
@@ -124,19 +93,6 @@ MtObject* cQuakeParam::MyDTI::newInstance() const {
 
 const MtDTI& rCameraQuakeList::getDTI() const {
     return rCameraQuakeList::DTI;
-}
-
-inline void* rCameraQuakeList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCameraQuakeList::DTI)->memAlloc(sz, align, rCameraQuakeList::DTI.getID());
-}
-
-inline void rCameraQuakeList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCameraQuakeList::DTI)->memFree(p_addr);
-}
-
-inline rCameraQuakeList::rCameraQuakeList() {
-    setAttribute(18u);
-    mQuakeList.mAutoDelete = true;
 }
 
 rCameraQuakeList::~rCameraQuakeList() {

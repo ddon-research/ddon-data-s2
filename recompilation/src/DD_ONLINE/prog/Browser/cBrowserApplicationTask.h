@@ -78,3 +78,30 @@ public:
 inline void* cBrowserApplicationTask::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline void cBrowserApplicationTask::reset_member() {
+    this->m_ini = 0;
+    this->m_rno0 = 0;
+    this->m_tskidx = 0;
+    this->m_prm = nullptr;
+}
+
+inline cBrowserApplicationTask::cBrowserApplicationTask() {
+    this->m_prm = nullptr;
+    this->m_tskidx = 0;
+    this->m_ini = 0;
+    this->m_rno0 = 0;
+    this->m_brw = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../MT/MtAllocator.h"
+#include "../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cBrowserApplicationTask::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cBrowserApplicationTask::DTI);
+}
+
+inline void cBrowserApplicationTask::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBrowserApplicationTask::DTI)->memFree(p_addr);
+}

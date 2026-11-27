@@ -137,3 +137,20 @@ inline uShlNotifyCatch::uShlNotifyCatch() {
     this->mIsHitSeCall = false;
     this->mIsKillRequest = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* uShlNotifyCatch::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlNotifyCatch::DTI)->memAlloc(sz, align, ::uShlNotifyCatch::DTI.::MtDTI::getID());
+}
+
+inline void uShlNotifyCatch::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlNotifyCatch::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamNotifyCatch* uShlNotifyCatch::getShlParam() const {
+    return static_cast<const cShlParamNotifyCatch*>(this->::uShlBase::mpShlParam2);
+}

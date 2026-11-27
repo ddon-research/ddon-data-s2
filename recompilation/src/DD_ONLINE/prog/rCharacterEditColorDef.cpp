@@ -19,10 +19,6 @@ const MtDTI& cCharacterEditColorDef::getDTI() const {
     return cCharacterEditColorDef::DTI;
 }
 
-inline void cCharacterEditColorDef::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharacterEditColorDef::DTI)->memFree(p_addr);
-}
-
 inline cCharacterEditColorDef::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cCharacterEditColorDef::MyDTI cCharacterEditColorDef::DTI("cCharacterEditColorDef", &::cCharacterEditPaletteBase::DTI, 64ul, 0u, 0u);
@@ -33,14 +29,6 @@ __attribute__((weak)) MtObject* cCharacterEditColorDef::MyDTI::newInstance() con
 
 const MtDTI& rCharacterEditColorDef::getDTI() const {
     return rCharacterEditColorDef::DTI;
-}
-
-inline void* rCharacterEditColorDef::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCharacterEditColorDef::DTI)->memAlloc(sz, align, rCharacterEditColorDef::DTI.getID());
-}
-
-inline void rCharacterEditColorDef::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCharacterEditColorDef::DTI)->memFree(p_addr);
 }
 
 bool rCharacterEditColorDef::loadData(MtDataReader& r, cCharacterEditColorDef* pData) {

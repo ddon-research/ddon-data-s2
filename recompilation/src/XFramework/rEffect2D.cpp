@@ -32,14 +32,6 @@ const MtDTI& rEffect2D::getDTI() const {
 __attribute__((weak)) void rEffect2D::usage() {
 }
 
-inline void* rEffect2D::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffect2D::DTI)->memAlloc(sz, align, rEffect2D::DTI.mID);
-}
-
-inline void rEffect2D::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffect2D::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rEffect2D::getExt() const {
     return "e2d";
 }

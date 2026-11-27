@@ -170,3 +170,15 @@ public:
 inline void* uGUIPhoto::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPhoto::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPhoto::DTI);
+}
+
+inline void uGUIPhoto::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPhoto::DTI)->memFree(p_addr);
+}

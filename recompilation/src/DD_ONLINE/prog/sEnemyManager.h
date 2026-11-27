@@ -161,3 +161,15 @@ inline sEnemyManager::cEnemyDistanceInfo::~cEnemyDistanceInfo() {
 inline f32 sEnemyManager::cEnemyDistanceInfo::getNearestDistanceSuperErosion() {
     return this->mNearestDistanceSuperErosion;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sEnemyManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sEnemyManager::DTI);
+}
+
+inline void sEnemyManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEnemyManager::DTI)->memFree(p_addr);
+}

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rLargeCameraParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cLargeCameraParam::getDTI() const {
     return cLargeCameraParam::DTI;
-}
-
-inline void* cLargeCameraParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cLargeCameraParam::DTI)->memAlloc(sz, align, cLargeCameraParam::DTI.getID());
-}
-
-inline void cLargeCameraParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLargeCameraParam::DTI)->memFree(p_addr);
 }
 
 void cLargeCameraParam::createProperty(MtPropertyList& s) {
@@ -43,14 +33,6 @@ MtObject* cLargeCameraParam::MyDTI::newInstance() const {
 
 const MtDTI& rLargeCameraParam::getDTI() const {
     return rLargeCameraParam::DTI;
-}
-
-inline void* rLargeCameraParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLargeCameraParam::DTI)->memAlloc(sz, align, rLargeCameraParam::DTI.getID());
-}
-
-inline void rLargeCameraParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLargeCameraParam::DTI)->memFree(p_addr);
 }
 
 bool rLargeCameraParam::loadData(MtDataReader& in, cLargeCameraParam* pData) {

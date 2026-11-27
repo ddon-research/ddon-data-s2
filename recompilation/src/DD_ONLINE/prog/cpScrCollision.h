@@ -22,6 +22,7 @@ class MtVector3;
 class cWallHitInfo;
 class uDDOModel;
 class uEnemy;
+class uNpc;
 
 // Declarations
 class cGroundAttrInfo;
@@ -86,6 +87,7 @@ class cpScrCollision : public cpComponent
 {
     friend class uDDOModel;
     friend class uEnemy;
+    friend class uNpc;
 public:
     enum
     {
@@ -251,4 +253,24 @@ inline void cpScrCollision::onNoAngleCapsule() {
 
 inline void cpScrCollision::offNoAngleCapsule() {
     this->mIsNoAngleCapsule = false;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cGroundAttrInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGroundAttrInfo::DTI)->memAlloc(sz, align, ::cGroundAttrInfo::DTI.::MtDTI::getID());
+}
+
+inline void cGroundAttrInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGroundAttrInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cpScrCollision::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpScrCollision::DTI);
+}
+
+inline void cpScrCollision::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpScrCollision::DTI)->memFree(p_addr);
 }

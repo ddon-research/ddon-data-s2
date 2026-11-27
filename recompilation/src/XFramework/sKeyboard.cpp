@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "sKeyboard.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
@@ -21,10 +20,6 @@
 
 const MtDTI& sKeyboard::getDTI() const {
     return sKeyboard::DTI;
-}
-
-inline void sKeyboard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sKeyboard::DTI)->memFree(p_addr);
 }
 
 sKeyboard::sKeyboard() {

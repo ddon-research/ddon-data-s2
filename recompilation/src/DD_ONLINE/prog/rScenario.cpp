@@ -20,14 +20,6 @@ const MtDTI& cScenarioData::getDTI() const {
     return cScenarioData::DTI;
 }
 
-inline void* cScenarioData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cScenarioData::DTI)->memAlloc(sz, align, cScenarioData::DTI.getID());
-}
-
-inline void cScenarioData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cScenarioData::DTI)->memFree(p_addr);
-}
-
 cScenarioData::~cScenarioData() {
     if (mpParam != nullptr) {
         delete mpParam;
@@ -61,18 +53,6 @@ MtObject* cScenarioData::MyDTI::newInstance() const {
 
 const MtDTI& rScenario::getDTI() const {
     return rScenario::DTI;
-}
-
-inline void* rScenario::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rScenario::DTI)->memAlloc(sz, align, rScenario::DTI.getID());
-}
-
-inline void rScenario::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rScenario::DTI)->memFree(p_addr);
-}
-
-inline rScenario::rScenario() {
-    setAttribute(18u);
 }
 
 rScenario::~rScenario() {

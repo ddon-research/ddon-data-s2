@@ -1,11 +1,10 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cAction.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cDelegate.h"
+#include "cState.h"
 #include "../../XFramework/cUnit.h"
 #include "cpActionManager.h"
 #include "cpActionRequest.h"
@@ -20,14 +19,6 @@
 
 const MtDTI& cAction::getDTI() const {
     return cAction::DTI;
-}
-
-inline void* cAction::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAction::DTI)->memAlloc(sz, align, cAction::DTI.getID());
-}
-
-inline void cAction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAction::DTI)->memFree(p_addr);
 }
 
 cAction::cAction() {
@@ -47,9 +38,39 @@ void cAction::preInit() {
     mpModel->resetAtkAdjust();
 }
 
-__attribute__((weak)) void cAction::init() {
-    DDON_STUB("cAction::init")
-    /* stub */
+void cAction::init() {
+    if (mpModel != nullptr) {
+        if (mpModel->mGuardComponent.mpActionRequest != nullptr) {
+            if (mpModel->getStateActionPtr() != nullptr) {
+                cState* v0_9 = mpModel->getStateActionPtr()->mpCurrentState;
+                if (v0_9 != nullptr) {
+                    const MtDTI& t0 = v0_9->getDTI();
+                    MT_CTSTR v0_1 = cStateAction::DTI.mName;
+                    for (const MtDTI* v0_0 = &t0;;) {
+                        if (v0_1 != v0_0->mName) {
+                            if (v0_0->mpParent != nullptr) {
+                                v0_0 = v0_0->mpParent;
+                            } else {
+                                break;
+                            }
+                        } else {
+                            mpModel->getActionRequestPtr()->mEndAction = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 24);
+                            mpModel->getActionRequestPtr()->mLandAction = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 28);
+                            mpModel->getActionRequestPtr()->mFallAction = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 32);
+                            mpModel->getActionRequestPtr()->mShrinkAction = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 40);
+                            mpModel->getActionRequestPtr()->mBlowAction = *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_9) + 36);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        if (mpModel != nullptr) {
+            if (mpModel->getCtrl() != nullptr) {
+                mpModel->getCtrl()->mForcePeriodic = nNetMsgData::nCtrl::NET_MSG_ID_PERIODIC_NOTHING;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cAction::move() {

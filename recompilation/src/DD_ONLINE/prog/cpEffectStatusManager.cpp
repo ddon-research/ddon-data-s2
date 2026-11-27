@@ -20,14 +20,6 @@ const MtDTI& cEffectStatus::getDTI() const {
     return cEffectStatus::DTI;
 }
 
-inline void* cEffectStatus::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEffectStatus::DTI)->memAlloc(sz, align, cEffectStatus::DTI.getID());
-}
-
-inline void cEffectStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEffectStatus::DTI)->memFree(p_addr);
-}
-
 inline cEffectStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cEffectStatus::MyDTI cEffectStatus::DTI("cEffectStatus", &::MtObject::DTI, 40ul, 0u, 0u);
@@ -40,16 +32,8 @@ const MtDTI& cpEffectStatusManager::getDTI() const {
     return cpEffectStatusManager::DTI;
 }
 
-inline MtAllocator* cpEffectStatusManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpEffectStatusManager::DTI);
-}
-
 void* cpEffectStatusManager::operator new(size_t sz, u32 align) {
     return cpEffectStatusManager::getAllocator()->memAlloc(sz, align, cpEffectStatusManager::DTI.getID());
-}
-
-inline void cpEffectStatusManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpEffectStatusManager::DTI)->memFree(p_addr);
 }
 
 cpEffectStatusManager::~cpEffectStatusManager() {

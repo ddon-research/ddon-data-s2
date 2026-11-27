@@ -99,3 +99,23 @@ inline cShlParamCompConditionJob10Cs08::cShlParamCompConditionJob10Cs08() {
 inline void* cpShlConditionJob10Cs08::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamCompConditionJob10Cs08::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamCompConditionJob10Cs08::DTI)->memAlloc(sz, align, ::cShlParamCompConditionJob10Cs08::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamCompConditionJob10Cs08::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamCompConditionJob10Cs08::DTI)->memFree(p_addr);
+}
+
+inline void* cpShlConditionJob10Cs08::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpShlConditionJob10Cs08::DTI)->memAlloc(sz, align, ::cpShlConditionJob10Cs08::DTI.::MtDTI::getID());
+}
+
+inline void cpShlConditionJob10Cs08::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShlConditionJob10Cs08::DTI)->memFree(p_addr);
+}

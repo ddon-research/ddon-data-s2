@@ -208,3 +208,11 @@ inline void uScreenSpace::setFXAA(bool enable) {
 inline bool uScreenSpace::isDistortionEnabled() const {
     return this->mDistortionEnabled;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uScreenSpace::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uScreenSpace::DTI)->memFree(p_addr);
+}

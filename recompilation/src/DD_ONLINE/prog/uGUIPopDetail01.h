@@ -35,7 +35,9 @@ class cGUIObjTexture;
 class cItemParam;
 namespace nGUIItem { class cItem; }
 class rGUI;
+class uGUIArisenCard;
 class uGUIBase;
+class uGUIBazaarItem;
 class uGUIGiveAndTake;
 class uGUILoginBonus;
 class uGUIPopCraftDetail;
@@ -56,6 +58,8 @@ using u8 = unsigned char;
 
 class uGUIPopDetail01 : public uGUIPopBase
 {
+    friend class uGUIArisenCard;
+    friend class uGUIBazaarItem;
     friend class uGUIGiveAndTake;
     friend class uGUILoginBonus;
     friend class uGUIStorage;
@@ -775,4 +779,81 @@ inline void* uGUIPopDetail01::cPartsFooter::operator new(size_t sz, void* p_addr
 
 inline void* uGUIPopDetail01::cPartsJob::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIInstance.h"
+
+inline MtAllocator* uGUIPopDetail01::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::DTI);
+}
+
+inline void uGUIPopDetail01::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::createPartsParam() {
+    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mDataInst.Null_param), true);
+    if (this->mDataInst.Null_param != nullptr) {
+        this->mDataInst.Null_param->::cGUIInstNull::setPositionY(static_cast<float>(this->mPartsY));
+    }
+    this->mPartsY = this->mPartsY + 47;
+}
+
+inline void uGUIPopDetail01::createPartsItemRank() {
+    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mDataInst.Null_itemrank), true);
+    if (this->mDataInst.Null_itemrank != nullptr) {
+        this->mDataInst.Null_itemrank->::cGUIInstNull::setPositionY(static_cast<float>(this->mPartsY));
+    }
+    this->mPartsY = this->mPartsY + 23;
+}
+
+inline void uGUIPopDetail01::createPartsCaption() {
+    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mDataInst.Null_caption), true);
+    if (this->mDataInst.Null_caption != nullptr) {
+        this->mDataInst.Null_caption->::cGUIInstNull::setPositionY(static_cast<float>(this->mPartsY));
+    }
+    this->mPartsY = this->mPartsY + 110;
+}
+
+inline void uGUIPopDetail01::cDupParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cDupParam::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cDupCraftParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cDupCraftParam::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cPartsBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsBase::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cPartsCraft::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsCraft::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cPartsParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsParam::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cPartsItemRank::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsItemRank::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cPartsStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsStatus::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cPartsCaption::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsCaption::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cPartsFooter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsFooter::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopDetail01::cPartsJob::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopDetail01::cPartsJob::DTI)->memFree(p_addr);
 }

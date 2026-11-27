@@ -23,22 +23,6 @@ const MtDTI& rStageCustom::getDTI() const {
     return rStageCustom::DTI;
 }
 
-inline void* rStageCustom::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustom::DTI)->memAlloc(sz, align, rStageCustom::DTI.getID());
-}
-
-inline void rStageCustom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageCustom::DTI)->memFree(p_addr);
-}
-
-inline rStageCustom::rStageCustom() {
-    mprParts = nullptr;
-    mPartsDataNo = -1;
-    setAttribute(18u);
-    mpArrayArea = nullptr;
-    mArrayAreaNum = 0;
-}
-
 rStageCustom::~rStageCustom() {
     if (mprParts != nullptr) {
         mprParts->release();
@@ -158,14 +142,6 @@ MtObject* rStageCustom::MyDTI::newInstance() const {
 
 const MtDTI& rStageCustom::Area::getDTI() const {
     return rStageCustom::Area::DTI;
-}
-
-inline void* rStageCustom::Area::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustom::Area::DTI)->memAlloc(sz, align, rStageCustom::Area::DTI.getID());
-}
-
-inline void rStageCustom::Area::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageCustom::Area::DTI)->memFree(p_addr);
 }
 
 void rStageCustom::Area::createProperty(MtPropertyList& s) {

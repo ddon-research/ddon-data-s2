@@ -1208,6 +1208,12 @@ inline void* uGUIGPShop::cScrollCOGDispList::operator new(size_t sz, void* p_add
     return p_addr;
 }
 
+inline uGUIGPShop::cScrollCOGDispList::cScrollCOGDispList() : mpNull(static_cast<cGUIInstNull*>(nullptr)) {
+    this->mpTextMsg = nullptr;
+    this->mpText = nullptr;
+    this->mpTitle = nullptr;
+}
+
 inline void* uGUIGPShop::cScrollShopItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -1230,4 +1236,105 @@ inline void* uGUIGPShop::cScrollHistoryItemList::operator new(size_t sz, void* p
 
 inline void* uGUIGPShop::cScrollCOGItemList::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+
+inline MtAllocator* uGUIGPShop::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGPShop::DTI);
+}
+
+inline void uGUIGPShop::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::setMenuCursorSequence(cGUIInstAnimation* pInst) {
+    if (this->mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance != nullptr) {
+        this->mShopMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    }
+    if (this->mStatusMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance != nullptr) {
+        this->mStatusMenuCursor.::uGUIBase::cSupportInstAnim::mpInstance->::cGUIInstance::setVisible(false);
+    }
+    if (pInst == nullptr) {
+        return;
+    }
+    pInst->::cGUIInstAnimation::setSequenceId(5u);
+}
+
+inline void uGUIGPShop::toShopPage() {
+    this->mIsPageChange = true;
+    this->mType = 0;
+    this->mShopControl.::cGUIControlMgr::setCurrentPos(0u, 1);
+}
+
+inline void uGUIGPShop::updateIndicator() {
+    if (this->::uGUIBase::mpServerRequestFunc == static_cast<uGUIBase::ServerRequestFunc>(0)) {
+        return;
+    }
+    static_cast<sGUIExt*>(::sGUI::mpInstance)->::sGUIExt::reqDispCommIndicator();
+}
+
+inline void uGUIGPShop::cScrollShopDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollShopDispList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::cScrollChargeDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollChargeDispList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIGPShop::cScrollTicketDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollTicketDispList::DTI)->memAlloc(sz, align, ::uGUIGPShop::cScrollTicketDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIGPShop::cScrollTicketDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollTicketDispList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::cScrollStatusDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollStatusDispList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIGPShop::cScrollHistoryDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollHistoryDispList::DTI)->memAlloc(sz, align, ::uGUIGPShop::cScrollHistoryDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIGPShop::cScrollHistoryDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollHistoryDispList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIGPShop::cScrollCOGDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollCOGDispList::DTI)->memAlloc(sz, align, ::uGUIGPShop::cScrollCOGDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUIGPShop::cScrollCOGDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollCOGDispList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::cScrollShopItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollShopItemList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::cScrollChargeItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollChargeItemList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::cScrollTicketItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollTicketItemList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::cScrollStatusItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollStatusItemList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::cScrollHistoryItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollHistoryItemList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIGPShop::cScrollCOGItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPShop::cScrollCOGItemList::DTI)->memFree(p_addr);
 }

@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUICaplinkFriendList.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -45,16 +46,8 @@ const MtDTI& uGUICaplinkFriendList::getDTI() const {
     return uGUICaplinkFriendList::DTI;
 }
 
-inline MtAllocator* uGUICaplinkFriendList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkFriendList::DTI);
-}
-
 void* uGUICaplinkFriendList::operator new(size_t sz, u32 align) {
     return uGUICaplinkFriendList::getAllocator()->memAlloc(sz, align, uGUICaplinkFriendList::DTI.getID());
-}
-
-inline void uGUICaplinkFriendList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkFriendList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkFriendList::~uGUICaplinkFriendList() {
@@ -112,14 +105,52 @@ void uGUICaplinkFriendList::beginNewTalkSearch() {
     mRequestFlowId = 44;
 }
 
-__attribute__((weak)) void uGUICaplinkFriendList::beginAddTalkFriend(MT_CTSTR unique_id, s32 id_type) {
-    DDON_STUB("uGUICaplinkFriendList::beginAddTalkFriend")
-    /* stub */
+void uGUICaplinkFriendList::beginAddTalkFriend(MT_CTSTR unique_id, s32 id_type) {
+    mMode = 2;
+    mRequestFlowId = 2;
+    if (unique_id != nullptr) {
+        if (unique_id != (&mGroupId.mStr[0])) {
+            size_t t0 = strlen(unique_id);
+            mGroupId.mLength = (static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u;
+            if (((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u) != 0) {
+                memcpy(static_cast<void*>(&mGroupId.mStr[0]), static_cast<const void*>(unique_id), static_cast<size_t>((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u));
+                mGroupId.mStr[(static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u] = 0;
+            } else {
+                mGroupId.mStr[0] = 0;
+            }
+            mIdType = id_type;
+        } else {
+            mIdType = id_type;
+        }
+    } else {
+        mGroupId.mStr[0] = 0;
+        mGroupId.mLength = 0;
+        mIdType = id_type;
+    }
 }
 
 __attribute__((weak)) void uGUICaplinkFriendList::beginAddTalkSearch(MT_CTSTR unique_id, s32 id_type) {
-    DDON_STUB("uGUICaplinkFriendList::beginAddTalkSearch")
-    /* stub */
+    mMode = MODE_ADD_TALK;
+    mRequestFlowId = FLOW_SEARCH_SELECT;
+    if (unique_id != nullptr) {
+        // workaround
+        if ((reinterpret_cast<char*>(&mGroupId) + sizeof(u32)) != unique_id) {
+            s32 t1 = static_cast<s32>(strlen(unique_id));
+            if (t1 > 32) {
+                t1 = 32;
+            }
+            *reinterpret_cast<u32*>(&mGroupId) = static_cast<u32>(t1);
+            if (*reinterpret_cast<u32*>(&mGroupId) != 0u) {
+                memcpy(reinterpret_cast<char*>(&mGroupId) + sizeof(u32), unique_id, *reinterpret_cast<u32*>(&mGroupId));
+                (reinterpret_cast<char*>(&mGroupId) + sizeof(u32))[*reinterpret_cast<u32*>(&mGroupId)] = '\0';
+            } else {
+                (reinterpret_cast<char*>(&mGroupId) + sizeof(u32))[0] = '\0';
+            }
+        }
+    } else {
+        new (&mGroupId) MtStringEx<33>();
+    }
+    mIdType = id_type;
 }
 
 __attribute__((weak)) void uGUICaplinkFriendList::setFlowId(u32 flow_id, bool isInit) {
@@ -639,10 +670,6 @@ uGUICaplinkFriendList::stMain::stMain() {
 
 const MtDTI& uGUICaplinkFriendList::cIndex::getDTI() const {
     return uGUICaplinkFriendList::cIndex::DTI;
-}
-
-inline void uGUICaplinkFriendList::cIndex::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkFriendList::cIndex::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkFriendList::cIndex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

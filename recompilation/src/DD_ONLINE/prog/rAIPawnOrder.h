@@ -146,3 +146,15 @@ inline void* cAIPawnOrderParam::operator new(size_t sz, u32 align) {
 inline void* cAIPawnOrderParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnOrderParam::DTI)->memAlloc(sz, align, ::cAIPawnOrderParam::DTI.::MtDTI::getID());
 }
+
+inline void cAIPawnOrderParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnOrderParam::DTI)->memFree(p_addr);
+}
+
+inline void* rAIPawnOrder::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAIPawnOrder::DTI)->memAlloc(sz, align, ::rAIPawnOrder::DTI.::MtDTI::getID());
+}
+
+inline void rAIPawnOrder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIPawnOrder::DTI)->memFree(p_addr);
+}

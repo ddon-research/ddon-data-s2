@@ -441,3 +441,15 @@ inline void* sObjCollision::operator new(size_t sz, void* p_addr) {
 inline sObjCollision* sObjCollision::getInstance() {
     return ::sObjCollision::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sObjCollision::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sObjCollision::DTI);
+}
+
+inline void sObjCollision::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sObjCollision::DTI)->memFree(p_addr);
+}

@@ -21,16 +21,8 @@ const MtDTI& rSoundSubMixer::getDTI() const {
     return rSoundSubMixer::DTI;
 }
 
-inline MtAllocator* rSoundSubMixer::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rSoundSubMixer::DTI);
-}
-
 void* rSoundSubMixer::operator new(size_t sz, u32 align) {
     return rSoundSubMixer::getAllocator()->memAlloc(sz, align, rSoundSubMixer::DTI.getID());
-}
-
-inline void rSoundSubMixer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSubMixer::DTI)->memFree(p_addr);
 }
 
 rSoundSubMixer::rSoundSubMixer() {
@@ -357,14 +349,6 @@ __attribute__((weak)) MtObject* rSoundSubMixer::MyDTI::newInstance() const {
 
 const MtDTI& rSoundSubMixer::Fader::getDTI() const {
     return rSoundSubMixer::Fader::DTI;
-}
-
-inline void* rSoundSubMixer::Fader::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundSubMixer::Fader::DTI)->memAlloc(sz, align, rSoundSubMixer::Fader::DTI.getID());
-}
-
-inline void rSoundSubMixer::Fader::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundSubMixer::Fader::DTI)->memFree(p_addr);
 }
 
 rSoundSubMixer::Fader::Fader() {

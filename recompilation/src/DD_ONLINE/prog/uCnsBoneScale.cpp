@@ -19,14 +19,6 @@ const MtDTI& cCnsBoneScaleCtrl::getDTI() const {
     return cCnsBoneScaleCtrl::DTI;
 }
 
-inline void* cCnsBoneScaleCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCnsBoneScaleCtrl::DTI)->memAlloc(sz, align, cCnsBoneScaleCtrl::DTI.getID());
-}
-
-inline void cCnsBoneScaleCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCnsBoneScaleCtrl::DTI)->memFree(p_addr);
-}
-
 cCnsBoneScaleCtrl::cCnsBoneScaleCtrl() {
     mbEnable = false;
     mpCnsBoneScale = nullptr;
@@ -83,19 +75,6 @@ MtObject* cCnsBoneScaleCtrl::MyDTI::newInstance() const {
 
 const MtDTI& uCnsBoneScale::getDTI() const {
     return uCnsBoneScale::DTI;
-}
-
-inline void* uCnsBoneScale::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uCnsBoneScale::DTI)->memAlloc(sz, align, uCnsBoneScale::DTI.getID());
-}
-
-inline void uCnsBoneScale::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsBoneScale::DTI)->memFree(p_addr);
-}
-
-inline uCnsBoneScale::uCnsBoneScale() {
-    mJoint = 0;
-    mScl = MtVector3::One;
 }
 
 uCnsBoneScale::~uCnsBoneScale() {

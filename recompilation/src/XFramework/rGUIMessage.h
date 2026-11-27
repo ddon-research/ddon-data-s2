@@ -16,6 +16,7 @@ class MtPropertyList;
 class MtStream;
 class MtUI;
 namespace cAcquirement { class cSkillDataBase; }
+class cQuestResourceManager;
 class sGUIExt;
 class sNpcManager;
 class sTalkManager;
@@ -36,6 +37,7 @@ using u32 = unsigned int;
 class rGUIMessage : public cResource
 {
     friend class cAcquirement::cSkillDataBase;
+    friend class cQuestResourceManager;
     friend class sGUIExt;
     friend class sNpcManager;
     friend class sTalkManager;
@@ -160,4 +162,16 @@ inline void* rGUIMessage::operator new(size_t sz, void* p_addr) {
 
 inline u32 rGUIMessage::getIndexNum() const {
     return this->mIndexNum;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rGUIMessage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rGUIMessage::DTI)->memAlloc(sz, align, ::rGUIMessage::DTI.::MtDTI::mID);
+}
+
+inline void rGUIMessage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGUIMessage::DTI)->memFree(p_addr);
 }

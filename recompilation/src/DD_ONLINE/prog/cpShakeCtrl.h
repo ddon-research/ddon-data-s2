@@ -21,6 +21,7 @@ class cHitInfo;
 class cHitInfoAfter;
 class cpIKCtrl;
 class rShakeCtrl;
+class uCharacter;
 class uCnsShakeCtrl;
 class uDDOModel;
 
@@ -39,6 +40,7 @@ using u64 = __uint64_t;
 
 class cpShakeCtrl : public cpComponent
 {
+    friend class uCharacter;
     friend class uCnsShakeCtrl;
 public:
     enum
@@ -122,4 +124,16 @@ inline void cpShakeCtrl::setIKCtrl(cpIKCtrl* pIKCtrl) {
 
 inline rShakeCtrl* cpShakeCtrl::getCurrentResource() {
     return this->mpResource;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpShakeCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpShakeCtrl::DTI);
+}
+
+inline void cpShakeCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpShakeCtrl::DTI)->memFree(p_addr);
 }

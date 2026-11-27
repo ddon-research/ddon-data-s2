@@ -22,7 +22,9 @@ class MtDataWriter;
 class MtPropertyList;
 class MtString;
 class cKeyCustomParam;
+namespace nMenuKeyConfig { class CategoryListItems; }
 namespace nMenuKeyConfig { class KeyCustomManagers; }
+namespace nMenuKeyConfig { class KeyListItems; }
 class rKeyCustomParam;
 class sInputManager;
 
@@ -42,6 +44,7 @@ using u8 = unsigned char;
 
 class cKeyCustom : public MtObject
 {
+    friend class sInputManager;
 public:
     class MyDTI;
     struct stKeyCustom;
@@ -262,7 +265,9 @@ public:
 
 class cKeyCustomManager : public MtObject
 {
+    friend class nMenuKeyConfig::CategoryListItems;
     friend class nMenuKeyConfig::KeyCustomManagers;
+    friend class nMenuKeyConfig::KeyListItems;
     friend class sInputManager;
 public:
     class MyDTI;
@@ -374,4 +379,16 @@ inline u32 cKeyCustom::getPad() const {
 
 inline void* cKeyCustomManager::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cKeyCustom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cKeyCustom::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cKeyCustomManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cKeyCustomManager::DTI);
 }

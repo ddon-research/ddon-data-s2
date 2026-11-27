@@ -22,16 +22,8 @@ const MtDTI& cpSequenceCtrl::getDTI() const {
     return cpSequenceCtrl::DTI;
 }
 
-inline MtAllocator* cpSequenceCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpSequenceCtrl::DTI);
-}
-
 void* cpSequenceCtrl::operator new(size_t sz, u32 align) {
     return cpSequenceCtrl::getAllocator()->memAlloc(sz, align, cpSequenceCtrl::DTI.getID());
-}
-
-inline void cpSequenceCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpSequenceCtrl::DTI)->memFree(p_addr);
 }
 
 cpSequenceCtrl::cpSequenceCtrl() {
@@ -54,9 +46,46 @@ __attribute__((weak)) void cpSequenceCtrl::setup() {
     /* stub */
 }
 
-__attribute__((weak)) void cpSequenceCtrl::move() {
-    DDON_STUB("cpSequenceCtrl::move")
-    /* stub */
+void cpSequenceCtrl::move() {
+    if (mActive) {
+        if (mpModel != nullptr) {
+            unsigned int i0_1 = 0;
+            uDDOModel* v1_0;
+            u32 v1_1;
+            s32 v1_2;
+            unsigned int v1_7;
+            for (;;) {
+                if (mSeqCnt[i0_1].mActive) {
+                    if (static_cast<int>(mpModel->mMotion[mSeqCnt[i0_1].mBlend].mFrame) >= mSeqCnt[i0_1].mFrame) {
+                        v1_0 = mpModel;
+                        v1_1 = mSeqCnt[i0_1].mBlend;
+                        v1_2 = mSeqCnt[i0_1].mFrame;
+                        v1_7 = static_cast<int>(mpModel->mMotion[mSeqCnt[i0_1].mBlend].mFrame);
+                        for (;;) {
+                            u32 t0 = v1_0->mMotion[v1_1].calcSequence(mSeqCnt[i0_1].mPage, v1_2, v1_2);
+                            if (((static_cast<unsigned long>(t0) >> static_cast<unsigned long>(mSeqCnt[i0_1].mBit & 31u)) & 1ul) != 0) {
+                                mSeqCnt[i0_1].mCount = mSeqCnt[i0_1].mCount + 1;
+                            }
+                            s32 t1 = mSeqCnt[i0_1].mFrame;
+                            mSeqCnt[i0_1].mFrame = t1 + 1;
+                            if (t1 >= static_cast<int>(v1_7)) {
+                                break;
+                            } else {
+                                v1_0 = mpModel;
+                                v1_1 = mSeqCnt[i0_1].mBlend;
+                                v1_2 = t1 + 1;
+                            }
+                        }
+                    }
+                }
+                if ((i0_1 + 1u) != 10) {
+                    i0_1 = i0_1 + 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 void cpSequenceCtrl::updatePtr() {

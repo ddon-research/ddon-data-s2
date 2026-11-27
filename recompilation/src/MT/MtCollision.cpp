@@ -26,14 +26,31 @@ bool MtCollision::intersect(const MtLine& line, const MtLineSegment& ls, f32 eps
     return epsilon > MtCollision::sqrDistance(ls, line, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
-__attribute__((weak)) bool MtCollision::intersect(const MtLine& line, const MtPlane& plane) {
-    DDON_STUB("MtCollision::intersect")
-    return {};
+bool MtCollision::intersect(const MtLine& line, const MtPlane& plane) {
+    if ((((plane.normal.x * line.dir.x) + (plane.normal.y * line.dir.y)) + (plane.normal.z * line.dir.z)) > -1e-5f) {
+        if (1e-5f > (((plane.normal.x * line.dir.x) + (plane.normal.y * line.dir.y)) + (plane.normal.z * line.dir.z))) {
+            return 1.1920929e-7f >= __builtin_fabsf(plane.dist + (((plane.normal.x * line.from.x) + (plane.normal.y * line.from.y)) + (plane.normal.z * line.from.z)));
+        }
+    }
+    return true;
 }
 
 __attribute__((weak)) bool MtCollision::intersect(const MtLine& line, const MtPlane& plane, f32& t) {
-    DDON_STUB("MtCollision::intersect")
-    return {};
+    const f32 t0 = plane.normal.x;
+    const f32 t1 = plane.normal.y;
+    const f32 t2 = plane.normal.z;
+    const f32 t3 = line.from.x;
+    const f32 t4 = line.from.y;
+    const f32 t5 = line.from.z;
+    const f32 t6 = plane.dist;
+    if ((((t0 * line.dir.x) + (t1 * line.dir.y)) + (t2 * line.dir.z)) > -1e-5f) {
+        if (1e-5f > (((t0 * line.dir.x) + (t1 * line.dir.y)) + (t2 * line.dir.z))) {
+            t = 3.4028235e38f;
+            return 1.1920929e-7f >= __builtin_fabsf(t6 + (((t0 * t3) + (t1 * t4)) + (t2 * t5)));
+        }
+    }
+    t = (-(t6 + (((t0 * t3) + (t1 * t4)) + (t2 * t5)))) / (((t0 * line.dir.x) + (t1 * line.dir.y)) + (t2 * line.dir.z));
+    return true;
 }
 
 bool MtCollision::intersect(const MtRay& ray, const MtVector3& pos, f32 epsilon) {
@@ -52,9 +69,13 @@ bool MtCollision::intersect(const MtRay& ray, const MtLineSegment& ls, f32 epsil
     return epsilon > MtCollision::sqrDistance(ray, ls, static_cast<f32*>(nullptr), static_cast<f32*>(nullptr), 0.001f);
 }
 
-__attribute__((weak)) bool MtCollision::intersect(const MtRay& ray, const MtPlane& plane) {
-    DDON_STUB("MtCollision::intersect")
-    return {};
+bool MtCollision::intersect(const MtRay& ray, const MtPlane& plane) {
+    if ((((plane.normal.x * ray.dir.x) + (plane.normal.y * ray.dir.y)) + (plane.normal.z * ray.dir.z)) > -1e-5f) {
+        if (1e-5f > (((plane.normal.x * ray.dir.x) + (plane.normal.y * ray.dir.y)) + (plane.normal.z * ray.dir.z))) {
+            return false;
+        }
+    }
+    return ((-(plane.dist + (((plane.normal.x * ray.from.x) + (plane.normal.y * ray.from.y)) + (plane.normal.z * ray.from.z)))) / (((plane.normal.x * ray.dir.x) + (plane.normal.y * ray.dir.y)) + (plane.normal.z * ray.dir.z))) >= 0.0f;
 }
 
 __attribute__((weak)) bool MtCollision::intersect(const MtRay& ray, const MtPlane& plane, f32& t) {
@@ -62,9 +83,16 @@ __attribute__((weak)) bool MtCollision::intersect(const MtRay& ray, const MtPlan
     return {};
 }
 
-__attribute__((weak)) bool MtCollision::intersect(const MtRayY& rayY, const MtPlane& plane) {
-    DDON_STUB("MtCollision::intersect")
-    return {};
+bool MtCollision::intersect(const MtRayY& rayY, const MtPlane& plane) {
+    if (1e-5f > __builtin_fabsf(plane.normal.y * rayY.dir)) {
+        return false;
+    } else {
+        if (0.0f > ((-(plane.dist + (((plane.normal.y * rayY.from.y) + (plane.normal.x * rayY.from.x)) + (plane.normal.z * rayY.from.z)))) / (plane.normal.y * rayY.dir))) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 }
 
 bool MtCollision::intersect(const MtRayY& rayY, const MtTriangle& triangle) {
@@ -196,9 +224,8 @@ __attribute__((weak)) bool MtCollision::intersect(const MtAABB& aabb, const MtOB
     return {};
 }
 
-__attribute__((weak)) bool MtCollision::intersect(const MtAABB& aabb, const MtPlane& plane) {
-    DDON_STUB("MtCollision::intersect")
-    return {};
+bool MtCollision::intersect(const MtAABB& aabb, const MtPlane& plane) {
+    return (((__builtin_fabsf(plane.normal.x) * (aabb.maxpos.x - (0.5f * (aabb.maxpos.x + aabb.minpos.x)))) + (__builtin_fabsf(plane.normal.y) * (aabb.maxpos.y - (0.5f * (aabb.maxpos.y + aabb.minpos.y))))) + (__builtin_fabsf(plane.normal.z) * (aabb.maxpos.z - (0.5f * (aabb.maxpos.z + aabb.minpos.z))))) >= __builtin_fabsf(plane.dist + (((plane.normal.x * (0.5f * (aabb.maxpos.x + aabb.minpos.x))) + (plane.normal.y * (0.5f * (aabb.maxpos.y + aabb.minpos.y)))) + (plane.normal.z * (0.5f * (aabb.maxpos.z + aabb.minpos.z)))));
 }
 
 __attribute__((weak)) bool MtCollision::intersect(const MtAABB& aabb, const MtLine& line, f32* pLine_t) {
@@ -291,9 +318,17 @@ __attribute__((weak)) bool MtCollision::intersect(const MtTriangle& tri, const M
     return {};
 }
 
-__attribute__((weak)) bool MtCollision::intersect(const MtTriangle& tri, const MtSphere& s) {
-    DDON_STUB("MtCollision::intersect")
-    return {};
+bool MtCollision::intersect(const MtTriangle& tri, const MtSphere& s) {
+    const f32 t0 = s.pos.x;
+    const f32 t1 = s.pos.y;
+    const f32 t2 = s.pos.z;
+    MtVector3 frame56;
+    frame56.x = t0;
+    frame56.y = t1;
+    frame56.z = t2;
+    frame56.pad_ = 0.0f;
+    f32 distSq = MtCollision::sqrDistance(tri, frame56);
+    return 0.001f >= (distSq - (s.r * s.r));
 }
 
 __attribute__((weak)) bool MtCollision::intersect(const MtTriangle& tri, const MtCapsule& cap) {
@@ -762,8 +797,30 @@ __attribute__((weak)) bool MtCollision::closest(const MtOBB& obb, const MtCapsul
 }
 
 __attribute__((weak)) bool MtCollision::closest(const MtOBB& obb1, const MtOBB& obb2, MtContact* obb1_closest, MtContact* obb2_closest) {
-    DDON_STUB("MtCollision::closest")
-    return {};
+    alignas(MtContact) unsigned char t1[sizeof(MtContact)];
+    MtContact& contact1 = *reinterpret_cast<MtContact*>(t1);
+    new (&contact1.pos) MtVector3();
+    new (&contact1.normal) MtVector3();
+    contact1.distance = 3.40282347e+38f;
+    contact1.toi = 0.0f;
+    contact1.bFind = false;
+    
+    alignas(MtContact) unsigned char t2[sizeof(MtContact)];
+    MtContact& contact2 = *reinterpret_cast<MtContact*>(t2);
+    new (&contact2.pos) MtVector3();
+    new (&contact2.normal) MtVector3();
+    contact2.distance = 3.40282347e+38f;
+    contact2.toi = 0.0f;
+    contact2.bFind = false;
+    
+    const bool FlgHit = MtCollision::closestCore(obb1, obb2, contact1, contact2, false, true);
+    if (obb1_closest) {
+        *obb1_closest = contact1;
+    }
+    if (obb2_closest) {
+        *obb2_closest = contact2;
+    }
+    return FlgHit;
 }
 
 __attribute__((weak)) bool MtCollision::closest(const MtOBB& obb, const MtPlane& plane, MtContact* pOBBContact, MtContact* pPlaneContact) {
@@ -1231,9 +1288,31 @@ __attribute__((weak)) bool MtCollision::find(const MtLine& line, const MtPlane& 
     return {};
 }
 
-__attribute__((weak)) bool MtCollision::find(const MtLine& line, const MtPlane& plane, const MtVector3& CircleCenter, const f32 CircleRadius, f32& t, MtVector3& HitPosOut) {
-    DDON_STUB("MtCollision::find")
-    return {};
+bool MtCollision::find(const MtLine& line, const MtPlane& plane, const MtVector3& CircleCenter, const f32 CircleRadius, f32& t, MtVector3& HitPosOut) {
+    bool t0 = MtCollision::intersect(line, plane, t);
+    f32 t1 = t;
+    const f32 t2 = line.dir.x;
+    const f32 t3 = line.dir.y;
+    const f32 t4 = line.dir.z;
+    const f32 t5 = line.from.x;
+    const f32 t6 = line.from.y;
+    const f32 t7 = line.from.z;
+    if (t0) {
+        const f32 t8 = CircleCenter.x;
+        const f32 t9 = CircleCenter.y;
+        const f32 t10 = CircleCenter.z;
+        HitPosOut.x = t5 + (t1 * t2);
+        HitPosOut.y = t6 + (t1 * t3);
+        HitPosOut.z = t7 + (t1 * t4);
+        HitPosOut.pad_ = 0.0f;
+        return (CircleRadius * CircleRadius) > (((((t5 + (t1 * t2)) - t8) * ((t5 + (t1 * t2)) - t8)) + (((t6 + (t1 * t3)) - t9) * ((t6 + (t1 * t3)) - t9))) + (((t7 + (t1 * t4)) - t10) * ((t7 + (t1 * t4)) - t10)));
+    } else {
+        HitPosOut.x = t5 + (t1 * t2);
+        HitPosOut.y = t6 + (t1 * t3);
+        HitPosOut.z = t7 + (t1 * t4);
+        HitPosOut.pad_ = 0.0f;
+        return false;
+    }
 }
 
 __attribute__((weak)) bool MtCollision::find(const MtRay& ray, const MtPlane& plane, const MtVector3& CircleCenter, const f32 CircleRadius) {
@@ -1241,9 +1320,31 @@ __attribute__((weak)) bool MtCollision::find(const MtRay& ray, const MtPlane& pl
     return {};
 }
 
-__attribute__((weak)) bool MtCollision::find(const MtRay& ray, const MtPlane& plane, const MtVector3& CircleCenter, const f32 CircleRadius, f32& t, MtVector3& HitPosOut) {
-    DDON_STUB("MtCollision::find")
-    return {};
+bool MtCollision::find(const MtRay& ray, const MtPlane& plane, const MtVector3& CircleCenter, const f32 CircleRadius, f32& t, MtVector3& HitPosOut) {
+    bool t0 = MtCollision::intersect(ray, plane, t);
+    f32 t1 = t;
+    const f32 t2 = ray.dir.x;
+    const f32 t3 = ray.dir.y;
+    const f32 t4 = ray.dir.z;
+    const f32 t5 = ray.from.x;
+    const f32 t6 = ray.from.y;
+    const f32 t7 = ray.from.z;
+    if (t0) {
+        const f32 t8 = CircleCenter.x;
+        const f32 t9 = CircleCenter.y;
+        const f32 t10 = CircleCenter.z;
+        HitPosOut.x = t5 + (t1 * t2);
+        HitPosOut.y = t6 + (t1 * t3);
+        HitPosOut.z = t7 + (t1 * t4);
+        HitPosOut.pad_ = 0.0f;
+        return (CircleRadius * CircleRadius) > (((((t5 + (t1 * t2)) - t8) * ((t5 + (t1 * t2)) - t8)) + (((t6 + (t1 * t3)) - t9) * ((t6 + (t1 * t3)) - t9))) + (((t7 + (t1 * t4)) - t10) * ((t7 + (t1 * t4)) - t10)));
+    } else {
+        HitPosOut.x = t5 + (t1 * t2);
+        HitPosOut.y = t6 + (t1 * t3);
+        HitPosOut.z = t7 + (t1 * t4);
+        HitPosOut.pad_ = 0.0f;
+        return false;
+    }
 }
 
 __attribute__((weak)) bool MtCollision::find(const MtLineSegment& ls, const MtPlane& plane, const MtVector3& CircleCenter, const f32 CircleRadius) {

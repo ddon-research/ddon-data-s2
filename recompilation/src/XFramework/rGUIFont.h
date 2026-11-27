@@ -338,3 +338,11 @@ inline u32 rGUIFont::getDynamicTextureNum() const {
 inline u32 rGUIFont::getDynamicTextureSize() const {
     return this->mDynamicTextureSize;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rGUIFont::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGUIFont::DTI)->memFree(p_addr);
+}

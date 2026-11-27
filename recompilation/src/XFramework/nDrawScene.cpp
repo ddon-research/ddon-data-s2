@@ -25,10 +25,6 @@ void* nDraw::Scene::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::Scene::DTI)->memAlloc(sz, align, ::nDraw::Scene::DTI.mID);
 }
 
-inline void nDraw::Scene::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::Scene::DTI)->memFree(p_addr);
-}
-
 nDraw::Scene::Scene(nDraw::SCENE_DESC desc) {
     DDON_STUB("nDraw::Scene::Scene")
     /* stub */

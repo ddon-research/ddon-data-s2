@@ -126,3 +126,15 @@ inline cEmblemColorTable::cEmblemColorTable()
     , mColor(0xffffffffu)
 {
 }
+
+inline void cEmblemColorTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmblemColorTable::DTI)->memFree(p_addr);
+}
+
+inline void* rEmblemColorTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmblemColorTable::DTI)->memAlloc(sz, align, ::rEmblemColorTable::DTI.::MtDTI::getID());
+}
+
+inline void rEmblemColorTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmblemColorTable::DTI)->memFree(p_addr);
+}

@@ -3,7 +3,6 @@
 #include "SupportPoint.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -12,10 +11,6 @@
 
 const MtDTI& CDataSupportRate::getDTI() const {
     return CDataSupportRate::DTI;
-}
-
-inline MtAllocator* CDataSupportRate::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataSupportRate::DTI);
 }
 
 void* CDataSupportRate::operator new(size_t sz, u32 align) {
@@ -38,10 +33,6 @@ const MtDTI& CDataUseSupportPoint::getDTI() const {
     return CDataUseSupportPoint::DTI;
 }
 
-inline MtAllocator* CDataUseSupportPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataUseSupportPoint::DTI);
-}
-
 void* CDataUseSupportPoint::operator new(size_t sz, u32 align) {
     return CDataUseSupportPoint::getAllocator()->memAlloc(sz, align, CDataUseSupportPoint::DTI.getID());
 }
@@ -60,10 +51,6 @@ MtObject* CDataUseSupportPoint::MyDTI::newInstance() const {
 
 const MtDTI& CDataUseSupportPointRes::getDTI() const {
     return CDataUseSupportPointRes::DTI;
-}
-
-inline MtAllocator* CDataUseSupportPointRes::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataUseSupportPointRes::DTI);
 }
 
 void* CDataUseSupportPointRes::operator new(size_t sz, u32 align) {

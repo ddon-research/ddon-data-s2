@@ -120,6 +120,10 @@ inline void* cDamageMsg::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cDamageMsg::setAttackerUID(u32 uID) {
+    this->mData.mAttackerUID = uID;
+}
+
 inline void cDamageMsg::setAttackParamUID(u64 uID) {
     this->mData.mAttackParamUID = uID;
 }
@@ -132,8 +136,20 @@ inline void cDamageMsg::setDfdNodeUID(u64 uID) {
     this->mData.mDfdNodeUID = uID;
 }
 
+inline void cDamageMsg::setAtkAdjustUniqueId(u16 uID) {
+    this->mData.mAtkAdjustUniqueId = uID;
+}
+
 inline bool cDamageMsg::isReceiveInfo() const {
     return this->mData.mIsReceiveInfo;
+}
+
+inline void cDamageMsg::setAttackAttr(u32 attr) {
+    this->mData.mAttackAttr = attr;
+}
+
+inline void cDamageMsg::setAttackerUIDPrivate(u64 NewValue) {
+    this->mData.mAttackerUID = NewValue;
 }
 
 inline u64 cDamageMsg::getAttackParamUIDPrivate() const {
@@ -142,4 +158,11 @@ inline u64 cDamageMsg::getAttackParamUIDPrivate() const {
 
 inline u32 cDamageMsg::getShlOwnerIDPrivate() const {
     return this->mData.mShlOwnerID;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cDamageMsg::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cDamageMsg::DTI);
 }

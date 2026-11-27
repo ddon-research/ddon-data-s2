@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cComponentManager.h"
 #include "cContextPlayerInfo.h"
@@ -110,16 +109,8 @@ const MtDTI& cpJob01::getDTI() const {
     return cpJob01::DTI;
 }
 
-inline MtAllocator* cpJob01::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJob01::DTI);
-}
-
 void* cpJob01::operator new(size_t sz, u32 align) {
     return cpJob01::getAllocator()->memAlloc(sz, align, cpJob01::DTI.getID());
-}
-
-inline void cpJob01::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob01::DTI)->memFree(p_addr);
 }
 
 cpJob01::~cpJob01() {

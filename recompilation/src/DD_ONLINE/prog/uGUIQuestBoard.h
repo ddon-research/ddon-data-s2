@@ -214,3 +214,23 @@ inline void* uGUIQuestBoard::operator new(size_t sz, void* p_addr) {
 inline void* uGUIQuestBoard::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIQuestBoard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestBoard::DTI)->memFree(p_addr);
+}
+
+inline void uGUIQuestBoard::adjustTab() {
+    if (this->mpTabCtrl != nullptr) {
+        this->::uGUIQuestBoardBase::mMain.mTab.::uGUIBase::cReferenceUITab::setFocus(static_cast<u32>(this->mpTabCtrl->::cControl::mCurrentPos), true, true);
+    } else {
+        this->::uGUIQuestBoardBase::mMain.mTab.::uGUIBase::cReferenceUITab::setFocus(0u, true, true);
+    }
+}
+
+inline void uGUIQuestBoard::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestBoard::cListInfo::DTI)->memFree(p_addr);
+}

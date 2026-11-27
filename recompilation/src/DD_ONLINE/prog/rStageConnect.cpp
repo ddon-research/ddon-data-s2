@@ -26,22 +26,6 @@ const MtDTI& rStageConnect::getDTI() const {
     return rStageConnect::DTI;
 }
 
-inline void* rStageConnect::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageConnect::DTI)->memAlloc(sz, align, rStageConnect::DTI.getID());
-}
-
-inline void rStageConnect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageConnect::DTI)->memFree(p_addr);
-}
-
-inline rStageConnect::rStageConnect() {
-    setAttribute(22u);
-    mpConnectorArray = nullptr;
-    mConnectorNum = 0;
-    mpConnectionArray = nullptr;
-    mConnectionNum = 0;
-}
-
 rStageConnect::~rStageConnect() {
     destruct();
 }
@@ -156,24 +140,6 @@ const MtDTI& rStageConnect::Data::getDTI() const {
     return rStageConnect::Data::DTI;
 }
 
-inline void* rStageConnect::Data::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageConnect::Data::DTI)->memAlloc(sz, align, rStageConnect::Data::DTI.getID());
-}
-
-inline void rStageConnect::Data::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageConnect::Data::DTI)->memFree(p_addr);
-}
-
-inline rStageConnect::Data::Data() {
-    mType = 0;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mPartsNo = 0;
-    mMapGroup = 0;
-}
-
 void rStageConnect::Data::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mPos", &mPos, 0u, 0u);
@@ -191,14 +157,6 @@ MtObject* rStageConnect::Data::MyDTI::newInstance() const {
 
 const MtDTI& rStageConnect::Connect::getDTI() const {
     return rStageConnect::Connect::DTI;
-}
-
-inline void* rStageConnect::Connect::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageConnect::Connect::DTI)->memAlloc(sz, align, rStageConnect::Connect::DTI.getID());
-}
-
-inline void rStageConnect::Connect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageConnect::Connect::DTI)->memFree(p_addr);
 }
 
 void rStageConnect::Connect::createProperty(MtPropertyList& s) {

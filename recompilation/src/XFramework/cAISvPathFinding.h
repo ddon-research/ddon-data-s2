@@ -453,3 +453,31 @@ inline void* cAISvPathFinding::operator new(size_t sz, void* p_addr) {
 inline void* cAISvPathFinding::Node::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cAISvNavPathFinding::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAISvNavPathFinding::DTI)->memFree(p_addr);
+}
+
+inline void* cAISvNavPathFinding::navCell::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAISvNavPathFinding::navCell::DTI)->memAlloc(sz, align, ::cAISvNavPathFinding::navCell::DTI.::MtDTI::mID);
+}
+
+inline void cAISvNavPathFinding::navCell::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAISvNavPathFinding::navCell::DTI)->memFree(p_addr);
+}
+
+inline void* cAISvNavPathFinding::NavArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAISvNavPathFinding::NavArea::DTI)->memAlloc(sz, align, ::cAISvNavPathFinding::NavArea::DTI.::MtDTI::mID);
+}
+
+inline void cAISvPathFinding::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAISvPathFinding::DTI)->memFree(p_addr);
+}
+
+inline void* cAISvPathFinding::Node::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAISvPathFinding::Node::DTI)->memAlloc(sz, align, ::cAISvPathFinding::Node::DTI.::MtDTI::mID);
+}

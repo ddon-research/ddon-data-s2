@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlJob06CS14.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextPlayerInfo.h"
 #include "cEfcHandle.h"
@@ -23,10 +21,6 @@
 
 const MtDTI& cShlParamJob06CS14::getDTI() const {
     return cShlParamJob06CS14::DTI;
-}
-
-inline void* cShlParamJob06CS14::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamJob06CS14::DTI)->memAlloc(sz, align, cShlParamJob06CS14::DTI.getID());
 }
 
 inline void cShlParamJob06CS14::operator delete(void* p_addr) {
@@ -55,14 +49,6 @@ MtObject* cShlParamJob06CS14::MyDTI::newInstance() const {
 
 const MtDTI& uShlJob06CS14::getDTI() const {
     return uShlJob06CS14::DTI;
-}
-
-inline void* uShlJob06CS14::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlJob06CS14::DTI)->memAlloc(sz, align, uShlJob06CS14::DTI.getID());
-}
-
-inline void uShlJob06CS14::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlJob06CS14::DTI)->memFree(p_addr);
 }
 
 void uShlJob06CS14::setup() {

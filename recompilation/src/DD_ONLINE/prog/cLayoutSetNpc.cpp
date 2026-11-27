@@ -5,7 +5,6 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
 #include "cLayoutSet.h"
@@ -32,16 +31,8 @@ const MtDTI& cLayoutSetNpc::getDTI() const {
     return cLayoutSetNpc::DTI;
 }
 
-inline MtAllocator* cLayoutSetNpc::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cLayoutSetNpc::DTI);
-}
-
 void* cLayoutSetNpc::operator new(size_t sz, u32 align) {
     return cLayoutSetNpc::getAllocator()->memAlloc(sz, align, cLayoutSetNpc::DTI.getID());
-}
-
-inline void cLayoutSetNpc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLayoutSetNpc::DTI)->memFree(p_addr);
 }
 
 cLayoutSetNpc::cLayoutSetNpc() {

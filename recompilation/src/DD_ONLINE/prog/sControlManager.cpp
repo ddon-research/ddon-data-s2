@@ -89,16 +89,8 @@ const MtDTI& sControlManager::getDTI() const {
     return sControlManager::DTI;
 }
 
-inline MtAllocator* sControlManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sControlManager::DTI);
-}
-
 void* sControlManager::operator new(size_t sz, u32 align) {
     return sControlManager::getAllocator()->memAlloc(sz, align, sControlManager::DTI.getID());
-}
-
-inline void sControlManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sControlManager::DTI)->memFree(p_addr);
 }
 
 sControlManager::sControlManager() {
@@ -310,7 +302,7 @@ void sControlManager::releaseUnitAllFromType(s32 Type, bool IsDeleteContext) {
     if (num != 0) {
         for (unsigned int i0_3 = 0;;) {
             if (mRefArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
-                if (static_cast<unsigned int>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mRefArray.getBuffer()[static_cast<int>(i0_3)]) + 104)) == static_cast<unsigned int>(Type)) {
+                if (static_cast<unsigned int>(static_cast<uControl*>(mRefArray.getBuffer()[static_cast<int>(i0_3)])->mCtrlType) == static_cast<unsigned int>(Type)) {
                     releaseUnit(static_cast<uControl*>(mRefArray.getBuffer()[static_cast<int>(i0_3)]));
                     mRefArray.getBuffer()[static_cast<int>(i0_3)] = nullptr;
                 }
@@ -365,8 +357,54 @@ __attribute__((weak)) void sControlManager::releaseUnitAll() {
 }
 
 __attribute__((weak)) uControl* sControlManager::getUnitFromUniqueId(u32 UniqueId) {
-    DDON_STUB("sControlManager::getUnitFromUniqueId")
-    return nullptr;
+    u32 v0_0 = getUnitNum();
+    if (v0_0 != 0) {
+        MtObject* * v0_1 = mRefArray.getBuffer();
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[static_cast<int>(i0_2)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 372)) == UniqueId) {
+                    return static_cast<uControl*>(v0_1[static_cast<int>(i0_2)]);
+                }
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    u32 v3_0 = mAddArray.mLength;
+    MtObject* v5_3;
+    if (v3_0 == 0) {
+        v5_3 = nullptr;
+    } else {
+        MtObject* * v3_2 = mAddArray.getBuffer();
+        for (unsigned int i3_1 = 0;;) {
+            if (v3_2[static_cast<int>(i3_1)] != nullptr) {
+                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v3_2[static_cast<int>(i3_1)]) + 372)) == UniqueId) {
+                    v5_3 = v3_2[static_cast<int>(i3_1)];
+                    break;
+                }
+            }
+            if ((i3_1 + 1u) < v3_0) {
+                i3_1 += 1u;
+            } else {
+                v5_3 = nullptr;
+                break;
+            }
+        }
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+        }
+    }
+    return static_cast<uControl*>(v5_3);
 }
 
 __attribute__((weak)) bool sControlManager::isExistEnemyFromGroup(u32 group) {
@@ -597,9 +635,37 @@ __attribute__((weak)) void sControlManager::checkNpcExMotionLoad(MtTypedArray<sC
     /* stub */
 }
 
-__attribute__((weak)) void sControlManager::resetClanBaseManager() {
-    DDON_STUB("sControlManager::resetClanBaseManager")
-    /* stub */
+void sControlManager::resetClanBaseManager() {
+    if (getUnitNum() != 0) {
+        u32 v0_0 = getUnitNum();
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            MtObject* t0 = mRefArray.getBuffer()[static_cast<int>(i0_3)];
+            if (t0 != nullptr) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 104)) == 16) {
+                    if (sNpcManager::getInstance()->getNpcUnitType(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 380)) == 17) {
+                        if (sTalkManager::getInstance()->isChangeClanManager()) {
+                            sControlManager::getInstance()->releaseUnit(static_cast<uControl*>(t0));
+                        }
+                        return;
+                    } else {
+                        v1_0 = getUnitNum();
+                    }
+                } else {
+                    v1_0 = v0_0;
+                }
+            } else {
+                v1_0 = v0_0;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sControlManager::initDispPriorityData() {
@@ -620,14 +686,6 @@ __attribute__((weak)) MtObject* sControlManager::MyDTI::newInstance() const {
 
 const MtDTI& sControlManager::cDispPriorityData::getDTI() const {
     return sControlManager::cDispPriorityData::DTI;
-}
-
-inline void* sControlManager::cDispPriorityData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sControlManager::cDispPriorityData::DTI)->memAlloc(sz, align, sControlManager::cDispPriorityData::DTI.getID());
-}
-
-inline void sControlManager::cDispPriorityData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sControlManager::cDispPriorityData::DTI)->memFree(p_addr);
 }
 
 inline sControlManager::cDispPriorityData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

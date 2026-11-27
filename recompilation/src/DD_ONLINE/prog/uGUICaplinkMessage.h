@@ -172,3 +172,32 @@ inline void* uGUICaplinkMessage::operator new(size_t sz, void* p_addr) {
 
 inline uGUICaplinkMessage::stVariable::stVariable() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkMessage::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkMessage::DTI);
+}
+
+inline void uGUICaplinkMessage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkMessage::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkMessage::eventCancel() {
+    this->mFlowId = 3;
+    if (this->mpDecideCtrl != nullptr) {
+        this->mpDecideCtrl->mCtrlF = this->mpDecideCtrl->mCtrlF | 8u;
+    }
+    if (this->mpCancelCtrl != nullptr) {
+        this->mpCancelCtrl->mCtrlF = this->mpCancelCtrl->mCtrlF | 8u;
+    }
+    if (this->mpUDCtrl != nullptr) {
+        this->mpUDCtrl->::cControl::mCtrlF = this->mpUDCtrl->::cControl::mCtrlF | 8u;
+    }
+    if (this->mpButtonCtrl != nullptr) {
+        this->mpButtonCtrl->::cControl::mCtrlF = this->mpButtonCtrl->::cControl::mCtrlF | 8u;
+    }
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICaplinkMessage::updateExit);
+}

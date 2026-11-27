@@ -5,7 +5,6 @@
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -24,16 +23,8 @@ const MtDTI& cEditParam::getDTI() const {
     return cEditParam::DTI;
 }
 
-inline MtAllocator* cEditParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cEditParam::DTI);
-}
-
 void* cEditParam::operator new(size_t sz, u32 align) {
     return cEditParam::getAllocator()->memAlloc(sz, align, cEditParam::DTI.getID());
-}
-
-inline void cEditParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEditParam::DTI)->memFree(p_addr);
 }
 
 cEditParam::cEditParam() {
@@ -1460,14 +1451,6 @@ const MtDTI& cEditUserData::getDTI() const {
     return cEditUserData::DTI;
 }
 
-inline void* cEditUserData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEditUserData::DTI)->memAlloc(sz, align, cEditUserData::DTI.getID());
-}
-
-inline void cEditUserData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEditUserData::DTI)->memFree(p_addr);
-}
-
 void cEditUserData::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "Sex", &mBodyType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "Hair", &mHair, 0u, 0u);
@@ -1545,14 +1528,6 @@ MtObject* cEditUserData::MyDTI::newInstance() const {
 
 const MtDTI& cEditValue::getDTI() const {
     return cEditValue::DTI;
-}
-
-inline void* cEditValue::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEditValue::DTI)->memAlloc(sz, align, cEditValue::DTI.getID());
-}
-
-inline void cEditValue::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEditValue::DTI)->memFree(p_addr);
 }
 
 void cEditValue::createProperty(MtPropertyList& s) {

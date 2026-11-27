@@ -43,6 +43,42 @@ u32 nInputText::CandidateList::getCandidateListSelectIndex() const {
     return mCandidateDispInfo.mListSelectIndex;
 }
 
+nInputText::Context::Context() {
+    DDON_STUB("nInputText::Context::Context")
+    /* stub */
+}
+
+void nInputText::Context::clear() {
+    mState = 0;
+    mInputString.mIndex = 0;
+    mInputString.mSelectIndex = 0xFFFFFFFF;
+    mInputString.mBuffer[0] = static_cast<wchar_t>(0);
+    mInputString.mBufferUtf8[0] = 0;
+    mConvertInfo.mString.mIndex = 0;
+    mConvertInfo.mString.mSelectIndex = 0xFFFFFFFF;
+    mConvertInfo.mString.mBuffer[0] = static_cast<wchar_t>(0);
+    mConvertInfo.mString.mBufferUtf8[0] = 0;
+    mConvertInfo.mInputInfo.::nIMEPS4::InputInfo::clear();
+    mCandidateList.mCandidateDispInfo.::nIMEPS4::CandidateDispInfo::clear();
+    mCaretDisp = false;
+    mIsImeAvailable = false;
+    mIsImeOn = false;
+    mConversionMode = 0;
+}
+
+__attribute__((weak)) void nInputText::Context::copy(const nInputText::Context& other) {
+    DDON_STUB("nInputText::Context::copy")
+    /* stub */
+}
+
+void nInputText::Context::clearComp() {
+    mConvertInfo.mString.mIndex = 0;
+    mConvertInfo.mString.mSelectIndex = 0xFFFFFFFF;
+    mConvertInfo.mString.mBuffer[0] = static_cast<wchar_t>(0);
+    mConvertInfo.mString.mBufferUtf8[0] = 0;
+    mConvertInfo.mInputInfo.::nIMEPS4::InputInfo::clear();
+}
+
 nInputText::ConvertInfo::ConvertInfo() {
     DDON_STUB("nInputText::ConvertInfo::ConvertInfo")
     /* stub */

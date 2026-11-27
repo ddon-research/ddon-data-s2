@@ -68,10 +68,6 @@ const MtDTI& MtCollisionUtil::MtDataBuffer::getDTI() const {
     return MtCollisionUtil::MtDataBuffer::DTI;
 }
 
-inline void* MtCollisionUtil::MtDataBuffer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtDataBuffer::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtDataBuffer::DTI.mID);
-}
-
 MtCollisionUtil::MtDataBuffer::~MtDataBuffer() {
     if (mpData != nullptr) {
         return;
@@ -172,10 +168,6 @@ const MtDTI& MtCollisionUtil::MtListElement::getDTI() const {
     return MtCollisionUtil::MtListElement::DTI;
 }
 
-inline void* MtCollisionUtil::MtListElement::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtListElement::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtListElement::DTI.mID);
-}
-
 MtCollisionUtil::MtListElement::~MtListElement() {
     DDON_STUB("MtCollisionUtil::MtListElement::~MtListElement")
     /* stub */
@@ -202,10 +194,6 @@ MtObject* MtCollisionUtil::MtListElement::MyDTI::newInstance() const {
 
 const MtDTI& MtCollisionUtil::MtList::getDTI() const {
     return MtCollisionUtil::MtList::DTI;
-}
-
-inline void* MtCollisionUtil::MtList::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtList::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtList::DTI.mID);
 }
 
 MtCollisionUtil::MtList::~MtList() {
@@ -239,14 +227,6 @@ MtObject* MtCollisionUtil::MtList::MyDTI::newInstance() const {
 
 const MtDTI& MtCollisionUtil::MtTreeDTI::getDTI() const {
     return MtCollisionUtil::MtTreeDTI::DTI;
-}
-
-inline void* MtCollisionUtil::MtTreeDTI::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtTreeDTI::DTI)->memAlloc(sz, align, ::MtCollisionUtil::MtTreeDTI::DTI.mID);
-}
-
-inline void MtCollisionUtil::MtTreeDTI::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::MtCollisionUtil::MtTreeDTI::DTI)->memFree(p_addr);
 }
 
 MtCollisionUtil::MtTreeDTI::~MtTreeDTI() {

@@ -3,7 +3,6 @@
 #include "cParentRegionStatus.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cBlowShrinkInfo.h"
 #include "cContextInterface.h"
@@ -25,16 +24,8 @@ const MtDTI& cParentRegionStatus::getDTI() const {
     return cParentRegionStatus::DTI;
 }
 
-inline MtAllocator* cParentRegionStatus::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cParentRegionStatus::DTI);
-}
-
 void* cParentRegionStatus::operator new(size_t sz, u32 align) {
     return cParentRegionStatus::getAllocator()->memAlloc(sz, align, cParentRegionStatus::DTI.getID());
-}
-
-inline void cParentRegionStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cParentRegionStatus::DTI)->memFree(p_addr);
 }
 
 cParentRegionStatus::cParentRegionStatus() {

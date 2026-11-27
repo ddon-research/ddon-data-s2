@@ -133,3 +133,23 @@ inline cQuestUnitGroup::cQuestUnitGroup() {
 inline void* cQuestUnitManager::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cQuestUnitGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestUnitGroup::DTI)->memAlloc(sz, align, ::cQuestUnitGroup::DTI.::MtDTI::getID());
+}
+
+inline void cQuestUnitGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestUnitGroup::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cQuestUnitManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cQuestUnitManager::DTI);
+}
+
+inline void cQuestUnitManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestUnitManager::DTI)->memFree(p_addr);
+}

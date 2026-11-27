@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rRoomWearParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cRoomWearParam::getDTI() const {
     return cRoomWearParam::DTI;
-}
-
-inline void* cRoomWearParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cRoomWearParam::DTI)->memAlloc(sz, align, cRoomWearParam::DTI.getID());
-}
-
-inline void cRoomWearParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cRoomWearParam::DTI)->memFree(p_addr);
 }
 
 cRoomWearParam::~cRoomWearParam() {
@@ -85,14 +75,6 @@ MtObject* cRoomWearParam::MyDTI::newInstance() const {
 
 const MtDTI& rRoomWearParam::getDTI() const {
     return rRoomWearParam::DTI;
-}
-
-inline void* rRoomWearParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rRoomWearParam::DTI)->memAlloc(sz, align, rRoomWearParam::DTI.getID());
-}
-
-inline void rRoomWearParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rRoomWearParam::DTI)->memFree(p_addr);
 }
 
 bool rRoomWearParam::loadData(MtDataReader& in, cRoomWearParam* pData) {

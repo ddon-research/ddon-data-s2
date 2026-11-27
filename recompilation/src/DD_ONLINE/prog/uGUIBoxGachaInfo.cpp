@@ -46,16 +46,8 @@ const MtDTI& uGUIBoxGachaInfo::getDTI() const {
     return uGUIBoxGachaInfo::DTI;
 }
 
-inline MtAllocator* uGUIBoxGachaInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::DTI);
-}
-
 void* uGUIBoxGachaInfo::operator new(size_t sz, u32 align) {
     return uGUIBoxGachaInfo::getAllocator()->memAlloc(sz, align, uGUIBoxGachaInfo::DTI.getID());
-}
-
-inline void uGUIBoxGachaInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIBoxGachaInfo::~uGUIBoxGachaInfo() {
@@ -162,9 +154,25 @@ __attribute__((weak)) void uGUIBoxGachaInfo::refreshInfo() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBoxGachaInfo::restartFromBoughtBox() {
-    DDON_STUB("uGUIBoxGachaInfo::restartFromBoughtBox")
-    /* stub */
+void uGUIBoxGachaInfo::restartFromBoughtBox() {
+    if (mIsBoughtBoxItemReqNow) {
+        mIsBoughtBoxItemReqReserv = true;
+    } else {
+        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIBoxGachaInfo::getBoughtBoxListRequestServer);
+            mServerCommandStatusRsv = 501;
+            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIBoxGachaInfo::getBoughtBoxListCallBack);
+            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        } else {
+            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIBoxGachaInfo::getBoughtBoxListRequestServer);
+            mServerCommandStatus = 501;
+            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIBoxGachaInfo::getBoughtBoxListCallBack);
+            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            mServerRno = 0;
+            mServerResult = 0;
+        }
+    }
+    mGetItemNum = 0;
 }
 
 __attribute__((weak)) void uGUIBoxGachaInfo::adjustCursor(bool isFocus) {
@@ -255,9 +263,28 @@ void uGUIBoxGachaInfo::updatePtr() {
     mpGPShop = nullptr;
 }
 
-__attribute__((weak)) void uGUIBoxGachaInfo::updateInit() {
-    DDON_STUB("uGUIBoxGachaInfo::updateInit")
-    /* stub */
+void uGUIBoxGachaInfo::updateInit() {
+    if (mIsBoughtBoxItemReqNow) {
+        mIsBoughtBoxItemReqReserv = true;
+    } else {
+        if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+            mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIBoxGachaInfo::getBoughtBoxListRequestServer);
+            mServerCommandStatusRsv = 501;
+            mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIBoxGachaInfo::getBoughtBoxListCallBack);
+            mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        } else {
+            mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIBoxGachaInfo::getBoughtBoxListRequestServer);
+            mServerCommandStatus = 501;
+            mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIBoxGachaInfo::getBoughtBoxListCallBack);
+            mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+            mServerRno = 0;
+            mServerResult = 0;
+        }
+    }
+    init();
+    updateWait();
+    adjustTabCursor(false);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIBoxGachaInfo::updateWait);
 }
 
 __attribute__((weak)) void uGUIBoxGachaInfo::updateWait() {
@@ -279,7 +306,7 @@ __attribute__((weak)) void uGUIBoxGachaInfo::moveEvent() {
     /* stub */
 }
 
-void uGUIBoxGachaInfo::init() {
+__attribute__((weak)) void uGUIBoxGachaInfo::init() {
     cGUIObjMessage* t0 = mSummary.mpObjImgMsg;
     setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 39u), 0u, false);
     if (mSummary.mpObjImgMsg != nullptr) {
@@ -441,8 +468,22 @@ __attribute__((weak)) void uGUIBoxGachaInfo::setupDialogReset() {
 }
 
 __attribute__((weak)) void uGUIBoxGachaInfo::setupDialogResetMes() {
-    DDON_STUB("uGUIBoxGachaInfo::setupDialogResetMes")
-    /* stub */
+    if (mpGUISystemMsg != nullptr) {
+        mpGUISystemMsg->mEndType = ENDTYPE_KILL;
+        mpGUISystemMsg->end();
+    }
+    mpGUISystemMsg = nullptr;
+    static_cast<sGUIExt*>(sGUI::getInstance())->reqWindowActive(this);
+    mpGUISystemMsg = new (16u) uGUISystemMsg(0u, 0u, false);
+    if (mpGUISystemMsg != nullptr) {
+        *reinterpret_cast<u32*>(reinterpret_cast<char*>(mpGUISystemMsg) + 0x1d60) = DIALOG_RESETMES;
+        mpGUISystemMsg->setText(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 88u), -1);
+        *reinterpret_cast<u32*>(reinterpret_cast<char*>(mpGUISystemMsg) + 0x1d64) = uGUISystemMsg::MODE_DEFAULT;
+        sUnit::getInstance()->addBottom(static_cast<MOVE_LINE>(sUnit::getInstance()->getNextMoveLineId(getMoveLine())), mpGUISystemMsg, getUnitGroup());
+        uGUISystemMsg* t1 = mpGUISystemMsg;
+        t1->mBasePointerPrio = mBasePointerPrio - mPointerPrioRange;
+        mIsOpenDialog = true;
+    }
 }
 
 __attribute__((weak)) void uGUIBoxGachaInfo::setupDialogGPShop() {
@@ -740,17 +781,12 @@ const MtDTI& uGUIBoxGachaInfo::cLotList::getDTI() const {
     return uGUIBoxGachaInfo::cLotList::DTI;
 }
 
-inline void uGUIBoxGachaInfo::cLotList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::cLotList::DTI)->memFree(p_addr);
-}
-
 inline uGUIBoxGachaInfo::cLotList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBoxGachaInfo::cLotList::MyDTI uGUIBoxGachaInfo::cLotList::DTI("uGUIBoxGachaInfo::cLotList", &::uGUIBase::cScrollListItemBase::DTI, 736ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIBoxGachaInfo::cLotList::MyDTI::newInstance() const {
-    DDON_STUB("uGUIBoxGachaInfo::cLotList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIBoxGachaInfo::cLotList::MyDTI::newInstance() const {
+    return new (16u) uGUIBoxGachaInfo::cLotList;
 }
 
 uGUIBoxGachaInfo::stSummary::stSummary() {
@@ -760,14 +796,6 @@ uGUIBoxGachaInfo::stSummary::stSummary() {
 
 const MtDTI& uGUIBoxGachaInfo::cSumList::getDTI() const {
     return uGUIBoxGachaInfo::cSumList::DTI;
-}
-
-inline void* uGUIBoxGachaInfo::cSumList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::cSumList::DTI)->memAlloc(sz, align, uGUIBoxGachaInfo::cSumList::DTI.getID());
-}
-
-inline void uGUIBoxGachaInfo::cSumList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::cSumList::DTI)->memFree(p_addr);
 }
 
 inline uGUIBoxGachaInfo::cSumList::cSumList() {
@@ -791,17 +819,12 @@ const MtDTI& uGUIBoxGachaInfo::cListItem::getDTI() const {
     return uGUIBoxGachaInfo::cListItem::DTI;
 }
 
-inline void uGUIBoxGachaInfo::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIBoxGachaInfo::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBoxGachaInfo::cListItem::MyDTI uGUIBoxGachaInfo::cListItem::DTI("uGUIBoxGachaInfo::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 560ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIBoxGachaInfo::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUIBoxGachaInfo::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIBoxGachaInfo::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUIBoxGachaInfo::cListItem;
 }
 
 const MtDTI& uGUIBoxGachaInfo::cLotInfo::getDTI() const {
@@ -821,10 +844,6 @@ const MtDTI& uGUIBoxGachaInfo::cListInfo::getDTI() const {
     return uGUIBoxGachaInfo::cListInfo::DTI;
 }
 
-inline void uGUIBoxGachaInfo::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::cListInfo::DTI)->memFree(p_addr);
-}
-
 inline uGUIBoxGachaInfo::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBoxGachaInfo::cListInfo::MyDTI uGUIBoxGachaInfo::cListInfo::DTI("uGUIBoxGachaInfo::cListInfo", &::uGUIBase::cScrollListInfoBase::DTI, 72ul, 0u, 0u);
@@ -836,14 +855,6 @@ __attribute__((weak)) MtObject* uGUIBoxGachaInfo::cListInfo::MyDTI::newInstance(
 
 const MtDTI& uGUIBoxGachaInfo::cItemInfo::getDTI() const {
     return uGUIBoxGachaInfo::cItemInfo::DTI;
-}
-
-inline void* uGUIBoxGachaInfo::cItemInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::cItemInfo::DTI)->memAlloc(sz, align, uGUIBoxGachaInfo::cItemInfo::DTI.getID());
-}
-
-inline void uGUIBoxGachaInfo::cItemInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBoxGachaInfo::cItemInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIBoxGachaInfo::cItemInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

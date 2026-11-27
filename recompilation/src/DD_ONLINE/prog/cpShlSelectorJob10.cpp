@@ -26,10 +26,6 @@ const MtDTI& cShlParamCompSelectorJob10Cs08::getDTI() const {
     return cShlParamCompSelectorJob10Cs08::DTI;
 }
 
-inline void cShlParamCompSelectorJob10Cs08::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamCompSelectorJob10Cs08::DTI)->memFree(p_addr);
-}
-
 const MtDTI& cShlParamCompSelectorJob10Cs08::getComponentDTI() const {
     return cpShlSelectorJob10Cs08::DTI;
 }
@@ -69,10 +65,6 @@ const MtDTI& cpShlSelectorJob10Cs08::getDTI() const {
     return cpShlSelectorJob10Cs08::DTI;
 }
 
-inline void cpShlSelectorJob10Cs08::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlSelectorJob10Cs08::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cpShlSelectorJob10Cs08::initSub() {
     DDON_STUB("cpShlSelectorJob10Cs08::initSub")
     /* stub */
@@ -83,9 +75,37 @@ __attribute__((weak)) void cpShlSelectorJob10Cs08::kill() {
     /* stub */
 }
 
-__attribute__((weak)) void cpShlSelectorJob10Cs08::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
-    DDON_STUB("cpShlSelectorJob10Cs08::callbackReplaceHitInfo_Atk")
-    /* stub */
+void cpShlSelectorJob10Cs08::callbackReplaceHitInfo_Atk(cHitInfo* pHitInfo) {
+    MtObject* v0_3 = mpOwner;
+    const MtDTI& t0 = v0_3->getDTI();
+    MT_CTSTR v0_1 = uShlComponentCtrl::DTI.mName;
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            if (v0_3 != nullptr) {
+                uShlComponentCtrl* pShl = static_cast<uShlComponentCtrl*>(v0_3);
+                if (static_cast<unsigned int>(static_cast<uShlBase*>(v0_3)->getShlId() - 79) <= 1) {
+                    if (static_cast<uShlBase*>(v0_3)->getOwner() != nullptr) {
+                        if ((static_cast<uShlBase*>(v0_3)->getOwner()->mUnitId & 16u) != 0) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(static_cast<uShlBase*>(v0_3)->getOwner()) + 13376)) != 0) {
+                                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(static_cast<uShlBase*>(v0_3)->getOwner()) + 13376)) + 40)) == 10) {
+                                    if (!mIsChargeMax) {
+                                        static_cast<uShlBase*>(v0_3)->getOwner()->attackParamReplace(pHitInfo, 1);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 u32 cpShlSelectorJob10Cs08::getSelectedIndex() const {

@@ -208,3 +208,50 @@ inline rNPCMotMyRoom::InfoBinary::MotDataBinary::MotDataBinary() {
     this->mItemMotNo = -1;
     this->mMessage = -1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rNPCMotMyRoom::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::DTI)->memAlloc(sz, align, ::rNPCMotMyRoom::DTI.::MtDTI::getID());
+}
+
+inline void rNPCMotMyRoom::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::DTI)->memFree(p_addr);
+}
+
+inline rNPCMotMyRoom::rNPCMotMyRoom() {
+    this->::cResource::setAttribute(18u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void rNPCMotMyRoom::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayNum != 0) {
+        do {
+            this->mpArray[i0].~InfoBinary();
+            i0 += 1u;
+        } while (i0 < this->mArrayNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::DTI)->memFree(static_cast<void*>(this->mpArray));
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void* rNPCMotMyRoom::InfoBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::InfoBinary::DTI)->memAlloc(sz, align, ::rNPCMotMyRoom::InfoBinary::DTI.::MtDTI::getID());
+}
+
+inline void rNPCMotMyRoom::InfoBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::InfoBinary::DTI)->memFree(p_addr);
+}
+
+inline void* rNPCMotMyRoom::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, ::rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI.::MtDTI::getID());
+}
+
+inline void rNPCMotMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
+}

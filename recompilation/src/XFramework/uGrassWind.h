@@ -8,6 +8,7 @@
 #include "../MT/MtLogisticMap.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtObject.h"
+#include "../MT/MtPrimitive3D.h"
 #include "sScene.h"
 #include "uGrassEffect.h"
 
@@ -21,19 +22,23 @@ class MtMatrix;
 class MtObject;
 class MtProperty;
 class MtPropertyList;
+class MtSphere;
 class MtUI;
 class MtVector3;
 class MtVector4;
+class uCoord;
 
 // Declarations
 class uGrassWind;
 class uGrassWindDirection;
+class uGrassWindPoint;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
 using f32 = float;
+using s32 = int;
 using size_t = _Sizet;
 using u32 = unsigned int;
 
@@ -73,6 +78,7 @@ public:
     class cSwingParameters : public MtObject
     {
         friend class uGrassWindDirection;
+        friend class uGrassWindPoint;
     public:
         class MyDTI;
     public:
@@ -225,8 +231,72 @@ public:
     static MyDTI DTI;
 };
 
+class uGrassWindPoint : public uGrassWind
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    uGrassWindPoint(MtFloat3 point, f32 attenuation);
+    virtual ~uGrassWindPoint();
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void move();  // vtable slot 9
+    virtual void moveAfter();  // vtable slot 10
+    virtual void applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset);  // vtable slot 15
+    virtual bool getBoundary(MtSphere* sphere);  // vtable slot 13
+    virtual void getAABB(MtAABB& aabb);  // vtable slot 24
+    virtual MtVector4 getInfo();  // vtable slot 25
+    virtual MtVector3 getDirection(const MtVector3& pos);  // vtable slot 27
+    virtual MtVector4 getAngle(const MtVector3& pos, const f32& phase);  // vtable slot 28
+    virtual MtVector3 getForce(const MtVector3& pos);  // vtable slot 29
+    void setParent(uCoord*, s32);
+    void setAttenuation(f32);
+    void setPoint(const MtVector3& point);
+    virtual sScene::Node* getSceneNode();  // vtable slot 30
+protected:
+    MtAABB mAABB;  // offset: 0xfa0
+    MtVector3 mWorldPos;  // offset: 0xfc0
+    MtVector3 mPoint;  // offset: 0xfd0
+    f32 mAttenuation;  // offset: 0xfe0
+    uCoord* mpParent;  // offset: 0xfe8
+    s32 mParentNo;  // offset: 0xff0
+    uGrassWind::cSwingParameters mParam;  // offset: 0x1000
+private:
+    sScene::Node mNode;  // offset: 0x10b0
+public:
+    static MyDTI DTI;
+};
+
 inline void* uGrassWind::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void uGrassWind::setPhase(f32 phase) {
+    this->mPhase = phase;
+}
+
+inline void uGrassWind::setFrequency(f32 freq) {
+    this->mFrequency = freq;
 }
 
 inline void* uGrassWind::cSwingParameters::operator new(size_t sz, void* p_addr) {
@@ -235,4 +305,28 @@ inline void* uGrassWind::cSwingParameters::operator new(size_t sz, void* p_addr)
 
 inline void* uGrassWindDirection::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* uGrassWindPoint::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uGrassWind::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGrassWind::DTI)->memFree(p_addr);
+}
+
+inline void uGrassWind::cSwingParameters::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGrassWind::cSwingParameters::DTI)->memFree(p_addr);
+}
+
+inline void uGrassWindDirection::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGrassWindDirection::DTI)->memFree(p_addr);
+}
+
+inline void uGrassWindPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGrassWindPoint::DTI)->memFree(p_addr);
 }

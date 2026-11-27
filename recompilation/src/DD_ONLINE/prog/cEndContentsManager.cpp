@@ -39,16 +39,8 @@ const MtDTI& cEndContentsManager::getDTI() const {
     return cEndContentsManager::DTI;
 }
 
-inline MtAllocator* cEndContentsManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cEndContentsManager::DTI);
-}
-
 void* cEndContentsManager::operator new(size_t sz, u32 align) {
     return cEndContentsManager::getAllocator()->memAlloc(sz, align, cEndContentsManager::DTI.getID());
-}
-
-inline void cEndContentsManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEndContentsManager::DTI)->memFree(p_addr);
 }
 
 bool cEndContentsManager::isPlayNow() const {
@@ -80,14 +72,22 @@ __attribute__((weak)) nQuest::QUEST_ID cEndContentsManager::getMainTaskQuestId()
     __builtin_unreachable();
 }
 
-__attribute__((weak)) u32 cEndContentsManager::getEndContentsGroupNo(u32 NpcId) {
-    DDON_STUB("cEndContentsManager::getEndContentsGroupNo")
-    return {};
+u32 cEndContentsManager::getEndContentsGroupNo(u32 NpcId) {
+    for (unsigned int i0_1 = 0; i0_1 <= 3u; i0_1 = i0_1 + 1u) {
+        if (mEndContentsGroupInfo[i0_1].mEntryNpcId == NpcId) {
+            return mEndContentsGroupInfo[i0_1].getGroupNo();
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 cEndContentsManager::getEndContentsEntryNpcId(u32 GroupNo) {
-    DDON_STUB("cEndContentsManager::getEndContentsEntryNpcId")
-    return {};
+u32 cEndContentsManager::getEndContentsEntryNpcId(u32 GroupNo) {
+    for (unsigned int i0_1 = 0; i0_1 <= 3u; i0_1 = i0_1 + 1u) {
+        if (mEndContentsGroupInfo[i0_1].mEndContentsGroupNo == GroupNo) {
+            return mEndContentsGroupInfo[i0_1].getEntryNpcId();
+        }
+    }
+    return 0;
 }
 
 u32 cEndContentsManager::getEndContentsPurposeNum() const {
@@ -215,18 +215,6 @@ __attribute__((weak)) void cEndContentsManager::moveEndContentsFailed() {
 __attribute__((weak)) void cEndContentsManager::moveEndContentsEnd() {
     DDON_STUB("cEndContentsManager::moveEndContentsEnd")
     /* stub */
-}
-
-inline void cEndContentsManager::moveEndContentsExit() {
-    if (mpMainTask != nullptr) {
-        mpMainTask->forceDelete();
-    }
-    mIsClear = false;
-    mIsInterrupt = false;
-    mIsFailed = false;
-    mIsExit = false;
-    mRno0 = 0;
-    mRno1 = 0;
 }
 
 void cEndContentsManager::deleteQuestTask(cQuestTask* pTask) {

@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rPartsCtrlTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cPartsCtrlTable::getDTI() const {
     return cPartsCtrlTable::DTI;
-}
-
-inline void* cPartsCtrlTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPartsCtrlTable::DTI)->memAlloc(sz, align, cPartsCtrlTable::DTI.getID());
-}
-
-inline void cPartsCtrlTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPartsCtrlTable::DTI)->memFree(p_addr);
 }
 
 void cPartsCtrlTable::createProperty(MtPropertyList& s) {
@@ -54,14 +44,6 @@ MtObject* cPartsCtrlTable::MyDTI::newInstance() const {
 
 const MtDTI& rPartsCtrlTable::getDTI() const {
     return rPartsCtrlTable::DTI;
-}
-
-inline void* rPartsCtrlTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPartsCtrlTable::DTI)->memAlloc(sz, align, rPartsCtrlTable::DTI.getID());
-}
-
-inline void rPartsCtrlTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPartsCtrlTable::DTI)->memFree(p_addr);
 }
 
 bool rPartsCtrlTable::loadData(MtDataReader& in, cPartsCtrlTable* pData) {

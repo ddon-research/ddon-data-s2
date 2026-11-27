@@ -33,10 +33,6 @@ namespace nZone { class ShapeInfoSphere; }
 class sAreaHit;
 class uDDOModel;
 
-// Declarations
-class AreaHitShape;
-class cAreaHit;
-
 enum AREAHIT_SHAPE_TYPE_ENUM
 {
     AREAHIT_SHAPE_TYPE_NONE = 0,
@@ -51,6 +47,10 @@ enum AREAHIT_SHAPE_TYPE_ENUM
     AREAHIT_SHAPE_TYPE_OBB = 9,
     AREAHIT_SHAPE_TYPE_MAX = 10,
 };
+
+// Declarations
+class AreaHitShape;
+class cAreaHit;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -333,4 +333,53 @@ inline AreaHitShape* cAreaHit::getShapePtr() const {
 
 inline void AreaHitShape::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(AreaHitShape::DTI)->memFree(p_addr);
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* AreaHitShape::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::AreaHitShape::DTI);
+}
+
+inline void* cAreaHit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaHit::DTI)->memAlloc(sz, align, ::cAreaHit::DTI.::MtDTI::getID());
+}
+
+inline void cAreaHit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaHit::DTI)->memFree(p_addr);
+}
+
+inline cAreaHit::cAreaHit() {
+    this->mpOwner = nullptr;
+    this->mOwnerId = 0;
+    this->mbEnable = true;
+    this->mbFix = false;
+    this->mUID = 0;
+    this->mDetect = 0;
+    this->mpShape = nullptr;
+    this->mAttr = 0;
+    this->mWorld.x = ::MtVector3::Zero.x;
+    this->mWorld.y = ::MtVector3::Zero.y;
+    this->mWorld.z = ::MtVector3::Zero.z;
+    this->mWorld.pad_ = 0.0f;
+    this->mLocal.x = ::MtVector3::Zero.x;
+    this->mLocal.y = ::MtVector3::Zero.y;
+    this->mLocal.z = ::MtVector3::Zero.z;
+    this->mLocal.pad_ = 0.0f;
+    this->mRotate.x = ::MtVector3::Zero.x;
+    this->mRotate.y = ::MtVector3::Zero.y;
+    this->mRotate.z = ::MtVector3::Zero.z;
+    this->mpSpTarget = nullptr;
+    this->mCkRange = 0.0f;
+    this->mCkToward = 0.0f;
+    this->mRotate.pad_ = 0.0f;
+    this->mCkAngle = 0.0f;
+    this->mRefPos.x = ::MtVector3::Zero.x;
+    this->mRefPos.y = ::MtVector3::Zero.y;
+    this->mRefPos.z = ::MtVector3::Zero.z;
+    this->mRefPos.pad_ = 0.0f;
+    this->mRefJointNo = 0;
+    this->mOwnerJointNo = 0;
 }

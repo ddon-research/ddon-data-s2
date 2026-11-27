@@ -41,10 +41,6 @@ const MtDTI& cShlParamAlchemy::getDTI() const {
     return cShlParamAlchemy::DTI;
 }
 
-inline void* cShlParamAlchemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamAlchemy::DTI)->memAlloc(sz, align, cShlParamAlchemy::DTI.getID());
-}
-
 inline void cShlParamAlchemy::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamAlchemy::DTI)->memFree(p_addr);
 }
@@ -93,14 +89,6 @@ const MtDTI& cShlParamAlchemyCS03::getDTI() const {
     return cShlParamAlchemyCS03::DTI;
 }
 
-inline void* cShlParamAlchemyCS03::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamAlchemyCS03::DTI)->memAlloc(sz, align, cShlParamAlchemyCS03::DTI.getID());
-}
-
-inline void cShlParamAlchemyCS03::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamAlchemyCS03::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamAlchemyCS03::getShlDTI() const {
     return uShlAlchemyCS03::DTI;
 }
@@ -141,14 +129,6 @@ const MtDTI& cShlParamAlchemyCS03::cDamageAlchemyValueInfo::getDTI() const {
     return cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI;
 }
 
-inline void* cShlParamAlchemyCS03::cDamageAlchemyValueInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI)->memAlloc(sz, align, cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI.getID());
-}
-
-inline void cShlParamAlchemyCS03::cDamageAlchemyValueInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamAlchemyCS03::cDamageAlchemyValueInfo::DTI)->memFree(p_addr);
-}
-
 void cShlParamAlchemyCS03::cDamageAlchemyValueInfo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mMinRate", &mMinRate, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mMaxRate", &mMaxRate, 0u, 0u);
@@ -165,14 +145,6 @@ MtObject* cShlParamAlchemyCS03::cDamageAlchemyValueInfo::MyDTI::newInstance() co
 
 const MtDTI& uShlAlchemy::getDTI() const {
     return uShlAlchemy::DTI;
-}
-
-inline void* uShlAlchemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlAlchemy::DTI)->memAlloc(sz, align, uShlAlchemy::DTI.getID());
-}
-
-inline void uShlAlchemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlAlchemy::DTI)->memFree(p_addr);
 }
 
 const cShlParamAlchemy* uShlAlchemy::getShlParam() const {
@@ -267,10 +239,6 @@ MtObject* uShlAlchemy::MyDTI::newInstance() const {
 
 const MtDTI& uShlAlchemyCS03::getDTI() const {
     return uShlAlchemyCS03::DTI;
-}
-
-inline void uShlAlchemyCS03::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlAlchemyCS03::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uShlAlchemyCS03::setup() {

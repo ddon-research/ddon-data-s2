@@ -110,3 +110,15 @@ inline void* sAreaHit::operator new(size_t sz, void* p_addr) {
 inline sAreaHit* sAreaHit::getInstance() {
     return ::sAreaHit::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sAreaHit::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sAreaHit::DTI);
+}
+
+inline void sAreaHit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sAreaHit::DTI)->memFree(p_addr);
+}

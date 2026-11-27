@@ -116,3 +116,14 @@ inline CDataRankingData::CDataRankingData() {
     this->m_unRank = 0;
     this->m_unSerial = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataRankingBoard::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRankingBoard::DTI);
+}
+
+inline MtAllocator* CDataRankingData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRankingData::DTI);
+}

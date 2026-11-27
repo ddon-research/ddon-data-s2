@@ -20,14 +20,6 @@ const MtDTI& rNpcLedgerList::getDTI() const {
     return rNpcLedgerList::DTI;
 }
 
-inline void* rNpcLedgerList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNpcLedgerList::DTI)->memAlloc(sz, align, rNpcLedgerList::DTI.getID());
-}
-
-inline void rNpcLedgerList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcLedgerList::DTI)->memFree(p_addr);
-}
-
 u32 rNpcLedgerList::getLedgerSize() const {
     return mArray.mLength;
 }
@@ -51,10 +43,6 @@ const rNpcLedgerList::cItem* rNpcLedgerList::searchNpcInfo(u32 npcId) const {
 
 MT_CTSTR rNpcLedgerList::getExt() const {
     return "nll";
-}
-
-inline rNpcLedgerList::rNpcLedgerList() {
-    setAttribute(22u);
 }
 
 __attribute__((noinline)) rNpcLedgerList::~rNpcLedgerList() {
@@ -135,10 +123,6 @@ MtObject* rNpcLedgerList::MyDTI::newInstance() const {
 
 const MtDTI& rNpcLedgerList::cItem::getDTI() const {
     return rNpcLedgerList::cItem::DTI;
-}
-
-inline void rNpcLedgerList::cItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::DTI)->memFree(p_addr);
 }
 
 u32 rNpcLedgerList::cItem::getNpcId() const {
@@ -262,10 +246,6 @@ const MtDTI& rNpcLedgerList::cItem::cInstitution::getDTI() const {
     return rNpcLedgerList::cItem::cInstitution::DTI;
 }
 
-inline void rNpcLedgerList::cItem::cInstitution::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::cInstitution::DTI)->memFree(p_addr);
-}
-
 rNpcLedgerList::cItem::cInstitution::~cInstitution() {
     if (mInstitutionOpenList.mLength != 0) {
         u32 v0_0 = mInstitutionOpenList.mLength;
@@ -310,10 +290,6 @@ MtObject* rNpcLedgerList::cItem::cInstitution::MyDTI::newInstance() const {
 
 const MtDTI& rNpcLedgerList::cItem::cInstitutionOpenData::getDTI() const {
     return rNpcLedgerList::cItem::cInstitutionOpenData::DTI;
-}
-
-inline void rNpcLedgerList::cItem::cInstitutionOpenData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::cInstitutionOpenData::DTI)->memFree(p_addr);
 }
 
 void rNpcLedgerList::cItem::cInstitutionOpenData::createProperty(MtPropertyList& s) {

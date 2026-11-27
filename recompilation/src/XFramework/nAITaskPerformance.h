@@ -138,10 +138,35 @@ inline void* nAI::TaskPerformanceInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nAI::TaskPerformanceInfo::TaskPerformanceInfo() {
+    this->mpDTI = nullptr;
+    this->mOverloadManageType = 1;
+    this->mPerformanceIndicator = 1.0f;
+    this->mAllowTime = 3.4028235e38f;
+    this->mLODNum = 0;
+    this->mLODList = nullptr;
+}
+
 inline u32 nAI::TaskPerformanceInfo::getLODNum() {
     return this->mLODNum;
 }
 
 inline void* nAI::TaskPerformanceInfo::LOD::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* nAI::TaskPerformanceInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nAI::TaskPerformanceInfo::DTI)->memAlloc(sz, align, ::nAI::TaskPerformanceInfo::DTI.::MtDTI::mID);
+}
+
+inline void nAI::TaskPerformanceInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nAI::TaskPerformanceInfo::DTI)->memFree(p_addr);
+}
+
+inline void nAI::TaskPerformanceInfo::LOD::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nAI::TaskPerformanceInfo::LOD::DTI)->memFree(p_addr);
 }

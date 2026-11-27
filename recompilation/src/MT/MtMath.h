@@ -4,6 +4,7 @@
 #include <cstddef>
 
 // Forward declarations
+class AHShapeBox;
 class AHShapeCone;
 class AHShapeCylinder;
 class AHShapeSphere;
@@ -11,7 +12,6 @@ class MtAABB;
 class MtCollision;
 namespace MtCollisionUtil { class MtLinerTree; }
 struct MtFloat2A;
-struct MtFloat4A;
 class MtGeomAABB;
 class MtGeomCapsule;
 class MtGeomCylinder;
@@ -21,17 +21,22 @@ class MtGeomOBB;
 class MtGeomRay;
 class MtGeomSphere;
 class MtGeomTriangle;
+class MtGeometry;
 struct MtHalf2;
 struct MtInt3;
 class MtMatrix33;
 class MtTriangle;
 class cAIGrid;
 class cAIPathTrace;
+class cAISvDynamicPathFinding;
 class cAISvPathFinding;
 class cAnimalData;
 class cAreaHit;
 class cBVHCollision;
+class cCamImpMot;
+class cCamImpPhoto;
 class cCamImpTarget;
+class cCamInterAll;
 class cCamInterporateAng3Time;
 class cCameraInfo;
 class cCaughtInfoParam;
@@ -46,10 +51,15 @@ class cDamageEffInfo;
 class cDamageMsg;
 class cDamageSeInfo;
 class cDayNightColorFogParam;
+class cEffectCulling;
 class cEmEffectTable;
 class cEmScaleTable;
 class cEmSoundTable;
 class cErosionRegionScaleChange;
+class cFSMOrderParamJumpPos;
+class cFSMOrderParamSetCallSe;
+class cFSMOrderParamSetEffect;
+class cFSMOrderParamStartQuake;
 class cFSMUnit;
 class cFacialEditJointPreset;
 class cFatAdjust;
@@ -57,8 +67,11 @@ class cFurniture;
 class cFurnitureData;
 class cGroundAttrInfo;
 class cGroupParam;
+class cHitInfo;
 class cHitInfoAfter;
 class cHitInfoAfterLocal;
+class cHumanActEnemyClimb;
+class cIKHandle;
 class cJumpParamCtrl;
 class cMenuEntryBoardItemList;
 class cPRTManager;
@@ -72,7 +85,10 @@ class cSetInfoOmBadStatus;
 class cSetInfoOmDoor;
 class cSetInfoOmNav;
 class cSetInfoOmOneWay;
+class cSetInfoOmWall;
 class cShlLogNode;
+class cShlNotifyInfo;
+class cShlParamBase;
 class cShlParamFollowMove;
 class cShlParamGeneTarget;
 class cShlParamGenerator;
@@ -86,6 +102,7 @@ namespace cThinkMgrName { class cThinkMgrTargetData; }
 class cWeaponOffset;
 class cWeatherFogInfo;
 class cWeatherParam;
+class cZoneListenerEffectEFL;
 class cZoneListenerLight;
 class cpCatchCtrl;
 class cpCheckWallCliff;
@@ -96,19 +113,25 @@ class cpJob02;
 class cpJob06;
 class cpJob09;
 class cpObjCollisionBase;
+class cpReturnTerritory;
 class cpShakeCtrl;
 class cpShlShotCtrl;
 class cpSlave;
 class cpWallMaria;
+class cpWaypoint;
 namespace nCollision { class cCollisionNodeGroup; }
 namespace nMarker { class cMarkerInfo; }
+namespace nPhysics { class Material; }
+namespace nPhysics { class System; }
 namespace nShlBase { class cShlFuwaMove; }
 namespace nShlBase { class cShlStickContextInfo; }
 namespace nShlStick { class cStickObjectCtrl; }
 namespace nZone { class ShapeInfoAABB; }
 namespace nZone { class ShapeInfoArea; }
 namespace nZone { class ShapeInfoBase; }
+namespace nZone { class ShapeInfoCylinder; }
 namespace nZone { class ShapeInfoGlobal; }
+namespace nZone { class ShapeInfoLine; }
 namespace nZone { class ShapeInfoOBB; }
 namespace nZone { class ShapeInfoPanel; }
 namespace nZone { class ShapeInfoPoint; }
@@ -124,6 +147,7 @@ class rNavigationMesh;
 class rOccluder;
 class rPlantTree;
 class rQuestMarkerInfo;
+class rSky;
 class rStageConnect;
 class rStageCustomPartsEx;
 class rStartPos;
@@ -136,6 +160,7 @@ class sGame;
 class sOmManager;
 class sSoundManager;
 class sWeatherManager;
+class sWorldOffset;
 class uAnimal;
 class uBaseEffect;
 class uBloomFilter;
@@ -143,6 +168,7 @@ class uCamera;
 class uCharacter;
 class uCnsBowUpper;
 class uCnsIK;
+class uCnsLookAt;
 class uCnsShakeCtrl;
 class uCnsTurnUpper;
 class uCorePointSearch;
@@ -150,18 +176,30 @@ class uCustomSimSoftBody;
 class uDDOModel;
 class uEfCam;
 class uEffect;
+class uEffectExt;
 class uFreeCamera;
+class uFullbodyIKHuman2;
+class uFullbodyIKHumanDDO;
 class uGUIAim;
+class uGUIArisenCard;
 class uGUIBase;
+class uGUIBazaar;
 class uGUIBoughtBox;
 class uGUICraft;
 class uGUIPopCmd01;
+class uGUIQuestInfo;
 class uGUISkill;
+class uGodRaysFilter;
 class uGrassWindDirection;
+class uGrassWindPoint;
 class uHuman;
 class uLight;
+class uModel;
 class uMotionCamera;
 class uOmModel;
+class uPointLight;
+class uPointLightExt;
+class uPointShadow;
 class uShlArrowInc;
 class uShlBase;
 class uShlFollowMove;
@@ -169,11 +207,13 @@ class uShlGeneAlongGround;
 class uShlGenerator;
 class uShlHoming;
 class uShlMeteo;
+class uShlMeteoCtrl;
 class uShlRenmadanCtrl;
 class uShlSpeed;
 class uSimSoftBody;
 class uSky;
 class uSoundSequenceSe;
+class uWeapon;
 
 // Declarations
 struct MtFloat2;
@@ -182,6 +222,7 @@ struct MtFloat3A;
 struct MtFloat3x3;
 struct MtFloat3x4;
 struct MtFloat4;
+struct MtFloat4A;
 struct MtFloat4x3;
 struct MtFloat4x4;
 struct MtHalf4;
@@ -299,6 +340,24 @@ public:
     f32 w;  // offset: 0xc
     static const MtFloat4 Zero;
     static const MtFloat4 One;
+};
+
+struct MtFloat4A
+{
+public:
+    MtFloat4A();
+    MtFloat4A(f32 _x, f32 _y, f32 _z, f32 _w);
+    MtFloat4A(const MtVector4&);
+    MtFloat4A(const MtQuaternion&);
+    const MtFloat4A& operator=(const MtVector4&);
+    const MtFloat4A& operator=(const MtQuaternion&);
+public:
+    f32 x;  // offset: 0x0
+    f32 y;  // offset: 0x4
+    f32 z;  // offset: 0x8
+    f32 w;  // offset: 0xc
+    static const MtFloat4A Zero;
+    static const MtFloat4A One;
 };
 
 struct MtFloat4x3
@@ -550,6 +609,7 @@ public:
 
 class alignas(16) MtVector3
 {
+    friend class AHShapeBox;
     friend class AHShapeCone;
     friend class AHShapeCylinder;
     friend class AHShapeSphere;
@@ -565,14 +625,19 @@ class alignas(16) MtVector3
     friend class MtGeomRay;
     friend class MtGeomSphere;
     friend class MtGeomTriangle;
+    friend class MtGeometry;
     friend class MtTriangle;
     friend class cAIGrid;
     friend class cAIPathTrace;
+    friend class cAISvDynamicPathFinding;
     friend class cAISvPathFinding;
     friend class cAnimalData;
     friend class cAreaHit;
     friend class cBVHCollision;
+    friend class cCamImpMot;
+    friend class cCamImpPhoto;
     friend class cCamImpTarget;
+    friend class cCamInterAll;
     friend class cCamInterporateAng3Time;
     friend class cCameraInfo;
     friend class cCaughtInfoParam;
@@ -587,10 +652,15 @@ class alignas(16) MtVector3
     friend class cDamageMsg;
     friend class cDamageSeInfo;
     friend class cDayNightColorFogParam;
+    friend class cEffectCulling;
     friend class cEmEffectTable;
     friend class cEmScaleTable;
     friend class cEmSoundTable;
     friend class cErosionRegionScaleChange;
+    friend class cFSMOrderParamJumpPos;
+    friend class cFSMOrderParamSetCallSe;
+    friend class cFSMOrderParamSetEffect;
+    friend class cFSMOrderParamStartQuake;
     friend class cFSMUnit;
     friend class cFacialEditJointPreset;
     friend class cFatAdjust;
@@ -598,8 +668,11 @@ class alignas(16) MtVector3
     friend class cFurnitureData;
     friend class cGroundAttrInfo;
     friend class cGroupParam;
+    friend class cHitInfo;
     friend class cHitInfoAfter;
     friend class cHitInfoAfterLocal;
+    friend class cHumanActEnemyClimb;
+    friend class cIKHandle;
     friend class cJumpParamCtrl;
     friend class cMenuEntryBoardItemList;
     friend class cPRTManager;
@@ -613,7 +686,10 @@ class alignas(16) MtVector3
     friend class cSetInfoOmDoor;
     friend class cSetInfoOmNav;
     friend class cSetInfoOmOneWay;
+    friend class cSetInfoOmWall;
     friend class cShlLogNode;
+    friend class cShlNotifyInfo;
+    friend class cShlParamBase;
     friend class cShlParamFollowMove;
     friend class cShlParamGeneTarget;
     friend class cShlParamGenerator;
@@ -627,6 +703,7 @@ class alignas(16) MtVector3
     friend class cWeaponOffset;
     friend class cWeatherFogInfo;
     friend class cWeatherParam;
+    friend class cZoneListenerEffectEFL;
     friend class cZoneListenerLight;
     friend class cpCatchCtrl;
     friend class cpCheckWallCliff;
@@ -637,19 +714,25 @@ class alignas(16) MtVector3
     friend class cpJob06;
     friend class cpJob09;
     friend class cpObjCollisionBase;
+    friend class cpReturnTerritory;
     friend class cpShakeCtrl;
     friend class cpShlShotCtrl;
     friend class cpSlave;
     friend class cpWallMaria;
+    friend class cpWaypoint;
     friend class nCollision::cCollisionNodeGroup;
     friend class nMarker::cMarkerInfo;
+    friend class nPhysics::Material;
+    friend class nPhysics::System;
     friend class nShlBase::cShlFuwaMove;
     friend class nShlBase::cShlStickContextInfo;
     friend class nShlStick::cStickObjectCtrl;
     friend class nZone::ShapeInfoAABB;
     friend class nZone::ShapeInfoArea;
     friend class nZone::ShapeInfoBase;
+    friend class nZone::ShapeInfoCylinder;
     friend class nZone::ShapeInfoGlobal;
+    friend class nZone::ShapeInfoLine;
     friend class nZone::ShapeInfoOBB;
     friend class nZone::ShapeInfoPanel;
     friend class nZone::ShapeInfoPoint;
@@ -665,6 +748,7 @@ class alignas(16) MtVector3
     friend class rOccluder;
     friend class rPlantTree;
     friend class rQuestMarkerInfo;
+    friend class rSky;
     friend class rStageConnect;
     friend class rStageCustomPartsEx;
     friend class rStartPos;
@@ -677,6 +761,7 @@ class alignas(16) MtVector3
     friend class sOmManager;
     friend class sSoundManager;
     friend class sWeatherManager;
+    friend class sWorldOffset;
     friend class uAnimal;
     friend class uBaseEffect;
     friend class uBloomFilter;
@@ -684,6 +769,7 @@ class alignas(16) MtVector3
     friend class uCharacter;
     friend class uCnsBowUpper;
     friend class uCnsIK;
+    friend class uCnsLookAt;
     friend class uCnsShakeCtrl;
     friend class uCnsTurnUpper;
     friend class uCorePointSearch;
@@ -691,18 +777,30 @@ class alignas(16) MtVector3
     friend class uDDOModel;
     friend class uEfCam;
     friend class uEffect;
+    friend class uEffectExt;
     friend class uFreeCamera;
+    friend class uFullbodyIKHuman2;
+    friend class uFullbodyIKHumanDDO;
     friend class uGUIAim;
+    friend class uGUIArisenCard;
     friend class uGUIBase;
+    friend class uGUIBazaar;
     friend class uGUIBoughtBox;
     friend class uGUICraft;
     friend class uGUIPopCmd01;
+    friend class uGUIQuestInfo;
     friend class uGUISkill;
+    friend class uGodRaysFilter;
     friend class uGrassWindDirection;
+    friend class uGrassWindPoint;
     friend class uHuman;
     friend class uLight;
+    friend class uModel;
     friend class uMotionCamera;
     friend class uOmModel;
+    friend class uPointLight;
+    friend class uPointLightExt;
+    friend class uPointShadow;
     friend class uShlArrowInc;
     friend class uShlBase;
     friend class uShlFollowMove;
@@ -710,11 +808,13 @@ class alignas(16) MtVector3
     friend class uShlGenerator;
     friend class uShlHoming;
     friend class uShlMeteo;
+    friend class uShlMeteoCtrl;
     friend class uShlRenmadanCtrl;
     friend class uShlSpeed;
     friend class uSimSoftBody;
     friend class uSky;
     friend class uSoundSequenceSe;
+    friend class uWeapon;
 public:
     MtVector3();
     explicit MtVector3(const f32* f);
@@ -1023,6 +1123,9 @@ inline MtFloat4::MtFloat4(f32 _x, f32 _y, f32 _z, f32 _w) {
     this->y = _y;
     this->z = _z;
     this->w = _w;
+}
+
+inline MtFloat4A::MtFloat4A() {
 }
 
 inline MtFloat4x3::MtFloat4x3() {

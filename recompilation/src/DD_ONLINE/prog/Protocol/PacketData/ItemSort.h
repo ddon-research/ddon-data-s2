@@ -59,3 +59,10 @@ public:
 inline void* CDataItemSort::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataItemSort::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataItemSort::DTI);
+}

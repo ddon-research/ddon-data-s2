@@ -18,6 +18,8 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 struct SceMouseData;
+class cBrowserPS4;
+class uGUICredit;
 
 // Declarations
 class sMouse;
@@ -35,6 +37,8 @@ using u64 = __uint64_t;
 
 class sMouse : public cSystem
 {
+    friend class cBrowserPS4;
+    friend class uGUICredit;
 public:
     enum TYPE
     {
@@ -150,4 +154,20 @@ protected:
 
 inline void* sMouse::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sMouse* sMouse::getInstance() {
+    return ::sMouse::mpInstance;
+}
+
+inline bool sMouse::isActive() {
+    return this->mActive;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sMouse::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sMouse::DTI)->memFree(p_addr);
 }

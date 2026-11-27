@@ -24,14 +24,6 @@ const MtDTI& cShlParamArrowRainCtrl::getDTI() const {
     return cShlParamArrowRainCtrl::DTI;
 }
 
-inline void* cShlParamArrowRainCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamArrowRainCtrl::DTI)->memAlloc(sz, align, cShlParamArrowRainCtrl::DTI.getID());
-}
-
-inline void cShlParamArrowRainCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamArrowRainCtrl::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamArrowRainCtrl::getShlDTI() const {
     return uShlArrowRainCtrl::DTI;
 }
@@ -89,10 +81,6 @@ const MtDTI& cShlParamArrowRainCtrl::cShootCtrlParamArrowRainCtrl::getDTI() cons
     return cShlParamArrowRainCtrl::cShootCtrlParamArrowRainCtrl::DTI;
 }
 
-inline void cShlParamArrowRainCtrl::cShootCtrlParamArrowRainCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamArrowRainCtrl::cShootCtrlParamArrowRainCtrl::DTI)->memFree(p_addr);
-}
-
 void cShlParamArrowRainCtrl::cShootCtrlParamArrowRainCtrl::createProperty(MtPropertyList& s) {
     this->cShlParamGenerator::cShootCtrlParam::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "underArrowNum", &underArrowNum, 0u, 0u);
@@ -110,18 +98,6 @@ __attribute__((weak)) MtObject* cShlParamArrowRainCtrl::cShootCtrlParamArrowRain
 
 const MtDTI& uShlArrowRainCtrl::getDTI() const {
     return uShlArrowRainCtrl::DTI;
-}
-
-inline void* uShlArrowRainCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlArrowRainCtrl::DTI)->memAlloc(sz, align, uShlArrowRainCtrl::DTI.getID());
-}
-
-inline void uShlArrowRainCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlArrowRainCtrl::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamArrowRainCtrl* uShlArrowRainCtrl::getShlParam() const {
-    return static_cast<const cShlParamArrowRainCtrl*>(mpShlParam2);
 }
 
 uShlArrowRainCtrl::~uShlArrowRainCtrl() {

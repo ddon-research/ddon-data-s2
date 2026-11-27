@@ -125,3 +125,38 @@ inline void* rQuestMarkerInfo::operator new(size_t sz, void* p_addr) {
 inline void* rQuestMarkerInfo::cInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rQuestMarkerInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rQuestMarkerInfo::DTI)->memAlloc(sz, align, ::rQuestMarkerInfo::DTI.::MtDTI::getID());
+}
+
+inline void rQuestMarkerInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rQuestMarkerInfo::DTI)->memFree(p_addr);
+}
+
+inline rQuestMarkerInfo::rQuestMarkerInfo() {
+    this->mStageNo = 0;
+    this->::cResource::setAttribute(22u);
+    this->mInfoList.::MtArray::mAutoDelete = true;
+}
+
+inline void* rQuestMarkerInfo::cInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rQuestMarkerInfo::cInfo::DTI)->memAlloc(sz, align, ::rQuestMarkerInfo::cInfo::DTI.::MtDTI::getID());
+}
+
+inline void rQuestMarkerInfo::cInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rQuestMarkerInfo::cInfo::DTI)->memFree(p_addr);
+}
+
+inline rQuestMarkerInfo::cInfo::cInfo() {
+    this->mGroupNo = 0;
+    this->mUniqueId = 0;
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+}

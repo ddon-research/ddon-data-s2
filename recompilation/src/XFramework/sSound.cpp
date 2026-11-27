@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_kernel.h>
 #include <_pthread.h>
 #include <math.h>
 #include <stdlib.h>
@@ -82,10 +83,6 @@ const MtDTI& sSound::getDTI() const {
     return sSound::DTI;
 }
 
-inline void sSound::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSound::DTI)->memFree(p_addr);
-}
-
 sSound::sSound(u32 efx0, u32 efx1, sSound::SOUNDDRIVER_INIT_PARAM* pParams) {
     DDON_STUB("sSound::sSound")
     /* stub */
@@ -149,9 +146,46 @@ __attribute__((weak)) void sSound::applyWorldOffset(const MtVector3& offset, con
     /* stub */
 }
 
-__attribute__((weak)) bool sSound::setListeningMatrix(const MtMatrix& listeningMatrix, size_t index) {
-    DDON_STUB("sSound::setListeningMatrix")
-    return {};
+bool sSound::setListeningMatrix(const MtMatrix& listeningMatrix, size_t index) {
+    if (index > 3ul) {
+        return false;
+    } else {
+        mListening[index].ListeningMatrix.m[0].x = listeningMatrix.m[0].x;
+        mListening[index].ListeningMatrix.m[0].y = listeningMatrix.m[0].y;
+        mListening[index].ListeningMatrix.m[0].z = listeningMatrix.m[0].z;
+        mListening[index].ListeningMatrix.m[0].w = listeningMatrix.m[0].w;
+        mListening[index].ListeningMatrix.m[1].x = listeningMatrix.m[1].x;
+        mListening[index].ListeningMatrix.m[1].y = listeningMatrix.m[1].y;
+        mListening[index].ListeningMatrix.m[1].z = listeningMatrix.m[1].z;
+        mListening[index].ListeningMatrix.m[1].w = listeningMatrix.m[1].w;
+        mListening[index].ListeningMatrix.m[2].x = listeningMatrix.m[2].x;
+        mListening[index].ListeningMatrix.m[2].y = listeningMatrix.m[2].y;
+        mListening[index].ListeningMatrix.m[2].z = listeningMatrix.m[2].z;
+        mListening[index].ListeningMatrix.m[2].w = listeningMatrix.m[2].w;
+        mListening[index].ListeningMatrix.m[3].x = listeningMatrix.m[3].x;
+        mListening[index].ListeningMatrix.m[3].y = listeningMatrix.m[3].y;
+        mListening[index].ListeningMatrix.m[3].z = listeningMatrix.m[3].z;
+        mListening[index].ListeningMatrix.m[3].w = listeningMatrix.m[3].w;
+        MtMatrix frame120(listeningMatrix.inverse());
+        mListening[index].ListeningMatrixInverse.m[0].x = frame120.m[0].x;
+        mListening[index].ListeningMatrixInverse.m[0].y = frame120.m[0].y;
+        mListening[index].ListeningMatrixInverse.m[0].z = frame120.m[0].z;
+        mListening[index].ListeningMatrixInverse.m[0].w = frame120.m[0].w;
+        mListening[index].ListeningMatrixInverse.m[1].x = frame120.m[1].x;
+        mListening[index].ListeningMatrixInverse.m[1].y = frame120.m[1].y;
+        mListening[index].ListeningMatrixInverse.m[1].z = frame120.m[1].z;
+        mListening[index].ListeningMatrixInverse.m[1].w = frame120.m[1].w;
+        mListening[index].ListeningMatrixInverse.m[2].x = frame120.m[2].x;
+        mListening[index].ListeningMatrixInverse.m[2].y = frame120.m[2].y;
+        mListening[index].ListeningMatrixInverse.m[2].z = frame120.m[2].z;
+        mListening[index].ListeningMatrixInverse.m[2].w = frame120.m[2].w;
+        mListening[index].ListeningMatrixInverse.m[3].x = frame120.m[3].x;
+        mListening[index].ListeningMatrixInverse.m[3].y = frame120.m[3].y;
+        mListening[index].ListeningMatrixInverse.m[3].z = frame120.m[3].z;
+        mListening[index].ListeningMatrixInverse.m[3].w = frame120.m[3].w;
+        mPanner.updateListenerMatrix(index, listeningMatrix);
+        return true;
+    }
 }
 
 void sSound::setSpeakerAngle51Front(const f32 degree) {
@@ -189,9 +223,19 @@ void sSound::setSpeakerAngle51(const f32 front_degree, const f32 surround_degree
 
 static auto ddon_emit_0x01ba84f0 __attribute__((used)) = &sSound::setSpeakerAngle51Default;
 
-__attribute__((weak)) void sSound::setSpeakerAngle51ItuR() {
-    DDON_STUB("sSound::setSpeakerAngle51ItuR")
-    /* stub */
+void sSound::setSpeakerAngle51ItuR() {
+    if ((57.295776f * (cSoundPanner::DefaultSpeakerAngleL)) >= 0.0f) {
+        if (89.9f > (57.295776f * (cSoundPanner::DefaultSpeakerAngleL))) {
+            mSpeakerAngle51.frontAngle = 57.295776f * (cSoundPanner::DefaultSpeakerAngleL);
+            updateSpeakerAngle();
+        }
+    }
+    if ((57.295776f * (cSoundPanner::DefaultSpeakerAngleLs)) >= 90.0f) {
+        if (179.9f > (57.295776f * (cSoundPanner::DefaultSpeakerAngleLs))) {
+            mSpeakerAngle51.surroundAngle = 57.295776f * (cSoundPanner::DefaultSpeakerAngleLs);
+            updateSpeakerAngle();
+        }
+    }
 }
 
 static auto ddon_emit_0x01ba84d0 __attribute__((used)) = &sSound::getSpeakerAngle51Front;
@@ -240,9 +284,20 @@ __attribute__((weak)) void sSound::setEQ(rSoundEQ* pEQ) {
 
 static auto ddon_emit_0x01ba84c0 __attribute__((used)) = &sSound::getEQ;
 
-__attribute__((weak)) void sSound::setEQId(u32 id, u32 fadeTimeMsec) {
-    DDON_STUB("sSound::setEQId")
-    /* stub */
+void sSound::setEQId(u32 id, u32 fadeTimeMsec) {
+    rSoundEQ* t0 = mEQResource.mpEQ;
+    if (t0 == nullptr) {
+        return;
+    }
+    rSoundEQ::cEQData* t1 = t0->getEQDataFromId(static_cast<s32>(id));
+    if (t1 == nullptr) {
+        return;
+    }
+    u32 t3 = t1->mCategory;
+    EQResource::EQResourceWork* t4 = mEQResource.mpEQResourceWork[t3];
+    t4->mId = id;
+    t4->mFadeTime = static_cast<float>(fadeTimeMsec);
+    t4->mFadeStatus = sSound::EffectResourceWork::FADE_STATUS_START;
 }
 
 __attribute__((weak)) void sSound::setReverb(rSoundReverb* pReverb) {
@@ -250,9 +305,17 @@ __attribute__((weak)) void sSound::setReverb(rSoundReverb* pReverb) {
     /* stub */
 }
 
-__attribute__((weak)) void sSound::setReverbId(u32 id, u32 reverbIndex, u32 fadeTimeMsec) {
-    DDON_STUB("sSound::setReverbId")
-    /* stub */
+void sSound::setReverbId(u32 id, u32 reverbIndex, u32 fadeTimeMsec) {
+    if (mReverbResource.mpReverb == nullptr) {
+        return;
+    }
+    if (reverbIndex <= 3u) {
+        if (mReverbResource.mpReverbResourceWork[reverbIndex] != nullptr) {
+            mReverbResource.mpReverbResourceWork[reverbIndex]->::sSound::EffectResourceWork::mId = id;
+            mReverbResource.mpReverbResourceWork[reverbIndex]->::sSound::EffectResourceWork::mFadeTime = static_cast<float>(fadeTimeMsec);
+            mReverbResource.mpReverbResourceWork[reverbIndex]->::sSound::EffectResourceWork::mFadeStatus = sSound::EffectResourceWork::FADE_STATUS_START;
+        }
+    }
 }
 
 f32 sSound::getUpDownMixCenterGain() {
@@ -287,24 +350,44 @@ f32 sSound::getUpDownMixEnhanceGain() {
     }
 }
 
-__attribute__((weak)) void sSound::setUpDownMixCenterGain(const f32 gain_decibel) {
-    DDON_STUB("sSound::setUpDownMixCenterGain")
-    /* stub */
+void sSound::setUpDownMixCenterGain(const f32 gain_decibel) {
+    if (gain_decibel > -96.0f) {
+        mUpDownMixGains[0] = powf(10.0f, gain_decibel / 20.0f);
+    } else {
+        mUpDownMixGains[0] = 0.0f;
+    }
+    mpNativeSystem->updateUpDownMixGains();
 }
 
-__attribute__((weak)) void sSound::setUpDownMixLFEGain(const f32 gain_decibel) {
-    DDON_STUB("sSound::setUpDownMixLFEGain")
-    /* stub */
+void sSound::setUpDownMixLFEGain(const f32 gain_decibel) {
+    if (gain_decibel > -96.0f) {
+        mUpDownMixGains[1] = powf(10.0f, gain_decibel / 20.0f);
+    } else {
+        mUpDownMixGains[1] = 0.0f;
+    }
+    mpNativeSystem->updateUpDownMixGains();
 }
 
-__attribute__((weak)) void sSound::setUpDownMixSurroundGain(const f32 gain_decibel) {
-    DDON_STUB("sSound::setUpDownMixSurroundGain")
-    /* stub */
+void sSound::setUpDownMixSurroundGain(const f32 gain_decibel) {
+    if (gain_decibel > -96.0f) {
+        mUpDownMixGains[2] = powf(10.0f, gain_decibel / 20.0f);
+        mUpDownMixGains[3] = mUpDownMixGains[2];
+    } else {
+        mUpDownMixGains[2] = 0.0f;
+        mUpDownMixGains[3] = 0.0f;
+    }
+    mpNativeSystem->updateUpDownMixGains();
 }
 
-__attribute__((weak)) void sSound::setUpDownMixEnhanceGain(const f32 gain_decibel) {
-    DDON_STUB("sSound::setUpDownMixEnhanceGain")
-    /* stub */
+void sSound::setUpDownMixEnhanceGain(const f32 gain_decibel) {
+    if (gain_decibel > -96.0f) {
+        mUpDownMixGains[4] = powf(10.0f, gain_decibel / 20.0f);
+        mUpDownMixGains[5] = mUpDownMixGains[4];
+    } else {
+        mUpDownMixGains[4] = 0.0f;
+        mUpDownMixGains[5] = 0.0f;
+    }
+    mpNativeSystem->updateUpDownMixGains();
 }
 
 __attribute__((weak)) void sSound::setUpDownMixDefaultGains() {
@@ -433,8 +516,11 @@ __attribute__((weak)) void sSound::setSePosition(rSoundRequest* pRequest, const 
 }
 
 __attribute__((weak)) void sSound::setSeVolumeRel(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, f32 volume, bool isLink, u32 volMode) {
-    DDON_STUB("sSound::setSeVolumeRel")
-    /* stub */
+    f32 floatVol = volMode == 0 ? volume
+        : (volume <= -96.0f ? 0.0f : powf(10.0f, volume / 20.0f));
+    
+    setSeEntry(pRequest, reqNo, thisId, reinterpret_cast<ControlParam&>(floatVol),
+        isLink, static_cast<ENTRY_COMMAND>(6), 3, nullptr, nullptr, nullptr);
 }
 
 __attribute__((weak)) void sSound::setSeVolumeRatio(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, f32 volume, bool isLink) {
@@ -443,8 +529,8 @@ __attribute__((weak)) void sSound::setSeVolumeRatio(rSoundRequest* pRequest, con
 }
 
 __attribute__((weak)) void sSound::setSeEffectVolumeRel(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, f32 volume, bool isLink, u32 volMode) {
-    DDON_STUB("sSound::setSeEffectVolumeRel")
-    /* stub */
+    f32 floatVol = (volMode == VOLUME_MODE_FLOAT) ? volume : ((volume <= -96.0f) ? 0.0f : powf(10.0f, volume / 20.0f));
+    setSeEntry(pRequest, reqNo, thisId, reinterpret_cast<ControlParam&>(floatVol), isLink, ENTRY_COMMAND_CONTROL, CONTROL_TYPE_EFFECT_VOLUME_REL, nullptr, nullptr, nullptr);
 }
 
 __attribute__((weak)) void sSound::setSeEffectVolumeRatio(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, f32 volume, bool isLink) {
@@ -528,8 +614,7 @@ __attribute__((weak)) void sSound::setSeLFEVolumeRatio(rSoundRequest* pRequest, 
 }
 
 __attribute__((weak)) void sSound::setSeLFECurveID(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId, s32 index, bool isLink) {
-    DDON_STUB("sSound::setSeLFECurveID")
-    /* stub */
+    setSeEntry(pRequest, reqNo, thisId, reinterpret_cast<ControlParam&>(index), isLink, ENTRY_COMMAND_CONTROL, CONTROL_TYPE_LFECURVEID, nullptr, nullptr, nullptr);
 }
 
 __attribute__((weak)) u32 sSound::getSeStatus(rSoundRequest* pRequest, const u32 reqNo, const uintptr thisId) {
@@ -1129,8 +1214,21 @@ __attribute__((weak)) void sSound::extractFadeStream(rSoundStreamRequest* pReque
 }
 
 __attribute__((weak)) void sSound::updateSpeakerAngle() {
-    DDON_STUB("sSound::updateSpeakerAngle")
-    /* stub */
+    if (mChannelsProcess == 8) {
+        mPanner.setSpeakerAngleL(0.017453294f * mSpeakerAngle71.frontAngle);
+        mPanner.setSpeakerAngleR(-(0.017453294f * mSpeakerAngle71.frontAngle));
+        mPanner.setSpeakerAngleLs(0.017453294f * mSpeakerAngle71.surroundAngle);
+        mPanner.setSpeakerAngleRs(-(0.017453294f * mSpeakerAngle71.surroundAngle));
+        mPanner.setSpeakerAngleLe(0.017453294f * mSpeakerAngle71.enhanceAngle);
+        mPanner.setSpeakerAngleRe(-(0.017453294f * mSpeakerAngle71.enhanceAngle));
+    } else {
+        if (mChannelsProcess == 6) {
+            mPanner.setSpeakerAngleL(0.017453294f * mSpeakerAngle51.frontAngle);
+            mPanner.setSpeakerAngleR(-(0.017453294f * mSpeakerAngle51.frontAngle));
+            mPanner.setSpeakerAngleLs(0.017453294f * mSpeakerAngle51.surroundAngle);
+            mPanner.setSpeakerAngleRs(-(0.017453294f * mSpeakerAngle51.surroundAngle));
+        }
+    }
 }
 
 __attribute__((weak)) sSound::SeVoice* sSound::getLowPrioritySeVoice(rSoundRequest* pRequest, u32 global, s32 ID_1, s32 ID_2, s32 ID_3, uintptr thisId, bool isRelease) {
@@ -1197,24 +1295,152 @@ __attribute__((weak)) void sSound::setReverbResource(rSoundReverb* pReverb) {
     /* stub */
 }
 
-__attribute__((weak)) void sSound::setListeningMatrix0(const MtMatrix& listeningMatrix) {
-    DDON_STUB("sSound::setListeningMatrix0")
-    /* stub */
+void sSound::setListeningMatrix0(const MtMatrix& listeningMatrix) {
+    mListening[0].ListeningMatrix.m[0].x = listeningMatrix.m[0].x;
+    mListening[0].ListeningMatrix.m[0].y = listeningMatrix.m[0].y;
+    mListening[0].ListeningMatrix.m[0].z = listeningMatrix.m[0].z;
+    mListening[0].ListeningMatrix.m[0].w = listeningMatrix.m[0].w;
+    mListening[0].ListeningMatrix.m[1].x = listeningMatrix.m[1].x;
+    mListening[0].ListeningMatrix.m[1].y = listeningMatrix.m[1].y;
+    mListening[0].ListeningMatrix.m[1].z = listeningMatrix.m[1].z;
+    mListening[0].ListeningMatrix.m[1].w = listeningMatrix.m[1].w;
+    mListening[0].ListeningMatrix.m[2].x = listeningMatrix.m[2].x;
+    mListening[0].ListeningMatrix.m[2].y = listeningMatrix.m[2].y;
+    mListening[0].ListeningMatrix.m[2].z = listeningMatrix.m[2].z;
+    mListening[0].ListeningMatrix.m[2].w = listeningMatrix.m[2].w;
+    mListening[0].ListeningMatrix.m[3].x = listeningMatrix.m[3].x;
+    mListening[0].ListeningMatrix.m[3].y = listeningMatrix.m[3].y;
+    mListening[0].ListeningMatrix.m[3].z = listeningMatrix.m[3].z;
+    mListening[0].ListeningMatrix.m[3].w = listeningMatrix.m[3].w;
+    MtMatrix frame104(listeningMatrix.inverse());
+    mListening[0].ListeningMatrixInverse.m[0].x = frame104.m[0].x;
+    mListening[0].ListeningMatrixInverse.m[0].y = frame104.m[0].y;
+    mListening[0].ListeningMatrixInverse.m[0].z = frame104.m[0].z;
+    mListening[0].ListeningMatrixInverse.m[0].w = frame104.m[0].w;
+    mListening[0].ListeningMatrixInverse.m[1].x = frame104.m[1].x;
+    mListening[0].ListeningMatrixInverse.m[1].y = frame104.m[1].y;
+    mListening[0].ListeningMatrixInverse.m[1].z = frame104.m[1].z;
+    mListening[0].ListeningMatrixInverse.m[1].w = frame104.m[1].w;
+    mListening[0].ListeningMatrixInverse.m[2].x = frame104.m[2].x;
+    mListening[0].ListeningMatrixInverse.m[2].y = frame104.m[2].y;
+    mListening[0].ListeningMatrixInverse.m[2].z = frame104.m[2].z;
+    mListening[0].ListeningMatrixInverse.m[2].w = frame104.m[2].w;
+    mListening[0].ListeningMatrixInverse.m[3].x = frame104.m[3].x;
+    mListening[0].ListeningMatrixInverse.m[3].y = frame104.m[3].y;
+    mListening[0].ListeningMatrixInverse.m[3].z = frame104.m[3].z;
+    mListening[0].ListeningMatrixInverse.m[3].w = frame104.m[3].w;
+    mPanner.updateListenerMatrix(0ul, listeningMatrix);
 }
 
-__attribute__((weak)) void sSound::setListeningMatrix1(const MtMatrix& listeningMatrix) {
-    DDON_STUB("sSound::setListeningMatrix1")
-    /* stub */
+void sSound::setListeningMatrix1(const MtMatrix& listeningMatrix) {
+    mListening[1].ListeningMatrix.m[0].x = listeningMatrix.m[0].x;
+    mListening[1].ListeningMatrix.m[0].y = listeningMatrix.m[0].y;
+    mListening[1].ListeningMatrix.m[0].z = listeningMatrix.m[0].z;
+    mListening[1].ListeningMatrix.m[0].w = listeningMatrix.m[0].w;
+    mListening[1].ListeningMatrix.m[1].x = listeningMatrix.m[1].x;
+    mListening[1].ListeningMatrix.m[1].y = listeningMatrix.m[1].y;
+    mListening[1].ListeningMatrix.m[1].z = listeningMatrix.m[1].z;
+    mListening[1].ListeningMatrix.m[1].w = listeningMatrix.m[1].w;
+    mListening[1].ListeningMatrix.m[2].x = listeningMatrix.m[2].x;
+    mListening[1].ListeningMatrix.m[2].y = listeningMatrix.m[2].y;
+    mListening[1].ListeningMatrix.m[2].z = listeningMatrix.m[2].z;
+    mListening[1].ListeningMatrix.m[2].w = listeningMatrix.m[2].w;
+    mListening[1].ListeningMatrix.m[3].x = listeningMatrix.m[3].x;
+    mListening[1].ListeningMatrix.m[3].y = listeningMatrix.m[3].y;
+    mListening[1].ListeningMatrix.m[3].z = listeningMatrix.m[3].z;
+    mListening[1].ListeningMatrix.m[3].w = listeningMatrix.m[3].w;
+    MtMatrix frame104(listeningMatrix.inverse());
+    mListening[1].ListeningMatrixInverse.m[0].x = frame104.m[0].x;
+    mListening[1].ListeningMatrixInverse.m[0].y = frame104.m[0].y;
+    mListening[1].ListeningMatrixInverse.m[0].z = frame104.m[0].z;
+    mListening[1].ListeningMatrixInverse.m[0].w = frame104.m[0].w;
+    mListening[1].ListeningMatrixInverse.m[1].x = frame104.m[1].x;
+    mListening[1].ListeningMatrixInverse.m[1].y = frame104.m[1].y;
+    mListening[1].ListeningMatrixInverse.m[1].z = frame104.m[1].z;
+    mListening[1].ListeningMatrixInverse.m[1].w = frame104.m[1].w;
+    mListening[1].ListeningMatrixInverse.m[2].x = frame104.m[2].x;
+    mListening[1].ListeningMatrixInverse.m[2].y = frame104.m[2].y;
+    mListening[1].ListeningMatrixInverse.m[2].z = frame104.m[2].z;
+    mListening[1].ListeningMatrixInverse.m[2].w = frame104.m[2].w;
+    mListening[1].ListeningMatrixInverse.m[3].x = frame104.m[3].x;
+    mListening[1].ListeningMatrixInverse.m[3].y = frame104.m[3].y;
+    mListening[1].ListeningMatrixInverse.m[3].z = frame104.m[3].z;
+    mListening[1].ListeningMatrixInverse.m[3].w = frame104.m[3].w;
+    mPanner.updateListenerMatrix(1ul, listeningMatrix);
 }
 
-__attribute__((weak)) void sSound::setListeningMatrix2(const MtMatrix& listeningMatrix) {
-    DDON_STUB("sSound::setListeningMatrix2")
-    /* stub */
+void sSound::setListeningMatrix2(const MtMatrix& listeningMatrix) {
+    mListening[2].ListeningMatrix.m[0].x = listeningMatrix.m[0].x;
+    mListening[2].ListeningMatrix.m[0].y = listeningMatrix.m[0].y;
+    mListening[2].ListeningMatrix.m[0].z = listeningMatrix.m[0].z;
+    mListening[2].ListeningMatrix.m[0].w = listeningMatrix.m[0].w;
+    mListening[2].ListeningMatrix.m[1].x = listeningMatrix.m[1].x;
+    mListening[2].ListeningMatrix.m[1].y = listeningMatrix.m[1].y;
+    mListening[2].ListeningMatrix.m[1].z = listeningMatrix.m[1].z;
+    mListening[2].ListeningMatrix.m[1].w = listeningMatrix.m[1].w;
+    mListening[2].ListeningMatrix.m[2].x = listeningMatrix.m[2].x;
+    mListening[2].ListeningMatrix.m[2].y = listeningMatrix.m[2].y;
+    mListening[2].ListeningMatrix.m[2].z = listeningMatrix.m[2].z;
+    mListening[2].ListeningMatrix.m[2].w = listeningMatrix.m[2].w;
+    mListening[2].ListeningMatrix.m[3].x = listeningMatrix.m[3].x;
+    mListening[2].ListeningMatrix.m[3].y = listeningMatrix.m[3].y;
+    mListening[2].ListeningMatrix.m[3].z = listeningMatrix.m[3].z;
+    mListening[2].ListeningMatrix.m[3].w = listeningMatrix.m[3].w;
+    MtMatrix frame104(listeningMatrix.inverse());
+    mListening[2].ListeningMatrixInverse.m[0].x = frame104.m[0].x;
+    mListening[2].ListeningMatrixInverse.m[0].y = frame104.m[0].y;
+    mListening[2].ListeningMatrixInverse.m[0].z = frame104.m[0].z;
+    mListening[2].ListeningMatrixInverse.m[0].w = frame104.m[0].w;
+    mListening[2].ListeningMatrixInverse.m[1].x = frame104.m[1].x;
+    mListening[2].ListeningMatrixInverse.m[1].y = frame104.m[1].y;
+    mListening[2].ListeningMatrixInverse.m[1].z = frame104.m[1].z;
+    mListening[2].ListeningMatrixInverse.m[1].w = frame104.m[1].w;
+    mListening[2].ListeningMatrixInverse.m[2].x = frame104.m[2].x;
+    mListening[2].ListeningMatrixInverse.m[2].y = frame104.m[2].y;
+    mListening[2].ListeningMatrixInverse.m[2].z = frame104.m[2].z;
+    mListening[2].ListeningMatrixInverse.m[2].w = frame104.m[2].w;
+    mListening[2].ListeningMatrixInverse.m[3].x = frame104.m[3].x;
+    mListening[2].ListeningMatrixInverse.m[3].y = frame104.m[3].y;
+    mListening[2].ListeningMatrixInverse.m[3].z = frame104.m[3].z;
+    mListening[2].ListeningMatrixInverse.m[3].w = frame104.m[3].w;
+    mPanner.updateListenerMatrix(2ul, listeningMatrix);
 }
 
-__attribute__((weak)) void sSound::setListeningMatrix3(const MtMatrix& listeningMatrix) {
-    DDON_STUB("sSound::setListeningMatrix3")
-    /* stub */
+void sSound::setListeningMatrix3(const MtMatrix& listeningMatrix) {
+    mListening[3].ListeningMatrix.m[0].x = listeningMatrix.m[0].x;
+    mListening[3].ListeningMatrix.m[0].y = listeningMatrix.m[0].y;
+    mListening[3].ListeningMatrix.m[0].z = listeningMatrix.m[0].z;
+    mListening[3].ListeningMatrix.m[0].w = listeningMatrix.m[0].w;
+    mListening[3].ListeningMatrix.m[1].x = listeningMatrix.m[1].x;
+    mListening[3].ListeningMatrix.m[1].y = listeningMatrix.m[1].y;
+    mListening[3].ListeningMatrix.m[1].z = listeningMatrix.m[1].z;
+    mListening[3].ListeningMatrix.m[1].w = listeningMatrix.m[1].w;
+    mListening[3].ListeningMatrix.m[2].x = listeningMatrix.m[2].x;
+    mListening[3].ListeningMatrix.m[2].y = listeningMatrix.m[2].y;
+    mListening[3].ListeningMatrix.m[2].z = listeningMatrix.m[2].z;
+    mListening[3].ListeningMatrix.m[2].w = listeningMatrix.m[2].w;
+    mListening[3].ListeningMatrix.m[3].x = listeningMatrix.m[3].x;
+    mListening[3].ListeningMatrix.m[3].y = listeningMatrix.m[3].y;
+    mListening[3].ListeningMatrix.m[3].z = listeningMatrix.m[3].z;
+    mListening[3].ListeningMatrix.m[3].w = listeningMatrix.m[3].w;
+    MtMatrix frame104(listeningMatrix.inverse());
+    mListening[3].ListeningMatrixInverse.m[0].x = frame104.m[0].x;
+    mListening[3].ListeningMatrixInverse.m[0].y = frame104.m[0].y;
+    mListening[3].ListeningMatrixInverse.m[0].z = frame104.m[0].z;
+    mListening[3].ListeningMatrixInverse.m[0].w = frame104.m[0].w;
+    mListening[3].ListeningMatrixInverse.m[1].x = frame104.m[1].x;
+    mListening[3].ListeningMatrixInverse.m[1].y = frame104.m[1].y;
+    mListening[3].ListeningMatrixInverse.m[1].z = frame104.m[1].z;
+    mListening[3].ListeningMatrixInverse.m[1].w = frame104.m[1].w;
+    mListening[3].ListeningMatrixInverse.m[2].x = frame104.m[2].x;
+    mListening[3].ListeningMatrixInverse.m[2].y = frame104.m[2].y;
+    mListening[3].ListeningMatrixInverse.m[2].z = frame104.m[2].z;
+    mListening[3].ListeningMatrixInverse.m[2].w = frame104.m[2].w;
+    mListening[3].ListeningMatrixInverse.m[3].x = frame104.m[3].x;
+    mListening[3].ListeningMatrixInverse.m[3].y = frame104.m[3].y;
+    mListening[3].ListeningMatrixInverse.m[3].z = frame104.m[3].z;
+    mListening[3].ListeningMatrixInverse.m[3].w = frame104.m[3].w;
+    mPanner.updateListenerMatrix(3ul, listeningMatrix);
 }
 
 __attribute__((weak)) MtMatrix sSound::getListeningMatrix0() {
@@ -1761,9 +1987,13 @@ __attribute__((weak)) void sSound::Voice::play() {
     /* stub */
 }
 
-__attribute__((weak)) void sSound::Voice::stop() {
-    DDON_STUB("sSound::Voice::stop")
-    /* stub */
+void sSound::Voice::stop() {
+    if (static_cast<unsigned int>(mStatus - 1) <= 2) {
+        if (mpNativeVoice != nullptr) {
+            mpNativeVoice->stop();
+        }
+        mStatus = sSound::VOICE_STATUS_STOPPING;
+    }
 }
 
 __attribute__((weak)) void sSound::Voice::pause() {
@@ -2117,14 +2347,12 @@ __attribute__((noinline)) sSound::NativeSystem::~NativeSystem() {
     /* stub */
 }
 
-__attribute__((weak)) void sSound::NativeSystem::updateExecute() {
-    DDON_STUB("sSound::NativeSystem::updateExecute")
-    /* stub */
+void sSound::NativeSystem::updateExecute() {
+    sceKernelUsleep(20000u);
 }
 
-__attribute__((weak)) void sSound::NativeSystem::loadExecute() {
-    DDON_STUB("sSound::NativeSystem::loadExecute")
-    /* stub */
+void sSound::NativeSystem::loadExecute() {
+    sceKernelUsleep(50000u);
 }
 
 void sSound::NativeSystem::updateVoice() {
@@ -2341,9 +2569,22 @@ __attribute__((weak)) void sSound::StreamVoice::play() {
     /* stub */
 }
 
-__attribute__((weak)) void sSound::StreamVoice::stop() {
-    DDON_STUB("sSound::StreamVoice::stop")
-    /* stub */
+void sSound::StreamVoice::stop() {
+    if (static_cast<unsigned int>(mStatus - 1) <= 2) {
+        mEffectSendLevel[6] = 0.0f;
+        mEffectSendLevel[7] = 0.0f;
+        mEffectSendLevel[4] = 0.0f;
+        mEffectSendLevel[5] = 0.0f;
+        mEffectSendLevel[2] = 0.0f;
+        mEffectSendLevel[3] = 0.0f;
+        mEffectSendLevel[0] = 0.0f;
+        mEffectSendLevel[1] = 0.0f;
+        memset(static_cast<void*>(&mSurroundVolume[0][0]), 0, 256ul);
+        if (mpNativeVoice != nullptr) {
+            mpNativeVoice->applyVolume();
+        }
+        mStatus = sSound::VOICE_STATUS_STOPPING;
+    }
 }
 
 __attribute__((weak)) void sSound::StreamVoice::update() {
@@ -2675,14 +2916,29 @@ void sSound::NativeSystemPS4::setLoadThreadPriority() {
     (sSound::mpInstance)->mLoadThread.MtThread::setPriority(700);
 }
 
-__attribute__((weak)) void sSound::NativeSystemPS4::updateExecute() {
-    DDON_STUB("sSound::NativeSystemPS4::updateExecute")
-    /* stub */
+void sSound::NativeSystemPS4::updateExecute() {
+    sceKernelUsleep(mUpdateThreadInterval * 1000u);
+    (sSound::mpInstance)->sSound::executeSoundFrame();
+    mNGS2System.update();
 }
 
-__attribute__((weak)) void sSound::NativeSystemPS4::loadExecute() {
-    DDON_STUB("sSound::NativeSystemPS4::loadExecute")
-    /* stub */
+void sSound::NativeSystemPS4::loadExecute() {
+    sceKernelUsleep(50000u);
+    sSound* v0_12 = sSound::mpInstance;
+    StreamVoice* p0_3 = &v0_12->mStreamVoice[0];
+    for (unsigned int i0_10 = 0; i0_10 <= 7u; p0_3 += 1, i0_10 += 1u) {
+        if (scePthreadMutexLock(&p0_3->mStreamLoadSection.mCSection) != 0) {
+            abort();
+            return;
+        }
+        if (v0_12->mpNativeSystem->checkFileAccessEnable()) {
+            p0_3->loadBuffer();
+        }
+        if (scePthreadMutexUnlock(&p0_3->mStreamLoadSection.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
 }
 
 void sSound::NativeSystemPS4::getFX(void* pParam) {
@@ -2692,14 +2948,74 @@ void sSound::NativeSystemPS4::getFX(void* pParam) {
     mNGS2System.mpNGS2RoutingMain->getFX(pParam);
 }
 
-__attribute__((weak)) void sSound::NativeSystemPS4::setFX(const void* pParam) {
-    DDON_STUB("sSound::NativeSystemPS4::setFX")
-    /* stub */
+void sSound::NativeSystemPS4::setFX(const void* pParam) {
+    if (mNGS2System.mpNGS2RoutingMain != nullptr) {
+        mNGS2System.mpNGS2RoutingMain->setFX(pParam);
+    }
+    if (mNGS2System.mAudioOut.mBgmPortEnable) {
+        if (mNGS2System.mpNGS2RoutingBgm != nullptr) {
+            mNGS2System.mpNGS2RoutingBgm->setFX(pParam);
+        }
+    }
+    if (mNGS2System.mAudioOut.mPadSpeakerPortNum != 0) {
+        u32 v0_0 = mNGS2System.mAudioOut.mPadSpeakerPortNum;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mNGS2System.mpNGS2RoutingPadSpeaker[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                mNGS2System.mpNGS2RoutingPadSpeaker[i0_3]->setFX(pParam);
+                v1_0 = mNGS2System.mAudioOut.mPadSpeakerPortNum;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mNGS2System.mAudioOut.mRestrictedPortEnable) {
+        if (mNGS2System.mpNGS2RoutingRestricted != nullptr) {
+            mNGS2System.mpNGS2RoutingRestricted->setFX(pParam);
+        }
+    }
 }
 
-__attribute__((weak)) void sSound::NativeSystemPS4::setReverbOutputChannel(u32 reverbIndex, u32 speakerIndex, bool b) {
-    DDON_STUB("sSound::NativeSystemPS4::setReverbOutputChannel")
-    /* stub */
+void sSound::NativeSystemPS4::setReverbOutputChannel(u32 reverbIndex, u32 speakerIndex, bool b) {
+    if (mNGS2System.mpNGS2RoutingMain != nullptr) {
+        mNGS2System.mpNGS2RoutingMain->setReverbOutputChannel(reverbIndex, speakerIndex, b);
+    }
+    if (mNGS2System.mAudioOut.mBgmPortEnable) {
+        if (mNGS2System.mpNGS2RoutingBgm != nullptr) {
+            mNGS2System.mpNGS2RoutingBgm->setReverbOutputChannel(reverbIndex, speakerIndex, b);
+        }
+    }
+    if (mNGS2System.mAudioOut.mPadSpeakerPortNum != 0) {
+        u32 v0_0 = mNGS2System.mAudioOut.mPadSpeakerPortNum;
+        unsigned int i0_7 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mNGS2System.mpNGS2RoutingPadSpeaker[i0_7] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                mNGS2System.mpNGS2RoutingPadSpeaker[i0_7]->setReverbOutputChannel(reverbIndex, speakerIndex, b);
+                v1_0 = mNGS2System.mAudioOut.mPadSpeakerPortNum;
+            }
+            if ((i0_7 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_7 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mNGS2System.mAudioOut.mRestrictedPortEnable) {
+        if (mNGS2System.mpNGS2RoutingRestricted != nullptr) {
+            mNGS2System.mpNGS2RoutingRestricted->setReverbOutputChannel(reverbIndex, speakerIndex, b);
+        }
+    }
 }
 
 bool sSound::NativeSystemPS4::getReverbOutputChannel(u32 reverbIndex, u32 speakerIndex) {
@@ -2749,14 +3065,6 @@ void sSound::NativeSystemPS4::setStreamSilentDecectionThreshold(f32 dB) {
 
 const MtDTI& sSound::NativeSystemPS4::PS4Property::getDTI() const {
     return sSound::NativeSystemPS4::PS4Property::DTI;
-}
-
-inline void* sSound::NativeSystemPS4::PS4Property::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sSound::NativeSystemPS4::PS4Property::DTI)->memAlloc(sz, align, sSound::NativeSystemPS4::PS4Property::DTI.mID);
-}
-
-inline void sSound::NativeSystemPS4::PS4Property::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSound::NativeSystemPS4::PS4Property::DTI)->memFree(p_addr);
 }
 
 void sSound::NativeSystemPS4::PS4Property::createProperty(MtPropertyList& s) {
@@ -2943,7 +3251,7 @@ __attribute__((weak)) bool sSound::NGS2System::final() {
     return {};
 }
 
-void sSound::NGS2System::update() {
+__attribute__((weak)) void sSound::NGS2System::update() {
     if (scePthreadMutexLock(&mRoutingSection.mCSection) == 0) {
         if (mpNGS2RoutingMain != nullptr) {
             mpNGS2RoutingMain->update();

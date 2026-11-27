@@ -18,19 +18,6 @@ const MtDTI& rTblMenuOption::getDTI() const {
     return rTblMenuOption::DTI;
 }
 
-inline void* rTblMenuOption::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTblMenuOption::DTI)->memAlloc(sz, align, rTblMenuOption::DTI.getID());
-}
-
-inline void rTblMenuOption::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuOption::DTI)->memFree(p_addr);
-}
-
-inline rTblMenuOption::rTblMenuOption() {
-    setAttribute(18u);
-    mCtgr.mAutoDelete = true;
-}
-
 rTblMenuOption::~rTblMenuOption() {
     if (mCtgr.mLength != 0) {
         u32 v0_0 = mCtgr.mLength;
@@ -121,10 +108,6 @@ const MtDTI& rTblMenuOption::cCtgr::getDTI() const {
     return rTblMenuOption::cCtgr::DTI;
 }
 
-inline void rTblMenuOption::cCtgr::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuOption::cCtgr::DTI)->memFree(p_addr);
-}
-
 rTblMenuOption::cCtgr::~cCtgr() {
     if (mTab.mLength != 0) {
         u32 v0_0 = mTab.mLength;
@@ -179,14 +162,6 @@ const MtDTI& rTblMenuOption::cTab::getDTI() const {
     return rTblMenuOption::cTab::DTI;
 }
 
-inline void* rTblMenuOption::cTab::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTblMenuOption::cTab::DTI)->memAlloc(sz, align, rTblMenuOption::cTab::DTI.getID());
-}
-
-inline void rTblMenuOption::cTab::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuOption::cTab::DTI)->memFree(p_addr);
-}
-
 rTblMenuOption::cTab::~cTab() {
 }
 
@@ -214,10 +189,6 @@ MtObject* rTblMenuOption::cTab::MyDTI::newInstance() const {
 
 const MtDTI& rTblMenuOption::cCaption::getDTI() const {
     return rTblMenuOption::cCaption::DTI;
-}
-
-inline void rTblMenuOption::cCaption::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuOption::cCaption::DTI)->memFree(p_addr);
 }
 
 rTblMenuOption::cCaption::~cCaption() {
@@ -274,14 +245,6 @@ const MtDTI& rTblMenuOption::cData::getDTI() const {
     return rTblMenuOption::cData::DTI;
 }
 
-inline void* rTblMenuOption::cData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTblMenuOption::cData::DTI)->memAlloc(sz, align, rTblMenuOption::cData::DTI.getID());
-}
-
-inline void rTblMenuOption::cData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuOption::cData::DTI)->memFree(p_addr);
-}
-
 rTblMenuOption::cData::~cData() {
     if (mPulldown.mLength != 0) {
         u32 v0_0 = mPulldown.mLength;
@@ -335,14 +298,6 @@ MtObject* rTblMenuOption::cData::MyDTI::newInstance() const {
 
 const MtDTI& rTblMenuOption::cPulldown::getDTI() const {
     return rTblMenuOption::cPulldown::DTI;
-}
-
-inline void* rTblMenuOption::cPulldown::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTblMenuOption::cPulldown::DTI)->memAlloc(sz, align, rTblMenuOption::cPulldown::DTI.getID());
-}
-
-inline void rTblMenuOption::cPulldown::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTblMenuOption::cPulldown::DTI)->memFree(p_addr);
 }
 
 rTblMenuOption::cPulldown::~cPulldown() {

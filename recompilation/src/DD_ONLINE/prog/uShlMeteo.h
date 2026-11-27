@@ -265,3 +265,66 @@ inline uShlMeteo::uShlMeteo() {
 inline void* uShlMeteoCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamMeteo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamMeteo::DTI)->memAlloc(sz, align, ::cShlParamMeteo::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamMeteoCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamMeteoCtrl::DTI)->memAlloc(sz, align, ::cShlParamMeteoCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamMeteoCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamMeteoCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* uShlMeteo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlMeteo::DTI)->memAlloc(sz, align, ::uShlMeteo::DTI.::MtDTI::getID());
+}
+
+inline void uShlMeteo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlMeteo::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamMeteo* uShlMeteo::getShlParam() const {
+    return static_cast<const cShlParamMeteo*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void* uShlMeteoCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlMeteoCtrl::DTI)->memAlloc(sz, align, ::uShlMeteoCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uShlMeteoCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlMeteoCtrl::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamMeteoCtrl* uShlMeteoCtrl::getShlParam() const {
+    return static_cast<const cShlParamMeteoCtrl*>(this->::uShlBase::mpShlParam2);
+}
+
+inline uShlMeteoCtrl::uShlMeteoCtrl() {
+    this->mMeteoCenter.z = 0.0f;
+    this->mMeteoCenter.pad_ = 0.0f;
+    this->mMeteoCenter.x = 0.0f;
+    this->mMeteoCenter.y = 0.0f;
+    this->mShootMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mShootMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mShootMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mShootMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mShootMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mShootMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mShootMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mShootMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mShootMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mShootMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mShootMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mShootMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mShootMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mShootMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mShootMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mShootMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+}

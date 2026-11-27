@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "rSoundRequest.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
@@ -25,10 +24,6 @@ __attribute__((weak)) void rSoundRequest::usage() {
 
 const MtDTI& rSoundRequest::getDTI() const {
     return rSoundRequest::DTI;
-}
-
-inline void rSoundRequest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundRequest::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rSoundRequest::~rSoundRequest() {

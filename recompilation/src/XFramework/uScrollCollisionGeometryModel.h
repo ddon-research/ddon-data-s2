@@ -120,3 +120,15 @@ inline uScrollCollisionGeometryModel::uScrollCollisionGeometryModel() {
     this->mpParentGeometryGroup = nullptr;
     this->mFlgGroupMode = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* uScrollCollisionGeometryModel::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uScrollCollisionGeometryModel::DTI)->memAlloc(sz, align, ::uScrollCollisionGeometryModel::DTI.::MtDTI::mID);
+}
+
+inline void uScrollCollisionGeometryModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uScrollCollisionGeometryModel::DTI)->memFree(p_addr);
+}

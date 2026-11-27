@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUIGameMenu.h"
 #include "Protocol/PacketData/Clan.h"
 #include "../../MT/MtAllocator.h"
@@ -152,10 +153,6 @@ const MtDTI& uGUIGameMenu::getDTI() const {
     return uGUIGameMenu::DTI;
 }
 
-inline void uGUIGameMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGameMenu::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIGameMenu::~uGUIGameMenu() {
     DDON_STUB("uGUIGameMenu::~uGUIGameMenu")
     /* stub */
@@ -291,9 +288,23 @@ __attribute__((weak)) void uGUIGameMenu::evSelectManual() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGameMenu::evSelectSupport() {
-    DDON_STUB("uGUIGameMenu::evSelectSupport")
-    /* stub */
+void uGUIGameMenu::evSelectSupport() {
+    if (mpServerRequestFunc != static_cast<uGUIBase::ServerRequestFunc>(0)) {
+        mpServerRequestFuncRsv = static_cast<ServerRequestFunc>(&::uGUIGameMenu::reportUrlRequestServer);
+        mServerCommandStatusRsv = 485;
+        mpServerSuccessFuncRsv = static_cast<ServerSuccessCallBack>(&::uGUIGameMenu::reportUrlCallBack);
+        mpServerFailedFuncRsv = static_cast<uGUIBase::ServerFailedCallBack>(0);
+    } else {
+        mpServerRequestFunc = static_cast<ServerRequestFunc>(&::uGUIGameMenu::reportUrlRequestServer);
+        mServerCommandStatus = 485;
+        mpServerSuccessFunc = static_cast<ServerSuccessCallBack>(&::uGUIGameMenu::reportUrlCallBack);
+        mpServerFailedFunc = static_cast<uGUIBase::ServerFailedCallBack>(0);
+        mServerRno = 0;
+        mServerResult = 0;
+    }
+    mIsBrowser = true;
+    static_cast<sGUIExt*>(sGUI::getInstance())->endBrowser();
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 38u);
 }
 
 void uGUIGameMenu::evSelectPhoto() {
@@ -570,9 +581,39 @@ __attribute__((weak)) void uGUIGameMenu::wakeupBanner() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIGameMenu::jumpSetPosSizeCallback(s32& PosX, s32& PosY, s32& Width, s32& Height, MT_CTSTR Url) {
-    DDON_STUB("uGUIGameMenu::jumpSetPosSizeCallback")
-    /* stub */
+void uGUIGameMenu::jumpSetPosSizeCallback(s32& PosX, s32& PosY, s32& Width, s32& Height, MT_CTSTR Url) {
+    s32 t0 = Width;
+    s32 t1 = Height;
+    mIsBrowser = true;
+    mIsInitBrowser = false;
+    mBrowserSize.w = t0;
+    mBrowserSize.h = t1;
+    if (Url != nullptr) {
+        if (Url != (&mBrowserUrl.mStr[0])) {
+            size_t t2 = strlen(Url);
+            mBrowserUrl.mLength = (static_cast<int>(t2) <= 255) ? static_cast<unsigned int>(t2) : 255u;
+            if (((static_cast<int>(t2) <= 255) ? static_cast<unsigned int>(t2) : 255u) != 0) {
+                memcpy(static_cast<void*>(&mBrowserUrl.mStr[0]), static_cast<const void*>(Url), static_cast<size_t>((static_cast<int>(t2) <= 255) ? static_cast<unsigned int>(t2) : 255u));
+                mBrowserUrl.mStr[(static_cast<int>(t2) <= 255) ? static_cast<unsigned int>(t2) : 255u] = 0;
+            } else {
+                mBrowserUrl.mStr[0] = 0;
+            }
+            static_cast<sGUIExt*>(sGUI::getInstance())->endBrowser();
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 35u);
+            sleep();
+        } else {
+            static_cast<sGUIExt*>(sGUI::getInstance())->endBrowser();
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 35u);
+            sleep();
+        }
+    } else {
+        mBrowserUrl.mStr[0] = 0;
+        mBrowserUrl.mLength = 0;
+        static_cast<sGUIExt*>(sGUI::getInstance())->endBrowser();
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 35u);
+        sleep();
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIGameMenu::updateBrowser);
 }
 
 __attribute__((weak)) void uGUIGameMenu::updateGacha() {
@@ -714,8 +755,8 @@ void uGUIGameMenu::reportUrlCallBack() {
     mIsInitBrowser = false;
     mBrowserSize.w = 480;
     mBrowserSize.h = 500;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 10316) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 10312) = 0;
+    mBrowserUrl.mStr[0] = 0;
+    mBrowserUrl.mLength = 0;
     static_cast<sGUIExt*>(sGUI::getInstance())->endBrowser();
 }
 
@@ -740,14 +781,6 @@ uGUIGameMenu::stCategoryItem::stCategoryItem() {
 
 const MtDTI& uGUIGameMenu::cGameMenuUnitWatcher::getDTI() const {
     return uGUIGameMenu::cGameMenuUnitWatcher::DTI;
-}
-
-inline void* uGUIGameMenu::cGameMenuUnitWatcher::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIGameMenu::cGameMenuUnitWatcher::DTI)->memAlloc(sz, align, uGUIGameMenu::cGameMenuUnitWatcher::DTI.getID());
-}
-
-inline void uGUIGameMenu::cGameMenuUnitWatcher::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGameMenu::cGameMenuUnitWatcher::DTI)->memFree(p_addr);
 }
 
 void uGUIGameMenu::cGameMenuUnitWatcher::update() {

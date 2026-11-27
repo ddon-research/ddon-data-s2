@@ -113,3 +113,15 @@ inline void* nLayout::cGameDataCache::operator new(size_t sz, void* p_addr) {
 
 inline nLayout::cGameDataCache::stFlagData::stFlagData() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* nLayout::cGameDataCache::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nLayout::cGameDataCache::DTI)->memAlloc(sz, align, ::nLayout::cGameDataCache::DTI.::MtDTI::getID());
+}
+
+inline void nLayout::cGameDataCache::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nLayout::cGameDataCache::DTI)->memFree(p_addr);
+}

@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rNpcEditData.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtDataWriter.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& rNpcEditData::getDTI() const {
     return rNpcEditData::DTI;
-}
-
-inline void* rNpcEditData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNpcEditData::DTI)->memAlloc(sz, align, rNpcEditData::DTI.getID());
-}
-
-inline void rNpcEditData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcEditData::DTI)->memFree(p_addr);
 }
 
 MT_CTSTR rNpcEditData::getExt() const {

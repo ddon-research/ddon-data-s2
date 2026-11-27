@@ -15,6 +15,7 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class MtStream;
+namespace nNetwork { class ProtocolStandard; }
 
 // Declarations
 namespace nNetwork { class BlockBuffer; }
@@ -34,6 +35,7 @@ namespace nNetwork {
     class BlockBuffer : public ::MtObject
     {
         friend class nNetwork::BlockQueue;
+        friend class nNetwork::ProtocolStandard;
     public:
         class MyDTI;
     public:
@@ -196,6 +198,7 @@ namespace nNetwork {
     template <typename T, unsigned int MAX_BLOCK>
     class TransportQueue : public nNetwork::BlockQueue
     {
+        friend class nNetwork::ProtocolStandard;
     public:
         void init(nNetwork::BlockPool* pool);
         bool push(const void* data_ptr, u32 data_size, const T& header);
@@ -230,4 +233,16 @@ inline void* nNetwork::BlockPool::operator new(size_t sz, void* p_addr) {
 
 inline void* nNetwork::BlockQueue::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* nNetwork::BlockBuffer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::BlockBuffer::DTI)->memAlloc(sz, align, ::nNetwork::BlockBuffer::DTI.::MtDTI::mID);
+}
+
+inline void nNetwork::BlockBuffer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::BlockBuffer::DTI)->memFree(p_addr);
 }

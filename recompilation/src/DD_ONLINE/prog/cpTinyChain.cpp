@@ -3,7 +3,6 @@
 #include "cpTinyChain.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cUnit.h"
@@ -21,16 +20,8 @@ const MtDTI& cpTinyChain::getDTI() const {
     return cpTinyChain::DTI;
 }
 
-inline MtAllocator* cpTinyChain::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpTinyChain::DTI);
-}
-
 void* cpTinyChain::operator new(size_t sz, u32 align) {
     return cpTinyChain::getAllocator()->memAlloc(sz, align, cpTinyChain::DTI.getID());
-}
-
-inline void cpTinyChain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpTinyChain::DTI)->memFree(p_addr);
 }
 
 cpTinyChain::cpTinyChain() {

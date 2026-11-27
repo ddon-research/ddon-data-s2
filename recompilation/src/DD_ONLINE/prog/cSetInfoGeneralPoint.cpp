@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cSetInfoGeneralPoint.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cSetInfo.h"
 #include "cSetInfoCoord.h"
@@ -16,16 +14,8 @@ const MtDTI& cSetInfoGeneralPoint::getDTI() const {
     return cSetInfoGeneralPoint::DTI;
 }
 
-inline void* cSetInfoGeneralPoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSetInfoGeneralPoint::DTI)->memAlloc(sz, align, cSetInfoGeneralPoint::DTI.getID());
-}
-
 void* cSetInfoGeneralPoint::operator new(size_t sz, void* p_addr) {
     return p_addr;
-}
-
-inline void cSetInfoGeneralPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSetInfoGeneralPoint::DTI)->memFree(p_addr);
 }
 
 cSetInfoGeneralPoint::cSetInfoGeneralPoint() {

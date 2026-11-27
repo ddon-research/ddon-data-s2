@@ -98,3 +98,23 @@ inline void* rOcdImmuneParamRes::operator new(size_t sz, void* p_addr) {
 inline void* rOcdStatusParamRes::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rOcdImmuneParamRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOcdImmuneParamRes::DTI)->memAlloc(sz, align, ::rOcdImmuneParamRes::DTI.::MtDTI::getID());
+}
+
+inline void rOcdImmuneParamRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOcdImmuneParamRes::DTI)->memFree(p_addr);
+}
+
+inline void* rOcdStatusParamRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOcdStatusParamRes::DTI)->memAlloc(sz, align, ::rOcdStatusParamRes::DTI.::MtDTI::getID());
+}
+
+inline void rOcdStatusParamRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOcdStatusParamRes::DTI)->memFree(p_addr);
+}

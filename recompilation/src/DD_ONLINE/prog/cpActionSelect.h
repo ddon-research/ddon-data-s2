@@ -117,3 +117,15 @@ inline void cpActionSelect::setId(u32 id) {
 inline s32 cpActionSelect::getId() {
     return this->mId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpActionSelect::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpActionSelect::DTI);
+}
+
+inline void cpActionSelect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpActionSelect::DTI)->memFree(p_addr);
+}

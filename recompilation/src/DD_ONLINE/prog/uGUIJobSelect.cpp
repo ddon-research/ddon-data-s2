@@ -35,16 +35,8 @@ const MtDTI& uGUIJobSelect::getDTI() const {
     return uGUIJobSelect::DTI;
 }
 
-inline MtAllocator* uGUIJobSelect::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIJobSelect::DTI);
-}
-
 void* uGUIJobSelect::operator new(size_t sz, u32 align) {
     return uGUIJobSelect::getAllocator()->memAlloc(sz, align, uGUIJobSelect::DTI.getID());
-}
-
-inline void uGUIJobSelect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIJobSelect::DTI)->memFree(p_addr);
 }
 
 uGUIJobSelect::~uGUIJobSelect() {
@@ -210,18 +202,6 @@ u32 uGUIJobSelect::evCtrlMouseClick(cControl::Message* msg) {
         }
     }
     return 0;
-}
-
-inline void uGUIJobSelect::evInputCancelJob() {
-    static_cast<sGUIExt*>(sGUI::mpInstance)->requestSE(0u, 5u);
-    mExitType = EXIT_TYPE_CANCEL;
-    if (mProc == PR_END) {
-        return;
-    }
-    mProc = PR_END;
-    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIJobSelect::updateInit);
-    setPlayingFlow(getFlow(34u), false);
-    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIJobSelect::updateExit);
 }
 
 void uGUIJobSelect::moveInput() {
@@ -394,10 +374,6 @@ const MtDTI& uGUIJobSelect::cItem::getDTI() const {
     return uGUIJobSelect::cItem::DTI;
 }
 
-inline void uGUIJobSelect::cItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIJobSelect::cItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIJobSelect::cItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIJobSelect::cItem::MyDTI uGUIJobSelect::cItem::DTI("uGUIJobSelect::cItem", &::MtObject::DTI, 160ul, 0u, 0u);
@@ -409,14 +385,6 @@ __attribute__((weak)) MtObject* uGUIJobSelect::cItem::MyDTI::newInstance() const
 
 const MtDTI& uGUIJobSelect::cJobInfo::getDTI() const {
     return uGUIJobSelect::cJobInfo::DTI;
-}
-
-inline void* uGUIJobSelect::cJobInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIJobSelect::cJobInfo::DTI)->memAlloc(sz, align, uGUIJobSelect::cJobInfo::DTI.getID());
-}
-
-inline void uGUIJobSelect::cJobInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIJobSelect::cJobInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIJobSelect::cJobInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

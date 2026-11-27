@@ -71,10 +71,6 @@ const MtDTI& cShlParamJob08Cs12Pad::getDTI() const {
     return cShlParamJob08Cs12Pad::DTI;
 }
 
-inline void* cShlParamJob08Cs12Pad::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamJob08Cs12Pad::DTI)->memAlloc(sz, align, cShlParamJob08Cs12Pad::DTI.getID());
-}
-
 inline void cShlParamJob08Cs12Pad::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamJob08Cs12Pad::DTI)->memFree(p_addr);
 }
@@ -110,10 +106,6 @@ const MtDTI& cShlParamPadCtrl::getDTI() const {
     return cShlParamPadCtrl::DTI;
 }
 
-inline void* cShlParamPadCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamPadCtrl::DTI)->memAlloc(sz, align, cShlParamPadCtrl::DTI.getID());
-}
-
 MtDTI& cShlParamPadCtrl::getShlDTI() const {
     return uShlPadCtrl::DTI;
 }
@@ -146,18 +138,6 @@ const MtDTI& uShlJob08Cs12Homing::getDTI() const {
     return uShlJob08Cs12Homing::DTI;
 }
 
-inline void* uShlJob08Cs12Homing::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlJob08Cs12Homing::DTI)->memAlloc(sz, align, uShlJob08Cs12Homing::DTI.getID());
-}
-
-inline void uShlJob08Cs12Homing::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlJob08Cs12Homing::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamJob08Cs12Homing* uShlJob08Cs12Homing::getShlParam() const {
-    return static_cast<const cShlParamJob08Cs12Homing*>(mpShlParam2);
-}
-
 __attribute__((weak)) void uShlJob08Cs12Homing::updateSub() {
     DDON_STUB("uShlJob08Cs12Homing::updateSub")
     /* stub */
@@ -180,18 +160,6 @@ const MtDTI& uShlJob08Cs12Pad::getDTI() const {
     return uShlJob08Cs12Pad::DTI;
 }
 
-inline void* uShlJob08Cs12Pad::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlJob08Cs12Pad::DTI)->memAlloc(sz, align, uShlJob08Cs12Pad::DTI.getID());
-}
-
-inline void uShlJob08Cs12Pad::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlJob08Cs12Pad::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamJob08Cs12Pad* uShlJob08Cs12Pad::getShlParam() const {
-    return static_cast<const cShlParamJob08Cs12Pad*>(mpShlParam2);
-}
-
 __attribute__((weak)) void uShlJob08Cs12Pad::updateSub() {
     DDON_STUB("uShlJob08Cs12Pad::updateSub")
     /* stub */
@@ -212,18 +180,6 @@ MtObject* uShlJob08Cs12Pad::MyDTI::newInstance() const {
 
 const MtDTI& uShlPadCtrl::getDTI() const {
     return uShlPadCtrl::DTI;
-}
-
-inline void* uShlPadCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlPadCtrl::DTI)->memAlloc(sz, align, uShlPadCtrl::DTI.getID());
-}
-
-inline void uShlPadCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlPadCtrl::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamPadCtrl* uShlPadCtrl::getShlParam() const {
-    return static_cast<const cShlParamPadCtrl*>(mpShlParam2);
 }
 
 uShlPadCtrl::~uShlPadCtrl() {

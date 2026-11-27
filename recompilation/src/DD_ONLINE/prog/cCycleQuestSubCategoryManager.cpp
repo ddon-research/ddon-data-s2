@@ -9,6 +9,7 @@
 #include "Protocol/PacketData/Quest.h"
 #include "cCycleQuestManagerBase.h"
 #include "cQuestManagerBase.h"
+#include "cQuestResourceManager.h"
 #include "cQuestTask.h"
 #include "nQuest.h"
 #include "../../XFramework/rGUIMessage.h"
@@ -26,16 +27,8 @@ const MtDTI& cCycleQuestSubCategoryManager::getDTI() const {
     return cCycleQuestSubCategoryManager::DTI;
 }
 
-inline MtAllocator* cCycleQuestSubCategoryManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCycleQuestSubCategoryManager::DTI);
-}
-
 void* cCycleQuestSubCategoryManager::operator new(size_t sz, u32 align) {
     return cCycleQuestSubCategoryManager::getAllocator()->memAlloc(sz, align, cCycleQuestSubCategoryManager::DTI.getID());
-}
-
-inline void cCycleQuestSubCategoryManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCycleQuestSubCategoryManager::DTI)->memFree(p_addr);
 }
 
 u32 cCycleQuestSubCategoryManager::getQuestManagerType() const {
@@ -179,6 +172,12 @@ __attribute__((weak)) void cCycleQuestSubCategoryManager::addTaskInfo(cQuestTask
     /* stub */
 }
 
+cCycleQuestSubCategoryManager::cCycleQuestSubCategoryManager() : cQuestManagerBase("SubCategory"), mpMainTask(static_cast<cQuestTask*>(nullptr)), mpParent(static_cast<cCycleQuestManagerBase*>(nullptr)) {
+    mCycleContentsPeriod = nQuest::CYCLE_CONTENTS_PERIOD_NONE;
+    mSubCategoryType = 0;
+    mIsDistEnable = true;
+}
+
 __attribute__((noinline)) cCycleQuestSubCategoryManager::~cCycleQuestSubCategoryManager() {
     if (mTaskInfo.mLength != 0) {
         u32 v0_0 = mTaskInfo.mLength;
@@ -270,21 +269,12 @@ inline cCycleQuestSubCategoryManager::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* p
 
 cCycleQuestSubCategoryManager::MyDTI cCycleQuestSubCategoryManager::DTI("cCycleQuestSubCategoryManager", &::cQuestManagerBase::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCycleQuestSubCategoryManager::MyDTI::newInstance() const {
-    DDON_STUB("cCycleQuestSubCategoryManager::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCycleQuestSubCategoryManager::MyDTI::newInstance() const {
+    return new (16u) cCycleQuestSubCategoryManager;
 }
 
 const MtDTI& cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::getDTI() const {
     return cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI;
-}
-
-inline void* cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI)->memAlloc(sz, align, cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI.getID());
-}
-
-inline void cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::DTI)->memFree(p_addr);
 }
 
 cCycleQuestSubCategoryManager::cCycleContentsTaskInfo::~cCycleContentsTaskInfo() {

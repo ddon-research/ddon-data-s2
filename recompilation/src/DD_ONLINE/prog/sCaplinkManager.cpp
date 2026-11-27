@@ -5,7 +5,7 @@
 #include <string.h>
 #include "sCaplinkManager.h"
 #include "../../MT/MtAllocator.h"
-#include "../../MT/MtCharset.h"
+#include "../../MT/MtCharSet.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtJsonReader.h"
@@ -111,16 +111,8 @@ const MtDTI& sCaplinkManager::getDTI() const {
     return sCaplinkManager::DTI;
 }
 
-inline MtAllocator* sCaplinkManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sCaplinkManager::DTI);
-}
-
 void* sCaplinkManager::operator new(size_t sz, u32 align) {
     return sCaplinkManager::getAllocator()->memAlloc(sz, align, sCaplinkManager::DTI.getID());
-}
-
-inline void sCaplinkManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCaplinkManager::DTI)->memFree(p_addr);
 }
 
 sCaplinkManager::sCaplinkManager() {
@@ -162,7 +154,8 @@ void sCaplinkManager::end(bool isForce) {
                 mUpdateFlag = 0;
                 if (mpCaplink != nullptr) {
                     mpCaplink->wsClose();
-                    *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 12068) = 0;
+                    mWebsocketListener.mIsConnected = false;
+                    mWebsocketListener.mIsError = false;
                     mWebsocketListener.mIsRegistDevice = false;
                     mpCaplink->final();
                     if (mpCaplink != nullptr) {
@@ -171,8 +164,8 @@ void sCaplinkManager::end(bool isForce) {
                     }
                 }
                 mIsLogin = false;
-                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 9724) = 0;
-                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 9720) = 0;
+                mMyProfile.mUniqueId.mStr[0] = 0;
+                mMyProfile.mUniqueId.mLength = 0;
                 mNextNotifyTime.mTime = 0;
                 mIsNoDispCOGError = false;
                 mIsFirstBoot = true;
@@ -194,7 +187,8 @@ void sCaplinkManager::end(bool isForce) {
         mUpdateFlag = 0;
         if (mpCaplink != nullptr) {
             mpCaplink->wsClose();
-            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 12068) = 0;
+            mWebsocketListener.mIsConnected = false;
+            mWebsocketListener.mIsError = false;
             mWebsocketListener.mIsRegistDevice = false;
             mpCaplink->final();
             if (mpCaplink != nullptr) {
@@ -203,8 +197,8 @@ void sCaplinkManager::end(bool isForce) {
             }
         }
         mIsLogin = false;
-        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 9724) = 0;
-        *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 9720) = 0;
+        mMyProfile.mUniqueId.mStr[0] = 0;
+        mMyProfile.mUniqueId.mLength = 0;
         mNextNotifyTime.mTime = 0;
         mIsNoDispCOGError = false;
         mIsFirstBoot = true;
@@ -343,8 +337,37 @@ __attribute__((weak)) void sCaplinkManager::loginCogKey(MT_CTSTR session_key, MT
 }
 
 __attribute__((weak)) void sCaplinkManager::loginCogKeyCallback() {
-    DDON_STUB("sCaplinkManager::loginCogKeyCallback")
-    /* stub */
+    const nCaplink::cUserBaseInfo* pInfo = reinterpret_cast<const nCaplink::cUserBaseInfo*>(reinterpret_cast<const char*>(&mLoginCogKeyAns) + 0x28);
+    const char* t1 = reinterpret_cast<const char*>(pInfo) + 0x8;
+    char* t2 = reinterpret_cast<char*>(&mMyProfile.mUniqueId) + 0x4;
+    s32 t3 = static_cast<s32>(strlen(t1));
+    if (t3 > 32) {
+        t3 = 32;
+    }
+    *reinterpret_cast<u32*>(&mMyProfile.mUniqueId) = static_cast<u32>(t3);
+    if (static_cast<u32>(t3) != 0u) {
+        memcpy(t2, t1, static_cast<u32>(t3));
+        t2[static_cast<u32>(t3)] = '\0';
+    } else {
+        t2[0] = '\0';
+    }
+    t1 = reinterpret_cast<const char*>(pInfo) + 0x29;
+    t2 = reinterpret_cast<char*>(&mMyProfile.mNickname) + 0x4;
+    t3 = static_cast<s32>(strlen(t1));
+    if (t3 > 80) {
+        t3 = 80;
+    }
+    *reinterpret_cast<u32*>(&mMyProfile.mNickname) = static_cast<u32>(t3);
+    if (static_cast<u32>(t3) != 0u) {
+        memcpy(t2, t1, static_cast<u32>(t3));
+        t2[static_cast<u32>(t3)] = '\0';
+    } else {
+        t2[0] = '\0';
+    }
+    if (*reinterpret_cast<const bool*>(reinterpret_cast<const char*>(&mLoginCogKeyAns) + 0x20)) {
+        mIsLogin = true;
+        mRnoMain = RNO_MAIN_INIT;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::userSearch(s32 searchType, MT_CTSTR keyword, s32 offset, s32 count) {
@@ -402,9 +425,44 @@ void sCaplinkManager::userProfileContentModify(MT_CTSTR content_id, MT_CTSTR cha
 __attribute__((weak)) void sCaplinkManager::userProfileContentModifyCallback() {
 }
 
-__attribute__((weak)) void sCaplinkManager::userProfileGet(MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::userProfileGet")
-    /* stub */
+void sCaplinkManager::userProfileGet(MT_CTSTR unique_id) {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isConnectServer()) {
+        if (mIsConnection) {
+            init();
+            memset(static_cast<void*>(&mUserProfileGetAns.mUserProfile), 0, 1704ul);
+            mUserProfileGetAns.nCaplink::ContextListener::init();
+            if (mpCaplink != nullptr) {
+                if (unique_id != nullptr) {
+                    if (mpCaplink->reqUserProfileGet(static_cast<nCaplink::ContextListener*>(&mUserProfileGetAns), unique_id)) {
+                        addListener(static_cast<nCaplink::ContextListener*>(&mUserProfileGetAns), &::sCaplinkManager::userProfileGetCallback);
+                        if (unique_id != (&mMyProfile.mUniqueId.mStr[0])) {
+                            mIsReqMyProfile = strcmp(&mMyProfile.mUniqueId.mStr[0], unique_id) == 0;
+                        } else {
+                            mIsReqMyProfile = true;
+                        }
+                    }
+                }
+            }
+        } else {
+            memset(static_cast<void*>(&mUserProfileGetAns.mUserProfile), 0, 1704ul);
+            mUserProfileGetAns.nCaplink::ContextListener::init();
+            mUserProfileGetAns.mStatus = 3;
+        }
+    } else {
+        memset(static_cast<void*>(&mUserProfileGetAns.mUserProfile), 0, 1704ul);
+        mUserProfileGetAns.nCaplink::ContextListener::init();
+        mUserProfileGetAns.mStatus = 3;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::userProfileGetCallback() {
@@ -725,7 +783,7 @@ void sCaplinkManager::contentInviteTotalGet() {
             init();
             mContentInviteTotalGetAns.nCaplink::ContextListener::init();
             if (mpCaplink != nullptr) {
-                if (mpCaplink->reqContentInviteTotalGet(static_cast<nCaplink::ContextListener*>(&mContentInviteTotalGetAns), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12256))))) {
+                if (mpCaplink->reqContentInviteTotalGet(static_cast<nCaplink::ContextListener*>(&mContentInviteTotalGetAns), &mDateContentInvite.mStr[0])) {
                     addListener(static_cast<nCaplink::ContextListener*>(&mContentInviteTotalGetAns), &::sCaplinkManager::contentInviteTotalGetCallback);
                 }
             }
@@ -1191,15 +1249,20 @@ void sCaplinkManager::notify() {
             mNotifyAns.mContentTotal = 0;
             mNotifyAns.mContentUpdate = 0;
             mNotifyAns.mResourcePresetTotal = 0;
-            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 9324) = 0;
+            mNotifyAns.mResourcePresetUpdate = 0;
+            mNotifyAns.mProfileUpdate = 0;
             mNotifyAns.mStampUpdate = 0;
             mNotifyAns.mStampTotal = 0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9296) = 0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9288) = 0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9280) = 0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9272) = 0;
+            mNotifyAns.mLastPostId = 0;
+            mNotifyAns.mAppNotifyTotal = 0;
+            mNotifyAns.mTagTotal = 0;
+            mNotifyAns.mContentInviteTotal = 0;
+            mNotifyAns.mFriendTagFreeTotal = 0;
+            mNotifyAns.mFriendRequestReceiveTotal = 0;
+            mNotifyAns.mFriendTotal = 0;
+            mNotifyAns.mFriendTagContentTotal = 0;
             if (mpCaplink != nullptr) {
-                if (mpCaplink->reqNotify(static_cast<nCaplink::ContextListener*>(&mNotifyAns), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12088))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12116))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12172))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12144))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12200))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12256))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12284))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12228))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12312))), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12368))))) {
+                if (mpCaplink->reqNotify(static_cast<nCaplink::ContextListener*>(&mNotifyAns), &mDateFriendList.mStr[0], &mDateFriendContentTagList.mStr[0], &mDateFriendFreeTag.mStr[0], &mDateFriendRecv.mStr[0], &mDateTag.mStr[0], &mDateContentInvite.mStr[0], &mDateStamp.mStr[0], &mDateContentList.mStr[0], &mDatePresetResource.mStr[0], &mDateChatGroupList.mStr[0])) {
                     mIsNoDispError = true;
                     addListener(static_cast<nCaplink::ContextListener*>(&mNotifyAns), &::sCaplinkManager::notifyCallback);
                     mRnoMain = 17;
@@ -1210,13 +1273,18 @@ void sCaplinkManager::notify() {
             mNotifyAns.mContentTotal = 0;
             mNotifyAns.mContentUpdate = 0;
             mNotifyAns.mResourcePresetTotal = 0;
-            *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 9324) = 0;
+            mNotifyAns.mResourcePresetUpdate = 0;
+            mNotifyAns.mProfileUpdate = 0;
             mNotifyAns.mStampUpdate = 0;
             mNotifyAns.mStampTotal = 0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9296) = 0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9288) = 0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9280) = 0;
-            *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9272) = 0;
+            mNotifyAns.mLastPostId = 0;
+            mNotifyAns.mAppNotifyTotal = 0;
+            mNotifyAns.mTagTotal = 0;
+            mNotifyAns.mContentInviteTotal = 0;
+            mNotifyAns.mFriendTagFreeTotal = 0;
+            mNotifyAns.mFriendRequestReceiveTotal = 0;
+            mNotifyAns.mFriendTotal = 0;
+            mNotifyAns.mFriendTagContentTotal = 0;
             mNotifyAns.mStatus = 3;
         }
     } else {
@@ -1224,13 +1292,18 @@ void sCaplinkManager::notify() {
         mNotifyAns.mContentTotal = 0;
         mNotifyAns.mContentUpdate = 0;
         mNotifyAns.mResourcePresetTotal = 0;
-        *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(this) + 9324) = 0;
+        mNotifyAns.mResourcePresetUpdate = 0;
+        mNotifyAns.mProfileUpdate = 0;
         mNotifyAns.mStampUpdate = 0;
         mNotifyAns.mStampTotal = 0;
-        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9296) = 0;
-        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9288) = 0;
-        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9280) = 0;
-        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 9272) = 0;
+        mNotifyAns.mLastPostId = 0;
+        mNotifyAns.mAppNotifyTotal = 0;
+        mNotifyAns.mTagTotal = 0;
+        mNotifyAns.mContentInviteTotal = 0;
+        mNotifyAns.mFriendTagFreeTotal = 0;
+        mNotifyAns.mFriendRequestReceiveTotal = 0;
+        mNotifyAns.mFriendTotal = 0;
+        mNotifyAns.mFriendTagContentTotal = 0;
         mNotifyAns.mStatus = 3;
     }
 }
@@ -1429,9 +1502,16 @@ __attribute__((weak)) void sCaplinkManager::websocketServerListGet() {
 __attribute__((weak)) void sCaplinkManager::websocketServerListGetCallback() {
 }
 
-__attribute__((weak)) bool sCaplinkManager::isMyUniqueId(MT_CTSTR unique_id) {
-    DDON_STUB("sCaplinkManager::isMyUniqueId")
-    return {};
+bool sCaplinkManager::isMyUniqueId(MT_CTSTR unique_id) {
+    if (unique_id != nullptr) {
+        if (unique_id != (&mMyProfile.mUniqueId.mStr[0])) {
+            return strcmp(&mMyProfile.mUniqueId.mStr[0], unique_id) == 0;
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::updateMyProfile(const sCaplinkManager::cProfile& prof) {
@@ -1442,22 +1522,6 @@ __attribute__((weak)) void sCaplinkManager::updateMyProfile(const sCaplinkManage
 __attribute__((weak)) bool sCaplinkManager::setupWebsocket() {
     DDON_STUB("sCaplinkManager::setupWebsocket")
     return {};
-}
-
-inline void sCaplinkManager::updateWebsocket() {
-    if (!mWebsocketListener.mIsRegistDevice) {
-        return;
-    }
-    if (mpCaplink->mpWsClient == nullptr) {
-        return;
-    }
-    if (mpCaplink->mpWsClient->mWsState != cWebsocketClient::WS_STATE_NORMAL) {
-        return;
-    }
-    if (!mpCaplink->wsRegistDevice()) {
-        return;
-    }
-    mWebsocketListener.mIsRegistDevice = false;
 }
 
 const sCaplinkManager::cIconUrl* sCaplinkManager::getIconUrlFromIndex(u32 index) {
@@ -1768,7 +1832,7 @@ __attribute__((weak)) void sCaplinkManager::sortChatList() {
     /* stub */
 }
 
-void sCaplinkManager::clearChatList() {
+__attribute__((weak)) void sCaplinkManager::clearChatList() {
     if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
             abort();
@@ -1781,10 +1845,10 @@ void sCaplinkManager::clearChatList() {
             }
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 11764) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 11760) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 11804) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 11800) = 0;
+    mChatList.mId.mStr[0] = 0;
+    mChatList.mId.mLength = 0;
+    mChatList.mChatGroupName.mStr[0] = 0;
+    mChatList.mChatGroupName.mLength = 0;
     mChatList.mIdType = 0;
     mChatList.mChatStatus = 0;
     mChatList.mLastChatId = 0;
@@ -1870,8 +1934,49 @@ void sCaplinkManager::clearChatList() {
 }
 
 __attribute__((weak)) void sCaplinkManager::addChatList(const nCaplink::WebsocketNotifyChat* notify) {
-    DDON_STUB("sCaplinkManager::addChatList")
-    /* stub */
+    if (notify == nullptr) {
+        return;
+    }
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    }
+    if (mChatList.mIdType == static_cast<int>(notify->mIdType)) {
+        if ((&mChatList.mId.mStr[0]) != (&notify->mId[0])) {
+            if (strcmp(&mChatList.mId.mStr[0], &notify->mId[0]) == 0) {
+                mChatList.mIsForward = true;
+                addChatList(notify->mChatId, &notify->mUniqueId[0], &notify->mNickname[0], &notify->mIcon[0], &notify->mMessage[0], &notify->mCreatedAt[0]);
+                compactionChatList();
+            }
+        } else {
+            mChatList.mIsForward = true;
+            addChatList(notify->mChatId, &notify->mUniqueId[0], &notify->mNickname[0], &notify->mIcon[0], &notify->mMessage[0], &notify->mCreatedAt[0]);
+            compactionChatList();
+        }
+    }
+    if ((&mMyProfile.mUniqueId.mStr[0]) != (&notify->mUniqueId[0])) {
+        if (strcmp(&mMyProfile.mUniqueId.mStr[0], &notify->mUniqueId[0]) != 0) {
+            if (notify->mIdType != 3) {
+                if (static_cast<unsigned int>(notify->mIdType - 1) <= 1) {
+                    if (!mIsInfoNewChat) {
+                        static_cast<sGUIExt*>(sGUI::getInstance())->requestInfomation(sGUIExt::INFO_FLAG_CAPLINK_NEW_CHAT, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
+                        mIsInfoNewChat = true;
+                    }
+                }
+            } else {
+                if (!mIsInfoMessage) {
+                    static_cast<sGUIExt*>(sGUI::getInstance())->requestInfomation(sGUIExt::INFO_FLAG_CAPLINK_MESSAGE, static_cast<MT_CTSTR>(nullptr), static_cast<MT_CTSTR>(nullptr));
+                    mIsInfoMessage = true;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::addChatList(s32 chat_id, MT_CTSTR unique_id, MT_CTSTR nickname, MT_CTSTR icon, MT_CTSTR message, MT_CTSTR date) {
@@ -3032,9 +3137,72 @@ void sCaplinkManager::reqGroupChatListUpdate(bool isDispError) {
     setReqFlag(8u, isDispError);
 }
 
-__attribute__((weak)) void sCaplinkManager::reqChatListUpdate(s32 id_type, MT_CTSTR id, bool is_forward) {
-    DDON_STUB("sCaplinkManager::reqChatListUpdate")
-    /* stub */
+void sCaplinkManager::reqChatListUpdate(s32 id_type, MT_CTSTR id, bool is_forward) {
+    if (id == nullptr) {
+        return;
+    }
+    if (id_type == 0) {
+        return;
+    }
+    if ((mUpdateFlag & 1024u) == 0) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+            }
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+        if (mChatList.mIdType == id_type) {
+            if (id != (&mChatList.mId.mStr[0])) {
+                if (strcmp(&mChatList.mId.mStr[0], id) != 0) {
+                    clearChatList();
+                    mChatList.mIdType = id_type;
+                    size_t t0 = strlen(id);
+                    mChatList.mId.mLength = (static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u;
+                    if (((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u) != 0) {
+                        memcpy(static_cast<void*>(&mChatList.mId.mStr[0]), static_cast<const void*>(id), static_cast<size_t>((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u));
+                        mChatList.mId.mStr[(static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u] = '\0';
+                    } else {
+                        mChatList.mId.mStr[0] = '\0';
+                    }
+                    mChatList.mIsFirst = false;
+                    mChatList.mIsForward = is_forward;
+                    setReqFlag(10u, static_cast<bool>((mUpdateDispError & 1024u) >> 10));
+                } else {
+                    mChatList.mIsFirst = false;
+                    mChatList.mIsForward = is_forward;
+                    setReqFlag(10u, static_cast<bool>((mUpdateDispError & 1024u) >> 10));
+                }
+            } else {
+                mChatList.mIsFirst = false;
+                mChatList.mIsForward = is_forward;
+                setReqFlag(10u, static_cast<bool>((mUpdateDispError & 1024u) >> 10));
+            }
+        } else {
+            clearChatList();
+            mChatList.mIdType = id_type;
+            if (id != (&mChatList.mId.mStr[0])) {
+                size_t t0 = strlen(id);
+                mChatList.mId.mLength = (static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u;
+                if (((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u) != 0) {
+                    memcpy(static_cast<void*>(&mChatList.mId.mStr[0]), static_cast<const void*>(id), static_cast<size_t>((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u));
+                    mChatList.mId.mStr[(static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u] = '\0';
+                } else {
+                    mChatList.mId.mStr[0] = '\0';
+                }
+                mChatList.mIsFirst = false;
+                mChatList.mIsForward = is_forward;
+                setReqFlag(10u, static_cast<bool>((mUpdateDispError & 1024u) >> 10));
+            } else {
+                mChatList.mIsFirst = false;
+                mChatList.mIsForward = is_forward;
+                setReqFlag(10u, static_cast<bool>((mUpdateDispError & 1024u) >> 10));
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sCaplinkManager::updateMyProf() {
@@ -3140,14 +3308,6 @@ const MtDTI& sCaplinkManager::cProfile::getDTI() const {
     return sCaplinkManager::cProfile::DTI;
 }
 
-inline void* sCaplinkManager::cProfile::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCaplinkManager::cProfile::DTI)->memAlloc(sz, align, sCaplinkManager::cProfile::DTI.getID());
-}
-
-inline void sCaplinkManager::cProfile::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCaplinkManager::cProfile::DTI)->memFree(p_addr);
-}
-
 inline sCaplinkManager::cProfile::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sCaplinkManager::cProfile::MyDTI sCaplinkManager::cProfile::DTI("sCaplinkManager::cProfile", &::cCaplinkObject::DTI, 936ul, 0u, 0u);
@@ -3160,13 +3320,8 @@ const MtDTI& sCaplinkManager::cIconUrl::getDTI() const {
     return sCaplinkManager::cIconUrl::DTI;
 }
 
-inline void sCaplinkManager::cIconUrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCaplinkManager::cIconUrl::DTI)->memFree(p_addr);
-}
-
-__attribute__((weak)) MT_CTSTR sCaplinkManager::cIconUrl::getUrl() const {
-    DDON_STUB("sCaplinkManager::cIconUrl::getUrl")
-    return {};
+MT_CTSTR sCaplinkManager::cIconUrl::getUrl() const {
+    return &mUrl.mStr[0];
 }
 
 inline sCaplinkManager::cIconUrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -3182,18 +3337,65 @@ const MtDTI& sCaplinkManager::cProfIconLoader::getDTI() const {
     return sCaplinkManager::cProfIconLoader::DTI;
 }
 
-inline void sCaplinkManager::cProfIconLoader::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCaplinkManager::cProfIconLoader::DTI)->memFree(p_addr);
-}
-
 sCaplinkManager::cProfIconLoader::~cProfIconLoader() {
-    DDON_STUB("sCaplinkManager::cProfIconLoader::~cProfIconLoader")
-    /* stub */
+    if (mHandle <= 8u) {
+        if (sHttpClient::getInstance()->mClientList[mHandle].mpHttp != nullptr) {
+            if (!sHttpClient::getInstance()->mClientList[mHandle].mpHttp->isExecOpeningServerFlow()) {
+                sHttpClient::getInstance()->mClientList[mHandle].mpHttp->abort();
+            }
+        }
+    }
+    if (mpImage != nullptr) {
+        MtMemoryAllocator::getAllocator(cResource::DTI)->memFree(mpImage);
+        mpImage = nullptr;
+    }
+    mURL.mStr[0] = 0;
+    mURL.mLength = 0;
+    mImageSize = 0;
+    mHandle = 0;
 }
 
-__attribute__((weak)) bool sCaplinkManager::cProfIconLoader::update() {
-    DDON_STUB("sCaplinkManager::cProfIconLoader::update")
-    return {};
+bool sCaplinkManager::cProfIconLoader::update() {
+    if (sCaplinkManager::getInstance()->mIsConnection) {
+        if (mHandle != 0) {
+            if (mHandle <= 8u) {
+                if ((sHttpClient::getInstance()->mClientList[mHandle].mpHttp != nullptr) && (sHttpClient::getInstance()->mClientList[mHandle].mpHttp->mRno != 8)) {
+                    return false;
+                }
+                if (sHttpClient::getInstance()->mClientList[mHandle].mErrorCode == 0) {
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setCaplinkIcon(mpImage, mImageSize, mId);
+                }
+            }
+            mHandle = 0;
+            return true;
+        } else {
+            if (sCaplinkManager::getInstance()->mListener.mLength == 0) {
+                if (sCaplinkManager::getInstance()->mUpdateFlag == 0) {
+                    if (sCaplinkManager::getInstance()->mRnoMain == 16) {
+                        mHandle = sHttpClient::getInstance()->reqDownloadPic(&mURL.mStr[0], &mpImage, &mImageSize);
+                    }
+                }
+            }
+            return false;
+        }
+    } else {
+        if (mHandle <= 8u) {
+            if (sHttpClient::getInstance()->mClientList[mHandle].mpHttp != nullptr) {
+                if (!sHttpClient::getInstance()->mClientList[mHandle].mpHttp->isExecOpeningServerFlow()) {
+                    sHttpClient::getInstance()->mClientList[mHandle].mpHttp->abort();
+                }
+            }
+        }
+        if (mpImage != nullptr) {
+            MtMemoryAllocator::getAllocator(cResource::DTI)->memFree(mpImage);
+            mpImage = nullptr;
+        }
+        mURL.mStr[0] = 0;
+        mURL.mLength = 0;
+        mImageSize = 0;
+        mHandle = 0;
+        return true;
+    }
 }
 
 inline sCaplinkManager::cProfIconLoader::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -3276,10 +3478,6 @@ const MtDTI& sCaplinkManager::cContentData::getDTI() const {
     return sCaplinkManager::cContentData::DTI;
 }
 
-inline void sCaplinkManager::cContentData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCaplinkManager::cContentData::DTI)->memFree(p_addr);
-}
-
 inline sCaplinkManager::cContentData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sCaplinkManager::cContentData::MyDTI sCaplinkManager::cContentData::DTI("sCaplinkManager::cContentData", &::cCaplinkObject::DTI, 216ul, 0u, 0u);
@@ -3291,10 +3489,6 @@ __attribute__((weak)) MtObject* sCaplinkManager::cContentData::MyDTI::newInstanc
 
 const MtDTI& sCaplinkManager::cGroupChatData::getDTI() const {
     return sCaplinkManager::cGroupChatData::DTI;
-}
-
-inline void sCaplinkManager::cGroupChatData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCaplinkManager::cGroupChatData::DTI)->memFree(p_addr);
 }
 
 inline sCaplinkManager::cGroupChatData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -3321,14 +3515,6 @@ __attribute__((weak)) MtObject* sCaplinkManager::cChatInfo::MyDTI::newInstance()
 
 const MtDTI& sCaplinkManager::cChatJoin::getDTI() const {
     return sCaplinkManager::cChatJoin::DTI;
-}
-
-inline void* sCaplinkManager::cChatJoin::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCaplinkManager::cChatJoin::DTI)->memAlloc(sz, align, sCaplinkManager::cChatJoin::DTI.getID());
-}
-
-inline void sCaplinkManager::cChatJoin::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCaplinkManager::cChatJoin::DTI)->memFree(p_addr);
 }
 
 inline sCaplinkManager::cChatJoin::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -20,10 +20,6 @@ const MtDTI& cAITask::getDTI() const {
     return cAITask::DTI;
 }
 
-inline void cAITask::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAITask::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) cAITask::cAITask() {
         mBackgroundJobType = BG_JOB_LOOP;
         mQuitTaskLoop = false;
@@ -130,14 +126,6 @@ __attribute__((weak)) MtObject* cAITaskJobPrim::MyDTI::newInstance() const {
 
 const MtDTI& cAITaskJobPrimList::getDTI() const {
     return cAITaskJobPrimList::DTI;
-}
-
-inline void* cAITaskJobPrimList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAITaskJobPrimList::DTI)->memAlloc(sz, align, cAITaskJobPrimList::DTI.mID);
-}
-
-inline void cAITaskJobPrimList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAITaskJobPrimList::DTI)->memFree(p_addr);
 }
 
 cAITaskJobPrimList::~cAITaskJobPrimList() {

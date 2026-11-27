@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uCnsMatrix.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -21,10 +20,6 @@ __attribute__((weak)) void uCnsMatrix::usage() {
 
 const MtDTI& uCnsMatrix::getDTI() const {
     return uCnsMatrix::DTI;
-}
-
-inline void uCnsMatrix::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsMatrix::DTI)->memFree(p_addr);
 }
 
 uCnsMatrix::uCnsMatrix() {
@@ -115,7 +110,13 @@ inline uCnsMatrix::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 uCnsMatrix::MyDTI uCnsMatrix::DTI("uCnsMatrix", &::uConstraint::DTI, 240ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* uCnsMatrix::MyDTI::newInstance() const {
-    DDON_STUB("uCnsMatrix::MyDTI::newInstance")
-    return nullptr;
+    uCnsMatrix* t1 = new (MtMemoryAllocator::getAllocator(uCnsMatrix::DTI)->memAlloc(
+        sizeof(uCnsMatrix), alignof(uCnsMatrix), uCnsMatrix::DTI.getID())) uCnsMatrix;
+    t1->mpCnsMatrixRes = nullptr;
+    t1->mMat = MtMatrix::Identity;
+    t1->mJoint = 0;
+    t1->mPos = true;
+    t1->mRot = true;
+    return t1;
 }
 

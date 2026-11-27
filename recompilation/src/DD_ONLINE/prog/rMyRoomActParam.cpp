@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rMyRoomActParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -21,35 +19,6 @@ extern template __attribute__((noinline)) void rTbl2<cMyRoomActParam>::allocData
 
 const MtDTI& cMyRoomActParam::getDTI() const {
     return cMyRoomActParam::DTI;
-}
-
-inline void* cMyRoomActParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMyRoomActParam::DTI)->memAlloc(sz, align, cMyRoomActParam::DTI.getID());
-}
-
-inline void cMyRoomActParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMyRoomActParam::DTI)->memFree(p_addr);
-}
-
-cMyRoomActParam::cMyRoomActParam() {
-    mWaypoint = 0;
-    mPos = MtVector3::Zero;
-    mAngleY = 0.0f;
-    mNpcMotNo = 0;
-    mStartIdx = 0;
-    mNeedOM = 0;
-    mNeedOM4 = 0;
-    mNeedOM5 = 0;
-    mNeedOM2 = 0;
-    mNeedOM3 = 0;
-    mMessage = -1;
-    mCondition = 0;
-    mLinkActNo = -1;
-    mLinkActLv = 1;
-    mChangeEquip = -1;
-    mIsGriffin = false;
-    mIsNotAvoid = false;
-    mIsSingle = false;
 }
 
 void cMyRoomActParam::createProperty(MtPropertyList& s) {
@@ -83,14 +52,6 @@ MtObject* cMyRoomActParam::MyDTI::newInstance() const {
 
 const MtDTI& rMyRoomActParam::getDTI() const {
     return rMyRoomActParam::DTI;
-}
-
-inline void* rMyRoomActParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMyRoomActParam::DTI)->memAlloc(sz, align, rMyRoomActParam::DTI.getID());
-}
-
-inline void rMyRoomActParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMyRoomActParam::DTI)->memFree(p_addr);
 }
 
 bool rMyRoomActParam::loadData(MtDataReader& in, cMyRoomActParam* pData) {

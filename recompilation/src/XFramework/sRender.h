@@ -53,6 +53,7 @@ namespace nPS4 { class VertexShaderObject; }
 struct pthread;
 class rModel;
 class sApp;
+class sCapture;
 class sGUI;
 class sGUIExt;
 class sShader2;
@@ -109,10 +110,11 @@ class sRender : public cSystem
     friend class nDraw::Resource;
 
     friend class nDraw::Texture;
-    friend class rRenderTargetTexture;
 
+    friend class rRenderTargetTexture;
     friend class rModel;
     friend class sApp;
+    friend class sCapture;
     friend class sGUI;
     friend class sGUIExt;
     friend class sShader2;
@@ -941,4 +943,12 @@ inline nDraw::FEATURE_LV sRender::getFeatureLevel() const {
 
 inline bool sRender::getRenderDetailControl() {
     return this->mRenderDetailControlEnable;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sRender::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sRender::DTI)->memFree(p_addr);
 }

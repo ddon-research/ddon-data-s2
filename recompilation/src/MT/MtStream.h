@@ -12,6 +12,7 @@ class MtAllocator;
 class MtDTI;
 class MtFile;
 class MtObject;
+class cGameHttpClient;
 namespace nNetwork { class Connect; }
 namespace nNetwork { class Session; }
 
@@ -138,6 +139,7 @@ public:
 
 class MtMemoryStream : public MtStream
 {
+    friend class cGameHttpClient;
     friend class nNetwork::Connect;
     friend class nNetwork::Session;
 public:
@@ -213,4 +215,16 @@ inline void* MtStream::operator new(size_t sz, void* p_addr) {
 }
 
 inline MtStream::MtStream() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void MtFileStream::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtFileStream::DTI)->memFree(p_addr);
+}
+
+inline void MtMemoryStream::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtMemoryStream::DTI)->memFree(p_addr);
 }

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cParticleGenerator.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollision.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
@@ -32,10 +31,6 @@
 
 const MtDTI& cParticleGenerator::getDTI() const {
     return cParticleGenerator::DTI;
-}
-
-inline void cParticleGenerator::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cParticleGenerator::DTI)->memFree(p_addr);
 }
 
 cParticleGenerator::cParticleGenerator() {
@@ -348,9 +343,20 @@ __attribute__((weak)) bool cParticleGenerator::isSynchroBoundary(cSynchronizatio
     return {};
 }
 
-__attribute__((weak)) void cParticleGenerator::applyParticleWorldOffsetLoop(const MtVector3& Offset) {
-    DDON_STUB("cParticleGenerator::applyParticleWorldOffsetLoop")
-    /* stub */
+void cParticleGenerator::applyParticleWorldOffsetLoop(const MtVector3& Offset) {
+    for (cParticle* pParticle = mpMoveTopParticle;;) {
+        if (pParticle == nullptr) {
+            break;
+        } else {
+            pParticle->mPos[0].x = Offset.x + pParticle->mPos[0].x;
+            pParticle->mPos[0].y = Offset.y + pParticle->mPos[0].y;
+            pParticle->mPos[0].z = Offset.z + pParticle->mPos[0].z;
+            pParticle->mPos[1].x = Offset.x + pParticle->mPos[1].x;
+            pParticle->mPos[1].y = Offset.y + pParticle->mPos[1].y;
+            pParticle->mPos[1].z = Offset.z + pParticle->mPos[1].z;
+            pParticle = pParticle->mpNext;
+        }
+    }
 }
 
 __attribute__((weak)) void cParticleGenerator::applyParticleLineWorldOffsetLoop(const MtVector3& Offset) {
@@ -534,8 +540,60 @@ __attribute__((weak)) void cParticleGenerator::initParticleLineClothZigzag(cLine
 }
 
 __attribute__((weak)) bool cParticleGenerator::moveParticleLineOfs(cLineParticle* pLineParticle, void* pParam) {
-    DDON_STUB("cParticleGenerator::moveParticleLineOfs")
-    return {};
+    unsigned long t1 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pLineParticle) + 0x90);
+    switch (static_cast<u32>(static_cast<u8>(t1 >> 32))) {
+        case rEffectList::LINE_TYPE_FOLLOW:
+            moveParticleLineFollowOfs(pLineParticle);
+            return true;
+        case rEffectList::LINE_TYPE_FIX:
+            moveParticleLineFixOfs(pLineParticle, static_cast<rEffectList::EFL_PARAM_LINE_FIX*>(pParam));
+            return true;
+        case rEffectList::LINE_TYPE_FIX_END: {
+            // workaround
+            rEffectList::EFL_PARAM_LINE_FIX_END* t2;
+            moveParticleLineFixEndOfs(pLineParticle, t2);
+            return true;
+        }
+        case rEffectList::LINE_TYPE_CHAIN:
+            moveParticleLineChainOfs(pLineParticle, static_cast<rEffectList::EFL_PARAM_CHAIN*>(pParam));
+            return true;
+        case rEffectList::LINE_TYPE_LENGTH: {
+            if (!moveParticleLineLengthParam(
+                    pLineParticle,
+                    reinterpret_cast<cEffectLineLength*>(reinterpret_cast<u8*>(pLineParticle) + mParticleSize + (((t1 >> 40) & 0xFFu) * (sizeof(MtVector3) * 2))),
+                    static_cast<rEffectList::EFL_PARAM_LINE_LENGTH*>(pParam))) {
+                return false;
+            }
+            // workaround
+            rEffectList::EFL_PARAM_LINE_LENGTH* t3;
+            calcParticleLineLengthOfs(
+                pLineParticle,
+                t3,
+                ((*reinterpret_cast<volatile unsigned int*>(reinterpret_cast<char*>(mpJoint) + 0x118) & 0x80u) != 0) || (mConstUpdateFlag != 0));
+            return true;
+        }
+        case rEffectList::LINE_TYPE_CLOTH:
+            if ((mpOwner->mStatus & uEffect::STATUS_CHAIN_RESET) != 0) {
+                pLineParticle->mStatus |= cParticle::PTCL_STATUS_RESET_CLOTH;
+            }
+            switch (static_cast<u32>(t1 >> 60)) {
+                case rEffectList::CLOTH_TYPE_CHAIN:
+                    moveParticleLineClothChain(pLineParticle, static_cast<rEffectList::EFL_PARAM_CLOTH_CHAIN*>(pParam));
+                    break;
+                case rEffectList::CLOTH_TYPE_CURVE:
+                    moveParticleLineClothCurve(pLineParticle, static_cast<rEffectList::EFL_PARAM_CLOTH_CURVE*>(pParam));
+                    break;
+                case rEffectList::CLOTH_TYPE_ZIGZAG:
+                    moveParticleLineClothZigzag(pLineParticle, static_cast<rEffectList::EFL_PARAM_CLOTH_ZIGZAG*>(pParam));
+                    break;
+            }
+            return true;
+        case rEffectList::LINE_TYPE_ZIGZAG:
+            return moveParticleLineZigzagOfs(pLineParticle, static_cast<rEffectList::EFL_PARAM_LINE_ZIGZAG*>(pParam));
+        default:
+            mpOwner->moveParticleLineCustomOfs(this, pLineParticle);
+            return true;
+    }
 }
 
 __attribute__((weak)) void cParticleGenerator::moveParticleLineFollowOfs(cLineParticle* pLineParticle) {

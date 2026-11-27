@@ -159,3 +159,22 @@ inline void cpSlave::setMoveMaxSpeed(f32 sp) {
 inline void cpSlave::setMoveMinSpeed(f32 sp) {
     this->mMoveMinSpeed = sp;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpSlave::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpSlave::DTI);
+}
+
+inline void cpSlave::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpSlave::DTI)->memFree(p_addr);
+}
+
+inline void cpSlave::setMoveTragetPos(const MtVector3& pos) {
+    this->mMoveTargetPos.x = pos.x;
+    this->mMoveTargetPos.y = pos.y;
+    this->mMoveTargetPos.z = pos.z;
+    this->mMoveTargetPos.pad_ = 0.0f;
+}

@@ -30,16 +30,8 @@ const MtDTI& uGUIMenuTutorial::getDTI() const {
     return uGUIMenuTutorial::DTI;
 }
 
-inline MtAllocator* uGUIMenuTutorial::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMenuTutorial::DTI);
-}
-
 void* uGUIMenuTutorial::operator new(size_t sz, u32 align) {
     return uGUIMenuTutorial::getAllocator()->memAlloc(sz, align, uGUIMenuTutorial::DTI.getID());
-}
-
-inline void uGUIMenuTutorial::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuTutorial::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMenuTutorial::~uGUIMenuTutorial() {
@@ -226,7 +218,7 @@ void uGUIMenuTutorial::updateScrollListDispCaption(uGUIBase::cScrollListItemBase
     }
     u32 dispIndex = mScrollListCaption.getDispIndex(pDispItem);
     cGUIObject* t0 = mpObjListCptn[dispIndex];
-    setObjectMessage(t0, sTutorialGuide::getInstance()->getGuideName(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mCaptionList.getBuffer()[static_cast<int>(Index)]) + 8)), 0u, false);
+    setObjectMessage(t0, sTutorialGuide::getInstance()->getGuideName(static_cast<cCaption*>(mCaptionList.getBuffer()[static_cast<int>(Index)])->mGuideNo), 0u, false);
 }
 
 __attribute__((weak)) void uGUIMenuTutorial::updateScrollListHide(uGUIBase::cScrollListItemBase* pDispItem) {
@@ -239,14 +231,6 @@ __attribute__((weak)) MtObject* uGUIMenuTutorial::MyDTI::newInstance() const {
 
 const MtDTI& uGUIMenuTutorial::cCaption::getDTI() const {
     return uGUIMenuTutorial::cCaption::DTI;
-}
-
-inline void* uGUIMenuTutorial::cCaption::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMenuTutorial::cCaption::DTI)->memAlloc(sz, align, uGUIMenuTutorial::cCaption::DTI.getID());
-}
-
-inline void uGUIMenuTutorial::cCaption::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuTutorial::cCaption::DTI)->memFree(p_addr);
 }
 
 inline uGUIMenuTutorial::cCaption::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

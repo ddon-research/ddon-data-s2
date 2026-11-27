@@ -24,6 +24,8 @@ class CDataCharacterJobData;
 class CDataContextAcquirementData;
 class CDataContextNormalSkillData;
 class CDataOrbCategoryStatus;
+class CDataOrbElement;
+class CDataOrbElementGroup;
 class CDataOrbGainExtendParam;
 class CDataOrbPageStatus;
 class CDataReleaseOrbElement;
@@ -34,6 +36,7 @@ using CAchievementIdentifier = CDataAchievementIdentifier;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using OrbCategoryStatusVec = MtTypedArray<CDataOrbCategoryStatus>;
+using OrbElementVec = MtTypedArray<CDataOrbElement>;
 using _Sizet = long unsigned int;
 using size_t = _Sizet;
 using u16 = unsigned short;
@@ -278,6 +281,76 @@ public:
 public:
     u8 m_ucCategoryID;  // offset: 0x8
     u8 m_ucReleaseNum;  // offset: 0x9
+    static MyDTI DTI;
+};
+
+class CDataOrbElement : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataOrbElement();
+    explicit CDataOrbElement(u32, u32, u32, u32, u32, u32);
+public:
+    u32 m_unElementID;  // offset: 0x8
+    u32 m_unParamType;  // offset: 0xc
+    u32 m_unParamID;  // offset: 0x10
+    u32 m_unParamValue;  // offset: 0x14
+    u32 m_unRequireOrb;  // offset: 0x18
+    u32 m_unIconNo;  // offset: 0x1c
+    static MyDTI DTI;
+};
+
+class CDataOrbElementGroup : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataOrbElementGroup();
+    explicit CDataOrbElementGroup(u32, const OrbElementVec&);
+public:
+    u32 m_unGroupNo;  // offset: 0x8
+    OrbElementVec m_OrbElementList;  // offset: 0x10
     static MyDTI DTI;
 };
 
@@ -531,6 +604,27 @@ inline CDataOrbCategoryStatus::CDataOrbCategoryStatus() {
     this->m_ucReleaseNum = 0;
 }
 
+inline void* CDataOrbElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataOrbElement::CDataOrbElement() {
+    this->m_unRequireOrb = 0;
+    this->m_unIconNo = 0;
+    this->m_unParamID = 0;
+    this->m_unParamValue = 0;
+    this->m_unElementID = 0;
+    this->m_unParamType = 0;
+}
+
+inline void* CDataOrbElementGroup::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataOrbElementGroup::CDataOrbElementGroup() {
+    this->m_unGroupNo = 0;
+}
+
 inline void* CDataOrbGainExtendParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -587,4 +681,68 @@ inline CDataStatusInfo::CDataStatusInfo() {
     this->m_unGainHp = 0;
     this->m_unMaxHp = 0;
     this->m_unMaxStamina = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataArisenProfile::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataArisenProfile::DTI);
+}
+
+inline void* CDataArisenProfile::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataArisenProfile::DTI)->memAlloc(sz, align, ::CDataArisenProfile::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataCharacterEquipData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterEquipData::DTI);
+}
+
+inline MtAllocator* CDataCharacterJobData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterJobData::DTI);
+}
+
+inline MtAllocator* CDataContextAcquirementData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextAcquirementData::DTI);
+}
+
+inline MtAllocator* CDataContextNormalSkillData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataContextNormalSkillData::DTI);
+}
+
+inline MtAllocator* CDataOrbCategoryStatus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOrbCategoryStatus::DTI);
+}
+
+inline MtAllocator* CDataOrbElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOrbElement::DTI);
+}
+
+inline MtAllocator* CDataOrbElementGroup::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOrbElementGroup::DTI);
+}
+
+inline MtAllocator* CDataOrbGainExtendParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOrbGainExtendParam::DTI);
+}
+
+inline void* CDataOrbGainExtendParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataOrbGainExtendParam::DTI)->memAlloc(sz, align, ::CDataOrbGainExtendParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataOrbPageStatus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOrbPageStatus::DTI);
+}
+
+inline MtAllocator* CDataReleaseOrbElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataReleaseOrbElement::DTI);
+}
+
+inline MtAllocator* CDataStatusInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStatusInfo::DTI);
+}
+
+inline void* CDataStatusInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataStatusInfo::DTI)->memAlloc(sz, align, ::CDataStatusInfo::DTI.::MtDTI::getID());
 }

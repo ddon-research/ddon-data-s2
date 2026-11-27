@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlStick.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtProperty.h"
@@ -27,10 +25,6 @@
 
 const MtDTI& cShlParamStick::getDTI() const {
     return cShlParamStick::DTI;
-}
-
-inline void* cShlParamStick::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamStick::DTI)->memAlloc(sz, align, cShlParamStick::DTI.getID());
 }
 
 inline void cShlParamStick::operator delete(void* p_addr) {
@@ -65,10 +59,6 @@ MtObject* cShlParamStick::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamStickCtrl::getDTI() const {
     return cShlParamStickCtrl::DTI;
-}
-
-inline void* cShlParamStickCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamStickCtrl::DTI)->memAlloc(sz, align, cShlParamStickCtrl::DTI.getID());
 }
 
 inline void cShlParamStickCtrl::operator delete(void* p_addr) {
@@ -113,18 +103,6 @@ const MtDTI& uShlStick::getDTI() const {
     return uShlStick::DTI;
 }
 
-inline void* uShlStick::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlStick::DTI)->memAlloc(sz, align, uShlStick::DTI.getID());
-}
-
-inline void uShlStick::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlStick::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamStick* uShlStick::getShlParam() const {
-    return static_cast<const cShlParamStick*>(mpShlParam2);
-}
-
 uShlStick::~uShlStick() {
     DDON_STUB("uShlStick::~uShlStick")
     /* stub */
@@ -160,18 +138,6 @@ MtObject* uShlStick::MyDTI::newInstance() const {
 
 const MtDTI& uShlStickCtrl::getDTI() const {
     return uShlStickCtrl::DTI;
-}
-
-inline void* uShlStickCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlStickCtrl::DTI)->memAlloc(sz, align, uShlStickCtrl::DTI.getID());
-}
-
-inline void uShlStickCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlStickCtrl::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamStickCtrl* uShlStickCtrl::getShlParam() const {
-    return static_cast<const cShlParamStickCtrl*>(mpShlParam2);
 }
 
 uShlStickCtrl::~uShlStickCtrl() {

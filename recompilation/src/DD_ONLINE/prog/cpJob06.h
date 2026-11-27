@@ -232,3 +232,15 @@ inline void cpJob06::setPrminentSphereSize(s32 valu) {
 inline u32 cpJob06::getIceRemainingBullets() {
     return this->mIceRemainingBullets;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob06::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob06::DTI);
+}
+
+inline void cpJob06::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob06::DTI)->memFree(p_addr);
+}

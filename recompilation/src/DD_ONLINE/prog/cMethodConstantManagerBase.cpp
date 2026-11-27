@@ -14,10 +14,6 @@ const MtDTI& cMethodConstantTimeName::cMethodConstantBase::getDTI() const {
     return cMethodConstantTimeName::cMethodConstantBase::DTI;
 }
 
-inline void cMethodConstantTimeName::cMethodConstantBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMethodConstantTimeName::cMethodConstantBase::DTI)->memFree(p_addr);
-}
-
 cMethodConstantTimeName::cMethodConstantBase::cMethodConstantBase() {
     DDON_STUB("cMethodConstantTimeName::cMethodConstantBase::cMethodConstantBase")
     /* stub */
@@ -48,10 +44,6 @@ __attribute__((weak)) MtObject* cMethodConstantTimeName::cMethodConstantBase::My
 
 const MtDTI& cMethodConstantTimeName::cMethodConstantManagerBase::getDTI() const {
     return cMethodConstantTimeName::cMethodConstantManagerBase::DTI;
-}
-
-inline void cMethodConstantTimeName::cMethodConstantManagerBase::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::cMethodConstantTimeName::cMethodConstantManagerBase::DTI)->memFree(p_addr);
 }
 
 cMethodConstantTimeName::cMethodConstantManagerBase::cMethodConstantManagerBase() {

@@ -268,3 +268,39 @@ inline uShlAlchemyTrap::uShlAlchemyTrap() {
 inline void* uShlAlchemyTrapAttack::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cShlParamAlchemyTrap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyTrap::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamAlchemyTrap::cTrapAttackShlInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyTrap::cTrapAttackShlInfo::DTI)->memAlloc(sz, align, ::cShlParamAlchemyTrap::cTrapAttackShlInfo::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamAlchemyTrap::cTrapAttackShlInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyTrap::cTrapAttackShlInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamAlchemyTrapAttack::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamAlchemyTrapAttack::DTI)->memAlloc(sz, align, ::cShlParamAlchemyTrapAttack::DTI.::MtDTI::getID());
+}
+
+inline void* uShlAlchemyTrap::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlAlchemyTrap::DTI)->memAlloc(sz, align, ::uShlAlchemyTrap::DTI.::MtDTI::getID());
+}
+
+inline void uShlAlchemyTrap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlAlchemyTrap::DTI)->memFree(p_addr);
+}
+
+inline void* uShlAlchemyTrapAttack::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlAlchemyTrapAttack::DTI)->memAlloc(sz, align, ::uShlAlchemyTrapAttack::DTI.::MtDTI::getID());
+}
+
+inline void uShlAlchemyTrapAttack::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlAlchemyTrapAttack::DTI)->memFree(p_addr);
+}

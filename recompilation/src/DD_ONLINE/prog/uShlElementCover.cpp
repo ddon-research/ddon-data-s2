@@ -84,14 +84,6 @@ const MtDTI& uShlElementCover::getDTI() const {
     return uShlElementCover::DTI;
 }
 
-inline void uShlElementCover::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlElementCover::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamElemntCover* uShlElementCover::getShlParam() const {
-    return static_cast<const cShlParamElemntCover*>(mpShlParam2);
-}
-
 __attribute__((weak)) void uShlElementCover::setup() {
     DDON_STUB("uShlElementCover::setup")
     /* stub */

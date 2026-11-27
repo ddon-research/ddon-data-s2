@@ -38,16 +38,8 @@ const MtDTI& uGUIShopBuy::getDTI() const {
     return uGUIShopBuy::DTI;
 }
 
-inline MtAllocator* uGUIShopBuy::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIShopBuy::DTI);
-}
-
 void* uGUIShopBuy::operator new(size_t sz, u32 align) {
     return uGUIShopBuy::getAllocator()->memAlloc(sz, align, uGUIShopBuy::DTI.getID());
-}
-
-inline void uGUIShopBuy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIShopBuy::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIShopBuy::~uGUIShopBuy() {
@@ -137,9 +129,38 @@ __attribute__((weak)) void uGUIShopBuy::setInfoBuy(u32 GoodsIdx, const rItemList
     /* stub */
 }
 
-__attribute__((weak)) void uGUIShopBuy::setInfoSell(const nGUIItem::cItem* pItemInfo) {
-    DDON_STUB("uGUIShopBuy::setInfoSell")
-    /* stub */
+void uGUIShopBuy::setInfoSell(const nGUIItem::cItem* pItemInfo) {
+    if (pItemInfo == nullptr) {
+        return;
+    }
+    mpSellItemInfo = pItemInfo;
+    mSellHaveMax = pItemInfo->getNum();
+    setGUIMove(true);
+    initParams();
+    mNumBox0.resetInputRange(1, static_cast<s32>(getSellNumMax()));
+    updateMoney();
+    if (mMode == 2) {
+        if (mNumBox0.mCurrentNum == 0) {
+            mButton0.setEnable(false);
+        } else {
+            mButton0.setEnable(true);
+        }
+    } else {
+        if (mMode == 1) {
+            if (mNumBox0.mCurrentNum == 0) {
+                if (mNumBox1.mCurrentNum != 0) {
+                    mButton0.setEnable(true);
+                } else {
+                    mButton0.setEnable(false);
+                }
+            } else {
+                mButton0.setEnable(true);
+            }
+        } else {
+            mButton0.setEnable(false);
+        }
+    }
+    mButton0.setBtnSize(mButtonSizeX, true);
 }
 
 bool uGUIShopBuy::isActive() {
@@ -796,8 +817,31 @@ void uGUIShopBuy::initSell() {
 }
 
 __attribute__((weak)) void uGUIShopBuy::updateMoney() {
-    DDON_STUB("uGUIShopBuy::updateMoney")
-    /* stub */
+    switch (mMode) {
+    case MODE_BUY:
+        mNowSelectNum = mNumBox0.mCurrentNum + mNumBox1.mCurrentNum;
+        mNowMoney = mNowSelectNum * mPrice;
+        break;
+    case MODE_SELL:
+        if (mpSellItemInfo != nullptr) {
+            mNowSelectNum = mNumBox0.mCurrentNum;
+            const rItemList::rItemParam* t1 = const_cast<nGUIItem::cItem*>(mpSellItemInfo)->getResourceParam();
+            mNowMoney = static_cast<u64>(mNowSelectNum) * ((t1 != nullptr) ? static_cast<u64>(*reinterpret_cast<const u32*>(reinterpret_cast<const char*>(t1) + 0x14)) : 0ul);
+            break;
+        }
+        mNowSelectNum = 0;
+        mNowMoney = 0;
+        break;
+    default:
+        mNowSelectNum = 0;
+        mNowMoney = 0;
+        break;
+    }
+    if (mpMoney != nullptr) {
+        MtString str;
+        cGUIUtility::makeNumberString(str, static_cast<s32>(mNowMoney), false);
+        setObjectMessage(mpMoney, str.ptr(), 0u, false);
+    }
 }
 
 __attribute__((weak)) void uGUIShopBuy::updateCursor() {
@@ -1004,7 +1048,7 @@ void uGUIShopBuy::sellCallBack(void*) {
     mItemList.mLength = 0;
 }
 
-void uGUIShopBuy::initParams() {
+__attribute__((weak)) void uGUIShopBuy::initParams() {
     mNowSelectNum = 0;
     mNowMoney = 0;
     mNumBox0.setNum(0);

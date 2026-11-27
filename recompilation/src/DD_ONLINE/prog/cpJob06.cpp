@@ -133,16 +133,8 @@ const MtDTI& cpJob06::getDTI() const {
     return cpJob06::DTI;
 }
 
-inline MtAllocator* cpJob06::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJob06::DTI);
-}
-
 void* cpJob06::operator new(size_t sz, u32 align) {
     return cpJob06::getAllocator()->memAlloc(sz, align, cpJob06::DTI.getID());
-}
-
-inline void cpJob06::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob06::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cpJob06::~cpJob06() {
@@ -308,9 +300,10 @@ void cpJob06::updateEfcHandle() {
     }
 }
 
-__attribute__((weak)) void cpJob06::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpJob06::applyWorldOffset")
-    /* stub */
+void cpJob06::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mCS12Pos.x = offset.x + mCS12Pos.x;
+    mCS12Pos.y = offset.y + mCS12Pos.y;
+    mCS12Pos.z = offset.z + mCS12Pos.z;
 }
 
 void cpJob06::reset() {

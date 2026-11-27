@@ -123,10 +123,34 @@ inline u32 cAreaReleaseManager::getAreaId() const {
     return this->mAreaId;
 }
 
+inline u32 cAreaReleaseManager::getAreaReleaseNumByRankUp() const {
+    return this->mAreaReleaseInfoByRankUp.::MtArray::length();
+}
+
 inline void* cAreaReleaseManager::cAreaReleaseInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline cAreaReleaseManager::cAreaReleaseInfo::cAreaReleaseInfo() {
     this->mId = 0xFFFF;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cAreaReleaseManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cAreaReleaseManager::DTI);
+}
+
+inline void cAreaReleaseManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaReleaseManager::DTI)->memFree(p_addr);
+}
+
+inline void* cAreaReleaseManager::cAreaReleaseInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaReleaseManager::cAreaReleaseInfo::DTI)->memAlloc(sz, align, ::cAreaReleaseManager::cAreaReleaseInfo::DTI.::MtDTI::getID());
+}
+
+inline void cAreaReleaseManager::cAreaReleaseInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaReleaseManager::cAreaReleaseInfo::DTI)->memFree(p_addr);
 }

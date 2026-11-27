@@ -34,7 +34,9 @@ class cBakeModel;
 class cBakeModelEx;
 class cDraw;
 class cpBakeJoint;
+class cpMotionHistory;
 class cpMotionRate;
+class cpSequenceCtrl;
 class cpShakeCtrl;
 namespace nDraw { class CommandCache; }
 namespace nDraw { class Material; }
@@ -56,9 +58,6 @@ class uDDOModel;
 class uHuman;
 class uSimSoftBody;
 
-// Declarations
-class uModel;
-
 enum MOT_TYPE
 {
     MOT_BASE = 0,
@@ -72,6 +71,9 @@ enum MOT_TYPE
     MOT_TYPE_NUM = 8,
     MOT_TYPE_UNDEF = -1,
 };
+
+// Declarations
+class uModel;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -90,7 +92,9 @@ class uModel : public uBaseModel
     friend class cBakeModel;
     friend class cBakeModelEx;
     friend class cpBakeJoint;
+    friend class cpMotionHistory;
     friend class cpMotionRate;
+    friend class cpSequenceCtrl;
     friend class cpShakeCtrl;
     friend class uArmor;
     friend class uCharacterEditBase;
@@ -300,9 +304,12 @@ public:
 public:
     class Motion : public MtObject
     {
+        friend class cpMotionHistory;
         friend class cpMotionRate;
+        friend class cpSequenceCtrl;
         friend class uDDOModel;
         friend class uHuman;
+        friend class uModel;
     public:
         enum ATTRIBUTE
         {
@@ -909,6 +916,10 @@ inline u32 uModel::Motion::getAttr() const {
     return this->mAttr;
 }
 
+inline f32 uModel::Motion::getBlendRate() const {
+    return this->mBlend;
+}
+
 inline f32 uModel::Motion::getSpeed() const {
     return this->mSpeed;
 }
@@ -927,4 +938,30 @@ inline u32 uModel::Motion::getKeyFrameNum() const {
 
 inline void* uModel::JointDAGNode::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uModel::DTI)->memFree(p_addr);
+}
+
+inline void* uModel::Joint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uModel::Joint::DTI)->memAlloc(sz, align, ::uModel::Joint::DTI.::MtDTI::mID);
+}
+
+inline void uModel::Joint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uModel::Joint::DTI)->memFree(p_addr);
+}
+
+inline uModel::Joint::Joint() {
+    this->mPreUpdate = 0;
+    this->mpModel = nullptr;
+    this->mShaderAttributes.rgba = 0;
+}
+
+inline void uModel::JointDAGNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uModel::JointDAGNode::DTI)->memFree(p_addr);
 }

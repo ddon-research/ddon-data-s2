@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSoundParamOfs.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cSoundParamOfs::getDTI() const {
     return cSoundParamOfs::DTI;
-}
-
-inline void* cSoundParamOfs::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSoundParamOfs::DTI)->memAlloc(sz, align, cSoundParamOfs::DTI.getID());
-}
-
-inline void cSoundParamOfs::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundParamOfs::DTI)->memFree(p_addr);
 }
 
 void cSoundParamOfs::createProperty(MtPropertyList& s) {
@@ -54,14 +44,6 @@ MtObject* cSoundParamOfs::MyDTI::newInstance() const {
 
 const MtDTI& rSoundParamOfs::getDTI() const {
     return rSoundParamOfs::DTI;
-}
-
-inline void* rSoundParamOfs::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundParamOfs::DTI)->memAlloc(sz, align, rSoundParamOfs::DTI.getID());
-}
-
-inline void rSoundParamOfs::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundParamOfs::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rSoundParamOfs::loadData(MtDataReader& in, cSoundParamOfs* pData) {

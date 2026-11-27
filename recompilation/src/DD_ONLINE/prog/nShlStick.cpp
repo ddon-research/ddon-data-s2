@@ -20,10 +20,6 @@ const MtDTI& nShlStick::cStickObjectCtrl::getDTI() const {
     return nShlStick::cStickObjectCtrl::DTI;
 }
 
-inline void nShlStick::cStickObjectCtrl::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nShlStick::cStickObjectCtrl::DTI)->memFree(p_addr);
-}
-
 nShlStick::cStickObjectCtrl::cStickObjectCtrl() {
     DDON_STUB("nShlStick::cStickObjectCtrl::cStickObjectCtrl")
     /* stub */
@@ -111,9 +107,28 @@ __attribute__((weak)) bool nShlStick::cStickObjectCtrl::calcHitPos(const MtCapsu
     return {};
 }
 
-__attribute__((weak)) void nShlStick::cStickObjectCtrl::copy(const nShlStick::cStickObjectCtrl& ctrl) {
-    DDON_STUB("nShlStick::cStickObjectCtrl::copy")
-    /* stub */
+void nShlStick::cStickObjectCtrl::copy(const nShlStick::cStickObjectCtrl& ctrl) {
+    mTargetUID = ctrl.mTargetUID;
+    mShape = ctrl.mShape;
+    mJoint0 = ctrl.mJoint0;
+    mJoint1 = ctrl.mJoint1;
+    mOffset0 = ctrl.mOffset0;
+    mOffset1 = ctrl.mOffset1;
+    mStickPos = ctrl.mStickPos;
+    mTgtQuat.x = ctrl.mTgtQuat.x;
+    mTgtQuat.y = ctrl.mTgtQuat.y;
+    mTgtQuat.z = ctrl.mTgtQuat.z;
+    mTgtQuat.w = ctrl.mTgtQuat.w;
+    mpStickModel = ctrl.mpStickModel;
+    mCapsule.p0.x = ctrl.mCapsule.p0.x;
+    mCapsule.p0.y = ctrl.mCapsule.p0.y;
+    mCapsule.p0.z = ctrl.mCapsule.p0.z;
+    mCapsule.p0.pad_ = 0.0f;
+    mCapsule.p1.x = ctrl.mCapsule.p1.x;
+    mCapsule.p1.y = ctrl.mCapsule.p1.y;
+    mCapsule.p1.z = ctrl.mCapsule.p1.z;
+    mCapsule.p1.pad_ = 0.0f;
+    mCapsule.r = ctrl.mCapsule.r;
 }
 
 inline nShlStick::cStickObjectCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

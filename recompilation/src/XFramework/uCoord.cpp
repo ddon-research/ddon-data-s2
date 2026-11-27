@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uCoord.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -15,10 +13,6 @@
 
 const MtDTI& uCoord::getDTI() const {
     return uCoord::DTI;
-}
-
-inline void uCoord::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCoord::DTI)->memFree(p_addr);
 }
 
 uCoord::uCoord() {

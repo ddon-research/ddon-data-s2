@@ -66,3 +66,15 @@ private:
 public:
     static MyDTI DTI;
 };
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cSetInfoGeneralPoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoGeneralPoint::DTI)->memAlloc(sz, align, ::cSetInfoGeneralPoint::DTI.::MtDTI::getID());
+}
+
+inline void cSetInfoGeneralPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSetInfoGeneralPoint::DTI)->memFree(p_addr);
+}

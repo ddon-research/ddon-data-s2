@@ -98,3 +98,23 @@ inline void* cAIObject::operator new(size_t sz, void* p_addr) {
 inline void* cAIResource::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* cAIObject::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIObject::DTI)->memAlloc(sz, align, ::cAIObject::DTI.::MtDTI::mID);
+}
+
+inline void cAIObject::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIObject::DTI)->memFree(p_addr);
+}
+
+inline void* cAIResource::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIResource::DTI)->memAlloc(sz, align, ::cAIResource::DTI.::MtDTI::mID);
+}
+
+inline void cAIResource::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIResource::DTI)->memFree(p_addr);
+}

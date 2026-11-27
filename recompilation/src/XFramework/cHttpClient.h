@@ -13,6 +13,7 @@
 class MtAllocator;
 class MtDTI;
 class MtString;
+class sScreenShot;
 
 // Declarations
 class cHttpClient;
@@ -33,6 +34,7 @@ using uint32_t = __uint32_t;
 
 class cHttpClient : public MtObject
 {
+    friend class sScreenShot;
 public:
     enum
     {
@@ -210,6 +212,10 @@ inline void cHttpClient::setRedirectPolicy(u32 policy) {
 
 inline void cHttpClient::setTimeout(MtNetTime::Total timeout) {
     this->mTimeout = 30000;
+}
+
+inline bool cHttpClient::isDone() {
+    return this->mState != 0;
 }
 
 inline cHttpClient::Listener::Listener() {

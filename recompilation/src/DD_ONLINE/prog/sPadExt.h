@@ -426,3 +426,19 @@ inline s32 sPadExt::getGamePadId() {
 inline void* sPadExt::cPadInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sPadExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sPadExt::DTI);
+}
+
+inline void sPadExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sPadExt::DTI)->memFree(p_addr);
+}
+
+inline void sPadExt::cPadInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sPadExt::cPadInfo::DTI)->memFree(p_addr);
+}

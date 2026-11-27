@@ -1,23 +1,40 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nPrim.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPropertyList.h"
+#include "sPrimitive.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
-const MtDTI& nPrim::PrimVertex::getDTI() const {
-    return nPrim::PrimVertex::DTI;
+s32 nPrim::calcDepthOrder(const MtVector3& pos, const MtVector4& v_vec, f32 pers_rt) {
+    return static_cast<s32>((static_cast<int>(static_cast<long>(pers_rt * (v_vec.w + (((v_vec.x * pos.x) + (v_vec.y * pos.y)) + (v_vec.z * pos.z))))) <= 32765) ? static_cast<unsigned int>(static_cast<long>(pers_rt * (v_vec.w + (((v_vec.x * pos.x) + (v_vec.y * pos.y)) + (v_vec.z * pos.z))))) : 32765u);
 }
 
-inline void nPrim::PrimVertex::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nPrim::PrimVertex::DTI)->memFree(p_addr);
+s32 nPrim::calcDepthOrder2D(f32, const MtVector4&) {
+    return 0;
+}
+
+__attribute__((weak)) void nPrim::setAlphaBlendState(cDraw* p_draw, const nPrim::Material& material) {
+    DDON_STUB("nPrim::setAlphaBlendState")
+    /* stub */
+}
+
+s32 nPrim::beginBranch(cDraw* p_draw, cDraw* sub_draw, u32 nsub_draw, bool use_vscr) {
+    return (sPrimitive::mpInstance)->beginBranch(p_draw, sub_draw, nsub_draw, use_vscr);
+}
+
+s32 nPrim::endBranch(cDraw* p_draw, cDraw* sub_draw, u32 nsub_draw) {
+    return (sPrimitive::mpInstance)->endBranch(p_draw, sub_draw, nsub_draw);
+}
+
+const MtDTI& nPrim::PrimVertex::getDTI() const {
+    return nPrim::PrimVertex::DTI;
 }
 
 __attribute__((weak)) void nPrim::PrimVertex::createProperty(MtPropertyList& prop_list) {

@@ -132,3 +132,24 @@ protected:
 inline void* rDDOModelMontageEm::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* rDDOModelMontageEm::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rDDOModelMontageEm::DTI);
+}
+
+inline void* rDDOModelMontageEm::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDDOModelMontageEm::DTI)->memAlloc(sz, align, ::rDDOModelMontageEm::DTI.::MtDTI::getID());
+}
+
+inline void rDDOModelMontageEm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDDOModelMontageEm::DTI)->memFree(p_addr);
+}
+
+inline rDDOModelMontageEm::rDDOModelMontageEm() {
+    this->::cResource::setAttribute(16u);
+    this->mpHeader = nullptr;
+}

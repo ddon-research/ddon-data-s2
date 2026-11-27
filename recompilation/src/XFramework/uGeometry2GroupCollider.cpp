@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uGeometry2GroupCollider.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollision.h"
 #include "../MT/MtCollisionUtil.h"
 #include "../MT/MtDTI.h"
@@ -26,10 +25,6 @@ __attribute__((weak)) void uGeometry2GroupCollider::usage() {
 
 const MtDTI& uGeometry2GroupCollider::getDTI() const {
     return uGeometry2GroupCollider::DTI;
-}
-
-inline void uGeometry2GroupCollider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGeometry2GroupCollider::DTI)->memFree(p_addr);
 }
 
 uGeometry2GroupCollider::uGeometry2GroupCollider() {

@@ -13,6 +13,7 @@
 #include "../../MT/MtTime.h"
 #include "Protocol/PacketData/Party.h"
 #include "Protocol/UserSession/S2C.h"
+#include "aCharacterEdit.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cContextInstance.h"
@@ -54,14 +55,6 @@
 
 const MtDTI& nSessionManager::MyListener::getDTI() const {
     return nSessionManager::MyListener::DTI;
-}
-
-inline void* nSessionManager::MyListener::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nSessionManager::MyListener::DTI)->memAlloc(sz, align, ::nSessionManager::MyListener::DTI.getID());
-}
-
-inline void nSessionManager::MyListener::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSessionManager::MyListener::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void nSessionManager::MyListener::onCreateComplete(bool flag, MtNetError* err) {
@@ -138,14 +131,6 @@ const MtDTI& nSessionManager::cLobbyDataMessage::getDTI() const {
     return nSessionManager::cLobbyDataMessage::DTI;
 }
 
-inline void* nSessionManager::cLobbyDataMessage::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nSessionManager::cLobbyDataMessage::DTI)->memAlloc(sz, align, ::nSessionManager::cLobbyDataMessage::DTI.getID());
-}
-
-inline void nSessionManager::cLobbyDataMessage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSessionManager::cLobbyDataMessage::DTI)->memFree(p_addr);
-}
-
 void nSessionManager::cLobbyDataMessage::serialize(BitWriter& w) const {
     w.writeS32(0);
     w.writeS32(static_cast<s32>(mMsgType));
@@ -171,16 +156,8 @@ const MtDTI& nSessionManager::cNetSessionManager::getDTI() const {
     return nSessionManager::cNetSessionManager::DTI;
 }
 
-inline MtAllocator* nSessionManager::cNetSessionManager::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nSessionManager::cNetSessionManager::DTI);
-}
-
 void* nSessionManager::cNetSessionManager::operator new(size_t sz, u32 align) {
     return ::nSessionManager::cNetSessionManager::getAllocator()->memAlloc(sz, align, ::nSessionManager::cNetSessionManager::DTI.getID());
-}
-
-inline void nSessionManager::cNetSessionManager::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSessionManager::cNetSessionManager::DTI)->memFree(p_addr);
 }
 
 nSessionManager::cNetSessionManager::cNetSessionManager() {
@@ -195,7 +172,7 @@ __attribute__((noinline)) nSessionManager::cNetSessionManager::~cNetSessionManag
 
 bool nSessionManager::cNetSessionManager::isPartyReqOk(s32 partyListIndex, bool onlyOne, bool large) {
     if (static_cast<unsigned int>(partyListIndex) < static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mPartyListInfoVec.mLength) {
-        if (onlyOne && ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mPartyListInfoVec.mpArray[partyListIndex]) + 24)) != 1)) {
+        if (onlyOne && (static_cast<CDataClientPartyListInfo*>(static_cast<sNetworkExt*>(::sNetwork::getInstance())->getGameServer()->mPartyListInfoVec.mpArray[partyListIndex])->m_MemberList.mLength != 1)) {
             return false;
         }
         return true;
@@ -858,10 +835,6 @@ void nSessionManager::cNetSessionManager::clearPartyReqInfo(s32 index) {
 __attribute__((weak)) bool nSessionManager::cNetSessionManager::setPartyReqInfo(const CDataPartyListInfo& info) {
     DDON_STUB("nSessionManager::cNetSessionManager::setPartyReqInfo")
     return {};
-}
-
-CDataClientPartyListInfo& nSessionManager::cNetSessionManager::getPartyReqInfo(s32 index) {
-    return mPartyReqInfo[index];
 }
 
 __attribute__((weak)) s32 nSessionManager::cNetSessionManager::getPartySpaceNum() {

@@ -34,6 +34,7 @@
 #include "nHumanMsg.h"
 #include "nJobParam.h"
 #include "nNet.h"
+#include "sDDOMain.h"
 #include "sDialogBase.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
@@ -50,16 +51,8 @@ const MtDTI& cNetLoginServer::getDTI() const {
     return cNetLoginServer::DTI;
 }
 
-inline MtAllocator* cNetLoginServer::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cNetLoginServer::DTI);
-}
-
 void* cNetLoginServer::operator new(size_t sz, u32 align) {
     return cNetLoginServer::getAllocator()->memAlloc(sz, align, cNetLoginServer::DTI.getID());
-}
-
-inline void cNetLoginServer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNetLoginServer::DTI)->memFree(p_addr);
 }
 
 cNetLoginServer::cNetLoginServer() {
@@ -434,14 +427,6 @@ const MtDTI& cNetLoginServer::cCtrlFlow::getDTI() const {
     return cNetLoginServer::cCtrlFlow::DTI;
 }
 
-inline void* cNetLoginServer::cCtrlFlow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cNetLoginServer::cCtrlFlow::DTI)->memAlloc(sz, align, cNetLoginServer::cCtrlFlow::DTI.getID());
-}
-
-inline void cNetLoginServer::cCtrlFlow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNetLoginServer::cCtrlFlow::DTI)->memFree(p_addr);
-}
-
 void cNetLoginServer::cCtrlFlow::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mRno0", &mRno0, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mRno1", &mRno1, 0u, 0u);
@@ -470,10 +455,6 @@ void cSeedLoginSvConnection::createProperty(MtPropertyList& s) {
 
 const MtDTI& cSeedLoginSvConnection::getDTI() const {
     return cSeedLoginSvConnection::DTI;
-}
-
-inline void cSeedLoginSvConnection::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSeedLoginSvConnection::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cSeedLoginSvConnection::init() {

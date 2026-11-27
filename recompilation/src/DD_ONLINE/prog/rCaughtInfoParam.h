@@ -119,3 +119,32 @@ inline void cCaughtInfoParam::operator delete[](void* p_addr) {
 inline void* cCaughtInfoParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCaughtInfoParam::DTI)->memAlloc(sz, align, ::cCaughtInfoParam::DTI.::MtDTI::getID());
 }
+
+inline void* cCaughtInfoParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaughtInfoParam::DTI)->memAlloc(sz, align, ::cCaughtInfoParam::DTI.::MtDTI::getID());
+}
+
+inline void cCaughtInfoParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCaughtInfoParam::DTI)->memFree(p_addr);
+}
+
+inline cCaughtInfoParam::cCaughtInfoParam() {
+    this->mCatchType = 0;
+    this->mCaughtActionTblNo = 0;
+    this->mConstOffsetPos.x = ::MtVector3::Zero.x;
+    this->mConstOffsetPos.y = ::MtVector3::Zero.y;
+    this->mConstOffsetPos.z = ::MtVector3::Zero.z;
+    this->mConstOffsetPos.pad_ = 0.0f;
+    this->mConstOffsetAngle.x = ::MtVector3::Zero.x;
+    this->mConstOffsetAngle.y = ::MtVector3::Zero.y;
+    this->mConstOffsetAngle.z = ::MtVector3::Zero.z;
+    this->mConstOffsetAngle.pad_ = 0.0f;
+}
+
+inline void* rCaughtInfoParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCaughtInfoParam::DTI)->memAlloc(sz, align, ::rCaughtInfoParam::DTI.::MtDTI::getID());
+}
+
+inline void rCaughtInfoParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCaughtInfoParam::DTI)->memFree(p_addr);
+}

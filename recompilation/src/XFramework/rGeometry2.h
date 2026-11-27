@@ -283,3 +283,41 @@ inline void* rGeometry2::cGeometryArray::operator new(size_t sz, void* p_addr) {
 inline void* rGeometry2::cGeometry::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rGeometry2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rGeometry2::DTI)->memAlloc(sz, align, ::rGeometry2::DTI.::MtDTI::mID);
+}
+
+inline void rGeometry2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGeometry2::DTI)->memFree(p_addr);
+}
+
+inline void rGeometry2::cGeometryArray::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGeometry2::cGeometryArray::DTI)->memFree(p_addr);
+}
+
+inline void* rGeometry2::cGeometry::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rGeometry2::cGeometry::DTI)->memAlloc(sz, align, ::rGeometry2::cGeometry::DTI.::MtDTI::mID);
+}
+
+inline void rGeometry2::cGeometry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGeometry2::cGeometry::DTI)->memFree(p_addr);
+}
+
+inline rGeometry2::cGeometry::cGeometry() {
+    this->mpAttachGeometry = nullptr;
+    this->mAttachMode = 0;
+    this->mJointNo0 = 0xFF;
+    this->mJointNo1 = 0xFF;
+    this->mFlgEnableScale = true;
+    this->mpAttachModel = nullptr;
+    this->mBeforeAttachPos0.x = ::MtVector3::Zero.x;
+    this->mBeforeAttachPos0.y = ::MtVector3::Zero.y;
+    this->mBeforeAttachPos0.z = ::MtVector3::Zero.z;
+    this->mBeforeAttachPos0.pad_ = 0.0f;
+    this->mpAddonObject = nullptr;
+}

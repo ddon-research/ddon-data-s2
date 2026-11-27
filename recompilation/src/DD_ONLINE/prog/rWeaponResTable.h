@@ -167,3 +167,11 @@ inline cWeaponResTable::cWeaponResTable()
     , mSex(0)
 {
 }
+
+inline void* rWeaponResTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWeaponResTable::DTI)->memAlloc(sz, align, ::rWeaponResTable::DTI.::MtDTI::getID());
+}
+
+inline void rWeaponResTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWeaponResTable::DTI)->memFree(p_addr);
+}

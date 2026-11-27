@@ -20,7 +20,9 @@
 #include "../../XFramework/cUnit.h"
 #include "cpComponent.h"
 #include "cpKeyCommand.h"
+#include "cpRootComponent.h"
 #include "cpTalk.h"
+#include "cpTalkPawn.h"
 #include "nCastUtility.h"
 #include "nCharacterData.h"
 #include "nFsm.h"
@@ -59,16 +61,8 @@ const MtDTI& sTalkManager::getDTI() const {
     return sTalkManager::DTI;
 }
 
-inline MtAllocator* sTalkManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sTalkManager::DTI);
-}
-
 void* sTalkManager::operator new(size_t sz, u32 align) {
     return sTalkManager::getAllocator()->memAlloc(sz, align, sTalkManager::DTI.getID());
-}
-
-inline void sTalkManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sTalkManager::DTI)->memFree(p_addr);
 }
 
 void sTalkManager::setNpcWindowText(cTalkMsgData& MsgData) {
@@ -322,9 +316,56 @@ void sTalkManager::setSendEventMsg(bool flag) {
     mSendEventMsg = flag;
 }
 
-__attribute__((weak)) void sTalkManager::requestPawnTalk(uDDOModel* pUnit) {
-    DDON_STUB("sTalkManager::requestPawnTalk")
-    /* stub */
+void sTalkManager::requestPawnTalk(uDDOModel* pUnit) {
+    u32 t0 = mTalkType;
+    if (t0 == 0) {
+        u8 t1 = getRno();
+        if (static_cast<unsigned char>(t1 + 255) > 3) {
+            sGUI* t2 = sGUI::getInstance();
+            bool t3 = static_cast<sGUIExt*>(t2)->isTelopFSMEnd();
+            if (t3) {
+                if (pUnit != nullptr) {
+                    if ((pUnit->mUnitId & 64u) != 0) {
+                        sPlayerManager* t6 = sPlayerManager::getInstance();
+                        uPlayer* pPl = t6->getMyPlayer();
+                        if (pPl != nullptr) {
+                            cpComponent* pComp = pUnit->mComponentMgr.getRootComponent();
+                            if (pComp != nullptr) {
+                                cpTalkPawn* pCp = static_cast<cpTalkPawn*>(pComp->find(cpTalkPawn::DTI, true, true));
+                                if (pCp != nullptr) {
+                                    unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pCp) + 0);
+                                    unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 144);
+                                    pCp->setTouch(static_cast<uDDOModel*>(pPl));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        sGUI* t2 = sGUI::getInstance();
+        bool t3 = static_cast<sGUIExt*>(t2)->isTelopFSMEnd();
+        if (t3) {
+            if (pUnit != nullptr) {
+                if ((pUnit->mUnitId & 64u) != 0) {
+                    sPlayerManager* t6 = sPlayerManager::getInstance();
+                    uPlayer* pPl = t6->getMyPlayer();
+                    if (pPl != nullptr) {
+                        cpComponent* pComp = pUnit->mComponentMgr.getRootComponent();
+                        if (pComp != nullptr) {
+                            cpTalkPawn* pCp = static_cast<cpTalkPawn*>(pComp->find(cpTalkPawn::DTI, true, true));
+                            if (pCp != nullptr) {
+                                unsigned long t8 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(pCp) + 0);
+                                unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t8) + 144);
+                                pCp->setTouch(static_cast<uDDOModel*>(pPl));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool sTalkManager::isPawnTalk(uDDOModel* pUnit) {
@@ -668,9 +709,26 @@ __attribute__((weak)) ARC_TAGID sTalkManager::createPawnTalkArcTag(u32 type, u32
     return {};
 }
 
-sTalkManager::sTalkManager() {
-    DDON_STUB("sTalkManager::sTalkManager")
-    /* stub */
+sTalkManager::sTalkManager() : mpTalkSelectItemName(static_cast<rGUIMessage*>(nullptr)), mpFuncSelectItemName(static_cast<rGUIMessage*>(nullptr)), mpGUISingletonMenu(static_cast<uGUIBase*>(nullptr)), mpTalkTarget(static_cast<uDDOModel*>(nullptr)), mpTalkState(static_cast<cTalkState*>(nullptr)) {
+    mTellMsgTimer = 0.0f;
+    mTalkType = 0;
+    mDispPageIdx = -1;
+    mVoiceStreamHandle = 0;
+    mCheckCylinderHeight = 400.0f;
+    mCheckCylinderRadius = 1400.0f;
+    mEventMsgTimer = 0.0f;
+    mRno0 = 0;
+    mTellRno = 0;
+    mEventUseSerial = false;
+    mIsHideMessage = false;
+    mEventMsgDispTime = 0.0f;
+    mEventMsgWaitTime = 0.0f;
+    mEventMsgType = 0;
+    mEventMsgGrpNo = 0;
+    mIsEndEventMsg = true;
+    mSendEventMsg = false;
+    mIsChangeClanManager = false;
+    sTalkManager::mpInstance = this;
 }
 
 __attribute__((noinline)) sTalkManager::~sTalkManager() {
@@ -840,14 +898,6 @@ __attribute__((weak)) MtObject* sTalkManager::MyDTI::newInstance() const {
 
 const MtDTI& sTalkManager::cTellQueueNode::getDTI() const {
     return sTalkManager::cTellQueueNode::DTI;
-}
-
-inline void* sTalkManager::cTellQueueNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sTalkManager::cTellQueueNode::DTI)->memAlloc(sz, align, sTalkManager::cTellQueueNode::DTI.getID());
-}
-
-inline void sTalkManager::cTellQueueNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sTalkManager::cTellQueueNode::DTI)->memFree(p_addr);
 }
 
 sTalkManager::cTellQueueNode::~cTellQueueNode() {

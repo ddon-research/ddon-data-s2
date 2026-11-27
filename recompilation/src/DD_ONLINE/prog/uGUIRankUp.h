@@ -108,3 +108,15 @@ inline void uGUIRankUp::setRank(u32 rank) {
 inline void uGUIRankUp::setupWait() {
     this->mDispFrame = 90.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIRankUp::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIRankUp::DTI);
+}
+
+inline void uGUIRankUp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIRankUp::DTI)->memFree(p_addr);
+}

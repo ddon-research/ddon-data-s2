@@ -111,3 +111,15 @@ inline void* cpMotionSe::operator new(size_t sz, void* p_addr) {
 inline void cpMotionSe::clearSeqFilter() {
     this->mMotionSe.mFilterSeq = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpMotionSe::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpMotionSe::DTI);
+}
+
+inline void cpMotionSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpMotionSe::DTI)->memFree(p_addr);
+}

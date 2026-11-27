@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -19,16 +18,8 @@ const MtDTI& uCnsHeadCtrl::getDTI() const {
     return uCnsHeadCtrl::DTI;
 }
 
-inline MtAllocator* uCnsHeadCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCnsHeadCtrl::DTI);
-}
-
 void* uCnsHeadCtrl::operator new(size_t sz, u32 align) {
     return uCnsHeadCtrl::getAllocator()->memAlloc(sz, align, uCnsHeadCtrl::DTI.getID());
-}
-
-inline void uCnsHeadCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsHeadCtrl::DTI)->memFree(p_addr);
 }
 
 uCnsHeadCtrl::uCnsHeadCtrl() {

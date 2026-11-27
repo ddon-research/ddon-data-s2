@@ -274,3 +274,27 @@ inline void* cAIUserProcessReference::operator new(size_t sz, void* p_addr) {
 
 inline cAIUserProcessReference::cAIUserProcessReference() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cAICopiableParameter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAICopiableParameter::DTI)->memFree(p_addr);
+}
+
+inline void cAIUserProcess::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIUserProcess::DTI)->memFree(p_addr);
+}
+
+inline void cAIUserProcessCallback::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIUserProcessCallback::DTI)->memFree(p_addr);
+}
+
+inline void* cAIUserProcessReference::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIUserProcessReference::DTI)->memAlloc(sz, align, ::cAIUserProcessReference::DTI.::MtDTI::mID);
+}
+
+inline void cAIUserProcessReference::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIUserProcessReference::DTI)->memFree(p_addr);
+}

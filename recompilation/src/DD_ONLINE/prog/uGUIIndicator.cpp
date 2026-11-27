@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIObject.h"
@@ -22,10 +21,6 @@
 
 const MtDTI& uGUIIndicator::getDTI() const {
     return uGUIIndicator::DTI;
-}
-
-inline MtAllocator* uGUIIndicator::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIIndicator::DTI);
 }
 
 void* uGUIIndicator::operator new(size_t sz, u32 align) {

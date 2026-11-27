@@ -51,10 +51,6 @@ const MtDTI& uMockUpModel::getDTI() const {
     return uMockUpModel::DTI;
 }
 
-inline void uMockUpModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uMockUpModel::DTI)->memFree(p_addr);
-}
-
 uMockUpModel::uMockUpModel() {
     DDON_STUB("uMockUpModel::uMockUpModel")
     /* stub */
@@ -196,14 +192,6 @@ void uMockUpModel::updateMatrix() {
 __attribute__((weak)) void uMockUpModel::updateArmIK() {
     DDON_STUB("uMockUpModel::updateArmIK")
     /* stub */
-}
-
-void uMockUpModel::initEquipData() {
-    mEquipData.init();
-}
-
-void uMockUpModel::setEquipData(const cEquipData& equip_data) {
-    mEquipData = equip_data;
 }
 
 void uMockUpModel::setupEdit(rCharacterEdit* pRes) {

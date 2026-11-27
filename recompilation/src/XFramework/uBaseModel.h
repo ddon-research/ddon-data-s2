@@ -22,15 +22,19 @@ class MtUI;
 class MtVector3;
 class MtVector4;
 class cBakeModel;
+class cBakeModelEx;
 class cDDMaterialCtrl;
 class cDraw;
 class cpBakeJoint;
+class cpEnemyLocalEst;
 class cpEquip;
+class cpOmGather;
 class cpTransparencyCtrl;
 namespace nDraw { class CommandCache; }
 namespace nDraw { class Material; }
 class rMaterial;
 class rModel;
+class uControl;
 class uCustomSimSoftBody;
 class uDDOModel;
 class uSimSoftBody;
@@ -54,10 +58,14 @@ using uintptr = __uintptr_t;
 class uBaseModel : public uCoord
 {
     friend class cBakeModel;
+    friend class cBakeModelEx;
     friend class cDDMaterialCtrl;
     friend class cpBakeJoint;
+    friend class cpEnemyLocalEst;
     friend class cpEquip;
+    friend class cpOmGather;
     friend class cpTransparencyCtrl;
+    friend class uControl;
     friend class uCustomSimSoftBody;
     friend class uDDOModel;
     friend class uSimSoftBody;
@@ -520,4 +528,12 @@ inline void uBaseModel::setDebugFlags(u32 f) {
 
 inline u32 uBaseModel::getViewDraw() const {
     return this->mViewDraw;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uBaseModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uBaseModel::DTI)->memFree(p_addr);
 }

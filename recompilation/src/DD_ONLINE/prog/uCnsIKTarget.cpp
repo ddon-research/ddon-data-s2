@@ -18,16 +18,8 @@ const MtDTI& uCnsIKTarget::getDTI() const {
     return uCnsIKTarget::DTI;
 }
 
-inline MtAllocator* uCnsIKTarget::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCnsIKTarget::DTI);
-}
-
 void* uCnsIKTarget::operator new(size_t sz, u32 align) {
     return uCnsIKTarget::getAllocator()->memAlloc(sz, align, uCnsIKTarget::DTI.getID());
-}
-
-inline void uCnsIKTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsIKTarget::DTI)->memFree(p_addr);
 }
 
 uCnsIKTarget::uCnsIKTarget() {

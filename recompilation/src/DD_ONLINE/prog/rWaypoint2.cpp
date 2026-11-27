@@ -20,14 +20,6 @@ const MtDTI& rWaypoint2::getDTI() const {
     return rWaypoint2::DTI;
 }
 
-inline void* rWaypoint2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWaypoint2::DTI)->memAlloc(sz, align, rWaypoint2::DTI.getID());
-}
-
-inline void rWaypoint2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWaypoint2::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rWaypoint2::getExt() const {
     return "wp2";
 }
@@ -109,14 +101,6 @@ MtObject* rWaypoint2::MyDTI::newInstance() const {
 
 const MtDTI& rWaypoint2::cRoute2::getDTI() const {
     return rWaypoint2::cRoute2::DTI;
-}
-
-void* rWaypoint2::cRoute2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWaypoint2::cRoute2::DTI)->memAlloc(sz, align, rWaypoint2::cRoute2::DTI.getID());
-}
-
-inline void rWaypoint2::cRoute2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWaypoint2::cRoute2::DTI)->memFree(p_addr);
 }
 
 rWaypoint2::cRoute2::~cRoute2() {

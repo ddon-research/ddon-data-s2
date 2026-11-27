@@ -24,10 +24,6 @@ const MtDTI& cCraftRecipe::getDTI() const {
     return cCraftRecipe::DTI;
 }
 
-inline void cCraftRecipe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftRecipe::DTI)->memFree(p_addr);
-}
-
 cCraftRecipe::cCraftRecipe() {
     DDON_STUB("cCraftRecipe::cCraftRecipe")
     /* stub */

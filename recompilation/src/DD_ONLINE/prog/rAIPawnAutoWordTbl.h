@@ -257,3 +257,36 @@ inline void cAIPawnAutoWordNode::operator delete[](void* p_addr) {
 inline void* cAIPawnAutoWordNode::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAIPawnAutoWordNode::DTI)->memAlloc(sz, align, ::cAIPawnAutoWordNode::DTI.::MtDTI::getID());
 }
+
+inline void cAIPawnAutoMotionNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnAutoMotionNode::DTI)->memFree(p_addr);
+}
+
+inline void* cAIPawnAutoWordNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPawnAutoWordNode::DTI)->memAlloc(sz, align, ::cAIPawnAutoWordNode::DTI.::MtDTI::getID());
+}
+
+inline void cAIPawnAutoWordNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnAutoWordNode::DTI)->memFree(p_addr);
+}
+
+inline void* rAIPawnAutoMotionTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAIPawnAutoMotionTbl::DTI)->memAlloc(sz, align, ::rAIPawnAutoMotionTbl::DTI.::MtDTI::getID());
+}
+
+inline void rAIPawnAutoMotionTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIPawnAutoMotionTbl::DTI)->memFree(p_addr);
+}
+
+inline rAIPawnAutoMotionTbl::rAIPawnAutoMotionTbl() {
+    this->::cResource::setAttribute(16u);
+    this->mArray.::MtArray::mAutoDelete = true;
+}
+
+inline void* rAIPawnAutoWordTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAIPawnAutoWordTbl::DTI)->memAlloc(sz, align, ::rAIPawnAutoWordTbl::DTI.::MtDTI::getID());
+}
+
+inline void rAIPawnAutoWordTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIPawnAutoWordTbl::DTI)->memFree(p_addr);
+}

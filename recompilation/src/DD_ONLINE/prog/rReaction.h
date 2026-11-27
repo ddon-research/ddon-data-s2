@@ -276,3 +276,43 @@ inline void cReaction::operator delete[](void* p_addr) {
 inline void* cReaction::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cReaction::DTI)->memAlloc(sz, align, ::cReaction::DTI.::MtDTI::getID());
 }
+
+inline void* cReaction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cReaction::DTI)->memAlloc(sz, align, ::cReaction::DTI.::MtDTI::getID());
+}
+
+inline void cReaction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cReaction::DTI)->memFree(p_addr);
+}
+
+inline void* cReaction::cCondition::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cReaction::cCondition::DTI)->memAlloc(sz, align, ::cReaction::cCondition::DTI.::MtDTI::getID());
+}
+
+inline void cReaction::cCondition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cReaction::cCondition::DTI)->memFree(p_addr);
+}
+
+inline void* cReaction::cTrigger::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cReaction::cTrigger::DTI)->memAlloc(sz, align, ::cReaction::cTrigger::DTI.::MtDTI::getID());
+}
+
+inline void cReaction::cTrigger::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cReaction::cTrigger::DTI)->memFree(p_addr);
+}
+
+inline void* cReaction::cAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cReaction::cAction::DTI)->memAlloc(sz, align, ::cReaction::cAction::DTI.::MtDTI::getID());
+}
+
+inline void cReaction::cAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cReaction::cAction::DTI)->memFree(p_addr);
+}
+
+inline void* rReaction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rReaction::DTI)->memAlloc(sz, align, ::rReaction::DTI.::MtDTI::getID());
+}
+
+inline void rReaction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rReaction::DTI)->memFree(p_addr);
+}

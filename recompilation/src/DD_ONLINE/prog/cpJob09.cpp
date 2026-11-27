@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "cpJob09.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -138,16 +139,8 @@ const MtDTI& cpJob09::getDTI() const {
     return cpJob09::DTI;
 }
 
-inline MtAllocator* cpJob09::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJob09::DTI);
-}
-
 void* cpJob09::operator new(size_t sz, u32 align) {
     return cpJob09::getAllocator()->memAlloc(sz, align, cpJob09::DTI.getID());
-}
-
-inline void cpJob09::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob09::DTI)->memFree(p_addr);
 }
 
 cpJob09::cpJob09() {
@@ -445,9 +438,76 @@ __attribute__((weak)) void cpJob09::changeMedalType(const s32 index) {
     /* stub */
 }
 
-__attribute__((weak)) void cpJob09::updateCS03Shl() {
-    DDON_STUB("cpJob09::updateCS03Shl")
-    /* stub */
+void cpJob09::updateCS03Shl() {
+    if (mpHuman != nullptr) {
+        if (mpHuman->isMaster()) {
+            if (mpHuman != nullptr) {
+                cContextInterface::subCustomWork(mpHuman->mContextInterface.mpContextInstance, mpHuman->mContextInterface.mpContextCharacter, static_cast<u16>(256));
+            }
+            if (mCS03ShlArray.mLength != 0) {
+                u32 v0_0 = mCS03ShlArray.mLength;
+                unsigned int i0_3 = 0;
+                u32 v1_0;
+                for (;;) {
+                    if (mCS03ShlArray.mpArray[i0_3] == nullptr) {
+                        v1_0 = v0_0;
+                    } else {
+                        if (!static_cast<uShlAlchemyCS03*>(mCS03ShlArray.mpArray[i0_3])->canDamageAlchemy()) {
+                            v1_0 = v0_0;
+                        } else {
+                            if (static_cast<uShlAlchemyCS03*>(mCS03ShlArray.mpArray[i0_3])->mIsKillReq) {
+                                v1_0 = v0_0;
+                            } else {
+                                if (static_cast<uShlAlchemyCS03*>(mCS03ShlArray.mpArray[i0_3])->mAlchemyValue >= 1001.0f) {
+                                    if (mpHuman == nullptr) {
+                                        v1_0 = v0_0;
+                                    } else {
+                                        cContextInterface::addCustomWork(mpHuman->mContextInterface.mpContextInstance, mpHuman->mContextInterface.mpContextCharacter, static_cast<u16>(256));
+                                        v1_0 = mCS03ShlArray.mLength;
+                                    }
+                                } else {
+                                    v1_0 = v0_0;
+                                }
+                            }
+                        }
+                    }
+                    if ((i0_3 + 1u) < v1_0) {
+                        v0_0 = v1_0;
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        } else {
+            if (cContextInterface::isCustomWork(mpHuman->mContextInterface.mpContextInstance, mpHuman->mContextInterface.mpContextCharacter, static_cast<u16>(256))) {
+                if (mCS03ShlArray.mLength != 0) {
+                    u32 v3_0 = mCS03ShlArray.mLength;
+                    unsigned int i3_3 = 0;
+                    u32 v4_0;
+                    for (;;) {
+                        if (mCS03ShlArray.mpArray[i3_3] == nullptr) {
+                            v4_0 = v3_0;
+                        } else {
+                            if (!static_cast<uShlAlchemyCS03*>(mCS03ShlArray.mpArray[i3_3])->canDamageAlchemy()) {
+                                v4_0 = v3_0;
+                            } else {
+                                static_cast<uShlAlchemyCS03*>(mCS03ShlArray.mpArray[i3_3])->mAlchemyValue = 1001.0f;
+                                static_cast<uShlAlchemy*>(mCS03ShlArray.mpArray[i3_3])->updateAlchemyModel(true);
+                                v4_0 = mCS03ShlArray.mLength;
+                            }
+                        }
+                        if ((i3_3 + 1u) < v4_0) {
+                            v3_0 = v4_0;
+                            i3_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void cpJob09::setContextCS03ValueMax(bool flg) {
@@ -497,8 +557,35 @@ nHuman::HM_SKILL_LV cpJob09::getElementLv() const {
 }
 
 __attribute__((weak)) nDDOGame::ELEMENT_TYPE cpJob09::getElementType() {
-    DDON_STUB("cpJob09::getElementType")
-    return {};
+    if (mpHuman != nullptr) {
+        cContextInterface& Con = mpHuman->mContextInterface;
+        if (!mpHuman->isMaster()) {
+            u16 t1 = cContextInterface::getCustomWork(Con.mpContextInstance, Con.mpContextCharacter);
+            switch (static_cast<u16>((t1 >> 9) & 7)) {
+                case 0:
+                    mEnchantType = nDDOGame::ELEMENT_TYPE_FIRE;
+                    break;
+                case 1:
+                    mEnchantType = nDDOGame::ELEMENT_TYPE_ICE;
+                    break;
+                case 2:
+                    mEnchantType = nDDOGame::ELEMENT_TYPE_THUNDER;
+                    break;
+                case 3:
+                    mEnchantType = nDDOGame::ELEMENT_TYPE_HOLY;
+                    break;
+                case 4:
+                    mEnchantType = nDDOGame::ELEMENT_TYPE_DARK;
+                    break;
+                default:
+                    mEnchantType = nDDOGame::ELEMENT_TYPE_FIRE;
+                    break;
+            }
+            mIsGraze = ((t1 >> 12) & 1) != 0;
+        }
+        return mEnchantType;
+    }
+    return nDDOGame::ELEMENT_TYPE_FIRE;
 }
 
 __attribute__((weak)) void cpJob09::setElementType(f32 angle) {
@@ -658,9 +745,48 @@ __attribute__((weak)) void cpJob09::addShl(uShlBase* pShl, cpJob09::JOB09_SHL_TY
     /* stub */
 }
 
-__attribute__((weak)) void cpJob09::getJob09ShlArray(const cpJob09::JOB09_SHL_TYPE type, MtTypedArray<uShlBase>* pArray) {
-    DDON_STUB("cpJob09::getJob09ShlArray")
-    /* stub */
+void cpJob09::getJob09ShlArray(const cpJob09::JOB09_SHL_TYPE type, MtTypedArray<uShlBase>* pArray) {
+    if (pArray != nullptr) {
+        if (mJob09ShlInfo.mLength != 0) {
+            JOB09_SHL_TYPE v0_3 = type;
+            unsigned int i0_9 = 0;
+            JOB09_SHL_TYPE v1_3;
+            for (;;) {
+                if (mJob09ShlInfo.mpArray[i0_9] == nullptr) {
+                    v1_3 = v0_3;
+                } else {
+                    if (static_cast<cJob09ShlInfo*>(mJob09ShlInfo.mpArray[i0_9])->mJob09ShlType != v0_3) {
+                        v1_3 = v0_3;
+                    } else {
+                        uShlBase* t0 = static_cast<cJob09ShlInfo*>(mJob09ShlInfo.mpArray[i0_9])->mpJob09Shl;
+                        u32 t1 = pArray->mLength;
+                        u32 t2 = pArray->mBufsiz;
+                        if (t1 < t2) {
+                            pArray->mLength = t1 + 1u;
+                            pArray->mpArray[t1] = static_cast<MtObject*>(t0);
+                        } else {
+                            void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t2 + 32u) * 8, 16u);
+                            memset(t3, 0, static_cast<size_t>(t2 + 32u) * 8);
+                            memcpy(t3, static_cast<const void*>(pArray->mpArray), static_cast<size_t>(pArray->mLength) * 8);
+                            MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(pArray->mpArray));
+                            pArray->mpArray = static_cast<MtObject* *>(t3);
+                            pArray->mBufsiz = t2 + 32u;
+                            u32 t4 = pArray->mLength;
+                            pArray->mLength = t4 + 1u;
+                            pArray->mpArray[t4] = static_cast<MtObject*>(t0);
+                        }
+                        v1_3 = type;
+                    }
+                }
+                if ((i0_9 + 1u) < mJob09ShlInfo.mLength) {
+                    v0_3 = v1_3;
+                    i0_9 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpJob09::updateAlchemyEvaluationValue() {
@@ -1387,14 +1513,6 @@ const MtDTI& cpJob09::cAlchemyEvaluationData::getDTI() const {
     return cpJob09::cAlchemyEvaluationData::DTI;
 }
 
-inline void* cpJob09::cAlchemyEvaluationData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJob09::cAlchemyEvaluationData::DTI)->memAlloc(sz, align, cpJob09::cAlchemyEvaluationData::DTI.getID());
-}
-
-inline void cpJob09::cAlchemyEvaluationData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob09::cAlchemyEvaluationData::DTI)->memFree(p_addr);
-}
-
 inline cpJob09::cAlchemyEvaluationData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cpJob09::cAlchemyEvaluationData::MyDTI cpJob09::cAlchemyEvaluationData::DTI("cpJob09::cAlchemyEvaluationData", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -1405,14 +1523,6 @@ MtObject* cpJob09::cAlchemyEvaluationData::MyDTI::newInstance() const {
 
 const MtDTI& cpJob09::cJob09ShlInfo::getDTI() const {
     return cpJob09::cJob09ShlInfo::DTI;
-}
-
-inline void* cpJob09::cJob09ShlInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJob09::cJob09ShlInfo::DTI)->memAlloc(sz, align, cpJob09::cJob09ShlInfo::DTI.getID());
-}
-
-inline void cpJob09::cJob09ShlInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob09::cJob09ShlInfo::DTI)->memFree(p_addr);
 }
 
 inline cpJob09::cJob09ShlInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -6,9 +6,6 @@
 // Forward declarations
 namespace nObjCondition { struct stOcdActiveInfo; }
 
-// Declarations
-namespace nObjCondition { struct stOcdActiveData; }
-
 namespace nObjCondition {
     enum IMMUNE_BOOST_LV
     {
@@ -88,6 +85,9 @@ namespace nObjCondition {
         SYSTEM_FLAG_CYCLE_EFF_OFF = 8,
     };
 }  // namespace nObjCondition
+
+// Declarations
+namespace nObjCondition { struct stOcdActiveData; }
 
 // Type aliases from DWARF
 using u8 = unsigned char;

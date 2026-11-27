@@ -180,3 +180,23 @@ inline void rTexDetailEdit::DetailParam::operator delete(void* p_addr) {
 inline u32 rTexDetailEdit::DetailParam::getIgnoreLimit() const {
     return this->mIgnoreLimit;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rTexDetailEdit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTexDetailEdit::DTI)->memAlloc(sz, align, ::rTexDetailEdit::DTI.::MtDTI::getID());
+}
+
+inline void rTexDetailEdit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTexDetailEdit::DTI)->memFree(p_addr);
+}
+
+inline rTexDetailEdit::rTexDetailEdit() {
+    this->::cResource::setAttribute(18u);
+}
+
+inline void* rTexDetailEdit::DetailParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTexDetailEdit::DetailParam::DTI)->memAlloc(sz, align, ::rTexDetailEdit::DetailParam::DTI.::MtDTI::getID());
+}

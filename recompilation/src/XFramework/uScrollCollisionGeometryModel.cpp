@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uScrollCollisionGeometryModel.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -25,14 +23,6 @@ __attribute__((weak)) void uScrollCollisionGeometryModel::usage() {
 
 const MtDTI& uScrollCollisionGeometryModel::getDTI() const {
     return uScrollCollisionGeometryModel::DTI;
-}
-
-inline void* uScrollCollisionGeometryModel::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uScrollCollisionGeometryModel::DTI)->memAlloc(sz, align, uScrollCollisionGeometryModel::DTI.mID);
-}
-
-inline void uScrollCollisionGeometryModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uScrollCollisionGeometryModel::DTI)->memFree(p_addr);
 }
 
 uScrollCollisionGeometryModel::~uScrollCollisionGeometryModel() {

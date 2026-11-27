@@ -13,10 +13,6 @@ const MtDTI& CDataItemSort::getDTI() const {
     return CDataItemSort::DTI;
 }
 
-inline MtAllocator* CDataItemSort::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataItemSort::DTI);
-}
-
 void* CDataItemSort::operator new(size_t sz, u32 align) {
     return CDataItemSort::getAllocator()->memAlloc(sz, align, CDataItemSort::DTI.getID());
 }

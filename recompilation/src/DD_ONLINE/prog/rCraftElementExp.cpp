@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCraftElementExp.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cCraftElementExpData::getDTI() const {
     return cCraftElementExpData::DTI;
-}
-
-inline void* cCraftElementExpData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCraftElementExpData::DTI)->memAlloc(sz, align, cCraftElementExpData::DTI.getID());
-}
-
-inline void cCraftElementExpData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftElementExpData::DTI)->memFree(p_addr);
 }
 
 void cCraftElementExpData::createProperty(MtPropertyList& s) {
@@ -40,14 +30,6 @@ MtObject* cCraftElementExpData::MyDTI::newInstance() const {
 
 const MtDTI& rCraftElementExp::getDTI() const {
     return rCraftElementExp::DTI;
-}
-
-inline void* rCraftElementExp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCraftElementExp::DTI)->memAlloc(sz, align, rCraftElementExp::DTI.getID());
-}
-
-inline void rCraftElementExp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCraftElementExp::DTI)->memFree(p_addr);
 }
 
 bool rCraftElementExp::loadData(MtDataReader& in, cCraftElementExpData* pData) {

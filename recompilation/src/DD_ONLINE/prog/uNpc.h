@@ -174,3 +174,21 @@ inline uNpc::uNpc() {
     this->mShopId = 0;
     this->mpFsmCtrl = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cContextPlayerInfo.h"
+#include "sNpcManager.h"
+
+inline void* uNpc::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uNpc::DTI)->memAlloc(sz, align, ::uNpc::DTI.::MtDTI::getID());
+}
+
+inline rkThinkData* uNpc::getThinkData() {
+    if (this->::uHuman::mpContextPlayerInfo != nullptr) {
+        return ::sNpcManager::getInstance()->::sNpcManager::getThinkData(this->::uHuman::mpContextPlayerInfo->mCurrentJob_pri);
+    } else {
+        return ::sNpcManager::getInstance()->::sNpcManager::getThinkData(255u);
+    }
+}

@@ -169,3 +169,50 @@ inline rPartnerPawnTalk::InfoBinary::TalkDataBinary::TalkDataBinary() {
     this->mTalk = 0;
     this->mType = 1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rPartnerPawnTalk::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::DTI)->memAlloc(sz, align, ::rPartnerPawnTalk::DTI.::MtDTI::getID());
+}
+
+inline void rPartnerPawnTalk::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::DTI)->memFree(p_addr);
+}
+
+inline rPartnerPawnTalk::rPartnerPawnTalk() {
+    this->::cResource::setAttribute(18u);
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void rPartnerPawnTalk::destruct() {
+    unsigned int i0 = 0;
+    if (this->mArrayNum != 0) {
+        do {
+            this->mpArray[i0].~InfoBinary();
+            i0 += 1u;
+        } while (i0 < this->mArrayNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::DTI)->memFree(static_cast<void*>(this->mpArray));
+    this->mpArray = nullptr;
+    this->mArrayNum = 0;
+}
+
+inline void* rPartnerPawnTalk::InfoBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::InfoBinary::DTI)->memAlloc(sz, align, ::rPartnerPawnTalk::InfoBinary::DTI.::MtDTI::getID());
+}
+
+inline void rPartnerPawnTalk::InfoBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::InfoBinary::DTI)->memFree(p_addr);
+}
+
+inline void* rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI)->memAlloc(sz, align, ::rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI.::MtDTI::getID());
+}
+
+inline void rPartnerPawnTalk::InfoBinary::TalkDataBinary::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPartnerPawnTalk::InfoBinary::TalkDataBinary::DTI)->memFree(p_addr);
+}

@@ -41,6 +41,7 @@ class uSoundOcclusion;
 class uSoundSubMixer;
 
 // Declarations
+struct RandomPitchData;
 class cSplitBgm;
 class sSoundExt;
 
@@ -59,6 +60,13 @@ using s8 = signed char;
 using size_t = _Sizet;
 using u64 = __uint64_t;
 using uintptr = __uintptr_t;
+
+struct RandomPitchData
+{
+public:
+    s32 Min;  // offset: 0x0
+    s32 Max;  // offset: 0x4
+};
 
 class cSplitBgm : public MtObject
 {
@@ -332,6 +340,7 @@ public:
 public:
     class cNonStopStream : public MtObject
     {
+        friend class sSoundExt;
     public:
         class MyDTI;
     public:
@@ -711,6 +720,10 @@ inline rSoundRequest* sSoundExt::getGameBuffResource() {
     return this->mprGameBuffRequest;
 }
 
+inline rSoundRequest* sSoundExt::getMagicResource() {
+    return this->mprMagicRequest;
+}
+
 inline void sSoundExt::setMagicResource(rSoundRequest* pRequest) {
     this->mprMagicRequest = pRequest;
 }
@@ -774,6 +787,168 @@ inline void* sSoundExt::cNonStopStream::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline sSoundExt::cNonStopStream::cNonStopStream() {
+    this->mpNoStopStreamDTI = nullptr;
+    this->mpNoStopStream = nullptr;
+}
+
 inline rSoundStreamRequest* sSoundExt::cNonStopStream::getStreamRequest() {
     return this->mpNoStopStream;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+#include "rSoundOptData.h"
+#include "rSoundParamOfs.h"
+#include "../../XFramework/rSoundRequest.h"
+#include "rSoundSubMixerSet.h"
+#include "sArchiveManager.h"
+#include "../../XFramework/sArea.h"
+#include "sAreaExt.h"
+#include "uSoundOcclusion.h"
+
+inline void* cSplitBgm::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSplitBgm::DTI)->memAlloc(sz, align, ::cSplitBgm::DTI.::MtDTI::getID());
+}
+
+inline void cSplitBgm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSplitBgm::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sSoundExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sSoundExt::DTI);
+}
+
+inline void sSoundExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSoundExt::DTI)->memFree(p_addr);
+}
+
+inline void sSoundExt::releaseEnchantResource() {
+    if (this->mprEnchantRequest == nullptr) {
+        return;
+    }
+    this->mprEnchantRequest->::cResource::release();
+    this->mprEnchantRequest = nullptr;
+}
+
+inline void sSoundExt::releaseHitEnchantResource() {
+    if (this->mprHitEnchantRequest == nullptr) {
+        return;
+    }
+    this->mprHitEnchantRequest->::cResource::release();
+    this->mprHitEnchantRequest = nullptr;
+}
+
+inline void sSoundExt::releaseMagicResource() {
+    if (this->mprMagicRequest == nullptr) {
+        return;
+    }
+    this->mprMagicRequest->::cResource::release();
+    this->mprMagicRequest = nullptr;
+}
+
+inline void sSoundExt::releaseGameBuffResource() {
+    if (this->mprGameBuffRequest == nullptr) {
+        return;
+    }
+    this->mprGameBuffRequest->::cResource::release();
+    this->mprGameBuffRequest = nullptr;
+}
+
+inline void sSoundExt::releaseShlJobShareResource() {
+    if (this->mprShlJobShareRequest == nullptr) {
+        return;
+    }
+    this->mprShlJobShareRequest->::cResource::release();
+    this->mprShlJobShareRequest = nullptr;
+}
+
+inline void sSoundExt::releaseEnemyShareSeResource() {
+    if (this->mprEnemyShareRequest == nullptr) {
+        return;
+    }
+    this->mprEnemyShareRequest->::cResource::release();
+    this->mprEnemyShareRequest = nullptr;
+}
+
+inline void sSoundExt::releaseHmParamOfsResource() {
+    if (this->mprHmParamOfs == nullptr) {
+        return;
+    }
+    this->mprHmParamOfs->::cResource::release();
+    this->mprHmParamOfs = nullptr;
+}
+
+inline void sSoundExt::moveArea() {
+    if (this->mpuOCC != nullptr) {
+        if ((this->mpuOCC->::cUnit::mBeFlag - 1u) > 1u) {
+            this->mpuOCC = nullptr;
+        }
+    }
+    if ((::sArea::mpInstance) == nullptr) {
+        return;
+    }
+    this->mpuOCC = static_cast<sAreaExt*>(::sArea::mpInstance)->::sAreaExt::getSoundOcclusion();
+}
+
+inline void sSoundExt::setSoundSubMixerSetResource(rSoundSubMixerSet* pResource) {
+    if (this->mprSoundSubMixerSet != nullptr) {
+        return;
+    }
+    this->mprSoundSubMixerSet = pResource;
+    pResource->::cResource::addRef();
+}
+
+inline void sSoundExt::releaseSoundSubMixerSetResource() {
+    if (this->mprSoundSubMixerSet == nullptr) {
+        return;
+    }
+    this->mprSoundSubMixerSet->::cResource::release();
+    this->mprSoundSubMixerSet = nullptr;
+}
+
+inline void sSoundExt::initNoStopStream() {
+    this->mBgmSystemTicket = ::sArchiveManager::INVALID_TICKET;
+    this->mNoStopStream[0].mpNoStopStreamDTI = nullptr;
+    this->mNoStopStream[0].mpNoStopStream = nullptr;
+    this->mNoStopStream[1].mpNoStopStreamDTI = nullptr;
+    this->mNoStopStream[1].mpNoStopStream = nullptr;
+    this->mNoStopStream[2].mpNoStopStreamDTI = nullptr;
+    this->mNoStopStream[2].mpNoStopStream = nullptr;
+    this->mNoStopStream[3].mpNoStopStreamDTI = nullptr;
+    this->mNoStopStream[3].mpNoStopStream = nullptr;
+    this->mNoStopStream[4].mpNoStopStreamDTI = nullptr;
+    this->mNoStopStream[4].mpNoStopStream = nullptr;
+    this->mNoStopStream[5].mpNoStopStreamDTI = nullptr;
+    this->mNoStopStream[5].mpNoStopStream = nullptr;
+    this->mNoStopStream[6].mpNoStopStreamDTI = nullptr;
+    this->mNoStopStream[6].mpNoStopStream = nullptr;
+    this->mNoStopStream[7].mpNoStopStreamDTI = nullptr;
+    this->mNoStopStream[7].mpNoStopStream = nullptr;
+}
+
+inline void sSoundExt::releaseOptionDataResource() {
+    if (this->mprOptionData == nullptr) {
+        return;
+    }
+    this->mprOptionData->::cResource::release();
+    this->mprOptionData = nullptr;
+}
+
+inline void* sSoundExt::cVoiceRequest::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sSoundExt::cVoiceRequest::DTI)->memAlloc(sz, align, ::sSoundExt::cVoiceRequest::DTI.::MtDTI::getID());
+}
+
+inline void sSoundExt::cVoiceRequest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSoundExt::cVoiceRequest::DTI)->memFree(p_addr);
+}
+
+inline void* sSoundExt::cNonStopStream::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sSoundExt::cNonStopStream::DTI)->memAlloc(sz, align, ::sSoundExt::cNonStopStream::DTI.::MtDTI::getID());
+}
+
+inline void sSoundExt::cNonStopStream::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSoundExt::cNonStopStream::DTI)->memFree(p_addr);
 }

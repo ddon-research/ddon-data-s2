@@ -1301,3 +1301,35 @@ inline void* uGUICraft::cCreateRecipeSort::operator new(size_t sz, void* p_addr)
 inline void* uGUICraft::cAddListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uGUIPopDetail01.h"
+
+inline void uGUICraft::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICraft::DTI)->memFree(p_addr);
+}
+
+inline void uGUICraft::resetItemDetailPage() {
+    if (this->mpDetail == nullptr) {
+        return;
+    }
+    this->mpDetail->::uGUIPopDetail01::resetPageType();
+}
+
+inline void uGUICraft::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICraft::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUICraft::cAddListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICraft::cAddListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUICraft::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICraft::cListInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUICraft::cCreateRecipeSort::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICraft::cCreateRecipeSort::DTI)->memFree(p_addr);
+}

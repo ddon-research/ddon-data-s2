@@ -10,6 +10,7 @@
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "cParticleGenerator.h"
+#include "cParticleGeneratorPolygon.h"
 #include "cParticleManager.h"
 #include "cUnit.h"
 #include "rEffectList.h"
@@ -32,10 +33,6 @@ const MtDTI& uEffect::getDTI() const {
 
 __attribute__((weak)) void* uEffect::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uEffect::DTI)->memAlloc(sz, align, uEffect::DTI.mID);
-}
-
-inline void uEffect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uEffect::DTI)->memFree(p_addr);
 }
 
 uEffect::uEffect() {
@@ -667,9 +664,18 @@ __attribute__((weak)) void uEffect::applyGeneratorWorldMatrix(cParticleGenerator
 __attribute__((weak)) void uEffect::applyNodeWorldMatrix(cParticleNode* pNode) {
 }
 
-__attribute__((weak)) u32 uEffect::updateParticlePosForce(u32 ForceType, f32 ForceRate, const MtVector3& ForceVec, MtVector3& Pos) {
-    DDON_STUB("uEffect::updateParticlePosForce")
-    return {};
+u32 uEffect::updateParticlePosForce(u32 ForceType, f32 ForceRate, const MtVector3& ForceVec, MtVector3& Pos) {
+    if (ForceType == 1) {
+        const f32 t0 = ForceVec.y;
+        const f32 t1 = ForceVec.z;
+        Pos.x = Pos.x + (ForceVec.x * ForceRate);
+        Pos.y = Pos.y + (t0 * ForceRate);
+        Pos.z = Pos.z + (t1 * ForceRate);
+        Pos.pad_ = 0.0f;
+        return 0;
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) u32 uEffect::checkCollisionLine(sCollision::TriangleInfo* pTriangleInfo, u32* pPtclFlag, const MtLineSegment& LineSegment, rEffectList::EFL_PARAM_COLL* pCollParam) {

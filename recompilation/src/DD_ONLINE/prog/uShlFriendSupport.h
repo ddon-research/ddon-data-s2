@@ -140,3 +140,19 @@ inline uShlFriendSupport::uShlFriendSupport() {
     this->mFlgMove = false;
     this->mpJobCommonEfcHandle = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamFriendSupport::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamFriendSupport::DTI)->memAlloc(sz, align, ::cShlParamFriendSupport::DTI.::MtDTI::getID());
+}
+
+inline void* uShlFriendSupport::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlFriendSupport::DTI)->memAlloc(sz, align, ::uShlFriendSupport::DTI.::MtDTI::getID());
+}
+
+inline void uShlFriendSupport::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlFriendSupport::DTI)->memFree(p_addr);
+}

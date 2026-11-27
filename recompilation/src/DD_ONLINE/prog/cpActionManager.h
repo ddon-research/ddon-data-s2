@@ -160,3 +160,15 @@ inline const cActList* cpActionManager::getActList(u32 bank) const {
 inline bool cpActionManager::isEndAction() {
     return this->mEndAction;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpActionManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpActionManager::DTI);
+}
+
+inline void cpActionManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpActionManager::DTI)->memFree(p_addr);
+}

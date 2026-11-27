@@ -74,3 +74,15 @@ inline void* cOcdHolyAbsorp::operator new(size_t sz, void* p_addr) {
 
 inline cOcdHolyAbsorp::cOcdHolyAbsorp() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cOcdHolyAbsorp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdHolyAbsorp::DTI)->memAlloc(sz, align, ::cOcdHolyAbsorp::DTI.::MtDTI::getID());
+}
+
+inline void cOcdHolyAbsorp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdHolyAbsorp::DTI)->memFree(p_addr);
+}

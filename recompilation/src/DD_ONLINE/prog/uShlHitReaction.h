@@ -325,3 +325,44 @@ inline void* uShlHitReactionSpline::operator new(size_t sz, void* p_addr) {
 inline void* uShlHitReactionStick::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* cShlParamHitReactionSpline::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamHitReactionSpline::DTI)->memAlloc(sz, align, ::cShlParamHitReactionSpline::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamHitReactionSpline::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamHitReactionSpline::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamHitReactionStick::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamHitReactionStick::DTI)->memAlloc(sz, align, ::cShlParamHitReactionStick::DTI.::MtDTI::getID());
+}
+
+inline void uShlHitReactionConditionStick::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlHitReactionConditionStick::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamHitReactionConditionStick* uShlHitReactionConditionStick::getShlParam() const {
+    return static_cast<const cShlParamHitReactionConditionStick*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void uShlHitReactionSpline::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlHitReactionSpline::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamHitReactionSpline* uShlHitReactionSpline::getShlParam() const {
+    return static_cast<const cShlParamHitReactionSpline*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void uShlHitReactionStick::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlHitReactionStick::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamHitReactionStick* uShlHitReactionStick::getShlParam() const {
+    return static_cast<const cShlParamHitReactionStick*>(this->::uShlBase::mpShlParam2);
+}

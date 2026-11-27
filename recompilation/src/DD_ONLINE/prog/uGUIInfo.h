@@ -288,3 +288,27 @@ inline uGUIInfo::cListItem::cListItem() {
 inline void* uGUIInfo::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIInfo::DTI);
+}
+
+inline void uGUIInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIInfo::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIInfo::cListItem::DTI)->memAlloc(sz, align, ::uGUIInfo::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIInfo::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIInfo::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIInfo::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIInfo::cListInfo::DTI)->memFree(p_addr);
+}

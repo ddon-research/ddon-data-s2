@@ -136,3 +136,27 @@ inline cScenarioArg* cScenarioData::getArg() {
 inline void* rScenario::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cScenarioData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cScenarioData::DTI)->memAlloc(sz, align, ::cScenarioData::DTI.::MtDTI::getID());
+}
+
+inline void cScenarioData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cScenarioData::DTI)->memFree(p_addr);
+}
+
+inline void* rScenario::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rScenario::DTI)->memAlloc(sz, align, ::rScenario::DTI.::MtDTI::getID());
+}
+
+inline void rScenario::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rScenario::DTI)->memFree(p_addr);
+}
+
+inline rScenario::rScenario() {
+    this->::cResource::setAttribute(18u);
+}

@@ -32,10 +32,6 @@ void* nNetwork::Connect::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::Connect::DTI)->memAlloc(sz, align, ::nNetwork::Connect::DTI.mID);
 }
 
-inline void nNetwork::Connect::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Connect::DTI)->memFree(p_addr);
-}
-
 nNetwork::Connect::Connect() {
     DDON_STUB("nNetwork::Connect::Connect")
     /* stub */
@@ -55,8 +51,7 @@ MtUI* nNetwork::Connect::createUI(MtProperty& prop) {
 void nNetwork::Connect::setup(nNetwork::Session* ps) {
     mpSession = ps;
     mReceiver.mpObject = static_cast<MtObject*>(this);
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 72) = 0;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 64) = 73;
+    mReceiver.mpCallback = &::nNetwork::Connect::recvMessage;
     ps->mCallback.set(2, static_cast<nNetwork::ReceiverBase*>(&mReceiver), false, true);
 }
 
@@ -106,9 +101,12 @@ void nNetwork::Connect::removeRouteAll() {
     removeRoute(15, static_cast<MtNetError*>(nullptr));
 }
 
-__attribute__((weak)) void nNetwork::Connect::setForward(s32 route_index, s32 forward_index, u32 ival, const s32* forward, u32 num) {
-    DDON_STUB("nNetwork::Connect::setForward")
-    /* stub */
+void nNetwork::Connect::setForward(s32 route_index, s32 forward_index, u32 ival, const s32* forward, u32 num) {
+    if (mNeedDetour) {
+        if (num <= 15u) {
+            mpSession->mpDatabase->mRouteList[route_index].mDirectIndex = mpSession->mpDatabase->mRouteList[forward_index].mDirectIndex;
+        }
+    }
 }
 
 __attribute__((weak)) bool nNetwork::Connect::tryFinal() {
@@ -173,9 +171,29 @@ __attribute__((weak)) void nNetwork::Connect::process(s32 src, cRemoteCall* prpc
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::Connect::procLinkState(nNetwork::RpcNetSystem_LinkState& call, s32 route_index) {
-    DDON_STUB("nNetwork::Connect::procLinkState")
-    /* stub */
+void nNetwork::Connect::procLinkState(nNetwork::RpcNetSystem_LinkState& call, s32 route_index) {
+    if (!mNeedDetour) {
+        return;
+    }
+    const nNetwork::SessionDatabase* pdb = mpSession->mpDatabase;
+    if (pdb->mRouteList[route_index].mMemberIndex > -1) {
+        pdb->isValid(0);
+        pdb->isValid(1);
+        pdb->isValid(2);
+        pdb->isValid(3);
+        pdb->isValid(4);
+        pdb->isValid(5);
+        pdb->isValid(6);
+        pdb->isValid(7);
+        pdb->isValid(8);
+        pdb->isValid(9);
+        pdb->isValid(10);
+        pdb->isValid(11);
+        pdb->isValid(12);
+        pdb->isValid(13);
+        pdb->isValid(14);
+        pdb->isValid(15);
+    }
 }
 
 __attribute__((weak)) void nNetwork::Connect::procReqDetour(nNetwork::RpcNetSystem_ReqDetour& call, s32 route_index) {

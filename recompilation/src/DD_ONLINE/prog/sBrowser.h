@@ -78,6 +78,7 @@ public:
 
 class sBrowser : public cSystem
 {
+    friend class cBrowserPS4;
     friend class sGUIExt;
     friend class uGUIBrowserBG;
     friend class uGUIGPConfirm;
@@ -449,4 +450,16 @@ inline void sBrowser::setFunctionButtonDisable(u32 FunctionButton) {
 
 inline u32 sBrowser::getFunctionButton() const {
     return this->mFunctionButton;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sBrowser::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sBrowser::DTI);
+}
+
+inline void sBrowser::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBrowser::DTI)->memFree(p_addr);
 }

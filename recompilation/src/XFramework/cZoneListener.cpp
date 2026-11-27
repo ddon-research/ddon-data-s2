@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cZoneListener.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtPrimitive3D.h"
 #include "../MT/MtProperty.h"
@@ -16,10 +14,6 @@
 
 const MtDTI& cZoneListener::getDTI() const {
     return cZoneListener::DTI;
-}
-
-inline void cZoneListener::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneListener::DTI)->memFree(p_addr);
 }
 
 cZoneListener::cZoneListener() {
@@ -82,9 +76,10 @@ const MtMatrix& cZoneListener::getZoneLayoutWorldInverseMatrix() const {
     return *((mpZoneLayout == nullptr) ? (&MtMatrix::Identity) : (&mpZoneLayout->mWorldInverseMatrix));
 }
 
-__attribute__((weak)) void cZoneListener::registerTargetZoneLayout(cZoneLayout& TargetZoneLayout, u32 TargetZoneLayoutIndex, u32 TargetZoneLayoutHandle) {
-    DDON_STUB("cZoneListener::registerTargetZoneLayout")
-    /* stub */
+void cZoneListener::registerTargetZoneLayout(cZoneLayout& TargetZoneLayout, u32 TargetZoneLayoutIndex, u32 TargetZoneLayoutHandle) {
+    mpZoneLayout = &TargetZoneLayout;
+    mTargetZoneLayoutIndex = TargetZoneLayoutIndex;
+    mTargetZoneLayoutHandle = TargetZoneLayoutHandle;
 }
 
 void cZoneListener::unregisterTargetZoneLayout() {

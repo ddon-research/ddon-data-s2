@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cTalkState.h"
 #include "nCharacterData.h"
@@ -32,16 +31,8 @@ const MtDTI& nTalk::cSelectData::getDTI() const {
     return nTalk::cSelectData::DTI;
 }
 
-inline MtAllocator* nTalk::cSelectData::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nTalk::cSelectData::DTI);
-}
-
 void* nTalk::cSelectData::operator new(size_t sz, u32 align) {
     return ::nTalk::cSelectData::getAllocator()->memAlloc(sz, align, ::nTalk::cSelectData::DTI.getID());
-}
-
-inline void nTalk::cSelectData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nTalk::cSelectData::DTI)->memFree(p_addr);
 }
 
 nTalk::cSelectData::SELECT_TYPE nTalk::cSelectData::getType() const {
@@ -73,16 +64,8 @@ const MtDTI& nTalk::cSelectMember::getDTI() const {
     return nTalk::cSelectMember::DTI;
 }
 
-inline MtAllocator* nTalk::cSelectMember::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nTalk::cSelectMember::DTI);
-}
-
 void* nTalk::cSelectMember::operator new(size_t sz, u32 align) {
     return ::nTalk::cSelectMember::getAllocator()->memAlloc(sz, align, ::nTalk::cSelectMember::DTI.getID());
-}
-
-inline void nTalk::cSelectMember::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nTalk::cSelectMember::DTI)->memFree(p_addr);
 }
 
 u32 nTalk::cSelectMember::getSlot() const {

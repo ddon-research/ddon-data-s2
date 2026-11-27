@@ -13,6 +13,7 @@
 #include "../../generated/shared/nUnicode.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
+#include "sInputText.h"
 #include "../../XFramework/sKeyboard.h"
 #include "sKeyboardExt.h"
 #include "../../XFramework/sUserManager.h"
@@ -24,16 +25,8 @@ const MtDTI& sKeyboardInterface::getDTI() const {
     return sKeyboardInterface::DTI;
 }
 
-inline MtAllocator* sKeyboardInterface::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sKeyboardInterface::DTI);
-}
-
 void* sKeyboardInterface::operator new(size_t sz, u32 align) {
     return sKeyboardInterface::getAllocator()->memAlloc(sz, align, sKeyboardInterface::DTI.getID());
-}
-
-inline void sKeyboardInterface::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sKeyboardInterface::DTI)->memFree(p_addr);
 }
 
 sKeyboardInterface::sKeyboardInterface() {
@@ -62,12 +55,6 @@ __attribute__((weak)) void sKeyboardInterface::move() {
 __attribute__((weak)) void sKeyboardInterface::reset() {
 }
 
-inline void sKeyboardInterface::setInputField(MT_CTSTR titleText, MT_CTSTR defaultText, u32 maxCharacterCount) {
-    nUnicode::ConvertUtf8toUcs16(&mTitleText[0], titleText, (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u);
-    nUnicode::ConvertUtf8toUcs16(&mDefaultText[0], defaultText, (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u);
-    mMaxCharacterCount = (maxCharacterCount <= 1023u) ? maxCharacterCount : 1023u;
-}
-
 bool sKeyboardInterface::requestOpen(u32 option, cInputTextKeyboardHook* keyboardHook) {
     if (mMode != MODE_IDLE) {
         return false;
@@ -90,9 +77,22 @@ bool sKeyboardInterface::requestOpenPad(u32 option, cInputTextKeyboardHook* keyb
     }
 }
 
-__attribute__((weak)) bool sKeyboardInterface::requestClose(bool isCancel) {
-    DDON_STUB("sKeyboardInterface::requestClose")
-    return {};
+bool sKeyboardInterface::requestClose(bool isCancel) {
+    if (static_cast<unsigned int>(mMode - 2) <= 1) {
+        return false;
+    } else {
+        if (mMode == MODE_IDLE) {
+            if (static_cast<unsigned int>(mRequest - 1) <= 1) {
+                mRequest = REQ_NONE;
+            }
+            return false;
+        } else {
+            if (static_cast<unsigned int>(mRequest - 3) > 1) {
+                mRequest = static_cast<REQUEST>(isCancel + 3);
+            }
+            return true;
+        }
+    }
 }
 
 void sKeyboardInterface::setKeyboardSetting(sKeyboardInterface::KEYBOARD_TYPE keyboardType, MT_CTSTR titleText, MT_CTSTR defaultText, s32 maxCharacterCount) {

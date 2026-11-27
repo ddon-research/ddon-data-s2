@@ -21,14 +21,6 @@ const MtDTI& rSoundDirectionalSet::getDTI() const {
     return rSoundDirectionalSet::DTI;
 }
 
-inline void* rSoundDirectionalSet::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundDirectionalSet::DTI)->memAlloc(sz, align, rSoundDirectionalSet::DTI.mID);
-}
-
-inline void rSoundDirectionalSet::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundDirectionalSet::DTI)->memFree(p_addr);
-}
-
 rSoundDirectionalSet::~rSoundDirectionalSet() {
     u16* t0 = mpIdToIndexTbl;
     MtMemoryAllocator::getAllocator(rSoundDirectionalSet::DTI)->memFree(static_cast<void*>(t0));

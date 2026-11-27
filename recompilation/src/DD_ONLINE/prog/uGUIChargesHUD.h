@@ -82,3 +82,15 @@ public:
 inline void* uGUIChargesHUD::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIChargesHUD::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIChargesHUD::DTI);
+}
+
+inline void uGUIChargesHUD::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIChargesHUD::DTI)->memFree(p_addr);
+}

@@ -144,3 +144,19 @@ inline void nKeyConfigTextTable::cKeyText::operator delete[](void* p_addr) {
 inline void* nKeyConfigTextTable::cKeyText::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memAlloc(sz, align, ::nKeyConfigTextTable::cKeyText::DTI.::MtDTI::getID());
 }
+
+inline void* nKeyConfigTextTable::cKeyText::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memAlloc(sz, align, ::nKeyConfigTextTable::cKeyText::DTI.::MtDTI::getID());
+}
+
+inline void nKeyConfigTextTable::cKeyText::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nKeyConfigTextTable::cKeyText::DTI)->memFree(p_addr);
+}
+
+inline void* rKeyConfigTextTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rKeyConfigTextTable::DTI)->memAlloc(sz, align, ::rKeyConfigTextTable::DTI.::MtDTI::getID());
+}
+
+inline void rKeyConfigTextTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rKeyConfigTextTable::DTI)->memFree(p_addr);
+}

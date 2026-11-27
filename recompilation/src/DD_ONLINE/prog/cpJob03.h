@@ -290,6 +290,10 @@ inline void cpJob03::setArrowEquipType(u32 type) {
     this->mArrowEquipType = 0;
 }
 
+inline u32 cpJob03::getArrowEquipType() {
+    return this->mArrowEquipType;
+}
+
 inline void cpJob03::requestMoveSpline() {
     this->mIsMoveSpline = true;
 }
@@ -330,6 +334,10 @@ inline f32 cpJob03::getTargetLength() const {
     return this->mTargetLength;
 }
 
+inline void cpJob03::setAccurate(f32 rate) {
+    this->mAccurate = rate;
+}
+
 inline void cpJob03::setReserveCustomSkill(cPlActWpnBow::SKILL_TYPE type) {
     this->mReserveCustomSkill = type;
 }
@@ -348,4 +356,20 @@ inline void cpJob03::setCS14BeforeChargeLv(u32 lv) {
 
 inline void* cpJob03::uLineCtrlUnit::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob03::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob03::DTI);
+}
+
+inline void cpJob03::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob03::DTI)->memFree(p_addr);
+}
+
+inline void cpJob03::uLineCtrlUnit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob03::uLineCtrlUnit::DTI)->memFree(p_addr);
 }

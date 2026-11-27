@@ -3,9 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-// Declarations
-namespace nEnemy { struct EM_BASIC_INFO; }
-
 namespace nEnemy {
     enum EM_CLASS_TYPE
     {
@@ -522,6 +519,9 @@ namespace nEnemy {
         EM_INVALID_ID = -1,
     };
 }  // namespace nEnemy
+
+// Declarations
+namespace nEnemy { struct EM_BASIC_INFO; }
 
 // Type aliases from DWARF
 using u32 = unsigned int;

@@ -1,6 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include <_pthread.h>
+#include <kernel.h>
 #include <stdlib.h>
 #include "sBakingJointOrder.h"
 #include "../../MT/MtAllocator.h"
@@ -32,6 +33,7 @@
 #include "../../XFramework/sUnit.h"
 #include "sUnitManager.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uDDOActorModelPl.h"
 #include "uHuman.h"
 #include "uMockUpModel.h"
 #include "../../XFramework/uModel.h"
@@ -70,16 +72,8 @@ const MtDTI& sBakingJointOrder::getDTI() const {
     return sBakingJointOrder::DTI;
 }
 
-inline MtAllocator* sBakingJointOrder::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sBakingJointOrder::DTI);
-}
-
 void* sBakingJointOrder::operator new(size_t sz, u32 align) {
     return sBakingJointOrder::getAllocator()->memAlloc(sz, align, sBakingJointOrder::DTI.getID());
-}
-
-inline void sBakingJointOrder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBakingJointOrder::DTI)->memFree(p_addr);
 }
 
 sBakingJointOrder::sBakingJointOrder() {
@@ -136,9 +130,39 @@ __attribute__((weak)) bool sBakingJointOrder::setBakeSoftModels(const sBakingJoi
     return {};
 }
 
-__attribute__((weak)) bool sBakingJointOrder::orderBakeQueue(const sBakingJointOrder::BAKE_HANDLE handle, uModel* pOriginModel, sBakingJointOrder::ORDER_PRIORITY::DECL priority) {
-    DDON_STUB("sBakingJointOrder::orderBakeQueue")
-    return {};
+bool sBakingJointOrder::orderBakeQueue(const sBakingJointOrder::BAKE_HANDLE handle, uModel* pOriginModel, sBakingJointOrder::ORDER_PRIORITY::DECL priority) {
+    if (handle != 0xFFFFFFFFu) {
+        if (mBakeModelQueue[handle].mLock == 1) {
+            if (mThreadSafe || (cSystem::mJobSafe)) {
+                if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+            if (mBakeModelQueue[handle].mBakeState != static_cast<volatile BakedQueue::BAKED_STATE::DECL>(0)) {
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return false;
+            } else {
+                mBakeModelQueue[handle].mpOrderUnit = pOriginModel;
+                mBakeModelQueue[handle].mPriority = static_cast<u32>(priority);
+                mBakeModelQueue[handle].mBakeState = static_cast<volatile BakedQueue::BAKED_STATE::DECL>(1);
+                sceKernelSignalSema(mpSemaphore->mHandle, 1);
+                if (mThreadSafe || (cSystem::mJobSafe)) {
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool sBakingJointOrder::execBakeQueue(const sBakingJointOrder::BAKE_HANDLE handle, uModel* pOriginModel, sBakingJointOrder::ORDER_PRIORITY::DECL priority) {

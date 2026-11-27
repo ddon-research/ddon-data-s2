@@ -1,6 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include <_pthread.h>
+#include <kernel.h>
 #include <stdlib.h>
 #include "MtNetMediator.h"
 #include "MtNetBuffer.h"
@@ -353,19 +354,46 @@ __attribute__((weak)) s32 MtNetMediator::termNpMatchContext(SceUserServiceUserId
     return {};
 }
 
-__attribute__((weak)) void MtNetMediator::setNpMatchContextEvent(SceNpMatching2ContextId context_id, SceNpMatching2Event event_id, SceNpMatching2EventCause event_cause, int error_code) {
-    DDON_STUB("MtNetMediator::setNpMatchContextEvent")
-    /* stub */
+void MtNetMediator::setNpMatchContextEvent(SceNpMatching2ContextId context_id, SceNpMatching2Event event_id, SceNpMatching2EventCause event_cause, int error_code) {
+    if (scePthreadMutexLock(&mCS.mCSection) == 0) {
+        if (mPsnUsrInfoTbl[0].mIsValid) {
+            if (mPsnUsrInfoTbl[0].mMatchPtr != nullptr) {
+                mPsnUsrInfoTbl[0].mMatchPtr->setContextEvent(context_id, event_id, event_cause, error_code);
+            }
+        }
+        if (mPsnUsrInfoTbl[1].mIsValid) {
+            if (mPsnUsrInfoTbl[1].mMatchPtr != nullptr) {
+                mPsnUsrInfoTbl[1].mMatchPtr->setContextEvent(context_id, event_id, event_cause, error_code);
+            }
+        }
+        if (mPsnUsrInfoTbl[2].mIsValid) {
+            if (mPsnUsrInfoTbl[2].mMatchPtr != nullptr) {
+                mPsnUsrInfoTbl[2].mMatchPtr->setContextEvent(context_id, event_id, event_cause, error_code);
+            }
+        }
+        if (mPsnUsrInfoTbl[3].mIsValid) {
+            if (mPsnUsrInfoTbl[3].mMatchPtr != nullptr) {
+                mPsnUsrInfoTbl[3].mMatchPtr->setContextEvent(context_id, event_id, event_cause, error_code);
+            }
+        }
+        if (mPsnUsrInfoTbl[4].mIsValid) {
+            if (mPsnUsrInfoTbl[4].mMatchPtr != nullptr) {
+                mPsnUsrInfoTbl[4].mMatchPtr->setContextEvent(context_id, event_id, event_cause, error_code);
+            }
+        }
+        if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+            return;
+        }
+    }
+    abort();
 }
 
-__attribute__((weak)) s32 MtNetMediator::waitNpMatchSema() {
-    DDON_STUB("MtNetMediator::waitNpMatchSema")
-    return {};
+s32 MtNetMediator::waitNpMatchSema() {
+    return sceKernelWaitSema(mNpMatchSema, 1, static_cast<SceKernelUseconds*>(nullptr));
 }
 
-__attribute__((weak)) s32 MtNetMediator::signalNpMatchSema() {
-    DDON_STUB("MtNetMediator::signalNpMatchSema")
-    return {};
+s32 MtNetMediator::signalNpMatchSema() {
+    return sceKernelSignalSema(mNpMatchSema, 1);
 }
 
 __attribute__((weak)) bool MtNetMediator::isSceUserId(s32 xf_user_no) {

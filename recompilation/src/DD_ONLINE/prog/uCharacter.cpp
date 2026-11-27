@@ -35,6 +35,7 @@
 #include "cOcdInfo.h"
 #include "../../XFramework/cResource.h"
 #include "cStaminaCtrl.h"
+#include "cState.h"
 #include "cThinkMgr.h"
 #include "../../XFramework/cUnit.h"
 #include "cpAIPawnEmChecker.h"
@@ -46,6 +47,10 @@
 #include "cpChargeCtrl.h"
 #include "cpCheckWallCliff.h"
 #include "cpComponent.h"
+#include "cpEfcFootSmoke.h"
+#include "cpEfcSequenceGeneral.h"
+#include "cpEfcTouchDownSmoke.h"
+#include "cpEfcWeaponAfterimage.h"
 #include "cpEnemyThink.h"
 #include "cpHeadCtrl.h"
 #include "cpHpDamageCtrl.h"
@@ -67,6 +72,8 @@
 #include "cpPathFinding.h"
 #include "cpPivotCtrl.h"
 #include "cpRegionStatusCtrl.h"
+#include "cpReturnTerritory.h"
+#include "cpRootComponent.h"
 #include "cpRotateCtrl.h"
 #include "cpScrCollision.h"
 #include "cpSequenceCtrl.h"
@@ -86,6 +93,7 @@
 #include "nJobParam.h"
 #include "nObjCollision.h"
 #include "rAttackParam.h"
+#include "rCalcDamage.h"
 #include "rCollNode.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "rMotionParam.h"
@@ -125,10 +133,6 @@ const MtDTI& uCharacter::getDTI() const {
     return uCharacter::DTI;
 }
 
-inline void uCharacter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCharacter::DTI)->memFree(p_addr);
-}
-
 uCharacter::uCharacter() {
     DDON_STUB("uCharacter::uCharacter")
     /* stub */
@@ -163,9 +167,13 @@ void uCharacter::moveAfter() {
     checkWarpCheat();
 }
 
-__attribute__((weak)) void uCharacter::kill() {
-    DDON_STUB("uCharacter::kill")
-    /* stub */
+void uCharacter::kill() {
+    this->uDDOModel::kill();
+    cpLockOn* p_lockon = static_cast<cpLockOn*>(mComponentMgr.getRootComponent()->find(cpLockOn::DTI, true, true));
+    if (p_lockon == nullptr) {
+        return;
+    }
+    p_lockon->unregister();
 }
 
 void uCharacter::updatePtr() {
@@ -189,9 +197,14 @@ __attribute__((weak)) void uCharacter::setParent(uCoord* pparent, s32 parent_no)
     /* stub */
 }
 
-__attribute__((weak)) void uCharacter::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uCharacter::applyWorldOffset")
-    /* stub */
+void uCharacter::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uDDOModel::applyWorldOffset(offset, absolute_offset);
+    const f32 t0 = offset.y;
+    const f32 t1 = offset.z;
+    mCheatCheckOldPos.x = mCheatCheckOldPos.x + offset.x;
+    mCheatCheckOldPos.y = mCheatCheckOldPos.y + t0;
+    mCheatCheckOldPos.z = mCheatCheckOldPos.z + t1;
+    mCheatCheckOldPos.pad_ = 0.0f;
 }
 
 void uCharacter::callbackMoveBegin() {
@@ -277,9 +290,35 @@ __attribute__((weak)) void uCharacter::createComponent() {
     /* stub */
 }
 
-__attribute__((weak)) void uCharacter::setupComponentPtr() {
-    DDON_STUB("uCharacter::setupComponentPtr")
-    /* stub */
+void uCharacter::setupComponentPtr() {
+    this->uDDOModel::setupComponentPtr();
+    mpAltitudeFallCtrl = static_cast<cpAltitudeFallCtrl*>(mComponentMgr.getRootComponent()->find(cpAltitudeFallCtrl::DTI, true, true));
+    mpEfcFootSmoke = static_cast<cpEfcFootSmoke*>(mComponentMgr.getRootComponent()->find(cpEfcFootSmoke::DTI, true, true));
+    mpEfcWeaponAfterimage = static_cast<cpEfcWeaponAfterimage*>(mComponentMgr.getRootComponent()->find(cpEfcWeaponAfterimage::DTI, true, true));
+    mpEfcTouchDownSmoke = static_cast<cpEfcTouchDownSmoke*>(mComponentMgr.getRootComponent()->find(cpEfcTouchDownSmoke::DTI, true, true));
+    mpEfcSequenceGeneral = static_cast<cpEfcSequenceGeneral*>(mComponentMgr.getRootComponent()->find(cpEfcSequenceGeneral::DTI, true, true));
+    mpIKCtrl = static_cast<cpIKCtrl*>(mComponentMgr.getRootComponent()->find(cpIKCtrl::DTI, true, true));
+    mpHeadCtrl = static_cast<cpHeadCtrl*>(mComponentMgr.getRootComponent()->find(cpHeadCtrl::DTI, true, true));
+    mpLegCtrl = static_cast<cpLegCtrl*>(mComponentMgr.getRootComponent()->find(cpLegCtrl::DTI, true, true));
+    mpShakeCtrl = static_cast<cpShakeCtrl*>(mComponentMgr.getRootComponent()->find(cpShakeCtrl::DTI, true, true));
+    mpJointOrder = static_cast<cpJointOrder*>(mComponentMgr.getRootComponent()->find(cpJointOrder::DTI, true, true));
+    mpReturnTerritory = static_cast<cpReturnTerritory*>(mComponentMgr.getRootComponent()->find(cpReturnTerritory::DTI, true, true));
+    mpVibration = static_cast<cpVibration*>(mComponentMgr.getRootComponent()->find(cpVibration::DTI, true, true));
+    mpAIPawnEmChecker = static_cast<cpAIPawnEmChecker*>(mComponentMgr.getRootComponent()->find(cpAIPawnEmChecker::DTI, true, true));
+    mpTinyChain = static_cast<cpTinyChain*>(mComponentMgr.getRootComponent()->find(cpTinyChain::DTI, true, true));
+    mpJointEx2 = static_cast<cpJointEx2*>(mComponentMgr.getRootComponent()->find(cpJointEx2::DTI, true, true));
+    if (mpShakeCtrl != nullptr) {
+        if (mpIKCtrl != nullptr) {
+            mpShakeCtrl->mpIKCtrl = mpIKCtrl;
+        }
+    }
+    if (mpLegCtrl == nullptr) {
+        return;
+    }
+    if (mpIKCtrl == nullptr) {
+        return;
+    }
+    mpLegCtrl->mpIKCtrl = mpIKCtrl;
 }
 
 void uCharacter::setupActPreInit() {
@@ -882,13 +921,6 @@ __attribute__((weak)) void uCharacter::playGuardHitStop(cHitInfo* pHitInfo) {
     }
 }
 
-inline void uCharacter::setCheatCheckOldPos(const MtVector3& NewValue) {
-    mCheatCheckOldPos.x = NewValue.x;
-    mCheatCheckOldPos.y = NewValue.y;
-    mCheatCheckOldPos.z = NewValue.z;
-    mCheatCheckOldPos.pad_ = 0.0f;
-}
-
 __attribute__((weak)) void uCharacter::checkWarpCheat() {
     DDON_STUB("uCharacter::checkWarpCheat")
     /* stub */
@@ -924,8 +956,112 @@ bool uCharacter::makeDamageVec(nObjCollision::stDmageVecInfo* pInfo, nObjCollisi
 }
 
 __attribute__((weak)) bool uCharacter::makeDamageVec(nObjCollision::stDmageVecInfo* pInfo, nObjCollision::REACTION_TYPE reactionTyep, bool isAir, u32 type, u32 Lv) {
-    DDON_STUB("uCharacter::makeDamageVec")
-    return {};
+    const cAttackParam* pAttackParam = mDmActParam.getAttackParam();
+    if (pAttackParam != nullptr) {
+        if (Lv == 0) {
+            return false;
+        } else {
+            if (Lv == 5) {
+                if (reactionTyep != nObjCollision::REACTION_BLOW) {
+                    if (reactionTyep == nObjCollision::REACTION_STORM) {
+                        pInfo->mSpeedXZ = pAttackParam->mWindReactionSpeedZ;
+                        pInfo->mAccelerateXZ = pAttackParam->mWindReactionAccelerateZ;
+                        pInfo->mSpeedY = pAttackParam->mWindReactionSpeedY;
+                        pInfo->mGravityY = pAttackParam->mWindReactionGravityY;
+                        return true;
+                    } else {
+                        if (reactionTyep == nObjCollision::REACTION_SHRINK) {
+                            if (isAir) {
+                                pInfo->mSpeedXZ = pAttackParam->mAirShrinkSpeedZ;
+                                pInfo->mAccelerateXZ = pAttackParam->mAirShrinkAccelerateZ;
+                                pInfo->mSpeedY = pAttackParam->mAirShrinkSpeedY;
+                                pInfo->mGravityY = pAttackParam->mAirShrinkGravityY;
+                            } else {
+                                pInfo->mSpeedXZ = pAttackParam->mGroundShrinkSpeedZ;
+                                pInfo->mAccelerateXZ = pAttackParam->mGroundShrinkAccelerateZ;
+                                pInfo->mSpeedY = pAttackParam->mGroundShrinkSpeedY;
+                                pInfo->mGravityY = pAttackParam->mGroundShrinkGravityY;
+                            }
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                } else {
+                    if (isAir) {
+                        pInfo->mSpeedXZ = pAttackParam->mAirBlowSpeedZ;
+                        pInfo->mAccelerateXZ = pAttackParam->mAirBlowAccelerateZ;
+                        pInfo->mSpeedY = pAttackParam->mAirBlowSpeedY;
+                        pInfo->mGravityY = pAttackParam->mAirBlowGravityY;
+                    } else {
+                        pInfo->mSpeedXZ = pAttackParam->mGroundBlowSpeedZ;
+                        pInfo->mAccelerateXZ = pAttackParam->mGroundBlowAccelerateZ;
+                        pInfo->mSpeedY = pAttackParam->mGroundBlowSpeedY;
+                        pInfo->mGravityY = pAttackParam->mGroundBlowGravityY;
+                    }
+                    return true;
+                }
+            } else {
+                if (reactionTyep != nObjCollision::REACTION_BLOW) {
+                    if (reactionTyep == nObjCollision::REACTION_STORM) {
+                        nObjCollision::SHRINK_BLOW_TYPE t0 = sObjCollision::getInstance()->getShrinkBlowTypeWind(isAir);
+                        if (t0 == nObjCollision::SHRINK_BLOW_TYPE_NON) {
+                            return false;
+                        } else {
+                            const cShrinkBlowValue* pData = sObjCollision::getInstance()->getShBlValue(t0, Lv);
+                            if (pData != nullptr) {
+                                pInfo->mSpeedXZ = pData->mSpeedXZ;
+                                pInfo->mAccelerateXZ = pData->mAccelerateXZ;
+                                pInfo->mSpeedY = pData->mSpeedY;
+                                pInfo->mGravityY = pData->mGravityY;
+                                return true;
+                            } else {
+                                return false;
+                            }
+                        }
+                    } else {
+                        if (reactionTyep == nObjCollision::REACTION_SHRINK) {
+                            nObjCollision::SHRINK_BLOW_TYPE t2 = sObjCollision::getInstance()->getShrinkBlowTypeShrink(type, isAir);
+                            if (t2 == nObjCollision::SHRINK_BLOW_TYPE_NON) {
+                                return false;
+                            } else {
+                                const cShrinkBlowValue* pData = sObjCollision::getInstance()->getShBlValue(t2, Lv);
+                                if (pData != nullptr) {
+                                    pInfo->mSpeedXZ = pData->mSpeedXZ;
+                                    pInfo->mAccelerateXZ = pData->mAccelerateXZ;
+                                    pInfo->mSpeedY = pData->mSpeedY;
+                                    pInfo->mGravityY = pData->mGravityY;
+                                    return true;
+                                } else {
+                                    return false;
+                                }
+                            }
+                        } else {
+                            return false;
+                        }
+                    }
+                } else {
+                    nObjCollision::SHRINK_BLOW_TYPE t1 = sObjCollision::getInstance()->getShrinkBlowTypeBlow(type, isAir);
+                    if (t1 == nObjCollision::SHRINK_BLOW_TYPE_NON) {
+                        return false;
+                    } else {
+                        const cShrinkBlowValue* pData = sObjCollision::getInstance()->getShBlValue(t1, Lv);
+                        if (pData != nullptr) {
+                            pInfo->mSpeedXZ = pData->mSpeedXZ;
+                            pInfo->mAccelerateXZ = pData->mAccelerateXZ;
+                            pInfo->mSpeedY = pData->mSpeedY;
+                            pInfo->mGravityY = pData->mGravityY;
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) u32 uCharacter::decideDamageReactionOnlyFront(const MtVector3& dmVector, u32 ActNoF, bool isAdjustDir) {

@@ -141,3 +141,16 @@ inline cShlParamElemntCover::stEffectSeInfo::stEffectSeInfo() : mEpvIndex(0u), m
 inline void* uShlElementCover::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void uShlElementCover::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlElementCover::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamElemntCover* uShlElementCover::getShlParam() const {
+    return static_cast<const cShlParamElemntCover*>(this->::uShlBase::mpShlParam2);
+}

@@ -15,16 +15,8 @@ const MtDTI& nMarker::cMarkerInfo::getDTI() const {
     return nMarker::cMarkerInfo::DTI;
 }
 
-inline MtAllocator* nMarker::cMarkerInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::DTI);
-}
-
 void* nMarker::cMarkerInfo::operator new(size_t sz, u32 align) {
     return ::nMarker::cMarkerInfo::getAllocator()->memAlloc(sz, align, ::nMarker::cMarkerInfo::DTI.getID());
-}
-
-inline void nMarker::cMarkerInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::DTI)->memFree(p_addr);
 }
 
 const nMarker::cMarkerInfo::Vector3Array& nMarker::cMarkerInfo::getPosList() const {
@@ -45,9 +37,18 @@ __attribute__((weak)) nMarker::cMarkerInfo& nMarker::cMarkerInfo::addCtrlFlag(u3
     __builtin_unreachable();
 }
 
-__attribute__((weak)) nMarker::cMarkerInfo& nMarker::cMarkerInfo::setPosition(u32 idx, const MtVector3& pos) {
-    DDON_STUB("nMarker::cMarkerInfo::setPosition")
-    __builtin_unreachable();
+nMarker::cMarkerInfo& nMarker::cMarkerInfo::setPosition(u32 idx, const MtVector3& pos) {
+    if (idx < mPosList.mLength) {
+        const f32 t0 = pos.y;
+        const f32 t1 = pos.z;
+        static_cast<nMarker::cMarkerInfo::cVector3*>(mPosList.getBuffer()[static_cast<int>(idx)])->mRealPos.x = pos.x;
+        static_cast<nMarker::cMarkerInfo::cVector3*>(mPosList.getBuffer()[static_cast<int>(idx)])->mRealPos.y = t0;
+        static_cast<nMarker::cMarkerInfo::cVector3*>(mPosList.getBuffer()[static_cast<int>(idx)])->mRealPos.z = t1;
+        static_cast<nMarker::cMarkerInfo::cVector3*>(mPosList.getBuffer()[static_cast<int>(idx)])->mRealPos.pad_ = 0.0f;
+        return *this;
+    } else {
+        return *this;
+    }
 }
 
 s16 nMarker::cMarkerInfo::getStageNo() const {
@@ -141,23 +142,8 @@ const MtDTI& nMarker::cMarkerInfo::cVector3::getDTI() const {
     return nMarker::cMarkerInfo::cVector3::DTI;
 }
 
-inline void* nMarker::cMarkerInfo::cVector3::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cVector3::DTI)->memAlloc(sz, align, ::nMarker::cMarkerInfo::cVector3::DTI.getID());
-}
-
-inline void nMarker::cMarkerInfo::cVector3::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cVector3::DTI)->memFree(p_addr);
-}
-
 nMarker::cMarkerInfo::cVector3::operator MtVector3() {
     return mRealPos;
-}
-
-inline nMarker::cMarkerInfo::cVector3::cVector3() {
-    mRealPos.x = ::MtVector3::Zero.x;
-    mRealPos.y = ::MtVector3::Zero.y;
-    mRealPos.z = ::MtVector3::Zero.z;
-    mRealPos.pad_ = 0.0f;
 }
 
 nMarker::cMarkerInfo::cVector3::cVector3(const MtVector3& pos) {
@@ -180,14 +166,6 @@ MtObject* nMarker::cMarkerInfo::cVector3::MyDTI::newInstance() const {
 
 const MtDTI& nMarker::cMarkerInfo::cCtrlFlag::getDTI() const {
     return nMarker::cMarkerInfo::cCtrlFlag::DTI;
-}
-
-inline void* nMarker::cMarkerInfo::cCtrlFlag::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cCtrlFlag::DTI)->memAlloc(sz, align, ::nMarker::cMarkerInfo::cCtrlFlag::DTI.getID());
-}
-
-inline void nMarker::cMarkerInfo::cCtrlFlag::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cCtrlFlag::DTI)->memFree(p_addr);
 }
 
 u32 nMarker::cMarkerInfo::cCtrlFlag::getQuestId() const {
@@ -213,16 +191,8 @@ const MtDTI& nMarker::cWarpMarkerInfo::getDTI() const {
     return nMarker::cWarpMarkerInfo::DTI;
 }
 
-inline MtAllocator* nMarker::cWarpMarkerInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfo::DTI);
-}
-
 void* nMarker::cWarpMarkerInfo::operator new(size_t sz, u32 align) {
     return ::nMarker::cWarpMarkerInfo::getAllocator()->memAlloc(sz, align, ::nMarker::cWarpMarkerInfo::DTI.getID());
-}
-
-inline void nMarker::cWarpMarkerInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfo::DTI)->memFree(p_addr);
 }
 
 const nMarker::cMarkerInfo::Vector3Array& nMarker::cWarpMarkerInfo::getTargetPosList() const {
@@ -325,16 +295,8 @@ const MtDTI& nMarker::cWarpMarkerInfoStage::getDTI() const {
     return nMarker::cWarpMarkerInfoStage::DTI;
 }
 
-inline MtAllocator* nMarker::cWarpMarkerInfoStage::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::DTI);
-}
-
 void* nMarker::cWarpMarkerInfoStage::operator new(size_t sz, u32 align) {
     return ::nMarker::cWarpMarkerInfoStage::getAllocator()->memAlloc(sz, align, ::nMarker::cWarpMarkerInfoStage::DTI.getID());
-}
-
-inline void nMarker::cWarpMarkerInfoStage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::DTI)->memFree(p_addr);
 }
 
 s16 nMarker::cWarpMarkerInfoStage::getTargetStageNo() const {
@@ -429,14 +391,6 @@ MtObject* nMarker::cWarpMarkerInfoStage::MyDTI::newInstance() const {
 
 const MtDTI& nMarker::cWarpMarkerInfoStage::cTargetInfo::getDTI() const {
     return nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI;
-}
-
-inline void* nMarker::cWarpMarkerInfoStage::cTargetInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI)->memAlloc(sz, align, ::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI.getID());
-}
-
-inline void nMarker::cWarpMarkerInfoStage::cTargetInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) const MtVector3& nMarker::cWarpMarkerInfoStage::cTargetInfo::getTargetPos() const {

@@ -10,10 +10,6 @@
 class cContextCharacter;
 class cpShlShotCtrl;
 
-// Declarations
-namespace nHuman { struct stShellRequestInfo; }
-namespace nHuman { struct stShellRequestMsg; }
-
 namespace nHuman {
     enum CUSTOM_SKILL_GROUP
     {
@@ -26,6 +22,10 @@ namespace nHuman {
         CUSTOM_SKILL_GROUP_INIT = 0,
     };
 }  // namespace nHuman
+
+// Declarations
+namespace nHuman { struct stShellRequestInfo; }
+namespace nHuman { struct stShellRequestMsg; }
 
 // Type aliases from DWARF
 using u32 = unsigned int;

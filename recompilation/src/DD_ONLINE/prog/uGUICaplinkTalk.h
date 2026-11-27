@@ -304,3 +304,15 @@ inline void uGUICaplinkTalk::initAdd() {
 
 inline uGUICaplinkTalk::stVariable::stVariable() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkTalk::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkTalk::DTI);
+}
+
+inline void uGUICaplinkTalk::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTalk::DTI)->memFree(p_addr);
+}

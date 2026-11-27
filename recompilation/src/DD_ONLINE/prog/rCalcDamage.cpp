@@ -2,10 +2,8 @@
 #include <new>
 #include <string.h>
 #include "rCalcDamage.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -21,14 +19,6 @@ extern template __attribute__((noinline)) void rTbl2<cDmJobAdjParam>::allocData(
 
 const MtDTI& cAdjLimitParam::getDTI() const {
     return cAdjLimitParam::DTI;
-}
-
-inline void* cAdjLimitParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAdjLimitParam::DTI)->memAlloc(sz, align, cAdjLimitParam::DTI.getID());
-}
-
-inline void cAdjLimitParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAdjLimitParam::DTI)->memFree(p_addr);
 }
 
 cAdjLimitParam::cAdjLimitParam() {
@@ -51,14 +41,6 @@ const MtDTI& cBlowSaveEmLvParam::getDTI() const {
     return cBlowSaveEmLvParam::DTI;
 }
 
-inline void* cBlowSaveEmLvParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cBlowSaveEmLvParam::DTI)->memAlloc(sz, align, cBlowSaveEmLvParam::DTI.getID());
-}
-
-inline void cBlowSaveEmLvParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBlowSaveEmLvParam::DTI)->memFree(p_addr);
-}
-
 void cBlowSaveEmLvParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "Lv", &mKeyLv, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244", &mSaveRate, 0u, 0u);
@@ -74,14 +56,6 @@ MtObject* cBlowSaveEmLvParam::MyDTI::newInstance() const {
 
 const MtDTI& cCalcDamageAtdmAdj::getDTI() const {
     return cCalcDamageAtdmAdj::DTI;
-}
-
-inline void* cCalcDamageAtdmAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, cCalcDamageAtdmAdj::DTI.getID());
-}
-
-inline void cCalcDamageAtdmAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdj::DTI)->memFree(p_addr);
 }
 
 void cCalcDamageAtdmAdj::createProperty(MtPropertyList& s) {
@@ -101,14 +75,6 @@ const MtDTI& cCalcDamageAtdmAdjRate::getDTI() const {
     return cCalcDamageAtdmAdjRate::DTI;
 }
 
-inline void* cCalcDamageAtdmAdjRate::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, cCalcDamageAtdmAdjRate::DTI.getID());
-}
-
-inline void cCalcDamageAtdmAdjRate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
-}
-
 void cCalcDamageAtdmAdjRate::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\346\255\246\345\231\250\346\224\273\346\222\203\351\230\262\345\276\241\345\212\233", &mKeyValue, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224\343\201\270\343\201\256\350\243\234\346\255\243", &mAtdmAdjRate, 0u, 0u);
@@ -124,14 +90,6 @@ MtObject* cCalcDamageAtdmAdjRate::MyDTI::newInstance() const {
 
 const MtDTI& cCalcDamageLvAdj::getDTI() const {
     return cCalcDamageLvAdj::DTI;
-}
-
-inline void* cCalcDamageLvAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCalcDamageLvAdj::DTI)->memAlloc(sz, align, cCalcDamageLvAdj::DTI.getID());
-}
-
-inline void cCalcDamageLvAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCalcDamageLvAdj::DTI)->memFree(p_addr);
 }
 
 void cCalcDamageLvAdj::createProperty(MtPropertyList& s) {
@@ -156,14 +114,6 @@ const MtDTI& cDamageSaveEmLvParam::getDTI() const {
     return cDamageSaveEmLvParam::DTI;
 }
 
-inline void* cDamageSaveEmLvParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDamageSaveEmLvParam::DTI)->memAlloc(sz, align, cDamageSaveEmLvParam::DTI.getID());
-}
-
-inline void cDamageSaveEmLvParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDamageSaveEmLvParam::DTI)->memFree(p_addr);
-}
-
 void cDamageSaveEmLvParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "Lv", &mKeyLv, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260A", &mSaveParamA, 0u, 0u);
@@ -183,14 +133,6 @@ const MtDTI& cDamageSpecialAdj::getDTI() const {
     return cDamageSpecialAdj::DTI;
 }
 
-inline void* cDamageSpecialAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDamageSpecialAdj::DTI)->memAlloc(sz, align, cDamageSpecialAdj::DTI.getID());
-}
-
-inline void cDamageSpecialAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDamageSpecialAdj::DTI)->memFree(p_addr);
-}
-
 void cDamageSpecialAdj::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\343\201\270\343\201\256\345\211\262\345\220\210", &mDamageRate, 0u, 0u);
 }
@@ -205,14 +147,6 @@ MtObject* cDamageSpecialAdj::MyDTI::newInstance() const {
 
 const MtDTI& cDmJobAdjParam::getDTI() const {
     return cDmJobAdjParam::DTI;
-}
-
-inline void* cDmJobAdjParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDmJobAdjParam::DTI)->memAlloc(sz, align, cDmJobAdjParam::DTI.getID());
-}
-
-inline void cDmJobAdjParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDmJobAdjParam::DTI)->memFree(p_addr);
 }
 
 void cDmJobAdjParam::createProperty(MtPropertyList& s) {
@@ -246,14 +180,6 @@ const MtDTI& cDmJobPawnAdjParam::getDTI() const {
     return cDmJobPawnAdjParam::DTI;
 }
 
-inline void* cDmJobPawnAdjParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDmJobPawnAdjParam::DTI)->memAlloc(sz, align, cDmJobPawnAdjParam::DTI.getID());
-}
-
-inline void cDmJobPawnAdjParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDmJobPawnAdjParam::DTI)->memFree(p_addr);
-}
-
 void cDmJobPawnAdjParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\203\247\343\203\226\343\202\277\343\202\244\343\203\227", &mJobType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\347\264\240\344\275\223\346\224\273\346\222\203\343\201\253\345\257\276\343\201\231\343\202\213\350\243\234\346\255\243", &mBaseAttackAdj, 0u, 0u);
@@ -271,14 +197,6 @@ MtObject* cDmJobPawnAdjParam::MyDTI::newInstance() const {
 
 const MtDTI& cDmLvPawnAdjParam::getDTI() const {
     return cDmLvPawnAdjParam::DTI;
-}
-
-inline void* cDmLvPawnAdjParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDmLvPawnAdjParam::DTI)->memAlloc(sz, align, cDmLvPawnAdjParam::DTI.getID());
-}
-
-inline void cDmLvPawnAdjParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDmLvPawnAdjParam::DTI)->memFree(p_addr);
 }
 
 void cDmLvPawnAdjParam::createProperty(MtPropertyList& s) {
@@ -299,14 +217,6 @@ const MtDTI& cErosionShakeConvert::getDTI() const {
     return cErosionShakeConvert::DTI;
 }
 
-inline void* cErosionShakeConvert::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cErosionShakeConvert::DTI)->memAlloc(sz, align, cErosionShakeConvert::DTI.getID());
-}
-
-inline void cErosionShakeConvert::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cErosionShakeConvert::DTI)->memFree(p_addr);
-}
-
 void cErosionShakeConvert::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\346\222\203\346\217\272\343\201\225\343\201\266\343\202\212\343\203\254\343\203\274\343\203\210", &mKeyShakesRate, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\343\202\263\343\202\242\343\203\235\343\202\244\343\203\263\343\203\210\343\201\256\345\212\240\347\256\227\346\231\202\351\226\223(Frame)", &mAddCoreTime, 0u, 0u);
@@ -322,14 +232,6 @@ MtObject* cErosionShakeConvert::MyDTI::newInstance() const {
 
 const MtDTI& cShrinkBlowValue::getDTI() const {
     return cShrinkBlowValue::DTI;
-}
-
-inline void* cShrinkBlowValue::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShrinkBlowValue::DTI)->memAlloc(sz, align, cShrinkBlowValue::DTI.getID());
-}
-
-inline void cShrinkBlowValue::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShrinkBlowValue::DTI)->memFree(p_addr);
 }
 
 void cShrinkBlowValue::createProperty(MtPropertyList& s) {
@@ -351,14 +253,6 @@ MtObject* cShrinkBlowValue::MyDTI::newInstance() const {
 
 const MtDTI& rAdjLimitParam::getDTI() const {
     return rAdjLimitParam::DTI;
-}
-
-inline void* rAdjLimitParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAdjLimitParam::DTI)->memAlloc(sz, align, rAdjLimitParam::DTI.getID());
-}
-
-inline void rAdjLimitParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAdjLimitParam::DTI)->memFree(p_addr);
 }
 
 bool rAdjLimitParam::loadData(MtDataReader& r, cAdjLimitParam* pData) {
@@ -587,14 +481,6 @@ const MtDTI& rBlowSaveEmLvParam::getDTI() const {
     return rBlowSaveEmLvParam::DTI;
 }
 
-inline void* rBlowSaveEmLvParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rBlowSaveEmLvParam::DTI)->memAlloc(sz, align, rBlowSaveEmLvParam::DTI.getID());
-}
-
-inline void rBlowSaveEmLvParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rBlowSaveEmLvParam::DTI)->memFree(p_addr);
-}
-
 bool rBlowSaveEmLvParam::loadData(MtDataReader& in, cBlowSaveEmLvParam* pData) {
     nDDOIO::readData(in, pData->mKeyLv);
     nDDOIO::readData(in, pData->mSaveRate);
@@ -619,14 +505,6 @@ MtObject* rBlowSaveEmLvParam::MyDTI::newInstance() const {
 
 const MtDTI& rCalcDamageAtdmAdj::getDTI() const {
     return rCalcDamageAtdmAdj::DTI;
-}
-
-inline void* rCalcDamageAtdmAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCalcDamageAtdmAdj::DTI)->memAlloc(sz, align, rCalcDamageAtdmAdj::DTI.getID());
-}
-
-inline void rCalcDamageAtdmAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCalcDamageAtdmAdj::DTI)->memFree(p_addr);
 }
 
 bool rCalcDamageAtdmAdj::loadData(MtDataReader& in, cCalcDamageAtdmAdj* pData) {
@@ -655,14 +533,6 @@ const MtDTI& rCalcDamageAtdmAdjRate::getDTI() const {
     return rCalcDamageAtdmAdjRate::DTI;
 }
 
-inline void* rCalcDamageAtdmAdjRate::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCalcDamageAtdmAdjRate::DTI)->memAlloc(sz, align, rCalcDamageAtdmAdjRate::DTI.getID());
-}
-
-inline void rCalcDamageAtdmAdjRate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCalcDamageAtdmAdjRate::DTI)->memFree(p_addr);
-}
-
 bool rCalcDamageAtdmAdjRate::loadData(MtDataReader& in, cCalcDamageAtdmAdjRate* pData) {
     nDDOIO::readData(in, pData->mKeyValue);
     nDDOIO::readData(in, pData->mAtdmAdjRate);
@@ -687,14 +557,6 @@ MtObject* rCalcDamageAtdmAdjRate::MyDTI::newInstance() const {
 
 const MtDTI& rCalcDamageLvAdj::getDTI() const {
     return rCalcDamageLvAdj::DTI;
-}
-
-inline void* rCalcDamageLvAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCalcDamageLvAdj::DTI)->memAlloc(sz, align, rCalcDamageLvAdj::DTI.getID());
-}
-
-inline void rCalcDamageLvAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCalcDamageLvAdj::DTI)->memFree(p_addr);
 }
 
 bool rCalcDamageLvAdj::loadData(MtDataReader& in, cCalcDamageLvAdj* pData) {
@@ -728,14 +590,6 @@ const MtDTI& rDamageSaveEmLvParam::getDTI() const {
     return rDamageSaveEmLvParam::DTI;
 }
 
-inline void* rDamageSaveEmLvParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDamageSaveEmLvParam::DTI)->memAlloc(sz, align, rDamageSaveEmLvParam::DTI.getID());
-}
-
-inline void rDamageSaveEmLvParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDamageSaveEmLvParam::DTI)->memFree(p_addr);
-}
-
 bool rDamageSaveEmLvParam::loadData(MtDataReader& in, cDamageSaveEmLvParam* pData) {
     nDDOIO::readData(in, pData->mKeyLv);
     nDDOIO::readData(in, pData->mSaveParamA);
@@ -764,14 +618,6 @@ const MtDTI& rDamageSpecialAdj::getDTI() const {
     return rDamageSpecialAdj::DTI;
 }
 
-inline void* rDamageSpecialAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDamageSpecialAdj::DTI)->memAlloc(sz, align, rDamageSpecialAdj::DTI.getID());
-}
-
-inline void rDamageSpecialAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDamageSpecialAdj::DTI)->memFree(p_addr);
-}
-
 bool rDamageSpecialAdj::loadData(MtDataReader& in, cDamageSpecialAdj* pData) {
     nDDOIO::readData(in, pData->mDamageRate);
     return true;
@@ -795,14 +641,6 @@ MtObject* rDamageSpecialAdj::MyDTI::newInstance() const {
 
 const MtDTI& rDmJobAdjParam::getDTI() const {
     return rDmJobAdjParam::DTI;
-}
-
-inline void* rDmJobAdjParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDmJobAdjParam::DTI)->memAlloc(sz, align, rDmJobAdjParam::DTI.getID());
-}
-
-inline void rDmJobAdjParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDmJobAdjParam::DTI)->memFree(p_addr);
 }
 
 bool rDmJobAdjParam::loadData(MtDataReader& in, cDmJobAdjParam* pData) {
@@ -845,14 +683,6 @@ const MtDTI& rDmJobPawnAdjParam::getDTI() const {
     return rDmJobPawnAdjParam::DTI;
 }
 
-inline void* rDmJobPawnAdjParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDmJobPawnAdjParam::DTI)->memAlloc(sz, align, rDmJobPawnAdjParam::DTI.getID());
-}
-
-inline void rDmJobPawnAdjParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDmJobPawnAdjParam::DTI)->memFree(p_addr);
-}
-
 bool rDmJobPawnAdjParam::loadData(MtDataReader& in, cDmJobPawnAdjParam* pData) {
     nDDOIO::readData(in, pData->mJobType);
     nDDOIO::readData(in, pData->mBaseAttackAdj);
@@ -879,14 +709,6 @@ MtObject* rDmJobPawnAdjParam::MyDTI::newInstance() const {
 
 const MtDTI& rDmLvPawnAdjParam::getDTI() const {
     return rDmLvPawnAdjParam::DTI;
-}
-
-inline void* rDmLvPawnAdjParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDmLvPawnAdjParam::DTI)->memAlloc(sz, align, rDmLvPawnAdjParam::DTI.getID());
-}
-
-inline void rDmLvPawnAdjParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDmLvPawnAdjParam::DTI)->memFree(p_addr);
 }
 
 bool rDmLvPawnAdjParam::loadData(MtDataReader& in, cDmLvPawnAdjParam* pData) {
@@ -916,14 +738,6 @@ const MtDTI& rErosionShakeConvert::getDTI() const {
     return rErosionShakeConvert::DTI;
 }
 
-inline void* rErosionShakeConvert::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rErosionShakeConvert::DTI)->memAlloc(sz, align, rErosionShakeConvert::DTI.getID());
-}
-
-inline void rErosionShakeConvert::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rErosionShakeConvert::DTI)->memFree(p_addr);
-}
-
 bool rErosionShakeConvert::loadData(MtDataReader& in, cErosionShakeConvert* pData) {
     nDDOIO::readData(in, pData->mKeyShakesRate);
     nDDOIO::readData(in, pData->mAddCoreTime);
@@ -948,14 +762,6 @@ MtObject* rErosionShakeConvert::MyDTI::newInstance() const {
 
 const MtDTI& rShrinkBlowValue::getDTI() const {
     return rShrinkBlowValue::DTI;
-}
-
-inline void* rShrinkBlowValue::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rShrinkBlowValue::DTI)->memAlloc(sz, align, rShrinkBlowValue::DTI.getID());
-}
-
-inline void rShrinkBlowValue::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rShrinkBlowValue::DTI)->memFree(p_addr);
 }
 
 bool rShrinkBlowValue::loadData(MtDataReader& in, cShrinkBlowValue* pData) {

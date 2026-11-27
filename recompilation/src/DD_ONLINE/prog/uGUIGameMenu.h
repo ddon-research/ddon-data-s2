@@ -497,3 +497,19 @@ inline void* uGUIGameMenu::cGameMenuUnitWatcher::operator new(size_t sz, void* p
 
 inline uGUIGameMenu::cGameMenuUnitWatcher::cGameMenuUnitWatcher() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIGameMenu::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGameMenu::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIGameMenu::cGameMenuUnitWatcher::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGameMenu::cGameMenuUnitWatcher::DTI)->memAlloc(sz, align, ::uGUIGameMenu::cGameMenuUnitWatcher::DTI.::MtDTI::getID());
+}
+
+inline void uGUIGameMenu::cGameMenuUnitWatcher::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGameMenu::cGameMenuUnitWatcher::DTI)->memFree(p_addr);
+}

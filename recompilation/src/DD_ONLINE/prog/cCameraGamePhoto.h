@@ -145,3 +145,40 @@ inline cCamExParamPhoto::cCamExParamPhoto() {
 inline void* cCamImpPhoto::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline cCamImpPhoto::cCamImpPhoto() {
+    this->mPhotoDistance = 0.0f;
+    this->mPhotoDistanceOld = 0.0f;
+    this->mPhotoMoveType = 0;
+    this->mIsFlipX = false;
+    this->mAngYOld = 0.0f;
+    this->mAngXOld = 0.0f;
+    this->mInitAngX = 0.0f;
+    this->mInitAngY = 0.0f;
+    this->mResetAngX = 0.0f;
+    this->mResetAngY = 0.0f;
+    this->mpParamPhoto = nullptr;
+    this->mPhotoOffsetXOld = 0.0f;
+    this->mPhotoOffsetYOld = 0.0f;
+    this->mPhotoOffsetXNow = 0.0f;
+    this->mPhotoOffsetYNow = 0.0f;
+    this->mPhotoOffsetX = 0.0f;
+    this->mPhotoOffsetY = 0.0f;
+    this->mMoveSuccess = true;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCamExParamPhoto::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamPhoto::DTI);
+}
+
+inline void* cCamImpPhoto::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCamImpPhoto::DTI)->memAlloc(sz, align, ::cCamImpPhoto::DTI.::MtDTI::getID());
+}
+
+inline void cCamImpPhoto::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpPhoto::DTI)->memFree(p_addr);
+}

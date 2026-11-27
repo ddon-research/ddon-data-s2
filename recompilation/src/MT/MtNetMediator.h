@@ -36,6 +36,7 @@ struct SceNpPartyRoomLeftInfo;
 struct SceNpSessionInvitationEventParam;
 struct SceRtcTick;
 struct _SceKernelSema;
+class sGuideBase;
 
 // Declarations
 class MtNetMediator;
@@ -67,6 +68,7 @@ class MtNetMediator : public MtNetObject
 {
     friend class MtNet::PS4Psn::Context;
     friend class MtNetCore;
+    friend class sGuideBase;
 public:
     enum PresenceFlag
     {

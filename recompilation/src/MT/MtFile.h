@@ -351,3 +351,15 @@ inline void* MtFile::operator new(size_t sz, void* p_addr) {
 inline void* MtFile::FileInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void MtFile::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtFile::DTI)->memFree(p_addr);
+}
+
+inline void MtFile::FileInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtFile::FileInfo::DTI)->memFree(p_addr);
+}

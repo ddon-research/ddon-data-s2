@@ -20,14 +20,6 @@ const MtDTI& cLegCtrl::getDTI() const {
     return cLegCtrl::DTI;
 }
 
-inline void* cLegCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cLegCtrl::DTI)->memAlloc(sz, align, cLegCtrl::DTI.getID());
-}
-
-inline void cLegCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLegCtrl::DTI)->memFree(p_addr);
-}
-
 inline cLegCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cLegCtrl::MyDTI cLegCtrl::DTI("cLegCtrl", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -38,14 +30,6 @@ MtObject* cLegCtrl::MyDTI::newInstance() const {
 
 const MtDTI& rLegCtrl::getDTI() const {
     return rLegCtrl::DTI;
-}
-
-inline void* rLegCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLegCtrl::DTI)->memAlloc(sz, align, rLegCtrl::DTI.getID());
-}
-
-inline void rLegCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLegCtrl::DTI)->memFree(p_addr);
 }
 
 rLegCtrl::~rLegCtrl() {

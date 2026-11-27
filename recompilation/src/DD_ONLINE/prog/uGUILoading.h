@@ -102,3 +102,23 @@ public:
 inline void* uGUILoading::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIInstance.h"
+
+inline MtAllocator* uGUILoading::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUILoading::DTI);
+}
+
+inline void uGUILoading::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUILoading::DTI)->memFree(p_addr);
+}
+
+inline void uGUILoading::updateDisp() {
+    if (this->::uGUIBase::mpInstNullBase == nullptr) {
+        return;
+    }
+    this->::uGUIBase::mpInstNullBase->::cGUIInstance::setVisible(this->mEnable);
+}

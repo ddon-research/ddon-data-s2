@@ -145,3 +145,19 @@ public:
 inline void* uGUIGPConfirm::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+inline bool uGUIGPConfirm::isPushOK() {
+    return this->mIsPushOK;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIGPConfirm::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGPConfirm::DTI);
+}
+
+inline void uGUIGPConfirm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGPConfirm::DTI)->memFree(p_addr);
+}

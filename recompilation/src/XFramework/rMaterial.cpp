@@ -12,12 +12,6 @@
 #include "../MT/MtStream.h"
 #include "cResource.h"
 #include "nDrawMaterial.h"
-#include "nDrawMaterialConstant.h"
-#include "nDrawMaterialSSS.h"
-#include "nDrawMaterialStd.h"
-#include "nDrawMaterialStdDM.h"
-#include "nDrawMaterialStdEst.h"
-#include "nDrawMaterialStdPN.h"
 #include "nDrawTexture.h"
 #include "rTexture.h"
 #include "sResource.h"
@@ -28,26 +22,6 @@
 
 const MtDTI& rMaterial::getDTI() const {
     return rMaterial::DTI;
-}
-
-inline void* rMaterial::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMaterial::DTI)->memAlloc(sz, align, rMaterial::DTI.mID);
-}
-
-inline void rMaterial::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMaterial::DTI)->memFree(p_addr);
-}
-
-inline rMaterial::rMaterial() {
-    mAttr = 16;
-    mpMaterials = nullptr;
-    mpHeader = nullptr;
-    nDraw::MaterialStd::usage();
-    nDraw::MaterialSSS::usage();
-    nDraw::MaterialStdEst::usage();
-    nDraw::MaterialStdPN::usage();
-    nDraw::MaterialStdDM::usage();
-    nDraw::MaterialConstant::usage();
 }
 
 rMaterial::~rMaterial() {

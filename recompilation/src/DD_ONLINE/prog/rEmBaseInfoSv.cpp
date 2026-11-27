@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmBaseInfoSv.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cEmBaseInfoSv::getDTI() const {
     return cEmBaseInfoSv::DTI;
-}
-
-inline void* cEmBaseInfoSv::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmBaseInfoSv::DTI)->memAlloc(sz, align, cEmBaseInfoSv::DTI.getID());
-}
-
-inline void cEmBaseInfoSv::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmBaseInfoSv::DTI)->memFree(p_addr);
 }
 
 inline cEmBaseInfoSv::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,14 +23,6 @@ MtObject* cEmBaseInfoSv::MyDTI::newInstance() const {
 
 const MtDTI& rEmBaseInfoSv::getDTI() const {
     return rEmBaseInfoSv::DTI;
-}
-
-inline void* rEmBaseInfoSv::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmBaseInfoSv::DTI)->memAlloc(sz, align, rEmBaseInfoSv::DTI.getID());
-}
-
-inline void rEmBaseInfoSv::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmBaseInfoSv::DTI)->memFree(p_addr);
 }
 
 bool rEmBaseInfoSv::loadData(MtDataReader& r, cEmBaseInfoSv* pData) {

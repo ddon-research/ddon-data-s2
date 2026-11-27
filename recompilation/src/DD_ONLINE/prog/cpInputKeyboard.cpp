@@ -33,16 +33,8 @@ const MtDTI& cpInputKeyboard::getDTI() const {
     return cpInputKeyboard::DTI;
 }
 
-inline MtAllocator* cpInputKeyboard::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpInputKeyboard::DTI);
-}
-
 void* cpInputKeyboard::operator new(size_t sz, u32 align) {
     return cpInputKeyboard::getAllocator()->memAlloc(sz, align, cpInputKeyboard::DTI.getID());
-}
-
-inline void cpInputKeyboard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpInputKeyboard::DTI)->memFree(p_addr);
 }
 
 cpInputKeyboard::cpInputKeyboard() {

@@ -25,10 +25,6 @@ void* MtGeomCylinder::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomCylinder::DTI)->memAlloc(sz, align, MtGeomCylinder::DTI.mID);
 }
 
-inline void MtGeomCylinder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomCylinder::DTI)->memFree(p_addr);
-}
-
 void MtGeomCylinder::load(MtDataReader& fin) {
     mCylinder.p0.x = fin.readF32();
     mCylinder.p1.x = fin.readF32();
@@ -175,9 +171,17 @@ __attribute__((weak)) MtVector3 MtGeomCylinder::getSupportConst(const MtVector3&
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 MtGeomCylinder::getInternalPos() const {
-    DDON_STUB("MtGeomCylinder::getInternalPos")
-    __builtin_unreachable();
+MtVector3 MtGeomCylinder::getInternalPos() const {
+    MtVector3 result;
+    const f32 t0 = mCylinder.p0.y;
+    const f32 t1 = mCylinder.p1.y;
+    const f32 t2 = mCylinder.p1.z;
+    const f32 t3 = mCylinder.p0.z;
+    result.x = mCylinder.p0.x + (0.5f * (mCylinder.p1.x - mCylinder.p0.x));
+    result.y = t0 + (0.5f * (t1 - t0));
+    result.z = t3 + (0.5f * (t2 - t3));
+    result.pad_ = 0.0f;
+    return result;
 }
 
 void MtGeomCylinder::setScale(f32 scale) {
@@ -190,9 +194,19 @@ void MtGeomCylinder::setScale(f32 scale) {
     mCylinder.r = mCylinder.r * scale;
 }
 
-__attribute__((weak)) void MtGeomCylinder::addPos(const MtVector3& pos) {
-    DDON_STUB("MtGeomCylinder::addPos")
-    /* stub */
+void MtGeomCylinder::addPos(const MtVector3& pos) {
+    const f32 t0 = pos.y;
+    const f32 t1 = pos.z;
+    mCylinder.p0.x = pos.x + mCylinder.p0.x;
+    mCylinder.p0.y = t0 + mCylinder.p0.y;
+    mCylinder.p0.z = t1 + mCylinder.p0.z;
+    mCylinder.p0.pad_ = 0.0f;
+    const f32 t2 = pos.y;
+    const f32 t3 = pos.z;
+    mCylinder.p1.x = pos.x + mCylinder.p1.x;
+    mCylinder.p1.y = t2 + mCylinder.p1.y;
+    mCylinder.p1.z = t3 + mCylinder.p1.z;
+    mCylinder.p1.pad_ = 0.0f;
 }
 
 inline MtGeomCylinder::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

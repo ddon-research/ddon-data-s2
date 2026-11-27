@@ -570,3 +570,39 @@ inline cAITreeBase::cAITreeBase() {
 inline void* cAITreeBase::Node::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cAIAStar::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIAStar::DTI)->memFree(p_addr);
+}
+
+inline void cAIGraph::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIGraph::DTI)->memFree(p_addr);
+}
+
+inline void* cAIGraph::Node::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIGraph::Node::DTI)->memAlloc(sz, align, ::cAIGraph::Node::DTI.::MtDTI::mID);
+}
+
+inline void cAIGraph::Node::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIGraph::Node::DTI)->memFree(p_addr);
+}
+
+inline void cAIGraph::Area::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIGraph::Area::DTI)->memFree(p_addr);
+}
+
+inline void cAIQuadTree::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIQuadTree::DTI)->memFree(p_addr);
+}
+
+inline void* cAITreeBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAITreeBase::DTI)->memAlloc(sz, align, ::cAITreeBase::DTI.::MtDTI::mID);
+}
+
+inline void cAITreeBase::Node::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAITreeBase::Node::DTI)->memFree(p_addr);
+}

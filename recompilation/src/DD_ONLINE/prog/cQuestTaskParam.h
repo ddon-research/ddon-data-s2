@@ -269,3 +269,19 @@ inline cQuestTaskParam::cQuestPoint::cQuestPoint() {
     this->mIdx = 0;
     this->mValue = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cQuestTaskParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTaskParam::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestTaskParam::cQuestPoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestTaskParam::cQuestPoint::DTI)->memAlloc(sz, align, ::cQuestTaskParam::cQuestPoint::DTI.::MtDTI::getID());
+}
+
+inline void cQuestTaskParam::cQuestPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestTaskParam::cQuestPoint::DTI)->memFree(p_addr);
+}

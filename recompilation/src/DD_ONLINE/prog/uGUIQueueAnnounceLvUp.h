@@ -84,3 +84,15 @@ private:
 inline void* uGUIQueueAnnounceLvUp::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIQueueAnnounceLvUp::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIQueueAnnounceLvUp::DTI);
+}
+
+inline void uGUIQueueAnnounceLvUp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQueueAnnounceLvUp::DTI)->memFree(p_addr);
+}

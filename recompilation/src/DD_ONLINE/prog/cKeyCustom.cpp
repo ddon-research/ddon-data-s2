@@ -48,10 +48,6 @@ const MtDTI& cKeyCustom::getDTI() const {
     return cKeyCustom::DTI;
 }
 
-inline void cKeyCustom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cKeyCustom::DTI)->memFree(p_addr);
-}
-
 cKeyCustom::cKeyCustom(const cKeyCustomParam* pRes) {
     DDON_STUB("cKeyCustom::cKeyCustom")
     /* stub */
@@ -81,16 +77,28 @@ inline cKeyCustom::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 cKeyCustom::MyDTI cKeyCustom::DTI("cKeyCustom", &::MtObject::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cKeyCustom::MyDTI::newInstance() const {
-    DDON_STUB("cKeyCustom::MyDTI::newInstance")
-    return nullptr;
+    // workaround
+    cKeyCustom* t1 = new (MtMemoryAllocator::getAllocator(cKeyCustom::DTI)->memAlloc(sizeof(cKeyCustom), 16u, cKeyCustom::DTI.getID())) cKeyCustom(static_cast<const cKeyCustomParam*>(nullptr));
+    t1->mSt.mKbcIndex = 0;
+    t1->mStR.mKbmNo2Stroke = 0;
+    t1->mStR.mPadBothMode = 0;
+    t1->mStR.mPadding03 = 0;
+    t1->mStR.mKbmBothMode = 0;
+    t1->mStR.mPadding00 = 0;
+    t1->mOverlapGroup = nKeyCustom::OVERLAP_GRP_NOTHING;
+    t1->mOverlapKeyCustom = nKeyCustom::KEY_CUSTOM_NOTHING;
+    t1->mSt.mPad2 = 0x3fu;
+    t1->clrSoloExcludeModifierKey();
+    t1->mSt.mKbmFlag = 0;
+    t1->mSt.mPadFlag = 0;
+    t1->mSt.mPad = 0x3fu;
+    t1->clearKey();
+    t1->mSt.mJobId = 0xffu;
+    return t1;
 }
 
 const MtDTI& cKeyCustomManager::getDTI() const {
     return cKeyCustomManager::DTI;
-}
-
-inline MtAllocator* cKeyCustomManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cKeyCustomManager::DTI);
 }
 
 void* cKeyCustomManager::operator new(size_t sz, u32 align) {

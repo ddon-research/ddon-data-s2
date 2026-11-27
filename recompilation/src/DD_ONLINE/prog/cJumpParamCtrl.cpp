@@ -20,10 +20,6 @@ const MtDTI& cJumpParamCtrl::getDTI() const {
     return cJumpParamCtrl::DTI;
 }
 
-inline MtAllocator* cJumpParamCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cJumpParamCtrl::DTI);
-}
-
 __attribute__((weak)) void cJumpParamCtrl::operator delete(void* p_addr) {
     cJumpParamCtrl::getAllocator()->memFree(p_addr);
 }
@@ -33,9 +29,18 @@ __attribute__((weak)) void cJumpParamCtrl::initialize(uHuman* pHuman, u32 bank, 
     /* stub */
 }
 
-__attribute__((weak)) void cJumpParamCtrl::initializeY(uHuman* pHuman, u32 bank, u32 jpIndex) {
-    DDON_STUB("cJumpParamCtrl::initializeY")
-    /* stub */
+void cJumpParamCtrl::initializeY(uHuman* pHuman, u32 bank, u32 jpIndex) {
+    if (pHuman == nullptr) {
+        return;
+    }
+    pHuman->setJumpParam(bank, jpIndex);
+    pHuman->mVelocity.y = pHuman->mJumpParam.mSpeedY;
+    const f32 t0 = MtVector3::AxisY.y;
+    const f32 t1 = MtVector3::AxisY.z;
+    pHuman->mAcceleration.x = pHuman->mJumpParam.mGravity * MtVector3::AxisY.x;
+    pHuman->mAcceleration.y = pHuman->mJumpParam.mGravity * t0;
+    pHuman->mAcceleration.z = pHuman->mJumpParam.mGravity * t1;
+    pHuman->mAcceleration.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void cJumpParamCtrl::initializeMoveRad(uHuman* pHuman, u32 bank, u32 jpIndex) {
@@ -43,9 +48,17 @@ __attribute__((weak)) void cJumpParamCtrl::initializeMoveRad(uHuman* pHuman, u32
     /* stub */
 }
 
-__attribute__((weak)) void cJumpParamCtrl::initializeG(uHuman* pHuman, u32 bank, u32 jpIndex) {
-    DDON_STUB("cJumpParamCtrl::initializeG")
-    /* stub */
+void cJumpParamCtrl::initializeG(uHuman* pHuman, u32 bank, u32 jpIndex) {
+    if (pHuman == nullptr) {
+        return;
+    }
+    pHuman->setJumpParam(bank, jpIndex);
+    const f32 t0 = MtVector3::AxisY.y;
+    const f32 t1 = MtVector3::AxisY.z;
+    pHuman->mAcceleration.x = pHuman->mJumpParam.mGravity * MtVector3::AxisY.x;
+    pHuman->mAcceleration.y = pHuman->mJumpParam.mGravity * t0;
+    pHuman->mAcceleration.z = pHuman->mJumpParam.mGravity * t1;
+    pHuman->mAcceleration.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void cJumpParamCtrl::addInitialize(uHuman* pHuman, u32 bank, u32 jpIndex, bool isCheckLever) {

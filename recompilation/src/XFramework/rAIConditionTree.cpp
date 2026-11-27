@@ -23,14 +23,6 @@ const MtDTI& cAIDEnum::getDTI() const {
     return cAIDEnum::DTI;
 }
 
-inline void* cAIDEnum::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAIDEnum::DTI)->memAlloc(sz, align, cAIDEnum::DTI.mID);
-}
-
-inline void cAIDEnum::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIDEnum::DTI)->memFree(p_addr);
-}
-
 cAIDEnum::~cAIDEnum() {
 }
 
@@ -49,14 +41,6 @@ MtObject* cAIDEnum::MyDTI::newInstance() const {
 
 const MtDTI& rAIConditionTree::getDTI() const {
     return rAIConditionTree::DTI;
-}
-
-inline void* rAIConditionTree::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAIConditionTree::DTI)->memAlloc(sz, align, rAIConditionTree::DTI.mID);
-}
-
-inline void rAIConditionTree::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIConditionTree::DTI)->memFree(p_addr);
 }
 
 rAIConditionTree::~rAIConditionTree() {
@@ -310,10 +294,6 @@ const MtDTI& rAIConditionTree::TreeInfo::getDTI() const {
     return rAIConditionTree::TreeInfo::DTI;
 }
 
-inline void rAIConditionTree::TreeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIConditionTree::TreeInfo::DTI)->memFree(p_addr);
-}
-
 rAIConditionTree::TreeInfo::~TreeInfo() {
     delete mpRootNode;
     mpRootNode = nullptr;
@@ -338,10 +318,6 @@ __attribute__((weak)) MtObject* rAIConditionTree::TreeInfo::MyDTI::newInstance()
 
 const MtDTI& rAIConditionTree::OperationNode::getDTI() const {
     return rAIConditionTree::OperationNode::DTI;
-}
-
-inline void rAIConditionTree::OperationNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIConditionTree::OperationNode::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rAIConditionTree::OperationNode::~OperationNode() {
@@ -392,10 +368,6 @@ const MtDTI& rAIConditionTree::StateNode::getDTI() const {
     return rAIConditionTree::StateNode::DTI;
 }
 
-inline void rAIConditionTree::StateNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIConditionTree::StateNode::DTI)->memFree(p_addr);
-}
-
 rAIConditionTree::StateNode::~StateNode() {
     DDON_STUB("rAIConditionTree::StateNode::~StateNode")
     /* stub */
@@ -439,10 +411,6 @@ __attribute__((weak)) MtObject* rAIConditionTree::StateNode::MyDTI::newInstance(
 
 const MtDTI& rAIConditionTree::VariableNode::getDTI() const {
     return rAIConditionTree::VariableNode::DTI;
-}
-
-inline void rAIConditionTree::VariableNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIConditionTree::VariableNode::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rAIConditionTree::VariableNode::~VariableNode() {
@@ -514,10 +482,6 @@ __attribute__((weak)) MtObject* rAIConditionTree::VariableNode::MyDTI::newInstan
 
 const MtDTI& rAIConditionTree::VariableNode::VariableInfo::getDTI() const {
     return rAIConditionTree::VariableNode::VariableInfo::DTI;
-}
-
-inline void* rAIConditionTree::VariableNode::VariableInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAIConditionTree::VariableNode::VariableInfo::DTI)->memAlloc(sz, align, rAIConditionTree::VariableNode::VariableInfo::DTI.mID);
 }
 
 rAIConditionTree::VariableNode::VariableInfo::~VariableInfo() {
@@ -688,10 +652,6 @@ const MtDTI& rAIConditionTree::ConstF32Node::getDTI() const {
     return rAIConditionTree::ConstF32Node::DTI;
 }
 
-inline void rAIConditionTree::ConstF32Node::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIConditionTree::ConstF32Node::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rAIConditionTree::ConstF32Node::~ConstF32Node() {
 }
 
@@ -744,10 +704,6 @@ __attribute__((weak)) MtObject* rAIConditionTree::ConstF32Node::MyDTI::newInstan
 
 const MtDTI& rAIConditionTree::ConstF64Node::getDTI() const {
     return rAIConditionTree::ConstF64Node::DTI;
-}
-
-inline void rAIConditionTree::ConstF64Node::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIConditionTree::ConstF64Node::DTI)->memFree(p_addr);
 }
 
 rAIConditionTree::ConstF64Node::~ConstF64Node() {
@@ -925,10 +881,6 @@ __attribute__((weak)) MtObject* rAIConditionTree::ConstEnumNode::MyDTI::newInsta
 
 const MtDTI& rAIConditionTreeNode::getDTI() const {
     return rAIConditionTreeNode::DTI;
-}
-
-inline void rAIConditionTreeNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAIConditionTreeNode::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rAIConditionTreeNode::~rAIConditionTreeNode() {

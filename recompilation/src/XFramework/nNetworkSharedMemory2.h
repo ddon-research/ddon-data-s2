@@ -179,6 +179,7 @@ namespace nNetwork {
     namespace nSharedMemory2 {
         class CRecord : public ::MtObject
         {
+            friend class nNetwork::nSharedMemory2::CSessionListener;
         public:
             class MyDTI;
         public:
@@ -256,6 +257,7 @@ namespace nNetwork {
         class Object : public ::MtObject
         {
             friend class nNetwork::nSharedMemory2::CProtocol;
+            friend class nNetwork::nSharedMemory2::CSessionListener;
         public:
             enum
             {
@@ -390,4 +392,32 @@ inline nNetwork::nSharedMemory2::CRecord::CRecord() {
 
 inline void* nNetwork::nSharedMemory2::Object::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::nSharedMemory2::CConsistentHash::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CConsistentHash::DTI)->memFree(p_addr);
+}
+
+inline void nNetwork::nSharedMemory2::CNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CNode::DTI)->memFree(p_addr);
+}
+
+inline void* nNetwork::nSharedMemory2::CProtocol::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CProtocol::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::CProtocol::DTI.::MtDTI::mID);
+}
+
+inline void nNetwork::nSharedMemory2::CProtocol::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CProtocol::DTI)->memFree(p_addr);
+}
+
+inline void* nNetwork::nSharedMemory2::CRecord::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::CRecord::DTI)->memAlloc(sz, align, ::nNetwork::nSharedMemory2::CRecord::DTI.::MtDTI::mID);
+}
+
+inline void nNetwork::nSharedMemory2::Object::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::nSharedMemory2::Object::DTI)->memFree(p_addr);
 }

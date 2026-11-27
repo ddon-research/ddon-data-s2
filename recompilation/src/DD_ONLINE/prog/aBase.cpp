@@ -51,10 +51,6 @@ const MtDTI& aBase::getDTI() const {
     return aBase::DTI;
 }
 
-inline void aBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(aBase::DTI)->memFree(p_addr);
-}
-
 aBase::~aBase() {
 }
 

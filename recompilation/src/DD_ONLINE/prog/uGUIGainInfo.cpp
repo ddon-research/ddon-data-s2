@@ -3,7 +3,6 @@
 #include "uGUIGainInfo.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../XFramework/cGUIInstance.h"
@@ -29,16 +28,8 @@ const MtDTI& uGUIGainInfo::getDTI() const {
     return uGUIGainInfo::DTI;
 }
 
-inline MtAllocator* uGUIGainInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGainInfo::DTI);
-}
-
 void* uGUIGainInfo::operator new(size_t sz, u32 align) {
     return uGUIGainInfo::getAllocator()->memAlloc(sz, align, uGUIGainInfo::DTI.getID());
-}
-
-inline void uGUIGainInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGainInfo::DTI)->memFree(p_addr);
 }
 
 uGUIGainInfo::uGUIGainInfo() : uGUIBase(0u, false) {

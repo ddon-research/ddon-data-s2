@@ -19,16 +19,8 @@ const MtDTI& uCnsLegCtrl::getDTI() const {
     return uCnsLegCtrl::DTI;
 }
 
-inline MtAllocator* uCnsLegCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCnsLegCtrl::DTI);
-}
-
 void* uCnsLegCtrl::operator new(size_t sz, u32 align) {
     return uCnsLegCtrl::getAllocator()->memAlloc(sz, align, uCnsLegCtrl::DTI.getID());
-}
-
-inline void uCnsLegCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsLegCtrl::DTI)->memFree(p_addr);
 }
 
 uCnsLegCtrl::uCnsLegCtrl() {

@@ -18,10 +18,6 @@ void* nDraw::SamplerState::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::SamplerState::DTI)->memAlloc(sz, align, ::nDraw::SamplerState::DTI.mID);
 }
 
-inline void nDraw::SamplerState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::SamplerState::DTI)->memFree(p_addr);
-}
-
 nDraw::SamplerState::SamplerState(const nDraw::SAMPLER_DESC* pdesc) {
     DDON_STUB("nDraw::SamplerState::SamplerState")
     /* stub */

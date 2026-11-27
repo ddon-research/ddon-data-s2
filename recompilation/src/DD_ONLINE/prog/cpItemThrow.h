@@ -112,3 +112,21 @@ inline void cpItemThrow::setThrowItemId(u32 id) {
 inline u32 cpItemThrow::getThrowItemId() const {
     return this->mThrowItemId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uDDOModel.h"
+#include "../../XFramework/uModel.h"
+
+inline MtAllocator* cpItemThrow::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpItemThrow::DTI);
+}
+
+inline void cpItemThrow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpItemThrow::DTI)->memFree(p_addr);
+}
+
+inline uModel* cpItemThrow::getItemModel() const {
+    return this->mpItemModel;
+}

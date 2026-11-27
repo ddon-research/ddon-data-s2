@@ -30,16 +30,8 @@ const MtDTI& uGUITutorialPop::getDTI() const {
     return uGUITutorialPop::DTI;
 }
 
-inline MtAllocator* uGUITutorialPop::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUITutorialPop::DTI);
-}
-
 void* uGUITutorialPop::operator new(size_t sz, u32 align) {
     return uGUITutorialPop::getAllocator()->memAlloc(sz, align, uGUITutorialPop::DTI.getID());
-}
-
-inline void uGUITutorialPop::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUITutorialPop::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUITutorialPop::~uGUITutorialPop() {

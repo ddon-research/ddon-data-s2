@@ -4,7 +4,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sAI.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -24,10 +23,6 @@
 
 const MtDTI& sAI::getDTI() const {
     return sAI::DTI;
-}
-
-inline void sAI::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sAI::DTI)->memFree(p_addr);
 }
 
 sAI::sAI() {
@@ -109,9 +104,36 @@ __attribute__((weak)) void sAI::addService(cAIService* pService, MT_CTSTR entryN
     /* stub */
 }
 
-__attribute__((weak)) void sAI::addService(MT_CTSTR dtiName, MT_CTSTR entryName) {
-    DDON_STUB("sAI::addService")
-    /* stub */
+void sAI::addService(MT_CTSTR dtiName, MT_CTSTR entryName) {
+    const MtDTI* t0 = MtDTI::from(dtiName, MtDTI::mDTI);
+    const MtDTI* v0_0;
+    MT_CTSTR v0_1;
+    MtObject* pobj;
+    if (t0 != nullptr) {
+        pobj = t0->newInstance();
+        if (pobj == nullptr) {
+            return;
+        } else {
+            const MtDTI& t2 = pobj->getDTI();
+            v0_1 = cAIService::DTI.mName;
+            v0_0 = &t2;
+        }
+    } else {
+        return;
+    }
+    for (;;) {
+        if (v0_1 == v0_0->mName) {
+            addService(static_cast<cAIService*>(pobj), entryName);
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
+    delete pobj;
 }
 
 u32 sAI::getServiceNum() {
@@ -378,9 +400,19 @@ void sAI::countTaskClassChild(u32& num, const MtDTI* pDTI) {
     }
 }
 
-__attribute__((weak)) void sAI::setDTIToTaskPerformanceInfo(u32& index, const MtDTI* pDTI) {
-    DDON_STUB("sAI::setDTIToTaskPerformanceInfo")
-    /* stub */
+void sAI::setDTIToTaskPerformanceInfo(u32& index, const MtDTI* pDTI) {
+    for (const MtDTI* pChild = pDTI->mpChild;;) {
+        if (pChild == nullptr) {
+            break;
+        } else {
+            if ((pChild->mAttr & 1u) == 0) {
+                mTaskPerformanceInfoList[index].mpDTI = pChild;
+                index = (index) + 1u;
+            }
+        }
+        setDTIToTaskPerformanceInfo(index, pChild);
+        pChild = pChild->mpNext;
+    }
 }
 
 nAI::TaskPerformanceInfo* sAI::getTaskPerformanceInfo(u32 index) {

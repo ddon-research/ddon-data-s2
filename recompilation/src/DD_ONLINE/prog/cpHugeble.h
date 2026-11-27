@@ -108,3 +108,15 @@ inline void* cpHugeble::operator new(size_t sz, void* p_addr) {
 inline f32 cpHugeble::getWaterDepth() const {
     return this->mWaterDepth;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpHugeble::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpHugeble::DTI);
+}
+
+inline void cpHugeble::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpHugeble::DTI)->memFree(p_addr);
+}

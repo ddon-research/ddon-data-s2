@@ -21,14 +21,6 @@ const MtDTI& cStaminaDecList::getDTI() const {
     return cStaminaDecList::DTI;
 }
 
-inline void* cStaminaDecList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStaminaDecList::DTI)->memAlloc(sz, align, cStaminaDecList::DTI.getID());
-}
-
-inline void cStaminaDecList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStaminaDecList::DTI)->memFree(p_addr);
-}
-
 cStaminaDecList::~cStaminaDecList() {
     if (mStaminaDecList.mLength != 0) {
         u32 v0_0 = mStaminaDecList.mLength;
@@ -94,14 +86,6 @@ const MtDTI& cStaminaDecParam::getDTI() const {
     return cStaminaDecParam::DTI;
 }
 
-inline void* cStaminaDecParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStaminaDecParam::DTI)->memAlloc(sz, align, cStaminaDecParam::DTI.getID());
-}
-
-inline void cStaminaDecParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStaminaDecParam::DTI)->memFree(p_addr);
-}
-
 void cStaminaDecParam::createProperty(MtPropertyList& proplist) {
     proplist << MtProperty(static_cast<MtObject*>(this), "mStamina", &mStamina, 0u, 0u);
 }
@@ -122,21 +106,8 @@ const MtDTI& rStaminaDecTbl::getDTI() const {
     return rStaminaDecTbl::DTI;
 }
 
-inline void* rStaminaDecTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStaminaDecTbl::DTI)->memAlloc(sz, align, rStaminaDecTbl::DTI.getID());
-}
-
-inline void rStaminaDecTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStaminaDecTbl::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rStaminaDecTbl::getExt() const {
     return "sdt";
-}
-
-inline rStaminaDecTbl::rStaminaDecTbl() {
-    setAttribute(18u);
-    mDecTbl.mAutoDelete = true;
 }
 
 rStaminaDecTbl::~rStaminaDecTbl() {

@@ -266,3 +266,15 @@ inline void uGUIEntryBoardInfo::evChangeWindow() {
 inline void* uGUIEntryBoardInfo::cData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIEntryBoardInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIEntryBoardInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIEntryBoardInfo::cData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIEntryBoardInfo::cData::DTI)->memFree(p_addr);
+}

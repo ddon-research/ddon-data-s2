@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nNetworkTagChecker.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetSession.h"
@@ -17,10 +16,6 @@
 
 const MtDTI& nNetwork::TagChecker::getDTI() const {
     return nNetwork::TagChecker::DTI;
-}
-
-inline void* nNetwork::TagChecker::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::DTI)->memAlloc(sz, align, ::nNetwork::TagChecker::DTI.mID);
 }
 
 nNetwork::TagChecker::TagChecker() {
@@ -82,14 +77,6 @@ const MtDTI& nNetwork::TagChecker::RpcSyncReq::getDTI() const {
     return nNetwork::TagChecker::RpcSyncReq::DTI;
 }
 
-inline void* nNetwork::TagChecker::RpcSyncReq::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::RpcSyncReq::DTI)->memAlloc(sz, align, ::nNetwork::TagChecker::RpcSyncReq::DTI.mID);
-}
-
-inline void nNetwork::TagChecker::RpcSyncReq::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::RpcSyncReq::DTI)->memFree(p_addr);
-}
-
 void nNetwork::TagChecker::RpcSyncReq::serialize(MtStream& stream) {
     nNetwork::Coder cod(stream);
     cod.writeU32(static_cast<u32>(mMemberIndex));
@@ -114,10 +101,6 @@ MtObject* nNetwork::TagChecker::RpcSyncReq::MyDTI::newInstance() const {
 
 const MtDTI& nNetwork::TagChecker::RpcSyncAns::getDTI() const {
     return nNetwork::TagChecker::RpcSyncAns::DTI;
-}
-
-inline void nNetwork::TagChecker::RpcSyncAns::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::RpcSyncAns::DTI)->memFree(p_addr);
 }
 
 inline nNetwork::TagChecker::RpcSyncAns::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

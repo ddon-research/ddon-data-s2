@@ -176,3 +176,23 @@ inline void* uShlEnchant::operator new(size_t sz, void* p_addr) {
 inline uShlEnchant::uShlEnchant() {
     this->mOwnerCustomSkillLv = -1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamEnchant::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamEnchant::DTI)->memAlloc(sz, align, ::cShlParamEnchant::DTI.::MtDTI::getID());
+}
+
+inline void* uShlEnchant::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlEnchant::DTI)->memAlloc(sz, align, ::uShlEnchant::DTI.::MtDTI::getID());
+}
+
+inline void uShlEnchant::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlEnchant::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamEnchant* uShlEnchant::getShlParam() const {
+    return static_cast<const cShlParamEnchant*>(this->::uShlBase::mpShlParam2);
+}

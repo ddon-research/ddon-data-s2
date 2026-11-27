@@ -210,3 +210,35 @@ inline void cAchievementHeaderData::operator delete[](void* p_addr) {
 inline void* cAchievementHeaderData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cAchievementHeaderData::DTI)->memAlloc(sz, align, ::cAchievementHeaderData::DTI.::MtDTI::getID());
 }
+
+inline void* cAchievementData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAchievementData::DTI)->memAlloc(sz, align, ::cAchievementData::DTI.::MtDTI::getID());
+}
+
+inline void cAchievementData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAchievementData::DTI)->memFree(p_addr);
+}
+
+inline void* cAchievementHeaderData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAchievementHeaderData::DTI)->memAlloc(sz, align, ::cAchievementHeaderData::DTI.::MtDTI::getID());
+}
+
+inline void cAchievementHeaderData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAchievementHeaderData::DTI)->memFree(p_addr);
+}
+
+inline void* rAchievement::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAchievement::DTI)->memAlloc(sz, align, ::rAchievement::DTI.::MtDTI::getID());
+}
+
+inline void rAchievement::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAchievement::DTI)->memFree(p_addr);
+}
+
+inline void* rAchievementHeader::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAchievementHeader::DTI)->memAlloc(sz, align, ::rAchievementHeader::DTI.::MtDTI::getID());
+}
+
+inline void rAchievementHeader::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAchievementHeader::DTI)->memFree(p_addr);
+}

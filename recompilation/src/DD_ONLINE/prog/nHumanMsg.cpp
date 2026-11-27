@@ -6,24 +6,20 @@
 #define DDON_STUB(name)
 #endif
 
-__attribute__((weak)) u32 nHuman::getJobArrayIndex(nHuman::JOB_ENUM jobId) {
-    DDON_STUB("nHuman::getJobArrayIndex")
-    return {};
+u32 nHuman::getJobArrayIndex(nHuman::JOB_ENUM jobId) {
+    return (((jobId == nHuman::JOB_ID_ERROR) || (static_cast<int>(jobId) > 10)) == false) ? static_cast<unsigned int>(jobId - 1) : 0u;
 }
 
-__attribute__((weak)) u32 nHuman::getRoleArrayIndex(nHuman::ROLE_ENUM roleId) {
-    DDON_STUB("nHuman::getRoleArrayIndex")
-    return {};
+u32 nHuman::getRoleArrayIndex(nHuman::ROLE_ENUM roleId) {
+    return (static_cast<unsigned int>(roleId - 1) <= 2) ? static_cast<unsigned int>(roleId - 1) : 0u;
 }
 
-__attribute__((weak)) u32 nHuman::getCustomSkillIdArrayIndex(nHuman::CUSTOM_SKILL_ENUM id) {
-    DDON_STUB("nHuman::getCustomSkillIdArrayIndex")
-    return {};
+u32 nHuman::getCustomSkillIdArrayIndex(nHuman::CUSTOM_SKILL_ENUM id) {
+    return (((id == nHuman::CUSTOM_SKILL_ID_ERROR) || (static_cast<int>(id) > 20)) == false) ? static_cast<unsigned int>(id - 1) : 0u;
 }
 
-__attribute__((weak)) bool nHuman::isEnableCustomSkillId(nHuman::CUSTOM_SKILL_ENUM id) {
-    DDON_STUB("nHuman::isEnableCustomSkillId")
-    return {};
+bool nHuman::isEnableCustomSkillId(nHuman::CUSTOM_SKILL_ENUM id) {
+    return static_cast<unsigned int>(id - 1) <= 19;
 }
 
 bool nHuman::CSGroupConvertCSMsg2Info(const u8 csSlotMsg, nHuman::CUSTOM_SKILL_GROUP& group, u8& slot) {
@@ -41,8 +37,7 @@ __attribute__((weak)) bool nHuman::CSGroupConvertInfo2CSMsg(const u8 group, cons
     return {};
 }
 
-__attribute__((weak)) u32 nHuman::getNormalSkillIdArrayIndex(nHuman::GROW_NORMAL_SKILL_ENUM id) {
-    DDON_STUB("nHuman::getNormalSkillIdArrayIndex")
-    return {};
+u32 nHuman::getNormalSkillIdArrayIndex(nHuman::GROW_NORMAL_SKILL_ENUM id) {
+    return (static_cast<int>(id) <= 10) ? static_cast<unsigned int>(id - 1) : 0u;
 }
 

@@ -29,10 +29,6 @@ void* cPrim::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cPrim::DTI)->memAlloc(sz, align, cPrim::DTI.mID);
 }
 
-inline void cPrim::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrim::DTI)->memFree(p_addr);
-}
-
 cPrim::cPrim() {
     DDON_STUB("cPrim::cPrim")
     /* stub */

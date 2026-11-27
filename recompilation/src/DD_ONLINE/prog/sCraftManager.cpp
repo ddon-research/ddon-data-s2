@@ -56,16 +56,8 @@ const MtDTI& sCraftManager::getDTI() const {
     return sCraftManager::DTI;
 }
 
-inline MtAllocator* sCraftManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sCraftManager::DTI);
-}
-
 void* sCraftManager::operator new(size_t sz, u32 align) {
     return sCraftManager::getAllocator()->memAlloc(sz, align, sCraftManager::DTI.getID());
-}
-
-inline void sCraftManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::DTI)->memFree(p_addr);
 }
 
 sCraftManager::sCraftManager() {
@@ -195,9 +187,16 @@ u32 sCraftManager::getSupportNumFromPassNum(u32 passNum) {
     }
 }
 
-__attribute__((weak)) sCraftManager::cCraftRecipeControl* sCraftManager::getCraftRecipeCtrl(sCraftManager::RECIPE_TYPE type, nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE category) {
-    DDON_STUB("sCraftManager::getCraftRecipeCtrl")
-    return nullptr;
+sCraftManager::cCraftRecipeControl* sCraftManager::getCraftRecipeCtrl(sCraftManager::RECIPE_TYPE type, nCraft::E_CRAFT_RECIPE_CATEGORY_TYPE category) {
+    if (type == RECIPE_TYPE_UPGRADE) {
+        return &mGradeupRecipeControl[(static_cast<unsigned int>(category - 1) <= 26) ? static_cast<unsigned int>(category - 1) : 0u];
+    } else {
+        if (type == RECIPE_TYPE_CREATE) {
+            return &mRecipeControl[(static_cast<unsigned int>(category - 1) <= 26) ? static_cast<unsigned int>(category - 1) : 0u];
+        } else {
+            return nullptr;
+        }
+    }
 }
 
 u32 sCraftManager::getPawnSkillLv(u32 pawnId, u32 skill) {
@@ -440,7 +439,7 @@ __attribute__((weak)) u32 sCraftManager::getMyPawnRankAll() {
 
 u32 sCraftManager::getMyPawnId(u32 index) {
     if (index < static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mLength) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.mpArray[static_cast<int>(index)]) + 8);
+        return static_cast<u32>(static_cast<cPawnListParam*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mMyPawnList.getBuffer()[static_cast<int>(index)])->m_nPawnId);
     } else {
         return 0;
     }
@@ -476,7 +475,7 @@ s32 sCraftManager::getRentalPawnNum() {
 
 u32 sCraftManager::getRentalPawnId(u32 index) {
     if (index < static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRentedPawnList.mLength) {
-        return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRentedPawnList.mpArray[static_cast<int>(index)]) + 8);
+        return static_cast<u32>(static_cast<cPawnListParam*>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mRentedPawnList.getBuffer()[static_cast<int>(index)])->m_nPawnId);
     } else {
         return 0;
     }
@@ -1268,8 +1267,8 @@ void sCraftManager::setCategoryCraftPlusMaterial(MtTypedArray<CDataCommonU32>& l
     if (list.size() != 0) {
         do {
             if (list.mpArray[i] != nullptr) {
-                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(list.mpArray[i]) + 8)) <= 12u) {
-                    mMasterPlusCategory[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(list.mpArray[i]) + 8)] = 1;
+                if (static_cast<CDataCommonU32*>(list.mpArray[i])->m_unvalue <= 12u) {
+                    mMasterPlusCategory[static_cast<CDataCommonU32*>(list.mpArray[i])->m_unvalue] = 1;
                 }
             }
             i += 1u;
@@ -1306,14 +1305,6 @@ const MtDTI& sCraftManager::cCraftFinishNotice::getDTI() const {
     return sCraftManager::cCraftFinishNotice::DTI;
 }
 
-inline void* sCraftManager::cCraftFinishNotice::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCraftManager::cCraftFinishNotice::DTI)->memAlloc(sz, align, sCraftManager::cCraftFinishNotice::DTI.getID());
-}
-
-inline void sCraftManager::cCraftFinishNotice::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::cCraftFinishNotice::DTI)->memFree(p_addr);
-}
-
 inline sCraftManager::cCraftFinishNotice::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sCraftManager::cCraftFinishNotice::MyDTI sCraftManager::cCraftFinishNotice::DTI("sCraftManager::cCraftFinishNotice", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -1324,14 +1315,6 @@ MtObject* sCraftManager::cCraftFinishNotice::MyDTI::newInstance() const {
 
 const MtDTI& sCraftManager::cAddExp::getDTI() const {
     return sCraftManager::cAddExp::DTI;
-}
-
-inline void* sCraftManager::cAddExp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCraftManager::cAddExp::DTI)->memAlloc(sz, align, sCraftManager::cAddExp::DTI.getID());
-}
-
-inline void sCraftManager::cAddExp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::cAddExp::DTI)->memFree(p_addr);
 }
 
 inline sCraftManager::cAddExp::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1346,14 +1329,6 @@ const MtDTI& sCraftManager::RecordRecipe::getDTI() const {
     return sCraftManager::RecordRecipe::DTI;
 }
 
-inline void* sCraftManager::RecordRecipe::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCraftManager::RecordRecipe::DTI)->memAlloc(sz, align, sCraftManager::RecordRecipe::DTI.getID());
-}
-
-inline void sCraftManager::RecordRecipe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::RecordRecipe::DTI)->memFree(p_addr);
-}
-
 inline sCraftManager::RecordRecipe::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sCraftManager::RecordRecipe::MyDTI sCraftManager::RecordRecipe::DTI("sCraftManager::RecordRecipe", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -1364,10 +1339,6 @@ MtObject* sCraftManager::RecordRecipe::MyDTI::newInstance() const {
 
 const MtDTI& sCraftManager::CreateItem::getDTI() const {
     return sCraftManager::CreateItem::DTI;
-}
-
-inline void sCraftManager::CreateItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::CreateItem::DTI)->memFree(p_addr);
 }
 
 inline sCraftManager::CreateItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1381,10 +1352,6 @@ __attribute__((weak)) MtObject* sCraftManager::CreateItem::MyDTI::newInstance() 
 
 const MtDTI& sCraftManager::cCraftPawnCtrl::getDTI() const {
     return sCraftManager::cCraftPawnCtrl::DTI;
-}
-
-inline void sCraftManager::cCraftPawnCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::cCraftPawnCtrl::DTI)->memFree(p_addr);
 }
 
 sCraftManager::cCraftPawnCtrl::cCraftPawnCtrl() {
@@ -2060,14 +2027,6 @@ const MtDTI& sCraftManager::cCraftRankUp::getDTI() const {
     return sCraftManager::cCraftRankUp::DTI;
 }
 
-inline void* sCraftManager::cCraftRankUp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCraftManager::cCraftRankUp::DTI)->memAlloc(sz, align, sCraftManager::cCraftRankUp::DTI.getID());
-}
-
-inline void sCraftManager::cCraftRankUp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::cCraftRankUp::DTI)->memFree(p_addr);
-}
-
 void sCraftManager::cCraftRankUp::init() {
     mIsRankUp = false;
     mBonusExp = 0;
@@ -2137,10 +2096,6 @@ const MtDTI& sCraftManager::cCraftUpGradeItemList::getDTI() const {
     return sCraftManager::cCraftUpGradeItemList::DTI;
 }
 
-inline void* sCraftManager::cCraftUpGradeItemList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCraftManager::cCraftUpGradeItemList::DTI)->memAlloc(sz, align, sCraftManager::cCraftUpGradeItemList::DTI.getID());
-}
-
 sCraftManager::cCraftUpGradeItemList::~cCraftUpGradeItemList() {
 }
 
@@ -2156,14 +2111,6 @@ const MtDTI& sCraftManager::cCraftIrReductionData::getDTI() const {
     return sCraftManager::cCraftIrReductionData::DTI;
 }
 
-inline void* sCraftManager::cCraftIrReductionData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCraftManager::cCraftIrReductionData::DTI)->memAlloc(sz, align, sCraftManager::cCraftIrReductionData::DTI.getID());
-}
-
-inline void sCraftManager::cCraftIrReductionData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::cCraftIrReductionData::DTI)->memFree(p_addr);
-}
-
 inline sCraftManager::cCraftIrReductionData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sCraftManager::cCraftIrReductionData::MyDTI sCraftManager::cCraftIrReductionData::DTI("sCraftManager::cCraftIrReductionData", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -2174,10 +2121,6 @@ MtObject* sCraftManager::cCraftIrReductionData::MyDTI::newInstance() const {
 
 const MtDTI& sCraftManager::cCraftRecipeControl::getDTI() const {
     return sCraftManager::cCraftRecipeControl::DTI;
-}
-
-inline void sCraftManager::cCraftRecipeControl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::cCraftRecipeControl::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) sCraftManager::cCraftRecipeControl::~cCraftRecipeControl() {
@@ -2353,14 +2296,6 @@ const MtDTI& sCraftManager::stRecipeRequest::getDTI() const {
     return sCraftManager::stRecipeRequest::DTI;
 }
 
-inline void* sCraftManager::stRecipeRequest::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCraftManager::stRecipeRequest::DTI)->memAlloc(sz, align, sCraftManager::stRecipeRequest::DTI.getID());
-}
-
-inline void sCraftManager::stRecipeRequest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::stRecipeRequest::DTI)->memFree(p_addr);
-}
-
 inline sCraftManager::stRecipeRequest::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sCraftManager::stRecipeRequest::MyDTI sCraftManager::stRecipeRequest::DTI("sCraftManager::stRecipeRequest", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -2371,14 +2306,6 @@ MtObject* sCraftManager::stRecipeRequest::MyDTI::newInstance() const {
 
 const MtDTI& sCraftManager::PawnCost::getDTI() const {
     return sCraftManager::PawnCost::DTI;
-}
-
-inline void* sCraftManager::PawnCost::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCraftManager::PawnCost::DTI)->memAlloc(sz, align, sCraftManager::PawnCost::DTI.getID());
-}
-
-inline void sCraftManager::PawnCost::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCraftManager::PawnCost::DTI)->memFree(p_addr);
 }
 
 inline sCraftManager::PawnCost::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

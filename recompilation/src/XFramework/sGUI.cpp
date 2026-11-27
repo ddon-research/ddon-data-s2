@@ -36,14 +36,6 @@ const MtDTI& sGUI::getDTI() const {
     return sGUI::DTI;
 }
 
-inline MtAllocator* sGUI::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sGUI::DTI);
-}
-
-inline void sGUI::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGUI::DTI)->memFree(p_addr);
-}
-
 sGUI::sGUI(u32 tempMTagCount, u32 polygonCount, u32 indexBuffer) {
     DDON_STUB("sGUI::sGUI")
     /* stub */
@@ -148,8 +140,13 @@ __attribute__((weak)) const nGUI::PROP_SETTER* sGUI::getPropSetter(const nGUI::C
 }
 
 __attribute__((weak)) void sGUI::setUseSystemFont(bool v) {
-    DDON_STUB("sGUI::setUseSystemFont")
-    /* stub */
+    if (((mAttr & ATTR_USE_SYSTEMFONT) != 0) != v) {
+        if (v) {
+            mAttr |= ATTR_USE_SYSTEMFONT;
+        } else {
+            mAttr &= ~ATTR_USE_SYSTEMFONT;
+        }
+    }
 }
 
 bool sGUI::isUseSystemFont() const {

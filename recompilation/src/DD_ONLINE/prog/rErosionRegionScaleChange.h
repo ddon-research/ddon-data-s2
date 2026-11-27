@@ -127,3 +127,27 @@ inline void cErosionRegionScaleChange::operator delete[](void* p_addr) {
 inline void* cErosionRegionScaleChange::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cErosionRegionScaleChange::DTI)->memAlloc(sz, align, ::cErosionRegionScaleChange::DTI.::MtDTI::getID());
 }
+
+inline void* cErosionRegionScaleChange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cErosionRegionScaleChange::DTI)->memAlloc(sz, align, ::cErosionRegionScaleChange::DTI.::MtDTI::getID());
+}
+
+inline void cErosionRegionScaleChange::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cErosionRegionScaleChange::DTI)->memFree(p_addr);
+}
+
+inline cErosionRegionScaleChange::cErosionRegionScaleChange() {
+    this->mInitScale.x = ::MtVector3::Zero.x;
+    this->mInitScale.y = ::MtVector3::Zero.y;
+    this->mInitScale.z = ::MtVector3::Zero.z;
+    this->mInitScale.pad_ = 0.0f;
+    this->mChangeFrame = 0.0f;
+}
+
+inline void* rErosionRegionScaleChange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rErosionRegionScaleChange::DTI)->memAlloc(sz, align, ::rErosionRegionScaleChange::DTI.::MtDTI::getID());
+}
+
+inline void rErosionRegionScaleChange::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rErosionRegionScaleChange::DTI)->memFree(p_addr);
+}

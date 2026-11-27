@@ -46,16 +46,8 @@ const MtDTI& sObjCollision::getDTI() const {
     return sObjCollision::DTI;
 }
 
-inline MtAllocator* sObjCollision::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sObjCollision::DTI);
-}
-
 void* sObjCollision::operator new(size_t sz, u32 align) {
     return sObjCollision::getAllocator()->memAlloc(sz, align, sObjCollision::DTI.getID());
-}
-
-inline void sObjCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sObjCollision::DTI)->memFree(p_addr);
 }
 
 sObjCollision::sObjCollision() {
@@ -460,42 +452,40 @@ __attribute__((weak)) const cEmDamageDirInfo* sObjCollision::getEmDamageDirStorm
 }
 
 const cDmVecWeightParam* sObjCollision::getDmVecWeightParam(f32 weight) {
-    cDmVecWeightParam* v1_8;
+    cDmVecWeightParam* v2_8;
     if (mpDmVecWeightParam == nullptr) {
-        v1_8 = nullptr;
+        v2_8 = nullptr;
     } else {
         u32 dataNum = mpDmVecWeightParam->getDataNum();
         if (dataNum == 0) {
-            v1_8 = nullptr;
+            v2_8 = nullptr;
         } else {
             unsigned int i0_3 = 0;
-            for (cDmVecWeightParam* v0_10 = nullptr;;) {
+            cDmVecWeightParam* v0_10 = nullptr;
+            cDmVecWeightParam* v1_0;
+            for (;;) {
                 cDmVecWeightParam* t0 = mpDmVecWeightParam->getData(i0_3);
                 if (t0 != nullptr) {
                     if (weight > t0->mWeight) {
-                        if ((i0_3 + 1u) < dataNum) {
-                            i0_3 += 1u;
-                            v0_10 = t0;
-                        } else {
-                            v1_8 = t0;
-                            break;
-                        }
+                        v1_0 = t0;
                     } else {
-                        v1_8 = v0_10;
+                        v2_8 = v0_10;
                         break;
                     }
                 } else {
-                    if ((i0_3 + 1u) < dataNum) {
-                        i0_3 += 1u;
-                    } else {
-                        v1_8 = v0_10;
-                        break;
-                    }
+                    v1_0 = v0_10;
+                }
+                if ((i0_3 + 1u) < dataNum) {
+                    i0_3 += 1u;
+                    v0_10 = v1_0;
+                } else {
+                    v2_8 = v1_0;
+                    break;
                 }
             }
         }
     }
-    return v1_8;
+    return v2_8;
 }
 
 f32 sObjCollision::getSystemParam(sObjCollision::SYS_PARAM_TYPE type) const {

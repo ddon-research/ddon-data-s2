@@ -57,9 +57,40 @@ __attribute__((weak)) void cGeomConvexHull::copy(const MtGeometry& input) {
     /* stub */
 }
 
-__attribute__((weak)) void cGeomConvexHull::setMatrix(const MtMatrix& mat) {
-    DDON_STUB("cGeomConvexHull::setMatrix")
-    /* stub */
+void cGeomConvexHull::setMatrix(const MtMatrix& mat) {
+    mMat.m[0].x = mat.m[0].x;
+    mMat.m[0].y = mat.m[0].y;
+    mMat.m[0].z = mat.m[0].z;
+    mMat.m[0].w = mat.m[0].w;
+    mMat.m[1].x = mat.m[1].x;
+    mMat.m[1].y = mat.m[1].y;
+    mMat.m[1].z = mat.m[1].z;
+    mMat.m[1].w = mat.m[1].w;
+    mMat.m[2].x = mat.m[2].x;
+    mMat.m[2].y = mat.m[2].y;
+    mMat.m[2].z = mat.m[2].z;
+    mMat.m[2].w = mat.m[2].w;
+    mMat.m[3].x = mat.m[3].x;
+    mMat.m[3].y = mat.m[3].y;
+    mMat.m[3].z = mat.m[3].z;
+    mMat.m[3].w = mat.m[3].w;
+    MtMatrix frame104(mat.inverse());
+    mInvMat.m[0].x = frame104.m[0].x;
+    mInvMat.m[0].y = frame104.m[0].y;
+    mInvMat.m[0].z = frame104.m[0].z;
+    mInvMat.m[0].w = frame104.m[0].w;
+    mInvMat.m[1].x = frame104.m[1].x;
+    mInvMat.m[1].y = frame104.m[1].y;
+    mInvMat.m[1].z = frame104.m[1].z;
+    mInvMat.m[1].w = frame104.m[1].w;
+    mInvMat.m[2].x = frame104.m[2].x;
+    mInvMat.m[2].y = frame104.m[2].y;
+    mInvMat.m[2].z = frame104.m[2].z;
+    mInvMat.m[2].w = frame104.m[2].w;
+    mInvMat.m[3].x = frame104.m[3].x;
+    mInvMat.m[3].y = frame104.m[3].y;
+    mInvMat.m[3].z = frame104.m[3].z;
+    mInvMat.m[3].w = frame104.m[3].w;
 }
 
 __attribute__((weak)) MtMatrix cGeomConvexHull::getMatrixCopy() {

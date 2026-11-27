@@ -127,3 +127,19 @@ inline void cCharacterEditPresetPalette::operator delete[](void* p_addr) {
 inline void* cCharacterEditPresetPalette::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCharacterEditPresetPalette::DTI)->memAlloc(sz, align, ::cCharacterEditPresetPalette::DTI.::MtDTI::getID());
 }
+
+inline void* cCharacterEditPresetPalette::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditPresetPalette::DTI)->memAlloc(sz, align, ::cCharacterEditPresetPalette::DTI.::MtDTI::getID());
+}
+
+inline void cCharacterEditPresetPalette::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditPresetPalette::DTI)->memFree(p_addr);
+}
+
+inline void* rCharacterEditPresetPalette::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCharacterEditPresetPalette::DTI)->memAlloc(sz, align, ::rCharacterEditPresetPalette::DTI.::MtDTI::getID());
+}
+
+inline void rCharacterEditPresetPalette::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCharacterEditPresetPalette::DTI)->memFree(p_addr);
+}

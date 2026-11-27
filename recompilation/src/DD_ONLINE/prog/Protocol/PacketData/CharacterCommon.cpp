@@ -6,7 +6,6 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
@@ -15,14 +14,6 @@
 
 const MtDTI& CDataArisenProfile::getDTI() const {
     return CDataArisenProfile::DTI;
-}
-
-inline MtAllocator* CDataArisenProfile::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataArisenProfile::DTI);
-}
-
-inline void* CDataArisenProfile::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataArisenProfile::DTI)->memAlloc(sz, align, CDataArisenProfile::DTI.getID());
 }
 
 __attribute__((weak)) void CDataArisenProfile::operator delete(void* p_addr) {
@@ -39,10 +30,6 @@ MtObject* CDataArisenProfile::MyDTI::newInstance() const {
 
 const MtDTI& CDataCharacterEquipData::getDTI() const {
     return CDataCharacterEquipData::DTI;
-}
-
-inline MtAllocator* CDataCharacterEquipData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterEquipData::DTI);
 }
 
 void* CDataCharacterEquipData::operator new(size_t sz, u32 align) {
@@ -65,10 +52,6 @@ const MtDTI& CDataCharacterJobData::getDTI() const {
     return CDataCharacterJobData::DTI;
 }
 
-inline MtAllocator* CDataCharacterJobData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterJobData::DTI);
-}
-
 void* CDataCharacterJobData::operator new(size_t sz, u32 align) {
     return CDataCharacterJobData::getAllocator()->memAlloc(sz, align, CDataCharacterJobData::DTI.getID());
 }
@@ -87,10 +70,6 @@ MtObject* CDataCharacterJobData::MyDTI::newInstance() const {
 
 const MtDTI& CDataContextAcquirementData::getDTI() const {
     return CDataContextAcquirementData::DTI;
-}
-
-inline MtAllocator* CDataContextAcquirementData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextAcquirementData::DTI);
 }
 
 void* CDataContextAcquirementData::operator new(size_t sz, u32 align) {
@@ -113,10 +92,6 @@ const MtDTI& CDataContextNormalSkillData::getDTI() const {
     return CDataContextNormalSkillData::DTI;
 }
 
-inline MtAllocator* CDataContextNormalSkillData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextNormalSkillData::DTI);
-}
-
 void* CDataContextNormalSkillData::operator new(size_t sz, u32 align) {
     return CDataContextNormalSkillData::getAllocator()->memAlloc(sz, align, CDataContextNormalSkillData::DTI.getID());
 }
@@ -137,10 +112,6 @@ const MtDTI& CDataOrbCategoryStatus::getDTI() const {
     return CDataOrbCategoryStatus::DTI;
 }
 
-inline MtAllocator* CDataOrbCategoryStatus::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataOrbCategoryStatus::DTI);
-}
-
 void* CDataOrbCategoryStatus::operator new(size_t sz, u32 align) {
     return CDataOrbCategoryStatus::getAllocator()->memAlloc(sz, align, CDataOrbCategoryStatus::DTI.getID());
 }
@@ -157,16 +128,48 @@ MtObject* CDataOrbCategoryStatus::MyDTI::newInstance() const {
     return new (16u) CDataOrbCategoryStatus;
 }
 
+const MtDTI& CDataOrbElement::getDTI() const {
+    return CDataOrbElement::DTI;
+}
+
+void* CDataOrbElement::operator new(size_t sz, u32 align) {
+    return CDataOrbElement::getAllocator()->memAlloc(sz, align, CDataOrbElement::DTI.getID());
+}
+
+__attribute__((weak)) void CDataOrbElement::operator delete(void* p_addr) {
+    CDataOrbElement::getAllocator()->memFree(p_addr);
+}
+
+inline CDataOrbElement::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataOrbElement::MyDTI CDataOrbElement::DTI("CDataOrbElement", &::CPacketDataBase::DTI, 32ul, 0u, 0u);
+
+MtObject* CDataOrbElement::MyDTI::newInstance() const {
+    return new (16u) CDataOrbElement;
+}
+
+const MtDTI& CDataOrbElementGroup::getDTI() const {
+    return CDataOrbElementGroup::DTI;
+}
+
+void* CDataOrbElementGroup::operator new(size_t sz, u32 align) {
+    return CDataOrbElementGroup::getAllocator()->memAlloc(sz, align, CDataOrbElementGroup::DTI.getID());
+}
+
+__attribute__((weak)) void CDataOrbElementGroup::operator delete(void* p_addr) {
+    CDataOrbElementGroup::getAllocator()->memFree(p_addr);
+}
+
+inline CDataOrbElementGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataOrbElementGroup::MyDTI CDataOrbElementGroup::DTI("CDataOrbElementGroup", &::CPacketDataBase::DTI, 48ul, 0u, 0u);
+
+MtObject* CDataOrbElementGroup::MyDTI::newInstance() const {
+    return new (16u) CDataOrbElementGroup;
+}
+
 const MtDTI& CDataOrbGainExtendParam::getDTI() const {
     return CDataOrbGainExtendParam::DTI;
-}
-
-inline MtAllocator* CDataOrbGainExtendParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataOrbGainExtendParam::DTI);
-}
-
-inline void* CDataOrbGainExtendParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataOrbGainExtendParam::DTI)->memAlloc(sz, align, CDataOrbGainExtendParam::DTI.getID());
 }
 
 __attribute__((weak)) void CDataOrbGainExtendParam::operator delete(void* p_addr) {
@@ -183,10 +186,6 @@ MtObject* CDataOrbGainExtendParam::MyDTI::newInstance() const {
 
 const MtDTI& CDataOrbPageStatus::getDTI() const {
     return CDataOrbPageStatus::DTI;
-}
-
-inline MtAllocator* CDataOrbPageStatus::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataOrbPageStatus::DTI);
 }
 
 void* CDataOrbPageStatus::operator new(size_t sz, u32 align) {
@@ -209,10 +208,6 @@ const MtDTI& CDataReleaseOrbElement::getDTI() const {
     return CDataReleaseOrbElement::DTI;
 }
 
-inline MtAllocator* CDataReleaseOrbElement::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataReleaseOrbElement::DTI);
-}
-
 void* CDataReleaseOrbElement::operator new(size_t sz, u32 align) {
     return CDataReleaseOrbElement::getAllocator()->memAlloc(sz, align, CDataReleaseOrbElement::DTI.getID());
 }
@@ -231,14 +226,6 @@ MtObject* CDataReleaseOrbElement::MyDTI::newInstance() const {
 
 const MtDTI& CDataStatusInfo::getDTI() const {
     return CDataStatusInfo::DTI;
-}
-
-inline MtAllocator* CDataStatusInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataStatusInfo::DTI);
-}
-
-inline void* CDataStatusInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataStatusInfo::DTI)->memAlloc(sz, align, CDataStatusInfo::DTI.getID());
 }
 
 __attribute__((weak)) void CDataStatusInfo::operator delete(void* p_addr) {

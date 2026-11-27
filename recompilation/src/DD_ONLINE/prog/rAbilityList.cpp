@@ -33,14 +33,6 @@ const MtDTI& cAbilityData::getDTI() const {
     return cAbilityData::DTI;
 }
 
-inline void* cAbilityData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAbilityData::DTI)->memAlloc(sz, align, cAbilityData::DTI.getID());
-}
-
-inline void cAbilityData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAbilityData::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) cAbilityData::~cAbilityData() {
     if (mParamArray.mAutoDelete) {
         if (mParamArray.mLength != 0) {
@@ -176,14 +168,6 @@ const MtDTI& cAbilityParam::getDTI() const {
     return cAbilityParam::DTI;
 }
 
-inline void* cAbilityParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAbilityParam::DTI)->memAlloc(sz, align, cAbilityParam::DTI.getID());
-}
-
-inline void cAbilityParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAbilityParam::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) cAbilityParam::~cAbilityParam() {
     if (mParamDataArray.mAutoDelete) {
         if (mParamDataArray.mLength != 0) {
@@ -306,14 +290,6 @@ const MtDTI& cAbilityParam::cParamData::getDTI() const {
     return cAbilityParam::cParamData::DTI;
 }
 
-inline void* cAbilityParam::cParamData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAbilityParam::cParamData::DTI)->memAlloc(sz, align, cAbilityParam::cParamData::DTI.getID());
-}
-
-inline void cAbilityParam::cParamData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAbilityParam::cParamData::DTI)->memFree(p_addr);
-}
-
 cAbilityParam::cParamData::~cParamData() {
 }
 
@@ -332,19 +308,6 @@ MtObject* cAbilityParam::cParamData::MyDTI::newInstance() const {
 
 const MtDTI& rAbilityList::getDTI() const {
     return rAbilityList::DTI;
-}
-
-inline void* rAbilityList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rAbilityList::DTI)->memAlloc(sz, align, rAbilityList::DTI.getID());
-}
-
-inline void rAbilityList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rAbilityList::DTI)->memFree(p_addr);
-}
-
-inline rAbilityList::rAbilityList() {
-    setAttribute(18u);
-    mDataList.mAutoDelete = true;
 }
 
 __attribute__((noinline)) rAbilityList::~rAbilityList() {

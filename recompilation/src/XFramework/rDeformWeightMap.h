@@ -280,3 +280,15 @@ inline void* rDeformWeightMap::LOD::operator new[](size_t s) {
 inline void rDeformWeightMap::LOD::operator delete[](void* padr) {
     memFree(padr);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rDeformWeightMap::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDeformWeightMap::DTI)->memAlloc(sz, align, ::rDeformWeightMap::DTI.::MtDTI::mID);
+}
+
+inline void rDeformWeightMap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDeformWeightMap::DTI)->memFree(p_addr);
+}

@@ -580,3 +580,144 @@ inline uCnsDDOIK::uCnsJoint::uCnsJoint() {
     this->mIsEffector = false;
     this->mpJointInfo = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uCnsDDOIK::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCnsDDOIK::DTI);
+}
+
+inline void uCnsDDOIK::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsDDOIK::DTI)->memFree(p_addr);
+}
+
+inline void* uCnsDDOIK::JointInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uCnsDDOIK::JointInfo::DTI)->memAlloc(sz, align, ::uCnsDDOIK::JointInfo::DTI.::MtDTI::getID());
+}
+
+inline void uCnsDDOIK::JointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsDDOIK::JointInfo::DTI)->memFree(p_addr);
+}
+
+inline uCnsDDOIK::JointInfo::JointInfo() {
+    this->mIsEffector = false;
+    this->mJntNo = -1;
+    this->mpJoint = nullptr;
+    this->mRotMin = -90.0f;
+    this->mRotMax = 90.0f;
+    this->mWMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mWMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mWMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mWMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mWMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mWMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mWMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mWMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mWMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mWMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mWMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mWMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mWMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mWMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mWMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mWMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mRotMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mRotMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mRotMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mRotMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mRotMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mRotMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mRotMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mRotMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mRotMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mRotMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mRotMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mRotMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mRotMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mRotMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mRotMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mRotMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mIKWMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mIKWMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mIKWMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mIKWMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mIKWMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mIKWMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mIKWMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mIKWMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mIKWMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mIKWMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mIKWMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mIKWMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mIKWMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mIKWMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mIKWMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mIKWMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mCnvMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mCnvMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mCnvMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mCnvMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mCnvMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mCnvMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mCnvMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mCnvMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mCnvMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mCnvMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mCnvMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mCnvMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mCnvMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mCnvMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mCnvMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mCnvMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mLMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mLMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mLMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mLMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mLMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mLMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mLMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mLMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mLMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mLMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mLMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mLMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mLMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mLMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mLMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mLMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mIsLimit = false;
+    this->mLastV = ::MtVector3::Zero;
+    this->mLen = 0.0f;
+    this->mOffset = 0.0f;
+    this->mScaleOffset = 1.0f;
+    this->mSclDir = 1.0f;
+    this->mCnsJoint.mpJointInfo = this;
+    this->mIdx = 0;
+    this->mReverse = false;
+}
+
+inline void* uCnsDDOIK::uCnsJoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uCnsDDOIK::uCnsJoint::DTI)->memAlloc(sz, align, ::uCnsDDOIK::uCnsJoint::DTI.::MtDTI::getID());
+}
+
+inline void uCnsDDOIK::uCnsJoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsDDOIK::uCnsJoint::DTI)->memFree(p_addr);
+}

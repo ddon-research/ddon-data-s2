@@ -25,19 +25,19 @@ class cQuakeParam;
 namespace nFsm { class cCameraCtrl; }
 class sCameraExt;
 
-// Declarations
-class cCameraInfo;
-class cCameraQuake;
-class cCameraSeqInfo;
-class cCameraSeqInfo2;
-class uCameraBase;
-
 enum CAMSEQ_TYPE
 {
     CAMSEQ_TYPE_FCURVE = 0,
     CAMSEQ_TYPE_LINEAR = 1,
     CAMSEQ_TYPE_FIXED = 2,
 };
+
+// Declarations
+class cCameraInfo;
+class cCameraQuake;
+class cCameraSeqInfo;
+class cCameraSeqInfo2;
+class uCameraBase;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -447,4 +447,53 @@ inline f32 uCameraBase::getRollAim() {
 
 inline bool uCameraBase::isInitial() {
     return this->mbInitial;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCameraInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCameraInfo::DTI)->memAlloc(sz, align, ::cCameraInfo::DTI.::MtDTI::getID());
+}
+
+inline void cCameraInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCameraInfo::DTI)->memFree(p_addr);
+}
+
+inline cCameraInfo::cCameraInfo() {
+    this->mCameraPos.x = ::MtVector3::Zero.x;
+    this->mCameraPos.y = ::MtVector3::Zero.y;
+    this->mCameraPos.z = ::MtVector3::Zero.z;
+    this->mCameraPos.pad_ = 0.0f;
+    this->mTargetPos.x = ::MtVector3::Zero.x;
+    this->mTargetPos.y = ::MtVector3::Zero.y;
+    this->mTargetPos.z = ::MtVector3::Zero.z;
+    this->mTargetPos.pad_ = 0.0f;
+    this->mRoll = 0.0f;
+    this->mFov = 0.0f;
+}
+
+inline void cCameraQuake::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCameraQuake::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cCameraSeqInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCameraSeqInfo::DTI);
+}
+
+inline void cCameraSeqInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCameraSeqInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cCameraSeqInfo2::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCameraSeqInfo2::DTI);
+}
+
+inline void cCameraSeqInfo2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCameraSeqInfo2::DTI)->memFree(p_addr);
+}
+
+inline void uCameraBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCameraBase::DTI)->memFree(p_addr);
 }

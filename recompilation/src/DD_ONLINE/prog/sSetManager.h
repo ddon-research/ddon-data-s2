@@ -765,3 +765,39 @@ inline sSetManager::CreateContextParam::CreateContextParam() {
     this->Id = 0;
     this->UniqueId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sSetManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sSetManager::DTI);
+}
+
+inline void sSetManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSetManager::DTI)->memFree(p_addr);
+}
+
+inline void sSetManager::cUnitData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSetManager::cUnitData::DTI)->memFree(p_addr);
+}
+
+inline void* sSetManager::cOmGroupData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sSetManager::cOmGroupData::DTI)->memAlloc(sz, align, ::sSetManager::cOmGroupData::DTI.::MtDTI::getID());
+}
+
+inline void sSetManager::cOmGroupData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSetManager::cOmGroupData::DTI)->memFree(p_addr);
+}
+
+inline void sSetManager::cEnemyDie::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSetManager::cEnemyDie::DTI)->memFree(p_addr);
+}
+
+inline void* sSetManager::CreateContextParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sSetManager::CreateContextParam::DTI)->memAlloc(sz, align, ::sSetManager::CreateContextParam::DTI.::MtDTI::getID());
+}
+
+inline void sSetManager::CreateContextParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSetManager::CreateContextParam::DTI)->memFree(p_addr);
+}

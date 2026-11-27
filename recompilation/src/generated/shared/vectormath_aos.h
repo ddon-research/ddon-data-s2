@@ -8,13 +8,6 @@ namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Ma
 namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class VecIdx; } } } }
 namespace sce { namespace Vectormath { namespace Simd { class floatInVec; } } }
 
-// Declarations
-namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Point3; } } } }
-namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Quat; } } } }
-namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Vector2; } } } }
-namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Vector3; } } } }
-namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Vector4; } } } }
-
 namespace sce {
 namespace Vectormath {
 namespace Simd {
@@ -30,6 +23,13 @@ namespace Simd {
 }  // namespace Simd
 }  // namespace Vectormath
 }  // namespace sce
+
+// Declarations
+namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Point3; } } } }
+namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Quat; } } } }
+namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Vector2; } } } }
+namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Vector3; } } } }
+namespace sce { namespace Vectormath { namespace Simd { namespace Aos { class Vector4; } } } }
 
 // Type aliases from DWARF
 using vec_float4 = float __attribute__((ext_vector_type(4)));

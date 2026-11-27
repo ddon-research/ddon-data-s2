@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmStatusAdj.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cEmStatusAdj::getDTI() const {
     return cEmStatusAdj::DTI;
-}
-
-inline void* cEmStatusAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmStatusAdj::DTI)->memAlloc(sz, align, cEmStatusAdj::DTI.getID());
-}
-
-inline void cEmStatusAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmStatusAdj::DTI)->memFree(p_addr);
 }
 
 inline cEmStatusAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,14 +23,6 @@ MtObject* cEmStatusAdj::MyDTI::newInstance() const {
 
 const MtDTI& rEmStatusAdj::getDTI() const {
     return rEmStatusAdj::DTI;
-}
-
-inline void* rEmStatusAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmStatusAdj::DTI)->memAlloc(sz, align, rEmStatusAdj::DTI.getID());
-}
-
-inline void rEmStatusAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmStatusAdj::DTI)->memFree(p_addr);
 }
 
 bool rEmStatusAdj::loadData(MtDataReader& r, cEmStatusAdj* pData) {

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cQuestPhaseState.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cQuestPhaseState001.h"
 #include "cQuestPhaseState002.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cQuestPhaseState::getDTI() const {
     return cQuestPhaseState::DTI;
-}
-
-inline void* cQuestPhaseState::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestPhaseState::DTI)->memAlloc(sz, align, cQuestPhaseState::DTI.getID());
-}
-
-inline void cQuestPhaseState::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestPhaseState::DTI)->memFree(p_addr);
 }
 
 void cQuestPhaseState::setWarpPlayerStageNoStartPos(cQuestPhaseState* pState, u32 stageNo, u32 startPosNo) {

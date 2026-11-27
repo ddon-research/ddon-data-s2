@@ -5,6 +5,7 @@
 #include "../PacketData/CharacterCommon.h"
 #include "../PacketData/CharacterEdit.h"
 #include "../PacketData/Common.h"
+#include "../PacketData/Context.h"
 #include "../PacketData/Craft.h"
 #include "../PacketData/EntryBoard.h"
 #include "../PacketData/Item.h"
@@ -14,6 +15,7 @@
 #include "../PacketData/Pawn.h"
 #include "../PacketData/Quest.h"
 #include "../PacketData/QuickParty.h"
+#include "../PacketData/Search.h"
 #include "../PacketData/Stage.h"
 #include "../PacketData/SupportPoint.h"
 #include "../../cPacket.h"
@@ -101,6 +103,11 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_ENEMY_GROUP_LEAVE_NOTICE::Wr
     return {};
 }
 
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_ENEMY_KILL_REQ::WritePacket(CPacket* pPacket, const CStageLayoutID& in_LayoutId, u32 in_SetId, u32 in_InnerId, f64 in_DropPosX, f32 in_DropPosY, f64 in_DropPosZ, b8 in_IsNoBattleReword, u32 in_RegionFlag) {
+    DDON_STUB("nUserSession::CPacket_C2S_ENEMY_KILL_REQ::WritePacket")
+    return {};
+}
+
 __attribute__((weak)) s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::WritePacket(CPacket* pPacket, u64 in_BoardID, const char* in_strPassword, const CEntryItemParam& in_Param) {
     DDON_STUB("nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_CREATE_REQ::WritePacket")
     return {};
@@ -113,6 +120,11 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_ENTRY_REQ::
 
 __attribute__((weak)) s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_INVITE_REQ::WritePacket(CPacket* pPacket, const MtTypedArray<CDataCommonU32>& in_CharacterIds) {
     DDON_STUB("nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_INVITE_REQ::WritePacket")
+    return {};
+}
+
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_LIST_REQ::WritePacket(CPacket* pPacket, u64 in_ID, u32 in_Offset, u32 in_Num, const CEntryBoardItemSearchParameter& in_SearchParam) {
+    DDON_STUB("nUserSession::CPacket_C2S_ENTRY_BOARD_ITEM_LIST_REQ::WritePacket")
     return {};
 }
 
@@ -156,6 +168,26 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_DROP_ITEM_REQ::WritePack
     return {};
 }
 
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_ENEMY_SET_LIST_REQ::WritePacket(CPacket* pPacket, const CStageLayoutID& in_LayoutId, u8 in_SubGroupId) {
+    DDON_STUB("nUserSession::CPacket_C2S_GET_ENEMY_SET_LIST_REQ::WritePacket")
+    return {};
+}
+
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_GATHERING_ITEM_LIST_REQ::WritePacket(CPacket* pPacket, const CStageLayoutID& in_LayoutId, u32 in_PosId, const char* in_strGatheringItemUID) {
+    DDON_STUB("nUserSession::CPacket_C2S_GET_GATHERING_ITEM_LIST_REQ::WritePacket")
+    return {};
+}
+
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_GATHERING_ITEM_REQ::WritePacket(CPacket* pPacket, const CStageLayoutID& in_LayoutId, u32 in_PosId, const MtTypedArray<CDataGatheringItemGetRequest>& in_GatheringItemGetRequestList) {
+    DDON_STUB("nUserSession::CPacket_C2S_GET_GATHERING_ITEM_REQ::WritePacket")
+    return {};
+}
+
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_ITEM_SET_LIST_REQ::WritePacket(CPacket* pPacket, const CStageLayoutID& in_LayoutId) {
+    DDON_STUB("nUserSession::CPacket_C2S_GET_ITEM_SET_LIST_REQ::WritePacket")
+    return {};
+}
+
 __attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_ITEM_SORTDATA_BIN_REQ::WritePacket(CPacket* pPacket, const MtTypedArray<CDataCommonU32>& in_SortList) {
     DDON_STUB("nUserSession::CPacket_C2S_GET_ITEM_SORTDATA_BIN_REQ::WritePacket")
     return {};
@@ -178,6 +210,11 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_PARTY_PAWN_DATA_REQ::Wri
 
 __attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_REWARD_BOX_ITEM_REQ::WritePacket(CPacket* pPacket, u32 in_ListNo, const MtTypedArray<CDataGetRewardBoxItem>& in_GetRewardBoxItemList) {
     DDON_STUB("nUserSession::CPacket_C2S_GET_REWARD_BOX_ITEM_REQ::WritePacket")
+    return {};
+}
+
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_GET_STORAGE_ITEM_LIST_REQ::WritePacket(CPacket* pPacket, const MtTypedArray<CDataCommonU8>& in_StorageList) {
+    DDON_STUB("nUserSession::CPacket_C2S_GET_STORAGE_ITEM_LIST_REQ::WritePacket")
     return {};
 }
 
@@ -241,8 +278,23 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_MOVE_IN_SERVER_REQ::WritePac
     return {};
 }
 
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_MOVE_ITEM_REQ::WritePacket(CPacket* pPacket, u8 in_SourceGameStorageType, const MtTypedArray<CDataMoveItemUIDFromTo>& in_ItemUIDList) {
+    DDON_STUB("nUserSession::CPacket_C2S_MOVE_ITEM_REQ::WritePacket")
+    return {};
+}
+
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_PARTY_SEARCH_REQ::WritePacket(CPacket* pPacket, const CPartySearchParameter& in_SearchParam) {
+    DDON_STUB("nUserSession::CPacket_C2S_PARTY_SEARCH_REQ::WritePacket")
+    return {};
+}
+
 __attribute__((weak)) s32 nUserSession::CPacket_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_REQ::WritePacket(CPacket* pPacket, u32 in_PawnRewardBoxId, const MtTypedArray<CDataGatheringItemGetRequest>& in_GatheringItemGetRequestList) {
     DDON_STUB("nUserSession::CPacket_C2S_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_REQ::WritePacket")
+    return {};
+}
+
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_PL_TOUCH_OM_NOTICE::WritePacket(CPacket* pPacket, const CStageLayoutID& in_LayoutId, u32 in_PosId) {
+    DDON_STUB("nUserSession::CPacket_C2S_PL_TOUCH_OM_NOTICE::WritePacket")
     return {};
 }
 
@@ -301,6 +353,11 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_SET_COMMUNICATION_SHORTCUT_L
     return {};
 }
 
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_SET_CONTEXT_NOTICE::WritePacket(CPacket* pPacket, const CContextSetInfo& in_Context) {
+    DDON_STUB("nUserSession::CPacket_C2S_SET_CONTEXT_NOTICE::WritePacket")
+    return {};
+}
+
 __attribute__((weak)) s32 nUserSession::CPacket_C2S_SET_MESSAGE_SET_REQ::WritePacket(CPacket* pPacket, const MtTypedArray<CDataCharacterMsgSet>& in_MessageSetList) {
     DDON_STUB("nUserSession::CPacket_C2S_SET_MESSAGE_SET_REQ::WritePacket")
     return {};
@@ -338,6 +395,11 @@ __attribute__((weak)) s32 nUserSession::CPacket_C2S_SET_SKILL_REQ::WritePacket(C
 
 __attribute__((weak)) s32 nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::WritePacket(CPacket* pPacket, const char* in_strEquipItemUID, const MtTypedArray<CDataCraftElement>& in_CraftElementList, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList) {
     DDON_STUB("nUserSession::CPacket_C2S_START_ATTACH_ELEMENT_REQ::WritePacket")
+    return {};
+}
+
+__attribute__((weak)) s32 nUserSession::CPacket_C2S_START_CRAFT_REQ::WritePacket(CPacket* pPacket, u32 in_RecipeID, const MtTypedArray<CDataCraftMaterial>& in_CraftMaterialList, const char* in_strToppingUID, u32 in_CraftMainPawnID, const MtTypedArray<CDataCraftSupportPawnID>& in_CraftSupportPawnIDList, u32 in_CreateCount) {
+    DDON_STUB("nUserSession::CPacket_C2S_START_CRAFT_REQ::WritePacket")
     return {};
 }
 

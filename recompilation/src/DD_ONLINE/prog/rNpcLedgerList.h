@@ -299,3 +299,27 @@ inline bool rNpcLedgerList::cItem::cInstitutionOpenData::load(MtDataReader& r) {
 inline void* rNpcLedgerList::cItem::cInstitutionOpenData::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rNpcLedgerList::cItem::cInstitutionOpenData::DTI)->memAlloc(sz, align, rNpcLedgerList::cItem::cInstitutionOpenData::DTI.getID());
 }
+
+inline void* rNpcLedgerList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::DTI)->memAlloc(sz, align, ::rNpcLedgerList::DTI.::MtDTI::getID());
+}
+
+inline void rNpcLedgerList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::DTI)->memFree(p_addr);
+}
+
+inline rNpcLedgerList::rNpcLedgerList() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void rNpcLedgerList::cItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::cItem::DTI)->memFree(p_addr);
+}
+
+inline void rNpcLedgerList::cItem::cInstitution::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::cItem::cInstitution::DTI)->memFree(p_addr);
+}
+
+inline void rNpcLedgerList::cItem::cInstitutionOpenData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcLedgerList::cItem::cInstitutionOpenData::DTI)->memFree(p_addr);
+}

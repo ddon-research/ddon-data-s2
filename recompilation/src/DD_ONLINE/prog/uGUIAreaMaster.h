@@ -1153,6 +1153,10 @@ inline void* uGUIAreaMaster::cPointItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline uGUIAreaMaster::cPointItem::cPointItem() : mpObjMsgTest(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgPtVal(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgPt(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgText(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgRankVal(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgRank(static_cast<cGUIObjMessage*>(nullptr)), mpInstAnimList(static_cast<cGUIInstAnimation*>(nullptr)), mpInstAnimHeader(static_cast<cGUIInstAnimation*>(nullptr)) {
+    this->::uGUIBase::cScrollListItemBase::mItemType = 2;
+}
+
 inline void* uGUIAreaMaster::cSuppliesHeaderItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -1165,6 +1169,10 @@ inline uGUIAreaMaster::cSuppliesHeaderItem::cSuppliesHeaderItem() {
 
 inline void* uGUIAreaMaster::cSuppliesItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline uGUIAreaMaster::cSuppliesItem::cSuppliesItem() : mpObjMsg(static_cast<cGUIObjMessage*>(nullptr)) {
+    this->::uGUIBase::cScrollListItemBase::mItemType = 4;
 }
 
 inline uGUIAreaMaster::stMonsterItem::stMonsterItem() {
@@ -1197,4 +1205,82 @@ inline void* uGUIAreaMaster::cSuppliesHeaderInfo::operator new(size_t sz, void* 
 
 inline void* uGUIAreaMaster::cSuppliesInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cMenuBase.h"
+#include "sMenu.h"
+
+inline MtAllocator* uGUIAreaMaster::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::DTI);
+}
+
+inline void uGUIAreaMaster::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::DTI)->memFree(p_addr);
+}
+
+inline void uGUIAreaMaster::setupQuickPartyCancel() {
+    (::sMenu::mpInstance)->mQuickMatchCancel.::cMenuQuickMatchCancel::initQuickMatchCancel(static_cast<uGUIBase*>(this));
+}
+
+inline void* uGUIAreaMaster::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cListItem::DTI)->memAlloc(sz, align, ::uGUIAreaMaster::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIAreaMaster::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIAreaMaster::cPawnListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cPawnListItem::DTI)->memAlloc(sz, align, ::uGUIAreaMaster::cPawnListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIAreaMaster::cPawnListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cPawnListItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIAreaMaster::cPointItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cPointItem::DTI)->memAlloc(sz, align, ::uGUIAreaMaster::cPointItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIAreaMaster::cPointItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cPointItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIAreaMaster::cSuppliesHeaderItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesHeaderItem::DTI)->memAlloc(sz, align, ::uGUIAreaMaster::cSuppliesHeaderItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIAreaMaster::cSuppliesHeaderItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesHeaderItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIAreaMaster::cSuppliesItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesItem::DTI)->memAlloc(sz, align, ::uGUIAreaMaster::cSuppliesItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIAreaMaster::cSuppliesItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIAreaMaster::cDetailInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cDetailInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIAreaMaster::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cListInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIAreaMaster::cPointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cPointInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIAreaMaster::cSuppliesHeaderInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesHeaderInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIAreaMaster::cSuppliesInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIAreaMaster::cSuppliesInfo::DTI)->memFree(p_addr);
 }

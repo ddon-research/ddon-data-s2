@@ -12,11 +12,6 @@ class MtRect;
 namespace nIMEPS4 { class CandidateDispInfo; }
 namespace nIMEPS4 { class InputInfo; }
 
-// Declarations
-namespace nInputText { struct CandidateList; }
-namespace nInputText { struct ConvertInfo; }
-namespace nInputText { class cUnicodeString; }
-
 namespace nInputText {
     enum CHARACTER_ATTRIBUTE
     {
@@ -27,6 +22,12 @@ namespace nInputText {
         CHARACTER_ATTRIBUTE_INVALID = 4,
     };
 }  // namespace nInputText
+
+// Declarations
+namespace nInputText { struct CandidateList; }
+namespace nInputText { struct Context; }
+namespace nInputText { struct ConvertInfo; }
+namespace nInputText { class cUnicodeString; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -60,6 +61,7 @@ namespace nInputText {
 namespace nInputText {
     class cUnicodeString
     {
+        friend struct nInputText::Context;
     public:
         cUnicodeString();
         ~cUnicodeString();
@@ -119,6 +121,26 @@ namespace nInputText {
     public:
         nInputText::cUnicodeString mString;  // offset: 0x0
         nIMEPS4::InputInfo mInputInfo;  // offset: 0x2808
+    };
+}  // namespace nInputText
+
+namespace nInputText {
+    struct Context
+    {
+    public:
+        Context();
+        void clear();
+        void copy(const nInputText::Context& other);
+        void clearComp();
+    public:
+        u32 mState;  // offset: 0x0
+        nInputText::cUnicodeString mInputString;  // offset: 0x4
+        nInputText::ConvertInfo mConvertInfo;  // offset: 0x2810
+        nInputText::CandidateList mCandidateList;  // offset: 0x5058
+        bool mCaretDisp;  // offset: 0x54c8
+        bool mIsImeAvailable;  // offset: 0x54c9
+        bool mIsImeOn;  // offset: 0x54ca
+        u32 mConversionMode;  // offset: 0x54cc
     };
 }  // namespace nInputText
 

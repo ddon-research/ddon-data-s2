@@ -134,3 +134,15 @@ inline rSoundCurveSet::rSoundCurveSet() {
     this->mListNum = 0;
     this->mCurveNum = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rSoundCurveSet::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundCurveSet::DTI)->memAlloc(sz, align, ::rSoundCurveSet::DTI.::MtDTI::mID);
+}
+
+inline void rSoundCurveSet::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundCurveSet::DTI)->memFree(p_addr);
+}

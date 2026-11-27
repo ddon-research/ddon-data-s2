@@ -36,10 +36,6 @@ const MtDTI& uGUICharaEditPartsWrap::getDTI() const {
     return uGUICharaEditPartsWrap::DTI;
 }
 
-inline void uGUICharaEditPartsWrap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::DTI)->memFree(p_addr);
-}
-
 void uGUICharaEditPartsWrap::setup() {
     this->uGUIBase::setup();
 }
@@ -63,14 +59,6 @@ __attribute__((weak)) MtObject* uGUICharaEditPartsWrap::MyDTI::newInstance() con
 
 const MtDTI& uGUICharaEditPartsWrap::cDupliObjectBase::getDTI() const {
     return uGUICharaEditPartsWrap::cDupliObjectBase::DTI;
-}
-
-inline void* uGUICharaEditPartsWrap::cDupliObjectBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cDupliObjectBase::DTI)->memAlloc(sz, align, uGUICharaEditPartsWrap::cDupliObjectBase::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cDupliObjectBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cDupliObjectBase::DTI)->memFree(p_addr);
 }
 
 MtVector2 uGUICharaEditPartsWrap::cDupliObjectBase::getPointerPos(uGUIBase* pBase) {
@@ -104,16 +92,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsBase::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsBase::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsBase::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsBase::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsBase::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsBase::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsBase::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsBase::cPartsBase() {
@@ -213,9 +193,14 @@ __attribute__((weak)) u32 uGUICharaEditPartsWrap::cPartsBase::getEditActiveTypeN
     return {};
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsBase::evClose(bool isClose) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsBase::evClose")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsBase::evClose(bool isClose) {
+    s32 i = 0;
+    if (static_cast<int>(mChildArray.mLength) > 0) {
+        do {
+            static_cast<cPartsBase*>(mChildArray.getBuffer()[i])->evClose(isClose);
+            i += 1;
+        } while (i < static_cast<int>(mChildArray.mLength));
+    }
 }
 
 bool uGUICharaEditPartsWrap::cPartsBase::isForceRegisterRedoUndo() {
@@ -235,14 +220,36 @@ uGUICharaEditPartsWrap::cPartsBase* uGUICharaEditPartsWrap::cPartsBase::getChild
     }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsBase::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsBase::callbackApplyUndoRedo")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsBase::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 length = mChildArray.mLength;
+    if (length != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (length != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsBase::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsBase::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsBase::callbackEditDefault() {
+    u32 length = mChildArray.mLength;
+    if (length != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (length != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 void uGUICharaEditPartsWrap::cPartsBase::moveInputPartsAlways() {
@@ -408,16 +415,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsSlider::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsSlider::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsSlider::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsSlider::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsSlider::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsSlider::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsSlider::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsSlider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsSlider::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsSlider::cPartsSlider() {
@@ -527,14 +526,44 @@ void uGUICharaEditPartsWrap::cPartsSlider::evChangeFocus(nCharacterEdit::DIR dir
     mSavePointerPos = hPos;
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsSlider::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsSlider::callbackApplyUndoRedo")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsSlider::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mpGuiCharacterEdit != nullptr) {
+        s32 t0 = getEditType(0);
+        mRefSlider.setSliderPos(mpGuiCharacterEdit->getSliderPosFromVal(static_cast<nCharacterEdit::EDIT_TYPE>(t0), static_cast<u32>(static_cast<int>(mRefSlider.mDiv))), false);
+    }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsSlider::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsSlider::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsSlider::callbackEditDefault() {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mpGuiCharacterEdit != nullptr) {
+        s32 t0 = getEditType(0);
+        mRefSlider.setSliderPos(mpGuiCharacterEdit->getSliderPosFromVal(static_cast<nCharacterEdit::EDIT_TYPE>(t0), static_cast<u32>(static_cast<int>(mRefSlider.mDiv))), false);
+    }
 }
 
 inline uGUICharaEditPartsWrap::cPartsSlider::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -548,14 +577,6 @@ __attribute__((weak)) MtObject* uGUICharaEditPartsWrap::cPartsSlider::MyDTI::new
 
 const MtDTI& uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::getDTI() const {
     return uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::DTI;
-}
-
-inline void* uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::DTI)->memAlloc(sz, align, uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUICharaEditPartsWrap::cReferenceUIEditSliderExt::setMsgNumStr(s32 n, bool bInit) {
@@ -586,16 +607,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsImage::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsImage::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsImage::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsImage::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsImage::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsImage::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsImage::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsImage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsImage::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsImage::cPartsImage() {
@@ -695,14 +708,38 @@ void uGUICharaEditPartsWrap::cPartsImage::moveEventParts(u32 inputEvent) {
     }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsImage::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsImage::callbackApplyUndoRedo")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsImage::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    setToDecidedPoint();
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsImage::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsImage::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsImage::callbackEditDefault() {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    setToDecidedPoint();
 }
 
 u32 uGUICharaEditPartsWrap::cPartsImage::evCtrlPartsCancel(cControl::Message* msg) {
@@ -775,16 +812,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsImage::cObject::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsImage::cObject::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsImage::cObject::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsImage::cObject::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsImage::cObject::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsImage::cObject::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsImage::cObject::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsImage::cObject::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsImage::cObject::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsImage::cObject::cObject() {
@@ -881,16 +910,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsColor::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsColor::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsColor::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsColor::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsColor::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsColor::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsColor::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsColor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsColor::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsColor::cPartsColor() {
@@ -979,14 +1000,38 @@ void uGUICharaEditPartsWrap::cPartsColor::moveEventParts(u32 inputEvent) {
     }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsColor::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsColor::callbackApplyUndoRedo")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsColor::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    setToDecidedPoint();
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsColor::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsColor::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsColor::callbackEditDefault() {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    setToDecidedPoint();
 }
 
 u32 uGUICharaEditPartsWrap::cPartsColor::evCtrlPartsCancel(cControl::Message* msg) {
@@ -1053,16 +1098,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsColor::cObject::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsColor::cObject::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsColor::cObject::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsColor::cObject::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsColor::cObject::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsColor::cObject::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsColor::cObject::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsColor::cObject::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsColor::cObject::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsColor::cObject::cObject() {
@@ -1124,16 +1161,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsColorEye::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsColorEye::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsColorEye::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsColorEye::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsColorEye::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsColorEye::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsColorEye::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsColorEye::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsColorEye::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsColorEye::cPartsColorEye() {
@@ -1170,14 +1199,50 @@ void uGUICharaEditPartsWrap::cPartsColorEye::evInputPartsDecide() {
     mRightEyeDef = mSelect;
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsColorEye::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsColorEye::callbackApplyUndoRedo")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsColorEye::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    setToDecidedPoint();
+    if (mIsLeftEdit) {
+        mLeftEyeDef = mSelect;
+    }
+    if (mIsRightEdit) {
+        mRightEyeDef = mSelect;
+    }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsColorEye::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsColorEye::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsColorEye::callbackEditDefault() {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    setToDecidedPoint();
+    if (mIsLeftEdit) {
+        mLeftEyeDef = mSelect;
+    }
+    if (mIsRightEdit) {
+        mRightEyeDef = mSelect;
+    }
 }
 
 __attribute__((weak)) f32 uGUICharaEditPartsWrap::cPartsColorEye::getSelectIdx(u32 idx, nCharacterEdit::PARTS_EVENT ev) {
@@ -1207,16 +1272,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsColorHairAll::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsColorHairAll::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsColorHairAll::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsColorHairAll::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsColorHairAll::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsColorHairAll::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsColorHairAll::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsColorHairAll::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsColorHairAll::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsColorHairAll::cPartsColorHairAll() {
@@ -1244,14 +1301,51 @@ void uGUICharaEditPartsWrap::cPartsColorHairAll::evInputPartsOpen() {
     mEditValueDefault[2] = static_cast<float>(static_cast<int>(t2->getEditValue(nCharacterEdit::EDIT_TYPE_BEARD_COLOR, t2->getEditParam())));
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsColorHairAll::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsColorHairAll::callbackApplyUndoRedo")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsColorHairAll::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    setToDecidedPoint();
+    if (mpCharacterEdit != nullptr) {
+        mEditValueDefault[0] = mpCharacterEdit->getEditValue(nCharacterEdit::EDIT_TYPE_HAIR_COLOR, undoData.mpEditParam);
+        mEditValueDefault[1] = mpCharacterEdit->getEditValue(nCharacterEdit::EDIT_TYPE_EYEBLOW_COLOR, undoData.mpEditParam);
+        mEditValueDefault[0] = mpCharacterEdit->getEditValue(nCharacterEdit::EDIT_TYPE_BEARD_COLOR, undoData.mpEditParam);
+    }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsColorHairAll::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsColorHairAll::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsColorHairAll::callbackEditDefault() {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    setToDecidedPoint();
+    uCharacterEdit* t0 = mpCharacterEdit;
+    if (t0 != nullptr) {
+        mEditValueDefault[0] = t0->getEditValue(nCharacterEdit::EDIT_TYPE_HAIR_COLOR, t0->getEditParam());
+        uCharacterEdit* t1 = mpCharacterEdit;
+        mEditValueDefault[1] = t1->getEditValue(nCharacterEdit::EDIT_TYPE_EYEBLOW_COLOR, t1->getEditParam());
+        uCharacterEdit* t2 = mpCharacterEdit;
+        mEditValueDefault[0] = t2->getEditValue(nCharacterEdit::EDIT_TYPE_BEARD_COLOR, t2->getEditParam());
+    }
 }
 
 inline uGUICharaEditPartsWrap::cPartsColorHairAll::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1267,16 +1361,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsPulldown::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsPulldown::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsPulldown::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsPulldown::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsPulldown::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsPulldown::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsPulldown::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsPulldown::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsPulldown::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICharaEditPartsWrap::cPartsPulldown::~cPartsPulldown() {
@@ -1370,21 +1456,36 @@ u32 uGUICharaEditPartsWrap::cPartsPulldown::evCtrlPartsMouseClick(cControl::Mess
     return 0;
 }
 
-inline void uGUICharaEditPartsWrap::cPartsPulldown::evInputPartsClosePullDown() {
-    mRefPulldown.uGUIBase::cReferenceUIPullDown::setFocus(false);
-    mRefPulldown.close(true);
-    mIsClose = true;
-    evClose(true);
+void uGUICharaEditPartsWrap::cPartsPulldown::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsPulldown::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsPulldown::callbackApplyUndoRedo")
-    /* stub */
-}
-
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsPulldown::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsPulldown::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsPulldown::callbackEditDefault() {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 inline uGUICharaEditPartsWrap::cPartsPulldown::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1400,16 +1501,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsMask::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsMask::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsMask::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsMask::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsMask::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsMask::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsMask::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsMask::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsMask::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsMask::~cPartsMask() {
@@ -1455,14 +1548,36 @@ __attribute__((weak)) void uGUICharaEditPartsWrap::cPartsMask::moveEventParts(u3
     /* stub */
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsMask::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsMask::callbackApplyUndoRedo")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsMask::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsMask::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsMask::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsMask::callbackEditDefault() {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 inline uGUICharaEditPartsWrap::cPartsMask::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1478,16 +1593,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsRadioButton::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsRadioButton::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsRadioButton::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsRadioButton::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsRadioButton::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsRadioButton::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsRadioButton::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsRadioButton::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsRadioButton::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICharaEditPartsWrap::cPartsRadioButton::~cPartsRadioButton() {
@@ -1567,14 +1674,52 @@ void uGUICharaEditPartsWrap::cPartsRadioButton::evInputPartsDecide() {
     mpGuiCharacterEdit->evParts(static_cast<cPartsBase*>(this), nCharacterEdit::PARTS_EVENT_DECIDE, true);
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsRadioButton::callbackApplyUndoRedo(cUndoData& undoData) {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsRadioButton::callbackApplyUndoRedo")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsRadioButton::callbackApplyUndoRedo(cUndoData& undoData) {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackApplyUndoRedo(undoData);
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    uCharacterEdit* t0 = mpCharacterEdit;
+    if (t0 != nullptr) {
+        s32 t1 = getEditType(0);
+        s32 t2 = t0->getEditParameter(static_cast<nCharacterEdit::EDIT_TYPE>(t1), mpCharacterEdit->getEditParam());
+        mRefRadioButton.setSelect(static_cast<int>(static_cast<float>(t2) - mAddRetIdx), true);
+    } else {
+        mRefRadioButton.setSelect(0, true);
+    }
 }
 
-__attribute__((weak)) void uGUICharaEditPartsWrap::cPartsRadioButton::callbackEditDefault() {
-    DDON_STUB("uGUICharaEditPartsWrap::cPartsRadioButton::callbackEditDefault")
-    /* stub */
+void uGUICharaEditPartsWrap::cPartsRadioButton::callbackEditDefault() {
+    u32 v0_8 = mChildArray.mLength;
+    if (v0_8 != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            if (mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                static_cast<cPartsBase*>(mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+            }
+            if (v0_8 != (i0_3 + 1u)) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    uCharacterEdit* t0 = mpCharacterEdit;
+    if (t0 != nullptr) {
+        s32 t1 = getEditType(0);
+        s32 t2 = t0->getEditParameter(static_cast<nCharacterEdit::EDIT_TYPE>(t1), mpCharacterEdit->getEditParam());
+        mRefRadioButton.setSelect(static_cast<int>(static_cast<float>(t2) - mAddRetIdx), true);
+    } else {
+        mRefRadioButton.setSelect(0, true);
+    }
 }
 
 inline uGUICharaEditPartsWrap::cPartsRadioButton::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1590,16 +1735,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsRadioSlider::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsRadioSlider::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsRadioSlider::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsRadioSlider::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsRadioSlider::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsRadioSlider::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsRadioSlider::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsRadioSlider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsRadioSlider::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsRadioSlider::cPartsRadioSlider() {
@@ -1736,10 +1873,6 @@ const MtDTI& uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::getDTI() const 
     return uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::DTI;
 }
 
-inline void uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::DTI)->memFree(p_addr);
-}
-
 inline uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::MyDTI uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt::DTI("uGUICharaEditPartsWrap::cReferenceUIRadioButtonExt", &::uGUIBase::cReferenceUIRadioButton::DTI, 248ul, 0u, 0u);
@@ -1753,16 +1886,8 @@ const MtDTI& uGUICharaEditPartsWrap::cPartsMyName::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsMyName::DTI;
 }
 
-inline MtAllocator* uGUICharaEditPartsWrap::cPartsMyName::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsMyName::DTI);
-}
-
 void* uGUICharaEditPartsWrap::cPartsMyName::operator new(size_t sz, u32 align) {
     return uGUICharaEditPartsWrap::cPartsMyName::getAllocator()->memAlloc(sz, align, uGUICharaEditPartsWrap::cPartsMyName::DTI.getID());
-}
-
-inline void uGUICharaEditPartsWrap::cPartsMyName::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsMyName::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsMyName::cPartsMyName() {
@@ -1942,10 +2067,6 @@ __attribute__((weak)) MtObject* uGUICharaEditPartsWrap::cPartsMyName::MyDTI::new
 
 const MtDTI& uGUICharaEditPartsWrap::cPartsHList::getDTI() const {
     return uGUICharaEditPartsWrap::cPartsHList::DTI;
-}
-
-inline void uGUICharaEditPartsWrap::cPartsHList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharaEditPartsWrap::cPartsHList::DTI)->memFree(p_addr);
 }
 
 uGUICharaEditPartsWrap::cPartsHList::~cPartsHList() {

@@ -3,7 +3,6 @@
 #include "cEfcHandle.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -13,16 +12,8 @@ const MtDTI& cEfcHandle::getDTI() const {
     return cEfcHandle::DTI;
 }
 
-inline MtAllocator* cEfcHandle::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cEfcHandle::DTI);
-}
-
 void* cEfcHandle::operator new(size_t sz, u32 align) {
     return cEfcHandle::getAllocator()->memAlloc(sz, align, cEfcHandle::DTI.getID());
-}
-
-inline void cEfcHandle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEfcHandle::DTI)->memFree(p_addr);
 }
 
 inline cEfcHandle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

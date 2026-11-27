@@ -21,10 +21,6 @@ void* nNetwork::Storage::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::Storage::DTI)->memAlloc(sz, align, ::nNetwork::Storage::DTI.mID);
 }
 
-inline void nNetwork::Storage::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Storage::DTI)->memFree(p_addr);
-}
-
 nNetwork::Storage::Storage() {
     DDON_STUB("nNetwork::Storage::Storage")
     /* stub */

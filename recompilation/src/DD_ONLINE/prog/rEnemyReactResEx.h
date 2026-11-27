@@ -217,3 +217,15 @@ inline rEnemyReactResEx::rEnemyReactResEx() {
         this->mCountType[i] = false;
     }
 }
+
+inline void* cEnemyReactRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyReactRes::DTI)->memAlloc(sz, align, ::cEnemyReactRes::DTI.::MtDTI::getID());
+}
+
+inline void cEnemyReactRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyReactRes::DTI)->memFree(p_addr);
+}
+
+inline void rEnemyReactResEx::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEnemyReactResEx::DTI)->memFree(p_addr);
+}

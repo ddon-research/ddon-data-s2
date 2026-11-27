@@ -16,14 +16,6 @@ const MtDTI& rSoundCurveSet::getDTI() const {
     return rSoundCurveSet::DTI;
 }
 
-inline void* rSoundCurveSet::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memAlloc(sz, align, rSoundCurveSet::DTI.mID);
-}
-
-inline void rSoundCurveSet::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memFree(p_addr);
-}
-
 rSoundCurveSet::~rSoundCurveSet() {
     void* t0 = mpRawData;
     MtMemoryAllocator::getAllocator(rSoundCurveSet::DTI)->memFree(t0);

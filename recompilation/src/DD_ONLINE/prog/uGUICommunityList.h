@@ -664,3 +664,55 @@ inline void* uGUICommunityList::cTabDataNearPlayerList::operator new(size_t sz, 
 inline void* uGUICommunityList::cTabDataBlackList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICommunityList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICommunityList::DTI);
+}
+
+inline void uGUICommunityList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::DTI)->memFree(p_addr);
+}
+
+inline void uGUICommunityList::cTabData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabData::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICommunityList::cTabDataInData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataInData::DTI)->memAlloc(sz, align, ::uGUICommunityList::cTabDataInData::DTI.::MtDTI::getID());
+}
+
+inline void uGUICommunityList::cTabDataInData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataInData::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICommunityList::cScrollDispList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cScrollDispList::DTI)->memAlloc(sz, align, ::uGUICommunityList::cScrollDispList::DTI.::MtDTI::getID());
+}
+
+inline void uGUICommunityList::cScrollDispList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cScrollDispList::DTI)->memFree(p_addr);
+}
+
+inline void uGUICommunityList::cScrollItemList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cScrollItemList::DTI)->memFree(p_addr);
+}
+
+inline void uGUICommunityList::cTabDataFriendList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataFriendList::DTI)->memFree(p_addr);
+}
+
+inline void uGUICommunityList::cTabDataActiveList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataActiveList::DTI)->memFree(p_addr);
+}
+
+inline void uGUICommunityList::cTabDataNearPlayerList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataNearPlayerList::DTI)->memFree(p_addr);
+}
+
+inline void uGUICommunityList::cTabDataBlackList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICommunityList::cTabDataBlackList::DTI)->memFree(p_addr);
+}

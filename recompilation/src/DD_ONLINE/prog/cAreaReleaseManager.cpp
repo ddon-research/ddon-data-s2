@@ -25,16 +25,8 @@ const MtDTI& cAreaReleaseManager::getDTI() const {
     return cAreaReleaseManager::DTI;
 }
 
-inline MtAllocator* cAreaReleaseManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cAreaReleaseManager::DTI);
-}
-
 void* cAreaReleaseManager::operator new(size_t sz, u32 align) {
     return cAreaReleaseManager::getAllocator()->memAlloc(sz, align, cAreaReleaseManager::DTI.getID());
-}
-
-inline void cAreaReleaseManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAreaReleaseManager::DTI)->memFree(p_addr);
 }
 
 bool cAreaReleaseManager::isAreaRelease(u16 id) const {
@@ -61,7 +53,7 @@ __attribute__((weak)) void cAreaReleaseManager::setAreaReleaseByRankUp(u16 id) {
 }
 
 u16 cAreaReleaseManager::getAreaReleaseByRankUp(u32 index) const {
-    return *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(mAreaReleaseInfoByRankUp.mpArray[index]) + 8);
+    return static_cast<cAreaReleaseInfo*>(mAreaReleaseInfoByRankUp.mpArray[index])->mId;
 }
 
 __attribute__((weak)) bool cAreaReleaseManager::reqGetAreaReleaseInfo() {
@@ -233,14 +225,6 @@ __attribute__((weak)) MtObject* cAreaReleaseManager::MyDTI::newInstance() const 
 
 const MtDTI& cAreaReleaseManager::cAreaReleaseInfo::getDTI() const {
     return cAreaReleaseManager::cAreaReleaseInfo::DTI;
-}
-
-inline void* cAreaReleaseManager::cAreaReleaseInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAreaReleaseManager::cAreaReleaseInfo::DTI)->memAlloc(sz, align, cAreaReleaseManager::cAreaReleaseInfo::DTI.getID());
-}
-
-inline void cAreaReleaseManager::cAreaReleaseInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAreaReleaseManager::cAreaReleaseInfo::DTI)->memFree(p_addr);
 }
 
 inline cAreaReleaseManager::cAreaReleaseInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

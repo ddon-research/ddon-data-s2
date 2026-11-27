@@ -19,10 +19,6 @@ void* nDraw::VertexBuffer::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::VertexBuffer::DTI)->memAlloc(sz, align, ::nDraw::VertexBuffer::DTI.mID);
 }
 
-inline void nDraw::VertexBuffer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::VertexBuffer::DTI)->memFree(p_addr);
-}
-
 nDraw::VertexBuffer::VertexBuffer(u32 size, nDraw::USAGE_TYPE usage, const void* pinitvalues) : nDraw::Buffer(usage) {
     mBufSize = size;
     void* t0 = ::MtMemory::mpAllocatorType[6]->memAlloc(size, 4u);

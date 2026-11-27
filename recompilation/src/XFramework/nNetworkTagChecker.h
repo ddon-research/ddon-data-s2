@@ -198,3 +198,23 @@ inline nNetwork::TagChecker::RpcSyncReq::RpcSyncReq() {
 inline void* nNetwork::TagChecker::RpcSyncAns::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* nNetwork::TagChecker::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::DTI)->memAlloc(sz, align, ::nNetwork::TagChecker::DTI.::MtDTI::mID);
+}
+
+inline void* nNetwork::TagChecker::RpcSyncReq::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::RpcSyncReq::DTI)->memAlloc(sz, align, ::nNetwork::TagChecker::RpcSyncReq::DTI.::MtDTI::mID);
+}
+
+inline void nNetwork::TagChecker::RpcSyncReq::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::RpcSyncReq::DTI)->memFree(p_addr);
+}
+
+inline void nNetwork::TagChecker::RpcSyncAns::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::TagChecker::RpcSyncAns::DTI)->memFree(p_addr);
+}

@@ -41,8 +41,8 @@ void nNetMsgData::decomposeOcdActiveMsg(nObjCondition::stOcdActiveInfo& dstInfo,
 void nNetMsgData::composeOcdActiveMsg(nObjCondition::stOcdActiveMsg& dstMsg, const nObjCondition::stOcdActiveInfo& srcInfo) {
     const u8 t0 = srcInfo.mActiveLv;
     const u8 t1 = srcInfo.mImmuneLv;
-    dstMsg.mOcdUIDMsg = static_cast<unsigned char>(static_cast<unsigned long>(srcInfo.mIndex) | static_cast<unsigned long>(srcInfo.mBank * 32));
-    dstMsg.mOcdActiveLvMsg = static_cast<unsigned char>(static_cast<unsigned long>(t1) | static_cast<unsigned long>(t0 * 16));
+    dstMsg.mOcdUIDMsg = static_cast<unsigned char>(static_cast<unsigned long>(srcInfo.mIndex) | static_cast<unsigned long>(static_cast<long>(srcInfo.mBank) * 32));
+    dstMsg.mOcdActiveLvMsg = static_cast<unsigned char>(static_cast<unsigned long>(t1) | static_cast<unsigned long>(static_cast<long>(t0) * 16));
 }
 
 void nNetMsgData::Head::serialize(nNetMsgData::Head::stMsgHead* pHead, nNetwork::Coder& cod) {

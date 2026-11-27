@@ -123,3 +123,23 @@ inline uShlCustomSpline::uShlCustomSpline() {
     this->mOwnerSkillLv = 0;
     this->mDieFrame = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamCustomSpline::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamCustomSpline::DTI)->memAlloc(sz, align, ::cShlParamCustomSpline::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamCustomSpline::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamCustomSpline::DTI)->memFree(p_addr);
+}
+
+inline void* uShlCustomSpline::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlCustomSpline::DTI)->memAlloc(sz, align, ::uShlCustomSpline::DTI.::MtDTI::getID());
+}
+
+inline void uShlCustomSpline::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlCustomSpline::DTI)->memFree(p_addr);
+}

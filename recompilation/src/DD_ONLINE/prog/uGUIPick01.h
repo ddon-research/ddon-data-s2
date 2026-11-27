@@ -301,3 +301,19 @@ inline void* uGUIPick01::cGUIUseItem::operator new(size_t sz, void* p_addr) {
 inline void* uGUIPick01::cGUIItem::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIPick01::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPick01::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPick01::cGUIUseItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPick01::cGUIUseItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPick01::cGUIItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPick01::cGUIItem::DTI)->memFree(p_addr);
+}

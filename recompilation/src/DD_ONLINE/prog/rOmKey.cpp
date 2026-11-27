@@ -2,11 +2,9 @@
 #include <new>
 #include <string.h>
 #include "rOmKey.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -18,20 +16,6 @@
 
 const MtDTI& rOmKey::getDTI() const {
     return rOmKey::DTI;
-}
-
-inline void* rOmKey::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOmKey::DTI)->memAlloc(sz, align, rOmKey::DTI.getID());
-}
-
-inline void rOmKey::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOmKey::DTI)->memFree(p_addr);
-}
-
-inline rOmKey::rOmKey() {
-    setAttribute(22u);
-    mOmKey.mAutoDelete = true;
-    mItem.mAutoDelete = true;
 }
 
 __attribute__((noinline)) rOmKey::~rOmKey() {
@@ -133,21 +117,6 @@ const MtDTI& rOmKey::cOmKey::getDTI() const {
     return rOmKey::cOmKey::DTI;
 }
 
-inline void* rOmKey::cOmKey::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOmKey::cOmKey::DTI)->memAlloc(sz, align, rOmKey::cOmKey::DTI.getID());
-}
-
-inline void rOmKey::cOmKey::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOmKey::cOmKey::DTI)->memFree(p_addr);
-}
-
-inline rOmKey::cOmKey::cOmKey() {
-    mOmID = -1;
-    mKeyType = 0;
-    mPos = MtVector3::Zero;
-    mbHorizontal = false;
-}
-
 rOmKey::cOmKey::~cOmKey() {
 }
 
@@ -168,14 +137,6 @@ MtObject* rOmKey::cOmKey::MyDTI::newInstance() const {
 
 const MtDTI& rOmKey::cItem::getDTI() const {
     return rOmKey::cItem::DTI;
-}
-
-inline void* rOmKey::cItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOmKey::cItem::DTI)->memAlloc(sz, align, rOmKey::cItem::DTI.getID());
-}
-
-inline void rOmKey::cItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOmKey::cItem::DTI)->memFree(p_addr);
 }
 
 rOmKey::cItem::~cItem() {

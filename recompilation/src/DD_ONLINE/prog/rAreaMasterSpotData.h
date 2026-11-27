@@ -437,3 +437,67 @@ inline void cSpotItemData::load(MtDataReader& r) {
     mIsFeature = r.readU8();
     mIsCannotPawnTake = r.readU8();
 }
+
+inline void* cAreaMasterRankData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterRankData::DTI)->memAlloc(sz, align, ::cAreaMasterRankData::DTI.::MtDTI::getID());
+}
+
+inline void cAreaMasterRankData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaMasterRankData::DTI)->memFree(p_addr);
+}
+
+inline void* cAreaMasterSpotData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotData::DTI.::MtDTI::getID());
+}
+
+inline void cAreaMasterSpotData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotData::DTI)->memFree(p_addr);
+}
+
+inline void* cAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, ::cAreaMasterSpotDetailData::DTI.::MtDTI::getID());
+}
+
+inline void cAreaMasterSpotDetailData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAreaMasterSpotDetailData::DTI)->memFree(p_addr);
+}
+
+inline void* cSpotEnemyData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSpotEnemyData::DTI)->memAlloc(sz, align, ::cSpotEnemyData::DTI.::MtDTI::getID());
+}
+
+inline void cSpotEnemyData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSpotEnemyData::DTI)->memFree(p_addr);
+}
+
+inline void* cSpotItemData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSpotItemData::DTI)->memAlloc(sz, align, ::cSpotItemData::DTI.::MtDTI::getID());
+}
+
+inline void cSpotItemData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSpotItemData::DTI)->memFree(p_addr);
+}
+
+inline void* rAreaMasterRankData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaMasterRankData::DTI)->memAlloc(sz, align, ::rAreaMasterRankData::DTI.::MtDTI::getID());
+}
+
+inline void rAreaMasterRankData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaMasterRankData::DTI)->memFree(p_addr);
+}
+
+inline void* rAreaMasterSpotData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaMasterSpotData::DTI)->memAlloc(sz, align, ::rAreaMasterSpotData::DTI.::MtDTI::getID());
+}
+
+inline void rAreaMasterSpotData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaMasterSpotData::DTI)->memFree(p_addr);
+}
+
+inline void* rAreaMasterSpotDetailData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaMasterSpotDetailData::DTI)->memAlloc(sz, align, ::rAreaMasterSpotDetailData::DTI.::MtDTI::getID());
+}
+
+inline void rAreaMasterSpotDetailData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaMasterSpotDetailData::DTI)->memFree(p_addr);
+}

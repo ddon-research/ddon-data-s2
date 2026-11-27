@@ -120,3 +120,26 @@ inline void cEmWeakSafe::operator delete[](void* p_addr) {
 inline void* cEmWeakSafe::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmWeakSafe::DTI)->memAlloc(sz, align, ::cEmWeakSafe::DTI.::MtDTI::getID());
 }
+
+inline void* cEmWeakSafe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmWeakSafe::DTI)->memAlloc(sz, align, ::cEmWeakSafe::DTI.::MtDTI::getID());
+}
+
+inline void cEmWeakSafe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmWeakSafe::DTI)->memFree(p_addr);
+}
+
+inline cEmWeakSafe::cEmWeakSafe() {
+    this->mParentJntNo = -1;
+    this->mKeepSphereRad = 5.0f;
+    this->mSafeJntNo = 0;
+    this->mOffset = ::MtVector3::Zero;
+}
+
+inline void* rEmWeakSafe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmWeakSafe::DTI)->memAlloc(sz, align, ::rEmWeakSafe::DTI.::MtDTI::getID());
+}
+
+inline void rEmWeakSafe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmWeakSafe::DTI)->memFree(p_addr);
+}

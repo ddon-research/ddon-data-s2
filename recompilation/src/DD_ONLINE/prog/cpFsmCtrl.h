@@ -144,3 +144,15 @@ inline void cpFsmCtrl::notifyEndSetEyeBall() {
 
 inline cpFsmCtrl::_stCnsEyeBall::_stCnsEyeBall() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpFsmCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpFsmCtrl::DTI);
+}
+
+inline void cpFsmCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpFsmCtrl::DTI)->memFree(p_addr);
+}

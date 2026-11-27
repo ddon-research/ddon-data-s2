@@ -66,14 +66,6 @@ const MtDTI& rWeaponResTable::getDTI() const {
     return rWeaponResTable::DTI;
 }
 
-inline void* rWeaponResTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rWeaponResTable::DTI)->memAlloc(sz, align, rWeaponResTable::DTI.getID());
-}
-
-inline void rWeaponResTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rWeaponResTable::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool rWeaponResTable::loadData(MtDataReader& in, cWeaponResTable* pData) {
     ::nDDOIO::readData(in, pData->mMTag);
     ::nDDOIO::readData(in, pData->mArcTag);

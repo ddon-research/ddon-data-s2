@@ -3,7 +3,6 @@
 #include "sKeyboardExt.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/sKeyboard.h"
 #ifndef DDON_STUB
@@ -14,16 +13,8 @@ const MtDTI& sKeyboardExt::getDTI() const {
     return sKeyboardExt::DTI;
 }
 
-inline MtAllocator* sKeyboardExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sKeyboardExt::DTI);
-}
-
 void* sKeyboardExt::operator new(size_t sz, u32 align) {
     return sKeyboardExt::getAllocator()->memAlloc(sz, align, sKeyboardExt::DTI.getID());
-}
-
-inline void sKeyboardExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sKeyboardExt::DTI)->memFree(p_addr);
 }
 
 sKeyboardExt::sKeyboardExt() {
@@ -83,14 +74,6 @@ MtObject* sKeyboardExt::MyDTI::newInstance() const {
 
 const MtDTI& sKeyboardExt::cKeyArray::getDTI() const {
     return sKeyboardExt::cKeyArray::DTI;
-}
-
-inline void* sKeyboardExt::cKeyArray::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sKeyboardExt::cKeyArray::DTI)->memAlloc(sz, align, sKeyboardExt::cKeyArray::DTI.getID());
-}
-
-inline void sKeyboardExt::cKeyArray::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sKeyboardExt::cKeyArray::DTI)->memFree(p_addr);
 }
 
 MtObject* sKeyboardExt::cKeyArray::MyDTI::newInstance() const {

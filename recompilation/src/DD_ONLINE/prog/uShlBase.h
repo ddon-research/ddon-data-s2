@@ -35,6 +35,7 @@ class cHitInfo;
 class cHitNode;
 class cShlGroupParam;
 class cUnit;
+class cpJob09;
 namespace nShlBase { struct stShlEfctParam; }
 namespace nShlBase { struct stShlSEParam; }
 namespace nShlStick { class cStickObjectCtrl; }
@@ -53,7 +54,9 @@ class uShlEnchant;
 class uShlEnergyCharge;
 class uShlFireWallCtrl;
 class uShlFuwaFuwa2;
+class uShlGeneAlongGround;
 class uShlGeneTarget;
+class uShlGenerator;
 class uShlHitReactionConditionStick;
 class uShlHitReactionSpline;
 class uShlHitReactionStick;
@@ -66,6 +69,7 @@ class uShlJob10CS06;
 class uShlKeepOwnerLog;
 class uShlLaser;
 class uShlMeteo;
+class uShlMeteoCtrl;
 class uShlMgcArrow;
 class uShlMgcArrowErosion;
 class uShlMgcArrowErosionCtrl;
@@ -338,6 +342,7 @@ public:
 
 class uShlBase : public uDDOModel
 {
+    friend class cpJob09;
     friend class uShlAlchemyObj;
     friend class uShlArrowRainCtrl;
     friend class uShlBakuensen;
@@ -349,7 +354,9 @@ class uShlBase : public uDDOModel
     friend class uShlEnergyCharge;
     friend class uShlFireWallCtrl;
     friend class uShlFuwaFuwa2;
+    friend class uShlGeneAlongGround;
     friend class uShlGeneTarget;
+    friend class uShlGenerator;
     friend class uShlHitReactionConditionStick;
     friend class uShlHitReactionSpline;
     friend class uShlHitReactionStick;
@@ -362,6 +369,7 @@ class uShlBase : public uDDOModel
     friend class uShlKeepOwnerLog;
     friend class uShlLaser;
     friend class uShlMeteo;
+    friend class uShlMeteoCtrl;
     friend class uShlMgcArrow;
     friend class uShlMgcArrowErosion;
     friend class uShlMgcArrowErosionCtrl;
@@ -725,6 +733,10 @@ inline void* uShlBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline nShlBase::SHL_ID uShlBase::getShlId() const {
+    return this->mShlId;
+}
+
 inline uDDOModel* uShlBase::getParent() {
     return this->mpParent;
 }
@@ -743,4 +755,16 @@ inline const cShlParamBase* uShlBase::getShlParamBase() const {
 
 inline rSoundRequest* uShlBase::getSeResource() {
     return this->mprSE;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamBase::DTI)->memAlloc(sz, align, ::cShlParamBase::DTI.::MtDTI::getID());
+}
+
+inline void uShlBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlBase::DTI)->memFree(p_addr);
 }

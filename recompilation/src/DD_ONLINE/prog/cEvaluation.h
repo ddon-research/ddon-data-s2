@@ -235,6 +235,10 @@ inline void* cEvaluationName::cEvaluation::operator new(size_t sz, void* p_addr)
     return p_addr;
 }
 
+inline rEvaluationTable* cEvaluationName::cEvaluation::getResource() {
+    return this->mpEvaluationTableRes;
+}
+
 inline void* cEvaluationName::cEvaluationData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -248,4 +252,24 @@ inline cEvaluationName::cEvaluationPoint::cEvaluationPoint() {
     this->mAddValue = 0.0f;
     this->mDecValue = 0.0f;
     this->mEnable = false;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cEvaluationName::cEvaluation::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluation::DTI)->memFree(p_addr);
+}
+
+inline void cEvaluationName::cEvaluationData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluationData::DTI)->memFree(p_addr);
+}
+
+inline void* cEvaluationName::cEvaluationPoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluationPoint::DTI)->memAlloc(sz, align, ::cEvaluationName::cEvaluationPoint::DTI.::MtDTI::getID());
+}
+
+inline void cEvaluationName::cEvaluationPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEvaluationName::cEvaluationPoint::DTI)->memFree(p_addr);
 }

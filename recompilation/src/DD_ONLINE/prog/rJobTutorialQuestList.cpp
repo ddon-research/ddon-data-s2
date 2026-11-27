@@ -21,14 +21,6 @@ const MtDTI& rJobTutorialQuestList::getDTI() const {
     return rJobTutorialQuestList::DTI;
 }
 
-inline void* rJobTutorialQuestList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rJobTutorialQuestList::DTI)->memAlloc(sz, align, rJobTutorialQuestList::DTI.getID());
-}
-
-inline void rJobTutorialQuestList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rJobTutorialQuestList::DTI)->memFree(p_addr);
-}
-
 u32 rJobTutorialQuestList::getJobTutorialQuestNum() const {
     return mJobTutorialList.mLength;
 }
@@ -40,10 +32,6 @@ __attribute__((weak)) nQuest::QUEST_ID rJobTutorialQuestList::getJobTutorialQues
 
 MT_CTSTR rJobTutorialQuestList::getExt() const {
     return "jtq";
-}
-
-inline rJobTutorialQuestList::rJobTutorialQuestList() {
-    setAttribute(22u);
 }
 
 rJobTutorialQuestList::~rJobTutorialQuestList() {
@@ -88,7 +76,7 @@ bool rJobTutorialQuestList::save(MtStream& out) {
     }
     unsigned int i3 = 0;
     do {
-        (&w)->writeU32(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mJobTutorialList.getBuffer()[static_cast<int>(i3)]) + 8));
+        (&w)->writeU32(static_cast<cQuestId*>(mJobTutorialList.getBuffer()[static_cast<int>(i3)])->mQuestId);
         i3 += 1u;
     } while (i3 < mJobTutorialList.mLength);
     return true;
@@ -117,19 +105,11 @@ const MtDTI& rJobTutorialQuestList::cQuestId::getDTI() const {
     return rJobTutorialQuestList::cQuestId::DTI;
 }
 
-inline void rJobTutorialQuestList::cQuestId::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rJobTutorialQuestList::cQuestId::DTI)->memFree(p_addr);
-}
-
 rJobTutorialQuestList::cQuestId::~cQuestId() {
 }
 
 void rJobTutorialQuestList::cQuestId::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mQuestId", &mQuestId, 0u, 0u);
-}
-
-void rJobTutorialQuestList::cQuestId::load(MtDataReader& r) {
-    mQuestId = r.readU32();
 }
 
 inline rJobTutorialQuestList::cQuestId::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

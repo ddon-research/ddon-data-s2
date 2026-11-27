@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rPrologueHmStatus.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -14,14 +12,6 @@
 
 const MtDTI& cPrologueHmStatus::getDTI() const {
     return cPrologueHmStatus::DTI;
-}
-
-inline void* cPrologueHmStatus::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrologueHmStatus::DTI)->memAlloc(sz, align, cPrologueHmStatus::DTI.getID());
-}
-
-inline void cPrologueHmStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrologueHmStatus::DTI)->memFree(p_addr);
 }
 
 inline cPrologueHmStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -34,14 +24,6 @@ MtObject* cPrologueHmStatus::MyDTI::newInstance() const {
 
 const MtDTI& rPrologueHmStatus::getDTI() const {
     return rPrologueHmStatus::DTI;
-}
-
-inline void* rPrologueHmStatus::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPrologueHmStatus::DTI)->memAlloc(sz, align, rPrologueHmStatus::DTI.getID());
-}
-
-inline void rPrologueHmStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPrologueHmStatus::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rPrologueHmStatus::loadData(MtDataReader& in, cPrologueHmStatus* pData) {

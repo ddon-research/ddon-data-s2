@@ -27,6 +27,8 @@ class uOmModel;
 // Declarations
 class cpOmBase;
 class cpOmLadder;
+class cpOmNav;
+class cpOmSpa;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -165,10 +167,113 @@ public:
     static const u32 UnitNum = 24;
 };
 
+class cpOmNav : public cpOmBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cpOmNav();
+    virtual ~cpOmNav();
+    virtual void move();  // vtable slot 7
+public:
+    u32 mRno;  // offset: 0xf0
+    static MyDTI DTI;
+};
+
+class cpOmSpa : public cpOmBase
+{
+public:
+    enum
+    {
+        RNO_INIT = 0,
+        RNO_WAIT = 1,
+    };
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cpOmSpa();
+    virtual ~cpOmSpa();
+    virtual void move();  // vtable slot 7
+    virtual void setTouch(uDDOModel* pUnit);  // vtable slot 15
+    virtual void finishTouch(nDDOModel::TOUCH_RELEASE_TYPE type);  // vtable slot 16
+public:
+    u32 mRno;  // offset: 0xf0
+    bool mbDone;  // offset: 0xf4
+    static MyDTI DTI;
+};
+
 inline void* cpOmBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline void* cpOmLadder::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* cpOmNav::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* cpOmSpa::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpOmLadder::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpOmLadder::DTI);
+}
+
+inline void cpOmLadder::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpOmLadder::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cpOmNav::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpOmNav::DTI);
+}
+
+inline MtAllocator* cpOmSpa::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpOmSpa::DTI);
 }

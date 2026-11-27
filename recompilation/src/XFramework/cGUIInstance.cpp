@@ -628,10 +628,6 @@ void* cGUIInstNull::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline void cGUIInstNull::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIInstNull::DTI)->memFree(p_addr);
-}
-
 cGUIInstNull::cGUIInstNull() {
     DDON_STUB("cGUIInstNull::cGUIInstNull")
     /* stub */
@@ -688,8 +684,11 @@ void cGUIInstNull::setResolutionAdjust(u32 type) {
 static auto ddon_emit_0x01b716a0 __attribute__((used)) = &cGUIInstNull::getResolutionAdjust;
 
 __attribute__((weak)) void cGUIInstNull::setReferencePosition(bool v) {
-    DDON_STUB("cGUIInstNull::setReferencePosition")
-    /* stub */
+    if (isReferencePosition() == v) {
+        return;
+    }
+    mReferencePosition = v;
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 0x5a) |= 1;
 }
 
 static auto ddon_emit_0x01b716b0 __attribute__((used)) = &cGUIInstNull::isReferencePosition;
@@ -731,9 +730,38 @@ void cGUIInstNull::setReferenceScaleZ(u32 type) {
 
 static auto ddon_emit_0x01b716f0 __attribute__((used)) = &cGUIInstNull::getReferenceScaleZ;
 
-__attribute__((weak)) void cGUIInstNull::setPosition(const MtVector4& pos) {
-    DDON_STUB("cGUIInstNull::setPosition")
-    /* stub */
+void cGUIInstNull::setPosition(const MtVector4& pos) {
+    if (mPosition.x == pos.x) {
+        if (mPosition.y == pos.y) {
+            if (mPosition.z == pos.z) {
+                if (mPosition.w != pos.w) {
+                    mPosition.x = pos.x;
+                    mPosition.y = pos.y;
+                    mPosition.z = pos.z;
+                    mPosition.w = pos.w;
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
+                }
+            } else {
+                mPosition.x = pos.x;
+                mPosition.y = pos.y;
+                mPosition.z = pos.z;
+                mPosition.w = pos.w;
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
+            }
+        } else {
+            mPosition.x = pos.x;
+            mPosition.y = pos.y;
+            mPosition.z = pos.z;
+            mPosition.w = pos.w;
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
+        }
+    } else {
+        mPosition.x = pos.x;
+        mPosition.y = pos.y;
+        mPosition.z = pos.z;
+        mPosition.w = pos.w;
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
+    }
 }
 
 void cGUIInstNull::setPositionX(f32 v) {
@@ -804,10 +832,7 @@ void cGUIInstNull::setRotationX(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-__attribute__((weak)) f32 cGUIInstNull::getRotationX() const {
-    DDON_STUB("cGUIInstNull::getRotationX")
-    return {};
-}
+static auto ddon_emit_0x01b71760 __attribute__((used)) = &cGUIInstNull::getRotationX;
 
 void cGUIInstNull::setRotationY(f32 v) {
     if (mRotation.y == (0.017453294f * v)) {
@@ -817,10 +842,7 @@ void cGUIInstNull::setRotationY(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-__attribute__((weak)) f32 cGUIInstNull::getRotationY() const {
-    DDON_STUB("cGUIInstNull::getRotationY")
-    return {};
-}
+static auto ddon_emit_0x01b71780 __attribute__((used)) = &cGUIInstNull::getRotationY;
 
 void cGUIInstNull::setRotationZ(f32 v) {
     if (mRotation.z == (0.017453294f * v)) {
@@ -830,14 +852,13 @@ void cGUIInstNull::setRotationZ(f32 v) {
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 90)) | 1;
 }
 
-__attribute__((weak)) f32 cGUIInstNull::getRotationZ() const {
-    DDON_STUB("cGUIInstNull::getRotationZ")
-    return {};
-}
+static auto ddon_emit_0x01b717a0 __attribute__((used)) = &cGUIInstNull::getRotationZ;
 
-__attribute__((weak)) void cGUIInstNull::setColorScale(const MtVector4& color) {
-    DDON_STUB("cGUIInstNull::setColorScale")
-    /* stub */
+void cGUIInstNull::setColorScale(const MtVector4& color) {
+    mColorScale.x = color.x;
+    mColorScale.y = color.y;
+    mColorScale.z = color.z;
+    mColorScale.w = color.w;
 }
 
 static auto ddon_emit_0x01b717d0 __attribute__((used)) = &cGUIInstNull::getColorScale;
@@ -929,10 +950,6 @@ void* cGUIInstRoot::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cGUIInstRoot::DTI)->memAlloc(sz, align, cGUIInstRoot::DTI.mID);
 }
 
-inline void cGUIInstRoot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIInstRoot::DTI)->memFree(p_addr);
-}
-
 cGUIInstRoot::cGUIInstRoot() {
     DDON_STUB("cGUIInstRoot::cGUIInstRoot")
     /* stub */
@@ -952,9 +969,26 @@ __attribute__((weak)) void cGUIInstRoot::createProperty(MtPropertyList& s) {
     /* stub */
 }
 
-__attribute__((weak)) void cGUIInstRoot::calcMatrix(const MtMatrix& wmat) {
-    DDON_STUB("cGUIInstRoot::calcMatrix")
-    /* stub */
+void cGUIInstRoot::calcMatrix(const MtMatrix& wmat) {
+    if ((mAttr & 0x10000u) == 0) {
+        return;
+    }
+    mMat.m[0].x = wmat.m[0].x;
+    mMat.m[0].y = wmat.m[0].y;
+    mMat.m[0].z = wmat.m[0].z;
+    mMat.m[0].w = wmat.m[0].w;
+    mMat.m[1].x = wmat.m[1].x;
+    mMat.m[1].y = wmat.m[1].y;
+    mMat.m[1].z = wmat.m[1].z;
+    mMat.m[1].w = wmat.m[1].w;
+    mMat.m[2].x = wmat.m[2].x;
+    mMat.m[2].y = wmat.m[2].y;
+    mMat.m[2].z = wmat.m[2].z;
+    mMat.m[2].w = wmat.m[2].w;
+    mMat.m[3].x = wmat.m[3].x;
+    mMat.m[3].y = wmat.m[3].y;
+    mMat.m[3].z = wmat.m[3].z;
+    mMat.m[3].w = wmat.m[3].w;
 }
 
 void cGUIInstRoot::triggerEvent(u32 eventNo) {
@@ -984,10 +1018,6 @@ const MtDTI& cGUIInstScissorMask::getDTI() const {
 
 void* cGUIInstScissorMask::operator new(size_t sz, void* p_addr) {
     return p_addr;
-}
-
-inline void cGUIInstScissorMask::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIInstScissorMask::DTI)->memFree(p_addr);
 }
 
 cGUIInstScissorMask::cGUIInstScissorMask() {
@@ -1064,10 +1094,6 @@ __attribute__((weak)) MtObject* cGUIInstScissorMask::MyDTI::newInstance() const 
 
 const MtDTI& cGUIInstance::getDTI() const {
     return cGUIInstance::DTI;
-}
-
-inline void cGUIInstance::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIInstance::DTI)->memFree(p_addr);
 }
 
 cGUIInstance::~cGUIInstance() {

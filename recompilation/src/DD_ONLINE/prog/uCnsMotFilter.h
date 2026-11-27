@@ -99,3 +99,15 @@ inline u32 uCnsMotFilter::getJoint() const {
 inline void uCnsMotFilter::setMotFilter(cpMotionFilter* pMotFlt) {
     this->mpMotFlt = pMotFlt;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uCnsMotFilter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCnsMotFilter::DTI);
+}
+
+inline void uCnsMotFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsMotFilter::DTI)->memFree(p_addr);
+}

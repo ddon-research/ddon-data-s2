@@ -30,6 +30,7 @@ namespace nPrim { class PrimVertex; }
 class rCharacterEdit;
 class rMotionList;
 class rRenderTargetTexture;
+class uGUIPawnReview;
 class uInfiniteLightExt;
 class uMockUpModel;
 
@@ -48,6 +49,7 @@ using u8 = unsigned char;
 
 class uUIMockUp : public uScreenSpace
 {
+    friend class uGUIPawnReview;
 public:
     enum
     {
@@ -245,4 +247,16 @@ inline void uUIMockUp::setupCameraDist(f32 model_height) {
 inline void uUIMockUp::setupCameraDist() {
     this->mCamDist = this->mCamDistDef + (100.0f * ((this->mModelHeight + -140.0f) / 70.0f));
     this->mCamYOfs = this->mCamYOfsDef + (20.0f * ((this->mModelHeight + -140.0f) / 70.0f));
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uUIMockUp::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uUIMockUp::DTI);
+}
+
+inline void uUIMockUp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uUIMockUp::DTI)->memFree(p_addr);
 }

@@ -117,3 +117,19 @@ inline void cEmDmgTimerTbl::operator delete[](void* p_addr) {
 inline void* cEmDmgTimerTbl::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEmDmgTimerTbl::DTI)->memAlloc(sz, align, ::cEmDmgTimerTbl::DTI.::MtDTI::getID());
 }
+
+inline void* cEmDmgTimerTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEmDmgTimerTbl::DTI)->memAlloc(sz, align, ::cEmDmgTimerTbl::DTI.::MtDTI::getID());
+}
+
+inline void cEmDmgTimerTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEmDmgTimerTbl::DTI)->memFree(p_addr);
+}
+
+inline void* rEmDmgTimerTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEmDmgTimerTbl::DTI)->memAlloc(sz, align, ::rEmDmgTimerTbl::DTI.::MtDTI::getID());
+}
+
+inline void rEmDmgTimerTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEmDmgTimerTbl::DTI)->memFree(p_addr);
+}

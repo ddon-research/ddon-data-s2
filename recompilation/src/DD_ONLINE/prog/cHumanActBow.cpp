@@ -106,10 +106,6 @@ const MtDTI& cPlActWpnBow::getDTI() const {
     return cPlActWpnBow::DTI;
 }
 
-inline void cPlActWpnBow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPlActWpnBow::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cPlActWpnBow::init() {
     DDON_STUB("cPlActWpnBow::init")
     /* stub */
@@ -211,9 +207,11 @@ __attribute__((weak)) bool cPlActWpnBow::checkLow_Jump() {
     return {};
 }
 
-__attribute__((weak)) bool cPlActWpnBow::checkLow_Fall() {
-    DDON_STUB("cPlActWpnBow::checkLow_Fall")
-    return {};
+bool cPlActWpnBow::checkLow_Fall() {
+    if ((static_cast<unsigned int>(mLowActNo - 5) > 1) && !mpHuman->getScrCollisionPtr()->isHitLand()) {
+        return true;
+    }
+    return false;
 }
 
 bool cPlActWpnBow::checkLow_Land() {
@@ -238,17 +236,17 @@ void cPlActWpnBow::initLow_Wait() {
     }
 }
 
-__attribute__((weak)) void cPlActWpnBow::moveLow_Wait() {
-        mIdealAccurate = getActParam()->accurateWait;
-        setLowerWaitMotion();
-        explosionReload(MOT_BASE);
-        if (!getActParam()->isVJump) {
-            if (getActParam()->isMovingJump) {
-                mpHuman->mIsBowJumpEnable = true;
-            }
-        } else {
+void cPlActWpnBow::moveLow_Wait() {
+    mIdealAccurate = getActParam()->accurateWait;
+    setLowerWaitMotion();
+    explosionReload(MOT_TYPE());
+    if (!getActParam()->isVJump) {
+        if (getActParam()->isMovingJump) {
             mpHuman->mIsBowJumpEnable = true;
         }
+    } else {
+        mpHuman->mIsBowJumpEnable = true;
+    }
 }
 
 void cPlActWpnBow::initLow_Turn() {
@@ -483,8 +481,55 @@ __attribute__((weak)) bool cPlActWpnBow::checkUp_End() {
 }
 
 __attribute__((weak)) bool cPlActWpnBow::checkUp_Reload() {
-    DDON_STUB("cPlActWpnBow::checkUp_Reload")
-    return {};
+    uHuman* t1 = mpHuman;
+    if (t1->getContextPlayerInfo() == nullptr) {
+        return false;
+    }
+    if (t1->getContextPlayerInfo()->mCurrentJob_pri != nHuman::JOB_ID_03) {
+        return false;
+    }
+    if (t1->isMaster() && t1->mIsPlayer) {
+        if (*reinterpret_cast<const bool*>(reinterpret_cast<const char*>(sGUI::getInstance()) + 0x2244)) {
+            return false;
+        }
+    }
+    if (mLowActNo == LOW_ACT_JUMP || mLowActNo == LOW_ACT_FALL) {
+        return false;
+    }
+    do {
+        if (mUpActNo == UP_ACT_SHOT) {
+            if (mpHuman->getContextPlayerInfo() != nullptr) {
+                if (mpHuman->getContextPlayerInfo()->mBaseInfo.mStamina_pri <= 0.0f) {
+                    return false;
+                }
+            }
+            if (getActParam()->isShotRetNml) {
+                break;
+            }
+        }
+        if (mChargeLv < getActParam()->usableLv) {
+            return false;
+        }
+    } while (false);
+    bool ck = true;
+    if (mUpActNo == UP_ACT_BGN || mUpActNo == UP_ACT_SHOT) {
+        uModel::Motion* pMot = &mpHuman->mMotion[MOT_BLEND1];
+        u32 seq = *reinterpret_cast<const u32*>(reinterpret_cast<const char*>(pMot) + 0x144);
+        if ((seq & 0x400u) != 0) {
+            if ((mpHuman->getInputPtr()->mBtnInfo.trg.special0 | mpHuman->getInputPtr()->mBtnInfo.trg.special1) != 0) {
+                mIsReloadRsv = true;
+            }
+        }
+        ck = (seq & 0x200u) != 0;
+    }
+    if (!ck) {
+        return false;
+    }
+    if ((mpHuman->getInputPtr()->mBtnInfo.trg.special0 | mpHuman->getInputPtr()->mBtnInfo.trg.special1) != 0 || mIsReloadRsv) {
+        mIsReloadRsv = false;
+        return true;
+    }
+    return false;
 }
 
 __attribute__((weak)) bool cPlActWpnBow::checkUp_CustomSkill() {
@@ -690,8 +735,35 @@ __attribute__((weak)) cEfcHandle* cPlActWpnBow::setEffect(rEffectProvider* prEpv
 }
 
 __attribute__((weak)) void cPlActWpnBow::setShotEfct() {
-    DDON_STUB("cPlActWpnBow::setShotEfct")
-    /* stub */
+    u32 isPlConst = getActParam()->efOption & nHumanBow::cBowActParam::EO_CMN_SHOT_CONST_PL;
+    if (mChargeLv == 0 && getActParam()->epvNoShot >= 0) {
+        if (isPlConst) {
+            setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoShot, mpHuman);
+        } else {
+            setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoShot);
+        }
+    }
+    
+    if (mChargeLv != 0 && mChargeLv <= nHumanBow::cBowActParam::CHARGE_LV_NUM) {
+        bool isJust = getActParam()->epvNoJustShot >= 0 && (mpHuman->isMaster()
+            ? mpHuman->getChargeCtrlPtr()->cheackJust()
+            : (mBowNetBit & nHumanBow::stNetData::BOW_BIT_CHARGE_JUST) != 0);
+        if (!isJust) {
+            if (getActParam()->epvNoChargeShotCs[mChargeLv - 1u] >= 0) {
+                if (isPlConst) {
+                    setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoChargeShotCs[mChargeLv - 1u], mpHuman);
+                } else {
+                    setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoChargeShotCs[mChargeLv - 1u]);
+                }
+            }
+        } else {
+            if (isPlConst) {
+                setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoJustShot, mpHuman);
+            } else {
+                setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoJustShot);
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool cPlActWpnBow::canBowActEnd() {
@@ -740,8 +812,45 @@ __attribute__((weak)) void cPlActWpnBow::initCharge() {
 }
 
 __attribute__((weak)) void cPlActWpnBow::initChargeEfct() {
-    DDON_STUB("cPlActWpnBow::initChargeEfct")
-    /* stub */
+    if (mpEfcHandleCharge != nullptr) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mpEfcHandleCharge, sEffectExt::EFC_END_TYPE_KILL);
+        mpEfcHandleCharge = nullptr;
+    }
+    if (mpEfcHandleChargeSkill != nullptr) {
+        static_cast<sEffectExt*>(sEffect::getInstance())->endEffect(mpEfcHandleChargeSkill, sEffectExt::EFC_END_TYPE_KILL);
+        mpEfcHandleChargeSkill = nullptr;
+    }
+    if ((getActParam()->efOption & nHumanBow::cBowActParam::EO_CHARGE_EF_WPN) != 0) {
+        if (getActParam()->epvNoCharge >= 0) {
+            mpEfcHandleCharge = setEffect(mprEpvCmn, getActParam()->epvIndex, getActParam()->epvNoCharge);
+        } else if (getActParam()->epvNoChargeStart >= 0) {
+            mpEfcHandleChargeSkill = setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoChargeStart);
+        }
+    } else {
+        if (getActParam()->epvNoCharge >= 0) {
+            mpEfcHandleCharge = setEffect(mprEpvCmn, getActParam()->epvIndex, getActParam()->epvNoCharge, mpHuman);
+        } else if (getActParam()->epvNoChargeStart >= 0) {
+            mpEfcHandleChargeSkill = setEffect(mprEpvSkill, getActParam()->epvIndexSkill, getActParam()->epvNoChargeStart, mpHuman);
+        }
+    }
+    switch (getActParam()->seType) {
+    case nHumanBow::cBowActParam::SE_SKILL: {
+        s32 t1 = getActParam()->seNoChargeBgn;
+        if (t1 >= 0) {
+            rSoundRequest* t2 = mpHuman->getCstmShlSe(static_cast<nHuman::CUSTOM_SKILL_ENUM>(getActParam()->customId));
+            static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(t2, t1, mpHuman, mpHuman, 2);
+        }
+        break;
+    }
+    case nHumanBow::cBowActParam::SE_CMN: {
+        s32 t3 = getActParam()->seNoChargeBgn;
+        if (t3 >= 0) {
+            rSoundRequest* t4 = mpHuman->getCommonShlSe();
+            static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(t4, t3, mpHuman, mpHuman, 2);
+        }
+        break;
+    }
+    }
 }
 
 f32 cPlActWpnBow::getChargeFrame() const {
@@ -803,13 +912,102 @@ __attribute__((weak)) void cPlActWpnBow::checkCriticalRange() {
     /* stub */
 }
 
-__attribute__((weak)) void cPlActWpnBow::requestMgcBowKamaeSe() {
-    DDON_STUB("cPlActWpnBow::requestMgcBowKamaeSe")
-    /* stub */
-}
-
-inline void cPlActWpnBow::stopMgcBowKamaeSe() {
-    static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(static_cast<sSoundExt*>(sSound::mpInstance)->mprMagicRequest, 500u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), -1);
+void cPlActWpnBow::requestMgcBowKamaeSe() {
+    static_cast<sSoundExt*>(sSound::mpInstance)->requestSeEx(static_cast<sSoundExt*>(sSound::mpInstance)->getMagicResource(), 500u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), -1);
+    if (getActParam()->customId != 0) {
+        switch (static_cast<unsigned int>(getActParam()->castType - 1)) {
+            case 0:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 501u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 1:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 511u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 2:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 521u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 3:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 531u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 4:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 541u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 5:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 551u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    } else {
+        switch (static_cast<unsigned int>(getActParam()->castType - 1)) {
+            case 0:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 501u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                if (mpHuman->getOcdCtrlPtr()->isOcdActive(8193u)) {
+                    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 601u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                } else {
+                    if (mpHuman->getOcdCtrlPtr()->isOcdActive(8194u)) {
+                        static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 602u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                    } else {
+                        if (mpHuman->getOcdCtrlPtr()->isOcdActive(8195u)) {
+                            static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 603u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                        } else {
+                            if (mpHuman->getOcdCtrlPtr()->isOcdActive(8196u)) {
+                                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 604u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                            } else {
+                                if (mpHuman->getOcdCtrlPtr()->isOcdActive(8197u)) {
+                                    static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 605u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                                }
+                            }
+                        }
+                    }
+                }
+                break;
+            }
+            case 1:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 511u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 2:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 521u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 3:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 531u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 4:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 541u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            case 5:
+            {
+                static_cast<sSoundExt*>(sSound::getInstance())->requestSeEx(static_cast<sSoundExt*>(sSound::getInstance())->getMagicResource(), 551u, static_cast<MtObject*>(mpHuman), static_cast<const uCoord*>(mpHuman), 12);
+                break;
+            }
+            default:
+            {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cPlActWpnBow::setupSkillChange(bool isChAction, bool isNoEffect) {
@@ -842,7 +1040,7 @@ __attribute__((weak)) void cPlActWpnBow::requestBowCamera() {
     /* stub */
 }
 
-void cPlActWpnBow::explosionReload(MOT_TYPE type) {
+__attribute__((weak)) void cPlActWpnBow::explosionReload(MOT_TYPE type) {
     if (mUpActNo != UP_ACT_SHOT) {
         return;
     }
@@ -881,10 +1079,6 @@ const MtDTI& cPlActWpnBowBase::getDTI() const {
     return cPlActWpnBowBase::DTI;
 }
 
-inline void cPlActWpnBowBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPlActWpnBowBase::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cPlActWpnBowBase::init() {
     DDON_STUB("cPlActWpnBowBase::init")
     /* stub */
@@ -906,8 +1100,7 @@ inline cPlActWpnBowBase::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t siz
 
 cPlActWpnBowBase::MyDTI cPlActWpnBowBase::DTI("cPlActWpnBowBase", &::cHumanActBase::DTI, 128ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cPlActWpnBowBase::MyDTI::newInstance() const {
-    DDON_STUB("cPlActWpnBowBase::MyDTI::newInstance")
-    return nullptr;
+MtObject* cPlActWpnBowBase::MyDTI::newInstance() const {
+    return new (16u) cPlActWpnBowBase;
 }
 

@@ -205,3 +205,15 @@ inline void* nNetwork::nRanking::Object::operator new(size_t sz, void* p_addr) {
 inline void* nNetwork::nRanking::Object::StateBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::nRanking::Object::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::nRanking::Object::DTI)->memFree(p_addr);
+}
+
+inline void nNetwork::nRanking::Object::StateBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::nRanking::Object::StateBase::DTI)->memFree(p_addr);
+}

@@ -127,3 +127,19 @@ inline void cIncreaseParam2::operator delete[](void* p_addr) {
 inline void* cIncreaseParam2::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cIncreaseParam2::DTI)->memAlloc(sz, align, ::cIncreaseParam2::DTI.::MtDTI::getID());
 }
+
+inline void* cIncreaseParam2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cIncreaseParam2::DTI)->memAlloc(sz, align, ::cIncreaseParam2::DTI.::MtDTI::getID());
+}
+
+inline void cIncreaseParam2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cIncreaseParam2::DTI)->memFree(p_addr);
+}
+
+inline void* rJobLevelUpTbl2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rJobLevelUpTbl2::DTI)->memAlloc(sz, align, ::rJobLevelUpTbl2::DTI.::MtDTI::getID());
+}
+
+inline void rJobLevelUpTbl2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rJobLevelUpTbl2::DTI)->memFree(p_addr);
+}

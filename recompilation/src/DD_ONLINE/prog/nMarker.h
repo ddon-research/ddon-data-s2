@@ -50,6 +50,7 @@ namespace nMarker {
     public:
         class cVector3 : public ::MtObject
         {
+            friend class nMarker::cMarkerInfo;
         public:
             class MyDTI;
         public:
@@ -312,4 +313,63 @@ inline void* nMarker::cWarpMarkerInfoStage::cTargetInfo::operator new(size_t sz,
 }
 
 inline nMarker::cWarpMarkerInfoStage::cTargetInfo::cTargetInfo() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* nMarker::cMarkerInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::DTI);
+}
+
+inline void nMarker::cMarkerInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::DTI)->memFree(p_addr);
+}
+
+inline void* nMarker::cMarkerInfo::cVector3::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cVector3::DTI)->memAlloc(sz, align, ::nMarker::cMarkerInfo::cVector3::DTI.::MtDTI::getID());
+}
+
+inline void nMarker::cMarkerInfo::cVector3::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cVector3::DTI)->memFree(p_addr);
+}
+
+inline nMarker::cMarkerInfo::cVector3::cVector3() {
+    this->mRealPos.x = ::MtVector3::Zero.x;
+    this->mRealPos.y = ::MtVector3::Zero.y;
+    this->mRealPos.z = ::MtVector3::Zero.z;
+    this->mRealPos.pad_ = 0.0f;
+}
+
+inline void* nMarker::cMarkerInfo::cCtrlFlag::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cCtrlFlag::DTI)->memAlloc(sz, align, ::nMarker::cMarkerInfo::cCtrlFlag::DTI.::MtDTI::getID());
+}
+
+inline void nMarker::cMarkerInfo::cCtrlFlag::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nMarker::cMarkerInfo::cCtrlFlag::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nMarker::cWarpMarkerInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfo::DTI);
+}
+
+inline void nMarker::cWarpMarkerInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nMarker::cWarpMarkerInfoStage::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::DTI);
+}
+
+inline void nMarker::cWarpMarkerInfoStage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::DTI)->memFree(p_addr);
+}
+
+inline void* nMarker::cWarpMarkerInfoStage::cTargetInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI)->memAlloc(sz, align, ::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI.::MtDTI::getID());
+}
+
+inline void nMarker::cWarpMarkerInfoStage::cTargetInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nMarker::cWarpMarkerInfoStage::cTargetInfo::DTI)->memFree(p_addr);
 }

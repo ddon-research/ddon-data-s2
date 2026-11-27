@@ -129,3 +129,23 @@ inline uShlJob04CS14::uShlJob04CS14() {
     this->mShotAfterEfcHnd = nullptr;
     this->mFirstEfcHnd = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamJob04CS14::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamJob04CS14::DTI)->memAlloc(sz, align, ::cShlParamJob04CS14::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamJob04CS14::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamJob04CS14::DTI)->memFree(p_addr);
+}
+
+inline void* uShlJob04CS14::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlJob04CS14::DTI)->memAlloc(sz, align, ::uShlJob04CS14::DTI.::MtDTI::getID());
+}
+
+inline void uShlJob04CS14::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlJob04CS14::DTI)->memFree(p_addr);
+}

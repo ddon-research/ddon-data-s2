@@ -133,3 +133,19 @@ inline rSoundStreamSourcePackage::rSoundStreamSourcePackage() {
 inline void* rSoundStreamSourcePackage::PackageFile::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rSoundStreamSourcePackage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundStreamSourcePackage::DTI)->memAlloc(sz, align, ::rSoundStreamSourcePackage::DTI.::MtDTI::mID);
+}
+
+inline void rSoundStreamSourcePackage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundStreamSourcePackage::DTI)->memFree(p_addr);
+}
+
+inline void rSoundStreamSourcePackage::PackageFile::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundStreamSourcePackage::PackageFile::DTI)->memFree(p_addr);
+}

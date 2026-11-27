@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rQuestSequenceList.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cQuestSequence::getDTI() const {
     return cQuestSequence::DTI;
-}
-
-inline void* cQuestSequence::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cQuestSequence::DTI)->memAlloc(sz, align, cQuestSequence::DTI.getID());
-}
-
-inline void cQuestSequence::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cQuestSequence::DTI)->memFree(p_addr);
 }
 
 void cQuestSequence::createProperty(MtPropertyList& s) {
@@ -40,14 +30,6 @@ MtObject* cQuestSequence::MyDTI::newInstance() const {
 
 const MtDTI& rQuestSequenceList::getDTI() const {
     return rQuestSequenceList::DTI;
-}
-
-inline void* rQuestSequenceList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rQuestSequenceList::DTI)->memAlloc(sz, align, rQuestSequenceList::DTI.getID());
-}
-
-inline void rQuestSequenceList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rQuestSequenceList::DTI)->memFree(p_addr);
 }
 
 rQuestSequenceList::~rQuestSequenceList() {

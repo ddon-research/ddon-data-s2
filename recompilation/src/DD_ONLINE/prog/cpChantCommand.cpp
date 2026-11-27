@@ -48,16 +48,8 @@ const MtDTI& cpChantCommand::getDTI() const {
     return cpChantCommand::DTI;
 }
 
-inline MtAllocator* cpChantCommand::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpChantCommand::DTI);
-}
-
 void* cpChantCommand::operator new(size_t sz, u32 align) {
     return cpChantCommand::getAllocator()->memAlloc(sz, align, cpChantCommand::DTI.getID());
-}
-
-inline void cpChantCommand::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpChantCommand::DTI)->memFree(p_addr);
 }
 
 cpChantCommand::cpChantCommand() {

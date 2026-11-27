@@ -16,6 +16,7 @@
 #include "../../XFramework/nDrawMaterial.h"
 #include "uArmor.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uDDOActorModel.h"
 #include "uDDOModel.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
@@ -24,23 +25,6 @@
 
 const MtDTI& rDDOModelMontage::getDTI() const {
     return rDDOModelMontage::DTI;
-}
-
-inline MtAllocator* rDDOModelMontage::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rDDOModelMontage::DTI);
-}
-
-inline void* rDDOModelMontage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDDOModelMontage::DTI)->memAlloc(sz, align, rDDOModelMontage::DTI.getID());
-}
-
-inline void rDDOModelMontage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDDOModelMontage::DTI)->memFree(p_addr);
-}
-
-inline rDDOModelMontage::rDDOModelMontage() {
-    setAttribute(16u);
-    mpHeader = nullptr;
 }
 
 rDDOModelMontage::~rDDOModelMontage() {

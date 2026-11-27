@@ -26,16 +26,8 @@ const MtDTI& uGUIShopTitle::getDTI() const {
     return uGUIShopTitle::DTI;
 }
 
-inline MtAllocator* uGUIShopTitle::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIShopTitle::DTI);
-}
-
 void* uGUIShopTitle::operator new(size_t sz, u32 align) {
     return uGUIShopTitle::getAllocator()->memAlloc(sz, align, uGUIShopTitle::DTI.getID());
-}
-
-inline void uGUIShopTitle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIShopTitle::DTI)->memFree(p_addr);
 }
 
 uGUIShopTitle::~uGUIShopTitle() {
@@ -98,9 +90,19 @@ __attribute__((weak)) void uGUIShopTitle::changeMoneyType() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIShopTitle::updateInit() {
-    DDON_STUB("uGUIShopTitle::updateInit")
-    /* stub */
+void uGUIShopTitle::updateInit() {
+    if (mTitleText.mLength == 0) {
+        return;
+    }
+    setPlay(false);
+    setPlay(true);
+    changeMoneyType();
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgTitle), &mTitleText.mStr[0], 0u, false);
+    setObjectMessage(static_cast<cGUIObject*>(mpObjMsgTitleSub), &mTitleTextSub.mStr[0], 0u, false);
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 181u);
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIShopTitle::updateWait);
+    updateMoney();
+    setInstanceVisible(static_cast<cGUIInstance*>(mpInstAnimMoney), mType != sGUIExt::SHOPTITLE_TYPE::NODISP);
 }
 
 void uGUIShopTitle::updateWait() {

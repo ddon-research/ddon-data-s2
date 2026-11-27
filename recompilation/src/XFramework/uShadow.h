@@ -7,8 +7,11 @@
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtPrimitive2D.h"
+#include "../MT/MtPrimitive3D.h"
+#include "cLightVolume.h"
 #include "cUnit.h"
 #include "nDrawRasterizerState.h"
+#include "sShadow.h"
 
 // Forward declarations
 class MtAllocator;
@@ -21,6 +24,7 @@ struct MtFloat4x4;
 class MtMatrix;
 class MtOBB;
 class MtObject;
+class MtPoint;
 class MtProperty;
 class MtPropertyList;
 class MtRect;
@@ -30,12 +34,16 @@ class MtVector3;
 class MtVector4;
 class cConvexBoundingVolume;
 class cDraw;
+class cSphereVolume;
 namespace nDraw { struct RASTERIZER_DESC; }
 namespace nDraw { class RasterizerState; }
 namespace nDraw { class Texture; }
+class sShadow;
 class uLight;
+class uPointLight;
 
 // Declarations
+class uPointShadow;
 class uShadow;
 
 // Type aliases from DWARF
@@ -53,6 +61,8 @@ using uintptr = __uintptr_t;
 
 class uShadow : public cUnit
 {
+    friend class sShadow;
+    friend class uPointShadow;
 public:
     enum SHADOW_MAP_TYPE
     {
@@ -398,6 +408,90 @@ public:
     static MyDTI DTI;
 };
 
+class uPointShadow : public uShadow
+{
+public:
+    class MyDTI;
+    struct VERTEX;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    struct VERTEX
+    {
+    public:
+        MtFloat2 pos;  // offset: 0x0
+        MtFloat2 uv;  // offset: 0x8
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    uPointShadow();
+    virtual ~uPointShadow();
+    virtual void moveAfter();  // vtable slot 10
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset);  // vtable slot 15
+    virtual bool isShadowed(const MtSphere& boundary) const;  // vtable slot 24
+    virtual bool getLimitRangeOBB(MtOBB* obb) const;  // vtable slot 25
+    virtual void setLimitRangeOBB(const MtOBB& obb);  // vtable slot 26
+    virtual MtSphere getBoundingSphere() const;  // vtable slot 27
+protected:
+    virtual MtVector3 getLightPos(uPointLight* pLight);  // vtable slot 39
+private:
+    static void allocateShadowMap(u32 shadowMapType, u32 mapSize, nDraw::Texture* * depthMap, nDraw::Texture* * tempMap, nDraw::Texture* * depthStencil, bool cache, sShadow::SharedTexture& sharedTexture, u32& rt_offset, u32& ds_offset, bool scratch, u32& rtOffsetScratch, u32& dsOffsetScratch);
+    static void allocateSharedTexture(u32 mapNum, sShadow::SharedTexture& sharedTexture, u32 shadowMapType, u32 mapSize, bool cache, u32 cachedViewNum, bool scratch, u32& rtOffsetScratch, u32& dsOffsetScratch);
+    void drawPoint(cDraw* pdraw);
+    void makeMarginVertices(void* vertices, const MtRect& pos, const MtRect& tex);
+    void makeCornerMarginVertices(void* vertices, const MtRect& pos, const MtPoint& t0, const MtPoint& t1);
+    void fillMargin(cDraw* pdraw);
+    void makeMipSubLevel(cDraw* pdraw);
+    void drawCubeBlur(cDraw* pdraw);
+    void drawCasterPoint(cDraw* pdraw, nDraw::Texture* pDepth, nDraw::Texture* pDepthStencil, bool clear, uShadow::ShadowMap::DrawMode drawMode);
+    void restoreShadowMapFromCache(cDraw* pdraw, const MtRect& srcRect);
+    virtual void createShadowMap();  // vtable slot 28
+    virtual void releaseShadowMapSub();  // vtable slot 29
+    virtual void drawSub(cDraw* pdraw);  // vtable slot 30
+    virtual void setupCasterDrawContext(cDraw* pdraw);  // vtable slot 31
+    virtual bool getBoundingVolume(cConvexBoundingVolume* * volume) const;  // vtable slot 33
+    virtual void beginBranchCaster(cDraw* pdraw, uShadow::ShadowMap& shadowMap);  // vtable slot 35
+    virtual bool checkValidShadowMapCacheSub();  // vtable slot 36
+    virtual void setupViewIndependentReceiveState(uShadow::ShadowViewIndependentReceiveState& state) const;  // vtable slot 37
+    virtual void setupViewDependentReceiveState(cDraw* pdraw, uShadow::ShadowReceiveParam& param, bool enableFrustum);  // vtable slot 38
+private:
+    MtVector3 mLightPos;  // offset: 0x1b0
+    MtOBB mRangeOBB;  // offset: 0x1c0
+    cSphereVolume mVolume;  // offset: 0x210
+    f32 mShadowDistanceBias;  // offset: 0x270
+    MtVector3 mLightPosCache;  // offset: 0x280
+    MtOBB mRangeOBBCache;  // offset: 0x290
+    sShadow::SharedTexture mSharedTexture;  // offset: 0x2e0
+public:
+    static MyDTI DTI;
+private:
+    static const MtVector3 face_dir[];
+    static const MtVector3 up_dir[];
+};
+
+inline void* uPointShadow::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* uShadow::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -456,4 +550,20 @@ inline bool uShadow::getPCDisableMode() {
 
 inline void* uShadow::cHardwareDispCtrlShadow::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uPointShadow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uPointShadow::DTI)->memFree(p_addr);
+}
+
+inline void uShadow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShadow::DTI)->memFree(p_addr);
+}
+
+inline void uShadow::cHardwareDispCtrlShadow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShadow::cHardwareDispCtrlShadow::DTI)->memFree(p_addr);
 }

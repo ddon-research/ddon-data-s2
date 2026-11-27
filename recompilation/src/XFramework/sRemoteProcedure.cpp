@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "sRemoteProcedure.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemory.h"
@@ -25,10 +24,6 @@
 
 const MtDTI& sRemoteProcedure::getDTI() const {
     return sRemoteProcedure::DTI;
-}
-
-inline void sRemoteProcedure::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sRemoteProcedure::DTI)->memFree(p_addr);
 }
 
 sRemoteProcedure::sRemoteProcedure() {
@@ -174,14 +169,6 @@ __attribute__((weak)) MtObject* sRemoteProcedure::MyDTI::newInstance() const {
 
 const MtDTI& sRemoteProcedure::cTemporaryRemoteCall::getDTI() const {
     return sRemoteProcedure::cTemporaryRemoteCall::DTI;
-}
-
-inline void* sRemoteProcedure::cTemporaryRemoteCall::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sRemoteProcedure::cTemporaryRemoteCall::DTI)->memAlloc(sz, align, sRemoteProcedure::cTemporaryRemoteCall::DTI.mID);
-}
-
-inline void sRemoteProcedure::cTemporaryRemoteCall::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sRemoteProcedure::cTemporaryRemoteCall::DTI)->memFree(p_addr);
 }
 
 sRemoteProcedure::cTemporaryRemoteCall::~cTemporaryRemoteCall() {

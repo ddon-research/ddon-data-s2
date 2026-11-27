@@ -41,10 +41,6 @@ const MtDTI& cSeedServerConnection::getDTI() const {
     return cSeedServerConnection::DTI;
 }
 
-inline void cSeedServerConnection::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSeedServerConnection::DTI)->memFree(p_addr);
-}
-
 cSeedServerConnection::~cSeedServerConnection() {
     DDON_STUB("cSeedServerConnection::~cSeedServerConnection")
     /* stub */
@@ -65,9 +61,49 @@ __attribute__((weak)) void cSeedServerConnection::disconnect(cSeedServerConnecti
     /* stub */
 }
 
-__attribute__((weak)) void cSeedServerConnection::move() {
-    DDON_STUB("cSeedServerConnection::move")
-    /* stub */
+void cSeedServerConnection::move() {
+    switch (static_cast<unsigned int>(getStatus() - 1)) {
+        case 0:
+        {
+            moveResolving();
+            break;
+        }
+        case 1:
+        {
+            moveConnecting();
+            break;
+        }
+        case 2:
+        {
+            moveHandShaking();
+            break;
+        }
+        case 3:
+        {
+            moveConnected();
+            break;
+        }
+        case 4:
+        {
+            moveDisconnecting();
+            break;
+        }
+        case 5:
+        {
+            moveDisconnected();
+            break;
+        }
+        case 6:
+        {
+            moveError();
+            break;
+        }
+        default:
+        {
+            moveNone();
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void cSeedServerConnection::moveNone() {
@@ -211,9 +247,8 @@ void cSeedServerConnection::cCalcBps::update(s32 byte, s32 sec) {
     }
 }
 
-__attribute__((weak)) s32 cSeedServerConnection::cCalcBps::getBps(s32 value) {
-    DDON_STUB("cSeedServerConnection::cCalcBps::getBps")
-    return {};
+s32 cSeedServerConnection::cCalcBps::getBps(s32 value) {
+    return static_cast<s32>(static_cast<unsigned int>((static_cast<unsigned long>(static_cast<long>(value * (((((((((mTotalByte[1] + mTotalByte[0]) + mTotalByte[2]) + mTotalByte[3]) + mTotalByte[4]) + mTotalByte[5]) + mTotalByte[6]) + mTotalByte[7]) + mTotalByte[8]) + mTotalByte[9])) * 1717986919) >> 63) + ((static_cast<long>(value * (((((((((mTotalByte[1] + mTotalByte[0]) + mTotalByte[2]) + mTotalByte[3]) + mTotalByte[4]) + mTotalByte[5]) + mTotalByte[6]) + mTotalByte[7]) + mTotalByte[8]) + mTotalByte[9])) * 1717986919) >> 34)));
 }
 
 s32 cSeedServerConnection::cCalcBps::getNowSize() {
@@ -222,10 +257,6 @@ s32 cSeedServerConnection::cCalcBps::getNowSize() {
 
 const MtDTI& cSeedServerStream::getDTI() const {
     return cSeedServerStream::DTI;
-}
-
-inline void cSeedServerStream::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSeedServerStream::DTI)->memFree(p_addr);
 }
 
 inline cSeedServerStream::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

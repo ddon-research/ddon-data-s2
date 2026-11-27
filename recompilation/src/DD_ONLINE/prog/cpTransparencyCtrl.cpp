@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -32,16 +31,8 @@ const MtDTI& cpTransparencyCtrl::getDTI() const {
     return cpTransparencyCtrl::DTI;
 }
 
-inline MtAllocator* cpTransparencyCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpTransparencyCtrl::DTI);
-}
-
 void* cpTransparencyCtrl::operator new(size_t sz, u32 align) {
     return cpTransparencyCtrl::getAllocator()->memAlloc(sz, align, cpTransparencyCtrl::DTI.getID());
-}
-
-inline void cpTransparencyCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpTransparencyCtrl::DTI)->memFree(p_addr);
 }
 
 cpTransparencyCtrl::cpTransparencyCtrl() {
@@ -134,9 +125,36 @@ void cpTransparencyCtrl::setOwner(MtObject* pOwner) {
     mpModel = static_cast<uDDOModel*>(pOwner);
 }
 
-__attribute__((weak)) void cpTransparencyCtrl::startChangeTrp(f32 initTrp, f32 endTrp, f32 frame) {
-    DDON_STUB("cpTransparencyCtrl::startChangeTrp")
-    /* stub */
+void cpTransparencyCtrl::startChangeTrp(f32 initTrp, f32 endTrp, f32 frame) {
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (0.0f > initTrp) {
+    } else {
+        if (initTrp > 1.0f) {
+        } else {
+            if (0.0f > endTrp) {
+            } else {
+                if (endTrp > 1.0f) {
+                } else {
+                    if (1.1920929e-7f > frame) {
+                    } else {
+                        mIsActive = true;
+                        mStartTrp = initTrp;
+                        mEndTrp = endTrp;
+                        mSpeed = (endTrp - initTrp) / frame;
+                        if (1e-5f > __builtin_fabsf((endTrp - initTrp) / frame)) {
+                            mIsActive = false;
+                            mBaseTrp = mEndTrp;
+                        } else {
+                            mBaseTrp = mStartTrp;
+                        }
+                        mpModel->mTransparency = mBaseTrp;
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpTransparencyCtrl::startChangeTrp(f32 endTrp, f32 frame) {

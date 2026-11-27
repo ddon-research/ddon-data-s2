@@ -68,42 +68,6 @@ const MtDTI& cDamageEffInfo::getDTI() const {
     return cDamageEffInfo::DTI;
 }
 
-inline void* cDamageEffInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDamageEffInfo::DTI)->memAlloc(sz, align, cDamageEffInfo::DTI.getID());
-}
-
-inline void cDamageEffInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDamageEffInfo::DTI)->memFree(p_addr);
-}
-
-inline cDamageEffInfo::cDamageEffInfo() {
-    mpReceiver = nullptr;
-    mpAttacker = nullptr;
-    mPhysTypeEff = 2;
-    mJointNo = 0;
-    mHitPos.x = MtVector3::Zero.x;
-    mHitPos.y = MtVector3::Zero.y;
-    mHitPos.z = MtVector3::Zero.z;
-    mHitPos.pad_ = 0.0f;
-    mHitNormal.x = MtVector3::Zero.x;
-    mHitNormal.y = MtVector3::Zero.y;
-    mHitNormal.z = MtVector3::Zero.z;
-    mHitNormal.pad_ = 0.0f;
-    mOffsetFromJoint.x = MtVector3::Zero.x;
-    mOffsetFromJoint.y = MtVector3::Zero.y;
-    mOffsetFromJoint.z = MtVector3::Zero.z;
-    mOffsetFromJoint.pad_ = 0.0f;
-    mSurfaceType = 0;
-    mElemntType = nDDOGame::ELEMENT_TYPE_INIT;
-    mEffectAngle = 1;
-    mEffectFlag = 0;
-    mEpvType = 0;
-    mIsDownWeakRegion = false;
-    mIsArrow = false;
-    mDamageRatePhys = 0.0f;
-    mDamageRatemagic = 0.0f;
-}
-
 inline cDamageEffInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cDamageEffInfo::MyDTI cDamageEffInfo::DTI("cDamageEffInfo", &::MtObject::DTI, 112ul, 0u, 0u);
@@ -114,43 +78,6 @@ MtObject* cDamageEffInfo::MyDTI::newInstance() const {
 
 const MtDTI& cDamageSeInfo::getDTI() const {
     return cDamageSeInfo::DTI;
-}
-
-inline void* cDamageSeInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDamageSeInfo::DTI)->memAlloc(sz, align, cDamageSeInfo::DTI.getID());
-}
-
-inline void cDamageSeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDamageSeInfo::DTI)->memFree(p_addr);
-}
-
-inline cDamageSeInfo::cDamageSeInfo() {
-    mIsDownWeakRegion = false;
-    mIsThrust = false;
-    mAttackType = 0;
-    mSurfaceType = 0;
-    mpDefenderOwner = nullptr;
-    mpAttackerOwner = nullptr;
-    mpDefender = nullptr;
-    mpAttacker = nullptr;
-    mAttackReactionType = 1;
-    mAttackLevel = 0;
-    mIsNoDamage = false;
-    mWeaponCategory = 0;
-    mAttackerType = 7;
-    mDefenderType = 7;
-    mAttackerBodySize = 1;
-    mElementType = nDDOGame::ELEMENT_TYPE_INIT;
-    mEnemyWeaponType = 0xFFFFFFFF;
-    mWeaponType = 0;
-    mSeType = 0;
-    mIsNonePhysSe = false;
-    mIsNoneElementSe = false;
-    mHitPos.x = MtVector3::Zero.x;
-    mHitPos.y = MtVector3::Zero.y;
-    mHitPos.z = MtVector3::Zero.z;
-    mHitPos.pad_ = 0.0f;
-    mJointNo = -1;
 }
 
 inline cDamageSeInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -165,16 +92,8 @@ const MtDTI& cpHpDamageCtrl::getDTI() const {
     return cpHpDamageCtrl::DTI;
 }
 
-inline MtAllocator* cpHpDamageCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpHpDamageCtrl::DTI);
-}
-
 void* cpHpDamageCtrl::operator new(size_t sz, u32 align) {
     return cpHpDamageCtrl::getAllocator()->memAlloc(sz, align, cpHpDamageCtrl::DTI.getID());
-}
-
-inline void cpHpDamageCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpHpDamageCtrl::DTI)->memFree(p_addr);
 }
 
 cpHpDamageCtrl::cpHpDamageCtrl() {
@@ -987,9 +906,18 @@ __attribute__((weak)) void cpHpDamageCtrl::callDamageSe(const cDamageSeInfo* pSe
     /* stub */
 }
 
-__attribute__((weak)) void cpHpDamageCtrl::resetEndurance_ActShake() {
-    DDON_STUB("cpHpDamageCtrl::resetEndurance_ActShake")
-    /* stub */
+void cpHpDamageCtrl::resetEndurance_ActShake() {
+    mShakeInfo.reset();
+    u32 i = 0;
+    if (mParentRegionStatusArray.mLength != 0) {
+        do {
+            if (mParentRegionStatusArray.getBuffer()[static_cast<int>(i)] != nullptr) {
+                static_cast<cParentRegionStatus*>(mParentRegionStatusArray.getBuffer()[static_cast<int>(i)])->mBlowInfo.reset();
+                static_cast<cParentRegionStatus*>(mParentRegionStatusArray.getBuffer()[static_cast<int>(i)])->mShrinkInfo.reset();
+            }
+            i += 1u;
+        } while (i < mParentRegionStatusArray.mLength);
+    }
 }
 
 void cpHpDamageCtrl::resetEndurance_RageStart() {
@@ -1004,9 +932,41 @@ void cpHpDamageCtrl::resetEndurance_RageStart() {
     mRageShrinkInfo.reset();
 }
 
-__attribute__((weak)) void cpHpDamageCtrl::makeDamageAdj(cHitInfoAfter* pHitInfo) {
-    DDON_STUB("cpHpDamageCtrl::makeDamageAdj")
-    /* stub */
+void cpHpDamageCtrl::makeDamageAdj(cHitInfoAfter* pHitInfo) {
+    uDDOModel* pAttacker = pHitInfo->mCommonInfo.getAttckerPtr();
+    if (pAttacker == nullptr) {
+        return;
+    }
+    uDDOModel* pDefender = pHitInfo->mCommonInfo.mpDfdModel;
+    if (pDefender == nullptr) {
+        return;
+    }
+    const cAttackParam* pAttackParam = pHitInfo->mCommonInfo.mpAttackParam;
+    if (pAttackParam == nullptr) {
+        return;
+    }
+    const cChildRegionStatus* pRegion = pHitInfo->mCommonInfo.mpChildRegion;
+    if (pRegion == nullptr) {
+        return;
+    }
+    if ((pAttackParam->mClimbAttackFlag2 & 1) != 0) {
+        if (pRegion->mIsClimbBonus) {
+            pHitInfo->mHpDamageInfo.addDamageAttackAdj(nObjCollision::HP_DAMAGE_ATTACK_ADJ_STATUS, pAttackParam->mClimbBonusRate);
+            pHitInfo->mBlowShrinkDmInfo.mShrinkAttackAdj[3] = pAttackParam->mClimbBonusRateShrink + pHitInfo->mBlowShrinkDmInfo.mShrinkAttackAdj[3];
+            pHitInfo->mBlowShrinkDmInfo.mBlowAttackAdj[3] = pAttackParam->mClimbBonusRateBlow + pHitInfo->mBlowShrinkDmInfo.mBlowAttackAdj[3];
+            pHitInfo->mBlowShrinkDmInfo.mShakeAttackAdj[3] = pAttackParam->mClimbBonusRateShake + pHitInfo->mBlowShrinkDmInfo.mShakeAttackAdj[3];
+            pHitInfo->mBlowShrinkDmInfo.mDownAttackAdj[3] = pAttackParam->mClimbBonusRateDown + pHitInfo->mBlowShrinkDmInfo.mDownAttackAdj[3];
+        }
+    }
+    if ((pAttackParam->mCatchFlag2 & 1) == 0) {
+        return;
+    }
+    if (pDefender->getCatchType() == nCatch::CATCH_TYPE_NOTHING) {
+        return;
+    }
+    sObjCollision* t0 = sObjCollision::getInstance();
+    f32 dmRate = t0->getCaughtDamageRate(pDefender->getCatchType());
+    pHitInfo->mHpDamageInfo.addDamageAttackAdj(nObjCollision::HP_DAMAGE_ATTACK_ADJ_STATUS, dmRate);
 }
 
 __attribute__((weak)) void cpHpDamageCtrl::calcDamage(cHitInfoAfter* pHitInfo) {

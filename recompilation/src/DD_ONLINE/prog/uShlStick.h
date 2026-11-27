@@ -221,3 +221,39 @@ inline uShlStickCtrl::uShlStickCtrl() {
     this->mIsOnce = false;
     this->mIsAlreadyKill = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamStick::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamStick::DTI)->memAlloc(sz, align, ::cShlParamStick::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamStickCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamStickCtrl::DTI)->memAlloc(sz, align, ::cShlParamStickCtrl::DTI.::MtDTI::getID());
+}
+
+inline void* uShlStick::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlStick::DTI)->memAlloc(sz, align, ::uShlStick::DTI.::MtDTI::getID());
+}
+
+inline void uShlStick::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlStick::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamStick* uShlStick::getShlParam() const {
+    return static_cast<const cShlParamStick*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void* uShlStickCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlStickCtrl::DTI)->memAlloc(sz, align, ::uShlStickCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uShlStickCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlStickCtrl::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamStickCtrl* uShlStickCtrl::getShlParam() const {
+    return static_cast<const cShlParamStickCtrl*>(this->::uShlBase::mpShlParam2);
+}

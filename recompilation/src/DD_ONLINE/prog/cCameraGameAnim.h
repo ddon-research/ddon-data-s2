@@ -345,3 +345,23 @@ inline void* cCamImpAnim::operator new(size_t sz, void* p_addr) {
 inline void* cCamImpAnimTar::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCamExParamAnim::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamAnim::DTI);
+}
+
+inline MtAllocator* cCamExParamAnim2::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamExParamAnim2::DTI);
+}
+
+inline void cCamImpAnim::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpAnim::DTI)->memFree(p_addr);
+}
+
+inline void cCamImpAnimTar::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCamImpAnimTar::DTI)->memFree(p_addr);
+}

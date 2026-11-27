@@ -21,10 +21,6 @@ void* sPlatformUtil::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sPlatformUtil::DTI)->memAlloc(sz, align, sPlatformUtil::DTI.mID);
 }
 
-inline void sPlatformUtil::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sPlatformUtil::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void sPlatformUtil::move() {
     DDON_STUB("sPlatformUtil::move")
     /* stub */

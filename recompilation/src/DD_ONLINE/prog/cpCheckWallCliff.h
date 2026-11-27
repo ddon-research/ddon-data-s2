@@ -128,3 +128,38 @@ private:
 inline void* cpCheckWallCliff::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpCheckWallCliff::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpCheckWallCliff::DTI);
+}
+
+inline void cpCheckWallCliff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpCheckWallCliff::DTI)->memFree(p_addr);
+}
+
+inline void cpCheckWallCliff::resetPos(const MtVector3& pos) {
+    this->mFallPreventionPosList.elems[0].x = pos.x;
+    this->mFallPreventionPosList.elems[0].y = pos.y;
+    this->mFallPreventionPosList.elems[0].z = pos.z;
+    this->mFallPreventionPosList.elems[0].pad_ = 0.0f;
+    this->mFallPreventionPosList.elems[1].x = pos.x;
+    this->mFallPreventionPosList.elems[1].y = pos.y;
+    this->mFallPreventionPosList.elems[1].z = pos.z;
+    this->mFallPreventionPosList.elems[1].pad_ = 0.0f;
+    this->mFallPreventionPosList.elems[2].x = pos.x;
+    this->mFallPreventionPosList.elems[2].y = pos.y;
+    this->mFallPreventionPosList.elems[2].z = pos.z;
+    this->mFallPreventionPosList.elems[2].pad_ = 0.0f;
+    this->mFallPreventionPosList.elems[3].x = pos.x;
+    this->mFallPreventionPosList.elems[3].y = pos.y;
+    this->mFallPreventionPosList.elems[3].z = pos.z;
+    this->mFallPreventionPosList.elems[3].pad_ = 0.0f;
+    this->mFallPreventionCorrectPos.x = pos.x;
+    this->mFallPreventionCorrectPos.y = pos.y;
+    this->mFallPreventionCorrectPos.z = pos.z;
+    this->mFallPreventionCorrectPos.pad_ = 0.0f;
+}

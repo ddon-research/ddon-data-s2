@@ -25,10 +25,6 @@ namespace nDraw { class RenderTargetView; }
 namespace nDraw { class Texture; }
 class sRender;
 
-// Declarations
-namespace nDraw { struct SCENE_DESC; }
-namespace nDraw { class Scene; }
-
 namespace nDraw {
     enum ANTIALIAS_ALT_TYPE
     {
@@ -101,6 +97,10 @@ namespace nDraw {
         __HDR_TYPE__U32 = -1,
     };
 }  // namespace nDraw
+
+// Declarations
+namespace nDraw { struct SCENE_DESC; }
+namespace nDraw { class Scene; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -245,4 +245,12 @@ namespace nDraw {
 
 inline void* nDraw::Scene::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nDraw::Scene::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nDraw::Scene::DTI)->memFree(p_addr);
 }

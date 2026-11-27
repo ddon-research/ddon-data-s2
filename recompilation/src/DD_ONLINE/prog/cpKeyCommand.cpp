@@ -63,16 +63,8 @@ const MtDTI& cpKeyCommand::getDTI() const {
     return cpKeyCommand::DTI;
 }
 
-inline MtAllocator* cpKeyCommand::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpKeyCommand::DTI);
-}
-
 void* cpKeyCommand::operator new(size_t sz, u32 align) {
     return cpKeyCommand::getAllocator()->memAlloc(sz, align, cpKeyCommand::DTI.getID());
-}
-
-inline void cpKeyCommand::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpKeyCommand::DTI)->memFree(p_addr);
 }
 
 cpKeyCommand::cpKeyCommand() {

@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <stdio.h>
 #include <string.h>
 #include "uCharacterEdit.h"
 #include "Protocol/PacketData/Character.h"
@@ -44,10 +45,12 @@
 #include "rCharacterEdit.h"
 #include "rCharacterEditCameraParam.h"
 #include "rEditStageParam.h"
+#include "rEffectProvider.h"
 #include "rEquipPreset.h"
 #include "rEquipPresetPalette.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "../../XFramework/rScheduler.h"
+#include "rSndPitchLimit.h"
 #include "../../XFramework/rSoundRequest.h"
 #include "../../XFramework/rSoundReverb.h"
 #include "../../XFramework/rSoundStreamRequest.h"
@@ -69,6 +72,7 @@
 #include "sInputManager.h"
 #include "sItemManager.h"
 #include "../../XFramework/sKeyboard.h"
+#include "sLightExt.h"
 #include "../../XFramework/sMain.h"
 #include "../../XFramework/sMouse.h"
 #include "sMouseExt.h"
@@ -128,14 +132,6 @@ const MtDTI& cEditParamList::getDTI() const {
     return cEditParamList::DTI;
 }
 
-inline void* cEditParamList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEditParamList::DTI)->memAlloc(sz, align, cEditParamList::DTI.getID());
-}
-
-inline void cEditParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEditParamList::DTI)->memFree(p_addr);
-}
-
 inline cEditParamList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cEditParamList::MyDTI cEditParamList::DTI("cEditParamList", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -146,10 +142,6 @@ MtObject* cEditParamList::MyDTI::newInstance() const {
 
 const MtDTI& cUndoData::getDTI() const {
     return cUndoData::DTI;
-}
-
-inline void cUndoData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cUndoData::DTI)->memFree(p_addr);
 }
 
 cUndoData::~cUndoData() {
@@ -173,16 +165,8 @@ const MtDTI& uCharacterEdit::getDTI() const {
     return uCharacterEdit::DTI;
 }
 
-inline MtAllocator* uCharacterEdit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCharacterEdit::DTI);
-}
-
 void* uCharacterEdit::operator new(size_t sz, u32 align) {
     return uCharacterEdit::getAllocator()->memAlloc(sz, align, uCharacterEdit::DTI.getID());
-}
-
-inline void uCharacterEdit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCharacterEdit::DTI)->memFree(p_addr);
 }
 
 uCharacterEdit::uCharacterEdit() {
@@ -399,9 +383,202 @@ __attribute__((weak)) uCharacterEdit::CHARA_REGIST_RESULT uCharacterEdit::charaR
     return {};
 }
 
-__attribute__((weak)) uCharacterEdit::CHARA_REGIST_RESULT uCharacterEdit::charaRegistInGame() {
-    DDON_STUB("uCharacterEdit::charaRegistInGame")
-    return {};
+uCharacterEdit::CHARA_REGIST_RESULT uCharacterEdit::charaRegistInGame() {
+    switch (mCharaRegistRno) {
+        case REGIST_ROUTINE_SETUP:
+        {
+            if (mpEditRes != nullptr) {
+                if (mpEditRes->mpEditParam != nullptr) {
+                    if (mpEditData != nullptr) {
+                        mpEditRes->mpEditParam->copyToCharacterData(&mpEditData->mCharacterEdit);
+                        cCharacterData::stPawnData* t0 = mpEditData;
+                        t0->mCharacterEdit.mName.clearName();
+                        snprintf(&t0->mCharacterEdit.mName.mFirstName[0], 13ul, "%s", &mName.mFirstName[0]);
+                        snprintf(&t0->mCharacterEdit.mName.mLastName[0], 9ul, "%s", &mName.mLastName[0]);
+                        cCharacterData::stPawnData* t1 = mpEditData;
+                        t1->mCharacterEdit.mSex = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 3648);
+                        unsigned char t2 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 176);
+                        t1->mCurrentJob = t2;
+                        if (static_cast<unsigned int>(mEdit - 3) > 1) {
+                            t1->mShareRange = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 624);
+                            sItemManager::getInstance()->setJobEquip(t1->mEquipData, t2);
+                            if (mEdit != nGUIExt::CHARA_EDIT_BEAUTY_PARLOR_PAWN) {
+                                if (mEdit == nGUIExt::CHARA_EDIT_BEAUTY_PARLOR_PLAYER) {
+                                    mCharaRegistRno = REGIST_ROUTINE_PLAYER_SALON_REQ_SV;
+                                    return REGIST_RESULT_NONE;
+                                } else {
+                                    if (mEdit == nGUIExt::CHARA_EDIT_PAWN) {
+                                        mCharaRegistRno = REGIST_ROUTINE_REQ_SV;
+                                        return REGIST_RESULT_NONE;
+                                    } else {
+                                        return REGIST_RESULT_ERROR;
+                                    }
+                                }
+                            } else {
+                                mCharaRegistRno = REGIST_ROUTINE_PAWN_SALON_REQ_SV;
+                                return REGIST_RESULT_NONE;
+                            }
+                        } else {
+                            sItemManager::getInstance()->setJobEquip(t1->mEquipData, t2);
+                            if (mEdit != nGUIExt::CHARA_EDIT_BEAUTY_PARLOR_PAWN) {
+                                if (mEdit == nGUIExt::CHARA_EDIT_BEAUTY_PARLOR_PLAYER) {
+                                    mCharaRegistRno = REGIST_ROUTINE_PLAYER_SALON_REQ_SV;
+                                    return REGIST_RESULT_NONE;
+                                } else {
+                                    if (mEdit == nGUIExt::CHARA_EDIT_PAWN) {
+                                        mCharaRegistRno = REGIST_ROUTINE_REQ_SV;
+                                        return REGIST_RESULT_NONE;
+                                    } else {
+                                        return REGIST_RESULT_ERROR;
+                                    }
+                                }
+                            } else {
+                                mCharaRegistRno = REGIST_ROUTINE_PAWN_SALON_REQ_SV;
+                                return REGIST_RESULT_NONE;
+                            }
+                        }
+                    } else {
+                        return REGIST_RESULT_ERROR;
+                    }
+                } else {
+                    return REGIST_RESULT_ERROR;
+                }
+            } else {
+                return REGIST_RESULT_ERROR;
+            }
+            break;
+        }
+        case REGIST_ROUTINE_REQ_SV:
+        {
+            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->createMyPawn(getSlotNo(), mpEditData);
+            mCharaRegistRno = REGIST_ROUTINE_WAIT_SV;
+            return REGIST_RESULT_NONE;
+        }
+        case REGIST_ROUTINE_WAIT_SV:
+        {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[58] != sNetworkExt::NET_STAT_ERROR) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[58] == sNetworkExt::NET_STAT_CANCEL) {
+                    mCharaRegistRno = REGIST_ROUTINE_END;
+                    return REGIST_RESULT_CANCEL;
+                } else {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[58] == sNetworkExt::NET_STAT_SUCCESS) {
+                        mCharaRegistRno = REGIST_ROUTINE_END;
+                        return REGIST_RESULT_SUCCESS;
+                    } else {
+                        return REGIST_RESULT_NONE;
+                    }
+                }
+            } else {
+                mCharaRegistRno = REGIST_ROUTINE_ERROR_DIALOG;
+                return REGIST_RESULT_NONE;
+            }
+            break;
+        }
+        case REGIST_ROUTINE_PLAYER_SALON_REQ_SV:
+        {
+            if ((mSalonChargeFlag & 0x40000000u) == 0) {
+                if ((((mSalonChargeFlag & 1u) == 0) ? (getSalonChargeFlag() & 2u) : static_cast<unsigned int>(((mSalonChargeFlag & 3u) == 3) ? 3 : 1)) != 0) {
+                    if (mpEditRes != nullptr) {
+                        if (mpEditRes->mpEditParam != nullptr) {
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->updateCharacterEditInfo(static_cast<unsigned char>(((mSalonChargeFlag & 1u) == 0) ? (getSalonChargeFlag() & 2u) : static_cast<unsigned int>(((mSalonChargeFlag & 3u) == 3) ? 3 : 1)), mpEditData->mCharacterEdit, *mpEditRes->mpEditParam);
+                            mCharaRegistRno = REGIST_ROUTINE_PLAYER_SALON_WAIT_SV;
+                            return REGIST_RESULT_NONE;
+                        } else {
+                            return REGIST_RESULT_ERROR;
+                        }
+                    } else {
+                        return REGIST_RESULT_ERROR;
+                    }
+                } else {
+                    mCharaRegistRno = REGIST_ROUTINE_END;
+                    return REGIST_RESULT_SUCCESS;
+                }
+            } else {
+                mCharaRegistRno = REGIST_ROUTINE_END;
+                return REGIST_RESULT_SUCCESS;
+            }
+            break;
+        }
+        case REGIST_ROUTINE_PLAYER_SALON_WAIT_SV:
+        {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[477] != sNetworkExt::NET_STAT_ERROR) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[477] == sNetworkExt::NET_STAT_CANCEL) {
+                    mCharaRegistRno = REGIST_ROUTINE_END;
+                    return REGIST_RESULT_CANCEL;
+                } else {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[477] == sNetworkExt::NET_STAT_SUCCESS) {
+                        mCharaRegistRno = REGIST_ROUTINE_END;
+                        return REGIST_RESULT_SUCCESS;
+                    } else {
+                        return REGIST_RESULT_NONE;
+                    }
+                }
+            } else {
+                mCharaRegistRno = REGIST_ROUTINE_ERROR_DIALOG;
+                return REGIST_RESULT_NONE;
+            }
+            break;
+        }
+        case REGIST_ROUTINE_PAWN_SALON_REQ_SV:
+        {
+            if ((mSalonChargeFlag & 0x40000000u) == 0) {
+                if ((((mSalonChargeFlag & 1u) == 0) ? (getSalonChargeFlag() & 2u) : static_cast<unsigned int>(((mSalonChargeFlag & 3u) == 3) ? 3 : 1)) != 0) {
+                    if (mpEditRes != nullptr) {
+                        if (mpEditRes->mpEditParam != nullptr) {
+                            static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->updatePawnEditInfo(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 5120), static_cast<unsigned char>(((mSalonChargeFlag & 1u) == 0) ? (getSalonChargeFlag() & 2u) : static_cast<unsigned int>(((mSalonChargeFlag & 3u) == 3) ? 3 : 1)), mpEditData->mCharacterEdit, *mpEditRes->mpEditParam);
+                            mCharaRegistRno = REGIST_ROUTINE_PAWN_SALON_WAIT_SV;
+                            return REGIST_RESULT_NONE;
+                        } else {
+                            return REGIST_RESULT_ERROR;
+                        }
+                    } else {
+                        return REGIST_RESULT_ERROR;
+                    }
+                } else {
+                    mCharaRegistRno = REGIST_ROUTINE_END;
+                    return REGIST_RESULT_SUCCESS;
+                }
+            } else {
+                mCharaRegistRno = REGIST_ROUTINE_END;
+                return REGIST_RESULT_SUCCESS;
+            }
+            break;
+        }
+        case REGIST_ROUTINE_PAWN_SALON_WAIT_SV:
+        {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[478] != sNetworkExt::NET_STAT_ERROR) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[478] == sNetworkExt::NET_STAT_CANCEL) {
+                    mCharaRegistRno = REGIST_ROUTINE_END;
+                    return REGIST_RESULT_CANCEL;
+                } else {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mStatus[478] == sNetworkExt::NET_STAT_SUCCESS) {
+                        mCharaRegistRno = REGIST_ROUTINE_END;
+                        return REGIST_RESULT_SUCCESS;
+                    } else {
+                        return REGIST_RESULT_NONE;
+                    }
+                }
+            } else {
+                mCharaRegistRno = REGIST_ROUTINE_ERROR_DIALOG;
+                return REGIST_RESULT_NONE;
+            }
+            break;
+        }
+        case REGIST_ROUTINE_ERROR_DIALOG:
+        {
+            if (!static_cast<sNetworkExt*>(sNetwork::getInstance())->isDispErrorDialog()) {
+                mCharaRegistRno = REGIST_ROUTINE_END;
+                return REGIST_RESULT_FAILED;
+            } else {
+                return REGIST_RESULT_NONE;
+            }
+            break;
+        }
+        default:
+        {
+            return REGIST_RESULT_NONE;
+        }
+    }
 }
 
 __attribute__((weak)) uCharacterEdit::GOLD_STONE_RESULT uCharacterEdit::checkGoldStone() {
@@ -410,20 +587,52 @@ __attribute__((weak)) uCharacterEdit::GOLD_STONE_RESULT uCharacterEdit::checkGol
 }
 
 __attribute__((weak)) bool uCharacterEdit::checkGoldStoneSaveMove() {
-    DDON_STUB("uCharacterEdit::checkGoldStoneSaveMove")
-    return {};
-}
-
-inline void uCharacterEdit::loadTemp() {
-    if (mpEditRes == nullptr) {
-        return;
+    switch (mSaveLoadRno) {
+        case EDIT_SAVE_LOAD_ROUTINE_INIT:
+        {
+            if (mpSaveLoadFlow != nullptr) {
+                mpSaveLoadFlow->kill();
+                mpSaveLoadFlow = nullptr;
+            }
+            mpSaveLoadFlow = new (16u) uEditSaveLoadFlow;
+            if (mpSaveLoadFlow == nullptr) {
+                return true;
+            }
+            const cEditParam* pEditParam = getEditParam();
+            if (pEditParam == nullptr) {
+                return true;
+            }
+            mpSaveLoadFlow->setCharacterEdit(this);
+            mpSaveLoadFlow->setGmdDialog(mpGmdDialog);
+            mpSaveLoadFlow->startSaveLoad(nEditSaveLoadFlow::MODE_SAVE);
+            MT_CTSTR firstName = mName.mFirstName;
+            MT_CTSTR lastName = mName.mLastName;
+            s32 bodyType = pEditParam->mBodyType;
+            mpSaveLoadFlow->setCharaInfo(bodyType, firstName, lastName);
+            sUnit::getInstance()->addBottom(static_cast<MOVE_LINE>(sUnitExt::ML_UI_AREA1), mpSaveLoadFlow, sUnitExt::GPT_UI_SUB);
+            mSaveLoadRno = EDIT_SAVE_LOAD_ROUTINE_WAIT;
+            break;
+        }
+        case EDIT_SAVE_LOAD_ROUTINE_WAIT:
+        {
+            if (mpSaveLoadFlow == nullptr) {
+                return true;
+            }
+            if (!mpSaveLoadFlow->isBusy()) {
+                mSaveLoadRno = EDIT_SAVE_LOAD_ROUTINE_END;
+            }
+            break;
+        }
+        case EDIT_SAVE_LOAD_ROUTINE_END:
+        {
+            return true;
+        }
+        default:
+        {
+            break;
+        }
     }
-    if (mpEditRes->mpEditParam == nullptr) {
-        return;
-    }
-    mpEditRes->mpEditParam->mVoice = mTemp.mVoice;
-    mpEditRes->mpEditParam->mPersonality = mTemp.mPersonal;
-    mpEditRes->mpEditParam->mSpeechFreq = mTemp.mSpeechFreq;
+    return false;
 }
 
 __attribute__((weak)) void uCharacterEdit::setModel(bool isAction) {
@@ -431,14 +640,145 @@ __attribute__((weak)) void uCharacterEdit::setModel(bool isAction) {
     /* stub */
 }
 
-__attribute__((weak)) void uCharacterEdit::requestVoice() {
-    DDON_STUB("uCharacterEdit::requestVoice")
-    /* stub */
+void uCharacterEdit::requestVoice() {
+    if (mpCharacterEdit == nullptr) {
+        return;
+    }
+    if (mpEditRes == nullptr) {
+        return;
+    }
+    if (mpEditRes->mpEditParam == nullptr) {
+        return;
+    }
+    switch (static_cast<unsigned int>(mEdit - 1)) {
+        case 0:
+        {
+            if (mpCharacterEdit->getVoiceRes() != nullptr) {
+                if (mConThisId != 0) {
+                    sSound::getInstance()->stopSe(mpCharacterEdit->getVoiceRes(), reqPLTbl[mVoiceReqNoOld], mConThisId, false);
+                    mConThisId = 0;
+                    mIsVoiceCallReq = true;
+                    mpCharacterEdit->requestArcLoad(8u);
+                } else {
+                    mIsVoiceCallReq = true;
+                    mpCharacterEdit->requestArcLoad(8u);
+                }
+            } else {
+                mIsVoiceCallReq = true;
+                mpCharacterEdit->requestArcLoad(8u);
+            }
+            break;
+        }
+        case 1:
+        {
+            if (mpCharacterEdit->getVoiceStreamRes() != nullptr) {
+                if (mConThisId != 0) {
+                    static_cast<sSoundExt*>(sSound::getInstance())->stopStream(mpCharacterEdit->getVoiceStreamRes(), reqPawnTbl[mVoiceReqNoOld], mConThisId, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+                    mConThisId = 0;
+                    mIsVoiceCallReq = true;
+                    mpCharacterEdit->requestArcLoad(8u);
+                } else {
+                    mIsVoiceCallReq = true;
+                    mpCharacterEdit->requestArcLoad(8u);
+                }
+            } else {
+                mIsVoiceCallReq = true;
+                mpCharacterEdit->requestArcLoad(8u);
+            }
+            break;
+        }
+        case 2:
+        {
+            if (mpCharacterEdit->getVoiceRes() != nullptr) {
+                if (mConThisId != 0) {
+                    sSound::getInstance()->stopSe(mpCharacterEdit->getVoiceRes(), reqPLTbl[mVoiceReqNoOld], mConThisId, false);
+                    mConThisId = 0;
+                    mIsVoiceCallReq = true;
+                    mpCharacterEdit->requestArcLoad(8u);
+                } else {
+                    mIsVoiceCallReq = true;
+                    mpCharacterEdit->requestArcLoad(8u);
+                }
+            } else {
+                mIsVoiceCallReq = true;
+                mpCharacterEdit->requestArcLoad(8u);
+            }
+            break;
+        }
+        case 3:
+        {
+            if (mpCharacterEdit->getVoiceStreamRes() != nullptr) {
+                if (mConThisId != 0) {
+                    static_cast<sSoundExt*>(sSound::getInstance())->stopStream(mpCharacterEdit->getVoiceStreamRes(), reqPawnTbl[mVoiceReqNoOld], mConThisId, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+                    mConThisId = 0;
+                    mIsVoiceCallReq = true;
+                    mpCharacterEdit->requestArcLoad(8u);
+                } else {
+                    mIsVoiceCallReq = true;
+                    mpCharacterEdit->requestArcLoad(8u);
+                }
+            } else {
+                mIsVoiceCallReq = true;
+                mpCharacterEdit->requestArcLoad(8u);
+            }
+            break;
+        }
+        default:
+        {
+            mIsVoiceCallReq = true;
+            mpCharacterEdit->requestArcLoad(8u);
+            break;
+        }
+    }
 }
 
-__attribute__((weak)) void uCharacterEdit::stopVoice() {
-    DDON_STUB("uCharacterEdit::stopVoice")
-    /* stub */
+void uCharacterEdit::stopVoice() {
+    switch (static_cast<unsigned int>(mEdit - 1)) {
+        case 0:
+        {
+            if (mpCharacterEdit->getVoiceRes() != nullptr) {
+                if (mConThisId != 0) {
+                    sSound::getInstance()->stopSe(mpCharacterEdit->getVoiceRes(), reqPLTbl[mVoiceReqNoOld], mConThisId, false);
+                    mConThisId = 0;
+                }
+            }
+            break;
+        }
+        case 1:
+        {
+            if (mpCharacterEdit->getVoiceStreamRes() != nullptr) {
+                if (mConThisId != 0) {
+                    static_cast<sSoundExt*>(sSound::getInstance())->stopStream(mpCharacterEdit->getVoiceStreamRes(), reqPawnTbl[mVoiceReqNoOld], mConThisId, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+                    mConThisId = 0;
+                }
+            }
+            break;
+        }
+        case 2:
+        {
+            if (mpCharacterEdit->getVoiceRes() != nullptr) {
+                if (mConThisId != 0) {
+                    sSound::getInstance()->stopSe(mpCharacterEdit->getVoiceRes(), reqPLTbl[mVoiceReqNoOld], mConThisId, false);
+                    mConThisId = 0;
+                }
+            }
+            break;
+        }
+        case 3:
+        {
+            if (mpCharacterEdit->getVoiceStreamRes() != nullptr) {
+                if (mConThisId != 0) {
+                    static_cast<sSoundExt*>(sSound::getInstance())->stopStream(mpCharacterEdit->getVoiceStreamRes(), reqPawnTbl[mVoiceReqNoOld], mConThisId, sSoundExt::STREAM_SEARCH_KEY_RESOURCE_REQNO);
+                    mConThisId = 0;
+                }
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void uCharacterEdit::callbackSetupVoice() {
@@ -701,24 +1041,6 @@ bool uCharacterEdit::isChargedVoiceData(u32 voiceType, u32 voiceUID) const {
     return false;
 }
 
-inline void uCharacterEdit::notifyChangeScr_On() {
-    if (mpGUIEdit == nullptr) {
-        return;
-    }
-    mpGUIEdit->mIsChangeScr = true;
-}
-
-inline void uCharacterEdit::notifyChangeScr_Off() {
-    if (mpGUIEdit == nullptr) {
-        return;
-    }
-    mpGUIEdit->mIsChangeScr = false;
-}
-
-void uCharacterEdit::setParlorEquipData(nCharacterData::stEquipData& data) {
-    mPalorParam.mEquipData.copyData(data);
-}
-
 void uCharacterEdit::setParlorEditParam(cEditParam* p) {
     if (p == nullptr) {
         return;
@@ -778,9 +1100,14 @@ __attribute__((weak)) void uCharacterEdit::registerCategoryParamList(s32 categor
     /* stub */
 }
 
-__attribute__((weak)) void uCharacterEdit::applyStageType() {
-    DDON_STUB("uCharacterEdit::applyStageType")
-    /* stub */
+void uCharacterEdit::applyStageType() {
+    if (static_cast<unsigned int>(mEdit - 3) <= 1) {
+        mStageType = 2;
+    } else {
+        if (mEdit == nGUIExt::CHARA_EDIT_PAWN) {
+            mStageType = 1;
+        }
+    }
 }
 
 __attribute__((weak)) uCharacterEditCameraBase* uCharacterEdit::createCamera() {
@@ -812,10 +1139,6 @@ uCharacterEdit::cParlorParam::~cParlorParam() {
 
 const MtDTI& uCharacterEditBase::getDTI() const {
     return uCharacterEditBase::DTI;
-}
-
-inline void uCharacterEditBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCharacterEditBase::DTI)->memFree(p_addr);
 }
 
 uCharacterEditBase::uCharacterEditBase() {
@@ -935,8 +1258,106 @@ __attribute__((weak)) void uCharacterEditBase::updatePtr() {
 }
 
 __attribute__((weak)) void uCharacterEditBase::release() {
-    DDON_STUB("uCharacterEditBase::release")
-    /* stub */
+    cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+    cArcLoaderBase* v0_7;
+    if (mArcTicketEditCommon != t0) {
+        sArchiveManager::getInstance()->returnTicket(mArcTicketEditCommon);
+        mArcTicketEditCommon = t0;
+        v0_7 = t0;
+    } else {
+        v0_7 = mArcTicketEditCommon;
+    }
+    if (v0_7 != mArcTicketStage) {
+        sArchiveManager::getInstance()->returnTicket(mArcTicketStage);
+        mArcTicketStage = v0_7;
+    }
+    if (mpEditStageParam != nullptr) {
+        mpEditStageParam->release();
+        mpEditStageParam = nullptr;
+    }
+    if (mpEditRes != nullptr) {
+        mpEditRes->release();
+        mpEditRes = nullptr;
+    }
+    if (mpWeatherParam != nullptr) {
+        mpWeatherParam->release();
+        mpWeatherParam = nullptr;
+    }
+    if (mpWeatherStage != nullptr) {
+        mpWeatherStage->release();
+        mpWeatherStage = nullptr;
+    }
+    if (mpEffectProv != nullptr) {
+        mpEffectProv->release();
+        mpEffectProv = nullptr;
+    }
+    if (mpSndReqEdit != nullptr) {
+        mpSndReqEdit->release();
+        mpSndReqEdit = nullptr;
+    }
+    if (mpSndPitchLimit != nullptr) {
+        mpSndPitchLimit->release();
+        mpSndPitchLimit = nullptr;
+    }
+    if (mpGmdDialog != nullptr) {
+        mpGmdDialog->release();
+        mpGmdDialog = nullptr;
+    }
+    if (mpModelSchl != nullptr) {
+        mpModelSchl->kill();
+        mpModelSchl = nullptr;
+    }
+    if (mpFilterSchl != nullptr) {
+        mpFilterSchl->kill();
+        mpFilterSchl = nullptr;
+    }
+    if (mpLightSchl != nullptr) {
+        mpLightSchl->kill();
+        mpLightSchl = nullptr;
+    }
+    if (mpOmListSchl != nullptr) {
+        mpOmListSchl->kill();
+        mpOmListSchl = nullptr;
+    }
+    if (mpModel != nullptr) {
+        mpModel->kill();
+        mpModel = nullptr;
+    }
+    if (mpCamera != nullptr) {
+        mpCamera->kill();
+        mpCamera = nullptr;
+    }
+    if (sSound::getInstance() != nullptr) {
+        static_cast<sSoundExt*>(sSound::getInstance())->stopAllStream();
+        static_cast<sSoundExt*>(sSound::getInstance())->stopAllSe();
+    }
+    if (sWeatherManager::getInstance() != nullptr) {
+        sWeatherManager::getInstance()->releaseEnvMapTexture();
+    }
+    if (sArea::getInstance() != nullptr) {
+        if (!static_cast<sAreaExt*>(sArea::getInstance())->isStage()) {
+            if (sLightExt::getInstance() != nullptr) {
+                sLightExt::getInstance()->stageFinal();
+            }
+        }
+    }
+    if (sWeatherManager::getInstance() != nullptr) {
+        sWeatherManager::getInstance()->endQuestWeather();
+        sWeatherManager::getInstance()->clearWeatherStageUnit();
+        sWeatherManager::getInstance()->releaseWeatherStageInfo();
+        sWeatherManager::getInstance()->releaseWeatherParamInfoTbl();
+    }
+    if (sWorldOffset::getInstance() != nullptr) {
+        sWorldOffset::getInstance()->clear();
+    }
+    if (sLightExt::getInstance() != nullptr) {
+        sLightExt::getInstance()->mbIsEditRoom = false;
+        sLightExt::getInstance()->mpuTargetModel = nullptr;
+    }
+    if (sRender::getInstance() != nullptr) {
+        sRender::getInstance()->setRenderDetailControl(true);
+        return;
+    }
 }
 
 __attribute__((weak)) bool uCharacterEditBase::moveLoadArc() {
@@ -1090,10 +1511,6 @@ const MtDTI& uCharacterEditCamera::getDTI() const {
     return uCharacterEditCamera::DTI;
 }
 
-inline void uCharacterEditCamera::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCharacterEditCamera::DTI)->memFree(p_addr);
-}
-
 uCharacterEditCamera::~uCharacterEditCamera() {
 }
 
@@ -1108,14 +1525,6 @@ __attribute__((weak)) MtObject* uCharacterEditCamera::MyDTI::newInstance() const
 
 const MtDTI& uCharacterEditCameraBase::getDTI() const {
     return uCharacterEditCameraBase::DTI;
-}
-
-inline void* uCharacterEditCameraBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::DTI)->memAlloc(sz, align, uCharacterEditCameraBase::DTI.getID());
-}
-
-inline void uCharacterEditCameraBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::DTI)->memFree(p_addr);
 }
 
 uCharacterEditCameraBase::uCharacterEditCameraBase() {
@@ -1270,14 +1679,6 @@ MtObject* uCharacterEditCameraBase::MyDTI::newInstance() const {
 
 const MtDTI& uCharacterEditCameraBase::cLimit::getDTI() const {
     return uCharacterEditCameraBase::cLimit::DTI;
-}
-
-inline MtAllocator* uCharacterEditCameraBase::cLimit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::cLimit::DTI);
-}
-
-inline void* uCharacterEditCameraBase::cLimit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uCharacterEditCameraBase::cLimit::DTI)->memAlloc(sz, align, uCharacterEditCameraBase::cLimit::DTI.getID());
 }
 
 __attribute__((weak)) void uCharacterEditCameraBase::cLimit::operator delete(void* p_addr) {

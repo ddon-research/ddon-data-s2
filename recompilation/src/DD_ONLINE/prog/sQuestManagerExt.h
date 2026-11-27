@@ -1570,3 +1570,102 @@ inline sQuestManagerExt::cUnreleasedArea::cUnreleasedArea() {
 inline void* sQuestManagerExt::cSayInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+
+inline MtAllocator* sQuestManagerExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::DTI);
+}
+
+inline void sQuestManagerExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::DTI)->memFree(p_addr);
+}
+
+inline void sQuestManagerExt::resetParam() {
+    unsigned int i1 = 0;
+    if (this->mKilledEnemy.::MtArray::mLength != 0) {
+        do {
+            if (this->mKilledEnemy.::MtArray::mpArray[i1] != nullptr) {
+                delete this->mKilledEnemy.::MtArray::mpArray[i1];
+            }
+            i1 += 1u;
+        } while (i1 < this->mKilledEnemy.::MtArray::mLength);
+    }
+    this->mKilledEnemy.::MtArray::mLength = 0;
+}
+
+inline void* sQuestManagerExt::cKilledEnemy::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cKilledEnemy::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cKilledEnemy::DTI.::MtDTI::getID());
+}
+
+inline void sQuestManagerExt::cKilledEnemy::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cKilledEnemy::DTI)->memFree(p_addr);
+}
+
+inline void* sQuestManagerExt::cManagerInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cManagerInfo::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cManagerInfo::DTI.::MtDTI::getID());
+}
+
+inline void sQuestManagerExt::cManagerInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cManagerInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sQuestManagerExt::cTouchOmInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cTouchOmInfo::DTI);
+}
+
+inline void sQuestManagerExt::cTouchOmInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cTouchOmInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sQuestManagerExt::cFunctionInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cFunctionInfo::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cFunctionInfo::DTI.::MtDTI::getID());
+}
+
+inline void sQuestManagerExt::cFunctionInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cFunctionInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sQuestManagerExt::cSystemLogNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cSystemLogNode::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cSystemLogNode::DTI.::MtDTI::getID());
+}
+
+inline void sQuestManagerExt::cSystemLogNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cSystemLogNode::DTI)->memFree(p_addr);
+}
+
+inline void* sQuestManagerExt::cClearedQuestInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cClearedQuestInfo::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cClearedQuestInfo::DTI.::MtDTI::getID());
+}
+
+inline void sQuestManagerExt::cClearedQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cClearedQuestInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sQuestManagerExt::cTimer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cTimer::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cTimer::DTI.::MtDTI::getID());
+}
+
+inline void sQuestManagerExt::cTimer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cTimer::DTI)->memFree(p_addr);
+}
+
+inline void sQuestManagerExt::cTimer::stopTimer() {
+    this->mStopTime = static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mWorldServerTime.mTime;
+}
+
+inline void* sQuestManagerExt::cUnreleasedArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cUnreleasedArea::DTI)->memAlloc(sz, align, ::sQuestManagerExt::cUnreleasedArea::DTI.::MtDTI::getID());
+}
+
+inline void sQuestManagerExt::cUnreleasedArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cUnreleasedArea::DTI)->memFree(p_addr);
+}
+
+inline void sQuestManagerExt::cSayInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sQuestManagerExt::cSayInfo::DTI)->memFree(p_addr);
+}

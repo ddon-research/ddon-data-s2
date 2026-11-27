@@ -9,6 +9,7 @@
 
 // Forward declarations
 class uDDOModel;
+class uHuman;
 
 // Declarations
 namespace ctl { namespace detail { class basic_storageArray; } }
@@ -37,6 +38,8 @@ namespace ctl {
         template <typename T, long unsigned int ELEMENT_NUM, long unsigned int WARN_SIZE, long unsigned int ERR_SIZE>
         class storageArray : public ctl::detail::basic_storageArray
         {
+            friend class ::uDDOModel;
+            friend class ::uHuman;
         public:
             storageArray();
             void fill(u8 value);
@@ -56,6 +59,8 @@ namespace ctl {
 template <>
 class MtTypedStorageArray<cpLockOn::cLockOnTarget, 16> : public ctl::detail::storageArray<cpLockOn::cLockOnTarget*, 16, 16384, 65536>
 {
+    friend class uDDOModel;
+    friend class uHuman;
 public:
     using container_type = ctl::traits::add_pointer<cpLockOn::cLockOnTarget>::type;
 public:
@@ -76,6 +81,8 @@ protected:
 template <>
 class MtTypedStorageArray<cpLockOn::cLockOnTarget, 32> : public ctl::detail::storageArray<cpLockOn::cLockOnTarget*, 32, 16384, 65536>
 {
+    friend class uDDOModel;
+    friend class uHuman;
 public:
     using container_type = ctl::traits::add_pointer<cpLockOn::cLockOnTarget>::type;
 public:
@@ -99,6 +106,8 @@ protected:
 template <>
 class MtTypedStorageArray<uDDOModel, 8> : public ctl::detail::storageArray<uDDOModel*, 8, 16384, 65536>
 {
+    friend class uDDOModel;
+    friend class uHuman;
 public:
     using container_type = ctl::traits::add_pointer<uDDOModel>::type;
 public:

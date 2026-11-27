@@ -216,3 +216,15 @@ inline rEffectStrip::rEffectStrip() {
     this->mpParamBuff = nullptr;
     this->::cResource::mAttr = 22;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rEffectStrip::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memAlloc(sz, align, ::rEffectStrip::DTI.::MtDTI::mID);
+}
+
+inline void rEffectStrip::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectStrip::DTI)->memFree(p_addr);
+}

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "sMouse.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
@@ -20,10 +19,6 @@
 
 const MtDTI& sMouse::getDTI() const {
     return sMouse::DTI;
-}
-
-inline void sMouse::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sMouse::DTI)->memFree(p_addr);
 }
 
 sMouse::sMouse() {

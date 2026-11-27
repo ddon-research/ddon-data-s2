@@ -36,16 +36,8 @@ const MtDTI& uGUIGaugeArtsV01_03::getDTI() const {
     return uGUIGaugeArtsV01_03::DTI;
 }
 
-inline MtAllocator* uGUIGaugeArtsV01_03::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGaugeArtsV01_03::DTI);
-}
-
 void* uGUIGaugeArtsV01_03::operator new(size_t sz, u32 align) {
     return uGUIGaugeArtsV01_03::getAllocator()->memAlloc(sz, align, uGUIGaugeArtsV01_03::DTI.getID());
-}
-
-inline void uGUIGaugeArtsV01_03::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeArtsV01_03::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) const MtVector2 uGUIGaugeArtsV01_03::getGaugeMouseChantInfo() {

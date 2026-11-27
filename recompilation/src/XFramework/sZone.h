@@ -247,3 +247,20 @@ inline void* sZone::operator new(size_t sz, void* p_addr) {
 inline sZone* sZone::getInstance() {
     return ::sZone::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+#include "../MT/MtObject.h"
+
+inline void sZone::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sZone::DTI)->memFree(p_addr);
+}
+
+inline void sZone::setWorldOffset(u32 handle, const MtVector3& ofsPos) {
+    if (handle < this->mZoneLayoutArray.::MtArray::mLength) {
+        if (this->mZoneLayoutArray.::MtArray::mpArray[handle] != nullptr) {
+            static_cast<cZoneLayout*>(this->mZoneLayoutArray.::MtArray::mpArray[handle])->::cZoneLayout::applyWorldOffset(::MtVector3::Zero, ofsPos);
+        }
+    }
+}

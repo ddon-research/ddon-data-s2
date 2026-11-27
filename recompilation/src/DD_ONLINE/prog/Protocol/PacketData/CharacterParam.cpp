@@ -21,10 +21,6 @@ const MtDTI& CDataCharacterInfo::getDTI() const {
     return CDataCharacterInfo::DTI;
 }
 
-inline MtAllocator* CDataCharacterInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterInfo::DTI);
-}
-
 __attribute__((weak)) void CDataCharacterInfo::operator delete(void* p_addr) {
     CDataCharacterInfo::getAllocator()->memFree(p_addr);
 }
@@ -47,16 +43,8 @@ const MtDTI& CDataJobExpMode::getDTI() const {
     return CDataJobExpMode::DTI;
 }
 
-inline MtAllocator* CDataJobExpMode::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataJobExpMode::DTI);
-}
-
 void* CDataJobExpMode::operator new(size_t sz, u32 align) {
     return CDataJobExpMode::getAllocator()->memAlloc(sz, align, CDataJobExpMode::DTI.getID());
-}
-
-inline void CDataJobExpMode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(CDataJobExpMode::DTI)->memFree(p_addr);
 }
 
 inline CDataJobExpMode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -69,10 +57,6 @@ MtObject* CDataJobExpMode::MyDTI::newInstance() const {
 
 const MtDTI& CDataJobPlayPoint::getDTI() const {
     return CDataJobPlayPoint::DTI;
-}
-
-inline MtAllocator* CDataJobPlayPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataJobPlayPoint::DTI);
 }
 
 void* CDataJobPlayPoint::operator new(size_t sz, u32 align) {
@@ -95,10 +79,6 @@ const MtDTI& CDataJobValueShopItem::getDTI() const {
     return CDataJobValueShopItem::DTI;
 }
 
-inline MtAllocator* CDataJobValueShopItem::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataJobValueShopItem::DTI);
-}
-
 void* CDataJobValueShopItem::operator new(size_t sz, u32 align) {
     return CDataJobValueShopItem::getAllocator()->memAlloc(sz, align, CDataJobValueShopItem::DTI.getID());
 }
@@ -117,14 +97,6 @@ MtObject* CDataJobValueShopItem::MyDTI::newInstance() const {
 
 const MtDTI& CDataPlayPointData::getDTI() const {
     return CDataPlayPointData::DTI;
-}
-
-inline MtAllocator* CDataPlayPointData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPlayPointData::DTI);
-}
-
-inline void* CDataPlayPointData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPlayPointData::DTI)->memAlloc(sz, align, CDataPlayPointData::DTI.getID());
 }
 
 __attribute__((weak)) void CDataPlayPointData::operator delete(void* p_addr) {

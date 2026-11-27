@@ -36,10 +36,6 @@ const MtDTI& cCamExParamMot::getDTI() const {
     return cCamExParamMot::DTI;
 }
 
-inline MtAllocator* cCamExParamMot::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamExParamMot::DTI);
-}
-
 void* cCamExParamMot::operator new(size_t sz, u32 align) {
     return cCamExParamMot::getAllocator()->memAlloc(sz, align, cCamExParamMot::DTI.getID());
 }
@@ -86,10 +82,6 @@ __attribute__((weak)) MtObject* cCamExParamMot::MyDTI::newInstance() const {
 
 const MtDTI& cCamImpMot::getDTI() const {
     return cCamImpMot::DTI;
-}
-
-inline void cCamImpMot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpMot::DTI)->memFree(p_addr);
 }
 
 cCamImpMot::~cCamImpMot() {
@@ -148,18 +140,15 @@ const MtDTI& cCamImpMotTar::getDTI() const {
     return cCamImpMotTar::DTI;
 }
 
-inline void cCamImpMotTar::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpMotTar::DTI)->memFree(p_addr);
-}
-
 cCamImpMotTar::~cCamImpMotTar() {
     DDON_STUB("cCamImpMotTar::~cCamImpMotTar")
     /* stub */
 }
 
-__attribute__((weak)) void cCamImpMotTar::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cCamImpMotTar::applyWorldOffset")
-    /* stub */
+void cCamImpMotTar::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mInterLockPos.mNow.x = offset.x + mInterLockPos.mNow.x;
+    mInterLockPos.mNow.y = offset.y + mInterLockPos.mNow.y;
+    mInterLockPos.mNow.z = offset.z + mInterLockPos.mNow.z;
 }
 
 __attribute__((weak)) void cCamImpMotTar::initSub(MtVector3& cameraPos, MtVector3& targetPos, f32& angX, f32& angY) {

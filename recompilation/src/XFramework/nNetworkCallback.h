@@ -20,6 +20,8 @@ class MtPropertyList;
 class MtUI;
 namespace nNetwork { class Connect; }
 namespace nNetwork { class Session; }
+namespace nNetwork { class SessionDriver; }
+class sNetwork;
 
 // Declarations
 namespace nNetwork { class Callback; }
@@ -215,6 +217,8 @@ namespace nNetwork {
     {
         friend class nNetwork::Callback;
         friend class nNetwork::Connect;
+        friend class nNetwork::SessionDriver;
+        friend class ::sNetwork;
     public:
         ReceiverBase();
         virtual ~ReceiverBase() {}
@@ -231,6 +235,9 @@ namespace nNetwork {
     template <typename T>
     class Receiver : public nNetwork::ReceiverBase
     {
+        friend class nNetwork::Connect;
+        friend class nNetwork::SessionDriver;
+        friend class ::sNetwork;
     public:
         using RECEIVE_CALLBACK = void(T::*)(s32, const void*, u32);
     public:
@@ -258,4 +265,34 @@ inline nNetwork::Callback::Entry::Entry() {
 
 inline void* nNetwork::Callback::Queue::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nNetwork::Callback::Queue::Queue() {
+    this->mTotal = 0;
+    this->mRate = 1.0f;
+    this->mCall = 1.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::Callback::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::DTI)->memFree(p_addr);
+}
+
+inline void* nNetwork::Callback::Entry::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Entry::DTI)->memAlloc(sz, align, ::nNetwork::Callback::Entry::DTI.::MtDTI::mID);
+}
+
+inline void nNetwork::Callback::Entry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Entry::DTI)->memFree(p_addr);
+}
+
+inline void* nNetwork::Callback::Queue::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Queue::DTI)->memAlloc(sz, align, ::nNetwork::Callback::Queue::DTI.::MtDTI::mID);
+}
+
+inline void nNetwork::Callback::Queue::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::Callback::Queue::DTI)->memFree(p_addr);
 }

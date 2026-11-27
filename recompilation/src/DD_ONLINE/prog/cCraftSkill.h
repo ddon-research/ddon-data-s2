@@ -81,3 +81,15 @@ inline void cCraftSkill::init() {
     this->mpCostResource = nullptr;
     this->mpSpdResource = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCraftSkill::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftSkill::DTI)->memAlloc(sz, align, ::cCraftSkill::DTI.::MtDTI::getID());
+}
+
+inline void cCraftSkill::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftSkill::DTI)->memFree(p_addr);
+}

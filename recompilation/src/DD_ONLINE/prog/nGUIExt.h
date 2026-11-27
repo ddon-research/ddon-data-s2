@@ -12,16 +12,6 @@
 class MtColor;
 class MtString;
 
-// Declarations
-namespace nGUIExt { struct HeadUiInfo; }
-namespace nGUIExt { struct JobParam; }
-namespace nGUIExt { class OcdIconInterface; }
-namespace nGUIExt { struct OcdIconParam; }
-namespace nGUIExt { struct stLearnNormalSkill; }
-namespace nGUIExt { struct stMsgAnalyzerWork; }
-namespace nGUIExt { struct stNormalSkill; }
-namespace nGUIExt { struct stWindowActive; }
-
 namespace nGUIExt {
     enum BROWSER_RESULT
     {
@@ -260,6 +250,16 @@ namespace nGUIExt {
         WINDOWACTIVE_PRIO_ERRORDIALOG = 2,
     };
 }  // namespace nGUIExt
+
+// Declarations
+namespace nGUIExt { struct HeadUiInfo; }
+namespace nGUIExt { struct JobParam; }
+namespace nGUIExt { class OcdIconInterface; }
+namespace nGUIExt { struct OcdIconParam; }
+namespace nGUIExt { struct stLearnNormalSkill; }
+namespace nGUIExt { struct stMsgAnalyzerWork; }
+namespace nGUIExt { struct stNormalSkill; }
+namespace nGUIExt { struct stWindowActive; }
 
 // Type aliases from DWARF
 using __uint64_t = long unsigned int;

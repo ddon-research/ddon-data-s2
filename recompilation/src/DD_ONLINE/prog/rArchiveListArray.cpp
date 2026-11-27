@@ -18,20 +18,6 @@ const MtDTI& rArchiveListArray::getDTI() const {
     return rArchiveListArray::DTI;
 }
 
-inline void* rArchiveListArray::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rArchiveListArray::DTI)->memAlloc(sz, align, rArchiveListArray::DTI.getID());
-}
-
-inline void rArchiveListArray::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rArchiveListArray::DTI)->memFree(p_addr);
-}
-
-inline rArchiveListArray::rArchiveListArray() {
-    setAttribute(16u);
-    mpDbgResDat = nullptr;
-    mpHeader = nullptr;
-}
-
 rArchiveListArray::~rArchiveListArray() {
     if (mpHeader == nullptr) {
         return;

@@ -232,3 +232,23 @@ inline MtPerformanceCounter::MtPerformanceCounter() {
 inline void* MtPerformanceTimer::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void* MtPerformance::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtPerformance::DTI)->memAlloc(sz, align, ::MtPerformance::DTI.::MtDTI::mID);
+}
+
+inline void MtPerformance::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtPerformance::DTI)->memFree(p_addr);
+}
+
+inline void* MtPerformanceCounter::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::MtPerformanceCounter::DTI)->memAlloc(sz, align, ::MtPerformanceCounter::DTI.::MtDTI::mID);
+}
+
+inline void MtPerformanceCounter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtPerformanceCounter::DTI)->memFree(p_addr);
+}

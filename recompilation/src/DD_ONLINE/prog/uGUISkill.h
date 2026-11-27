@@ -1048,3 +1048,58 @@ inline uGUISkill::cJobData::cJobData() {
     this->mId = 0;
     this->mJp = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIInstance.h"
+#include "../../XFramework/cGUIObject.h"
+#include "uUIMockUp.h"
+
+inline void uGUISkill::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUISkill::DTI)->memFree(p_addr);
+}
+
+inline void uGUISkill::updateJobTex() {
+    this->mTexLoader.::uGUIBase::cTexArcLoader::update(this->::cUnit::mDeltaTime);
+}
+
+inline void uGUISkill::setupPresetRenameExec() {
+    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mPresetL.mpInstNull), true);
+    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mPresetR.mpInstNull), true);
+    this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mNameEdit.mpInstNull), true);
+    this->mNameEdit.mTextBox.::uGUIBase::cReferenceUITextBox::wakeupKeyboard(2, &this->mPresetName.mStr[0]);
+}
+
+inline void uGUISkill::updateMockUp() {
+    if (this->mpUIMockUp == nullptr) {
+        return;
+    }
+    if (this->mpUIMockUp->::uUIMockUp::isComplete()) {
+        if (this->mTop.mpObjTexMockup != nullptr) {
+            this->mTop.mpObjTexMockup->::cGUIObject::setVisible(true);
+        }
+        this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mTop.mpInstAnimLoad), false);
+    } else {
+        if (this->mTop.mpObjTexMockup != nullptr) {
+            this->mTop.mpObjTexMockup->::cGUIObject::setVisible(false);
+        }
+        this->::uGUIBase::setInstanceVisible(static_cast<cGUIInstance*>(this->mTop.mpInstAnimLoad), true);
+    }
+}
+
+inline void uGUISkill::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUISkill::cListInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUISkill::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUISkill::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUISkill::cJobData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUISkill::cJobData::DTI)->memAlloc(sz, align, ::uGUISkill::cJobData::DTI.::MtDTI::getID());
+}
+
+inline void uGUISkill::cJobData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUISkill::cJobData::DTI)->memFree(p_addr);
+}

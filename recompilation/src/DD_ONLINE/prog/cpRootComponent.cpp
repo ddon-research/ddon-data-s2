@@ -14,16 +14,8 @@ const MtDTI& cpRootComponent::getDTI() const {
     return cpRootComponent::DTI;
 }
 
-inline MtAllocator* cpRootComponent::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpRootComponent::DTI);
-}
-
 void* cpRootComponent::operator new(size_t sz, u32 align) {
     return cpRootComponent::getAllocator()->memAlloc(sz, align, cpRootComponent::DTI.getID());
-}
-
-inline void cpRootComponent::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpRootComponent::DTI)->memFree(p_addr);
 }
 
 cpRootComponent::cpRootComponent() {

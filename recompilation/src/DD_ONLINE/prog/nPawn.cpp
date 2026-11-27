@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "../../generated/shared/nDDOMath.h"
@@ -15,14 +14,6 @@
 
 const MtDTI& cPawnEnableArea::getDTI() const {
     return cPawnEnableArea::DTI;
-}
-
-inline MtAllocator* cPawnEnableArea::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cPawnEnableArea::DTI);
-}
-
-inline void* cPawnEnableArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnEnableArea::DTI)->memAlloc(sz, align, cPawnEnableArea::DTI.getID());
 }
 
 __attribute__((weak)) void cPawnEnableArea::operator delete(void* p_addr) {

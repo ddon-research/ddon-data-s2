@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "cAISvUserProcess.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
@@ -17,14 +16,6 @@
 
 const MtDTI& cAISvUserProcess::getDTI() const {
     return cAISvUserProcess::DTI;
-}
-
-inline void* cAISvUserProcess::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cAISvUserProcess::DTI)->memAlloc(sz, align, cAISvUserProcess::DTI.mID);
-}
-
-inline void cAISvUserProcess::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAISvUserProcess::DTI)->memFree(p_addr);
 }
 
 cAISvUserProcess::~cAISvUserProcess() {
@@ -208,10 +199,6 @@ const MtDTI& cAISvUserProcess::UserObjectInfo::getDTI() const {
     return cAISvUserProcess::UserObjectInfo::DTI;
 }
 
-inline void cAISvUserProcess::UserObjectInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAISvUserProcess::UserObjectInfo::DTI)->memFree(p_addr);
-}
-
 cAISvUserProcess::UserObjectInfo::~UserObjectInfo() {
 }
 
@@ -219,8 +206,7 @@ inline cAISvUserProcess::UserObjectInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI
 
 cAISvUserProcess::UserObjectInfo::MyDTI cAISvUserProcess::UserObjectInfo::DTI("cAISvUserProcess::UserObjectInfo", &::MtObject::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cAISvUserProcess::UserObjectInfo::MyDTI::newInstance() const {
-    DDON_STUB("cAISvUserProcess::UserObjectInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* cAISvUserProcess::UserObjectInfo::MyDTI::newInstance() const {
+    return new (16u) cAISvUserProcess::UserObjectInfo;
 }
 

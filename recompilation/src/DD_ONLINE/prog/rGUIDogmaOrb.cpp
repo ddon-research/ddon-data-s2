@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rGUIDogmaOrb.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cGUIDogmaOrbRes::getDTI() const {
     return cGUIDogmaOrbRes::DTI;
-}
-
-inline void* cGUIDogmaOrbRes::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGUIDogmaOrbRes::DTI)->memAlloc(sz, align, cGUIDogmaOrbRes::DTI.getID());
-}
-
-inline void cGUIDogmaOrbRes::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIDogmaOrbRes::DTI)->memFree(p_addr);
 }
 
 cGUIDogmaOrbRes::~cGUIDogmaOrbRes() {
@@ -36,14 +26,6 @@ MtObject* cGUIDogmaOrbRes::MyDTI::newInstance() const {
 
 const MtDTI& rGUIDogmaOrb::getDTI() const {
     return rGUIDogmaOrb::DTI;
-}
-
-inline void* rGUIDogmaOrb::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rGUIDogmaOrb::DTI)->memAlloc(sz, align, rGUIDogmaOrb::DTI.getID());
-}
-
-inline void rGUIDogmaOrb::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGUIDogmaOrb::DTI)->memFree(p_addr);
 }
 
 bool rGUIDogmaOrb::loadData(MtDataReader& Reader, cGUIDogmaOrbRes* pData) {

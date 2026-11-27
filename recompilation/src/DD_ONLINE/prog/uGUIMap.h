@@ -986,3 +986,89 @@ inline uGUIMap::stChkWork::stChkWork() {
 inline void* uGUIMap::cQuestMarkerData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cGUIObject.h"
+
+inline MtAllocator* uGUIMap::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMap::DTI);
+}
+
+inline void uGUIMap::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMap::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMap::execZoomSlider() {
+    if (this->mpObjZoomSlider == nullptr) {
+        return;
+    }
+    this->mpObjZoomSlider->::cGUIObject::setCurrentFrame(100.0f * (static_cast<float>(this->mpCtrlZoom->::cControl::mCurrentPos) / static_cast<float>(this->mpCtrlZoom->::cControl::mItemNum - 1)), true);
+}
+
+inline void* uGUIMap::cLandId::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMap::cLandId::DTI)->memAlloc(sz, align, ::uGUIMap::cLandId::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMap::cLandId::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMap::cLandId::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIMap::cMarkerUpdInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMap::cMarkerUpdInfo::DTI)->memAlloc(sz, align, ::uGUIMap::cMarkerUpdInfo::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMap::cMarkerUpdInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMap::cMarkerUpdInfo::DTI)->memFree(p_addr);
+}
+
+inline uGUIMap::cMarkerUpdInfo::cMarkerUpdInfo() {
+    this->mEnable = false;
+    this->mIsDefFloor = false;
+    this->mQuestId = 0;
+    this->mIdx = 0;
+    this->mGroupNo = 0;
+    this->mDist = ::MtVector2::Zero;
+    this->mEffectiveRange = 0.0f;
+    this->mPosIdx = 0;
+    this->mSaveId = -1;
+    this->mpUnit = nullptr;
+}
+
+inline void* uGUIMap::cMarkerLandInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMap::cMarkerLandInfo::DTI)->memAlloc(sz, align, ::uGUIMap::cMarkerLandInfo::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMap::cMarkerLandInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMap::cMarkerLandInfo::DTI)->memFree(p_addr);
+}
+
+inline uGUIMap::cMarkerLandInfo::cMarkerLandInfo() {
+    this->mWorldPos = ::MtVector3::Zero;
+    this->mDist = ::MtVector2::Zero;
+    this->mType = 0;
+    this->mSpotMessId = 0;
+    this->mMessId = -1;
+}
+
+inline void uGUIMap::cPointerCursor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMap::cPointerCursor::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIMap::cQuestMarkerData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMap::cQuestMarkerData::DTI)->memAlloc(sz, align, ::uGUIMap::cQuestMarkerData::DTI.::MtDTI::getID());
+}
+
+inline void uGUIMap::cQuestMarkerData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMap::cQuestMarkerData::DTI)->memFree(p_addr);
+}
+
+inline uGUIMap::cQuestMarkerData::cQuestMarkerData() {
+    this->mScheduleId = 0;
+    this->mPrio = 0;
+    this->mIndex = -1;
+    this->mDist.x = ::MtVector2::Zero.x;
+    this->mDist.y = ::MtVector2::Zero.y;
+    this->mDefFloor = false;
+}

@@ -31,9 +31,12 @@ class cDraw;
 class cLightVolume;
 class rTexture;
 class sScene;
+class uCoord;
+class uPointShadow;
 
 // Declarations
 class uLight;
+class uPointLight;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -43,6 +46,7 @@ using SO_HANDLE = u32;
 using _Sizet = long unsigned int;
 using __uint64_t = long unsigned int;
 using f32 = float;
+using s32 = int;
 using size_t = _Sizet;
 using u64 = __uint64_t;
 
@@ -304,6 +308,63 @@ public:
     static MyDTI DTI;
 };
 
+class uPointLight : public uLight
+{
+    friend class uPointShadow;
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    uPointLight();
+    virtual ~uPointLight();
+    virtual void moveAfter();  // vtable slot 10
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+    virtual MtUI* createUI(MtProperty& prop);  // vtable slot 2
+    virtual void applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset);  // vtable slot 15
+    virtual bool getSHFactor(cDraw* pdraw, const MtSphere& sphere, uLight::SHFACTOR* pfactor) const;  // vtable slot 24
+    const MtVector3& getPos() const;
+    void setPos(const MtVector3& pos);
+    f32 getStart();
+    f32 getEnd();
+    void setAttenuation(f32 start, f32 end);
+    void setParent(uCoord* pcoord, s32 no);
+    const MtVector3& getWorldPos() const;
+    void setProjectionAngle(const MtVector3& ang);
+    MtVector3 getProjectionAngle() const;
+    virtual bool getLimitRangeOBB(MtOBB* obb) const;  // vtable slot 26
+    virtual void setLimitRangeOBB(const MtOBB& obb);  // vtable slot 27
+protected:
+    MtVector3 mPos;  // offset: 0x3e0
+    MtVector3 mWPos;  // offset: 0x3f0
+    MtVector3 mProjectionAngle;  // offset: 0x400
+    f32 mStart;  // offset: 0x410
+    f32 mEnd;  // offset: 0x414
+    uCoord* mpParent;  // offset: 0x418
+    s32 mParentNo;  // offset: 0x420
+    MtOBB mRangeOBB;  // offset: 0x430
+public:
+    static MyDTI DTI;
+};
+
 inline void* uLight::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -346,4 +407,24 @@ inline bool uLight::getPCDisableMode() {
 
 inline void* uLight::cHardwareDispCtrlLight::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* uPointLight::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uLight::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uLight::DTI)->memFree(p_addr);
+}
+
+inline void uLight::cHardwareDispCtrlLight::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uLight::cHardwareDispCtrlLight::DTI)->memFree(p_addr);
+}
+
+inline void uPointLight::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uPointLight::DTI)->memFree(p_addr);
 }

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rOcdIrAdj.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cOcdIrAdj::getDTI() const {
     return cOcdIrAdj::DTI;
-}
-
-inline void* cOcdIrAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdIrAdj::DTI)->memAlloc(sz, align, cOcdIrAdj::DTI.getID());
-}
-
-inline void cOcdIrAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdIrAdj::DTI)->memFree(p_addr);
 }
 
 void cOcdIrAdj::createProperty(MtPropertyList& s) {
@@ -42,14 +32,6 @@ const MtDTI& cOcdIrAdjPL::getDTI() const {
     return cOcdIrAdjPL::DTI;
 }
 
-inline void* cOcdIrAdjPL::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdIrAdjPL::DTI)->memAlloc(sz, align, cOcdIrAdjPL::DTI.getID());
-}
-
-inline void cOcdIrAdjPL::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdIrAdjPL::DTI)->memFree(p_addr);
-}
-
 void cOcdIrAdjPL::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240\343\203\251\343\203\263\343\202\257", &mItemLank, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\350\250\210\347\256\227\345\274\217\343\201\247\344\275\277\343\201\206\343\203\251\343\203\263\343\202\257", &mOcdRank, 0u, 0u);
@@ -65,14 +47,6 @@ MtObject* cOcdIrAdjPL::MyDTI::newInstance() const {
 
 const MtDTI& rOcdIrAdj::getDTI() const {
     return rOcdIrAdj::DTI;
-}
-
-inline void* rOcdIrAdj::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOcdIrAdj::DTI)->memAlloc(sz, align, rOcdIrAdj::DTI.getID());
-}
-
-inline void rOcdIrAdj::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOcdIrAdj::DTI)->memFree(p_addr);
 }
 
 bool rOcdIrAdj::loadData(MtDataReader& in, cOcdIrAdj* pData) {
@@ -99,14 +73,6 @@ MtObject* rOcdIrAdj::MyDTI::newInstance() const {
 
 const MtDTI& rOcdIrAdjPL::getDTI() const {
     return rOcdIrAdjPL::DTI;
-}
-
-inline void* rOcdIrAdjPL::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rOcdIrAdjPL::DTI)->memAlloc(sz, align, rOcdIrAdjPL::DTI.getID());
-}
-
-inline void rOcdIrAdjPL::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rOcdIrAdjPL::DTI)->memFree(p_addr);
 }
 
 bool rOcdIrAdjPL::loadData(MtDataReader& in, cOcdIrAdjPL* pData) {

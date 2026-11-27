@@ -7,6 +7,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "aTitle.h"
 #include "cNetGameServer.h"
 #include "cNetLoginServer.h"
 #include "cNetSessionManager.h"
@@ -14,6 +15,7 @@
 #include "nDialog.h"
 #include "../../XFramework/rGUIMessage.h"
 #include "../../XFramework/sArea.h"
+#include "../../XFramework/sCommonDialog.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
@@ -28,16 +30,8 @@ const MtDTI& sDialogBase::getDTI() const {
     return sDialogBase::DTI;
 }
 
-inline MtAllocator* sDialogBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sDialogBase::DTI);
-}
-
 void* sDialogBase::operator new(size_t sz, u32 align) {
     return sDialogBase::getAllocator()->memAlloc(sz, align, sDialogBase::DTI.getID());
-}
-
-inline void sDialogBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sDialogBase::DTI)->memFree(p_addr);
 }
 
 sDialogBase::sDialogBase() {

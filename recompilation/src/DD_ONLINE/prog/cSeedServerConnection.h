@@ -254,9 +254,25 @@ inline cSeedServerStream& cSeedServerConnection::pendingStream() {
     return this->mPendingStream;
 }
 
+inline cSeedServerConnection::eConnStatus cSeedServerConnection::getStatus() const {
+    return this->mConnStatus;
+}
+
 inline cSeedServerConnection::stPacketHeader::stPacketHeader() {
 }
 
 inline void* cSeedServerStream::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cSeedServerConnection::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSeedServerConnection::DTI)->memFree(p_addr);
+}
+
+inline void cSeedServerStream::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSeedServerStream::DTI)->memFree(p_addr);
 }

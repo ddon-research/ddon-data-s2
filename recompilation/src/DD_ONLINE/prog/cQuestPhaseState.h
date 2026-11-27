@@ -90,3 +90,15 @@ public:
 inline void* cQuestPhaseState::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cQuestPhaseState::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseState::DTI)->memAlloc(sz, align, ::cQuestPhaseState::DTI.::MtDTI::getID());
+}
+
+inline void cQuestPhaseState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPhaseState::DTI)->memFree(p_addr);
+}

@@ -155,3 +155,23 @@ inline uFSMTask::uFSMTask() {
     this->mType = 0;
     this->mpCore = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cFSMTaskCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cFSMTaskCtrl::DTI);
+}
+
+inline void cFSMTaskCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cFSMTaskCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* uFSMTask::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uFSMTask::DTI)->memAlloc(sz, align, ::uFSMTask::DTI.::MtDTI::getID());
+}
+
+inline void uFSMTask::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uFSMTask::DTI)->memFree(p_addr);
+}

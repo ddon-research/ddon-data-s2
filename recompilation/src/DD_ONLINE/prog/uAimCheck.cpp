@@ -18,6 +18,7 @@
 #include "sArchiveManager.h"
 #include "../../XFramework/sCamera.h"
 #include "sCameraExt.h"
+#include "../../XFramework/uBaseModel.h"
 #include "uCameraGame.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
@@ -28,10 +29,6 @@
 
 const MtDTI& uAimCheck::getDTI() const {
     return uAimCheck::DTI;
-}
-
-inline void uAimCheck::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAimCheck::DTI)->memFree(p_addr);
 }
 
 uAimCheck::~uAimCheck() {
@@ -68,9 +65,14 @@ __attribute__((weak)) void uAimCheck::initAim(uAimCheck::AIM_TYPE type, const Mt
     /* stub */
 }
 
-__attribute__((weak)) void uAimCheck::updatePtr() {
-    DDON_STUB("uAimCheck::updatePtr")
-    /* stub */
+void uAimCheck::updatePtr() {
+    if (mpTarget == nullptr) {
+        return;
+    }
+    if (mpTarget->isEnable()) {
+        return;
+    }
+    mpTarget = nullptr;
 }
 
 __attribute__((weak)) void uAimCheck::update() {

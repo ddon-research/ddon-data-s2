@@ -165,3 +165,15 @@ inline cAIPawnSkillParamNode::cAIPawnSkillParamNode() {
         mSkillOcd.elems[i] = 0u;
     }
 }
+
+inline void cAIPawnSkillParamNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPawnSkillParamNode::DTI)->memFree(p_addr);
+}
+
+inline void* rAIPawnSkillParamTbl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAIPawnSkillParamTbl::DTI)->memAlloc(sz, align, ::rAIPawnSkillParamTbl::DTI.::MtDTI::getID());
+}
+
+inline void rAIPawnSkillParamTbl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAIPawnSkillParamTbl::DTI)->memFree(p_addr);
+}

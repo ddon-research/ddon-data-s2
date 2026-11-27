@@ -25,27 +25,6 @@ const MtDTI& cCameraInfo::getDTI() const {
     return cCameraInfo::DTI;
 }
 
-inline void* cCameraInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCameraInfo::DTI)->memAlloc(sz, align, cCameraInfo::DTI.getID());
-}
-
-inline void cCameraInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCameraInfo::DTI)->memFree(p_addr);
-}
-
-inline cCameraInfo::cCameraInfo() {
-    mCameraPos.x = MtVector3::Zero.x;
-    mCameraPos.y = MtVector3::Zero.y;
-    mCameraPos.z = MtVector3::Zero.z;
-    mCameraPos.pad_ = 0.0f;
-    mTargetPos.x = MtVector3::Zero.x;
-    mTargetPos.y = MtVector3::Zero.y;
-    mTargetPos.z = MtVector3::Zero.z;
-    mTargetPos.pad_ = 0.0f;
-    mRoll = 0.0f;
-    mFov = 0.0f;
-}
-
 __attribute__((weak)) void cCameraInfo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mCameraPos", &mCameraPos, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTargetPos", &mTargetPos, 0u, 0u);
@@ -63,10 +42,6 @@ MtObject* cCameraInfo::MyDTI::newInstance() const {
 
 const MtDTI& cCameraQuake::getDTI() const {
     return cCameraQuake::DTI;
-}
-
-inline void cCameraQuake::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCameraQuake::DTI)->memFree(p_addr);
 }
 
 void cCameraQuake::createProperty(MtPropertyList& s) {
@@ -211,16 +186,8 @@ const MtDTI& cCameraSeqInfo::getDTI() const {
     return cCameraSeqInfo::DTI;
 }
 
-inline MtAllocator* cCameraSeqInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCameraSeqInfo::DTI);
-}
-
 void* cCameraSeqInfo::operator new(size_t sz, u32 align) {
     return cCameraSeqInfo::getAllocator()->memAlloc(sz, align, cCameraSeqInfo::DTI.getID());
-}
-
-inline void cCameraSeqInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCameraSeqInfo::DTI)->memFree(p_addr);
 }
 
 cCameraSeqInfo::cCameraSeqInfo() {
@@ -291,16 +258,8 @@ const MtDTI& cCameraSeqInfo2::getDTI() const {
     return cCameraSeqInfo2::DTI;
 }
 
-inline MtAllocator* cCameraSeqInfo2::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCameraSeqInfo2::DTI);
-}
-
 void* cCameraSeqInfo2::operator new(size_t sz, u32 align) {
     return cCameraSeqInfo2::getAllocator()->memAlloc(sz, align, cCameraSeqInfo2::DTI.getID());
-}
-
-inline void cCameraSeqInfo2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCameraSeqInfo2::DTI)->memFree(p_addr);
 }
 
 cCameraSeqInfo2::cCameraSeqInfo2() {
@@ -326,10 +285,6 @@ __attribute__((weak)) MtObject* cCameraSeqInfo2::MyDTI::newInstance() const {
 
 const MtDTI& uCameraBase::getDTI() const {
     return uCameraBase::DTI;
-}
-
-inline void uCameraBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCameraBase::DTI)->memFree(p_addr);
 }
 
 uCameraBase::uCameraBase() {

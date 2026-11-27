@@ -1,23 +1,54 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_pthread.h>
+#include <stdlib.h>
 #include <string.h>
 #include "MtNetStorage2.h"
 #include "MtNetBuffer.h"
 #include "MtNetObject.h"
 #include "MtNetRequest.h"
+#include "MtSynchronize.h"
 #include "MtTime.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
-__attribute__((weak)) void MtNetStorage2::addListener(MtNetStorage2::Listener* listener) {
-    DDON_STUB("MtNetStorage2::addListener")
-    /* stub */
+void MtNetStorage2::addListener(MtNetStorage2::Listener* listener) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        mpListener = listener;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        mpListener = listener;
+    }
 }
 
-__attribute__((weak)) void MtNetStorage2::removeListener(MtNetStorage2::Listener* listener) {
-    DDON_STUB("MtNetStorage2::removeListener")
-    /* stub */
+void MtNetStorage2::removeListener(MtNetStorage2::Listener* listener) {
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        mpListener = nullptr;
+        if (mIsThreadSafe) {
+            mLockCount = t0;
+            if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                abort();
+            }
+        }
+    } else {
+        mpListener = nullptr;
+    }
 }
 
 __attribute__((weak)) void MtNetStorage2::reqFinalize(u32* req_seq) {

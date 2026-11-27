@@ -25,10 +25,6 @@ const MtDTI& cStageMap::getDTI() const {
     return cStageMap::DTI;
 }
 
-inline void cStageMap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStageMap::DTI)->memFree(p_addr);
-}
-
 cStageMap::~cStageMap() {
     if (mParamList.mLength != 0) {
         u32 v0_0 = mParamList.mLength;
@@ -77,19 +73,6 @@ const MtDTI& cStageMap::cParam::getDTI() const {
     return cStageMap::cParam::DTI;
 }
 
-inline void* cStageMap::cParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStageMap::cParam::DTI)->memAlloc(sz, align, cStageMap::cParam::DTI.getID());
-}
-
-inline cStageMap::cParam::cParam() {
-    mAreaNo = 0;
-    mSize = 0.0f;
-    mConnectPos.x = MtVector3::Zero.x;
-    mConnectPos.y = MtVector3::Zero.y;
-    mConnectPos.z = MtVector3::Zero.z;
-    mConnectPos.pad_ = 0.0f;
-}
-
 void cStageMap::cParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mAreaNo", &mAreaNo, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mSize", &mSize, 0u, 0u);
@@ -115,14 +98,6 @@ MtObject* cStageMap::cParam::MyDTI::newInstance() const {
 
 const MtDTI& rStageMap::getDTI() const {
     return rStageMap::DTI;
-}
-
-inline void* rStageMap::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageMap::DTI)->memAlloc(sz, align, rStageMap::DTI.getID());
-}
-
-inline void rStageMap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageMap::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rStageMap::loadData(MtDataReader& in, cStageMap* pData) {

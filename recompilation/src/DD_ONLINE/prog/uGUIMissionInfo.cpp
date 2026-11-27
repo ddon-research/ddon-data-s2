@@ -50,16 +50,8 @@ const MtDTI& uGUIMissionInfo::getDTI() const {
     return uGUIMissionInfo::DTI;
 }
 
-inline MtAllocator* uGUIMissionInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMissionInfo::DTI);
-}
-
 void* uGUIMissionInfo::operator new(size_t sz, u32 align) {
     return uGUIMissionInfo::getAllocator()->memAlloc(sz, align, uGUIMissionInfo::DTI.getID());
-}
-
-inline void uGUIMissionInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMissionInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMissionInfo::~uGUIMissionInfo() {
@@ -425,10 +417,6 @@ __attribute__((weak)) MtObject* uGUIMissionInfo::MyDTI::newInstance() const {
 
 const MtDTI& uGUIMissionInfo::cItem::getDTI() const {
     return uGUIMissionInfo::cItem::DTI;
-}
-
-inline void uGUIMissionInfo::cItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMissionInfo::cItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIMissionInfo::cItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -11,6 +11,7 @@
 #include "cpEquip.h"
 #include "rCharacterEdit.h"
 #include "../../XFramework/uBaseModel.h"
+#include "uDDOActorModelPl.h"
 #include "uHuman.h"
 #include "uMockUpModel.h"
 #ifndef DDON_STUB
@@ -19,23 +20,6 @@
 
 const MtDTI& rPlPartsInfo::getDTI() const {
     return rPlPartsInfo::DTI;
-}
-
-inline MtAllocator* rPlPartsInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rPlPartsInfo::DTI);
-}
-
-inline void* rPlPartsInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPlPartsInfo::DTI)->memAlloc(sz, align, rPlPartsInfo::DTI.getID());
-}
-
-inline void rPlPartsInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPlPartsInfo::DTI)->memFree(p_addr);
-}
-
-inline rPlPartsInfo::rPlPartsInfo() {
-    setAttribute(16u);
-    mpHeader = nullptr;
 }
 
 rPlPartsInfo::~rPlPartsInfo() {

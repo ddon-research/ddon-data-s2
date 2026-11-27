@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
 #include "cDelegate.h"
@@ -30,16 +29,8 @@ const MtDTI& cpInputPad::getDTI() const {
     return cpInputPad::DTI;
 }
 
-inline MtAllocator* cpInputPad::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpInputPad::DTI);
-}
-
 void* cpInputPad::operator new(size_t sz, u32 align) {
     return cpInputPad::getAllocator()->memAlloc(sz, align, cpInputPad::DTI.getID());
-}
-
-inline void cpInputPad::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpInputPad::DTI)->memFree(p_addr);
 }
 
 cpInputPad::cpInputPad() {

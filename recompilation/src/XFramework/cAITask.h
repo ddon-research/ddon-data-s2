@@ -234,3 +234,19 @@ inline cAITaskJobPrimList::cAITaskJobPrimList() {
     this->mpListBottom = nullptr;
     this->mpList = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cAITask::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAITask::DTI)->memFree(p_addr);
+}
+
+inline void* cAITaskJobPrimList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAITaskJobPrimList::DTI)->memAlloc(sz, align, ::cAITaskJobPrimList::DTI.::MtDTI::mID);
+}
+
+inline void cAITaskJobPrimList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAITaskJobPrimList::DTI)->memFree(p_addr);
+}

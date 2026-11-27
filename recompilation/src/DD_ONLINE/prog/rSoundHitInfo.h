@@ -215,3 +215,44 @@ inline s32 rSoundHitInfo::cSoundHitInfo::getEtc00() const {
 inline s32 rSoundHitInfo::cSoundHitInfo::getEtc01() const {
     return this->mEtc01;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rSoundHitInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::DTI)->memAlloc(sz, align, ::rSoundHitInfo::DTI.::MtDTI::getID());
+}
+
+inline void rSoundHitInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::DTI)->memFree(p_addr);
+}
+
+inline rSoundHitInfo::rSoundHitInfo() {
+    this->::cResource::setAttribute(22u);
+    this->::cResource::clear();
+    this->mpArrayData = nullptr;
+    this->mArrayDataNum = 0;
+    this->mVersion = 5;
+}
+
+inline void rSoundHitInfo::releaseWork() {
+    unsigned int i0 = 0;
+    if (this->mArrayDataNum != 0) {
+        do {
+            this->mpArrayData[i0].~cSoundHitInfo();
+            i0 += 1u;
+        } while (i0 < this->mArrayDataNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::DTI)->memFree(static_cast<void*>(this->mpArrayData));
+    this->mpArrayData = nullptr;
+    this->mArrayDataNum = 0;
+}
+
+inline void* rSoundHitInfo::cSoundHitInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::cSoundHitInfo::DTI)->memAlloc(sz, align, ::rSoundHitInfo::cSoundHitInfo::DTI.::MtDTI::getID());
+}
+
+inline void rSoundHitInfo::cSoundHitInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundHitInfo::cSoundHitInfo::DTI)->memFree(p_addr);
+}

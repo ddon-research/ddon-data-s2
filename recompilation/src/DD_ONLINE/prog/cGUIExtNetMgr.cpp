@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <sce_atomic.h>
+#include <string.h>
 #include "cGUIExtNetMgr.h"
 #include "Protocol/PacketData/Achievement.h"
 #include "Protocol/PacketData/CharacterCommon.h"
@@ -28,10 +30,6 @@
 
 const MtDTI& cGUIExtNetMgr::getDTI() const {
     return cGUIExtNetMgr::DTI;
-}
-
-inline void cGUIExtNetMgr::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIExtNetMgr::DTI)->memFree(p_addr);
 }
 
 void cGUIExtNetMgr::clearReceiveFlags() {
@@ -279,9 +277,34 @@ __attribute__((weak)) void cGUIExtNetMgr::setupPresetEquipInfo(const CEquipPrese
     /* stub */
 }
 
-__attribute__((weak)) void cGUIExtNetMgr::setPresetEquipName(s32 PresetNo, MT_CTSTR Name) {
-    DDON_STUB("cGUIExtNetMgr::setPresetEquipName")
-    /* stub */
+void cGUIExtNetMgr::setPresetEquipName(s32 PresetNo, MT_CTSTR Name) {
+    if (PresetNo == 0) {
+        return;
+    }
+    if (PresetNo <= 10) {
+        if (Name != mData.PresetEquipList[PresetNo - 1].Name.ptr()) {
+            if (mData.PresetEquipList[PresetNo - 1].Name.value != nullptr) {
+                if (sceAtomicAdd32Relaxed(&mData.PresetEquipList[PresetNo - 1].Name.value->ref, -1) == 1) {
+                    (MtString::mpAllocator)->memFree(static_cast<void*>(mData.PresetEquipList[PresetNo - 1].Name.value));
+                }
+                mData.PresetEquipList[PresetNo - 1].Name.value = nullptr;
+            }
+            if (Name != nullptr) {
+                size_t t0 = strlen(Name);
+                if (static_cast<unsigned int>(t0) != 0) {
+                    void* t1 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t0)) + 12, 16u);
+                    mData.PresetEquipList[PresetNo - 1].Name.value = static_cast<MtString::STRING*>(t1);
+                    mData.PresetEquipList[PresetNo - 1].Name.value->ref = 1;
+                    mData.PresetEquipList[PresetNo - 1].Name.value->length = static_cast<unsigned int>(t0);
+                    strcpy(reinterpret_cast<char*>(mData.PresetEquipList[PresetNo - 1].Name.value->str), Name);
+                } else {
+                    mData.PresetEquipList[PresetNo - 1].Name.value = nullptr;
+                }
+            } else {
+                mData.PresetEquipList[PresetNo - 1].Name.value = nullptr;
+            }
+        }
+    }
 }
 
 const cGUIExtNetMgr::PresetEquipInfo& cGUIExtNetMgr::getPresetEquipInfo(u32 PresetNo) {

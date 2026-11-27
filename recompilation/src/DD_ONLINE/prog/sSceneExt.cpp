@@ -28,16 +28,8 @@ const MtDTI& sSceneExt::getDTI() const {
     return sSceneExt::DTI;
 }
 
-inline MtAllocator* sSceneExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sSceneExt::DTI);
-}
-
 void* sSceneExt::operator new(size_t sz, u32 align) {
     return sSceneExt::getAllocator()->memAlloc(sz, align, sSceneExt::DTI.getID());
-}
-
-inline void sSceneExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSceneExt::DTI)->memFree(p_addr);
 }
 
 sSceneExt::~sSceneExt() {

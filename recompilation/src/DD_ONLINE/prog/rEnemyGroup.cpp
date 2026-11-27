@@ -22,10 +22,6 @@ const MtDTI& cEnemyGroup::getDTI() const {
     return cEnemyGroup::DTI;
 }
 
-inline void cEnemyGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEnemyGroup::DTI)->memFree(p_addr);
-}
-
 cEnemyGroup::~cEnemyGroup() {
     if (mEmList.mLength != 0) {
         u32 v0_0 = mEmList.mLength;
@@ -72,14 +68,6 @@ const MtDTI& cEnemyGroup::cEmList::getDTI() const {
     return cEnemyGroup::cEmList::DTI;
 }
 
-inline void* cEnemyGroup::cEmList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEnemyGroup::cEmList::DTI)->memAlloc(sz, align, cEnemyGroup::cEmList::DTI.getID());
-}
-
-inline void cEnemyGroup::cEmList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEnemyGroup::cEmList::DTI)->memFree(p_addr);
-}
-
 void cEnemyGroup::cEmList::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mEmId", &mEmId, 0u, 0u);
 }
@@ -94,14 +82,6 @@ MtObject* cEnemyGroup::cEmList::MyDTI::newInstance() const {
 
 const MtDTI& rEnemyGroup::getDTI() const {
     return rEnemyGroup::DTI;
-}
-
-inline void* rEnemyGroup::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEnemyGroup::DTI)->memAlloc(sz, align, rEnemyGroup::DTI.getID());
-}
-
-inline void rEnemyGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEnemyGroup::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rEnemyGroup::loadData(MtDataReader& in, cEnemyGroup* pData) {

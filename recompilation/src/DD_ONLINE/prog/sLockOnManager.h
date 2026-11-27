@@ -90,3 +90,15 @@ inline void* sLockOnManager::operator new(size_t sz, void* p_addr) {
 inline sLockOnManager* sLockOnManager::getInstance() {
     return ::sLockOnManager::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sLockOnManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sLockOnManager::DTI);
+}
+
+inline void sLockOnManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sLockOnManager::DTI)->memFree(p_addr);
+}

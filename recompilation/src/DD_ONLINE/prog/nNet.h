@@ -27,15 +27,6 @@ struct MtNetError;
 class MtObject;
 class MtPropertyList;
 
-// Declarations
-class CDataClientPartyListInfo;
-namespace nNet { struct stClanEmblem; }
-namespace nNet { class cProgress; }
-namespace nNet { class cResult; }
-namespace nNet { struct stEntryBoardItemInfo; }
-namespace nNet { struct stPawnFeedback; }
-namespace nNet { struct stFeedbackData; }
-
 namespace nNet {
     enum CLAN_DAY
     {
@@ -212,6 +203,15 @@ namespace nNetSv {
         PLAY_START_CYCLE_CONTENTS = 1,
     };
 }  // namespace nNetSv
+
+// Declarations
+class CDataClientPartyListInfo;
+namespace nNet { struct stClanEmblem; }
+namespace nNet { class cProgress; }
+namespace nNet { class cResult; }
+namespace nNet { struct stEntryBoardItemInfo; }
+namespace nNet { struct stPawnFeedback; }
+namespace nNet { struct stFeedbackData; }
 
 // Type aliases from DWARF
 using CClanParam = CDataClanParam;
@@ -476,4 +476,16 @@ inline bool nNet::cProgress::getWaitFlag() {
 
 inline bool nNet::cProgress::getCancelFlag() {
     return this->mCancelFlag;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* CDataClientPartyListInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataClientPartyListInfo::DTI)->memAlloc(sz, align, ::CDataClientPartyListInfo::DTI.::MtDTI::getID());
+}
+
+inline void CDataClientPartyListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::CDataClientPartyListInfo::DTI)->memFree(p_addr);
 }

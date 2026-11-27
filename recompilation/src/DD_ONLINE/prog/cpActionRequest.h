@@ -16,6 +16,7 @@ class cHumanActBase;
 class cNetGameServer;
 class cPlActWpnBow;
 class cpOmBase;
+class cpOmSpa;
 namespace nSessionManager { class cNetSessionManager; }
 class uCharacter;
 class uDDOModel;
@@ -41,6 +42,7 @@ class cpActionRequest : public cpComponent
     friend class cNetGameServer;
     friend class cPlActWpnBow;
     friend class cpOmBase;
+    friend class cpOmSpa;
     friend class nSessionManager::cNetSessionManager;
     friend class uCharacter;
     friend class uDDOModel;
@@ -214,4 +216,16 @@ inline void cpActionRequest::reqLandActionNoSend(bool isSend) {
 
 inline void cpActionRequest::reqFallActionNoSend(bool isSend) {
     this->mFallActionNoSend = false;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpActionRequest::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpActionRequest::DTI);
+}
+
+inline void cpActionRequest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpActionRequest::DTI)->memFree(p_addr);
 }

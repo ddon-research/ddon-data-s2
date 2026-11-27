@@ -370,3 +370,31 @@ inline rStageJoint::rStageJoint() {
     mpArrayInfo = nullptr;
     mArrayInfoNum = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void rStageJoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageJoint::DTI)->memFree(p_addr);
+}
+
+inline void rStageJoint::Param::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageJoint::Param::DTI)->memFree(p_addr);
+}
+
+inline u64 rStageJoint::Info::getEfcColorZone() const {
+    return this->mEfcColorZone.::cResPathBase::mId;
+}
+
+inline u64 rStageJoint::Info::getEfcCtrlZone() const {
+    return this->mEfcCtrlZone.::cResPathBase::mId;
+}
+
+inline u64 rStageJoint::Info::getLightAndFogZone() const {
+    return this->mLightAndFogZone.::cResPathBase::mId;
+}
+
+inline u64 rStageJoint::Info::getZoneStatus() const {
+    return this->mZoneStatus.::cResPathBase::mId;
+}

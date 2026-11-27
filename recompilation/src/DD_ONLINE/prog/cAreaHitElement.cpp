@@ -19,10 +19,6 @@ const MtDTI& AHShapeBox::getDTI() const {
     return AHShapeBox::DTI;
 }
 
-inline void AHShapeBox::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(AHShapeBox::DTI)->memFree(p_addr);
-}
-
 void AHShapeBox::createProperty(MtPropertyList& s) {
     this->AreaHitShape::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "Box.mHeight", &mHeight, 0u, 0u);
@@ -89,9 +85,19 @@ __attribute__((weak)) void AHShapeBox::setCenter(const MtVector3& pos) {
     /* stub */
 }
 
-__attribute__((weak)) MtVector3 AHShapeBox::getCenter() const {
-    DDON_STUB("AHShapeBox::getCenter")
-    __builtin_unreachable();
+MtVector3 AHShapeBox::getCenter() const {
+    MtVector3 buf;
+    const f32 t0 = MtVector3::Zero.x;
+    const f32 t1 = MtVector3::Zero.z;
+    buf.pad_ = 0.0f;
+    const f32 t2 = mPos[0].z;
+    const f32 t3 = mPos[1].z;
+    const f32 t4 = mPos[2].z;
+    const f32 t5 = mPos[3].z;
+    buf.x = 0.25f * (mPos[3].x + (mPos[2].x + (mPos[1].x + (t0 + mPos[0].x))));
+    buf.y = mPosY;
+    buf.z = 0.25f * (t5 + (t4 + (t3 + (t1 + t2))));
+    return buf;
 }
 
 f32 AHShapeBox::getHeight() {
@@ -113,10 +119,6 @@ __attribute__((weak)) MtObject* AHShapeBox::MyDTI::newInstance() const {
 
 const MtDTI& AHShapeBoxRotate::getDTI() const {
     return AHShapeBoxRotate::DTI;
-}
-
-inline void AHShapeBoxRotate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(AHShapeBoxRotate::DTI)->memFree(p_addr);
 }
 
 void AHShapeBoxRotate::createProperty(MtPropertyList& s) {
@@ -188,24 +190,6 @@ const MtDTI& AHShapeCone::getDTI() const {
     return AHShapeCone::DTI;
 }
 
-inline void* AHShapeCone::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(AHShapeCone::DTI)->memAlloc(sz, align, AHShapeCone::DTI.getID());
-}
-
-inline void AHShapeCone::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(AHShapeCone::DTI)->memFree(p_addr);
-}
-
-inline AHShapeCone::AHShapeCone() {
-    mCenterPos.x = MtVector3::Zero.x;
-    mCenterPos.y = MtVector3::Zero.y;
-    mCenterPos.z = MtVector3::Zero.z;
-    mCenterPos.pad_ = 0.0f;
-    mHeight = 300.0f;
-    mTopRadius = 250.0f;
-    mBottomRadius = 100.0f;
-}
-
 void AHShapeCone::createProperty(MtPropertyList& s) {
     this->AreaHitShape::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "Cone.mCenterPos", &mCenterPos, 0u, 0u);
@@ -256,23 +240,6 @@ const MtDTI& AHShapeCylinder::getDTI() const {
     return AHShapeCylinder::DTI;
 }
 
-inline void* AHShapeCylinder::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(AHShapeCylinder::DTI)->memAlloc(sz, align, AHShapeCylinder::DTI.getID());
-}
-
-inline void AHShapeCylinder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(AHShapeCylinder::DTI)->memFree(p_addr);
-}
-
-inline AHShapeCylinder::AHShapeCylinder() {
-    mCenterPos.x = MtVector3::Zero.x;
-    mCenterPos.y = MtVector3::Zero.y;
-    mCenterPos.z = MtVector3::Zero.z;
-    mCenterPos.pad_ = 0.0f;
-    mHeight = 300.0f;
-    mRadius = 200.0f;
-}
-
 void AHShapeCylinder::createProperty(MtPropertyList& s) {
     this->AreaHitShape::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "Cylinder.mCenterPos", &mCenterPos, 0u, 0u);
@@ -320,10 +287,6 @@ MtObject* AHShapeCylinder::MyDTI::newInstance() const {
 
 const MtDTI& AHShapePolygon::getDTI() const {
     return AHShapePolygon::DTI;
-}
-
-inline void AHShapePolygon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(AHShapePolygon::DTI)->memFree(p_addr);
 }
 
 AHShapePolygon::AHShapePolygon() {
@@ -437,10 +400,6 @@ const MtDTI& AHShapePolygon::PosUnit::getDTI() const {
     return AHShapePolygon::PosUnit::DTI;
 }
 
-inline void AHShapePolygon::PosUnit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(AHShapePolygon::PosUnit::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void AHShapePolygon::PosUnit::createProperty(MtPropertyList& s) {
 }
 
@@ -466,22 +425,6 @@ __attribute__((weak)) MtObject* AHShapePolygon::PosUnit::MyDTI::newInstance() co
 
 const MtDTI& AHShapeSphere::getDTI() const {
     return AHShapeSphere::DTI;
-}
-
-inline void* AHShapeSphere::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(AHShapeSphere::DTI)->memAlloc(sz, align, AHShapeSphere::DTI.getID());
-}
-
-inline void AHShapeSphere::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(AHShapeSphere::DTI)->memFree(p_addr);
-}
-
-inline AHShapeSphere::AHShapeSphere() {
-    mCenterPos.x = MtVector3::Zero.x;
-    mCenterPos.y = MtVector3::Zero.y;
-    mCenterPos.z = MtVector3::Zero.z;
-    mCenterPos.pad_ = 0.0f;
-    mRadius = 100.0f;
 }
 
 void AHShapeSphere::createProperty(MtPropertyList& s) {
@@ -527,14 +470,6 @@ MtObject* AHShapeSphere::MyDTI::newInstance() const {
 
 const MtDTI& AHShapeTriangle::getDTI() const {
     return AHShapeTriangle::DTI;
-}
-
-inline void* AHShapeTriangle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(AHShapeTriangle::DTI)->memAlloc(sz, align, AHShapeTriangle::DTI.getID());
-}
-
-inline void AHShapeTriangle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(AHShapeTriangle::DTI)->memFree(p_addr);
 }
 
 void AHShapeTriangle::createProperty(MtPropertyList& s) {

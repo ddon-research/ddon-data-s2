@@ -7,7 +7,7 @@
 #include <string.h>
 #include "sBrowser.h"
 #include "../../MT/MtAllocator.h"
-#include "../../MT/MtCharset.h"
+#include "../../MT/MtCharSet.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
@@ -51,16 +51,8 @@ const MtDTI& sBrowser::getDTI() const {
     return sBrowser::DTI;
 }
 
-inline MtAllocator* sBrowser::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sBrowser::DTI);
-}
-
 void* sBrowser::operator new(size_t sz, u32 align) {
     return sBrowser::getAllocator()->memAlloc(sz, align, sBrowser::DTI.getID());
-}
-
-inline void sBrowser::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sBrowser::DTI)->memFree(p_addr);
 }
 
 sBrowser::sBrowser() {

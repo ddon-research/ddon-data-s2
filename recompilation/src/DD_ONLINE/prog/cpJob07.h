@@ -184,3 +184,15 @@ inline f32 cpJob07::getAttitudeOfFuryTimer() const {
 inline void cpJob07::setIsAttackHitDownEnemy(bool flg) {
     this->mIsAttackHitDownEnemy = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob07::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob07::DTI);
+}
+
+inline void cpJob07::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob07::DTI)->memFree(p_addr);
+}

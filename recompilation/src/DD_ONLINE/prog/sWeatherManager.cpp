@@ -60,6 +60,7 @@
 #include "uSkyCloud.h"
 #include "uSkyExt.h"
 #include "uSkyFog.h"
+#include "uSkyGrassWind.h"
 #include "uSoundTrigger.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -67,10 +68,6 @@
 
 const MtDTI& cCustomWeatherParam::getDTI() const {
     return cCustomWeatherParam::DTI;
-}
-
-inline void cCustomWeatherParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCustomWeatherParam::DTI)->memFree(p_addr);
 }
 
 void cCustomWeatherParam::setCustomWeatherID(u32 val) {
@@ -163,14 +160,12 @@ static auto ddon_emit_0x01acff60 __attribute__((used)) = &cCustomWeatherParam::g
 
 static auto ddon_emit_0x01acff70 __attribute__((used)) = &cCustomWeatherParam::getCustomTime;
 
-__attribute__((weak)) u32 cCustomWeatherParam::getCustomTimeHour() const {
-    DDON_STUB("cCustomWeatherParam::getCustomTimeHour")
-    return {};
+u32 cCustomWeatherParam::getCustomTimeHour() const {
+    return static_cast<u32>((static_cast<unsigned long>(static_cast<unsigned int>(((static_cast<unsigned long>(mCustomWeatherTime) * 0x10624DD3) >> 38) + (((((static_cast<unsigned long>(mCustomWeatherTime) * 0x10624DD3) >> 38) * 0xC22E4507ul) >> 48) * 0x1517FFFFEAE80ul))) * 0x91A2B3C5ul) >> 43);
 }
 
-__attribute__((weak)) u32 cCustomWeatherParam::getCustomTimeMinite() const {
-    DDON_STUB("cCustomWeatherParam::getCustomTimeMinite")
-    return {};
+u32 cCustomWeatherParam::getCustomTimeMinite() const {
+    return static_cast<u32>((static_cast<unsigned long>(static_cast<unsigned int>((((static_cast<unsigned long>(mCustomWeatherTime) * 0x10624DD3) >> 38) + (((((static_cast<unsigned long>(mCustomWeatherTime) * 0x10624DD3) >> 38) * 0xC22E4507ul) >> 48) * 0xFFFEAE80ul)) + (((static_cast<unsigned long>(static_cast<unsigned int>(((static_cast<unsigned long>(mCustomWeatherTime) * 0x10624DD3) >> 38) + (((((static_cast<unsigned long>(mCustomWeatherTime) * 0x10624DD3) >> 38) * 0xC22E4507ul) >> 48) * 0x1517FFFFEAE80ul))) * 0x91A2B3C5ul) >> 43) * 0xE0FFFFFF1F0ul))) * 0x88888889ul) >> 37);
 }
 
 static auto ddon_emit_0x01acff80 __attribute__((used)) = &cCustomWeatherParam::getCustomShadowViewDistance;
@@ -225,16 +220,8 @@ const MtDTI& sWeatherManager::getDTI() const {
     return sWeatherManager::DTI;
 }
 
-inline MtAllocator* sWeatherManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sWeatherManager::DTI);
-}
-
 void* sWeatherManager::operator new(size_t sz, u32 align) {
     return sWeatherManager::getAllocator()->memAlloc(sz, align, sWeatherManager::DTI.getID());
-}
-
-inline void sWeatherManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sWeatherManager::DTI)->memFree(p_addr);
 }
 
 sWeatherManager::sWeatherManager() {
@@ -397,9 +384,8 @@ u32 sWeatherManager::getWeatherTime() const {
     return mWeatherTime;
 }
 
-__attribute__((weak)) u32 sWeatherManager::getWeatherTimeHour() const {
-    DDON_STUB("sWeatherManager::getWeatherTimeHour")
-    return {};
+u32 sWeatherManager::getWeatherTimeHour() const {
+    return static_cast<u32>((static_cast<unsigned long>(static_cast<unsigned int>(((static_cast<unsigned long>(mWeatherTime) * 0x10624DD3) >> 38) + (((((static_cast<unsigned long>(mWeatherTime) * 0x10624DD3) >> 38) * 0xC22E4507ul) >> 48) * 0x1517FFFFEAE80ul))) * 0x91A2B3C5ul) >> 43);
 }
 
 void sWeatherManager::setWeatherTimefromHMS(u32 hour, u32 min, u32 sec) {
@@ -410,10 +396,6 @@ void sWeatherManager::setWeatherTimefromHMS(u32 hour, u32 min, u32 sec) {
 __attribute__((weak)) void sWeatherManager::updateWeatherTime() {
     DDON_STUB("sWeatherManager::updateWeatherTime")
     /* stub */
-}
-
-inline void sWeatherManager::updateWeatherTimeSync() {
-    mWeatherTime = (sGame::mpInstance)->sGame::getGameTime();
 }
 
 __attribute__((weak)) void sWeatherManager::updateSkyParam() {
@@ -484,62 +466,52 @@ __attribute__((weak)) MtVector3 sWeatherManager::getGrassWindDirection() const {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) f32 sWeatherManager::getGrassWindAmp() const {
-    DDON_STUB("sWeatherManager::getGrassWindAmp")
-    return {};
+f32 sWeatherManager::getGrassWindAmp() const {
+    return mGrassWindAmp * 170.0f;
 }
 
-__attribute__((weak)) f32 sWeatherManager::getGrassWindFreq() const {
-    DDON_STUB("sWeatherManager::getGrassWindFreq")
-    return {};
+f32 sWeatherManager::getGrassWindFreq() const {
+    return mGrassWindFreq * 0.1f;
 }
 
-__attribute__((weak)) f32 sWeatherManager::getGrassWindPhase() const {
-    DDON_STUB("sWeatherManager::getGrassWindPhase")
-    return {};
+f32 sWeatherManager::getGrassWindPhase() const {
+    return mGrassWindPhase * 3.5f;
 }
 
 const MtColor& sWeatherManager::getEffectColor(u32 correctType) const {
     return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].mEfcColorParam.Color;
 }
 
-__attribute__((weak)) f32 sWeatherManager::getEffectColorBlend(u32 correctType) const {
-    DDON_STUB("sWeatherManager::getEffectColorBlend")
-    return {};
+f32 sWeatherManager::getEffectColorBlend(u32 correctType) const {
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].getColorBlend();
 }
 
-__attribute__((weak)) f32 sWeatherManager::getEffectIntensity(u32 correctType) const {
-    DDON_STUB("sWeatherManager::getEffectIntensity")
-    return {};
+f32 sWeatherManager::getEffectIntensity(u32 correctType) const {
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].getIntensity();
 }
 
-__attribute__((weak)) f32 sWeatherManager::getEffectIntensityBlend(u32 correctType) const {
-    DDON_STUB("sWeatherManager::getEffectIntensityBlend")
-    return {};
+f32 sWeatherManager::getEffectIntensityBlend(u32 correctType) const {
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].getIntensityBlend();
 }
 
-__attribute__((weak)) f32 sWeatherManager::getEffectEnvMapPowerScale(u32 correctType) const {
-    DDON_STUB("sWeatherManager::getEffectEnvMapPowerScale")
-    return {};
+f32 sWeatherManager::getEffectEnvMapPowerScale(u32 correctType) const {
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].getEnvMapPowerScale();
 }
 
 const MtColor& sWeatherManager::getEffectShadowColor(u32 correctType) const {
     return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].mEfcColorParam.ShadowColor;
 }
 
-__attribute__((weak)) f32 sWeatherManager::getEffectShadowColorBlend(u32 correctType) const {
-    DDON_STUB("sWeatherManager::getEffectShadowColorBlend")
-    return {};
+f32 sWeatherManager::getEffectShadowColorBlend(u32 correctType) const {
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].getShadowColorBlend();
 }
 
-__attribute__((weak)) f32 sWeatherManager::getEffectShadowIntensity(u32 correctType) const {
-    DDON_STUB("sWeatherManager::getEffectShadowIntensity")
-    return {};
+f32 sWeatherManager::getEffectShadowIntensity(u32 correctType) const {
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].getShadowIntensity();
 }
 
-__attribute__((weak)) f32 sWeatherManager::getEffectShadowIntensityBlend(u32 correctType) const {
-    DDON_STUB("sWeatherManager::getEffectShadowIntensityBlend")
-    return {};
+f32 sWeatherManager::getEffectShadowIntensityBlend(u32 correctType) const {
+    return mEffectColorParam[(correctType <= 6u) ? correctType : 0u].getShadowIntensityBlend();
 }
 
 f32 sWeatherManager::getEffectColorUpdateTime() const {
@@ -1161,9 +1133,19 @@ __attribute__((weak)) MtVector3 sWeatherManager::calcMainLightDir(bool enableNig
     __builtin_unreachable();
 }
 
-__attribute__((weak)) MtVector3 sWeatherManager::calcSubLightColor(const MtVector3& nightColor) {
-    DDON_STUB("sWeatherManager::calcSubLightColor")
-    __builtin_unreachable();
+MtVector3 sWeatherManager::calcSubLightColor(const MtVector3& nightColor) {
+    MtVector3 ret_color;
+    f32 t0 = mDayNightBlendRate;
+    ret_color.pad_ = 0.0f;
+    f32 t1 = mInfiniteLightSubDayColor.y;
+    const f32 t2 = nightColor.y;
+    f32 t3 = mInfiniteLightSubDayColor.z;
+    const f32 t4 = nightColor.z;
+    f32 t5 = mZoneIndoorSubLightRate.now;
+    ret_color.x = t5 * ((t0 * nightColor.x) + (mInfiniteLightSubDayColor.x * (1.0f - t0)));
+    ret_color.y = t5 * ((t0 * t2) + (t1 * (1.0f - t0)));
+    ret_color.z = t5 * ((t0 * t4) + (t3 * (1.0f - t0)));
+    return ret_color;
 }
 
 __attribute__((weak)) MtVector3 sWeatherManager::calcHemiLightColor(const MtVector3& nightColor) {
@@ -1192,15 +1174,6 @@ u32 sWeatherManager::addLightZoneRes(rZone* pZone, const MtVector3& pos) {
 
 void sWeatherManager::eraseLightZoneRes(u32 handle) {
     mLightAndFogZoneMultiListener.mStack.releaseZone(handle);
-}
-
-inline void sWeatherManager::initLightZoneRes() {
-    mLightAndFogZoneMultiListener.mStack.releaseZoneAll();
-    mLightAndFogZoneMultiListener.mStack.addZone(mpLightAndFogZone.mpPtr, MtVector3::Zero);
-}
-
-inline void sWeatherManager::eraseLightZoneRes() {
-    mLightAndFogZoneMultiListener.mStack.releaseZoneAll();
 }
 
 __attribute__((weak)) void sWeatherManager::updateLightParam() {
@@ -1255,10 +1228,6 @@ MtVector3 sWeatherManager::getSkyAmbientColor(f32 height, f32 scale) {
     return result;
 }
 
-inline void sWeatherManager::updateWaterLRate() {
-    mWaterLRate = nDDOMath::lerp(((mpWeatherInfomOld == nullptr) ? (&WeatherInfoNone) : mpWeatherInfomOld)->mWaterLRate, ((mpWeatherInfoNow == nullptr) ? (&WeatherInfoNone) : mpWeatherInfoNow)->mWaterLRate, mWeatherBlend);
-}
-
 __attribute__((weak)) void sWeatherManager::updateWaterReflectionRate() {
     DDON_STUB("sWeatherManager::updateWaterReflectionRate")
     /* stub */
@@ -1267,12 +1236,6 @@ __attribute__((weak)) void sWeatherManager::updateWaterReflectionRate() {
 __attribute__((weak)) void sWeatherManager::updateEffectColorParam() {
     DDON_STUB("sWeatherManager::updateEffectColorParam")
     /* stub */
-}
-
-inline void sWeatherManager::eraseZoneIndoor() {
-    mZoneIndoorListenerScr.mStack.releaseZoneAll();
-    mZoneIndoorListenerEfc.mStack.releaseZoneAll();
-    mZoneIndoorListenerSnd.mStack.releaseZoneAll();
 }
 
 __attribute__((weak)) cZoneIndoorHandle sWeatherManager::addZoneIndoorRes(rZone* pComZone, rZone* pScrZone, rZone* pEfcZone, const MtVector3& pos) {
@@ -1295,12 +1258,6 @@ void sWeatherManager::eraseZoneIndoorRes(cZoneIndoorHandle& handle) {
 }
 
 __attribute__((weak)) void sWeatherManager::releaseZoneIndoorRes() {
-}
-
-inline void sWeatherManager::initZoneIndoorRes() {
-    mZoneIndoorListenerScr.mStack.releaseZoneAll();
-    mZoneIndoorListenerEfc.mStack.releaseZoneAll();
-    mZoneIndoorListenerSnd.mStack.releaseZoneAll();
 }
 
 __attribute__((weak)) void sWeatherManager::updateZoneIndoor() {

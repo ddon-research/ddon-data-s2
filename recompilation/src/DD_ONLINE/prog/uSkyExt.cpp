@@ -29,16 +29,8 @@ const MtDTI& uSkyExt::getDTI() const {
     return uSkyExt::DTI;
 }
 
-inline MtAllocator* uSkyExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uSkyExt::DTI);
-}
-
 void* uSkyExt::operator new(size_t sz, u32 align) {
     return uSkyExt::getAllocator()->memAlloc(sz, align, uSkyExt::DTI.getID());
-}
-
-inline void uSkyExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSkyExt::DTI)->memFree(p_addr);
 }
 
 uSkyExt::~uSkyExt() {

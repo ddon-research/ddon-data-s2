@@ -354,3 +354,15 @@ private:
 inline void* uGUIOption::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIOption::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIOption::DTI);
+}
+
+inline void uGUIOption::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIOption::DTI)->memFree(p_addr);
+}

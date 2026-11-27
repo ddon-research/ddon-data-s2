@@ -13,6 +13,7 @@ class MtDTI;
 class MtObject;
 
 // Declarations
+class CDataAchieveCategoryStatus;
 class CDataAchieveRewardCommon;
 class CDataAchievementFurnitureReward;
 class CDataAchievementIdentifier;
@@ -28,8 +29,43 @@ using __int64_t = long int;
 using b8 = bool;
 using s64 = __int64_t;
 using size_t = _Sizet;
+using u16 = unsigned short;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+class CDataAchieveCategoryStatus : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataAchieveCategoryStatus();
+    explicit CDataAchieveCategoryStatus(u8, u16, u16);
+public:
+    u8 m_ucCategoryID;  // offset: 0x8
+    u16 m_usAchieveNum;  // offset: 0xa
+    u16 m_usTargetNum;  // offset: 0xc
+    static MyDTI DTI;
+};
 
 class CDataAchieveRewardCommon : public CPacketDataBase
 {
@@ -203,6 +239,16 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataAchieveCategoryStatus::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataAchieveCategoryStatus::CDataAchieveCategoryStatus() {
+    this->m_ucCategoryID = 0;
+    this->m_usAchieveNum = 0;
+    this->m_usTargetNum = 0;
+}
+
 inline void* CDataAchieveRewardCommon::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -251,4 +297,36 @@ inline CDataAchievementRewardProgress::CDataAchievementRewardProgress() {
     this->m_unTargetNum = 0;
     this->m_unRewardId = 0;
     this->m_unCurrentNum = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataAchieveCategoryStatus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAchieveCategoryStatus::DTI);
+}
+
+inline MtAllocator* CDataAchieveRewardCommon::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAchieveRewardCommon::DTI);
+}
+
+inline MtAllocator* CDataAchievementFurnitureReward::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAchievementFurnitureReward::DTI);
+}
+
+inline MtAllocator* CDataAchievementIdentifier::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAchievementIdentifier::DTI);
+}
+
+inline void* CDataAchievementIdentifier::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataAchievementIdentifier::DTI)->memAlloc(sz, align, ::CDataAchievementIdentifier::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataAchievementProgress::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAchievementProgress::DTI);
+}
+
+inline MtAllocator* CDataAchievementRewardProgress::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataAchievementRewardProgress::DTI);
 }

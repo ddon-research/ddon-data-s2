@@ -431,6 +431,25 @@ inline void* cNetLoginServer::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline void cNetLoginServer::allClearFlow() {
+    this->mFlow[0].mFTimer = 0.0f;
+    this->mFlow[0].mError.mCause = 0;
+    this->mFlow[0].mError.mNative = 0;
+    this->mFlow[0].mCommand = 0;
+    this->mFlow[0].mError.mNo = 0;
+    this->mFlow[0].mRno0 = 0;
+    this->mFlow[0].mRno1 = 0;
+    this->mFlow[0].mIsCallback = true;
+    this->mFlow[1].mFTimer = 0.0f;
+    this->mFlow[1].mError.mCause = 0;
+    this->mFlow[1].mError.mNative = 0;
+    this->mFlow[1].mCommand = 0;
+    this->mFlow[1].mError.mNo = 0;
+    this->mFlow[1].mRno0 = 0;
+    this->mFlow[1].mRno1 = 0;
+    this->mFlow[1].mIsCallback = true;
+}
+
 inline void cNetLoginServer::setSvPort(u32 port) {
     this->mGuardData.mSvPort = port;
 }
@@ -488,4 +507,28 @@ inline bool cSeedLoginSvConnection::isLoginSuccess() const {
 
 inline cNetLoginServer* cSeedLoginSvConnection::getManager() {
     return this->mpManager;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cNetLoginServer::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cNetLoginServer::DTI);
+}
+
+inline void cNetLoginServer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNetLoginServer::DTI)->memFree(p_addr);
+}
+
+inline void* cNetLoginServer::cCtrlFlow::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNetLoginServer::cCtrlFlow::DTI)->memAlloc(sz, align, ::cNetLoginServer::cCtrlFlow::DTI.::MtDTI::getID());
+}
+
+inline void cNetLoginServer::cCtrlFlow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNetLoginServer::cCtrlFlow::DTI)->memFree(p_addr);
+}
+
+inline void cSeedLoginSvConnection::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSeedLoginSvConnection::DTI)->memFree(p_addr);
 }

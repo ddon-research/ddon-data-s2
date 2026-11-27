@@ -345,3 +345,32 @@ inline void cAIPathTrace::clear() {
 inline void* cAIPathTrace::TracePoint::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cAINavPathTrace::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAINavPathTrace::DTI)->memFree(p_addr);
+}
+
+inline void cAIPathTrace::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPathTrace::DTI)->memFree(p_addr);
+}
+
+inline void* cAIPathTrace::TracePoint::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAIPathTrace::TracePoint::DTI)->memAlloc(sz, align, ::cAIPathTrace::TracePoint::DTI.::MtDTI::mID);
+}
+
+inline void cAIPathTrace::TracePoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIPathTrace::TracePoint::DTI)->memFree(p_addr);
+}
+
+inline cAIPathTrace::TracePoint::TracePoint() {
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+    this->mLinkAttribute = 0;
+    this->mpData = nullptr;
+}

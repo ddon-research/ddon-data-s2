@@ -214,6 +214,7 @@ public:
 
 class uShlRenmadanMain : public uShlHoming
 {
+    friend class uShlRenmadanCtrl;
 public:
     class MyDTI;
 public:
@@ -298,4 +299,63 @@ inline uShlRenmadanMain::uShlRenmadanMain() {
 
 inline void uShlRenmadanMain::setRenmaCtrl(uShlRenmadanCtrl* pRenma) {
     this->mpRenmaCtrl = pRenma;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamRenmadanCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamRenmadanCtrl::DTI)->memAlloc(sz, align, ::cShlParamRenmadanCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamRenmadanCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamRenmadanCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamRenmadanCtrl::cRenmaSubCtrlParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamRenmadanCtrl::cRenmaSubCtrlParam::DTI)->memAlloc(sz, align, ::cShlParamRenmadanCtrl::cRenmaSubCtrlParam::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamRenmadanCtrl::cRenmaSubCtrlParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamRenmadanCtrl::cRenmaSubCtrlParam::DTI)->memFree(p_addr);
+}
+
+inline void uShlRenmadanCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlRenmadanCtrl::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamRenmadanCtrl* uShlRenmadanCtrl::getShlParam() const {
+    return static_cast<const cShlParamRenmadanCtrl*>(this->::uShlBase::mpShlParam2);
+}
+
+inline uShlRenmadanCtrl::uShlRenmadanCtrl() {
+    this->mpRenmaTarget = nullptr;
+    this->mpRenmaMain = nullptr;
+    this->mSubWaitTimer = 0.0f;
+    this->mSubDelayTimer = 0.0f;
+    this->mShlSetNum = 0;
+    this->mShlSetFrame = 0.0f;
+    this->mpTargetEfcHandle = nullptr;
+    this->mSubTargetUID = 0;
+    this->mJointNo = -1;
+    this->mOffset.x = ::MtVector3::Zero.x;
+    this->mOffset.y = ::MtVector3::Zero.y;
+    this->mOffset.z = ::MtVector3::Zero.z;
+    this->mOffset.pad_ = 0.0f;
+    this->mRenmaState = 0;
+    this->mSubHomingFirstArray.::MtArray::mpArray = nullptr;
+    this->mSubHomingFirstArray.::MtArray::mBufsiz = 0;
+    this->mSubHomingFirstArray.::MtArray::mLength = 0;
+    this->mSubHomingSecondArray.::MtArray::mpArray = nullptr;
+    this->mSubHomingSecondArray.::MtArray::mLength = 0;
+    this->mSubHomingSecondArray.::MtArray::mBufsiz = 0;
+}
+
+inline void* uShlRenmadanMain::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlRenmadanMain::DTI)->memAlloc(sz, align, ::uShlRenmadanMain::DTI.::MtDTI::getID());
+}
+
+inline void uShlRenmadanMain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlRenmadanMain::DTI)->memFree(p_addr);
 }

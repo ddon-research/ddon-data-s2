@@ -30,16 +30,8 @@ const MtDTI& cpSafePos::getDTI() const {
     return cpSafePos::DTI;
 }
 
-inline MtAllocator* cpSafePos::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpSafePos::DTI);
-}
-
 void* cpSafePos::operator new(size_t sz, u32 align) {
     return cpSafePos::getAllocator()->memAlloc(sz, align, cpSafePos::DTI.getID());
-}
-
-inline void cpSafePos::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpSafePos::DTI)->memFree(p_addr);
 }
 
 cpSafePos::cpSafePos() {

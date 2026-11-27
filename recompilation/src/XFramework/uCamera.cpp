@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uCamera.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -16,10 +14,6 @@
 
 const MtDTI& uCamera::getDTI() const {
     return uCamera::DTI;
-}
-
-inline void uCamera::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCamera::DTI)->memFree(p_addr);
 }
 
 uCamera::uCamera() {
@@ -57,9 +51,13 @@ __attribute__((weak)) void uCamera::moveAfter() {
     /* stub */
 }
 
-__attribute__((weak)) void uCamera::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uCamera::applyWorldOffset")
-    /* stub */
+void uCamera::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mCameraPos.x = offset.x + mCameraPos.x;
+    mCameraPos.y = offset.y + mCameraPos.y;
+    mCameraPos.z = offset.z + mCameraPos.z;
+    mTargetPos.x = offset.x + mTargetPos.x;
+    mTargetPos.y = offset.y + mTargetPos.y;
+    mTargetPos.z = offset.z + mTargetPos.z;
 }
 
 void uCamera::createProperty(MtPropertyList& s) {

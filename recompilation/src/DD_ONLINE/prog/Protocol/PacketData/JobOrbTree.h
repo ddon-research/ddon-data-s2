@@ -130,3 +130,14 @@ inline CDataJobOrbTreeStatus::CDataJobOrbTreeStatus() {
     this->m_bIsReleased = false;
     this->m_fRate = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataJobOrbDevoteElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJobOrbDevoteElement::DTI);
+}
+
+inline MtAllocator* CDataJobOrbTreeStatus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJobOrbTreeStatus::DTI);
+}

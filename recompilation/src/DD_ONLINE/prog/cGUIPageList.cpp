@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cGUIPageList.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "cControl.h"
 #include "cGUIControlMgr.h"
 #include "../../XFramework/cGUIInstance.h"
@@ -16,10 +14,6 @@
 
 const MtDTI& cGUIPageList::getDTI() const {
     return cGUIPageList::DTI;
-}
-
-inline void cGUIPageList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIPageList::DTI)->memFree(p_addr);
 }
 
 cGUIPageList::cGUIPageList() {
@@ -101,9 +95,12 @@ __attribute__((weak)) s32 cGUIPageList::getDispItemIndex() const {
     return {};
 }
 
-__attribute__((weak)) f32 cGUIPageList::getCursorPosY(s32 dispItemIndex) const {
-    DDON_STUB("cGUIPageList::getCursorPosY")
-    return {};
+f32 cGUIPageList::getCursorPosY(s32 dispItemIndex) const {
+    if (mCursor != nullptr) {
+        return mCursorDefaultY + (mCursor->mDistY * static_cast<float>(dispItemIndex));
+    } else {
+        return 0.0f;
+    }
 }
 
 void cGUIPageList::getMouseCollision(cGUIInstance* & instance, cGUIObject* & object, s32 dispItemIndex) const {
@@ -111,9 +108,21 @@ void cGUIPageList::getMouseCollision(cGUIInstance* & instance, cGUIObject* & obj
     object = nullptr;
 }
 
-__attribute__((weak)) void cGUIPageList::clearMouseTouchList() {
-    DDON_STUB("cGUIPageList::clearMouseTouchList")
-    /* stub */
+void cGUIPageList::clearMouseTouchList() {
+    if (mControlMgr == nullptr) {
+        return;
+    }
+    if (mListControlMgrId <= 15u) {
+        if (mControlMgr->mControl[mListControlMgrId].mpScrollList != nullptr) {
+            if (mControlMgr->mControl[mListControlMgrId].mpScrollList->getCtrl() != nullptr) {
+                mControlMgr->mControl[mListControlMgrId].mpScrollList->getCtrl()->clearMouseTouchList();
+            }
+        } else {
+            if (mControlMgr->mControl[mListControlMgrId].mpCtrl != nullptr) {
+                mControlMgr->mControl[mListControlMgrId].mpCtrl->clearMouseTouchList();
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cGUIPageList::updateMouseTouchList() {

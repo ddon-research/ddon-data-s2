@@ -21,14 +21,6 @@ const MtDTI& rPawnQuestTalk::getDTI() const {
     return rPawnQuestTalk::DTI;
 }
 
-inline void* rPawnQuestTalk::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPawnQuestTalk::DTI)->memAlloc(sz, align, rPawnQuestTalk::DTI.getID());
-}
-
-inline void rPawnQuestTalk::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPawnQuestTalk::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool rPawnQuestTalk::getTalkData(rPawnQuestTalk::MSGTYPE msgType, u32 personality, u32& groupSerial, rPawnQuestTalk::RESTYPE& resType) const {
     DDON_STUB("rPawnQuestTalk::getTalkData")
     return {};
@@ -36,10 +28,6 @@ __attribute__((weak)) bool rPawnQuestTalk::getTalkData(rPawnQuestTalk::MSGTYPE m
 
 MT_CTSTR rPawnQuestTalk::getExt() const {
     return "pqt";
-}
-
-inline rPawnQuestTalk::rPawnQuestTalk() {
-    setAttribute(22u);
 }
 
 rPawnQuestTalk::~rPawnQuestTalk() {
@@ -110,14 +98,6 @@ MtObject* rPawnQuestTalk::MyDTI::newInstance() const {
 
 const MtDTI& rPawnQuestTalk::cTalkData::getDTI() const {
     return rPawnQuestTalk::cTalkData::DTI;
-}
-
-void* rPawnQuestTalk::cTalkData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPawnQuestTalk::cTalkData::DTI)->memAlloc(sz, align, rPawnQuestTalk::cTalkData::DTI.getID());
-}
-
-inline void rPawnQuestTalk::cTalkData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPawnQuestTalk::cTalkData::DTI)->memFree(p_addr);
 }
 
 rPawnQuestTalk::MSGTYPE rPawnQuestTalk::cTalkData::getMsgType() const {

@@ -112,3 +112,14 @@ inline void* CDataDLCLineupHistory::operator new(size_t sz, void* p_addr) {
 inline CDataDLCLineupHistory::CDataDLCLineupHistory() {
     this->m_llUsedDate = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataDLCLineupBought::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDLCLineupBought::DTI);
+}
+
+inline MtAllocator* CDataDLCLineupHistory::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDLCLineupHistory::DTI);
+}

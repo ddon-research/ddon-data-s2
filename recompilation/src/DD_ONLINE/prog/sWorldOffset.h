@@ -14,6 +14,7 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class MtVector3;
+class cAIGrid;
 namespace nNetMsgData { struct stNetPos; }
 
 // Declarations
@@ -29,6 +30,7 @@ using u32 = unsigned int;
 
 class sWorldOffset : public cSystem
 {
+    friend class cAIGrid;
 public:
     enum
     {
@@ -126,4 +128,16 @@ inline s32 sWorldOffset::getX() {
 
 inline s32 sWorldOffset::getZ() {
     return this->mIdZ;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sWorldOffset::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sWorldOffset::DTI);
+}
+
+inline void sWorldOffset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sWorldOffset::DTI)->memFree(p_addr);
 }

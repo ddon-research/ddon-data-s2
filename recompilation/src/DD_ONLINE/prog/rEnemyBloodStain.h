@@ -131,3 +131,19 @@ inline void cEnemyBloodStain::operator delete[](void* p_addr) {
 inline void* cEnemyBloodStain::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEnemyBloodStain::DTI)->memAlloc(sz, align, ::cEnemyBloodStain::DTI.::MtDTI::getID());
 }
+
+inline void* cEnemyBloodStain::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyBloodStain::DTI)->memAlloc(sz, align, ::cEnemyBloodStain::DTI.::MtDTI::getID());
+}
+
+inline void cEnemyBloodStain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyBloodStain::DTI)->memFree(p_addr);
+}
+
+inline void* rEnemyBloodStain::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEnemyBloodStain::DTI)->memAlloc(sz, align, ::rEnemyBloodStain::DTI.::MtDTI::getID());
+}
+
+inline void rEnemyBloodStain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEnemyBloodStain::DTI)->memFree(p_addr);
+}

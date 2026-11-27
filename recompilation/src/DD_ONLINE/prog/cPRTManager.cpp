@@ -30,16 +30,8 @@ const MtDTI& cPRTManager::getDTI() const {
     return cPRTManager::DTI;
 }
 
-inline MtAllocator* cPRTManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cPRTManager::DTI);
-}
-
 void* cPRTManager::operator new(size_t sz, u32 align) {
     return cPRTManager::getAllocator()->memAlloc(sz, align, cPRTManager::DTI.getID());
-}
-
-inline void cPRTManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPRTManager::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cPRTManager::reset() {
@@ -117,11 +109,6 @@ void cPRTManager::setReadyOKBit(u32 index) {
 
 void cPRTManager::resetReadyOKBit(u32 index) {
     static_cast<sNetworkExt*>(sNetwork::getInstance())->clrNotifySync(mReadyOKBit, static_cast<s32>(index));
-}
-
-inline void cPRTManager::resetReadyBitAll() {
-    static_cast<sNetworkExt*>(sNetwork::mpInstance)->clrNotifySyncAll(mReadyBit);
-    static_cast<sNetworkExt*>(sNetwork::mpInstance)->clrNotifySyncAll(mReadyOKBit);
 }
 
 void cPRTManager::resetAdvancePRT() {

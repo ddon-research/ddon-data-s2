@@ -130,3 +130,37 @@ inline void uCorePointSearch::setOwner(uHuman* pHm) {
 inline void* uCorePointSearch::cCoreSearchInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* uCorePointSearch::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uCorePointSearch::DTI)->memAlloc(sz, align, ::uCorePointSearch::DTI.::MtDTI::getID());
+}
+
+inline void uCorePointSearch::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCorePointSearch::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uCorePointSearch::cCoreSearchInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCorePointSearch::cCoreSearchInfo::DTI);
+}
+
+inline void* uCorePointSearch::cCoreSearchInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uCorePointSearch::cCoreSearchInfo::DTI)->memAlloc(sz, align, ::uCorePointSearch::cCoreSearchInfo::DTI.::MtDTI::getID());
+}
+
+inline uCorePointSearch::cCoreSearchInfo::cCoreSearchInfo() {
+    this->mprColRes = nullptr;
+    this->mIndex = 1;
+    this->mRadius = 0.0f;
+    this->mOffset0.x = ::MtVector3::Zero.x;
+    this->mOffset0.y = ::MtVector3::Zero.y;
+    this->mOffset0.z = ::MtVector3::Zero.z;
+    this->mOffset0.pad_ = 0.0f;
+    this->mOffset1.x = ::MtVector3::Zero.x;
+    this->mOffset1.y = ::MtVector3::Zero.y;
+    this->mOffset1.z = ::MtVector3::Zero.z;
+    this->mOffset1.pad_ = 0.0f;
+}

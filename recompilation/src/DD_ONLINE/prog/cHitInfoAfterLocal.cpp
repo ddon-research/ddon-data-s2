@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -14,27 +13,8 @@ const MtDTI& cHitInfoAfterLocal::getDTI() const {
     return cHitInfoAfterLocal::DTI;
 }
 
-inline MtAllocator* cHitInfoAfterLocal::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cHitInfoAfterLocal::DTI);
-}
-
-inline void* cHitInfoAfterLocal::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cHitInfoAfterLocal::DTI)->memAlloc(sz, align, cHitInfoAfterLocal::DTI.getID());
-}
-
 __attribute__((weak)) void cHitInfoAfterLocal::operator delete(void* p_addr) {
     cHitInfoAfterLocal::getAllocator()->memFree(p_addr);
-}
-
-cHitInfoAfterLocal::cHitInfoAfterLocal() {
-    mHitPos.x = MtVector3::Zero.x;
-    mHitPos.y = MtVector3::Zero.y;
-    mHitPos.z = MtVector3::Zero.z;
-    mHitStopFlag = 0;
-    mIsForceHitStop = false;
-    mHitPos.pad_ = 0.0f;
-    mpShlAtkPtr = nullptr;
-    mHitStopTime = 0.0f;
 }
 
 inline cHitInfoAfterLocal::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

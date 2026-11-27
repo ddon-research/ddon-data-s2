@@ -113,3 +113,19 @@ inline void* CDataLoadingInfoSchedules::operator new(size_t sz, void* p_addr) {
 
 inline CDataLoadingInfoSchedules::CDataLoadingInfoSchedules() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataLoadingInfoSchedule::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLoadingInfoSchedule::DTI);
+}
+
+inline MtAllocator* CDataLoadingInfoSchedules::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLoadingInfoSchedules::DTI);
+}
+
+inline void* CDataLoadingInfoSchedules::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataLoadingInfoSchedules::DTI)->memAlloc(sz, align, ::CDataLoadingInfoSchedules::DTI.::MtDTI::getID());
+}

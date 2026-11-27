@@ -182,3 +182,15 @@ inline void* uGUIBrowserBG::operator new(size_t sz, void* p_addr) {
 inline nGUIExt::BROWSER_RESULT uGUIBrowserBG::getBrowserResult() {
     return this->mBrowserResult;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIBrowserBG::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBrowserBG::DTI);
+}
+
+inline void uGUIBrowserBG::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBrowserBG::DTI)->memFree(p_addr);
+}

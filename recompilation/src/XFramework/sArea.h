@@ -22,16 +22,21 @@ class cMenuPartyList;
 class cNetGameServer;
 class cQuestTask;
 class cpTalk;
+class cpWaypoint;
 namespace nFsm { class cCameraCtrl; }
 namespace nSessionManager { class cNetSessionManager; }
+class sBenchmark;
 class sGUIExt;
 class sGame;
+class sMyRoom;
 class sNpcManager;
+class sQuestManagerExt;
 class sSoundExt;
 class sSoundManager;
 class uControl;
 class uControlNpc;
 class uEnemy;
+class uGUIAnnounce;
 class uGUIContentsBoard;
 class uGUIGaugeEnemy;
 class uGUIGaugeEnemyBoss;
@@ -43,6 +48,7 @@ class uGUIPopTopSel;
 class uHuman;
 class uShlArrow;
 class uStageCraftPawnCtrl;
+class uStageJointMdl;
 
 // Declarations
 class sArea;
@@ -68,17 +74,22 @@ class sArea : public cSystem
     friend class cNetGameServer;
     friend class cQuestTask;
     friend class cpTalk;
+    friend class cpWaypoint;
     friend void nDDOUtility::requestOnTutorialFlg(s32 questTarget);
     friend class nFsm::cCameraCtrl;
     friend class nSessionManager::cNetSessionManager;
+    friend class sBenchmark;
     friend class sGUIExt;
     friend class sGame;
+    friend class sMyRoom;
     friend class sNpcManager;
+    friend class sQuestManagerExt;
     friend class sSoundExt;
     friend class sSoundManager;
     friend class uControl;
     friend class uControlNpc;
     friend class uEnemy;
+    friend class uGUIAnnounce;
     friend class uGUIContentsBoard;
     friend class uGUIGaugeEnemy;
     friend class uGUIGaugeEnemyBoss;
@@ -90,6 +101,7 @@ class sArea : public cSystem
     friend class uHuman;
     friend class uShlArrow;
     friend class uStageCraftPawnCtrl;
+    friend class uStageJointMdl;
 public:
     class MyDTI;
     class AreaInfo;
@@ -213,4 +225,29 @@ inline void sArea::setArea(cArea* p, u32 pt) {
 
 inline void* sArea::AreaInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline sArea::AreaInfo::AreaInfo() {
+    this->mName = "";
+    this->mpPrev = nullptr;
+    this->mpNext = nullptr;
+    this->mpChild = nullptr;
+    this->mpParent = nullptr;
+    this->mpDTI = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sArea::DTI)->memFree(p_addr);
+}
+
+inline void* sArea::AreaInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sArea::AreaInfo::DTI)->memAlloc(sz, align, ::sArea::AreaInfo::DTI.::MtDTI::mID);
+}
+
+inline void sArea::AreaInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sArea::AreaInfo::DTI)->memFree(p_addr);
 }

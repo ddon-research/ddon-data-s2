@@ -34,6 +34,7 @@ using u8 = unsigned char;
 
 class sAreaExt : public sArea
 {
+    friend class aStage;
 public:
     enum eJumpType
     {
@@ -203,4 +204,16 @@ inline void* sAreaExt::operator new(size_t sz, void* p_addr) {
 
 inline rStageList* sAreaExt::getStageList() const {
     return this->mpStageList;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sAreaExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sAreaExt::DTI);
+}
+
+inline void sAreaExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sAreaExt::DTI)->memFree(p_addr);
 }

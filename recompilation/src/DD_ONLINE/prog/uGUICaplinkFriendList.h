@@ -425,3 +425,19 @@ inline void* uGUICaplinkFriendList::operator new(size_t sz, void* p_addr) {
 inline void* uGUICaplinkFriendList::cIndex::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkFriendList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkFriendList::DTI);
+}
+
+inline void uGUICaplinkFriendList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFriendList::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkFriendList::cIndex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkFriendList::cIndex::DTI)->memFree(p_addr);
+}

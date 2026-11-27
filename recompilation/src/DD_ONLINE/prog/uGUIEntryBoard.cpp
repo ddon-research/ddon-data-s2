@@ -41,10 +41,6 @@ const MtDTI& uGUIEntryBoard::getDTI() const {
     return uGUIEntryBoard::DTI;
 }
 
-inline void uGUIEntryBoard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIEntryBoard::DTI)->memFree(p_addr);
-}
-
 uGUIEntryBoard::~uGUIEntryBoard() {
     if (mpGUIRes != nullptr) {
         mpGUIRes->release();
@@ -80,7 +76,7 @@ void uGUIEntryBoard::kill() {
 
 bool uGUIEntryBoard::isItemEnable(u32 index) {
     if (index < mDataArray.mLength) {
-        return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mDataArray.getBuffer()[static_cast<int>(index)]) + 184)) != 0;
+        return static_cast<cData*>(mDataArray.getBuffer()[static_cast<int>(index)])->mIsEnable;
     } else {
         return false;
     }
@@ -193,10 +189,6 @@ __attribute__((weak)) MtObject* uGUIEntryBoard::MyDTI::newInstance() const {
 
 const MtDTI& uGUIEntryBoard::cData::getDTI() const {
     return uGUIEntryBoard::cData::DTI;
-}
-
-inline void uGUIEntryBoard::cData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIEntryBoard::cData::DTI)->memFree(p_addr);
 }
 
 inline uGUIEntryBoard::cData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

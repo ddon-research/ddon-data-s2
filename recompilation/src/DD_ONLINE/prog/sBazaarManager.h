@@ -23,6 +23,11 @@ class MtDTI;
 class MtObject;
 class MtPropertyList;
 class MtString;
+class uGUIBazaar;
+class uGUIBazaarDealSheet;
+class uGUIBazaarItemSearch;
+class uGUIBazaarPopBuy;
+class uGUIBazaarPopItemList;
 
 // Declarations
 class sBazaarManager;
@@ -46,6 +51,10 @@ using u8 = unsigned char;
 
 class sBazaarManager : public cSystem
 {
+    friend class uGUIBazaar;
+    friend class uGUIBazaarDealSheet;
+    friend class uGUIBazaarItemSearch;
+    friend class uGUIBazaarPopItemList;
 public:
     enum
     {
@@ -313,6 +322,7 @@ public:
 public:
     class cBazaarItemInfoData : public MtObject
     {
+        friend class uGUIBazaarPopBuy;
     public:
         class MyDTI;
     public:
@@ -517,6 +527,7 @@ public:
     class cBazaarCharListCtrl : public MtObject
     {
         friend class sBazaarManager;
+        friend class uGUIBazaarDealSheet;
     public:
         class MyDTI;
     public:
@@ -986,4 +997,164 @@ inline sBazaarManager::cBazaarExhibitItemCtrl::cBazaarExhibitItemCtrl() {
     this->mResult = 0;
     this->mErrorType = 0;
     this->mItemId = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cNetGameServer.h"
+#include "../../XFramework/sNetwork.h"
+#include "sNetworkExt.h"
+
+inline MtAllocator* sBazaarManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::DTI);
+}
+
+inline void sBazaarManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::DTI)->memFree(p_addr);
+}
+
+inline void sBazaarManager::moveBazaarCharList() {
+    switch (this->mBazaarCharListTaskRno - 1u) {
+        case 0:
+        {
+            if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->::cNetGameServer::getBazaarExhibitPossibleNum()) {
+                this->mBazaarCharListTaskRno = 2;
+            } else {
+                this->mBazaarCharListTaskRno = 5;
+            }
+            break;
+        }
+        case 1:
+        {
+            if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->mStatus[440] != static_cast<sNetworkExt::NET_STAT>(1)) {
+                if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->mStatus[440] == static_cast<sNetworkExt::NET_STAT>(4)) {
+                    this->mBazaarCharListTaskRno = 5;
+                } else {
+                    this->mBazaarCharListTaskRno = 3;
+                }
+            }
+            break;
+        }
+        case 2:
+        {
+            if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->::cNetGameServer::getBazaarCharacterInfo()) {
+                this->mBazaarCharListTaskRno = 4;
+            } else {
+                this->mBazaarCharListTaskRno = 5;
+            }
+            break;
+        }
+        case 3:
+        {
+            if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->mStatus[430] != static_cast<sNetworkExt::NET_STAT>(1)) {
+                if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->mStatus[430] == static_cast<sNetworkExt::NET_STAT>(4)) {
+                    this->mBazaarCharListTaskRno = 5;
+                } else {
+                    this->mBazaarCharListTaskRno = 6;
+                }
+            }
+            break;
+        }
+        case 4:
+        {
+            this->mBazaarCharListTaskRno = 0;
+            break;
+        }
+        case 5:
+        {
+            this->mBazaarCharListTaskRno = 0;
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
+}
+
+inline void sBazaarManager::moveGetAnExhibitItemProceeds() {
+    if (this->mGetAnExhibitItemProceedsReqResult != 1) {
+        return;
+    }
+    if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->mStatus[437] == static_cast<sNetworkExt::NET_STAT>(1)) {
+        return;
+    }
+    if (static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mpGameServer->mStatus[437] == static_cast<sNetworkExt::NET_STAT>(4)) {
+        this->mGetAnExhibitItemProceedsReqResult = 3;
+    } else {
+        this->mGetAnExhibitItemProceedsReqResult = 2;
+    }
+}
+
+inline void* sBazaarManager::cBazaarCharListCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarCharListCtrl::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarCharListCtrl::DTI.::MtDTI::getID());
+}
+
+inline void sBazaarManager::cBazaarCharListCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarCharListCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* sBazaarManager::cBazaarCharListData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarCharListData::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarCharListData::DTI.::MtDTI::getID());
+}
+
+inline void* sBazaarManager::cBazaarProceedsCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarProceedsCtrl::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarProceedsCtrl::DTI.::MtDTI::getID());
+}
+
+inline void sBazaarManager::cBazaarProceedsCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarProceedsCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* sBazaarManager::cBazaarItemListCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemListCtrl::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarItemListCtrl::DTI.::MtDTI::getID());
+}
+
+inline void sBazaarManager::cBazaarItemListCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemListCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* sBazaarManager::cBazaarItemListData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemListData::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarItemListData::DTI.::MtDTI::getID());
+}
+
+inline void sBazaarManager::cBazaarItemListData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemListData::DTI)->memFree(p_addr);
+}
+
+inline void* sBazaarManager::cBazaarItemInfoCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemInfoCtrl::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarItemInfoCtrl::DTI.::MtDTI::getID());
+}
+
+inline void sBazaarManager::cBazaarItemInfoCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemInfoCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* sBazaarManager::cBazaarItemInfoData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemInfoData::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarItemInfoData::DTI.::MtDTI::getID());
+}
+
+inline void* sBazaarManager::cBazaarItemHistoryData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemHistoryData::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarItemHistoryData::DTI.::MtDTI::getID());
+}
+
+inline void sBazaarManager::cBazaarItemHistoryData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemHistoryData::DTI)->memFree(p_addr);
+}
+
+inline void* sBazaarManager::cBazaarItemPrimLimit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemPrimLimit::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarItemPrimLimit::DTI.::MtDTI::getID());
+}
+
+inline void sBazaarManager::cBazaarItemPrimLimit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarItemPrimLimit::DTI)->memFree(p_addr);
+}
+
+inline void* sBazaarManager::cBazaarExhibitItemCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarExhibitItemCtrl::DTI)->memAlloc(sz, align, ::sBazaarManager::cBazaarExhibitItemCtrl::DTI.::MtDTI::getID());
+}
+
+inline void sBazaarManager::cBazaarExhibitItemCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sBazaarManager::cBazaarExhibitItemCtrl::DTI)->memFree(p_addr);
 }

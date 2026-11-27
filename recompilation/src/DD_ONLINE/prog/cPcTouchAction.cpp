@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cPcTouchAction.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
 #include "cMenuBase.h"
@@ -17,14 +15,6 @@
 
 const MtDTI& cPcTouchAction::getDTI() const {
     return cPcTouchAction::DTI;
-}
-
-inline void* cPcTouchAction::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPcTouchAction::DTI)->memAlloc(sz, align, cPcTouchAction::DTI.getID());
-}
-
-inline void cPcTouchAction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPcTouchAction::DTI)->memFree(p_addr);
 }
 
 cPcTouchAction::cPcTouchAction() {

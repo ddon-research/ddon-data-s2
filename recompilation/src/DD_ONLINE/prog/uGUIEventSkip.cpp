@@ -29,16 +29,8 @@ const MtDTI& uGUIEventSkip::getDTI() const {
     return uGUIEventSkip::DTI;
 }
 
-inline MtAllocator* uGUIEventSkip::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIEventSkip::DTI);
-}
-
 void* uGUIEventSkip::operator new(size_t sz, u32 align) {
     return uGUIEventSkip::getAllocator()->memAlloc(sz, align, uGUIEventSkip::DTI.getID());
-}
-
-inline void uGUIEventSkip::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIEventSkip::DTI)->memFree(p_addr);
 }
 
 uGUIEventSkip::uGUIEventSkip(uGUIEventSkip::SKIP_MODE mode) : uGUIBase(1u, false) {

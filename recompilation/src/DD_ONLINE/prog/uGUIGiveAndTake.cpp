@@ -38,16 +38,8 @@ const MtDTI& uGUIGiveAndTake::getDTI() const {
     return uGUIGiveAndTake::DTI;
 }
 
-inline MtAllocator* uGUIGiveAndTake::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGiveAndTake::DTI);
-}
-
 void* uGUIGiveAndTake::operator new(size_t sz, u32 align) {
     return uGUIGiveAndTake::getAllocator()->memAlloc(sz, align, uGUIGiveAndTake::DTI.getID());
-}
-
-inline void uGUIGiveAndTake::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGiveAndTake::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIGiveAndTake::~uGUIGiveAndTake() {
@@ -500,14 +492,6 @@ const MtDTI& uGUIGiveAndTake::cItemInfoList::getDTI() const {
     return uGUIGiveAndTake::cItemInfoList::DTI;
 }
 
-inline void* uGUIGiveAndTake::cItemInfoList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIGiveAndTake::cItemInfoList::DTI)->memAlloc(sz, align, uGUIGiveAndTake::cItemInfoList::DTI.getID());
-}
-
-inline void uGUIGiveAndTake::cItemInfoList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGiveAndTake::cItemInfoList::DTI)->memFree(p_addr);
-}
-
 inline uGUIGiveAndTake::cItemInfoList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIGiveAndTake::cItemInfoList::MyDTI uGUIGiveAndTake::cItemInfoList::DTI("uGUIGiveAndTake::cItemInfoList", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -520,16 +504,8 @@ const MtDTI& uGUIGiveAndTake::cItemGiveList::getDTI() const {
     return uGUIGiveAndTake::cItemGiveList::DTI;
 }
 
-inline MtAllocator* uGUIGiveAndTake::cItemGiveList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGiveAndTake::cItemGiveList::DTI);
-}
-
 void* uGUIGiveAndTake::cItemGiveList::operator new(size_t sz, u32 align) {
     return uGUIGiveAndTake::cItemGiveList::getAllocator()->memAlloc(sz, align, uGUIGiveAndTake::cItemGiveList::DTI.getID());
-}
-
-inline void uGUIGiveAndTake::cItemGiveList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGiveAndTake::cItemGiveList::DTI)->memFree(p_addr);
 }
 
 inline uGUIGiveAndTake::cItemGiveList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -551,9 +527,8 @@ inline uGUIGiveAndTake::cItemList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 
 uGUIGiveAndTake::cItemList::MyDTI uGUIGiveAndTake::cItemList::DTI("uGUIGiveAndTake::cItemList", &::MtObject::DTI, 528ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUIGiveAndTake::cItemList::MyDTI::newInstance() const {
-    DDON_STUB("uGUIGiveAndTake::cItemList::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUIGiveAndTake::cItemList::MyDTI::newInstance() const {
+    return new (16u) uGUIGiveAndTake::cItemList;
 }
 
 template MtTypedArray<uGUIGiveAndTake::cItemGiveList>::~MtTypedArray();

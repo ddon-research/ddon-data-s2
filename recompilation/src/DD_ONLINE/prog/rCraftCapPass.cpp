@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCraftCapPass.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cCraftCapPassData::getDTI() const {
     return cCraftCapPassData::DTI;
-}
-
-inline void* cCraftCapPassData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCraftCapPassData::DTI)->memAlloc(sz, align, cCraftCapPassData::DTI.getID());
-}
-
-inline void cCraftCapPassData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftCapPassData::DTI)->memFree(p_addr);
 }
 
 void cCraftCapPassData::createProperty(MtPropertyList& s) {
@@ -45,14 +35,6 @@ MtObject* cCraftCapPassData::MyDTI::newInstance() const {
 
 const MtDTI& rCraftCapPass::getDTI() const {
     return rCraftCapPass::DTI;
-}
-
-inline void* rCraftCapPass::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCraftCapPass::DTI)->memAlloc(sz, align, rCraftCapPass::DTI.getID());
-}
-
-inline void rCraftCapPass::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCraftCapPass::DTI)->memFree(p_addr);
 }
 
 bool rCraftCapPass::loadData(MtDataReader& in, cCraftCapPassData* pData) {

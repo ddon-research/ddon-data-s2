@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/cResource.h"
 #include "cpComponent.h"
@@ -19,16 +18,8 @@ const MtDTI& cpJointEx2::getDTI() const {
     return cpJointEx2::DTI;
 }
 
-inline MtAllocator* cpJointEx2::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJointEx2::DTI);
-}
-
 void* cpJointEx2::operator new(size_t sz, u32 align) {
     return cpJointEx2::getAllocator()->memAlloc(sz, align, cpJointEx2::DTI.getID());
-}
-
-inline void cpJointEx2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJointEx2::DTI)->memFree(p_addr);
 }
 
 cpJointEx2::cpJointEx2() {

@@ -161,3 +161,27 @@ inline void* cUIResource::operator new(size_t sz, void* p_addr) {
 
 inline cUIResource::cUIResource() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cTexturePNG::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cTexturePNG::DTI);
+}
+
+inline void cTexturePNG::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cTexturePNG::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cUIObject::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cUIObject::DTI);
+}
+
+inline void* cUIResource::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cUIResource::DTI)->memAlloc(sz, align, ::cUIResource::DTI.::MtDTI::getID());
+}
+
+inline void cUIResource::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cUIResource::DTI)->memFree(p_addr);
+}

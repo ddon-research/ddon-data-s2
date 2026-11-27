@@ -346,3 +346,15 @@ inline cShlConditionInfo::cShlConditionInfo() {
     this->mIsSetActiveTime = false;
     this->mBoostLv = static_cast<nObjCondition::IMMUNE_BOOST_LV>(9);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cShlConditionInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cShlConditionInfo::DTI);
+}
+
+inline void* cShlConditionInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlConditionInfo::DTI)->memAlloc(sz, align, ::cShlConditionInfo::DTI.::MtDTI::getID());
+}

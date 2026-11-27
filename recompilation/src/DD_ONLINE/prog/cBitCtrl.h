@@ -96,3 +96,15 @@ inline BitData cBitCtrl::getBitData() const {
 inline rBitTable* cBitCtrl::getResource() const {
     return this->mpBitTableRes;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cBitCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cBitCtrl::DTI);
+}
+
+inline void cBitCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cBitCtrl::DTI)->memFree(p_addr);
+}

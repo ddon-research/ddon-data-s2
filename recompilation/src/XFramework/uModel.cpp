@@ -38,10 +38,6 @@ void* uModel::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uModel::DTI)->memAlloc(sz, align, uModel::DTI.mID);
 }
 
-inline void uModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uModel::DTI)->memFree(p_addr);
-}
-
 uModel::uModel() {
     DDON_STUB("uModel::uModel")
     /* stub */
@@ -52,9 +48,27 @@ __attribute__((noinline)) uModel::~uModel() {
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR uModel::getName() {
-    DDON_STUB("uModel::getName")
-    return {};
+MT_CTSTR uModel::getName() {
+    rModel* v0_0 = mpModel;
+    unsigned int i0_1;
+    int v0_3;
+    if (v0_0 == nullptr) {
+        return this->cUnit::getName();
+    } else {
+        i0_1 = 0;
+        v0_3 = 0;
+    }
+    for (;;) {
+        if (v0_0->mPath[i0_1] == 0) {
+            break;
+        } else {
+            if (v0_0->mPath[i0_1] == 92) {
+                v0_3 = static_cast<int>(i0_1 + 1u);
+            }
+            i0_1 = i0_1 + 1u;
+        }
+    }
+    return &v0_0->mPath[v0_3];
 }
 
 void uModel::move() {
@@ -145,9 +159,54 @@ __attribute__((weak)) void uModel::calcJointDependency() {
 
 static auto ddon_emit_0x01b63360 __attribute__((used)) = &uModel::getJointNum;
 
-__attribute__((weak)) void uModel::initJointLocalMatrix() {
-    DDON_STUB("uModel::initJointLocalMatrix")
-    /* stub */
+void uModel::initJointLocalMatrix() {
+    if ((mMotionCalcFlag & 0x10000000u) != 0) {
+        u32 v0_0 = mJointNum;
+        if (v0_0 != 0) {
+            Joint* p0_1 = mJoint;
+            for (unsigned int i0_2 = 0;;) {
+                p0_1->mTrans.x = MtVector3::Zero.x;
+                p0_1->mTrans.y = MtVector3::Zero.y;
+                p0_1->mTrans.z = MtVector3::Zero.z;
+                p0_1->mTrans.pad_ = 0.0f;
+                p0_1->mQuat.x = MtQuaternion::Identity.x;
+                p0_1->mQuat.y = MtQuaternion::Identity.y;
+                p0_1->mQuat.z = MtQuaternion::Identity.z;
+                p0_1->mQuat.w = MtQuaternion::Identity.w;
+                p0_1->mScale.x = MtVector3::One.x;
+                p0_1->mScale.y = MtVector3::One.y;
+                p0_1->mScale.z = MtVector3::One.z;
+                p0_1->mScale.pad_ = 0.0f;
+                if ((i0_2 + 1u) < v0_0) {
+                    p0_1 += 1;
+                    i0_2 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    } else {
+        if (mJointNum != 0) {
+            const MtMatrix* pLMat = mpModel->mLmat;
+            for (unsigned int i2_8 = 0;;) {
+                Joint* t0 = mJoint;
+                t0[i2_8].mTrans.x = t0[i2_8].mOffset.x;
+                t0[i2_8].mTrans.y = t0[i2_8].mOffset.y;
+                t0[i2_8].mTrans.z = t0[i2_8].mOffset.z;
+                t0[i2_8].mTrans.pad_ = 0.0f;
+                t0[i2_8].mQuat.setRotationMatrix(mpModel->mLmat[i2_8]);
+                t0[i2_8].mScale.x = MtVector3::One.x;
+                t0[i2_8].mScale.y = MtVector3::One.y;
+                t0[i2_8].mScale.z = MtVector3::One.z;
+                t0[i2_8].mScale.pad_ = 0.0f;
+                if ((i2_8 + 1u) < mJointNum) {
+                    i2_8 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uModel::setMotionList(rMotionList* pmot, u32 bank) {
@@ -354,9 +413,27 @@ __attribute__((weak)) void uModel::updateNormal(cDraw* pdraw) {
     /* stub */
 }
 
-__attribute__((weak)) bool uModel::isInterpolating() {
-    DDON_STUB("uModel::isInterpolating")
-    return {};
+bool uModel::isInterpolating() {
+    u32 v0_1 = mBlendNum;
+    bool b2_0;
+    if (v0_1 == 0) {
+        b2_0 = false;
+    } else {
+        for (unsigned int i0_2 = 0;;) {
+            if ((mMotion[i0_2].mState & 256) != 0) {
+                b2_0 = true;
+                return b2_0;
+            } else {
+                if ((i0_2 + 1u) < v0_1) {
+                    i0_2 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        b2_0 = false;
+    }
+    return b2_0;
 }
 
 __attribute__((weak)) void uModel::updateMotionFrame() {
@@ -402,26 +479,12 @@ const MtDTI& uModel::Joint::getDTI() const {
     return uModel::Joint::DTI;
 }
 
-inline void* uModel::Joint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memAlloc(sz, align, uModel::Joint::DTI.mID);
-}
-
 void* uModel::Joint::operator new[](size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memAlloc(sz, align, uModel::Joint::DTI.mID);
 }
 
-inline void uModel::Joint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memFree(p_addr);
-}
-
 void uModel::Joint::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(uModel::Joint::DTI)->memFree(p_addr);
-}
-
-inline uModel::Joint::Joint() {
-    mPreUpdate = 0;
-    mpModel = nullptr;
-    mShaderAttributes.rgba = 0;
 }
 
 uModel::Joint::~Joint() {
@@ -450,9 +513,11 @@ MtUI* uModel::Joint::createUI(MtProperty& prop) {
     return this->MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void uModel::Joint::setQuat(const MtQuaternion& quat) {
-    DDON_STUB("uModel::Joint::setQuat")
-    /* stub */
+void uModel::Joint::setQuat(const MtQuaternion& quat) {
+    mQuat.x = quat.x;
+    mQuat.y = quat.y;
+    mQuat.z = quat.z;
+    mQuat.w = quat.w;
 }
 
 __attribute__((weak)) void uModel::Joint::setWorldPos(const MtVector3& pos) {
@@ -664,10 +729,6 @@ __attribute__((weak)) MtObject* uModel::Motion::MyDTI::newInstance() const {
 
 const MtDTI& uModel::JointDAGNode::getDTI() const {
     return uModel::JointDAGNode::DTI;
-}
-
-inline void uModel::JointDAGNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uModel::JointDAGNode::DTI)->memFree(p_addr);
 }
 
 uModel::JointDAGNode::~JointDAGNode() {

@@ -114,3 +114,30 @@ inline CDataLobbyInfo::CDataLobbyInfo() {
 inline void* CDataLobbyMemberInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataLobbyInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLobbyInfo::DTI);
+}
+
+inline void* CDataLobbyInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataLobbyInfo::DTI)->memAlloc(sz, align, ::CDataLobbyInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataLobbyMemberInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLobbyMemberInfo::DTI);
+}
+
+inline CDataLobbyMemberInfo::CDataLobbyMemberInfo() {
+    this->m_unPawnId = 0;
+    this->m_ucPlatform = 0;
+    this->m_ucClientVersion = 0;
+    this->m_ucSessionStatus = 0;
+    this->m_ucOnlineStatus = 0;
+    this->m_CommunityCharacterBaseInfo.m_wstrClanName.value = nullptr;
+    this->m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}

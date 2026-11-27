@@ -120,11 +120,33 @@ inline rAreaInfo::cAreaInfo::cAreaInfo() {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 inline bool rAreaInfo::cAreaInfo::load(MtDataReader& r) {
     mAreaId = r.readU32();
     mPosX = r.readS32();
     mPosY = r.readS32();
     return true;
+}
+
+inline void* rAreaInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaInfo::DTI)->memAlloc(sz, align, ::rAreaInfo::DTI.::MtDTI::getID());
+}
+
+inline void rAreaInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaInfo::DTI)->memFree(p_addr);
+}
+
+inline rAreaInfo::rAreaInfo() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rAreaInfo::cAreaInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaInfo::cAreaInfo::DTI)->memAlloc(sz, align, ::rAreaInfo::cAreaInfo::DTI.::MtDTI::getID());
+}
+
+inline void rAreaInfo::cAreaInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaInfo::cAreaInfo::DTI)->memFree(p_addr);
 }

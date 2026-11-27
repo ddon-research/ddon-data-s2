@@ -293,6 +293,42 @@ inline void* uGUICaplinkProfile::cListItem::operator new(size_t sz, void* p_addr
     return p_addr;
 }
 
+inline uGUICaplinkProfile::cListItem::cListItem() : mpObjMsgCharacter(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgTitle(static_cast<cGUIObjMessage*>(nullptr)) {
+    this->::uGUIBase::cScrollListItemBase::mItemType = 1;
+}
+
 inline void* uGUICaplinkProfile::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkProfile::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::DTI);
+}
+
+inline void uGUICaplinkProfile::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkProfile::eventAdjustCursor() {
+    if (this->mGame.mListCtrl.mpVCtrl != nullptr) {
+        this->mGame.mListCtrl.::uGUIBase::cScrollList::setListPos(static_cast<u32>(this->mGame.mListCtrl.mpVCtrl->::cControl::mCurrentPos), false);
+    } else {
+        this->mGame.mListCtrl.::uGUIBase::cScrollList::setListPos(0u, false);
+    }
+}
+
+inline void* uGUICaplinkProfile::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::cListItem::DTI)->memAlloc(sz, align, ::uGUICaplinkProfile::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkProfile::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkProfile::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkProfile::cListInfo::DTI)->memFree(p_addr);
 }

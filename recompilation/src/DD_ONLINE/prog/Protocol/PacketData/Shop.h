@@ -71,3 +71,10 @@ inline CDataGoodsParam::CDataGoodsParam() {
     this->m_unIndex = 0;
     this->m_unPrice = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataGoodsParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGoodsParam::DTI);
+}

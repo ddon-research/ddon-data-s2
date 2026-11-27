@@ -210,3 +210,31 @@ inline bool cCharacterEditCameraParam::cCameraParam::load(MtDataReader& r) {
     nDDOIO::readData(r, mGlobalOffset);
     return true;
 }
+
+inline void* cCharacterEditCameraParam::cCameraParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditCameraParam::cCameraParam::DTI)->memAlloc(sz, align, ::cCharacterEditCameraParam::cCameraParam::DTI.::MtDTI::getID());
+}
+
+inline void cCharacterEditCameraParam::cCameraParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditCameraParam::cCameraParam::DTI)->memFree(p_addr);
+}
+
+inline cCharacterEditCameraParam::cCameraParam::cCameraParam() {
+    this->mAttachJoint = 3;
+    this->mTargetOffset.x = ::MtVector3::Zero.x;
+    this->mTargetOffset.y = ::MtVector3::Zero.y;
+    this->mTargetOffset.z = ::MtVector3::Zero.z;
+    this->mTargetOffset.pad_ = 0.0f;
+    this->mCameraOffset.x = this->mTargetOffset.x;
+    this->mCameraOffset.y = this->mTargetOffset.y;
+    this->mCameraOffset.z = this->mTargetOffset.z;
+    this->mCameraOffset.pad_ = 0.0f;
+    this->mGlobalOffset.x = this->mCameraOffset.x;
+    this->mGlobalOffset.y = this->mCameraOffset.y;
+    this->mGlobalOffset.z = this->mCameraOffset.z;
+    this->mGlobalOffset.pad_ = 0.0f;
+}
+
+inline void* rCharacterEditCameraParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCharacterEditCameraParam::DTI)->memAlloc(sz, align, ::rCharacterEditCameraParam::DTI.::MtDTI::getID());
+}

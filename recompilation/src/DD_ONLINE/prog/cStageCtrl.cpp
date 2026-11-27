@@ -18,10 +18,6 @@ const MtDTI& cStageCtrl::getDTI() const {
     return cStageCtrl::DTI;
 }
 
-inline void cStageCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStageCtrl::DTI)->memFree(p_addr);
-}
-
 cStageCtrl::cStageCtrl() {
     DDON_STUB("cStageCtrl::cStageCtrl")
     /* stub */
@@ -115,14 +111,6 @@ __attribute__((weak)) MtObject* cStageCtrl::MyDTI::newInstance() const {
 
 const MtDTI& cStageCtrl::Area::getDTI() const {
     return cStageCtrl::Area::DTI;
-}
-
-inline void* cStageCtrl::Area::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStageCtrl::Area::DTI)->memAlloc(sz, align, cStageCtrl::Area::DTI.getID());
-}
-
-inline void cStageCtrl::Area::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStageCtrl::Area::DTI)->memFree(p_addr);
 }
 
 void cStageCtrl::Area::createProperty(MtPropertyList& s) {

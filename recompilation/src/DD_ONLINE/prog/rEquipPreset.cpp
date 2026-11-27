@@ -19,14 +19,6 @@ const MtDTI& cEquipPreset::getDTI() const {
     return cEquipPreset::DTI;
 }
 
-inline void* cEquipPreset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEquipPreset::DTI)->memAlloc(sz, align, cEquipPreset::DTI.getID());
-}
-
-inline void cEquipPreset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEquipPreset::DTI)->memFree(p_addr);
-}
-
 inline cEquipPreset::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cEquipPreset::MyDTI cEquipPreset::DTI("cEquipPreset", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -37,14 +29,6 @@ MtObject* cEquipPreset::MyDTI::newInstance() const {
 
 const MtDTI& rEquipPreset::getDTI() const {
     return rEquipPreset::DTI;
-}
-
-inline void* rEquipPreset::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEquipPreset::DTI)->memAlloc(sz, align, rEquipPreset::DTI.getID());
-}
-
-inline void rEquipPreset::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEquipPreset::DTI)->memFree(p_addr);
 }
 
 rEquipPreset::~rEquipPreset() {

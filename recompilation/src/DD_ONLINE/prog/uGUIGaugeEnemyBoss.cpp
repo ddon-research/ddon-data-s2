@@ -42,16 +42,8 @@ const MtDTI& uGUIGaugeEnemyBoss::getDTI() const {
     return uGUIGaugeEnemyBoss::DTI;
 }
 
-inline MtAllocator* uGUIGaugeEnemyBoss::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGaugeEnemyBoss::DTI);
-}
-
 void* uGUIGaugeEnemyBoss::operator new(size_t sz, u32 align) {
     return uGUIGaugeEnemyBoss::getAllocator()->memAlloc(sz, align, uGUIGaugeEnemyBoss::DTI.getID());
-}
-
-inline void uGUIGaugeEnemyBoss::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeEnemyBoss::DTI)->memFree(p_addr);
 }
 
 uGUIGaugeEnemyBoss::~uGUIGaugeEnemyBoss() {

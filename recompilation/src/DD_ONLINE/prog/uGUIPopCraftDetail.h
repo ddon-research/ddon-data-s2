@@ -268,3 +268,19 @@ inline uGUIPopCraftDetail::stMaterialItem::stMaterialItem() {
 
 inline uGUIPopCraftDetail::stCrestResult::stCrestResult() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopCraftDetail::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopCraftDetail::DTI);
+}
+
+inline void uGUIPopCraftDetail::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopCraftDetail::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPopCraftDetail::setPageNum(u32 page_num) {
+    this->mPage.mPageDot.::uGUIBase::cReferenceUIPageDot::setDispPageNum(page_num);
+}

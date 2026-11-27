@@ -35,10 +35,6 @@ const MtDTI& cShlParamMeteo::getDTI() const {
     return cShlParamMeteo::DTI;
 }
 
-inline void* cShlParamMeteo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamMeteo::DTI)->memAlloc(sz, align, cShlParamMeteo::DTI.getID());
-}
-
 inline void cShlParamMeteo::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamMeteo::DTI)->memFree(p_addr);
 }
@@ -88,14 +84,6 @@ __attribute__((weak)) MtObject* cShlParamMeteo::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamMeteoCtrl::getDTI() const {
     return cShlParamMeteoCtrl::DTI;
-}
-
-inline void* cShlParamMeteoCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamMeteoCtrl::DTI)->memAlloc(sz, align, cShlParamMeteoCtrl::DTI.getID());
-}
-
-inline void cShlParamMeteoCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamMeteoCtrl::DTI)->memFree(p_addr);
 }
 
 MtDTI& cShlParamMeteoCtrl::getShlDTI() const {
@@ -158,18 +146,6 @@ const MtDTI& uShlMeteo::getDTI() const {
     return uShlMeteo::DTI;
 }
 
-inline void* uShlMeteo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlMeteo::DTI)->memAlloc(sz, align, uShlMeteo::DTI.getID());
-}
-
-inline void uShlMeteo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlMeteo::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamMeteo* uShlMeteo::getShlParam() const {
-    return static_cast<const cShlParamMeteo*>(mpShlParam2);
-}
-
 uShlMeteo::~uShlMeteo() {
 }
 
@@ -212,9 +188,11 @@ void uShlMeteo::updateEfcHandle() {
     mpTargetEfcHandle = nullptr;
 }
 
-__attribute__((weak)) void uShlMeteo::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlMeteo::applyWorldOffset")
-    /* stub */
+void uShlMeteo::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlBase::applyWorldOffset(offset, absolute_offset);
+    mGroundPos.x = offset.x + mGroundPos.x;
+    mGroundPos.y = offset.y + mGroundPos.y;
+    mGroundPos.z = offset.z + mGroundPos.z;
 }
 
 __attribute__((weak)) void uShlMeteo::checkScr() {
@@ -244,10 +222,6 @@ const MtDTI& uShlMeteoCtrl::getDTI() const {
     return uShlMeteoCtrl::DTI;
 }
 
-inline void uShlMeteoCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlMeteoCtrl::DTI)->memFree(p_addr);
-}
-
 uShlMeteoCtrl::~uShlMeteoCtrl() {
 }
 
@@ -271,9 +245,11 @@ void uShlMeteoCtrl::updateEfcHandle() {
     this->uShlBase::updateEfcHandle();
 }
 
-__attribute__((weak)) void uShlMeteoCtrl::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlMeteoCtrl::applyWorldOffset")
-    /* stub */
+void uShlMeteoCtrl::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlBase::applyWorldOffset(offset, absolute_offset);
+    mMeteoCenter.x = offset.x + mMeteoCenter.x;
+    mMeteoCenter.y = offset.y + mMeteoCenter.y;
+    mMeteoCenter.z = offset.z + mMeteoCenter.z;
 }
 
 __attribute__((weak)) void uShlMeteoCtrl::setShl(u32 shlNo, const MtVector3& offset, f32 degX, f32 degY) {
@@ -285,8 +261,7 @@ inline uShlMeteoCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, 
 
 uShlMeteoCtrl::MyDTI uShlMeteoCtrl::DTI("uShlMeteoCtrl", &::uShlGenerator::DTI, 11040ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uShlMeteoCtrl::MyDTI::newInstance() const {
-    DDON_STUB("uShlMeteoCtrl::MyDTI::newInstance")
-    return nullptr;
+MtObject* uShlMeteoCtrl::MyDTI::newInstance() const {
+    return new (16u) uShlMeteoCtrl;
 }
 

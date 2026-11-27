@@ -13,10 +13,12 @@ class MtDTI;
 class MtObject;
 
 // Declarations
+class CDataDropItemSetInfo;
 class CDataEncounterPawnInfo;
 class CDataGatheringItemElement;
 class CDataGatheringItemGetRequest;
 class CDataLayoutEnemyData;
+class CDataLayoutItemData;
 class CDataOmData;
 class CDataRandomStageInfo;
 class CDataStageAttribute;
@@ -31,10 +33,48 @@ using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
 using b8 = bool;
+using f32 = float;
+using f64 = double;
 using size_t = _Sizet;
 using u16 = unsigned short;
 using u32 = unsigned int;
 using u8 = unsigned char;
+
+class CDataDropItemSetInfo : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataDropItemSetInfo();
+    explicit CDataDropItemSetInfo(u8, u8, f64, f32, f64);
+public:
+    u8 m_ucID;  // offset: 0x8
+    u8 m_ucMdlType;  // offset: 0x9
+    f64 m_dX;  // offset: 0x10
+    f32 m_fY;  // offset: 0x18
+    f64 m_dZ;  // offset: 0x20
+    static MyDTI DTI;
+};
 
 class CDataEncounterPawnInfo : public CPacketDataBase
 {
@@ -134,6 +174,42 @@ public:
 public:
     u32 m_ulID;  // offset: 0x8
     u32 m_ulNum;  // offset: 0xc
+    static MyDTI DTI;
+};
+
+class CDataLayoutItemData : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataLayoutItemData();
+    explicit CDataLayoutItemData(u8, b8, b8, b8, b8);
+public:
+    u8 m_ucPosID;  // offset: 0x8
+    b8 m_bIsEmpty;  // offset: 0x9
+    b8 m_bIsGathered;  // offset: 0xa
+    b8 m_bIsAppearEnemy;  // offset: 0xb
+    b8 m_bIsTreasurePoint;  // offset: 0xc
     static MyDTI DTI;
 };
 
@@ -396,6 +472,18 @@ public:
     static MyDTI DTI;
 };
 
+inline void* CDataDropItemSetInfo::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataDropItemSetInfo::CDataDropItemSetInfo() {
+    this->m_ucID = 0;
+    this->m_ucMdlType = 0;
+    this->m_dX = 0.0;
+    this->m_fY = 0.0f;
+    this->m_dZ = 0.0;
+}
+
 inline void* CDataEncounterPawnInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -431,6 +519,18 @@ inline void* CDataLayoutEnemyData::operator new(size_t sz, void* p_addr) {
 
 inline CDataLayoutEnemyData::CDataLayoutEnemyData() {
     this->m_ucPositionIndex = 0;
+}
+
+inline void* CDataLayoutItemData::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataLayoutItemData::CDataLayoutItemData() {
+    this->m_bIsTreasurePoint = false;
+    this->m_ucPosID = 0;
+    this->m_bIsEmpty = false;
+    this->m_bIsGathered = false;
+    this->m_bIsAppearEnemy = false;
 }
 
 inline void* CDataOmData::operator new(size_t sz, void* p_addr) {
@@ -512,4 +612,72 @@ inline CDataStageLayoutID::CDataStageLayoutID() {
     this->m_unStageID = 0;
     this->m_ucLayerNo = 0;
     this->m_unGroupID = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataDropItemSetInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDropItemSetInfo::DTI);
+}
+
+inline MtAllocator* CDataEncounterPawnInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEncounterPawnInfo::DTI);
+}
+
+inline void* CDataEncounterPawnInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataEncounterPawnInfo::DTI)->memAlloc(sz, align, ::CDataEncounterPawnInfo::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataGatheringItemElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGatheringItemElement::DTI);
+}
+
+inline MtAllocator* CDataGatheringItemGetRequest::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataGatheringItemGetRequest::DTI);
+}
+
+inline MtAllocator* CDataLayoutEnemyData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLayoutEnemyData::DTI);
+}
+
+inline MtAllocator* CDataLayoutItemData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataLayoutItemData::DTI);
+}
+
+inline MtAllocator* CDataOmData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataOmData::DTI);
+}
+
+inline MtAllocator* CDataRandomStageInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataRandomStageInfo::DTI);
+}
+
+inline MtAllocator* CDataStageAttribute::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStageAttribute::DTI);
+}
+
+inline void* CDataStageAttribute::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataStageAttribute::DTI)->memAlloc(sz, align, ::CDataStageAttribute::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataStageInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStageInfo::DTI);
+}
+
+inline MtAllocator* CDataStageLayoutEnemyPresetEnemyInfoClient::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStageLayoutEnemyPresetEnemyInfoClient::DTI);
+}
+
+inline void* CDataStageLayoutEnemyPresetEnemyInfoClient::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataStageLayoutEnemyPresetEnemyInfoClient::DTI)->memAlloc(sz, align, ::CDataStageLayoutEnemyPresetEnemyInfoClient::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataStageLayoutID::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStageLayoutID::DTI);
+}
+
+inline void* CDataStageLayoutID::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataStageLayoutID::DTI)->memAlloc(sz, align, ::CDataStageLayoutID::DTI.::MtDTI::getID());
 }

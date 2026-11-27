@@ -22,14 +22,6 @@ const MtDTI& rCameraParamList::getDTI() const {
     return rCameraParamList::DTI;
 }
 
-inline void* rCameraParamList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCameraParamList::DTI)->memAlloc(sz, align, rCameraParamList::DTI.getID());
-}
-
-inline void rCameraParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCameraParamList::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rCameraParamList::~rCameraParamList() {
     mParamList.deleteAll(true);
     if (mprCameraList != nullptr) {

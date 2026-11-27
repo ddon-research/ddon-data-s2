@@ -198,3 +198,11 @@ inline bool uScrollCollisionSbc::isUseWorldMatrix() const {
 inline void uScrollCollisionSbc::setUseWorldMatrix(bool set) {
     this->mFlgUseWorldMatrix = set;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uScrollCollisionSbc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uScrollCollisionSbc::DTI)->memFree(p_addr);
+}

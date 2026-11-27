@@ -10,6 +10,14 @@
 class MtCriticalSection;
 class MtObject;
 
+namespace nAutomation {
+    enum eScreenShotMethod
+    {
+        SSM_NATIVE = 0,
+        SSM_ALTERNATIVE = 1,
+    };
+}  // namespace nAutomation
+
 // Declarations
 namespace nAutomation { class RespawnContext; }
 namespace nAutomation { class Envelope; }
@@ -26,14 +34,6 @@ namespace nAutomation { class cUploader; }
 namespace nAutomation { struct UPLOAD_DESC; }
 namespace nAutomation { struct IdentityInfo; }
 namespace nAutomation { struct ReferVersion; }
-
-namespace nAutomation {
-    enum eScreenShotMethod
-    {
-        SSM_NATIVE = 0,
-        SSM_ALTERNATIVE = 1,
-    };
-}  // namespace nAutomation
 
 // Type aliases from DWARF
 using MT_CHAR = char;

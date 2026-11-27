@@ -92,3 +92,15 @@ public:
 inline void* uSkyExt::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uSkyExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uSkyExt::DTI);
+}
+
+inline void uSkyExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSkyExt::DTI)->memFree(p_addr);
+}

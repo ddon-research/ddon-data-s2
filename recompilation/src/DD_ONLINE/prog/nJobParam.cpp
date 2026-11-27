@@ -20,10 +20,6 @@ const MtDTI& nJobParam::cHumanBaseInfo::getDTI() const {
     return nJobParam::cHumanBaseInfo::DTI;
 }
 
-inline void nJobParam::cHumanBaseInfo::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nJobParam::cHumanBaseInfo::DTI)->memFree(p_addr);
-}
-
 nJobParam::cHumanBaseInfo::~cHumanBaseInfo() {
     DDON_STUB("nJobParam::cHumanBaseInfo::~cHumanBaseInfo")
     /* stub */
@@ -142,14 +138,6 @@ __attribute__((weak)) MtObject* nJobParam::cHumanBaseInfo::MyDTI::newInstance() 
 
 const MtDTI& nJobParam::cJobInfo::getDTI() const {
     return nJobParam::cJobInfo::DTI;
-}
-
-MtAllocator* nJobParam::cJobInfo::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI);
-}
-
-inline void* nJobParam::cJobInfo::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nJobParam::cJobInfo::DTI)->memAlloc(sz, align, ::nJobParam::cJobInfo::DTI.getID());
 }
 
 __attribute__((weak)) void nJobParam::cJobInfo::operator delete(void* p_addr) {

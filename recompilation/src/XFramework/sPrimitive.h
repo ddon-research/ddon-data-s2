@@ -50,9 +50,15 @@ using u32 = unsigned int;
 using u8 = unsigned char;
 using uintptr = __uintptr_t;
 
+// Functions the classes below befriend, declared first
+namespace nPrim { s32 beginBranch(cDraw* p_draw, cDraw* sub_draw, u32 nsub_draw, bool use_vscr); }
+namespace nPrim { s32 endBranch(cDraw* p_draw, cDraw* sub_draw, u32 nsub_draw); }
+
 class sPrimitive : public cSystem
 {
     friend class cPrimTexHandle;
+    friend s32 nPrim::beginBranch(cDraw* p_draw, cDraw* sub_draw, u32 nsub_draw, bool use_vscr);
+    friend s32 nPrim::endBranch(cDraw* p_draw, cDraw* sub_draw, u32 nsub_draw);
     friend class uEffect2D;
 public:
     enum ePrimStencilFunc
@@ -303,4 +309,12 @@ protected:
 
 inline void* sPrimitive::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sPrimitive::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sPrimitive::DTI)->memFree(p_addr);
 }

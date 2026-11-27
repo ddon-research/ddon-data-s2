@@ -336,3 +336,19 @@ inline void cpEquip::onFlag(u32 flag) {
 inline void* cpEquip::cEquipInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpEquip::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpEquip::DTI);
+}
+
+inline void cpEquip::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpEquip::DTI)->memFree(p_addr);
+}
+
+inline void cpEquip::cEquipInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpEquip::cEquipInfo::DTI)->memFree(p_addr);
+}

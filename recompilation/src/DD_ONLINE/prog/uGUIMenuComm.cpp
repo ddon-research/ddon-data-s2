@@ -43,16 +43,8 @@ const MtDTI& uGUIMenuComm::getDTI() const {
     return uGUIMenuComm::DTI;
 }
 
-inline MtAllocator* uGUIMenuComm::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMenuComm::DTI);
-}
-
 void* uGUIMenuComm::operator new(size_t sz, u32 align) {
     return uGUIMenuComm::getAllocator()->memAlloc(sz, align, uGUIMenuComm::DTI.getID());
-}
-
-inline void uGUIMenuComm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMenuComm::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMenuComm::~uGUIMenuComm() {

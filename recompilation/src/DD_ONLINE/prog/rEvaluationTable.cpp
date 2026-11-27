@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEvaluationTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cEvaluationTable::getDTI() const {
     return cEvaluationTable::DTI;
-}
-
-inline void* cEvaluationTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEvaluationTable::DTI)->memAlloc(sz, align, cEvaluationTable::DTI.getID());
-}
-
-inline void cEvaluationTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEvaluationTable::DTI)->memFree(p_addr);
 }
 
 void cEvaluationTable::createProperty(MtPropertyList& s) {
@@ -43,14 +33,6 @@ MtObject* cEvaluationTable::MyDTI::newInstance() const {
 
 const MtDTI& rEvaluationTable::getDTI() const {
     return rEvaluationTable::DTI;
-}
-
-inline void* rEvaluationTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEvaluationTable::DTI)->memAlloc(sz, align, rEvaluationTable::DTI.getID());
-}
-
-inline void rEvaluationTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEvaluationTable::DTI)->memFree(p_addr);
 }
 
 bool rEvaluationTable::loadData(MtDataReader& in, cEvaluationTable* pData) {

@@ -24,14 +24,6 @@ const MtDTI& rStageCustomPartsEx::getDTI() const {
     return rStageCustomPartsEx::DTI;
 }
 
-inline void* rStageCustomPartsEx::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memAlloc(sz, align, rStageCustomPartsEx::DTI.getID());
-}
-
-inline void rStageCustomPartsEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::DTI)->memFree(p_addr);
-}
-
 rStageCustomPartsEx::~rStageCustomPartsEx() {
     destruct();
 }
@@ -335,10 +327,6 @@ const MtDTI& rStageCustomPartsEx::Pattern::getDTI() const {
     return rStageCustomPartsEx::Pattern::DTI;
 }
 
-inline void* rStageCustomPartsEx::Pattern::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::Pattern::DTI)->memAlloc(sz, align, rStageCustomPartsEx::Pattern::DTI.getID());
-}
-
 rStageCustomPartsEx::Pattern::~Pattern() {
 }
 
@@ -451,29 +439,6 @@ const MtDTI& rStageCustomPartsEx::HemiSphLight::getDTI() const {
     return rStageCustomPartsEx::HemiSphLight::DTI;
 }
 
-inline void* rStageCustomPartsEx::HemiSphLight::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::HemiSphLight::DTI)->memAlloc(sz, align, rStageCustomPartsEx::HemiSphLight::DTI.getID());
-}
-
-inline rStageCustomPartsEx::HemiSphLight::HemiSphLight() {
-    mLightColor.x = MtVector3::One.x;
-    mLightColor.y = MtVector3::One.y;
-    mLightColor.z = MtVector3::One.z;
-    mLightColor.pad_ = 0.0f;
-    mRevColor.x = MtVector3::Zero.x;
-    mRevColor.y = MtVector3::Zero.y;
-    mRevColor.z = MtVector3::Zero.z;
-    mRevColor.pad_ = 0.0f;
-    mNightColor.x = MtVector3::One.x;
-    mNightColor.y = MtVector3::One.y;
-    mNightColor.z = MtVector3::One.z;
-    mNightColor.pad_ = 0.0f;
-    mNightRevColor.x = MtVector3::Zero.x;
-    mNightRevColor.y = MtVector3::Zero.y;
-    mNightRevColor.z = MtVector3::Zero.z;
-    mNightRevColor.pad_ = 0.0f;
-}
-
 rStageCustomPartsEx::HemiSphLight::~HemiSphLight() {
 }
 
@@ -497,21 +462,6 @@ const MtDTI& rStageCustomPartsEx::InfiLight::getDTI() const {
     return rStageCustomPartsEx::InfiLight::DTI;
 }
 
-inline void* rStageCustomPartsEx::InfiLight::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::InfiLight::DTI)->memAlloc(sz, align, rStageCustomPartsEx::InfiLight::DTI.getID());
-}
-
-inline rStageCustomPartsEx::InfiLight::InfiLight() {
-    mLightColor.x = MtVector3::One.x;
-    mLightColor.y = MtVector3::One.y;
-    mLightColor.z = MtVector3::One.z;
-    mLightColor.pad_ = 0.0f;
-    mNightColor.x = MtVector3::One.x;
-    mNightColor.y = MtVector3::One.y;
-    mNightColor.z = MtVector3::One.z;
-    mNightColor.pad_ = 0.0f;
-}
-
 rStageCustomPartsEx::InfiLight::~InfiLight() {
 }
 
@@ -531,14 +481,6 @@ MtObject* rStageCustomPartsEx::InfiLight::MyDTI::newInstance() const {
 
 const MtDTI& rStageCustomPartsEx::AreaParam::getDTI() const {
     return rStageCustomPartsEx::AreaParam::DTI;
-}
-
-void* rStageCustomPartsEx::AreaParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::AreaParam::DTI)->memAlloc(sz, align, rStageCustomPartsEx::AreaParam::DTI.getID());
-}
-
-inline void rStageCustomPartsEx::AreaParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::AreaParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rStageCustomPartsEx::AreaParam::~AreaParam() {
@@ -562,14 +504,6 @@ MtObject* rStageCustomPartsEx::AreaParam::MyDTI::newInstance() const {
 
 const MtDTI& rStageCustomPartsEx::InfoEx::getDTI() const {
     return rStageCustomPartsEx::InfoEx::DTI;
-}
-
-inline void* rStageCustomPartsEx::InfoEx::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::InfoEx::DTI)->memAlloc(sz, align, rStageCustomPartsEx::InfoEx::DTI.getID());
-}
-
-inline void rStageCustomPartsEx::InfoEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStageCustomPartsEx::InfoEx::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rStageCustomPartsEx::InfoEx::~InfoEx() {
@@ -597,10 +531,6 @@ MtObject* rStageCustomPartsEx::InfoEx::MyDTI::newInstance() const {
 
 const MtDTI& rStageCustomPartsEx::FilterEx::getDTI() const {
     return rStageCustomPartsEx::FilterEx::DTI;
-}
-
-inline void* rStageCustomPartsEx::FilterEx::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStageCustomPartsEx::FilterEx::DTI)->memAlloc(sz, align, rStageCustomPartsEx::FilterEx::DTI.getID());
 }
 
 rStageCustomPartsEx::FilterEx::~FilterEx() {

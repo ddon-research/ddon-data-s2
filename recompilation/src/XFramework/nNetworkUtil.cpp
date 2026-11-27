@@ -2,7 +2,6 @@
 #include <new>
 #include <string.h>
 #include "nNetworkUtil.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetDevice.h"
@@ -16,10 +15,6 @@
 
 const MtDTI& nNetwork::SearchFilterListPtr::getDTI() const {
     return nNetwork::SearchFilterListPtr::DTI;
-}
-
-inline void nNetwork::SearchFilterListPtr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::SearchFilterListPtr::DTI)->memFree(p_addr);
 }
 
 void nNetwork::SearchFilterListPtr::createProperty(MtPropertyList& s) {
@@ -40,9 +35,24 @@ MtUI* nNetwork::SearchFilterListPtr::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nNetwork::SearchFilterListPtr::init(MtNetSession::SearchKeyFilterList& list) {
-    DDON_STUB("nNetwork::SearchFilterListPtr::init")
-    /* stub */
+void nNetwork::SearchFilterListPtr::init(MtNetSession::SearchKeyFilterList& list) {
+    mpList = &list;
+    mList[0].mpFilter = &list.mFilter[0];
+    mList[0].mKey.mpKey = &list.mFilter[0].mSearchKey;
+    mList[1].mpFilter = &list.mFilter[1];
+    mList[1].mKey.mpKey = &list.mFilter[1].mSearchKey;
+    mList[2].mpFilter = &list.mFilter[2];
+    mList[2].mKey.mpKey = &list.mFilter[2].mSearchKey;
+    mList[3].mpFilter = &list.mFilter[3];
+    mList[3].mKey.mpKey = &list.mFilter[3].mSearchKey;
+    mList[4].mpFilter = &list.mFilter[4];
+    mList[4].mKey.mpKey = &list.mFilter[4].mSearchKey;
+    mList[5].mpFilter = &list.mFilter[5];
+    mList[5].mKey.mpKey = &list.mFilter[5].mSearchKey;
+    mList[6].mpFilter = &list.mFilter[6];
+    mList[6].mKey.mpKey = &list.mFilter[6].mSearchKey;
+    mList[7].mpFilter = &list.mFilter[7];
+    mList[7].mKey.mpKey = &list.mFilter[7].mSearchKey;
 }
 
 __attribute__((weak)) void nNetwork::SearchFilterListPtr::trace() {
@@ -59,10 +69,6 @@ __attribute__((weak)) MtObject* nNetwork::SearchFilterListPtr::MyDTI::newInstanc
 
 const MtDTI& nNetwork::SearchFilterPtr::getDTI() const {
     return nNetwork::SearchFilterPtr::DTI;
-}
-
-inline void nNetwork::SearchFilterPtr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::SearchFilterPtr::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void nNetwork::SearchFilterPtr::createProperty(MtPropertyList& s) {
@@ -83,10 +89,6 @@ const MtDTI& nNetwork::SearchKeyListPtr::getDTI() const {
     return nNetwork::SearchKeyListPtr::DTI;
 }
 
-inline void nNetwork::SearchKeyListPtr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::SearchKeyListPtr::DTI)->memFree(p_addr);
-}
-
 void nNetwork::SearchKeyListPtr::createProperty(MtPropertyList& s) {
     if (mpSearchKeyList == nullptr) {
         return;
@@ -103,9 +105,16 @@ MtUI* nNetwork::SearchKeyListPtr::createUI(MtProperty& prop) {
     return this->::MtObject::createUI(prop);
 }
 
-__attribute__((weak)) void nNetwork::SearchKeyListPtr::init(MtNetSessionInfo::SearchKeyList& list) {
-    DDON_STUB("nNetwork::SearchKeyListPtr::init")
-    /* stub */
+void nNetwork::SearchKeyListPtr::init(MtNetSessionInfo::SearchKeyList& list) {
+    mpSearchKeyList = &list;
+    mList[0].mpKey = &list.mSearchKey[0];
+    mList[1].mpKey = &list.mSearchKey[1];
+    mList[2].mpKey = &list.mSearchKey[2];
+    mList[3].mpKey = &list.mSearchKey[3];
+    mList[4].mpKey = &list.mSearchKey[4];
+    mList[5].mpKey = &list.mSearchKey[5];
+    mList[6].mpKey = &list.mSearchKey[6];
+    mList[7].mpKey = &list.mSearchKey[7];
 }
 
 __attribute__((weak)) void nNetwork::SearchKeyListPtr::trace() {
@@ -122,10 +131,6 @@ __attribute__((weak)) MtObject* nNetwork::SearchKeyListPtr::MyDTI::newInstance()
 
 const MtDTI& nNetwork::SearchKeyPtr::getDTI() const {
     return nNetwork::SearchKeyPtr::DTI;
-}
-
-inline void nNetwork::SearchKeyPtr::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::SearchKeyPtr::DTI)->memFree(p_addr);
 }
 
 void nNetwork::SearchKeyPtr::createProperty(MtPropertyList& s) {

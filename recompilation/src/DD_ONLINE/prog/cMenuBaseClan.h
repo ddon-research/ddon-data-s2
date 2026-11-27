@@ -27,7 +27,10 @@ namespace nCharacterData { struct stCharacterName; }
 namespace nMenu { struct MENU_PARTS; }
 namespace nNet { struct stClanEmblem; }
 class uGUIBase;
+class uGUIClanEditInputName;
+class uGUIClanEditInputNickname;
 class uGUIClanScoutEntry;
+class uGUIClanStatus;
 class uGUIPopFilter;
 
 // Declarations
@@ -929,6 +932,7 @@ public:
 
 class cMenuClanInfoManager : public cMenuBase
 {
+    friend class uGUIClanStatus;
 public:
     enum MODE
     {
@@ -2333,6 +2337,7 @@ public:
 
 class cMenuSetClanName : public cMenuBase
 {
+    friend class uGUIClanEditInputName;
 public:
     enum
     {
@@ -2402,6 +2407,7 @@ public:
 
 class cMenuSetClanNickName : public cMenuBase
 {
+    friend class uGUIClanEditInputNickname;
 public:
     enum
     {
@@ -2762,4 +2768,296 @@ inline void* cMenuSetClanNickName::operator new(size_t sz, void* p_addr) {
 }
 
 inline cMenuSetClanNickName::cMenuSetClanNickName() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cMenuApplyClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuApplyClan::DTI)->memAlloc(sz, align, ::cMenuApplyClan::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuApproveClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuApproveClan::DTI)->memAlloc(sz, align, ::cMenuApproveClan::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuApproveInvitedClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuApproveInvitedClan::DTI)->memAlloc(sz, align, ::cMenuApproveInvitedClan::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuCancelApplyClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuCancelApplyClan::DTI)->memAlloc(sz, align, ::cMenuCancelApplyClan::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuCancelClanScoutEntry::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuCancelClanScoutEntry::DTI)->memAlloc(sz, align, ::cMenuCancelClanScoutEntry::DTI.::MtDTI::getID());
+}
+
+inline void cMenuCancelClanScoutEntry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuCancelClanScoutEntry::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuCancelInviteClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuCancelInviteClan::DTI)->memAlloc(sz, align, ::cMenuCancelInviteClan::DTI.::MtDTI::getID());
+}
+
+inline void cMenuCancelInviteClan::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuCancelInviteClan::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanApplyList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanApplyList::DTI)->memAlloc(sz, align, ::cMenuClanApplyList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanApplyList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanApplyList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanApplyManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanApplyManager::DTI)->memAlloc(sz, align, ::cMenuClanApplyManager::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanApplyManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanApplyManager::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanApproveDirectInvite::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanApproveDirectInvite::DTI)->memAlloc(sz, align, ::cMenuClanApproveDirectInvite::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuClanAuthority::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanAuthority::DTI)->memAlloc(sz, align, ::cMenuClanAuthority::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuClanChangeMaster::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanChangeMaster::DTI)->memAlloc(sz, align, ::cMenuClanChangeMaster::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuClanDirectInvite::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanDirectInvite::DTI)->memAlloc(sz, align, ::cMenuClanDirectInvite::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuClanDirectInvitedList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanDirectInvitedList::DTI)->memAlloc(sz, align, ::cMenuClanDirectInvitedList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanDirectInvitedList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanDirectInvitedList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanExpelMember::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanExpelMember::DTI)->memAlloc(sz, align, ::cMenuClanExpelMember::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuClanHistory::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanHistory::DTI)->memAlloc(sz, align, ::cMenuClanHistory::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanHistory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanHistory::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanInfoDisp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanInfoDisp::DTI)->memAlloc(sz, align, ::cMenuClanInfoDisp::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanInfoDisp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanInfoDisp::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanInfoManager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanInfoManager::DTI)->memAlloc(sz, align, ::cMenuClanInfoManager::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanInfoManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanInfoManager::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanInviteList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanInviteList::DTI)->memAlloc(sz, align, ::cMenuClanInviteList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanInviteList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanInviteList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanInvitedList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanInvitedList::DTI)->memAlloc(sz, align, ::cMenuClanInvitedList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanInvitedList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanInvitedList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanJoinReqList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanJoinReqList::DTI)->memAlloc(sz, align, ::cMenuClanJoinReqList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanJoinReqList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanJoinReqList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanList::DTI)->memAlloc(sz, align, ::cMenuClanList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanMemberList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanMemberList::DTI)->memAlloc(sz, align, ::cMenuClanMemberList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanMemberList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanMemberList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanScoutEntry::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanScoutEntry::DTI)->memAlloc(sz, align, ::cMenuClanScoutEntry::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuClanScoutEntryList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanScoutEntryList::DTI)->memAlloc(sz, align, ::cMenuClanScoutEntryList::DTI.::MtDTI::getID());
+}
+
+inline void cMenuClanScoutEntryList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuClanScoutEntryList::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuClanSetMemberRank::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuClanSetMemberRank::DTI)->memAlloc(sz, align, ::cMenuClanSetMemberRank::DTI.::MtDTI::getID());
+}
+
+inline void cMenuCreateClan::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuCreateClan::DTI)->memFree(p_addr);
+}
+
+inline void cMenuEditClan::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClan::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditClanComment::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanComment::DTI)->memAlloc(sz, align, ::cMenuEditClanComment::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEditClanComment::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClanComment::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditClanDay::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanDay::DTI)->memAlloc(sz, align, ::cMenuEditClanDay::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEditClanDay::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClanDay::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditClanEmblem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanEmblem::DTI)->memAlloc(sz, align, ::cMenuEditClanEmblem::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEditClanEmblem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClanEmblem::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditClanEntryComment::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanEntryComment::DTI)->memAlloc(sz, align, ::cMenuEditClanEntryComment::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEditClanEntryComment::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClanEntryComment::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditClanFeature::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanFeature::DTI)->memAlloc(sz, align, ::cMenuEditClanFeature::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEditClanFeature::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClanFeature::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditClanHour::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanHour::DTI)->memAlloc(sz, align, ::cMenuEditClanHour::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEditClanHour::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClanHour::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditClanMessage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanMessage::DTI)->memAlloc(sz, align, ::cMenuEditClanMessage::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEditClanMessage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClanMessage::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuEditClanMotto::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuEditClanMotto::DTI)->memAlloc(sz, align, ::cMenuEditClanMotto::DTI.::MtDTI::getID());
+}
+
+inline void cMenuEditClanMotto::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuEditClanMotto::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuGetClanBaseInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuGetClanBaseInfo::DTI)->memAlloc(sz, align, ::cMenuGetClanBaseInfo::DTI.::MtDTI::getID());
+}
+
+inline void cMenuGetClanBaseInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuGetClanBaseInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuGetClanDetail::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuGetClanDetail::DTI)->memAlloc(sz, align, ::cMenuGetClanDetail::DTI.::MtDTI::getID());
+}
+
+inline void cMenuGetClanDetail::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuGetClanDetail::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuGetMyClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuGetMyClan::DTI)->memAlloc(sz, align, ::cMenuGetMyClan::DTI.::MtDTI::getID());
+}
+
+inline void cMenuGetMyClan::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuGetMyClan::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuGetMyScoutEntry::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuGetMyScoutEntry::DTI)->memAlloc(sz, align, ::cMenuGetMyScoutEntry::DTI.::MtDTI::getID());
+}
+
+inline void cMenuGetMyScoutEntry::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuGetMyScoutEntry::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuInviteClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuInviteClan::DTI)->memAlloc(sz, align, ::cMenuInviteClan::DTI.::MtDTI::getID());
+}
+
+inline void* cMenuQuitClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuQuitClan::DTI)->memAlloc(sz, align, ::cMenuQuitClan::DTI.::MtDTI::getID());
+}
+
+inline void cMenuQuitClan::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuQuitClan::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuSetClanName::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuSetClanName::DTI)->memAlloc(sz, align, ::cMenuSetClanName::DTI.::MtDTI::getID());
+}
+
+inline void cMenuSetClanName::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuSetClanName::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuSetClanNickName::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuSetClanNickName::DTI)->memAlloc(sz, align, ::cMenuSetClanNickName::DTI.::MtDTI::getID());
+}
+
+inline void cMenuSetClanNickName::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuSetClanNickName::DTI)->memFree(p_addr);
 }

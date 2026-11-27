@@ -2814,11 +2814,12 @@ MtProperty::Custom* MtProperty::getCustom(MT_CTSTR name) {
     return nullptr;
 }
 
-__attribute__((weak)) MtProperty::Custom* MtProperty::getCustom(MtProperty::TYPE type) {
-    if (type >= TYPE_CUSTOM) {
-        return mpCustom[type - TYPE_CUSTOM];
+MtProperty::Custom* MtProperty::getCustom(MtProperty::TYPE type) {
+    if (type > 127) {
+        return MtProperty::mpCustom[type - 128];
+    } else {
+        return nullptr;
     }
-    return nullptr;
 }
 
 MT_CTSTR MtProperty::mTypeName[75] = {

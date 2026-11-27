@@ -125,3 +125,23 @@ inline void* cShlFuwaFuwaCtrl2::operator new(size_t sz, void* p_addr) {
 inline void* cShlFuwaFuwaInfo2::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlFuwaFuwaCtrl2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlFuwaFuwaCtrl2::DTI)->memAlloc(sz, align, ::cShlFuwaFuwaCtrl2::DTI.::MtDTI::getID());
+}
+
+inline void cShlFuwaFuwaCtrl2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlFuwaFuwaCtrl2::DTI)->memFree(p_addr);
+}
+
+inline void* cShlFuwaFuwaInfo2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlFuwaFuwaInfo2::DTI)->memAlloc(sz, align, ::cShlFuwaFuwaInfo2::DTI.::MtDTI::getID());
+}
+
+inline void cShlFuwaFuwaInfo2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlFuwaFuwaInfo2::DTI)->memFree(p_addr);
+}

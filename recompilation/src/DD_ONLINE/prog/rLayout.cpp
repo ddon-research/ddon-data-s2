@@ -51,45 +51,6 @@ const MtDTI& rLayout::getDTI() const {
     return rLayout::DTI;
 }
 
-inline void* rLayout::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLayout::DTI)->memAlloc(sz, align, rLayout::DTI.getID());
-}
-
-inline void rLayout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLayout::DTI)->memFree(p_addr);
-}
-
-inline rLayout::rLayout() {
-    setAttribute(22u);
-    mpArray = nullptr;
-    mArrayNum = 0;
-    mLotType = TYPE_SCR;
-    mSetInfoNeedNums[20] = 0;
-    mSetInfoNeedNums[21] = 0;
-    mSetInfoNeedNums[18] = 0;
-    mSetInfoNeedNums[19] = 0;
-    mSetInfoNeedNums[16] = 0;
-    mSetInfoNeedNums[17] = 0;
-    mSetInfoNeedNums[14] = 0;
-    mSetInfoNeedNums[15] = 0;
-    mSetInfoNeedNums[12] = 0;
-    mSetInfoNeedNums[13] = 0;
-    mSetInfoNeedNums[10] = 0;
-    mSetInfoNeedNums[11] = 0;
-    mSetInfoNeedNums[8] = 0;
-    mSetInfoNeedNums[9] = 0;
-    mSetInfoNeedNums[6] = 0;
-    mSetInfoNeedNums[7] = 0;
-    mSetInfoNeedNums[4] = 0;
-    mSetInfoNeedNums[5] = 0;
-    mSetInfoNeedNums[2] = 0;
-    mSetInfoNeedNums[3] = 0;
-    mSetInfoNeedNums[0] = 0;
-    mSetInfoNeedNums[1] = 0;
-    mpSetInfoBuffer = nullptr;
-    mSetInfoSingleNewArray.mAutoDelete = true;
-}
-
 rLayout::~rLayout() {
     destruct();
 }
@@ -814,17 +775,6 @@ MtObject* rLayout::MyDTI::newInstance() const {
 
 const MtDTI& rLayout::SetInfo::getDTI() const {
     return rLayout::SetInfo::DTI;
-}
-
-inline void rLayout::SetInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLayout::SetInfo::DTI)->memFree(p_addr);
-}
-
-inline rLayout::SetInfo::SetInfo() {
-    mID = 0;
-    mLayoutID.mLayoutID = 0x3FFFFFF;
-    mSplitID.mSplitID = 0;
-    mpInfo = nullptr;
 }
 
 rLayout::SetInfo::~SetInfo() {

@@ -6,12 +6,6 @@
 // Forward declarations
 class uGUIKeyConfig;
 
-// Declarations
-namespace nGUIKeyConfig { struct Key; }
-namespace nGUIKeyConfig { class cCategoryListItems; }
-namespace nGUIKeyConfig { class cInputEventHandler; }
-namespace nGUIKeyConfig { class cKeyListItems; }
-
 namespace nGUIKeyConfig {
     enum CATEGORY_STATE
     {
@@ -41,6 +35,12 @@ namespace nGUIKeyConfig {
         SORT_TYPE_NUM = 2,
     };
 }  // namespace nGUIKeyConfig
+
+// Declarations
+namespace nGUIKeyConfig { struct Key; }
+namespace nGUIKeyConfig { class cCategoryListItems; }
+namespace nGUIKeyConfig { class cInputEventHandler; }
+namespace nGUIKeyConfig { class cKeyListItems; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;

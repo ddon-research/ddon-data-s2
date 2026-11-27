@@ -299,3 +299,52 @@ inline uShlPadCtrl::uShlPadCtrl() {
     this->mIsCtrlEnd = false;
     this->::uShlSpeed::mIsThroughWater = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* cShlParamJob08Cs12Pad::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamJob08Cs12Pad::DTI)->memAlloc(sz, align, ::cShlParamJob08Cs12Pad::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamPadCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamPadCtrl::DTI)->memAlloc(sz, align, ::cShlParamPadCtrl::DTI.::MtDTI::getID());
+}
+
+inline void* uShlJob08Cs12Homing::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlJob08Cs12Homing::DTI)->memAlloc(sz, align, ::uShlJob08Cs12Homing::DTI.::MtDTI::getID());
+}
+
+inline void uShlJob08Cs12Homing::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlJob08Cs12Homing::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamJob08Cs12Homing* uShlJob08Cs12Homing::getShlParam() const {
+    return static_cast<const cShlParamJob08Cs12Homing*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void* uShlJob08Cs12Pad::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlJob08Cs12Pad::DTI)->memAlloc(sz, align, ::uShlJob08Cs12Pad::DTI.::MtDTI::getID());
+}
+
+inline void uShlJob08Cs12Pad::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlJob08Cs12Pad::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamJob08Cs12Pad* uShlJob08Cs12Pad::getShlParam() const {
+    return static_cast<const cShlParamJob08Cs12Pad*>(this->::uShlBase::mpShlParam2);
+}
+
+inline void* uShlPadCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlPadCtrl::DTI)->memAlloc(sz, align, ::uShlPadCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uShlPadCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlPadCtrl::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamPadCtrl* uShlPadCtrl::getShlParam() const {
+    return static_cast<const cShlParamPadCtrl*>(this->::uShlBase::mpShlParam2);
+}

@@ -81,3 +81,15 @@ public:
 inline void* uCnsIKHandle::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uCnsIKHandle::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCnsIKHandle::DTI);
+}
+
+inline void uCnsIKHandle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsIKHandle::DTI)->memFree(p_addr);
+}

@@ -134,3 +134,15 @@ inline void* cpMotionFilter::operator new(size_t sz, void* p_addr) {
 inline rMotionFilter* cpMotionFilter::getResource() {
     return this->mpResource;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpMotionFilter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpMotionFilter::DTI);
+}
+
+inline void cpMotionFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpMotionFilter::DTI)->memFree(p_addr);
+}

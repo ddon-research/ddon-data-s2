@@ -34,16 +34,8 @@ const MtDTI& uGUICaplinkTag::getDTI() const {
     return uGUICaplinkTag::DTI;
 }
 
-inline MtAllocator* uGUICaplinkTag::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkTag::DTI);
-}
-
 void* uGUICaplinkTag::operator new(size_t sz, u32 align) {
     return uGUICaplinkTag::getAllocator()->memAlloc(sz, align, uGUICaplinkTag::DTI.getID());
-}
-
-inline void uGUICaplinkTag::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTag::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkTag::~uGUICaplinkTag() {
@@ -204,9 +196,20 @@ __attribute__((weak)) void uGUICaplinkTag::setupList() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUICaplinkTag::setupListItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
-    DDON_STUB("uGUICaplinkTag::setupListItem")
-    /* stub */
+void uGUICaplinkTag::setupListItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase::cScrollListInfoBase* pInfoBase, u32 index) {
+    if (pItemBase == nullptr) {
+        return;
+    }
+    if (pInfoBase == nullptr) {
+        return;
+    }
+    if (pItemBase->mpInstBase != nullptr) {
+        pItemBase->mpInstBase->setPositionY(pInfoBase->mTopPos);
+    }
+    if (index <= 9u) {
+        cListItem* pItem = static_cast<cListItem*>(pItemBase);
+        setObjectMessageFit(pItem->mpObjMsg, &sCaplinkManager::getInstance()->mFreeTag[index].mTagName[0], 81ul);
+    }
 }
 
 void uGUICaplinkTag::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) {
@@ -251,21 +254,11 @@ __attribute__((weak)) MtObject* uGUICaplinkTag::MyDTI::newInstance() const {
     return nullptr;
 }
 
-uGUICaplinkTag::stMain::stMain() {
-    DDON_STUB("uGUICaplinkTag::stMain::stMain")
-    /* stub */
+uGUICaplinkTag::stMain::stMain() : mpObjMsgTitleSub(static_cast<cGUIObjMessage*>(nullptr)), mpObjMsgTitle(static_cast<cGUIObjMessage*>(nullptr)), mpInstAnimMask(static_cast<cGUIInstAnimation*>(nullptr)) {
 }
 
 const MtDTI& uGUICaplinkTag::cListItem::getDTI() const {
     return uGUICaplinkTag::cListItem::DTI;
-}
-
-inline void* uGUICaplinkTag::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkTag::cListItem::DTI)->memAlloc(sz, align, uGUICaplinkTag::cListItem::DTI.getID());
-}
-
-inline void uGUICaplinkTag::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTag::cListItem::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkTag::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -278,10 +271,6 @@ MtObject* uGUICaplinkTag::cListItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUICaplinkTag::cListInfo::getDTI() const {
     return uGUICaplinkTag::cListInfo::DTI;
-}
-
-inline void uGUICaplinkTag::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTag::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkTag::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

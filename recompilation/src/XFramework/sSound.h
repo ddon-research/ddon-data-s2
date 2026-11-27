@@ -2899,3 +2899,19 @@ inline sSound::NativeSystemPS4::PS4Property::PS4Property() {
 
 inline sSound::NativeVoicePS4::NativeVoicePS4() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sSound::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSound::DTI)->memFree(p_addr);
+}
+
+inline void* sSound::NativeSystemPS4::PS4Property::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sSound::NativeSystemPS4::PS4Property::DTI)->memAlloc(sz, align, ::sSound::NativeSystemPS4::PS4Property::DTI.::MtDTI::mID);
+}
+
+inline void sSound::NativeSystemPS4::PS4Property::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSound::NativeSystemPS4::PS4Property::DTI)->memFree(p_addr);
+}

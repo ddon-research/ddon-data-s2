@@ -261,3 +261,15 @@ inline void* nNetwork::Transport::operator new(size_t sz, void* p_addr) {
 inline void* nNetwork::Transport::ForwardQueue::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nNetwork::Transport::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::DTI)->memFree(p_addr);
+}
+
+inline void nNetwork::Transport::ForwardQueue::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nNetwork::Transport::ForwardQueue::DTI)->memFree(p_addr);
+}

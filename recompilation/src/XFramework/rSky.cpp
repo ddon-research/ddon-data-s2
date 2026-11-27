@@ -24,10 +24,6 @@ const MtDTI& rSky::getDTI() const {
     return rSky::DTI;
 }
 
-inline void rSky::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSky::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rSky::rSky() {
     mAttr = 0x10;
     MtVector3 t0;
@@ -177,9 +173,18 @@ MT_CTSTR rSky::getExt() const {
     return "sky";
 }
 
-__attribute__((weak)) MtVector3 rSky::getRayleighScattering() const {
-    DDON_STUB("rSky::getRayleighScattering")
-    __builtin_unreachable();
+MtVector3 rSky::getRayleighScattering() const {
+    MtVector3 rs;
+    rs.pad_ = 0.0f;
+    const f32 t0 = mRayleighScatteringBase;
+    const f32 t1 = mRamda.z;
+    float t2 = powf(mRamda.x / t1, -4.0f);
+    rs.x = 0.01f / (t0 * t2);
+    float t3 = powf(mRamda.y / t1, -4.0f);
+    rs.y = 0.01f / (t0 * t3);
+    float t4 = powf(t1 / t1, -4.0f);
+    rs.z = 0.01f / (t0 * t4);
+    return rs;
 }
 
 inline rSky::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -193,14 +198,6 @@ __attribute__((weak)) MtObject* rSky::MyDTI::newInstance() const {
 
 const MtDTI& rStarCatalog::getDTI() const {
     return rStarCatalog::DTI;
-}
-
-inline void* rStarCatalog::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStarCatalog::DTI)->memAlloc(sz, align, rStarCatalog::DTI.mID);
-}
-
-inline void rStarCatalog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStarCatalog::DTI)->memFree(p_addr);
 }
 
 rStarCatalog::~rStarCatalog() {

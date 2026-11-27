@@ -3,7 +3,6 @@
 #include "DLCLineup.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
 #include "../../cPacket.h"
@@ -13,10 +12,6 @@
 
 const MtDTI& CDataDLCLineupBought::getDTI() const {
     return CDataDLCLineupBought::DTI;
-}
-
-inline MtAllocator* CDataDLCLineupBought::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDLCLineupBought::DTI);
 }
 
 void* CDataDLCLineupBought::operator new(size_t sz, u32 align) {
@@ -37,10 +32,6 @@ MtObject* CDataDLCLineupBought::MyDTI::newInstance() const {
 
 const MtDTI& CDataDLCLineupHistory::getDTI() const {
     return CDataDLCLineupHistory::DTI;
-}
-
-inline MtAllocator* CDataDLCLineupHistory::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataDLCLineupHistory::DTI);
 }
 
 void* CDataDLCLineupHistory::operator new(size_t sz, u32 align) {

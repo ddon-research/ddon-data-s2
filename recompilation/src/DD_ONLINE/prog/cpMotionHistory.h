@@ -107,3 +107,15 @@ inline void* cpMotionHistory::operator new(size_t sz, void* p_addr) {
 inline u32 cpMotionHistory::getHistoryMotTypeStartNo() {
     return this->mHistoryMotTypeStartNo;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpMotionHistory::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpMotionHistory::DTI);
+}
+
+inline void cpMotionHistory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpMotionHistory::DTI)->memFree(p_addr);
+}

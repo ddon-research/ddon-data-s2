@@ -25,14 +25,6 @@ const MtDTI& rEffectStrip::getDTI() const {
     return rEffectStrip::DTI;
 }
 
-inline void* rEffectStrip::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memAlloc(sz, align, rEffectStrip::DTI.mID);
-}
-
-inline void rEffectStrip::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEffectStrip::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rEffectStrip::getExt() const {
     return "efs";
 }
@@ -177,8 +169,19 @@ __attribute__((weak)) bool rEffectStrip::calcPathLinearVertex(u32 PartsNo, u32 V
 }
 
 __attribute__((weak)) bool rEffectStrip::calcPathLinearVertex(u32 PartsNo, u32 VertexNo0, u32 VertexNo1, f32 Rate, MtVector3* pPos, uModel* pModelUnit, u32 ModelJointNo, const MtVector3& Scale) {
-    DDON_STUB("rEffectStrip::calcPathLinearVertex")
-    return {};
+    MtVector3 pos[2];
+    u32 vertexNo[2] = {VertexNo0, VertexNo1};
+    bool calcFlag = calcVertices(PartsNo, pos, vertexNo, 2, pModelUnit, ModelJointNo, Scale);
+    
+    f32 t1 = pos[1].x - pos[0].x;
+    f32 t2 = pos[1].y - pos[0].y;
+    f32 t3 = pos[1].z - pos[0].z;
+    t1 *= Rate;
+    t2 *= Rate;
+    t3 *= Rate;
+    
+    *pPos = MtVector3(pos[0].x + t1, pos[0].y + t2, pos[0].z + t3);
+    return calcFlag;
 }
 
 __attribute__((weak)) bool rEffectStrip::calcPathHermiteVertex(u32 PartsNo, u32 VertexNo0, u32 VertexNo1, u32 VertexNo2, f32 Rate, MtVector3* pPos, MtVector3* pNorm, const MtVector3& Ofs, uModel* pModelUnit, u32 ModelJointNo, const MtVector3& Scale) {

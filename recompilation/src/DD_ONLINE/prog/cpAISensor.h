@@ -205,3 +205,19 @@ inline const cAISensorNodeRes* cAISensorNode::getRes() const {
 inline void* cpAISensor::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cAISensorNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAISensorNode::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cpAISensor::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpAISensor::DTI);
+}
+
+inline void cpAISensor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpAISensor::DTI)->memFree(p_addr);
+}

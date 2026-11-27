@@ -2,6 +2,7 @@
 #include <new>
 #include <string.h>
 #include "cOmComponent.h"
+#include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtRandom.h"
 #include "../../MT/MtString.h"
@@ -21,12 +22,16 @@
 #include "cpMotionSe.h"
 #include "cpNpc.h"
 #include "cpObjCollision.h"
+#include "cpOmBlink.h"
 #include "cpOmComponent.h"
 #include "cpOmGather.h"
+#include "cpRootComponent.h"
 #include "cpSoftBody.h"
 #include "cpTalk.h"
 #include "cpTransparencyCtrl.h"
 #include "rOmParam.h"
+#include "rSoundMotionSe.h"
+#include "../../XFramework/rSoundRequest.h"
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
@@ -82,9 +87,22 @@ __attribute__((weak)) void cOmComponent::setup(uBaseModel* pum) {
     /* stub */
 }
 
-__attribute__((weak)) void cOmComponent::move(uBaseModel* pum) {
-    DDON_STUB("cOmComponent::move")
-    /* stub */
+void cOmComponent::move(uBaseModel* pum) {
+    if (pum == nullptr) {
+        return;
+    }
+    loopSeControl(pum);
+    if (!mbReqKill) {
+        return;
+    }
+    cpTransparencyCtrl* pCtrl = static_cast<cpTransparencyCtrl*>(mpOmModel->mComponentMgr.getRootComponent()->find(cpTransparencyCtrl::DTI, true, true));
+    if (pCtrl != nullptr) {
+        if (!pCtrl->mIsActive) {
+            mpOmModel->kill();
+        }
+    } else {
+        mpOmModel->kill();
+    }
 }
 
 __attribute__((weak)) void cOmComponent::kill(uBaseModel* pum) {
@@ -92,9 +110,16 @@ __attribute__((weak)) void cOmComponent::kill(uBaseModel* pum) {
     /* stub */
 }
 
-__attribute__((weak)) void cOmComponent::reqKill() {
-    DDON_STUB("cOmComponent::reqKill")
-    /* stub */
+void cOmComponent::reqKill() {
+    mbReqKill = true;
+    if (mpOmModel == nullptr) {
+        return;
+    }
+    cpTransparencyCtrl* pCtrl = static_cast<cpTransparencyCtrl*>(mpOmModel->mComponentMgr.getRootComponent()->find(cpTransparencyCtrl::DTI, true, true));
+    if (pCtrl == nullptr) {
+        return;
+    }
+    pCtrl->startChangeTrp(1.0f, 0.0f, 15.0f);
 }
 
 __attribute__((weak)) void cOmComponent::updatePtr() {
@@ -121,14 +146,27 @@ __attribute__((weak)) void cOmComponent::initObjCollision(uOmModel* puom, rObjCo
     /* stub */
 }
 
-__attribute__((weak)) void cOmComponent::eraseObjCollision(uOmModel* puom) {
-    DDON_STUB("cOmComponent::eraseObjCollision")
-    /* stub */
+void cOmComponent::eraseObjCollision(uOmModel* puom) {
+    if (puom == nullptr) {
+        return;
+    }
+    cpComponent* t0 = puom->mComponentMgr.getRootComponent()->find(cpObjCollisionBase::DTI, true, true);
+    if (t0 == nullptr) {
+        return;
+    }
+    static_cast<cpObjCollisionBase*>(t0)->setResource(static_cast<rObjCollision*>(nullptr), 0u);
+    static_cast<cpObjCollisionBase*>(t0)->killNodeAll();
 }
 
-__attribute__((weak)) void cOmComponent::killNodeAll(uOmModel* puom) {
-    DDON_STUB("cOmComponent::killNodeAll")
-    /* stub */
+void cOmComponent::killNodeAll(uOmModel* puom) {
+    if (puom == nullptr) {
+        return;
+    }
+    cpObjCollisionBase* p_comp = static_cast<cpObjCollisionBase*>(puom->mComponentMgr.getRootComponent()->find(cpObjCollisionBase::DTI, true, true));
+    if (p_comp == nullptr) {
+        return;
+    }
+    p_comp->killNodeAll();
 }
 
 void cOmComponent::keyOffSe() {
@@ -138,9 +176,30 @@ void cOmComponent::keyOffSe() {
     static_cast<sSoundExt*>(sSound::getInstance())->keyOffSe(mpSoundRequest, 1u, reinterpret_cast<const uintptr>(mpOmModel), sSoundExt::SE_SEARCH_KEY_ALL);
 }
 
-__attribute__((weak)) void cOmComponent::initMotionSe(uOmModel* puom, const cOmParam* pParam) {
-    DDON_STUB("cOmComponent::initMotionSe")
-    /* stub */
+void cOmComponent::initMotionSe(uOmModel* puom, const cOmParam* pParam) {
+    if (puom == nullptr) {
+        return;
+    }
+    cpComponent* t0 = puom->mComponentMgr.getRootComponent()->find(cpMotionSe::DTI, true, true);
+    if (t0 == nullptr) {
+        return;
+    }
+    cResource* t1 = sArchiveManager::getInstance()->createRes(pParam->mrSoundMotionSe.getResId(), 1u, false);
+    if (t1 != nullptr) {
+        static_cast<cpMotionSe*>(t0)->setMotionSe(static_cast<rSoundMotionSe*>(t1));
+        t1->release();
+        cResource* t2 = sArchiveManager::getInstance()->createRes(pParam->mrSoundRequest.getResId(), 1u, false);
+        if (t2 != nullptr) {
+            static_cast<cpMotionSe*>(t0)->setRequest(static_cast<rSoundRequest*>(t2), 0u);
+            t2->release();
+        }
+    } else {
+        cResource* t2 = sArchiveManager::getInstance()->createRes(pParam->mrSoundRequest.getResId(), 1u, false);
+        if (t2 != nullptr) {
+            static_cast<cpMotionSe*>(t0)->setRequest(static_cast<rSoundRequest*>(t2), 0u);
+            t2->release();
+        }
+    }
 }
 
 __attribute__((weak)) void cOmComponent::loopSeControl(uBaseModel* pum) {

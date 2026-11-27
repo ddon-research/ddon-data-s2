@@ -131,3 +131,19 @@ inline void cCharacterEditMuscle::operator delete[](void* p_addr) {
 inline void* cCharacterEditMuscle::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCharacterEditMuscle::DTI)->memAlloc(sz, align, ::cCharacterEditMuscle::DTI.::MtDTI::getID());
 }
+
+inline void* cCharacterEditMuscle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditMuscle::DTI)->memAlloc(sz, align, ::cCharacterEditMuscle::DTI.::MtDTI::getID());
+}
+
+inline void cCharacterEditMuscle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditMuscle::DTI)->memFree(p_addr);
+}
+
+inline void* rCharacterEditMuscle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCharacterEditMuscle::DTI)->memAlloc(sz, align, ::rCharacterEditMuscle::DTI.::MtDTI::getID());
+}
+
+inline void rCharacterEditMuscle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCharacterEditMuscle::DTI)->memFree(p_addr);
+}

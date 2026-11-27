@@ -175,3 +175,23 @@ inline rShlParamList::rShlParamList() {
 inline u32 rShlParamList::getGroupNum() const {
     return this->mParamList.mLength;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlGroupParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlGroupParam::DTI)->memAlloc(sz, align, ::cShlGroupParam::DTI.::MtDTI::getID());
+}
+
+inline void cShlGroupParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlGroupParam::DTI)->memFree(p_addr);
+}
+
+inline void* rShlParamList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rShlParamList::DTI)->memAlloc(sz, align, ::rShlParamList::DTI.::MtDTI::getID());
+}
+
+inline void rShlParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rShlParamList::DTI)->memFree(p_addr);
+}

@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmScrAdjust.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cEmScrAdjust::getDTI() const {
     return cEmScrAdjust::DTI;
-}
-
-inline void* cEmScrAdjust::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmScrAdjust::DTI)->memAlloc(sz, align, cEmScrAdjust::DTI.getID());
-}
-
-inline void cEmScrAdjust::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmScrAdjust::DTI)->memFree(p_addr);
 }
 
 inline cEmScrAdjust::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,14 +23,6 @@ MtObject* cEmScrAdjust::MyDTI::newInstance() const {
 
 const MtDTI& rEmScrAdjust::getDTI() const {
     return rEmScrAdjust::DTI;
-}
-
-inline void* rEmScrAdjust::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmScrAdjust::DTI)->memAlloc(sz, align, rEmScrAdjust::DTI.getID());
-}
-
-inline void rEmScrAdjust::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmScrAdjust::DTI)->memFree(p_addr);
 }
 
 bool rEmScrAdjust::loadData(MtDataReader& r, cEmScrAdjust* pData) {

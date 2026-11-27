@@ -123,7 +123,9 @@ inline rTutorialList::cTutorialNode::cTutorialNode() {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 inline bool rTutorialList::cTutorialNode::load(MtDataReader& r) {
     mId = r.readU32();
@@ -132,4 +134,24 @@ inline bool rTutorialList::cTutorialNode::load(MtDataReader& r) {
     mCategory = r.readU32();
     mOpenQuestId = r.readU32();
     return true;
+}
+
+inline void* rTutorialList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTutorialList::DTI)->memAlloc(sz, align, ::rTutorialList::DTI.::MtDTI::getID());
+}
+
+inline void rTutorialList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTutorialList::DTI)->memFree(p_addr);
+}
+
+inline rTutorialList::rTutorialList() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rTutorialList::cTutorialNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rTutorialList::cTutorialNode::DTI)->memAlloc(sz, align, ::rTutorialList::cTutorialNode::DTI.::MtDTI::getID());
+}
+
+inline void rTutorialList::cTutorialNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rTutorialList::cTutorialNode::DTI)->memFree(p_addr);
 }

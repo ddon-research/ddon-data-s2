@@ -95,3 +95,11 @@ inline void* cGeneralPoint::operator new(size_t sz, void* p_addr) {
 inline void cGeneralPoint::reqKill() {
     this->mKillReq = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cGeneralPoint::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGeneralPoint::DTI)->memFree(p_addr);
+}

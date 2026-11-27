@@ -35,14 +35,6 @@ const MtDTI& cShlParamMultiLock::getDTI() const {
     return cShlParamMultiLock::DTI;
 }
 
-inline void* cShlParamMultiLock::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamMultiLock::DTI)->memAlloc(sz, align, cShlParamMultiLock::DTI.getID());
-}
-
-inline void cShlParamMultiLock::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamMultiLock::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamMultiLock::getShlDTI() const {
     return uShlEmMultiLock::DTI;
 }
@@ -81,14 +73,6 @@ const MtDTI& cShlParamMultiLock::cRangePointTbl::getDTI() const {
     return cShlParamMultiLock::cRangePointTbl::DTI;
 }
 
-inline void* cShlParamMultiLock::cRangePointTbl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamMultiLock::cRangePointTbl::DTI)->memAlloc(sz, align, cShlParamMultiLock::cRangePointTbl::DTI.getID());
-}
-
-inline void cShlParamMultiLock::cRangePointTbl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamMultiLock::cRangePointTbl::DTI)->memFree(p_addr);
-}
-
 void cShlParamMultiLock::cRangePointTbl::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\347\257\204\345\233\262", &mRange, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\347\202\271\346\225\260", &mPoint, 0u, 0u);
@@ -114,10 +98,6 @@ const MtDTI& cShlParamMultiLock::cShootCtrlParamMultiLock::getDTI() const {
     return cShlParamMultiLock::cShootCtrlParamMultiLock::DTI;
 }
 
-inline void cShlParamMultiLock::cShootCtrlParamMultiLock::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamMultiLock::cShootCtrlParamMultiLock::DTI)->memFree(p_addr);
-}
-
 void cShlParamMultiLock::cShootCtrlParamMultiLock::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\343\202\260\343\203\253\343\203\274\343\203\227", &mGroup, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\343\202\273\343\203\203\343\203\210\344\275\215\347\275\256", reinterpret_cast<s32*>(&mShlSetLocate), 0u, 0u);
@@ -134,33 +114,6 @@ __attribute__((weak)) MtObject* cShlParamMultiLock::cShootCtrlParamMultiLock::My
 
 const MtDTI& uShlEmMultiLock::getDTI() const {
     return uShlEmMultiLock::DTI;
-}
-
-inline void* uShlEmMultiLock::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlEmMultiLock::DTI)->memAlloc(sz, align, uShlEmMultiLock::DTI.getID());
-}
-
-inline void uShlEmMultiLock::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlEmMultiLock::DTI)->memFree(p_addr);
-}
-
-inline uShlEmMultiLock::uShlEmMultiLock() {
-    mNoCalcTgtDir = false;
-    mIsBlind = false;
-    mShlSetNumGrp[4] = 0;
-    mShlSetNumGrp[5] = 0;
-    mShlSetNumGrp[2] = 0;
-    mShlSetNumGrp[3] = 0;
-    mShlSetNumGrp[0] = 0;
-    mShlSetNumGrp[1] = 0;
-    mLockNum = 1;
-    mBaseVec = MtVector3::Zero;
-    mTmpTargetArray.mpArray = nullptr;
-    mTmpTargetArray.mBufsiz = 0;
-    mTmpTargetArray.mLength = 0;
-    mTargetArray.mpArray = nullptr;
-    mTargetArray.mLength = 0;
-    mTargetArray.mBufsiz = 0;
 }
 
 __attribute__((noinline)) uShlEmMultiLock::~uShlEmMultiLock() {
@@ -237,9 +190,9 @@ void uShlEmMultiLock::updatePtr() {
     if (v0_0 != 0) {
         for (u32 i = 0;;) {
             if (mTargetArray.mpArray[i] != nullptr) {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mTargetArray.mpArray[i]) + 8)) != 0) {
-                    if ((((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mTargetArray.mpArray[i]) + 8)) + 16)) & 7u) - 1u) > 1u) {
-                        *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mTargetArray.mpArray[i]) + 8) = 0;
+                if (static_cast<cTargetList*>(mTargetArray.mpArray[i])->mpTarget != nullptr) {
+                    if (!static_cast<cTargetList*>(mTargetArray.mpArray[i])->mpTarget->isEnable()) {
+                        static_cast<cTargetList*>(mTargetArray.mpArray[i])->mpTarget = nullptr;
                     }
                 }
             }
@@ -290,14 +243,6 @@ MtObject* uShlEmMultiLock::MyDTI::newInstance() const {
 
 const MtDTI& uShlEmMultiLock::cTargetList::getDTI() const {
     return uShlEmMultiLock::cTargetList::DTI;
-}
-
-inline void* uShlEmMultiLock::cTargetList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlEmMultiLock::cTargetList::DTI)->memAlloc(sz, align, uShlEmMultiLock::cTargetList::DTI.getID());
-}
-
-inline void uShlEmMultiLock::cTargetList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlEmMultiLock::cTargetList::DTI)->memFree(p_addr);
 }
 
 inline uShlEmMultiLock::cTargetList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

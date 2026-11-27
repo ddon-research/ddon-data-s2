@@ -19,6 +19,7 @@
 #include "cPrim.h"
 #include "cPrimBufferManager.h"
 #include "cPrimTagList.h"
+#include "cPrimTagManager.h"
 #include "cPrimTexHandleManager.h"
 #include "cSystem.h"
 #include "nDraw.h"
@@ -38,10 +39,6 @@ void* sPrimitive::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sPrimitive::DTI)->memAlloc(sz, align, sPrimitive::DTI.mID);
 }
 
-inline void sPrimitive::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sPrimitive::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) cPrim* sPrimitive::getCPrim(cDraw* p_draw, sPrimitive::ePrimType type, cUnit* p_unit) {
     DDON_STUB("sPrimitive::getCPrim")
     return nullptr;
@@ -52,9 +49,42 @@ __attribute__((weak)) cPrim* sPrimitive::getCPrim(cDraw* p_draw, nDraw::PASS_TYP
     return nullptr;
 }
 
-__attribute__((weak)) void sPrimitive::begin() {
-    DDON_STUB("sPrimitive::begin")
-    /* stub */
+void sPrimitive::begin() {
+    u32 job_num = (sMain::mpInstance)->mJobThreadNum;
+    mpTagManager->assignTags(&mpPrim[0], job_num);
+    u32 ui;
+    if (job_num == 0) {
+        ui = job_num;
+    } else {
+        u32 v0_3 = job_num;
+        for (cPrim* * p0_10 = &mpPrim[0];;) {
+            (*p0_10)->cPrim::clear();
+            if ((v0_3 - 1u) != 0) {
+                v0_3 += 0xFFFFFFFFu;
+                p0_10 += 1;
+            } else {
+                break;
+            }
+        }
+        ui = job_num;
+    }
+    for (;;) {
+        if (ui >= mNumOfPrim) {
+            break;
+        } else {
+            cPrimTagList* t0 = mpPrim[ui]->mpPrimTagList;
+            t0->mTagSize = 0;
+            t0->mpSorted = nullptr;
+            t0->mpTags = nullptr;
+            t0->clearTag();
+            mpPrim[ui]->cPrim::clear();
+            ui += 1u;
+        }
+    }
+    mpTexHandleMgr->mUsedTex = 1;
+    cPrimBufferManager* t1 = mpBufferMgr;
+    t1->mpCurrentPtr = t1->mpBuffer;
+    t1->mCurrentSize = 0;
 }
 
 __attribute__((weak)) void sPrimitive::end() {
@@ -70,14 +100,101 @@ __attribute__((weak)) s32 sPrimitive::endBranch(cDraw* p_draw, cDraw* sub_draw, 
     return {};
 }
 
-__attribute__((weak)) void sPrimitive::initPrimitiveSys(u32 vb_size, u32 tag_size) {
-    DDON_STUB("sPrimitive::initPrimitiveSys")
-    /* stub */
+void sPrimitive::initPrimitiveSys(u32 vb_size, u32 tag_size) {
+    if (mState != 1) {
+        if (mThreadSafe || (cSystem::mJobSafe)) {
+            if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+                abort();
+                return;
+            }
+        }
+        mpTexHandleMgr = new (16u) cPrimTexHandleManager(1025u);
+        mNumOfPrim = 6;
+        mpBufferMgr = new (16u) cPrimBufferManager(vb_size);
+        mpTagManager = new (16u) cPrimTagManager(tag_size);
+        if (mNumOfPrim != 0) {
+            for (unsigned int i0_3 = 0;;) {
+                if ((mpPrim[i0_3] = new (16u) cPrim) == nullptr) {
+                    if (mThreadSafe || (cSystem::mJobSafe)) {
+                        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                            abort();
+                            return;
+                        }
+                    }
+                    return;
+                } else {
+                    if ((i0_3 + 1u) < mNumOfPrim) {
+                        i0_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+        }
+    } else {
+        return;
+    }
+    clearTag();
+    mState = 1;
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
 }
 
-__attribute__((weak)) void sPrimitive::termPrimitiveSys() {
-    DDON_STUB("sPrimitive::termPrimitiveSys")
-    /* stub */
+void sPrimitive::termPrimitiveSys() {
+    if (mThreadSafe || (cSystem::mJobSafe)) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+            return;
+        }
+    }
+    if (mpPrim[0] != nullptr) {
+        delete mpPrim[0];
+        mpPrim[0] = nullptr;
+    }
+    if (mpPrim[1] != nullptr) {
+        delete mpPrim[1];
+        mpPrim[1] = nullptr;
+    }
+    if (mpPrim[2] != nullptr) {
+        delete mpPrim[2];
+        mpPrim[2] = nullptr;
+    }
+    if (mpPrim[3] != nullptr) {
+        delete mpPrim[3];
+        mpPrim[3] = nullptr;
+    }
+    if (mpPrim[4] != nullptr) {
+        delete mpPrim[4];
+        mpPrim[4] = nullptr;
+    }
+    if (mpPrim[5] != nullptr) {
+        delete mpPrim[5];
+        mpPrim[5] = nullptr;
+    }
+    if (mpTexHandleMgr != nullptr) {
+        delete mpTexHandleMgr;
+        mpTexHandleMgr = nullptr;
+    }
+    if (mpBufferMgr != nullptr) {
+        delete mpBufferMgr;
+        mpBufferMgr = nullptr;
+    }
+    if (mpTagManager != nullptr) {
+        delete mpTagManager;
+        mpTagManager = nullptr;
+    }
+    mState = 2;
+    if (!(mThreadSafe || (cSystem::mJobSafe))) {
+        return;
+    }
+    if (scePthreadMutexUnlock(&mCS.mCSection) == 0) {
+        return;
+    }
+    abort();
 }
 
 void sPrimitive::createProperty(MtPropertyList& prop_list) {

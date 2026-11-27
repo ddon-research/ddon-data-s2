@@ -124,3 +124,19 @@ inline void cGatheringItem::operator delete[](void* p_addr) {
 inline void* cGatheringItem::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cGatheringItem::DTI)->memAlloc(sz, align, ::cGatheringItem::DTI.::MtDTI::getID());
 }
+
+inline void* cGatheringItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cGatheringItem::DTI)->memAlloc(sz, align, ::cGatheringItem::DTI.::MtDTI::getID());
+}
+
+inline void cGatheringItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGatheringItem::DTI)->memFree(p_addr);
+}
+
+inline void* rGatheringItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rGatheringItem::DTI)->memAlloc(sz, align, ::rGatheringItem::DTI.::MtDTI::getID());
+}
+
+inline void rGatheringItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGatheringItem::DTI)->memFree(p_addr);
+}

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nNetworkSession.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetBuffer.h"
@@ -30,10 +29,6 @@
 
 const MtDTI& nNetwork::Session::getDTI() const {
     return nNetwork::Session::DTI;
-}
-
-inline void nNetwork::Session::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::Session::DTI)->memFree(p_addr);
 }
 
 nNetwork::Session::~Session() {
@@ -105,13 +100,16 @@ __attribute__((weak)) void nNetwork::Session::dbgGetSummary(MtString& sum) {
 __attribute__((weak)) void nNetwork::Session::dbgPrintLog() {
 }
 
-__attribute__((weak)) bool nNetwork::Session::callback(u32 callback_index, s32 route_index, const void* data_ptr, u32 data_size) {
-    DDON_STUB("nNetwork::Session::callback")
-    return {};
-}
-
-void nNetwork::Session::abortRequest() {
-    mDriver.tryAbort();
+bool nNetwork::Session::callback(u32 callback_index, s32 route_index, const void* data_ptr, u32 data_size) {
+    if (route_index > -1) {
+        return mCallback.receive(callback_index, route_index, mpDatabase->mRouteList[route_index].mMemberIndex, data_ptr, data_size);
+    } else {
+        if ((mpDatabase->mAttribute & 1u) != 0) {
+            return mCallback.receive(callback_index, route_index, mpDatabase->mSelfIndex, data_ptr, data_size);
+        } else {
+            return mCallback.receive(callback_index, route_index, -1, data_ptr, data_size);
+        }
+    }
 }
 
 bool nNetwork::Session::addListener(nNetwork::SessionListener* p) {

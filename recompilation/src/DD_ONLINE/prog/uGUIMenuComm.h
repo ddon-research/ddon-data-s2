@@ -244,3 +244,15 @@ public:
 inline void* uGUIMenuComm::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIMenuComm::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMenuComm::DTI);
+}
+
+inline void uGUIMenuComm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMenuComm::DTI)->memFree(p_addr);
+}

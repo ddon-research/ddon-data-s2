@@ -30,10 +30,6 @@ void* nNetwork::nAchievement::Object::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::nAchievement::Object::DTI)->memAlloc(sz, align, ::nNetwork::nAchievement::Object::DTI.mID);
 }
 
-inline void nNetwork::nAchievement::Object::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::nAchievement::Object::DTI)->memFree(p_addr);
-}
-
 nNetwork::nAchievement::Object::Object() {
     DDON_STUB("nNetwork::nAchievement::Object::Object")
     /* stub */

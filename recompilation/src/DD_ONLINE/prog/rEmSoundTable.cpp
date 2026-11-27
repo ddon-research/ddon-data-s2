@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmSoundTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -17,14 +15,6 @@
 
 const MtDTI& cEmSoundTable::getDTI() const {
     return cEmSoundTable::DTI;
-}
-
-inline void* cEmSoundTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmSoundTable::DTI)->memAlloc(sz, align, cEmSoundTable::DTI.getID());
-}
-
-inline void cEmSoundTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmSoundTable::DTI)->memFree(p_addr);
 }
 
 void cEmSoundTable::createProperty(MtPropertyList& s) {
@@ -48,14 +38,6 @@ MtObject* cEmSoundTable::MyDTI::newInstance() const {
 
 const MtDTI& rEmSoundTable::getDTI() const {
     return rEmSoundTable::DTI;
-}
-
-inline void* rEmSoundTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmSoundTable::DTI)->memAlloc(sz, align, rEmSoundTable::DTI.getID());
-}
-
-inline void rEmSoundTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmSoundTable::DTI)->memFree(p_addr);
 }
 
 bool rEmSoundTable::loadData(MtDataReader& in, cEmSoundTable* pData) {

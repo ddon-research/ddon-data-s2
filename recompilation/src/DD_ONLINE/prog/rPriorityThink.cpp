@@ -73,14 +73,6 @@ const MtDTI& cPrioThkCmd::getDTI() const {
     return cPrioThkCmd::DTI;
 }
 
-inline void* cPrioThkCmd::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmd::DTI)->memAlloc(sz, align, cPrioThkCmd::DTI.getID());
-}
-
-inline void cPrioThkCmd::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmd::DTI)->memFree(p_addr);
-}
-
 cPrioThkCmd::~cPrioThkCmd() {
 }
 
@@ -171,29 +163,16 @@ const MtDTI& cPrioThkCmd::cTmpResult::getDTI() const {
     return cPrioThkCmd::cTmpResult::DTI;
 }
 
-inline void cPrioThkCmd::cTmpResult::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmd::cTmpResult::DTI)->memFree(p_addr);
-}
-
 inline cPrioThkCmd::cTmpResult::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cPrioThkCmd::cTmpResult::MyDTI cPrioThkCmd::cTmpResult::DTI("cPrioThkCmdRetEnemyTable::cTmpResult", &::MtObject::DTI, 48ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmd::cTmpResult::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmd::cTmpResult::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cTmpResult;
 }
 
 const MtDTI& cPrioThkCmdAddAnimalCoop::getDTI() const {
     return cPrioThkCmdAddAnimalCoop::DTI;
-}
-
-inline void* cPrioThkCmdAddAnimalCoop::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddAnimalCoop::DTI)->memAlloc(sz, align, cPrioThkCmdAddAnimalCoop::DTI.getID());
-}
-
-inline void cPrioThkCmdAddAnimalCoop::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddAnimalCoop::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddAnimalCoop::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -213,14 +192,6 @@ const MtDTI& cPrioThkCmdAddAnimalProtect::getDTI() const {
     return cPrioThkCmdAddAnimalProtect::DTI;
 }
 
-inline void* cPrioThkCmdAddAnimalProtect::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddAnimalProtect::DTI)->memAlloc(sz, align, cPrioThkCmdAddAnimalProtect::DTI.getID());
-}
-
-inline void cPrioThkCmdAddAnimalProtect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddAnimalProtect::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdAddAnimalProtect::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdAddAnimalProtect::check")
     return {};
@@ -236,14 +207,6 @@ MtObject* cPrioThkCmdAddAnimalProtect::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddBase::getDTI() const {
     return cPrioThkCmdAddBase::DTI;
-}
-
-inline void* cPrioThkCmdAddBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddBase::DTI)->memAlloc(sz, align, cPrioThkCmdAddBase::DTI.getID());
-}
-
-inline void cPrioThkCmdAddBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddBase::DTI)->memFree(p_addr);
 }
 
 u32 cPrioThkCmdAddBase::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -269,14 +232,6 @@ MtObject* cPrioThkCmdAddBase::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddBreakTarget::getDTI() const {
     return cPrioThkCmdAddBreakTarget::DTI;
-}
-
-inline void* cPrioThkCmdAddBreakTarget::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddBreakTarget::DTI)->memAlloc(sz, align, cPrioThkCmdAddBreakTarget::DTI.getID());
-}
-
-inline void cPrioThkCmdAddBreakTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddBreakTarget::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddBreakTarget::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -315,14 +270,6 @@ MtObject* cPrioThkCmdAddBreakTarget::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddCoreNearTarget::getDTI() const {
     return cPrioThkCmdAddCoreNearTarget::DTI;
-}
-
-inline void* cPrioThkCmdAddCoreNearTarget::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddCoreNearTarget::DTI)->memAlloc(sz, align, cPrioThkCmdAddCoreNearTarget::DTI.getID());
-}
-
-inline void cPrioThkCmdAddCoreNearTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddCoreNearTarget::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddCoreNearTarget::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -367,14 +314,6 @@ MtObject* cPrioThkCmdAddCoreNearTarget::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddEnemy::getDTI() const {
     return cPrioThkCmdAddEnemy::DTI;
-}
-
-inline void* cPrioThkCmdAddEnemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddEnemy::DTI)->memAlloc(sz, align, cPrioThkCmdAddEnemy::DTI.getID());
-}
-
-inline void cPrioThkCmdAddEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddEnemy::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddEnemy::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -445,14 +384,6 @@ const MtDTI& cPrioThkCmdAddEnemyClimb::getDTI() const {
     return cPrioThkCmdAddEnemyClimb::DTI;
 }
 
-inline void* cPrioThkCmdAddEnemyClimb::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddEnemyClimb::DTI)->memAlloc(sz, align, cPrioThkCmdAddEnemyClimb::DTI.getID());
-}
-
-inline void cPrioThkCmdAddEnemyClimb::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddEnemyClimb::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdAddEnemyClimb::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdAddEnemyClimb::check")
     return {};
@@ -468,14 +399,6 @@ MtObject* cPrioThkCmdAddEnemyClimb::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddEnemyHp::getDTI() const {
     return cPrioThkCmdAddEnemyHp::DTI;
-}
-
-inline void* cPrioThkCmdAddEnemyHp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddEnemyHp::DTI)->memAlloc(sz, align, cPrioThkCmdAddEnemyHp::DTI.getID());
-}
-
-inline void cPrioThkCmdAddEnemyHp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddEnemyHp::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddEnemyHp::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -500,14 +423,6 @@ const MtDTI& cPrioThkCmdAddEnemyRange::getDTI() const {
     return cPrioThkCmdAddEnemyRange::DTI;
 }
 
-inline void* cPrioThkCmdAddEnemyRange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddEnemyRange::DTI)->memAlloc(sz, align, cPrioThkCmdAddEnemyRange::DTI.getID());
-}
-
-inline void cPrioThkCmdAddEnemyRange::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddEnemyRange::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdAddEnemyRange::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdAddEnemyRange::check")
     return {};
@@ -528,14 +443,6 @@ MtObject* cPrioThkCmdAddEnemyRange::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddErosionRequest::getDTI() const {
     return cPrioThkCmdAddErosionRequest::DTI;
-}
-
-inline void* cPrioThkCmdAddErosionRequest::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddErosionRequest::DTI)->memAlloc(sz, align, cPrioThkCmdAddErosionRequest::DTI.getID());
-}
-
-inline void cPrioThkCmdAddErosionRequest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddErosionRequest::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddErosionRequest::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -574,14 +481,6 @@ MtObject* cPrioThkCmdAddErosionRequest::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddEvaluation::getDTI() const {
     return cPrioThkCmdAddEvaluation::DTI;
-}
-
-inline void* cPrioThkCmdAddEvaluation::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddEvaluation::DTI)->memAlloc(sz, align, cPrioThkCmdAddEvaluation::DTI.getID());
-}
-
-inline void cPrioThkCmdAddEvaluation::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddEvaluation::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddEvaluation::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -640,14 +539,6 @@ const MtDTI& cPrioThkCmdAddHiPrioEnemy::getDTI() const {
     return cPrioThkCmdAddHiPrioEnemy::DTI;
 }
 
-inline void* cPrioThkCmdAddHiPrioEnemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddHiPrioEnemy::DTI)->memAlloc(sz, align, cPrioThkCmdAddHiPrioEnemy::DTI.getID());
-}
-
-inline void cPrioThkCmdAddHiPrioEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddHiPrioEnemy::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdAddHiPrioEnemy::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdAddHiPrioEnemy::check")
     return {};
@@ -690,14 +581,6 @@ MtObject* cPrioThkCmdAddHiPrioEnemy::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddParty::getDTI() const {
     return cPrioThkCmdAddParty::DTI;
-}
-
-inline void* cPrioThkCmdAddParty::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddParty::DTI)->memAlloc(sz, align, cPrioThkCmdAddParty::DTI.getID());
-}
-
-inline void cPrioThkCmdAddParty::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddParty::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddParty::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -763,14 +646,6 @@ MtObject* cPrioThkCmdAddParty::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddPartyAction::getDTI() const {
     return cPrioThkCmdAddPartyAction::DTI;
-}
-
-inline void* cPrioThkCmdAddPartyAction::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyAction::DTI)->memAlloc(sz, align, cPrioThkCmdAddPartyAction::DTI.getID());
-}
-
-inline void cPrioThkCmdAddPartyAction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyAction::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddPartyAction::checkEx(uCharacter* pChar, cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -839,14 +714,6 @@ MtObject* cPrioThkCmdAddPartyAction::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddPartyHp::getDTI() const {
     return cPrioThkCmdAddPartyHp::DTI;
-}
-
-inline void* cPrioThkCmdAddPartyHp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyHp::DTI)->memAlloc(sz, align, cPrioThkCmdAddPartyHp::DTI.getID());
-}
-
-inline void cPrioThkCmdAddPartyHp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyHp::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddPartyHp::checkEx(uCharacter* pChar, cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -1017,14 +884,6 @@ MtObject* cPrioThkCmdAddPartyHp::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddPartyHpForShift::getDTI() const {
     return cPrioThkCmdAddPartyHpForShift::DTI;
-}
-
-inline void* cPrioThkCmdAddPartyHpForShift::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyHpForShift::DTI)->memAlloc(sz, align, cPrioThkCmdAddPartyHpForShift::DTI.getID());
-}
-
-inline void cPrioThkCmdAddPartyHpForShift::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyHpForShift::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddPartyHpForShift::checkEx(uCharacter* pChar, cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -1231,14 +1090,6 @@ MtObject* cPrioThkCmdAddPartyHpForShift::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdAddPartyOcd::getDTI() const {
     return cPrioThkCmdAddPartyOcd::DTI;
-}
-
-inline void* cPrioThkCmdAddPartyOcd::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyOcd::DTI)->memAlloc(sz, align, cPrioThkCmdAddPartyOcd::DTI.getID());
-}
-
-inline void cPrioThkCmdAddPartyOcd::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyOcd::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdAddPartyOcd::checkEx(uCharacter* pChar, cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -1489,14 +1340,6 @@ const MtDTI& cPrioThkCmdAddPartyStamina::getDTI() const {
     return cPrioThkCmdAddPartyStamina::DTI;
 }
 
-inline void* cPrioThkCmdAddPartyStamina::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyStamina::DTI)->memAlloc(sz, align, cPrioThkCmdAddPartyStamina::DTI.getID());
-}
-
-inline void cPrioThkCmdAddPartyStamina::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyStamina::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdAddPartyStamina::checkEx(uCharacter* pChar, cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdAddPartyStamina::checkEx")
     return {};
@@ -1619,10 +1462,6 @@ const MtDTI& cPrioThkCmdAddPartyStatus::getDTI() const {
     return cPrioThkCmdAddPartyStatus::DTI;
 }
 
-inline void cPrioThkCmdAddPartyStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdAddPartyStatus::DTI)->memFree(p_addr);
-}
-
 u32 cPrioThkCmdAddPartyStatus::checkEx(uCharacter* pChar, cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     return isEnablePrioThkStatusFlag(mPrioThkStatusFlag, *pChar);
 }
@@ -1683,20 +1522,11 @@ inline cPrioThkCmdAddPartyStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, s
 cPrioThkCmdAddPartyStatus::MyDTI cPrioThkCmdAddPartyStatus::DTI("cPrioThkCmdAddPartyStatus", &::cPrioThkCmdAddParty::DTI, 32ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdAddPartyStatus::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdAddPartyStatus::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdAddPartyStatus;
 }
 
 const MtDTI& cPrioThkCmdConCureSpot::getDTI() const {
     return cPrioThkCmdConCureSpot::DTI;
-}
-
-inline void* cPrioThkCmdConCureSpot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdConCureSpot::DTI)->memAlloc(sz, align, cPrioThkCmdConCureSpot::DTI.getID());
-}
-
-inline void cPrioThkCmdConCureSpot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdConCureSpot::DTI)->memFree(p_addr);
 }
 
 u32 cPrioThkCmdConCureSpot::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -1715,14 +1545,6 @@ const MtDTI& cPrioThkCmdConEventOmElf::getDTI() const {
     return cPrioThkCmdConEventOmElf::DTI;
 }
 
-inline void* cPrioThkCmdConEventOmElf::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdConEventOmElf::DTI)->memAlloc(sz, align, cPrioThkCmdConEventOmElf::DTI.getID());
-}
-
-inline void cPrioThkCmdConEventOmElf::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdConEventOmElf::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdConEventOmElf::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdConEventOmElf::check")
     return {};
@@ -1738,14 +1560,6 @@ MtObject* cPrioThkCmdConEventOmElf::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdConFollowArea::getDTI() const {
     return cPrioThkCmdConFollowArea::DTI;
-}
-
-inline void* cPrioThkCmdConFollowArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdConFollowArea::DTI)->memAlloc(sz, align, cPrioThkCmdConFollowArea::DTI.getID());
-}
-
-inline void cPrioThkCmdConFollowArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdConFollowArea::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdConFollowArea::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -1777,14 +1591,6 @@ const MtDTI& cPrioThkCmdConHealFountain::getDTI() const {
     return cPrioThkCmdConHealFountain::DTI;
 }
 
-inline void* cPrioThkCmdConHealFountain::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdConHealFountain::DTI)->memAlloc(sz, align, cPrioThkCmdConHealFountain::DTI.getID());
-}
-
-inline void cPrioThkCmdConHealFountain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdConHealFountain::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdConHealFountain::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdConHealFountain::check")
     return {};
@@ -1802,14 +1608,6 @@ const MtDTI& cPrioThkCmdConHealSpot::getDTI() const {
     return cPrioThkCmdConHealSpot::DTI;
 }
 
-inline void* cPrioThkCmdConHealSpot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdConHealSpot::DTI)->memAlloc(sz, align, cPrioThkCmdConHealSpot::DTI.getID());
-}
-
-inline void cPrioThkCmdConHealSpot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdConHealSpot::DTI)->memFree(p_addr);
-}
-
 u32 cPrioThkCmdConHealSpot::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     return 0;
 }
@@ -1824,14 +1622,6 @@ MtObject* cPrioThkCmdConHealSpot::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdConSpot::getDTI() const {
     return cPrioThkCmdConSpot::DTI;
-}
-
-inline void* cPrioThkCmdConSpot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdConSpot::DTI)->memAlloc(sz, align, cPrioThkCmdConSpot::DTI.getID());
-}
-
-inline void cPrioThkCmdConSpot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdConSpot::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdConSpot::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -1855,14 +1645,6 @@ MtObject* cPrioThkCmdConSpot::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdConSpotExt::getDTI() const {
     return cPrioThkCmdConSpotExt::DTI;
-}
-
-inline void* cPrioThkCmdConSpotExt::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdConSpotExt::DTI)->memAlloc(sz, align, cPrioThkCmdConSpotExt::DTI.getID());
-}
-
-inline void cPrioThkCmdConSpotExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdConSpotExt::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdConSpotExt::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -1889,10 +1671,6 @@ const MtDTI& cPrioThkCmdFilTargetStatus::getDTI() const {
     return cPrioThkCmdFilTargetStatus::DTI;
 }
 
-inline void cPrioThkCmdFilTargetStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdFilTargetStatus::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdFilTargetStatus::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdFilTargetStatus::check")
     return {};
@@ -1908,20 +1686,11 @@ inline cPrioThkCmdFilTargetStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 cPrioThkCmdFilTargetStatus::MyDTI cPrioThkCmdFilTargetStatus::DTI("cPrioThkCmdFilTargetStatus", &::cPrioThkCmd::DTI, 16ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdFilTargetStatus::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdFilTargetStatus::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdFilTargetStatus;
 }
 
 const MtDTI& cPrioThkCmdIsAction::getDTI() const {
     return cPrioThkCmdIsAction::DTI;
-}
-
-inline void* cPrioThkCmdIsAction::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsAction::DTI)->memAlloc(sz, align, cPrioThkCmdIsAction::DTI.getID());
-}
-
-inline void cPrioThkCmdIsAction::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsAction::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsAction::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -1968,14 +1737,6 @@ const MtDTI& cPrioThkCmdIsAutoSituation::getDTI() const {
     return cPrioThkCmdIsAutoSituation::DTI;
 }
 
-inline void* cPrioThkCmdIsAutoSituation::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsAutoSituation::DTI)->memAlloc(sz, align, cPrioThkCmdIsAutoSituation::DTI.getID());
-}
-
-inline void cPrioThkCmdIsAutoSituation::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsAutoSituation::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsAutoSituation::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsAutoSituation::check")
     return {};
@@ -2020,14 +1781,6 @@ const MtDTI& cPrioThkCmdIsBakuensen::getDTI() const {
     return cPrioThkCmdIsBakuensen::DTI;
 }
 
-inline void* cPrioThkCmdIsBakuensen::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsBakuensen::DTI)->memAlloc(sz, align, cPrioThkCmdIsBakuensen::DTI.getID());
-}
-
-inline void cPrioThkCmdIsBakuensen::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsBakuensen::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsBakuensen::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsBakuensen::check")
     return {};
@@ -2043,14 +1796,6 @@ MtObject* cPrioThkCmdIsBakuensen::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsBase::getDTI() const {
     return cPrioThkCmdIsBase::DTI;
-}
-
-inline void* cPrioThkCmdIsBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsBase::DTI)->memAlloc(sz, align, cPrioThkCmdIsBase::DTI.getID());
-}
-
-inline void cPrioThkCmdIsBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsBase::DTI)->memFree(p_addr);
 }
 
 u32 cPrioThkCmdIsBase::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2073,14 +1818,6 @@ const MtDTI& cPrioThkCmdIsBattle::getDTI() const {
     return cPrioThkCmdIsBattle::DTI;
 }
 
-inline void* cPrioThkCmdIsBattle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsBattle::DTI)->memAlloc(sz, align, cPrioThkCmdIsBattle::DTI.getID());
-}
-
-inline void cPrioThkCmdIsBattle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsBattle::DTI)->memFree(p_addr);
-}
-
 u32 cPrioThkCmdIsBattle::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     return static_cast<u32>((static_cast<unsigned long>(io.mThinkBattleStatus == 1) ^ static_cast<unsigned long>(isRet())) ^ 1ul);
 }
@@ -2095,14 +1832,6 @@ MtObject* cPrioThkCmdIsBattle::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsBattleAct::getDTI() const {
     return cPrioThkCmdIsBattleAct::DTI;
-}
-
-inline void* cPrioThkCmdIsBattleAct::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsBattleAct::DTI)->memAlloc(sz, align, cPrioThkCmdIsBattleAct::DTI.getID());
-}
-
-inline void cPrioThkCmdIsBattleAct::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsBattleAct::DTI)->memFree(p_addr);
 }
 
 u32 cPrioThkCmdIsBattleAct::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2131,14 +1860,6 @@ const MtDTI& cPrioThkCmdIsCanErosionRescue::getDTI() const {
     return cPrioThkCmdIsCanErosionRescue::DTI;
 }
 
-inline void* cPrioThkCmdIsCanErosionRescue::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsCanErosionRescue::DTI)->memAlloc(sz, align, cPrioThkCmdIsCanErosionRescue::DTI.getID());
-}
-
-inline void cPrioThkCmdIsCanErosionRescue::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsCanErosionRescue::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsCanErosionRescue::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsCanErosionRescue::check")
     return {};
@@ -2154,14 +1875,6 @@ MtObject* cPrioThkCmdIsCanErosionRescue::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsCanSetEmotion::getDTI() const {
     return cPrioThkCmdIsCanSetEmotion::DTI;
-}
-
-inline void* cPrioThkCmdIsCanSetEmotion::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsCanSetEmotion::DTI)->memAlloc(sz, align, cPrioThkCmdIsCanSetEmotion::DTI.getID());
-}
-
-inline void cPrioThkCmdIsCanSetEmotion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsCanSetEmotion::DTI)->memFree(p_addr);
 }
 
 u32 cPrioThkCmdIsCanSetEmotion::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2184,14 +1897,6 @@ const MtDTI& cPrioThkCmdIsDamage::getDTI() const {
     return cPrioThkCmdIsDamage::DTI;
 }
 
-inline void* cPrioThkCmdIsDamage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsDamage::DTI)->memAlloc(sz, align, cPrioThkCmdIsDamage::DTI.getID());
-}
-
-inline void cPrioThkCmdIsDamage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsDamage::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsDamage::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsDamage::check")
     return {};
@@ -2207,14 +1912,6 @@ MtObject* cPrioThkCmdIsDamage::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsDanger::getDTI() const {
     return cPrioThkCmdIsDanger::DTI;
-}
-
-inline void* cPrioThkCmdIsDanger::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsDanger::DTI)->memAlloc(sz, align, cPrioThkCmdIsDanger::DTI.getID());
-}
-
-inline void cPrioThkCmdIsDanger::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsDanger::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsDanger::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2266,14 +1963,6 @@ const MtDTI& cPrioThkCmdIsEnableArea::getDTI() const {
     return cPrioThkCmdIsEnableArea::DTI;
 }
 
-inline void* cPrioThkCmdIsEnableArea::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsEnableArea::DTI)->memAlloc(sz, align, cPrioThkCmdIsEnableArea::DTI.getID());
-}
-
-inline void cPrioThkCmdIsEnableArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsEnableArea::DTI)->memFree(p_addr);
-}
-
 u32 cPrioThkCmdIsEnableArea::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     bool t0 = io.mResultFollowAreaEnable.isEnableArea(owner, io.mResultFollowOfsPos, io.mResultFollowAngle);
     if (io.mThinkBattleStatus != 1) {
@@ -2294,14 +1983,6 @@ MtObject* cPrioThkCmdIsEnableArea::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsEvaluation::getDTI() const {
     return cPrioThkCmdIsEvaluation::DTI;
-}
-
-inline void* cPrioThkCmdIsEvaluation::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsEvaluation::DTI)->memAlloc(sz, align, cPrioThkCmdIsEvaluation::DTI.getID());
-}
-
-inline void cPrioThkCmdIsEvaluation::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsEvaluation::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsEvaluation::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2348,14 +2029,6 @@ const MtDTI& cPrioThkCmdIsFollowEnable::getDTI() const {
     return cPrioThkCmdIsFollowEnable::DTI;
 }
 
-inline void* cPrioThkCmdIsFollowEnable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsFollowEnable::DTI)->memAlloc(sz, align, cPrioThkCmdIsFollowEnable::DTI.getID());
-}
-
-inline void cPrioThkCmdIsFollowEnable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsFollowEnable::DTI)->memFree(p_addr);
-}
-
 u32 cPrioThkCmdIsFollowEnable::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     return mIs;
 }
@@ -2370,14 +2043,6 @@ MtObject* cPrioThkCmdIsFollowEnable::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsGuardBit::getDTI() const {
     return cPrioThkCmdIsGuardBit::DTI;
-}
-
-inline void* cPrioThkCmdIsGuardBit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsGuardBit::DTI)->memAlloc(sz, align, cPrioThkCmdIsGuardBit::DTI.getID());
-}
-
-inline void cPrioThkCmdIsGuardBit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsGuardBit::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsGuardBit::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2422,14 +2087,6 @@ MtObject* cPrioThkCmdIsGuardBit::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsHp::getDTI() const {
     return cPrioThkCmdIsHp::DTI;
-}
-
-inline void* cPrioThkCmdIsHp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsHp::DTI)->memAlloc(sz, align, cPrioThkCmdIsHp::DTI.getID());
-}
-
-inline void cPrioThkCmdIsHp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsHp::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsHp::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2482,14 +2139,6 @@ const MtDTI& cPrioThkCmdIsImpactForce::getDTI() const {
     return cPrioThkCmdIsImpactForce::DTI;
 }
 
-inline void* cPrioThkCmdIsImpactForce::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsImpactForce::DTI)->memAlloc(sz, align, cPrioThkCmdIsImpactForce::DTI.getID());
-}
-
-inline void cPrioThkCmdIsImpactForce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsImpactForce::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsImpactForce::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsImpactForce::check")
     return {};
@@ -2505,14 +2154,6 @@ MtObject* cPrioThkCmdIsImpactForce::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsLanternOff::getDTI() const {
     return cPrioThkCmdIsLanternOff::DTI;
-}
-
-inline void* cPrioThkCmdIsLanternOff::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsLanternOff::DTI)->memAlloc(sz, align, cPrioThkCmdIsLanternOff::DTI.getID());
-}
-
-inline void cPrioThkCmdIsLanternOff::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsLanternOff::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsLanternOff::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2532,14 +2173,6 @@ const MtDTI& cPrioThkCmdIsLanternOn::getDTI() const {
     return cPrioThkCmdIsLanternOn::DTI;
 }
 
-inline void* cPrioThkCmdIsLanternOn::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsLanternOn::DTI)->memAlloc(sz, align, cPrioThkCmdIsLanternOn::DTI.getID());
-}
-
-inline void cPrioThkCmdIsLanternOn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsLanternOn::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsLanternOn::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsLanternOn::check")
     return {};
@@ -2557,14 +2190,6 @@ const MtDTI& cPrioThkCmdIsMasterDead::getDTI() const {
     return cPrioThkCmdIsMasterDead::DTI;
 }
 
-inline void* cPrioThkCmdIsMasterDead::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsMasterDead::DTI)->memAlloc(sz, align, cPrioThkCmdIsMasterDead::DTI.getID());
-}
-
-inline void cPrioThkCmdIsMasterDead::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsMasterDead::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsMasterDead::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsMasterDead::check")
     return {};
@@ -2580,14 +2205,6 @@ MtObject* cPrioThkCmdIsMasterDead::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsNotice::getDTI() const {
     return cPrioThkCmdIsNotice::DTI;
-}
-
-inline void* cPrioThkCmdIsNotice::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsNotice::DTI)->memAlloc(sz, align, cPrioThkCmdIsNotice::DTI.getID());
-}
-
-inline void cPrioThkCmdIsNotice::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsNotice::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsNotice::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2632,10 +2249,6 @@ MtObject* cPrioThkCmdIsNotice::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsOrder::getDTI() const {
     return cPrioThkCmdIsOrder::DTI;
-}
-
-inline void cPrioThkCmdIsOrder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsOrder::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsOrder::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2688,13 +2301,10 @@ const MtDTI& cPrioThkCmdIsOtherFlag::getDTI() const {
     return cPrioThkCmdIsOtherFlag::DTI;
 }
 
-inline void cPrioThkCmdIsOtherFlag::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsOtherFlag::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsOtherFlag::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
-    DDON_STUB("cPrioThkCmdIsOtherFlag::check")
-    return {};
+    return (static_cast<u32>(*reinterpret_cast<const unsigned char*>(&mIs) != 0) ^
+            static_cast<u32>((reinterpret_cast<const u32*>(&io)[0x144 / sizeof(u32)] &
+                              reinterpret_cast<const u32&>(mCheckPrioThkOtherFlag)) != 0)) ^ 1U;
 }
 
 void cPrioThkCmdIsOtherFlag::load(MtDataReader& r) {
@@ -2735,20 +2345,11 @@ inline cPrioThkCmdIsOtherFlag::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 cPrioThkCmdIsOtherFlag::MyDTI cPrioThkCmdIsOtherFlag::DTI("cPrioThkCmdIsOtherFlag", &::cPrioThkCmdIsBase::DTI, 16ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdIsOtherFlag::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdIsOtherFlag::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdIsOtherFlag;
 }
 
 const MtDTI& cPrioThkCmdIsPartyJob::getDTI() const {
     return cPrioThkCmdIsPartyJob::DTI;
-}
-
-inline void* cPrioThkCmdIsPartyJob::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsPartyJob::DTI)->memAlloc(sz, align, cPrioThkCmdIsPartyJob::DTI.getID());
-}
-
-inline void cPrioThkCmdIsPartyJob::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsPartyJob::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsPartyJob::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2789,14 +2390,6 @@ const MtDTI& cPrioThkCmdIsReleaseAlchemy::getDTI() const {
     return cPrioThkCmdIsReleaseAlchemy::DTI;
 }
 
-inline void* cPrioThkCmdIsReleaseAlchemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsReleaseAlchemy::DTI)->memAlloc(sz, align, cPrioThkCmdIsReleaseAlchemy::DTI.getID());
-}
-
-inline void cPrioThkCmdIsReleaseAlchemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsReleaseAlchemy::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsReleaseAlchemy::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsReleaseAlchemy::check")
     return {};
@@ -2812,14 +2405,6 @@ MtObject* cPrioThkCmdIsReleaseAlchemy::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsReload::getDTI() const {
     return cPrioThkCmdIsReload::DTI;
-}
-
-inline void* cPrioThkCmdIsReload::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsReload::DTI)->memAlloc(sz, align, cPrioThkCmdIsReload::DTI.getID());
-}
-
-inline void cPrioThkCmdIsReload::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsReload::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsReload::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2870,14 +2455,6 @@ MtObject* cPrioThkCmdIsReload::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsShl::getDTI() const {
     return cPrioThkCmdIsShl::DTI;
-}
-
-inline void* cPrioThkCmdIsShl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsShl::DTI)->memAlloc(sz, align, cPrioThkCmdIsShl::DTI.getID());
-}
-
-inline void cPrioThkCmdIsShl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsShl::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsShl::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -2936,14 +2513,6 @@ const MtDTI& cPrioThkCmdIsStageNo::getDTI() const {
     return cPrioThkCmdIsStageNo::DTI;
 }
 
-inline void* cPrioThkCmdIsStageNo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsStageNo::DTI)->memAlloc(sz, align, cPrioThkCmdIsStageNo::DTI.getID());
-}
-
-inline void cPrioThkCmdIsStageNo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsStageNo::DTI)->memFree(p_addr);
-}
-
 u32 cPrioThkCmdIsStageNo::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     aStage* p_stage = static_cast<sAreaExt*>(sArea::getInstance())->getCurrentStage();
     if (p_stage != nullptr) {
@@ -2990,14 +2559,6 @@ MtObject* cPrioThkCmdIsStageNo::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsStageType::getDTI() const {
     return cPrioThkCmdIsStageType::DTI;
-}
-
-inline void* cPrioThkCmdIsStageType::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsStageType::DTI)->memAlloc(sz, align, cPrioThkCmdIsStageType::DTI.getID());
-}
-
-inline void cPrioThkCmdIsStageType::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsStageType::DTI)->memFree(p_addr);
 }
 
 u32 cPrioThkCmdIsStageType::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3069,14 +2630,6 @@ const MtDTI& cPrioThkCmdIsStamina::getDTI() const {
     return cPrioThkCmdIsStamina::DTI;
 }
 
-inline void* cPrioThkCmdIsStamina::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsStamina::DTI)->memAlloc(sz, align, cPrioThkCmdIsStamina::DTI.getID());
-}
-
-inline void cPrioThkCmdIsStamina::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsStamina::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsStamina::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsStamina::check")
     return {};
@@ -3127,14 +2680,6 @@ const MtDTI& cPrioThkCmdIsStandOffTime::getDTI() const {
     return cPrioThkCmdIsStandOffTime::DTI;
 }
 
-inline void* cPrioThkCmdIsStandOffTime::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsStandOffTime::DTI)->memAlloc(sz, align, cPrioThkCmdIsStandOffTime::DTI.getID());
-}
-
-inline void cPrioThkCmdIsStandOffTime::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsStandOffTime::DTI)->memFree(p_addr);
-}
-
 u32 cPrioThkCmdIsStandOffTime::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     return static_cast<u32>(static_cast<unsigned long>(mIs) ^ static_cast<unsigned long>(0.0f >= io.mStandOffTime));
 }
@@ -3151,18 +2696,15 @@ const MtDTI& cPrioThkCmdIsStatus::getDTI() const {
     return cPrioThkCmdIsStatus::DTI;
 }
 
-inline void cPrioThkCmdIsStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsStatus::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsStatus::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsStatus::check")
     return {};
 }
 
 __attribute__((weak)) void cPrioThkCmdIsStatus::load(MtDataReader& r) {
-    DDON_STUB("cPrioThkCmdIsStatus::load")
-    /* stub */
+    nDDOIO::readData(r, mIs);
+    nDDOIO::readData(r, mPrioThkStatusFlag);
+    nDDOIO::readData(r, mCheckTargetMaster);
 }
 
 inline cPrioThkCmdIsStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -3170,20 +2712,11 @@ inline cPrioThkCmdIsStatus::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t 
 cPrioThkCmdIsStatus::MyDTI cPrioThkCmdIsStatus::DTI("cPrioThkCmdIsStatus", &::cPrioThkCmdIsBase::DTI, 24ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdIsStatus::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdIsStatus::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdIsStatus;
 }
 
 const MtDTI& cPrioThkCmdIsStatusCounter::getDTI() const {
     return cPrioThkCmdIsStatusCounter::DTI;
-}
-
-inline void* cPrioThkCmdIsStatusCounter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsStatusCounter::DTI)->memAlloc(sz, align, cPrioThkCmdIsStatusCounter::DTI.getID());
-}
-
-inline void cPrioThkCmdIsStatusCounter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsStatusCounter::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdIsStatusCounter::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3236,14 +2769,6 @@ const MtDTI& cPrioThkCmdIsStatusEx::getDTI() const {
     return cPrioThkCmdIsStatusEx::DTI;
 }
 
-inline void* cPrioThkCmdIsStatusEx::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsStatusEx::DTI)->memAlloc(sz, align, cPrioThkCmdIsStatusEx::DTI.getID());
-}
-
-inline void cPrioThkCmdIsStatusEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsStatusEx::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsStatusEx::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsStatusEx::check")
     return {};
@@ -3288,14 +2813,6 @@ const MtDTI& cPrioThkCmdIsTalkWithPl::getDTI() const {
     return cPrioThkCmdIsTalkWithPl::DTI;
 }
 
-inline void* cPrioThkCmdIsTalkWithPl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsTalkWithPl::DTI)->memAlloc(sz, align, cPrioThkCmdIsTalkWithPl::DTI.getID());
-}
-
-inline void cPrioThkCmdIsTalkWithPl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsTalkWithPl::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdIsTalkWithPl::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdIsTalkWithPl::check")
     return {};
@@ -3311,14 +2828,6 @@ MtObject* cPrioThkCmdIsTalkWithPl::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdIsTarget::getDTI() const {
     return cPrioThkCmdIsTarget::DTI;
-}
-
-inline void* cPrioThkCmdIsTarget::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdIsTarget::DTI)->memAlloc(sz, align, cPrioThkCmdIsTarget::DTI.getID());
-}
-
-inline void cPrioThkCmdIsTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdIsTarget::DTI)->memFree(p_addr);
 }
 
 u32 cPrioThkCmdIsTarget::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3337,10 +2846,6 @@ const MtDTI& cPrioThkCmdRetActGoldBurst::getDTI() const {
     return cPrioThkCmdRetActGoldBurst::DTI;
 }
 
-inline void cPrioThkCmdRetActGoldBurst::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetActGoldBurst::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdRetActGoldBurst::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdRetActGoldBurst::check")
     return {};
@@ -3356,16 +2861,11 @@ inline cPrioThkCmdRetActGoldBurst::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 cPrioThkCmdRetActGoldBurst::MyDTI cPrioThkCmdRetActGoldBurst::DTI("cPrioThkCmdRetActGoldBurst", &::cPrioThkCmd::DTI, 16ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdRetActGoldBurst::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdRetActGoldBurst::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdRetActGoldBurst;
 }
 
 const MtDTI& cPrioThkCmdRetActGroup::getDTI() const {
     return cPrioThkCmdRetActGroup::DTI;
-}
-
-inline void cPrioThkCmdRetActGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetActGroup::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetActGroup::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3389,16 +2889,11 @@ inline cPrioThkCmdRetActGroup::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 cPrioThkCmdRetActGroup::MyDTI cPrioThkCmdRetActGroup::DTI("cPrioThkCmdRetActGroup", &::cPrioThkCmd::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdRetActGroup::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdRetActGroup::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdRetActGroup;
 }
 
 const MtDTI& cPrioThkCmdRetActInter::getDTI() const {
     return cPrioThkCmdRetActInter::DTI;
-}
-
-inline void cPrioThkCmdRetActInter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetActInter::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetActInter::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3428,10 +2923,6 @@ const MtDTI& cPrioThkCmdRetActInterTarget::getDTI() const {
     return cPrioThkCmdRetActInterTarget::DTI;
 }
 
-inline void cPrioThkCmdRetActInterTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetActInterTarget::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdRetActInterTarget::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdRetActInterTarget::check")
     return {};
@@ -3448,20 +2939,11 @@ inline cPrioThkCmdRetActInterTarget::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps
 cPrioThkCmdRetActInterTarget::MyDTI cPrioThkCmdRetActInterTarget::DTI("cPrioThkCmdRetActInterTarget", &::cPrioThkCmd::DTI, 16ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdRetActInterTarget::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdRetActInterTarget::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdRetActInterTarget;
 }
 
 const MtDTI& cPrioThkCmdRetCureAct::getDTI() const {
     return cPrioThkCmdRetCureAct::DTI;
-}
-
-inline void* cPrioThkCmdRetCureAct::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetCureAct::DTI)->memAlloc(sz, align, cPrioThkCmdRetCureAct::DTI.getID());
-}
-
-inline void cPrioThkCmdRetCureAct::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetCureAct::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetCureAct::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3496,14 +2978,6 @@ const MtDTI& cPrioThkCmdRetDispersion::getDTI() const {
     return cPrioThkCmdRetDispersion::DTI;
 }
 
-inline void* cPrioThkCmdRetDispersion::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetDispersion::DTI)->memAlloc(sz, align, cPrioThkCmdRetDispersion::DTI.getID());
-}
-
-inline void cPrioThkCmdRetDispersion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetDispersion::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdRetDispersion::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdRetDispersion::check")
     return {};
@@ -3519,14 +2993,6 @@ MtObject* cPrioThkCmdRetDispersion::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdRetEnemyTable::getDTI() const {
     return cPrioThkCmdRetEnemyTable::DTI;
-}
-
-inline void* cPrioThkCmdRetEnemyTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetEnemyTable::DTI)->memAlloc(sz, align, cPrioThkCmdRetEnemyTable::DTI.getID());
-}
-
-inline void cPrioThkCmdRetEnemyTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetEnemyTable::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetEnemyTable::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3550,14 +3016,6 @@ const MtDTI& cPrioThkCmdRetFollow::getDTI() const {
     return cPrioThkCmdRetFollow::DTI;
 }
 
-inline void* cPrioThkCmdRetFollow::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetFollow::DTI)->memAlloc(sz, align, cPrioThkCmdRetFollow::DTI.getID());
-}
-
-inline void cPrioThkCmdRetFollow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetFollow::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdRetFollow::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdRetFollow::check")
     return {};
@@ -3577,14 +3035,6 @@ MtObject* cPrioThkCmdRetFollow::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdRetFreeParam::getDTI() const {
     return cPrioThkCmdRetFreeParam::DTI;
-}
-
-inline void* cPrioThkCmdRetFreeParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetFreeParam::DTI)->memAlloc(sz, align, cPrioThkCmdRetFreeParam::DTI.getID());
-}
-
-inline void cPrioThkCmdRetFreeParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetFreeParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetFreeParam::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3611,24 +3061,6 @@ const MtDTI& cPrioThkCmdRetGoto::getDTI() const {
     return cPrioThkCmdRetGoto::DTI;
 }
 
-inline void* cPrioThkCmdRetGoto::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetGoto::DTI)->memAlloc(sz, align, cPrioThkCmdRetGoto::DTI.getID());
-}
-
-inline void cPrioThkCmdRetGoto::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetGoto::DTI)->memFree(p_addr);
-}
-
-inline cPrioThkCmdRetGoto::cPrioThkCmdRetGoto() {
-    mReqTargetType = 2;
-    mReqTargetRealPos.x = MtVector3::Zero.x;
-    mReqTargetRealPos.y = MtVector3::Zero.y;
-    mReqTargetRealPos.z = MtVector3::Zero.z;
-    mReqTargetRealPos.pad_ = 0.0f;
-    mReqTargetRange = 100.0f;
-    mReqMoveType = 0;
-}
-
 __attribute__((weak)) u32 cPrioThkCmdRetGoto::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdRetGoto::check")
     return {};
@@ -3651,10 +3083,6 @@ MtObject* cPrioThkCmdRetGoto::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdRetHealAct::getDTI() const {
     return cPrioThkCmdRetHealAct::DTI;
-}
-
-inline void cPrioThkCmdRetHealAct::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetHealAct::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetHealAct::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3707,20 +3135,11 @@ inline cPrioThkCmdRetHealAct::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_
 cPrioThkCmdRetHealAct::MyDTI cPrioThkCmdRetHealAct::DTI("cPrioThkCmdRetHealAct", &::cPrioThkCmd::DTI, 16ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cPrioThkCmdRetHealAct::MyDTI::newInstance() const {
-    DDON_STUB("cPrioThkCmdRetHealAct::MyDTI::newInstance")
-    return nullptr;
+        return new (16u) cPrioThkCmdRetHealAct;
 }
 
 const MtDTI& cPrioThkCmdRetNoMoveJump::getDTI() const {
     return cPrioThkCmdRetNoMoveJump::DTI;
-}
-
-inline void* cPrioThkCmdRetNoMoveJump::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetNoMoveJump::DTI)->memAlloc(sz, align, cPrioThkCmdRetNoMoveJump::DTI.getID());
-}
-
-inline void cPrioThkCmdRetNoMoveJump::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetNoMoveJump::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetNoMoveJump::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3738,14 +3157,6 @@ MtObject* cPrioThkCmdRetNoMoveJump::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdRetOrder::getDTI() const {
     return cPrioThkCmdRetOrder::DTI;
-}
-
-inline void* cPrioThkCmdRetOrder::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetOrder::DTI)->memAlloc(sz, align, cPrioThkCmdRetOrder::DTI.getID());
-}
-
-inline void cPrioThkCmdRetOrder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetOrder::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetOrder::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3774,14 +3185,6 @@ const MtDTI& cPrioThkCmdRetRouteInfo::getDTI() const {
     return cPrioThkCmdRetRouteInfo::DTI;
 }
 
-inline void* cPrioThkCmdRetRouteInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetRouteInfo::DTI)->memAlloc(sz, align, cPrioThkCmdRetRouteInfo::DTI.getID());
-}
-
-inline void cPrioThkCmdRetRouteInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetRouteInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdRetRouteInfo::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdRetRouteInfo::check")
     return {};
@@ -3797,14 +3200,6 @@ MtObject* cPrioThkCmdRetRouteInfo::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCmdRetStaminaHealAct::getDTI() const {
     return cPrioThkCmdRetStaminaHealAct::DTI;
-}
-
-inline void* cPrioThkCmdRetStaminaHealAct::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetStaminaHealAct::DTI)->memAlloc(sz, align, cPrioThkCmdRetStaminaHealAct::DTI.getID());
-}
-
-inline void cPrioThkCmdRetStaminaHealAct::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetStaminaHealAct::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) u32 cPrioThkCmdRetStaminaHealAct::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
@@ -3834,14 +3229,6 @@ const MtDTI& cPrioThkCmdRetSupport::getDTI() const {
     return cPrioThkCmdRetSupport::DTI;
 }
 
-inline void* cPrioThkCmdRetSupport::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPrioThkCmdRetSupport::DTI)->memAlloc(sz, align, cPrioThkCmdRetSupport::DTI.getID());
-}
-
-inline void cPrioThkCmdRetSupport::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCmdRetSupport::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) u32 cPrioThkCmdRetSupport::check(cPrioThkIO& io, uDDOModel& owner, cPrioThkCode& code) {
     DDON_STUB("cPrioThkCmdRetSupport::check")
     return {};
@@ -3857,10 +3244,6 @@ MtObject* cPrioThkCmdRetSupport::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkCode::getDTI() const {
     return cPrioThkCode::DTI;
-}
-
-inline void cPrioThkCode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPrioThkCode::DTI)->memFree(p_addr);
 }
 
 cPrioThkCode::~cPrioThkCode() {
@@ -3885,10 +3268,6 @@ __attribute__((weak)) MtObject* cPrioThkCode::MyDTI::newInstance() const {
 
 const MtDTI& cPrioThkIO::getDTI() const {
     return cPrioThkIO::DTI;
-}
-
-inline MtAllocator* cPrioThkIO::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cPrioThkIO::DTI);
 }
 
 __attribute__((weak)) void cPrioThkIO::operator delete(void* p_addr) {
@@ -3982,14 +3361,6 @@ __attribute__((weak)) MtObject* cPrioThkIO::MyDTI::newInstance() const {
 
 const MtDTI& rPriorityThink::getDTI() const {
     return rPriorityThink::DTI;
-}
-
-inline void* rPriorityThink::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPriorityThink::DTI)->memAlloc(sz, align, rPriorityThink::DTI.getID());
-}
-
-inline void rPriorityThink::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPriorityThink::DTI)->memFree(p_addr);
 }
 
 rPriorityThink::~rPriorityThink() {

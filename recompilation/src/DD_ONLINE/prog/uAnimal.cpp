@@ -2,10 +2,8 @@
 #include <new>
 #include "uAnimal.h"
 #include "Protocol/PacketData/Enemy.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtRandom.h"
@@ -45,25 +43,6 @@
 
 const MtDTI& uAnimal::getDTI() const {
     return uAnimal::DTI;
-}
-
-inline void* uAnimal::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::DTI)->memAlloc(sz, align, uAnimal::DTI.getID());
-}
-
-inline void uAnimal::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::DTI)->memFree(p_addr);
-}
-
-inline uAnimal::uAnimal() {
-    mModelType = 0;
-    mIsGround = true;
-    mSafePos.x = MtVector3::Zero.x;
-    mSafePos.y = MtVector3::Zero.y;
-    mSafePos.z = MtVector3::Zero.z;
-    mSafePos.pad_ = 0.0f;
-    mInitFrame = 0.0f;
-    mArcTicket = sArchiveManager::INVALID_TICKET;
 }
 
 uAnimal::~uAnimal() {
@@ -145,14 +124,6 @@ const MtDTI& uAnimal::ActBase::getDTI() const {
     return uAnimal::ActBase::DTI;
 }
 
-inline void* uAnimal::ActBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActBase::DTI)->memAlloc(sz, align, uAnimal::ActBase::DTI.getID());
-}
-
-inline void uAnimal::ActBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActBase::DTI)->memFree(p_addr);
-}
-
 void uAnimal::ActBase::init() {
     this->cAction::init();
     mpAnimal = static_cast<uAnimal*>(mpModel);
@@ -176,14 +147,6 @@ const MtDTI& uAnimal::ActFootwork::getDTI() const {
     return uAnimal::ActFootwork::DTI;
 }
 
-inline void* uAnimal::ActFootwork::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActFootwork::DTI)->memAlloc(sz, align, uAnimal::ActFootwork::DTI.getID());
-}
-
-inline void uAnimal::ActFootwork::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActFootwork::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uAnimal::ActFootwork::init() {
     DDON_STUB("uAnimal::ActFootwork::init")
     /* stub */
@@ -200,22 +163,6 @@ MtObject* uAnimal::ActFootwork::MyDTI::newInstance() const {
 
 const MtDTI& uAnimal::ActWalk::getDTI() const {
     return uAnimal::ActWalk::DTI;
-}
-
-inline void* uAnimal::ActWalk::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActWalk::DTI)->memAlloc(sz, align, uAnimal::ActWalk::DTI.getID());
-}
-
-inline void uAnimal::ActWalk::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActWalk::DTI)->memFree(p_addr);
-}
-
-inline uAnimal::ActWalk::ActWalk() {
-    mTimer = 0.0f;
-    mOldPos.x = MtVector3::Zero.x;
-    mOldPos.y = MtVector3::Zero.y;
-    mOldPos.z = MtVector3::Zero.z;
-    mOldPos.pad_ = 0.0f;
 }
 
 __attribute__((weak)) void uAnimal::ActWalk::init() {
@@ -236,23 +183,6 @@ const MtDTI& uAnimal::ActRun::getDTI() const {
     return uAnimal::ActRun::DTI;
 }
 
-inline void* uAnimal::ActRun::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActRun::DTI)->memAlloc(sz, align, uAnimal::ActRun::DTI.getID());
-}
-
-inline void uAnimal::ActRun::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActRun::DTI)->memFree(p_addr);
-}
-
-inline uAnimal::ActRun::ActRun() {
-    mMotionStart = 0;
-    mTimer = 0.0f;
-    mOldPos.x = MtVector3::Zero.x;
-    mOldPos.y = MtVector3::Zero.y;
-    mOldPos.z = MtVector3::Zero.z;
-    mOldPos.pad_ = 0.0f;
-}
-
 __attribute__((weak)) void uAnimal::ActRun::init() {
     DDON_STUB("uAnimal::ActRun::init")
     /* stub */
@@ -269,14 +199,6 @@ MtObject* uAnimal::ActRun::MyDTI::newInstance() const {
 
 const MtDTI& uAnimal::ActTurn::getDTI() const {
     return uAnimal::ActTurn::DTI;
-}
-
-inline void* uAnimal::ActTurn::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActTurn::DTI)->memAlloc(sz, align, uAnimal::ActTurn::DTI.getID());
-}
-
-inline void uAnimal::ActTurn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActTurn::DTI)->memFree(p_addr);
 }
 
 void uAnimal::ActTurn::init() {
@@ -355,14 +277,6 @@ const MtDTI& uAnimal::ActCollapse::getDTI() const {
     return uAnimal::ActCollapse::DTI;
 }
 
-inline void* uAnimal::ActCollapse::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActCollapse::DTI)->memAlloc(sz, align, uAnimal::ActCollapse::DTI.getID());
-}
-
-inline void uAnimal::ActCollapse::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActCollapse::DTI)->memFree(p_addr);
-}
-
 void uAnimal::ActCollapse::init() {
     this->cAction::init();
     mpAnimal = static_cast<uAnimal*>(mpModel);
@@ -389,23 +303,6 @@ const MtDTI& uAnimal::ActEscape::getDTI() const {
     return uAnimal::ActEscape::DTI;
 }
 
-inline void* uAnimal::ActEscape::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActEscape::DTI)->memAlloc(sz, align, uAnimal::ActEscape::DTI.getID());
-}
-
-inline void uAnimal::ActEscape::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActEscape::DTI)->memFree(p_addr);
-}
-
-inline uAnimal::ActEscape::ActEscape() {
-    mRotSpeed = 0.0f;
-    mTimer = 0.0f;
-    mOldPos.x = MtVector3::Zero.x;
-    mOldPos.y = MtVector3::Zero.y;
-    mOldPos.z = MtVector3::Zero.z;
-    mOldPos.pad_ = 0.0f;
-}
-
 __attribute__((weak)) void uAnimal::ActEscape::init() {
     DDON_STUB("uAnimal::ActEscape::init")
     /* stub */
@@ -424,14 +321,6 @@ const MtDTI& uAnimal::ActApproach::getDTI() const {
     return uAnimal::ActApproach::DTI;
 }
 
-inline void* uAnimal::ActApproach::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActApproach::DTI)->memAlloc(sz, align, uAnimal::ActApproach::DTI.getID());
-}
-
-inline void uAnimal::ActApproach::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActApproach::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uAnimal::ActApproach::init() {
     DDON_STUB("uAnimal::ActApproach::init")
     /* stub */
@@ -448,14 +337,6 @@ MtObject* uAnimal::ActApproach::MyDTI::newInstance() const {
 
 const MtDTI& uAnimal::ActFlap::getDTI() const {
     return uAnimal::ActFlap::DTI;
-}
-
-inline void* uAnimal::ActFlap::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActFlap::DTI)->memAlloc(sz, align, uAnimal::ActFlap::DTI.getID());
-}
-
-inline void uAnimal::ActFlap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActFlap::DTI)->memFree(p_addr);
 }
 
 void uAnimal::ActFlap::init() {
@@ -482,14 +363,6 @@ MtObject* uAnimal::ActFlap::MyDTI::newInstance() const {
 
 const MtDTI& uAnimal::ActSleep::getDTI() const {
     return uAnimal::ActSleep::DTI;
-}
-
-inline void* uAnimal::ActSleep::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uAnimal::ActSleep::DTI)->memAlloc(sz, align, uAnimal::ActSleep::DTI.getID());
-}
-
-inline void uAnimal::ActSleep::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uAnimal::ActSleep::DTI)->memFree(p_addr);
 }
 
 uAnimal::ActSleep::~ActSleep() {

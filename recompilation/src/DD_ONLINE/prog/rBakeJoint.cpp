@@ -20,14 +20,6 @@ const MtDTI& cBakeJoint::getDTI() const {
     return cBakeJoint::DTI;
 }
 
-inline void* cBakeJoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cBakeJoint::DTI)->memAlloc(sz, align, cBakeJoint::DTI.getID());
-}
-
-inline void cBakeJoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBakeJoint::DTI)->memFree(p_addr);
-}
-
 inline cBakeJoint::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cBakeJoint::MyDTI cBakeJoint::DTI("cBakeJoint", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -38,14 +30,6 @@ MtObject* cBakeJoint::MyDTI::newInstance() const {
 
 const MtDTI& rBakeJoint::getDTI() const {
     return rBakeJoint::DTI;
-}
-
-inline void* rBakeJoint::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rBakeJoint::DTI)->memAlloc(sz, align, rBakeJoint::DTI.getID());
-}
-
-inline void rBakeJoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rBakeJoint::DTI)->memFree(p_addr);
 }
 
 rBakeJoint::~rBakeJoint() {

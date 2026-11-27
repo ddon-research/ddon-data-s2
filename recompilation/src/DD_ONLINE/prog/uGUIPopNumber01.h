@@ -180,3 +180,15 @@ inline s32 uGUIPopNumber01::getNum() {
 inline void uGUIPopNumber01::setUnit(uGUIBase* pUnit) {
     this->mpDialog = pUnit;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPopNumber01::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPopNumber01::DTI);
+}
+
+inline void uGUIPopNumber01::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPopNumber01::DTI)->memFree(p_addr);
+}

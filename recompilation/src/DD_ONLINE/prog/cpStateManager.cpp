@@ -19,16 +19,8 @@ const MtDTI& cpStateManager::getDTI() const {
     return cpStateManager::DTI;
 }
 
-inline MtAllocator* cpStateManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpStateManager::DTI);
-}
-
 void* cpStateManager::operator new(size_t sz, u32 align) {
     return cpStateManager::getAllocator()->memAlloc(sz, align, cpStateManager::DTI.getID());
-}
-
-inline void cpStateManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpStateManager::DTI)->memFree(p_addr);
 }
 
 cpStateManager::cpStateManager() {

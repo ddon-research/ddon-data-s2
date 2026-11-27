@@ -421,3 +421,35 @@ inline void* uGUIPSStore::cStationListInfo::operator new(size_t sz, void* p_addr
 inline void* uGUIPSStore::cHistoryListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPSStore::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPSStore::DTI);
+}
+
+inline void uGUIPSStore::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPSStore::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIPSStore::cStationListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPSStore::cStationListItem::DTI)->memAlloc(sz, align, ::uGUIPSStore::cStationListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIPSStore::cStationListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPSStore::cStationListItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIPSStore::cHistoryListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPSStore::cHistoryListItem::DTI)->memAlloc(sz, align, ::uGUIPSStore::cHistoryListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIPSStore::cHistoryListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPSStore::cHistoryListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPSStore::cStationListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPSStore::cStationListInfo::DTI)->memFree(p_addr);
+}

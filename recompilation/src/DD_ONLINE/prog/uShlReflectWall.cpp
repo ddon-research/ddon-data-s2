@@ -64,18 +64,6 @@ const MtDTI& uShlReflectWall::getDTI() const {
     return uShlReflectWall::DTI;
 }
 
-inline void* uShlReflectWall::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlReflectWall::DTI)->memAlloc(sz, align, uShlReflectWall::DTI.getID());
-}
-
-inline void uShlReflectWall::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlReflectWall::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamReflectWall* uShlReflectWall::getShlParam() const {
-    return static_cast<const cShlParamReflectWall*>(mpShlParam2);
-}
-
 uShlReflectWall::~uShlReflectWall() {
 }
 

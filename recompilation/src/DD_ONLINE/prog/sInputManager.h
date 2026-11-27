@@ -23,11 +23,15 @@ class MtPropertyList;
 class MtString;
 class MtVector2;
 class MtVector3;
+class aLobby;
+class aStage;
 class cArcLoaderBase;
 class cKeyCustomManager;
+namespace nMenuKeyConfig { class CategoryListItems; }
 class rKeyCustomParam;
 class sGUIExt;
 class uGUIBase;
+class uGUICredit;
 class uGUIMap;
 
 // Declarations
@@ -47,8 +51,12 @@ using u8 = unsigned char;
 
 class sInputManager : public cSystem
 {
+    friend class aLobby;
+    friend class aStage;
+    friend class nMenuKeyConfig::CategoryListItems;
     friend class sGUIExt;
     friend class uGUIBase;
+    friend class uGUICredit;
     friend class uGUIMap;
 public:
     class MyDTI;
@@ -291,4 +299,16 @@ inline sInputManager* sInputManager::getInstance() {
 
 inline void sInputManager::setChangeHoldBowKey(u32 key) {
     this->mChangeHoldBowKey = 4096;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sInputManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sInputManager::DTI);
+}
+
+inline void sInputManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sInputManager::DTI)->memFree(p_addr);
 }

@@ -153,3 +153,15 @@ public:
 inline void* cAIGrid::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cAIGrid::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cAIGrid::DTI);
+}
+
+inline void cAIGrid::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAIGrid::DTI)->memFree(p_addr);
+}

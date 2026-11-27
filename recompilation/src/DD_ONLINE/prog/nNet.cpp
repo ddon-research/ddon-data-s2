@@ -32,14 +32,6 @@ const MtDTI& CDataClientPartyListInfo::getDTI() const {
     return CDataClientPartyListInfo::DTI;
 }
 
-void* CDataClientPartyListInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataClientPartyListInfo::DTI)->memAlloc(sz, align, CDataClientPartyListInfo::DTI.getID());
-}
-
-inline void CDataClientPartyListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(CDataClientPartyListInfo::DTI)->memFree(p_addr);
-}
-
 inline CDataClientPartyListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 CDataClientPartyListInfo::MyDTI CDataClientPartyListInfo::DTI("CDataClientPartyListInfo", &::CDataPartyListInfo::DTI, 112ul, 0u, 0u);

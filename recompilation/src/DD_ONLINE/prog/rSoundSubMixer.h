@@ -19,6 +19,7 @@ class MtStream;
 class MtString;
 class MtUI;
 class rSoundSimpleCurve;
+class uSoundSubMixer;
 
 // Declarations
 class rSoundSubMixer;
@@ -38,6 +39,7 @@ using u8 = unsigned char;
 
 class rSoundSubMixer : public cResource
 {
+    friend class uSoundSubMixer;
 public:
     class MyDTI;
     class Fader;
@@ -405,4 +407,24 @@ inline void rSoundSubMixer::Fader::setReleaseTime(u16 releaseTime) {
 
 inline void rSoundSubMixer::Fader::setSetFlag(bool setFlag) {
     this->mSetFlag = setFlag;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* rSoundSubMixer::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rSoundSubMixer::DTI);
+}
+
+inline void rSoundSubMixer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSubMixer::DTI)->memFree(p_addr);
+}
+
+inline void* rSoundSubMixer::Fader::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundSubMixer::Fader::DTI)->memAlloc(sz, align, ::rSoundSubMixer::Fader::DTI.::MtDTI::getID());
+}
+
+inline void rSoundSubMixer::Fader::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSubMixer::Fader::DTI)->memFree(p_addr);
 }

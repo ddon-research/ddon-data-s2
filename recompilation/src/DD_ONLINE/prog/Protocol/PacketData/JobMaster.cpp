@@ -16,10 +16,6 @@ const MtDTI& CDataJobChangeInfo::getDTI() const {
     return CDataJobChangeInfo::DTI;
 }
 
-inline MtAllocator* CDataJobChangeInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataJobChangeInfo::DTI);
-}
-
 void* CDataJobChangeInfo::operator new(size_t sz, u32 align) {
     return CDataJobChangeInfo::getAllocator()->memAlloc(sz, align, CDataJobChangeInfo::DTI.getID());
 }
@@ -38,10 +34,6 @@ MtObject* CDataJobChangeInfo::MyDTI::newInstance() const {
 
 const MtDTI& CDataPawnJobChangeInfo::getDTI() const {
     return CDataPawnJobChangeInfo::DTI;
-}
-
-inline MtAllocator* CDataPawnJobChangeInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnJobChangeInfo::DTI);
 }
 
 void* CDataPawnJobChangeInfo::operator new(size_t sz, u32 align) {
@@ -63,10 +55,6 @@ __attribute__((weak)) MtObject* CDataPawnJobChangeInfo::MyDTI::newInstance() con
 
 const MtDTI& CDataReleaseElement::getDTI() const {
     return CDataReleaseElement::DTI;
-}
-
-inline MtAllocator* CDataReleaseElement::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataReleaseElement::DTI);
 }
 
 void* CDataReleaseElement::operator new(size_t sz, u32 align) {

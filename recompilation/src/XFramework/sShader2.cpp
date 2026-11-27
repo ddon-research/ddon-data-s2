@@ -17,12 +17,15 @@
 #include "cResource.h"
 #include "cSystem.h"
 #include "nDraw.h"
+#include "nDrawBlendState.h"
 #include "nDrawInputLayout.h"
 #include "nDrawMaterialNull.h"
 #include "nDrawRasterizerState.h"
 #include "nDrawSamplerState.h"
 #include "nDrawShader.h"
 #include "rArchive.h"
+#include "rShader2.h"
+#include "rShaderCache.h"
 #include "rShaderPackage.h"
 #include "sArea.h"
 #include "sRender.h"
@@ -38,10 +41,6 @@ const MtDTI& sShader2::getDTI() const {
 
 void* sShader2::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sShader2::DTI)->memAlloc(sz, align, sShader2::DTI.mID);
-}
-
-inline void sShader2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShader2::DTI)->memFree(p_addr);
 }
 
 sShader2::sShader2(MT_CTSTR shader_path, bool isLoadRootShader, MT_CTSTR RootShaderName, MtStream* pMFXStream, MtStream* pRootStream) {

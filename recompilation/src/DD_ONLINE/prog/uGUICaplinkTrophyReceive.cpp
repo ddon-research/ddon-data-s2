@@ -40,16 +40,8 @@ const MtDTI& uGUICaplinkTrophyReceive::getDTI() const {
     return uGUICaplinkTrophyReceive::DTI;
 }
 
-inline MtAllocator* uGUICaplinkTrophyReceive::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkTrophyReceive::DTI);
-}
-
 void* uGUICaplinkTrophyReceive::operator new(size_t sz, u32 align) {
     return uGUICaplinkTrophyReceive::getAllocator()->memAlloc(sz, align, uGUICaplinkTrophyReceive::DTI.getID());
-}
-
-inline void uGUICaplinkTrophyReceive::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyReceive::DTI)->memFree(p_addr);
 }
 
 uGUICaplinkTrophyReceive::~uGUICaplinkTrophyReceive() {
@@ -218,7 +210,7 @@ u32 uGUICaplinkTrophyReceive::evCtrlDecide(cControl::Message* msg) {
     if (mpOwner != nullptr) {
         if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
             if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
-                const cCaptrophyRelationData* pData = mpOwner->getCaptrophyRelationData(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 2272))), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
+                const cCaptrophyRelationData* pData = mpOwner->getCaptrophyRelationData(&mContentId.mStr[0], static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
                 if (pData != nullptr) {
                     if (mFlowId == 3) {
                         if (pData->mTrophy.mComplete == 1) {
@@ -262,7 +254,7 @@ u32 uGUICaplinkTrophyReceive::evCtrlButton(cControl::Message* msg) {
             if (mpOwner != nullptr) {
                 if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
                     if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
-                        cCaptrophyRelationData* t0 = mpOwner->getCaptrophyRelationData(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 2272))), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
+                        cCaptrophyRelationData* t0 = mpOwner->getCaptrophyRelationData(&mContentId.mStr[0], static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
                         if (t0 != nullptr) {
                             if (mFlowId == 3) {
                                 if (t0->mTrophy.mComplete == 1) {
@@ -287,7 +279,7 @@ u32 uGUICaplinkTrophyReceive::evCtrlButton(cControl::Message* msg) {
         if (mpOwner != nullptr) {
             if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
                 if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
-                    cCaptrophyRelationData* t0 = mpOwner->getCaptrophyRelationData(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 2272))), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
+                    cCaptrophyRelationData* t0 = mpOwner->getCaptrophyRelationData(&mContentId.mStr[0], static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
                     if (t0 != nullptr) {
                         if (mFlowId == 3) {
                             if (t0->mTrophy.mComplete == 1) {
@@ -329,7 +321,7 @@ bool uGUICaplinkTrophyReceive::evCtrlScrl(cControl::Message* msg) {
                     if (mpOwner != nullptr) {
                         if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
                             if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
-                                cCaptrophyRelationData* t0 = mpOwner->getCaptrophyRelationData(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 2272))), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
+                                cCaptrophyRelationData* t0 = mpOwner->getCaptrophyRelationData(&mContentId.mStr[0], static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
                                 if (t0 != nullptr) {
                                     if (mFlowId == 3) {
                                         if (t0->mTrophy.mComplete == 1) {
@@ -357,7 +349,7 @@ bool uGUICaplinkTrophyReceive::evCtrlScrl(cControl::Message* msg) {
                         if (mpOwner != nullptr) {
                             if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
                                 if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
-                                    cCaptrophyRelationData* t1 = mpOwner->getCaptrophyRelationData(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 2272))), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
+                                    cCaptrophyRelationData* t1 = mpOwner->getCaptrophyRelationData(&mContentId.mStr[0], static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
                                     if (t1 != nullptr) {
                                         if (mFlowId == 3) {
                                             if (t1->mTrophy.mComplete == 1) {
@@ -398,7 +390,7 @@ void uGUICaplinkTrophyReceive::callbackReceiveReward() {
     if (mpOwner != nullptr) {
         if (mList.mListCtrl.mListPos < mList.mListCtrl.mInfoArray.mLength) {
             if (mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)] != nullptr) {
-                cCaptrophyRelationData* pData = mpOwner->getCaptrophyRelationData(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 2272))), static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
+                cCaptrophyRelationData* pData = mpOwner->getCaptrophyRelationData(&mContentId.mStr[0], static_cast<s32>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mList.mListCtrl.mInfoArray.mpArray[static_cast<int>(mList.mListCtrl.mListPos)]) + 40)));
                 if (pData != nullptr) {
                     pData->mTrophy.mReceive = 1;
                 }
@@ -431,10 +423,6 @@ const MtDTI& uGUICaplinkTrophyReceive::cListItem::getDTI() const {
     return uGUICaplinkTrophyReceive::cListItem::DTI;
 }
 
-inline void uGUICaplinkTrophyReceive::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyReceive::cListItem::DTI)->memFree(p_addr);
-}
-
 uGUICaplinkTrophyReceive::cListItem::~cListItem() {
 }
 
@@ -442,17 +430,12 @@ inline uGUICaplinkTrophyReceive::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 
 uGUICaplinkTrophyReceive::cListItem::MyDTI uGUICaplinkTrophyReceive::cListItem::DTI("uGUICaplinkTrophyReceive::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 1280ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkTrophyReceive::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkTrophyReceive::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkTrophyReceive::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkTrophyReceive::cListItem;
 }
 
 const MtDTI& uGUICaplinkTrophyReceive::cListInfo::getDTI() const {
     return uGUICaplinkTrophyReceive::cListInfo::DTI;
-}
-
-inline void uGUICaplinkTrophyReceive::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyReceive::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkTrophyReceive::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

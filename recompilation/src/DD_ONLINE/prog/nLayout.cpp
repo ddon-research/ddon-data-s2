@@ -52,13 +52,19 @@ static const MtDTI* SetInfoDtiTable[28] = {
 }
 
 __attribute__((weak)) u32 nLayout::createUniqueID(nLayout::U_KIND kind, u32 layoutGroup, u32 layoutId, s32 stageNo) {
-    DDON_STUB("nLayout::createUniqueID")
-    return {};
+    s32 stageId = static_cast<sAreaExt*>(sArea::getInstance())->convertStageId(stageNo);
+    return (static_cast<u32>(kind) & 7u) | ((static_cast<u32>(stageId) & 0x1ffu) << 3) | ((layoutGroup & 0x1ffu) << 12) | ((layoutId & 0x1fu) << 21) | 0x80000000u;
 }
 
 __attribute__((weak)) u32 nLayout::createUniqueID(nLayout::U_KIND kind, u32 layoutGroup, u32 layoutId, u32 innerId, s32 stageNo) {
-    DDON_STUB("nLayout::createUniqueID")
-    return {};
+    s32 stageId = static_cast<const sAreaExt*>(sAreaExt::getInstance())->convertStageId(stageNo);
+    
+    u32 uniqueid = ((static_cast<u32>(kind) & 0x7u) + ((layoutGroup << 12) & 0x1ff000u))
+        | ((layoutId & 0x1fu) << 21)
+        | (innerId << 26)
+        | ((static_cast<u32>(stageId) << 3) & 0xff8u)
+        | 0x80000000u;
+    return uniqueid;
 }
 
 __attribute__((weak)) u32 nLayout::createUniqueIDQuestProcess(u32 q_no, u32 blockNo, s32 stageNo, u8 processNo) {

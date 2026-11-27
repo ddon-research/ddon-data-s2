@@ -25,14 +25,6 @@ const MtDTI& rSwingModel::getDTI() const {
     return rSwingModel::DTI;
 }
 
-inline void* rSwingModel::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSwingModel::DTI)->memAlloc(sz, align, rSwingModel::DTI.mID);
-}
-
-inline void rSwingModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSwingModel::DTI)->memFree(p_addr);
-}
-
 rSwingModel::~rSwingModel() {
     PRIMITIVE_QUANT_INFO* t0 = mpPrimQuantInfo;
     if (t0 != nullptr) {

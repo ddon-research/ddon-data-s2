@@ -30,16 +30,8 @@ const MtDTI& sOccluderEx::getDTI() const {
     return sOccluderEx::DTI;
 }
 
-inline MtAllocator* sOccluderEx::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sOccluderEx::DTI);
-}
-
 void* sOccluderEx::operator new(size_t sz, u32 align) {
     return sOccluderEx::getAllocator()->memAlloc(sz, align, sOccluderEx::DTI.getID());
-}
-
-inline void sOccluderEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sOccluderEx::DTI)->memFree(p_addr);
 }
 
 sOccluderEx::sOccluderEx() {
@@ -126,14 +118,6 @@ const MtDTI& sOccluderEx::Area::getDTI() const {
     return sOccluderEx::Area::DTI;
 }
 
-inline void* sOccluderEx::Area::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sOccluderEx::Area::DTI)->memAlloc(sz, align, sOccluderEx::Area::DTI.getID());
-}
-
-inline void sOccluderEx::Area::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sOccluderEx::Area::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) sOccluderEx::Area::~Area() {
     if (mprOCC != nullptr) {
         mprOCC->release();
@@ -176,20 +160,6 @@ MtObject* sOccluderEx::Area::MyDTI::newInstance() const {
 
 const MtDTI& sOccluderEx::Shape::getDTI() const {
     return sOccluderEx::Shape::DTI;
-}
-
-inline void* sOccluderEx::Shape::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sOccluderEx::Shape::DTI)->memAlloc(sz, align, sOccluderEx::Shape::DTI.getID());
-}
-
-inline void sOccluderEx::Shape::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sOccluderEx::Shape::DTI)->memFree(p_addr);
-}
-
-inline sOccluderEx::Shape::Shape() {
-    mbEnable = true;
-    mType = nZone::ShapeInfoBase::SHAPE_TYPE_OBB;
-    mpZShape = static_cast<nZone::ShapeInfoBase*>(new (16u) nZone::ShapeInfoOBB);
 }
 
 sOccluderEx::Shape::~Shape() {

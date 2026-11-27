@@ -161,3 +161,19 @@ inline cShlParamFireWallCtrl::cShlParamFireWallCtrl() {
 inline void* uShlFireWallCtrl::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamFireWallCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamFireWallCtrl::DTI)->memAlloc(sz, align, ::cShlParamFireWallCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uShlFireWallCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlFireWallCtrl::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamFireWallCtrl* uShlFireWallCtrl::getShlParam() const {
+    return static_cast<const cShlParamFireWallCtrl*>(this->::uShlBase::mpShlParam2);
+}

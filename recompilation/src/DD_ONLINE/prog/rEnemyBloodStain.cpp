@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEnemyBloodStain.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cEnemyBloodStain::getDTI() const {
     return cEnemyBloodStain::DTI;
-}
-
-inline void* cEnemyBloodStain::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEnemyBloodStain::DTI)->memAlloc(sz, align, cEnemyBloodStain::DTI.getID());
-}
-
-inline void cEnemyBloodStain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEnemyBloodStain::DTI)->memFree(p_addr);
 }
 
 inline cEnemyBloodStain::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,14 +23,6 @@ MtObject* cEnemyBloodStain::MyDTI::newInstance() const {
 
 const MtDTI& rEnemyBloodStain::getDTI() const {
     return rEnemyBloodStain::DTI;
-}
-
-inline void* rEnemyBloodStain::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEnemyBloodStain::DTI)->memAlloc(sz, align, rEnemyBloodStain::DTI.getID());
-}
-
-inline void rEnemyBloodStain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEnemyBloodStain::DTI)->memFree(p_addr);
 }
 
 bool rEnemyBloodStain::loadData(MtDataReader& r, cEnemyBloodStain* pData) {

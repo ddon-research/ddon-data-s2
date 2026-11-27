@@ -16,6 +16,7 @@ class MtPropertyList;
 class MtStream;
 class MtTime;
 class MtVector3;
+class cSwingModel;
 namespace nDraw { class VertexBuffer; }
 
 // Declarations
@@ -32,6 +33,7 @@ using u32 = unsigned int;
 
 class rSwingModel : public cResource
 {
+    friend class cSwingModel;
 public:
     enum SWING_MODE
     {
@@ -141,4 +143,16 @@ inline rSwingModel::rSwingModel() {
     this->mAdjustNormalTangent = false;
     this->mUseWorldPosition = false;
     this->mFrequencyFactor = 1.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rSwingModel::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSwingModel::DTI)->memAlloc(sz, align, ::rSwingModel::DTI.::MtDTI::mID);
+}
+
+inline void rSwingModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSwingModel::DTI)->memFree(p_addr);
 }

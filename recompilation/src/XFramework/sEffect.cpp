@@ -40,10 +40,6 @@ const MtDTI& sEffect::getDTI() const {
     return sEffect::DTI;
 }
 
-inline void sEffect::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sEffect::DTI)->memFree(p_addr);
-}
-
 sEffect::~sEffect() {
     sEffect::mpInstance = nullptr;
     if (mpTempBuff == nullptr) {
@@ -251,9 +247,17 @@ __attribute__((weak)) void sEffect::setForceVec(const MtVector3& ForceVec) {
 
 static auto ddon_emit_0x01b9efd0 __attribute__((used)) = &sEffect::getForceDir;
 
-__attribute__((weak)) void sEffect::setForceDir(const MtVector3& ForceDir) {
-    DDON_STUB("sEffect::setForceDir")
-    /* stub */
+void sEffect::setForceDir(const MtVector3& ForceDir) {
+    mForceDir.x = ForceDir.x;
+    mForceDir.y = ForceDir.y;
+    mForceDir.z = ForceDir.z;
+    mForceDir.pad_ = 0.0f;
+    const f32 t0 = ForceDir.y;
+    const f32 t1 = ForceDir.z;
+    mForceVec.x = mForcePower * ForceDir.x;
+    mForceVec.y = mForcePower * t0;
+    mForceVec.z = mForcePower * t1;
+    mForceVec.pad_ = 0.0f;
 }
 
 static auto ddon_emit_0x01b9f000 __attribute__((used)) = &sEffect::getForcePower;

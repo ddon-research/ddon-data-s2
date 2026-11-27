@@ -1,7 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "MtXmlWriter.h"
-#include "MtCharset.h"
+#include "MtCharSet.h"
 #include "MtMemory.h"
 #include "MtStream.h"
 #ifndef DDON_STUB

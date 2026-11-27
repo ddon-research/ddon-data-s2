@@ -13,11 +13,15 @@ class MtAllocator;
 class MtCriticalSection;
 class MtDTI;
 namespace MtNet { namespace PS4Psn { class Context; } }
+class MtNetAchievement;
 class MtNetContext;
 class MtNetCore;
 class MtNetFriendList;
 class MtNetMediator;
+class MtNetRanking;
 class MtNetRequestController;
+class MtNetServiceError;
+class MtNetStorage2;
 class MtPropertyList;
 
 // Declarations
@@ -265,11 +269,15 @@ public:
 class MtNetObject : public MtObject
 {
     friend class MtNet::PS4Psn::Context;
+    friend class MtNetAchievement;
     friend class MtNetContext;
     friend class MtNetCore;
     friend class MtNetFriendList;
     friend class MtNetMediator;
+    friend class MtNetRanking;
     friend class MtNetRequestController;
+    friend class MtNetServiceError;
+    friend class MtNetStorage2;
 public:
     class MyDTI;
     class ScopedLock;

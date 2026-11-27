@@ -60,3 +60,15 @@ public:
 inline void* rOcdPriorityParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rOcdPriorityParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOcdPriorityParam::DTI)->memAlloc(sz, align, ::rOcdPriorityParam::DTI.::MtDTI::getID());
+}
+
+inline void rOcdPriorityParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOcdPriorityParam::DTI)->memFree(p_addr);
+}

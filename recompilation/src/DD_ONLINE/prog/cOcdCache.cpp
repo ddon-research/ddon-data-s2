@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cOcdCache.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "nObjCondition.h"
 #ifndef DDON_STUB
@@ -12,14 +10,6 @@
 
 const MtDTI& cOcdCache::getDTI() const {
     return cOcdCache::DTI;
-}
-
-inline void* cOcdCache::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdCache::DTI)->memAlloc(sz, align, cOcdCache::DTI.getID());
-}
-
-inline void cOcdCache::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdCache::DTI)->memFree(p_addr);
 }
 
 cOcdCache::cOcdCache() {

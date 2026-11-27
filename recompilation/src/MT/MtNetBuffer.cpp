@@ -4,8 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "MtNetBuffer.h"
-#include "MtAllocator.h"
-#include "MtCharset.h"
+#include "MtCharSet.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtNetDevice.h"
@@ -263,9 +262,106 @@ s32 MtNetFriendList::getUniqueIdList(MtNetUniqueId* uniq_id_list, s32 uniq_id_ma
     return static_cast<s32>(v1_8);
 }
 
-__attribute__((weak)) void MtNetFriendList::add(MtNetUniqueId* uniq_id) {
-    DDON_STUB("MtNetFriendList::add")
-    /* stub */
+void MtNetFriendList::add(MtNetUniqueId* uniq_id) {
+    if (uniq_id == nullptr) {
+        return;
+    }
+    if (mIsThreadSafe) {
+        if (scePthreadMutexLock(&mCS.mCSection) != 0) {
+            abort();
+        }
+        s32 t0 = mLockCount;
+        mLockCount = t0 + 1;
+        if (mValidNum <= 1999) {
+            if (!inUniqueIdList(uniq_id)) {
+                s32 t1 = mValidNum;
+                if (static_cast<unsigned char>(uniq_id->mData[0] + 255) <= 20) {
+                    if (mUniqueId[t1].mpBuffer != nullptr) {
+                        if (uniq_id->mpBuffer != nullptr) {
+                            if ((uniq_id->mDataLength - 1u) < mUniqueId[t1].mBufferSize) {
+                                memcpy(static_cast<void*>(mUniqueId[t1].mpBuffer), static_cast<const void*>(uniq_id->mpBuffer), uniq_id->mDataLength);
+                                mUniqueId[t1].mDataLength = uniq_id->mDataLength;
+                                mValidNum = mValidNum + 1;
+                            } else {
+                                mValidNum = t1 + 1;
+                            }
+                        } else {
+                            mValidNum = t1 + 1;
+                        }
+                    } else {
+                        mValidNum = t1 + 1;
+                    }
+                } else {
+                    mValidNum = t1 + 1;
+                }
+                if (mIsThreadSafe) {
+                    mLockCount = mLockCount - 1;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+            } else {
+                if (mIsThreadSafe) {
+                    mLockCount = mLockCount - 1;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = t0;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+    } else {
+        if (mValidNum <= 1999) {
+            if (!inUniqueIdList(uniq_id)) {
+                s32 t1 = mValidNum;
+                if (static_cast<unsigned char>(uniq_id->mData[0] + 255) <= 20) {
+                    if (mUniqueId[t1].mpBuffer != nullptr) {
+                        if (uniq_id->mpBuffer != nullptr) {
+                            if ((uniq_id->mDataLength - 1u) < mUniqueId[t1].mBufferSize) {
+                                memcpy(static_cast<void*>(mUniqueId[t1].mpBuffer), static_cast<const void*>(uniq_id->mpBuffer), uniq_id->mDataLength);
+                                mUniqueId[t1].mDataLength = uniq_id->mDataLength;
+                                mValidNum = mValidNum + 1;
+                            } else {
+                                mValidNum = t1 + 1;
+                            }
+                        } else {
+                            mValidNum = t1 + 1;
+                        }
+                    } else {
+                        mValidNum = t1 + 1;
+                    }
+                } else {
+                    mValidNum = t1 + 1;
+                }
+                if (mIsThreadSafe) {
+                    mLockCount = mLockCount - 1;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+            } else {
+                if (mIsThreadSafe) {
+                    mLockCount = mLockCount - 1;
+                    if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                        abort();
+                    }
+                }
+            }
+        } else {
+            if (mIsThreadSafe) {
+                mLockCount = mLockCount - 1;
+                if (scePthreadMutexUnlock(&mCS.mCSection) != 0) {
+                    abort();
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool MtNetFriendList::inUniqueIdList(MtNetUniqueId* uniq_id) {
@@ -275,10 +371,6 @@ __attribute__((weak)) bool MtNetFriendList::inUniqueIdList(MtNetUniqueId* uniq_i
 
 const MtDTI& MtNetUniqueId::getDTI() const {
     return MtNetUniqueId::DTI;
-}
-
-inline void MtNetUniqueId::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtNetUniqueId::DTI)->memFree(p_addr);
 }
 
 MtNetUniqueId::MtNetUniqueId() {
@@ -318,7 +410,7 @@ void MtNetUniqueId::exportTo(void* data, u32 size) const {
             if (size == 16) {
                 u64 t0 = MtNetByteOrder::netToHost64(static_cast<u64>(*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 60)));
                 u32 t1 = MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 68));
-                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + 8) = static_cast<unsigned long>((MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 72)) * 0u) | t1);
+                *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + 8) = (static_cast<unsigned long>(MtNetByteOrder::netToHost32(*reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 72))) * 0x100000000ul) | static_cast<unsigned long>(t1);
                 *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(data) + 0) = static_cast<unsigned long>(t0);
             }
         } else {

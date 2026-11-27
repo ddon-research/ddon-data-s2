@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rShaderPackage.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemory.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -17,14 +16,6 @@
 
 const MtDTI& rShaderPackage::getDTI() const {
     return rShaderPackage::DTI;
-}
-
-inline void* rShaderPackage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rShaderPackage::DTI)->memAlloc(sz, align, rShaderPackage::DTI.mID);
-}
-
-inline void rShaderPackage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rShaderPackage::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rShaderPackage::load(MtStream& in) {

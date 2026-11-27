@@ -259,3 +259,56 @@ inline uGUIJobSelect::cJobInfo::cJobInfo() {
     this->mJobID = 0;
     this->mJobNameGmdIdx = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+#include "../../XFramework/rGUIMessage.h"
+#include "../../XFramework/sGUI.h"
+#include "sGUIExt.h"
+#include "../../XFramework/uGUI.h"
+
+inline MtAllocator* uGUIJobSelect::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIJobSelect::DTI);
+}
+
+inline void uGUIJobSelect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIJobSelect::DTI)->memFree(p_addr);
+}
+
+inline void uGUIJobSelect::evInputCancelJob() {
+    static_cast<sGUIExt*>(::sGUI::mpInstance)->::sGUIExt::requestSE(0u, 5u);
+    this->::uGUIsMenuBase::mExitType = static_cast<uGUIsMenuBase::EXIT_TYPE>(2);
+    if (this->mProc == static_cast<uGUIJobSelect::PR>(2)) {
+        return;
+    }
+    this->mProc = static_cast<uGUIJobSelect::PR>(2);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIJobSelect::updateInit);
+    this->setPlayingFlow(this->::uGUI::getFlow(34u), false);
+    this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIJobSelect::updateExit);
+}
+
+inline void uGUIJobSelect::releaseGMDSecond() {
+    if (this->mpGUIMsgsSecond.elems[0] != nullptr) {
+        this->mpGUIMsgsSecond.elems[0]->::cResource::release();
+        this->mpGUIMsgsSecond.elems[0] = nullptr;
+    }
+    if (this->mpGUIMsgsSecond.elems[1] == nullptr) {
+        return;
+    }
+    this->mpGUIMsgsSecond.elems[1]->::cResource::release();
+    this->mpGUIMsgsSecond.elems[1] = nullptr;
+}
+
+inline void uGUIJobSelect::cItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIJobSelect::cItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIJobSelect::cJobInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIJobSelect::cJobInfo::DTI)->memAlloc(sz, align, ::uGUIJobSelect::cJobInfo::DTI.::MtDTI::getID());
+}
+
+inline void uGUIJobSelect::cJobInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIJobSelect::cJobInfo::DTI)->memFree(p_addr);
+}

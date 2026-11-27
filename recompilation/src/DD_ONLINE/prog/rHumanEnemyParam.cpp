@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rHumanEnemyParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "nJobParam.h"
 #include "rTbl2.h"
@@ -14,14 +12,6 @@
 
 const MtDTI& cHumanEnemyParam::getDTI() const {
     return cHumanEnemyParam::DTI;
-}
-
-inline void* cHumanEnemyParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cHumanEnemyParam::DTI)->memAlloc(sz, align, cHumanEnemyParam::DTI.getID());
-}
-
-inline void cHumanEnemyParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHumanEnemyParam::DTI)->memFree(p_addr);
 }
 
 inline cHumanEnemyParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -34,14 +24,6 @@ MtObject* cHumanEnemyParam::MyDTI::newInstance() const {
 
 const MtDTI& rHumanEnemyParam::getDTI() const {
     return rHumanEnemyParam::DTI;
-}
-
-inline void* rHumanEnemyParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rHumanEnemyParam::DTI)->memAlloc(sz, align, rHumanEnemyParam::DTI.getID());
-}
-
-inline void rHumanEnemyParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rHumanEnemyParam::DTI)->memFree(p_addr);
 }
 
 bool rHumanEnemyParam::loadData(MtDataReader& in, cHumanEnemyParam* pData) {

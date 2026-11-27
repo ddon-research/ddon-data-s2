@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEnemyMaterialTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cEnemyMaterialTable::getDTI() const {
     return cEnemyMaterialTable::DTI;
-}
-
-inline void* cEnemyMaterialTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEnemyMaterialTable::DTI)->memAlloc(sz, align, cEnemyMaterialTable::DTI.getID());
-}
-
-inline void cEnemyMaterialTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEnemyMaterialTable::DTI)->memFree(p_addr);
 }
 
 void cEnemyMaterialTable::createProperty(MtPropertyList& s) {
@@ -44,14 +34,6 @@ MtObject* cEnemyMaterialTable::MyDTI::newInstance() const {
 
 const MtDTI& rEnemyMaterialTable::getDTI() const {
     return rEnemyMaterialTable::DTI;
-}
-
-inline void* rEnemyMaterialTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEnemyMaterialTable::DTI)->memAlloc(sz, align, rEnemyMaterialTable::DTI.getID());
-}
-
-inline void rEnemyMaterialTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEnemyMaterialTable::DTI)->memFree(p_addr);
 }
 
 bool rEnemyMaterialTable::loadData(MtDataReader& in, cEnemyMaterialTable* pData) {

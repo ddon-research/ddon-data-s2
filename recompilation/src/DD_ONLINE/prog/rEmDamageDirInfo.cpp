@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmDamageDirInfo.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cEmDamageDirInfo::getDTI() const {
     return cEmDamageDirInfo::DTI;
-}
-
-inline void* cEmDamageDirInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmDamageDirInfo::DTI)->memAlloc(sz, align, cEmDamageDirInfo::DTI.getID());
-}
-
-inline void cEmDamageDirInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmDamageDirInfo::DTI)->memFree(p_addr);
 }
 
 void cEmDamageDirInfo::createProperty(MtPropertyList& s) {
@@ -47,14 +37,6 @@ MtObject* cEmDamageDirInfo::MyDTI::newInstance() const {
 
 const MtDTI& rEmDamageDirInfo::getDTI() const {
     return rEmDamageDirInfo::DTI;
-}
-
-inline void* rEmDamageDirInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmDamageDirInfo::DTI)->memAlloc(sz, align, rEmDamageDirInfo::DTI.getID());
-}
-
-inline void rEmDamageDirInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmDamageDirInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rEmDamageDirInfo::loadData(MtDataReader& in, cEmDamageDirInfo* pData) {

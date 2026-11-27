@@ -58,14 +58,6 @@ const MtDTI& nHumanBow::cBowActParam::getDTI() const {
     return nHumanBow::cBowActParam::DTI;
 }
 
-inline void* nHumanBow::cBowActParam::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nHumanBow::cBowActParam::DTI)->memAlloc(sz, align, ::nHumanBow::cBowActParam::DTI.getID());
-}
-
-inline void nHumanBow::cBowActParam::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nHumanBow::cBowActParam::DTI)->memFree(p_addr);
-}
-
 nHumanBow::cBowActParam::cBowActParam() {
     cameraNoCharge = -1;
     cameraShotA = -1;

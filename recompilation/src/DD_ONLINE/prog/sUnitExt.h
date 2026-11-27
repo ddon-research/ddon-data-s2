@@ -344,3 +344,15 @@ inline void sUnitExt::setCommandCacheFlag(bool set) {
 
 inline sUnitExt::cCommandCacheResetFromUsageDifference::~cCommandCacheResetFromUsageDifference() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sUnitExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sUnitExt::DTI);
+}
+
+inline void sUnitExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sUnitExt::DTI)->memFree(p_addr);
+}

@@ -166,3 +166,27 @@ inline rPawnQuestTalk::cTalkData::cTalkData() {
     this->mResType = 1;
     this->mParsonality = 1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rPawnQuestTalk::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPawnQuestTalk::DTI)->memAlloc(sz, align, ::rPawnQuestTalk::DTI.::MtDTI::getID());
+}
+
+inline void rPawnQuestTalk::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPawnQuestTalk::DTI)->memFree(p_addr);
+}
+
+inline rPawnQuestTalk::rPawnQuestTalk() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rPawnQuestTalk::cTalkData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPawnQuestTalk::cTalkData::DTI)->memAlloc(sz, align, ::rPawnQuestTalk::cTalkData::DTI.::MtDTI::getID());
+}
+
+inline void rPawnQuestTalk::cTalkData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPawnQuestTalk::cTalkData::DTI)->memFree(p_addr);
+}

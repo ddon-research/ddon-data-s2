@@ -12,25 +12,90 @@
 // Forward declarations
 class MtAllocator;
 class MtColor;
+class MtColorF;
 class MtDTI;
+struct MtFloat2;
 struct MtFloat3;
+class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
 class MtVector3;
+class MtVector4;
+class cDraw;
 namespace nDraw { class Texture; }
 class rTexture;
 
+namespace nPrim {
+    enum MDShadeStype
+    {
+        MD_SHADE_OFF = 0,
+        MD_SHADE_MUL = 1,
+        MD_SHADE_GRAD = 2,
+        MD_SHADE_MAX = 3,
+        MD_SHADE_FORCEWORD = -1,
+    };
+}  // namespace nPrim
+
+namespace nPrim {
+    enum eErrorStatus
+    {
+        PRIM_ERR_NONE = 0,
+        PRIM_ERR_CRITICAL = 1,
+        PRIM_ERR_UNINIT = 2,
+        PRIM_ERR_NO_VB = 3,
+        PRIM_ERR_VB_MAX = 4,
+        PRIM_ERR_VB_TEMP_ERR = 5,
+        PRIM_ERR_NO_IB = 6,
+        PRIM_ERR_IB_MAX = 7,
+        PRIM_ERR_IB_TEMP_ERR = 8,
+        PRIM_ERR_STACK_OVERFLOW = 9,
+        PRIM_ERR_STACK_EMPTY = 10,
+        PRIM_ERR_UNSUPORTED = 11,
+        PRIM_TAG_ERR_MAX = 12,
+        PRIM_DRAW_ERR_V_COUNT = 13,
+        PRIM_DRAW_ERR_DEPTH = 14,
+        PRIM_MD_NO_TRANS = 15,
+        PRIM_MD_ALLOC_FAILED = 16,
+        PRIM_ERR_COUNT = 17,
+    };
+}  // namespace nPrim
+
+namespace nPrim {
+    enum eMetaDataType
+    {
+        METADATA_LIGHT = 0,
+        METADATA_OCCLUSION = 1,
+        METADATA_FRESNEL = 2,
+        METADATA_UVCLAMP = 3,
+        METADATA_SHADE = 4,
+        METADATA_CLOUD = 5,
+        METADATA_LV_CORRECTION = 6,
+        METADATA_LENS_FLARE = 7,
+        MAX_METADATA = 8,
+    };
+}  // namespace nPrim
+
 // Declarations
-namespace nPrim { struct DepthOrder; }
 namespace nPrim { struct Material; }
-namespace nPrim { struct MetaDataHeader; }
-namespace nPrim { class PrimVertex; }
-namespace nPrim { struct Rect; }
-namespace nPrim { struct TexCoord; }
+namespace nPrim { struct DepthOrder; }
 namespace nPrim { struct Texture; }
+namespace nPrim { struct MetaDataHeader; }
 namespace nPrim { struct Vertex; }
+namespace nPrim { struct TexCoord; }
+namespace nPrim { struct Rect; }
+namespace nPrim { struct FRect; }
 namespace nPrim { struct VertexFormat; }
+namespace nPrim { struct MetaDataLight; }
+namespace nPrim { struct MetaDataCloud; }
+namespace nPrim { struct MetaDataOcclusion; }
+namespace nPrim { struct MetaDataFresnel; }
+namespace nPrim { struct MetaDataShade; }
+namespace nPrim { struct MetaDataLvCorrection; }
+namespace nPrim { struct MetaDataLensFlare; }
+namespace nPrim { struct CloudBillboardVertexFormat; }
+namespace nPrim { struct CloudVertexFormat; }
+namespace nPrim { class PrimVertex; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -38,42 +103,36 @@ using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
 using __uint64_t = long unsigned int;
 using f32 = float;
+using s16 = short;
 using s32 = int;
+using s8 = signed char;
 using size_t = _Sizet;
 using u32 = unsigned int;
 using u64 = __uint64_t;
 
 namespace nPrim {
-    struct DepthOrder
-    {
-    public:
-        DepthOrder();
-        nPrim::DepthOrder& operator=(const nPrim::DepthOrder& dd);
-        operator unsigned int() const;
-        nPrim::DepthOrder& operator=(u32);
-    public:
-        union
-        {
-        public:
-            struct
-            {
-            public:
-                u32 subpri : 12;  // offset: 0x0
-                u32 depth : 15;  // offset: 0x0
-                u32 disp_lv : 5;  // offset: 0x0
-            };  // offset: 0x0
-            struct
-            {
-            public:
-                u32 pri : 27;  // offset: 0x0
-                u32 pass : 5;  // offset: 0x0
-            };  // offset: 0x0
-            u32 order;  // offset: 0x0
-        };  // offset: 0x0
-    };
-}  // namespace nPrim
 
-namespace nPrim {
+    // Forward declarations
+    struct Material;
+    struct DepthOrder;
+    struct Texture;
+    struct MetaDataHeader;
+    struct Vertex;
+    struct TexCoord;
+    struct Rect;
+    struct FRect;
+    struct VertexFormat;
+    struct MetaDataLight;
+    struct MetaDataCloud;
+    struct MetaDataOcclusion;
+    struct MetaDataFresnel;
+    struct MetaDataShade;
+    struct MetaDataLvCorrection;
+    struct MetaDataLensFlare;
+    struct CloudBillboardVertexFormat;
+    struct CloudVertexFormat;
+    class PrimVertex;
+
     struct Material
     {
     public:
@@ -175,9 +234,66 @@ namespace nPrim {
         static nPrim::Material AlphaBlend;
         static nPrim::Material AddAlpha;
     };
-}  // namespace nPrim
 
-namespace nPrim {
+    struct DepthOrder
+    {
+    public:
+        DepthOrder();
+        nPrim::DepthOrder& operator=(const nPrim::DepthOrder& dd);
+        operator unsigned int() const;
+        nPrim::DepthOrder& operator=(u32);
+    public:
+        union
+        {
+        public:
+            struct
+            {
+            public:
+                u32 subpri : 12;  // offset: 0x0
+                u32 depth : 15;  // offset: 0x0
+                u32 disp_lv : 5;  // offset: 0x0
+            };  // offset: 0x0
+            struct
+            {
+            public:
+                u32 pri : 27;  // offset: 0x0
+                u32 pass : 5;  // offset: 0x0
+            };  // offset: 0x0
+            u32 order;  // offset: 0x0
+        };  // offset: 0x0
+    };
+
+    struct Texture
+    {
+    public:
+        enum TextureFlags
+        {
+            RESOURCE_TEXBASE = 1,
+            RESOURCE_TEXTURE = 2,
+            RESOURCE_NORMAL = 4,
+            RESOURCE_MASK = 8,
+            RESOURCE_ALPHA = 16,
+        };
+    public:
+        Texture();
+        Texture(rTexture* base, rTexture* normal, rTexture* mask, rTexture* alpha);
+        Texture(nDraw::Texture* texbase, rTexture* normal, rTexture* mask, rTexture* alpha);
+        Texture(const nPrim::Texture&);
+        bool operator==(const nPrim::Texture& tex);
+    public:
+        u32 flags;  // offset: 0x0
+        union
+        {
+        public:
+            rTexture* p_base;  // offset: 0x0
+            nDraw::Texture* p_texbase;  // offset: 0x0
+            void* ptr;  // offset: 0x0
+        };  // offset: 0x8
+        rTexture* p_normal;  // offset: 0x10
+        rTexture* p_mask;  // offset: 0x18
+        rTexture* p_alpha;  // offset: 0x20
+    };
+
     struct MetaDataHeader
     {
     public:
@@ -188,9 +304,228 @@ namespace nPrim {
     public:
         void* p_data[8];  // offset: 0x0
     };
-}  // namespace nPrim
 
-namespace nPrim {
+    struct TexCoord
+    {
+    public:
+        TexCoord();
+        TexCoord(const nPrim::TexCoord& tc);
+        TexCoord(f32 uu, f32 vv);
+        TexCoord(rTexture*, s32, s32);
+        nPrim::TexCoord operator+() const;
+        nPrim::TexCoord operator-() const;
+        nPrim::TexCoord& operator+=(const nPrim::TexCoord&);
+        nPrim::TexCoord& operator+=(f32);
+        nPrim::TexCoord& operator-=(const nPrim::TexCoord&);
+        nPrim::TexCoord& operator-=(f32);
+        nPrim::TexCoord& operator*=(const nPrim::TexCoord&);
+        nPrim::TexCoord& operator*=(f32);
+        nPrim::TexCoord operator+(const nPrim::TexCoord&) const;
+        nPrim::TexCoord operator+(f32) const;
+        nPrim::TexCoord operator-(const nPrim::TexCoord&) const;
+        nPrim::TexCoord operator-(f32) const;
+        nPrim::TexCoord operator*(const nPrim::TexCoord&) const;
+        nPrim::TexCoord operator*(f32) const;
+    public:
+        f32 u;  // offset: 0x0
+        f32 v;  // offset: 0x4
+    };
+
+    struct Rect
+    {
+    public:
+        Rect();
+        Rect(u32, u32, u32, u32);
+        Rect(u64 idata);
+        operator unsigned long() const;
+        nPrim::Rect& operator=(u64);
+    public:
+        union
+        {
+        public:
+            struct
+            {
+            public:
+                u32 x : 16;  // offset: 0x0
+                u32 y : 16;  // offset: 0x0
+                u32 w : 16;  // offset: 0x4
+                u32 h : 16;  // offset: 0x4
+            };  // offset: 0x0
+            u64 data;  // offset: 0x0
+        };  // offset: 0x0
+    };
+
+    struct FRect
+    {
+    public:
+        FRect();
+        FRect(f32, f32, f32, f32);
+    public:
+        struct
+        {
+        public:
+            f32 fx;  // offset: 0x0
+            f32 fy;  // offset: 0x4
+            f32 fw;  // offset: 0x8
+            f32 fh;  // offset: 0xc
+        };  // offset: 0x0
+    };
+
+    struct VertexFormat
+    {
+    public:
+        MtFloat3 pos;  // offset: 0x0
+        u32 color;  // offset: 0xc
+        s32 u : 16;  // offset: 0x10
+        s32 v : 16;  // offset: 0x10
+        u32 zofs : 16;  // offset: 0x14
+        u32 intensity : 16;  // offset: 0x14
+        union
+        {
+        public:
+            struct
+            {
+            public:
+                u32 spr_scale : 16;  // offset: 0x0
+                u32 spr_rot : 16;  // offset: 0x0
+                u32 spr_w : 8;  // offset: 0x4
+                u32 spr_h : 8;  // offset: 0x4
+                u32 spr_aspect_ratio : 8;  // offset: 0x4
+                u32 spr_volume : 8;  // offset: 0x4
+            };  // offset: 0x0
+            struct
+            {
+            public:
+                u32 nt_spr_rot : 16;  // offset: 0x0
+                u32 nt_spr_w : 16;  // offset: 0x0
+                u32 nt_spr_h : 16;  // offset: 0x4
+                u32 nt_spr_volume : 16;  // offset: 0x4
+            };  // offset: 0x0
+            struct
+            {
+            public:
+                u32 polyline_w : 16;  // offset: 0x0
+                u32 polyline_reserved : 16;  // offset: 0x0
+                u32 polyline_tangent_x : 8;  // offset: 0x4
+                u32 polyline_tangent_y : 8;  // offset: 0x4
+                u32 polyline_tangent_z : 8;  // offset: 0x4
+                u32 polyline_volume : 8;  // offset: 0x4
+            };  // offset: 0x0
+            struct
+            {
+            public:
+                u32 poly_normal_x : 8;  // offset: 0x0
+                u32 poly_normal_y : 8;  // offset: 0x0
+                u32 poly_normal_z : 8;  // offset: 0x0
+                u32 poly_binormal : 8;  // offset: 0x0
+                u32 poly_tangent_x : 8;  // offset: 0x4
+                u32 poly_tangent_y : 8;  // offset: 0x4
+                u32 poly_tangent_z : 8;  // offset: 0x4
+                u32 poly_volume : 8;  // offset: 0x4
+            };  // offset: 0x0
+        };  // offset: 0x18
+    };
+
+    struct MetaDataLight
+    {
+    public:
+        MtFloat3 wpos;  // offset: 0x0
+        u32 group;  // offset: 0xc
+    };
+
+    struct MetaDataCloud
+    {
+    public:
+        MtFloat3 sun_dir;  // offset: 0x0
+        MtFloat2 h_range;  // offset: 0xc
+        MtColor height_c0;  // offset: 0x14
+        MtColor height_c1;  // offset: 0x18
+        MtColorF dir_cmin;  // offset: 0x20
+        MtColorF dir_cmed;  // offset: 0x30
+        MtColorF dir_cmax;  // offset: 0x40
+    };
+
+    struct MetaDataOcclusion
+    {
+    public:
+        MtFloat3 wpos;  // offset: 0x0
+        f32 radius;  // offset: 0xc
+    };
+
+    struct MetaDataFresnel
+    {
+    public:
+        f32 factor;  // offset: 0x0
+        f32 bias;  // offset: 0x4
+        f32 refl_coef;  // offset: 0x8
+        u32 pad01;  // offset: 0xc
+    };
+
+    struct MetaDataShade
+    {
+    public:
+        MtVector3 light_pos;  // offset: 0x0
+        MtVector3 light_col;  // offset: 0x10
+        f32 light_range;  // offset: 0x20
+        f32 light_att;  // offset: 0x24
+        union
+        {
+        public:
+            struct
+            {
+            public:
+                u32 type : 4;  // offset: 0x0
+                u32 pad : 28;  // offset: 0x0
+            };  // offset: 0x0
+            u32 pad00;  // offset: 0x0
+        };  // offset: 0x28
+    };
+
+    struct MetaDataLvCorrection
+    {
+    public:
+        f32 lv_min;  // offset: 0x0
+        f32 lv_max;  // offset: 0x4
+        s32 atten;  // offset: 0x8
+        MtFloat3 color_const;  // offset: 0xc
+    };
+
+    struct MetaDataLensFlare
+    {
+    public:
+        MtFloat3 wpos;  // offset: 0x0
+        f32 radius;  // offset: 0xc
+        f32 scl_limit;  // offset: 0x10
+        f32 radial_dist;  // offset: 0x14
+        f32 min_int;  // offset: 0x18
+        f32 max_int;  // offset: 0x1c
+    };
+
+    struct CloudBillboardVertexFormat
+    {
+    public:
+        MtFloat3 gen_pos;  // offset: 0x0
+        s16 asp;  // offset: 0xc
+        s16 alpha;  // offset: 0xe
+        s16 u;  // offset: 0x10
+        s16 v;  // offset: 0x12
+        f32 size;  // offset: 0x14
+        s16 pos_x;  // offset: 0x18
+        s16 pos_y;  // offset: 0x1a
+        s16 pos_z;  // offset: 0x1c
+        s16 pos_scale;  // offset: 0x1e
+    };
+
+    struct CloudVertexFormat
+    {
+    public:
+        MtFloat3 gen_pos;  // offset: 0x0
+        MtFloat3 pos;  // offset: 0xc
+        f32 alpha;  // offset: 0x18
+        s16 u;  // offset: 0x1c
+        s16 v;  // offset: 0x1e
+    };
+
     class PrimVertex : public ::MtObject
     {
     public:
@@ -251,96 +586,7 @@ namespace nPrim {
         u32 attr;  // offset: 0x50
         static MyDTI DTI;
     };
-}  // namespace nPrim
 
-namespace nPrim {
-    struct Rect
-    {
-    public:
-        Rect();
-        Rect(u32, u32, u32, u32);
-        Rect(u64 idata);
-        operator unsigned long() const;
-        nPrim::Rect& operator=(u64);
-    public:
-        union
-        {
-        public:
-            struct
-            {
-            public:
-                u32 x : 16;  // offset: 0x0
-                u32 y : 16;  // offset: 0x0
-                u32 w : 16;  // offset: 0x4
-                u32 h : 16;  // offset: 0x4
-            };  // offset: 0x0
-            u64 data;  // offset: 0x0
-        };  // offset: 0x0
-    };
-}  // namespace nPrim
-
-namespace nPrim {
-    struct TexCoord
-    {
-    public:
-        TexCoord();
-        TexCoord(const nPrim::TexCoord& tc);
-        TexCoord(f32 uu, f32 vv);
-        TexCoord(rTexture*, s32, s32);
-        nPrim::TexCoord operator+() const;
-        nPrim::TexCoord operator-() const;
-        nPrim::TexCoord& operator+=(const nPrim::TexCoord&);
-        nPrim::TexCoord& operator+=(f32);
-        nPrim::TexCoord& operator-=(const nPrim::TexCoord&);
-        nPrim::TexCoord& operator-=(f32);
-        nPrim::TexCoord& operator*=(const nPrim::TexCoord&);
-        nPrim::TexCoord& operator*=(f32);
-        nPrim::TexCoord operator+(const nPrim::TexCoord&) const;
-        nPrim::TexCoord operator+(f32) const;
-        nPrim::TexCoord operator-(const nPrim::TexCoord&) const;
-        nPrim::TexCoord operator-(f32) const;
-        nPrim::TexCoord operator*(const nPrim::TexCoord&) const;
-        nPrim::TexCoord operator*(f32) const;
-    public:
-        f32 u;  // offset: 0x0
-        f32 v;  // offset: 0x4
-    };
-}  // namespace nPrim
-
-namespace nPrim {
-    struct Texture
-    {
-    public:
-        enum TextureFlags
-        {
-            RESOURCE_TEXBASE = 1,
-            RESOURCE_TEXTURE = 2,
-            RESOURCE_NORMAL = 4,
-            RESOURCE_MASK = 8,
-            RESOURCE_ALPHA = 16,
-        };
-    public:
-        Texture();
-        Texture(rTexture* base, rTexture* normal, rTexture* mask, rTexture* alpha);
-        Texture(nDraw::Texture* texbase, rTexture* normal, rTexture* mask, rTexture* alpha);
-        Texture(const nPrim::Texture&);
-        bool operator==(const nPrim::Texture& tex);
-    public:
-        u32 flags;  // offset: 0x0
-        union
-        {
-        public:
-            rTexture* p_base;  // offset: 0x0
-            nDraw::Texture* p_texbase;  // offset: 0x0
-            void* ptr;  // offset: 0x0
-        };  // offset: 0x8
-        rTexture* p_normal;  // offset: 0x10
-        rTexture* p_mask;  // offset: 0x18
-        rTexture* p_alpha;  // offset: 0x20
-    };
-}  // namespace nPrim
-
-namespace nPrim {
     struct Vertex
     {
     public:
@@ -362,68 +608,30 @@ namespace nPrim {
         MtVector3 normal;  // offset: 0x20
         MtVector3 tangent;  // offset: 0x30
     };
+
+    const s8* getErrorStr(s32 err);
+    s32 calcDepthOrder(const MtVector3& pos, const MtVector4& v_vec, f32 pers_rt);
+    s32 calcDepthOrder2D(f32, const MtVector4&);
+    void setAlphaBlendState(cDraw* p_draw, const Material& material);
+    s32 beginBranch(cDraw* p_draw, cDraw* sub_draw, u32 nsub_draw, bool use_vscr);
+    s32 endBranch(cDraw* p_draw, cDraw* sub_draw, u32 nsub_draw);
+
 }  // namespace nPrim
 
-namespace nPrim {
-    struct VertexFormat
-    {
-    public:
-        MtFloat3 pos;  // offset: 0x0
-        u32 color;  // offset: 0xc
-        s32 u : 16;  // offset: 0x10
-        s32 v : 16;  // offset: 0x10
-        u32 zofs : 16;  // offset: 0x14
-        u32 intensity : 16;  // offset: 0x14
-        union
-        {
-        public:
-            struct
-            {
-            public:
-                u32 spr_scale : 16;  // offset: 0x0
-                u32 spr_rot : 16;  // offset: 0x0
-                u32 spr_w : 8;  // offset: 0x4
-                u32 spr_h : 8;  // offset: 0x4
-                u32 spr_aspect_ratio : 8;  // offset: 0x4
-                u32 spr_volume : 8;  // offset: 0x4
-            };  // offset: 0x0
-            struct
-            {
-            public:
-                u32 nt_spr_rot : 16;  // offset: 0x0
-                u32 nt_spr_w : 16;  // offset: 0x0
-                u32 nt_spr_h : 16;  // offset: 0x4
-                u32 nt_spr_volume : 16;  // offset: 0x4
-            };  // offset: 0x0
-            struct
-            {
-            public:
-                u32 polyline_w : 16;  // offset: 0x0
-                u32 polyline_reserved : 16;  // offset: 0x0
-                u32 polyline_tangent_x : 8;  // offset: 0x4
-                u32 polyline_tangent_y : 8;  // offset: 0x4
-                u32 polyline_tangent_z : 8;  // offset: 0x4
-                u32 polyline_volume : 8;  // offset: 0x4
-            };  // offset: 0x0
-            struct
-            {
-            public:
-                u32 poly_normal_x : 8;  // offset: 0x0
-                u32 poly_normal_y : 8;  // offset: 0x0
-                u32 poly_normal_z : 8;  // offset: 0x0
-                u32 poly_binormal : 8;  // offset: 0x0
-                u32 poly_tangent_x : 8;  // offset: 0x4
-                u32 poly_tangent_y : 8;  // offset: 0x4
-                u32 poly_tangent_z : 8;  // offset: 0x4
-                u32 poly_volume : 8;  // offset: 0x4
-            };  // offset: 0x0
-        };  // offset: 0x18
-    };
-}  // namespace nPrim
+inline nPrim::TexCoord::TexCoord() {
+}
+
+inline nPrim::FRect::FRect() {
+}
 
 inline void* nPrim::PrimVertex::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
-inline nPrim::TexCoord::TexCoord() {
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nPrim::PrimVertex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nPrim::PrimVertex::DTI)->memFree(p_addr);
 }

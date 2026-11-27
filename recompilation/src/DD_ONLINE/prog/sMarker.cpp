@@ -11,6 +11,7 @@
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cGUIFloorManager.h"
+#include "cQuestMarkerManager.h"
 #include "../../XFramework/cResource.h"
 #include "../../XFramework/cSystem.h"
 #include "nMarker.h"
@@ -41,16 +42,8 @@ const MtDTI& sMarker::getDTI() const {
     return sMarker::DTI;
 }
 
-inline MtAllocator* sMarker::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sMarker::DTI);
-}
-
 void* sMarker::operator new(size_t sz, u32 align) {
     return sMarker::getAllocator()->memAlloc(sz, align, sMarker::DTI.getID());
-}
-
-inline void sMarker::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sMarker::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) const nMarker::cMarkerInfo* sMarker::getMarkerInfoStage(const nQuest::cQuestMarker* pMarker) {
@@ -523,14 +516,6 @@ __attribute__((weak)) MtObject* sMarker::MyDTI::newInstance() const {
 
 const MtDTI& sMarker::cLoadResource::getDTI() const {
     return sMarker::cLoadResource::DTI;
-}
-
-inline void* sMarker::cLoadResource::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sMarker::cLoadResource::DTI)->memAlloc(sz, align, sMarker::cLoadResource::DTI.getID());
-}
-
-inline void sMarker::cLoadResource::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sMarker::cLoadResource::DTI)->memFree(p_addr);
 }
 
 inline sMarker::cLoadResource::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -37,6 +37,7 @@
 #include "uCharacter.h"
 #include "uCnsEdit.h"
 #include "uCnsScaleFix.h"
+#include "uDDOActorModelPl.h"
 #include "uDDOModel.h"
 #include "uHuman.h"
 #include "uMockUpModel.h"
@@ -171,16 +172,8 @@ const MtDTI& cpCharacterEdit::getDTI() const {
     return cpCharacterEdit::DTI;
 }
 
-inline MtAllocator* cpCharacterEdit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpCharacterEdit::DTI);
-}
-
 void* cpCharacterEdit::operator new(size_t sz, u32 align) {
     return cpCharacterEdit::getAllocator()->memAlloc(sz, align, cpCharacterEdit::DTI.getID());
-}
-
-inline void cpCharacterEdit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpCharacterEdit::DTI)->memFree(p_addr);
 }
 
 cpCharacterEdit::cpCharacterEdit() {

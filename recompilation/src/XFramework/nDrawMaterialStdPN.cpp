@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nDrawMaterialStdPN.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "nDrawMaterial.h"
 #include "nDrawMaterialStd.h"
@@ -16,14 +14,6 @@ __attribute__((weak)) void nDraw::MaterialStdPN::usage() {
 
 const MtDTI& nDraw::MaterialStdPN::getDTI() const {
     return nDraw::MaterialStdPN::DTI;
-}
-
-inline void* nDraw::MaterialStdPN::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nDraw::MaterialStdPN::DTI)->memAlloc(sz, align, ::nDraw::MaterialStdPN::DTI.mID);
-}
-
-inline void nDraw::MaterialStdPN::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::MaterialStdPN::DTI)->memFree(p_addr);
 }
 
 void nDraw::MaterialStdPN::createProperty(MtPropertyList& s) {

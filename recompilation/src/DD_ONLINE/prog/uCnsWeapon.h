@@ -79,3 +79,15 @@ public:
 inline void* uCnsWeapon::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uCnsWeapon::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uCnsWeapon::DTI);
+}
+
+inline void uCnsWeapon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsWeapon::DTI)->memFree(p_addr);
+}

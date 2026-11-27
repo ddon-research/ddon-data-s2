@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "sVibration.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -19,10 +18,6 @@
 
 const MtDTI& sVibration::getDTI() const {
     return sVibration::DTI;
-}
-
-inline void sVibration::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sVibration::DTI)->memFree(p_addr);
 }
 
 sVibration::sVibration() {
@@ -151,14 +146,12 @@ void sVibration::stopVibAll() {
     }
 }
 
-__attribute__((weak)) u32 sVibration::getPadHighVibration(u32 PadNo, u32 VibValue) const {
-    DDON_STUB("sVibration::getPadHighVibration")
-    return {};
+u32 sVibration::getPadHighVibration(u32 PadNo, u32 VibValue) const {
+    return (VibValue < static_cast<unsigned int>(static_cast<long>(mPadVibration[PadNo].mHighVibRate * 65535.0f))) ? static_cast<unsigned int>(static_cast<long>(mPadVibration[PadNo].mHighVibRate * 65535.0f)) : VibValue;
 }
 
-__attribute__((weak)) u32 sVibration::getPadLowVibration(u32 PadNo, u32 VibValue) const {
-    DDON_STUB("sVibration::getPadLowVibration")
-    return {};
+u32 sVibration::getPadLowVibration(u32 PadNo, u32 VibValue) const {
+    return (VibValue < static_cast<unsigned int>(static_cast<long>(mPadVibration[PadNo].mLowVibRate * 65535.0f))) ? static_cast<unsigned int>(static_cast<long>(mPadVibration[PadNo].mLowVibRate * 65535.0f)) : VibValue;
 }
 
 __attribute__((weak)) MtMatrix sVibration::getCameraVibrationViewMatrix(u32 ViewportNo, uCamera* pCamera) const {

@@ -20,11 +20,6 @@ class cDraw;
 class uDDOModel;
 class uShlBakuensen;
 
-// Declarations
-class cShlLogNode;
-class cShlParamKeepLog;
-class uShlKeepOwnerLog;
-
 namespace nShlKeepLog {
     enum KEEP_LOG_PHASE
     {
@@ -35,6 +30,11 @@ namespace nShlKeepLog {
         MODE_NUM = 4,
     };
 }  // namespace nShlKeepLog
+
+// Declarations
+class cShlLogNode;
+class cShlParamKeepLog;
+class uShlKeepOwnerLog;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -221,4 +221,24 @@ inline void uShlKeepOwnerLog::requestTrace() {
 
 inline void uShlKeepOwnerLog::clearRequestTrace() {
     this->mIsKeepLogReqest = false;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cShlLogNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlLogNode::DTI)->memFree(p_addr);
+}
+
+inline void* cShlParamKeepLog::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamKeepLog::DTI)->memAlloc(sz, align, ::cShlParamKeepLog::DTI.::MtDTI::getID());
+}
+
+inline void uShlKeepOwnerLog::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlKeepOwnerLog::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamKeepLog* uShlKeepOwnerLog::getShlParam() const {
+    return static_cast<const cShlParamKeepLog*>(this->::uShlBase::mpShlParam2);
 }

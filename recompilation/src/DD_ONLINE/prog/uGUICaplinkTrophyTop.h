@@ -251,3 +251,27 @@ inline uGUICaplinkTrophyTop::cListItem::cListItem() {
 inline void* uGUICaplinkTrophyTop::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUICaplinkTrophyTop::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyTop::DTI);
+}
+
+inline void uGUICaplinkTrophyTop::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyTop::DTI)->memFree(p_addr);
+}
+
+inline void* uGUICaplinkTrophyTop::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyTop::cListItem::DTI)->memAlloc(sz, align, ::uGUICaplinkTrophyTop::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUICaplinkTrophyTop::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyTop::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkTrophyTop::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTrophyTop::cListInfo::DTI)->memFree(p_addr);
+}

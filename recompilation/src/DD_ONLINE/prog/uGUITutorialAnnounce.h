@@ -109,3 +109,15 @@ inline void* uGUITutorialAnnounce::operator new(size_t sz, void* p_addr) {
 inline sGUIExt::ANNOUNCE_TYPE uGUITutorialAnnounce::getAnnounceType() const {
     return this->mAnnounceType;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUITutorialAnnounce::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUITutorialAnnounce::DTI);
+}
+
+inline void uGUITutorialAnnounce::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUITutorialAnnounce::DTI)->memFree(p_addr);
+}

@@ -21,10 +21,6 @@ void* sUserManager::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sUserManager::DTI)->memAlloc(sz, align, sUserManager::DTI.mID);
 }
 
-inline void sUserManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sUserManager::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) sUserManager::~sUserManager() {
     DDON_STUB("sUserManager::~sUserManager")
     /* stub */

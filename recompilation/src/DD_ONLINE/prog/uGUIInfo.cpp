@@ -37,16 +37,8 @@ const MtDTI& uGUIInfo::getDTI() const {
     return uGUIInfo::DTI;
 }
 
-inline MtAllocator* uGUIInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIInfo::DTI);
-}
-
 void* uGUIInfo::operator new(size_t sz, u32 align) {
     return uGUIInfo::getAllocator()->memAlloc(sz, align, uGUIInfo::DTI.getID());
-}
-
-inline void uGUIInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIInfo::~uGUIInfo() {
@@ -297,14 +289,6 @@ const MtDTI& uGUIInfo::cListItem::getDTI() const {
     return uGUIInfo::cListItem::DTI;
 }
 
-inline void* uGUIInfo::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIInfo::cListItem::DTI)->memAlloc(sz, align, uGUIInfo::cListItem::DTI.getID());
-}
-
-inline void uGUIInfo::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIInfo::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIInfo::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIInfo::cListItem::MyDTI uGUIInfo::cListItem::DTI("uGUIInfo::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 112ul, 0u, 0u);
@@ -320,10 +304,6 @@ uGUIInfo::stList::stList() {
 
 const MtDTI& uGUIInfo::cListInfo::getDTI() const {
     return uGUIInfo::cListInfo::DTI;
-}
-
-inline void uGUIInfo::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIInfo::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUIInfo::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

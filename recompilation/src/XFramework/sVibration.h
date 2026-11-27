@@ -170,6 +170,7 @@ public:
 public:
     class PadVibration
     {
+        friend class sVibration;
     public:
         PadVibration();
         virtual ~PadVibration();
@@ -312,4 +313,12 @@ inline u32 sVibration::getPadViewportNo(u32 No) const {
 
 inline u32 sVibration::getPadNum() const {
     return 4;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sVibration::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sVibration::DTI)->memFree(p_addr);
 }

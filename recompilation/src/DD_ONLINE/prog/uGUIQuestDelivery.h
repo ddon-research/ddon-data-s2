@@ -342,6 +342,10 @@ inline void uGUIQuestDelivery::setMode(u32 mode) {
     this->mMode = 2;
 }
 
+inline void uGUIQuestDelivery::setIndexData(nQuest::cGUIDeliveryData* pIndexData) {
+    this->mpIndexData = pIndexData;
+}
+
 inline uGUIQuestDelivery::stVar::stVar() {
 }
 
@@ -364,4 +368,28 @@ inline uGUIQuestDelivery::cDeliveryItem::cDeliveryItem() {
 
 inline void* uGUIQuestDelivery::cListInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIQuestDelivery::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestDelivery::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIQuestDelivery::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIQuestDelivery::cListItem::DTI)->memAlloc(sz, align, ::uGUIQuestDelivery::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIQuestDelivery::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestDelivery::cListItem::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIQuestDelivery::cDeliveryItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIQuestDelivery::cDeliveryItem::DTI)->memAlloc(sz, align, ::uGUIQuestDelivery::cDeliveryItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIQuestDelivery::cListInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestDelivery::cListInfo::DTI)->memFree(p_addr);
 }

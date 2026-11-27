@@ -125,3 +125,35 @@ inline cShlParamGeneAlongGround::cShlParamGeneAlongGround() {
 inline void* uShlGeneAlongGround::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* cShlParamGeneAlongGround::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamGeneAlongGround::DTI)->memAlloc(sz, align, ::cShlParamGeneAlongGround::DTI.::MtDTI::getID());
+}
+
+inline void cShlParamGeneAlongGround::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShlParamGeneAlongGround::DTI)->memFree(p_addr);
+}
+
+inline void* uShlGeneAlongGround::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlGeneAlongGround::DTI)->memAlloc(sz, align, ::uShlGeneAlongGround::DTI.::MtDTI::getID());
+}
+
+inline void uShlGeneAlongGround::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlGeneAlongGround::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamGeneAlongGround* uShlGeneAlongGround::getShlParam() const {
+    return static_cast<const cShlParamGeneAlongGround*>(this->::uShlBase::mpShlParam2);
+}
+
+inline uShlGeneAlongGround::uShlGeneAlongGround() {
+    this->mLastGeneratPos.x = ::MtVector3::Zero.x;
+    this->mLastGeneratPos.y = ::MtVector3::Zero.y;
+    this->mLastGeneratPos.z = ::MtVector3::Zero.z;
+    this->mLastGeneratPos.pad_ = 0.0f;
+}

@@ -80,3 +80,10 @@ inline void cFSMRelate::operator delete(void* p_addr) {
 inline MT_CTSTR cFSMRelate::getName() const {
     return mFSMName.ptr();
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cFSMRelate::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cFSMRelate::DTI);
+}

@@ -7,13 +7,6 @@
 struct SceImeEvent;
 struct SceImeKeycode;
 
-// Declarations
-struct SceImeColor;
-struct SceImeKeyboardInfo;
-struct SceImeKeyboardParam;
-struct SceImeParamExtended;
-struct SceImeTextAreaProperty;
-
 enum SceImeEnterLabel
 {
     SCE_IME_ENTER_LABEL_DEFAULT = 0,
@@ -112,6 +105,13 @@ enum SceImeVerticalAlignment
     SCE_IME_VALIGN_CENTER = 1,
     SCE_IME_VALIGN_BOTTOM = 2,
 };
+
+// Declarations
+struct SceImeColor;
+struct SceImeKeyboardInfo;
+struct SceImeKeyboardParam;
+struct SceImeParamExtended;
+struct SceImeTextAreaProperty;
 
 // Type aliases from DWARF
 using SceImeEventHandler = void(*)(void*, const SceImeEvent*);

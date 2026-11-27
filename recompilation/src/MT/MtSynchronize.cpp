@@ -1,6 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include <_pthread.h>
+#include <kernel.h>
 #include <stdlib.h>
 #include "MtSynchronize.h"
 #ifndef DDON_STUB
@@ -34,13 +35,20 @@ __attribute__((noinline)) MtCriticalSection::~MtCriticalSection() {
     }
 }
 
+void nWin32Detour::waitForSingleObject(nWin32Detour::eventFlag& cs) {
+    sceKernelWaitEventFlag(cs.mEventFlag, 1ul, 17u, static_cast<uint64_t*>(nullptr), static_cast<SceKernelUseconds*>(nullptr));
+}
+
+void nWin32Detour::setEvent(nWin32Detour::eventFlag& cs) {
+    sceKernelSetEventFlag(cs.mEventFlag, 1ul);
+}
+
 nWin32Detour::eventFlag::eventFlag() {
     DDON_STUB("nWin32Detour::eventFlag::eventFlag")
     /* stub */
 }
 
 nWin32Detour::eventFlag::~eventFlag() {
-    DDON_STUB("nWin32Detour::eventFlag::~eventFlag")
-    /* stub */
+    ::sceKernelDeleteEventFlag(mEventFlag);
 }
 

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "nGUI.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtEaseCurve.h"
 #include "../MT/MtMath.h"
@@ -49,10 +48,6 @@ const MtDTI& nGUI::WrapPoint::getDTI() const {
     return nGUI::WrapPoint::DTI;
 }
 
-inline void nGUI::WrapPoint::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nGUI::WrapPoint::DTI)->memFree(p_addr);
-}
-
 void nGUI::WrapPoint::createProperty(MtPropertyList& s) {
     s << ::MtProperty(static_cast<MtObject*>(this), "Unicode", &mUnicode, 1u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "Start a new line after continued wrap points", &mStartNewLineAfterContdWrapPts, 0u, 0u);
@@ -70,10 +65,6 @@ __attribute__((weak)) MtObject* nGUI::WrapPoint::MyDTI::newInstance() const {
 
 const MtDTI& nGUI::Language::getDTI() const {
     return nGUI::Language::DTI;
-}
-
-inline void nGUI::Language::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nGUI::Language::DTI)->memFree(p_addr);
 }
 
 MT_CTSTR nGUI::Language::getLanguageShortName(nGUI::LANGUAGE language) {
@@ -120,10 +111,6 @@ __attribute__((weak)) MtObject* nGUI::Language::MyDTI::newInstance() const {
 
 const MtDTI& nGUI::BlendState::getDTI() const {
     return nGUI::BlendState::DTI;
-}
-
-inline void nGUI::BlendState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nGUI::BlendState::DTI)->memFree(p_addr);
 }
 
 inline nGUI::BlendState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -178,10 +165,6 @@ nGUI::MTAG* nGUI::MessageDrawState::searchDrawLineMTag(nGUI::MTAG* pMTag, nGUI::
 
 const MtDTI& nGUI::SamplerState::getDTI() const {
     return nGUI::SamplerState::DTI;
-}
-
-inline void nGUI::SamplerState::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nGUI::SamplerState::DTI)->memFree(p_addr);
 }
 
 inline nGUI::SamplerState::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

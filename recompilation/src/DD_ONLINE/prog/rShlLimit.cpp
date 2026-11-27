@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rShlLimit.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -13,14 +11,6 @@
 
 const MtDTI& cCustomShlLimit::getDTI() const {
     return cCustomShlLimit::DTI;
-}
-
-inline void* cCustomShlLimit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCustomShlLimit::DTI)->memAlloc(sz, align, cCustomShlLimit::DTI.getID());
-}
-
-inline void cCustomShlLimit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCustomShlLimit::DTI)->memFree(p_addr);
 }
 
 inline cCustomShlLimit::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -35,14 +25,6 @@ const MtDTI& cShlLimit::getDTI() const {
     return cShlLimit::DTI;
 }
 
-inline void* cShlLimit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlLimit::DTI)->memAlloc(sz, align, cShlLimit::DTI.getID());
-}
-
-inline void cShlLimit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlLimit::DTI)->memFree(p_addr);
-}
-
 inline cShlLimit::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cShlLimit::MyDTI cShlLimit::DTI("cShlLimit", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -53,14 +35,6 @@ MtObject* cShlLimit::MyDTI::newInstance() const {
 
 const MtDTI& rCustimShlLimit::getDTI() const {
     return rCustimShlLimit::DTI;
-}
-
-inline void* rCustimShlLimit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCustimShlLimit::DTI)->memAlloc(sz, align, rCustimShlLimit::DTI.getID());
-}
-
-inline void rCustimShlLimit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCustimShlLimit::DTI)->memFree(p_addr);
 }
 
 bool rCustimShlLimit::loadData(MtDataReader& r, cCustomShlLimit* pData) {
@@ -89,14 +63,6 @@ MtObject* rCustimShlLimit::MyDTI::newInstance() const {
 
 const MtDTI& rShlLimit::getDTI() const {
     return rShlLimit::DTI;
-}
-
-inline void* rShlLimit::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rShlLimit::DTI)->memAlloc(sz, align, rShlLimit::DTI.getID());
-}
-
-inline void rShlLimit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rShlLimit::DTI)->memFree(p_addr);
 }
 
 bool rShlLimit::loadData(MtDataReader& r, cShlLimit* pData) {

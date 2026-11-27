@@ -37,16 +37,8 @@ const MtDTI& uOmSwingInstancing::getDTI() const {
     return uOmSwingInstancing::DTI;
 }
 
-inline MtAllocator* uOmSwingInstancing::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uOmSwingInstancing::DTI);
-}
-
 void* uOmSwingInstancing::operator new(size_t sz, u32 align) {
     return uOmSwingInstancing::getAllocator()->memAlloc(sz, align, uOmSwingInstancing::DTI.getID());
-}
-
-inline void uOmSwingInstancing::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uOmSwingInstancing::DTI)->memFree(p_addr);
 }
 
 uOmSwingInstancing::uOmSwingInstancing() {
@@ -144,10 +136,6 @@ __attribute__((weak)) MtObject* uOmSwingInstancing::MyDTI::newInstance() const {
 
 const MtDTI& uOmSwingModelInstancing::getDTI() const {
     return uOmSwingModelInstancing::DTI;
-}
-
-inline void uOmSwingModelInstancing::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uOmSwingModelInstancing::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uOmSwingModelInstancing::move() {

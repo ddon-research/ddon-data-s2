@@ -38,14 +38,6 @@ const MtDTI& uGUI::getDTI() const {
     return uGUI::DTI;
 }
 
-inline MtAllocator* uGUI::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUI::DTI);
-}
-
-inline void uGUI::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUI::DTI)->memFree(p_addr);
-}
-
 uGUI::uGUI() {
     DDON_STUB("uGUI::uGUI")
     /* stub */
@@ -100,9 +92,27 @@ void uGUI::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U8, "StencilRef", reinterpret_cast<MT_MFUNC>(&::uGUI::getStencilRef), reinterpret_cast<MT_MFUNC>(&::uGUI::setStencilRef), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
-__attribute__((weak)) MT_CTSTR uGUI::getName() {
-    DDON_STUB("uGUI::getName")
-    return {};
+MT_CTSTR uGUI::getName() {
+    rGUI* v0_0 = mpResource;
+    unsigned int i0_1;
+    int v0_3;
+    if (v0_0 == nullptr) {
+        return this->cUnit::getName();
+    } else {
+        i0_1 = 0;
+        v0_3 = 0;
+    }
+    for (;;) {
+        if (v0_0->mPath[i0_1] == 0) {
+            break;
+        } else {
+            if (v0_0->mPath[i0_1] == 92) {
+                v0_3 = static_cast<int>(i0_1 + 1u);
+            }
+            i0_1 = i0_1 + 1u;
+        }
+    }
+    return &v0_0->mPath[v0_3];
 }
 
 __attribute__((weak)) void uGUI::setResource(rGUI* pResource) {

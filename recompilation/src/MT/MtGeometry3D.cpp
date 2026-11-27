@@ -69,9 +69,17 @@ void MtGeometry::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 8193u, 0u);
 }
 
-__attribute__((weak)) void MtGeometry::getBoundingAABB(MtAABB& aabb) const {
-    DDON_STUB("MtGeometry::getBoundingAABB")
-    /* stub */
+void MtGeometry::getBoundingAABB(MtAABB& aabb) const {
+    const f32 t0 = MtVector3::One.y;
+    const f32 t1 = MtVector3::One.z;
+    aabb.minpos.x = -MtVector3::One.x;
+    aabb.minpos.y = -t0;
+    aabb.minpos.z = -t1;
+    aabb.minpos.pad_ = 0.0f;
+    aabb.maxpos.x = MtVector3::One.x;
+    aabb.maxpos.y = MtVector3::One.y;
+    aabb.maxpos.z = MtVector3::One.z;
+    aabb.maxpos.pad_ = 0.0f;
 }
 
 void MtGeometry::getBoundingSphere(MtSphere& sphere) const {

@@ -167,3 +167,19 @@ inline void cEnemyStatusChange::operator delete[](void* p_addr) {
 inline void* cEnemyStatusChange::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEnemyStatusChange::DTI)->memAlloc(sz, align, ::cEnemyStatusChange::DTI.::MtDTI::getID());
 }
+
+inline void* cEnemyStatusChange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEnemyStatusChange::DTI)->memAlloc(sz, align, ::cEnemyStatusChange::DTI.::MtDTI::getID());
+}
+
+inline void cEnemyStatusChange::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEnemyStatusChange::DTI)->memFree(p_addr);
+}
+
+inline void* rEnemyStatusChange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEnemyStatusChange::DTI)->memAlloc(sz, align, ::rEnemyStatusChange::DTI.::MtDTI::getID());
+}
+
+inline void rEnemyStatusChange::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEnemyStatusChange::DTI)->memFree(p_addr);
+}

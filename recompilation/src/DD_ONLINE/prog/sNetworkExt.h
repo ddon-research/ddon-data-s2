@@ -37,6 +37,7 @@ class MtPropertyList;
 class MtTime;
 class MtUI;
 struct SceNpId;
+class aStage;
 class cCharacterData;
 class cMenuApproveInvitedClan;
 class cMenuClanInfoDisp;
@@ -57,11 +58,16 @@ namespace nNet { struct stClanEmblem; }
 namespace nNet { struct stEntryBoardItemInfo; }
 namespace nSessionManager { class cNetSessionManager; }
 class sBazaarManager;
+class sClanKyoten;
 class sGame;
 class sQuestManagerExt;
+class sReward;
 class sSavedataExt;
 class uGUIAnnounce;
+class uGUIClanEmblem;
+class uGUIClanStatus;
 class uGUICommunityList;
+class uGUIGPShop;
 
 // Declarations
 class sNetworkExt;
@@ -91,6 +97,7 @@ using u8 = unsigned char;
 
 class sNetworkExt : public sNetwork
 {
+    friend class aStage;
     friend class cMenuApproveInvitedClan;
     friend class cMenuClanInfoDisp;
     friend class cMenuFriendList;
@@ -105,11 +112,16 @@ class sNetworkExt : public sNetwork
     friend class cQuestTaskParam;
     friend class nSessionManager::cNetSessionManager;
     friend class sBazaarManager;
+    friend class sClanKyoten;
     friend class sGame;
     friend class sQuestManagerExt;
+    friend class sReward;
     friend class sSavedataExt;
     friend class uGUIAnnounce;
+    friend class uGUIClanEmblem;
+    friend class uGUIClanStatus;
     friend class uGUICommunityList;
+    friend class uGUIGPShop;
 public:
     enum LOGIN_RNO
     {
@@ -628,6 +640,10 @@ inline cNetGameServer* sNetworkExt::getGameServer() {
     return this->mpGameServer;
 }
 
+inline s32 sNetworkExt::getUserIndex() const {
+    return this->mUserIndex;
+}
+
 inline bool sNetworkExt::isToLauncher() {
     return this->mIsToLauncher;
 }
@@ -682,4 +698,34 @@ inline bool sNetworkExt::isLeaveOnTheWayBusy() {
 
 inline void sNetworkExt::setLeaveOnTheWayTimer(f32 timer) {
     this->mLeaveOnTheWayTimer = timer;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/sMain.h"
+
+inline MtAllocator* sNetworkExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sNetworkExt::DTI);
+}
+
+inline void sNetworkExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sNetworkExt::DTI)->memFree(p_addr);
+}
+
+inline void sNetworkExt::shutdownCore() {
+    this->::sNetwork::shutdownContext(static_cast<u32>(this->mUserIndex), 0);
+}
+
+inline void sNetworkExt::updateLeaveOnTheWayTimer() {
+    if (!static_cast<sNetworkExt*>(::sNetwork::mpInstance)->mLeaveOnTheWayBusy) {
+        return;
+    }
+    if (this->mLeaveOnTheWayTimer > 0.0f) {
+        this->mLeaveOnTheWayTimer = this->mLeaveOnTheWayTimer - (::sMain::mpInstance)->mDeltaTime;
+    }
+}
+
+inline void sNetworkExt::cAchievementListener::setParent(sNetworkExt* p) {
+    p->mAchievementListener.mpParent = p;
 }

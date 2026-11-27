@@ -105,3 +105,15 @@ public:
 inline void* uGUISkillLvUp::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUISkillLvUp::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUISkillLvUp::DTI);
+}
+
+inline void uGUISkillLvUp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUISkillLvUp::DTI)->memFree(p_addr);
+}

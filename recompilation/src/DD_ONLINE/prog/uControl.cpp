@@ -23,6 +23,7 @@
 #include "cpActionManager.h"
 #include "cpComponent.h"
 #include "cpLayout.h"
+#include "cpRootComponent.h"
 #include "cpTransparencyCtrl.h"
 #include "nLayout.h"
 #include "nNetMsgData.h"
@@ -46,10 +47,6 @@
 
 const MtDTI& uControl::getDTI() const {
     return uControl::DTI;
-}
-
-inline void uControl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uControl::DTI)->memFree(p_addr);
 }
 
 uControl::uControl() {
@@ -302,12 +299,6 @@ void uControl::updateBossCondSendInterval() {
     mBossCondSendInterval = 90.0f;
 }
 
-inline void uControl::sendSaveNetMessage() {
-    mpNetRpc->sendNetAction(nNetMsgData::nCtrl::NET_MSG_ID_ACT_NORMAL, nNetMsg::MSG_PRIO_LOW, nNetMsg::MSG_ADR_OTHER, 0u);
-    mSendActIntervalTimer = 30.0f;
-    mIsSaveSendAct = false;
-}
-
 __attribute__((weak)) void uControl::sendNetMessage() {
     DDON_STUB("uControl::sendNetMessage")
     /* stub */
@@ -342,9 +333,34 @@ __attribute__((weak)) void uControl::setSetPos(const MtVector3& pos) {
     /* stub */
 }
 
-__attribute__((weak)) bool uControl::fadeUnit() {
-    DDON_STUB("uControl::fadeUnit")
-    return {};
+bool uControl::fadeUnit() {
+    if (mpModel != nullptr) {
+        if (1.1920929e-7f > mpModel->mTransparency) {
+            mIsFadeOut = false;
+            return true;
+        } else {
+            cpComponent* t0 = mpModel->mComponentMgr.getRootComponent()->find(cpTransparencyCtrl::DTI, true, true);
+            if (t0 != nullptr) {
+                mFadeTimer = mFadeTimer - sMain::getInstance()->mDeltaTime;
+                if (0.0f > mFadeTimer) {
+                    mIsFadeOut = false;
+                    mFadeTimer = 0.0f;
+                    return true;
+                } else {
+                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 113)) == 0) {
+                        static_cast<cpTransparencyCtrl*>(t0)->startChangeTrp(0.0f, 30.0f);
+                    }
+                    return false;
+                }
+            } else {
+                mIsFadeOut = false;
+                return true;
+            }
+        }
+    } else {
+        mIsFadeOut = false;
+        return true;
+    }
 }
 
 void uControl::setFadeOut() {

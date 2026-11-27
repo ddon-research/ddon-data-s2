@@ -22,16 +22,8 @@ const MtDTI& cLayoutSetGeneralPoint::getDTI() const {
     return cLayoutSetGeneralPoint::DTI;
 }
 
-inline MtAllocator* cLayoutSetGeneralPoint::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cLayoutSetGeneralPoint::DTI);
-}
-
 void* cLayoutSetGeneralPoint::operator new(size_t sz, u32 align) {
     return cLayoutSetGeneralPoint::getAllocator()->memAlloc(sz, align, cLayoutSetGeneralPoint::DTI.getID());
-}
-
-inline void cLayoutSetGeneralPoint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLayoutSetGeneralPoint::DTI)->memFree(p_addr);
 }
 
 cLayoutSetGeneralPoint::cLayoutSetGeneralPoint() {

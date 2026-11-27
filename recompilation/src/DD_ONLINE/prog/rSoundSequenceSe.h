@@ -237,3 +237,36 @@ inline rSoundSequenceSe::SequenceSe::Command::Command() {
     mValue[0] = 0.0f;
     mValue[1] = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rSoundSequenceSe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundSequenceSe::DTI)->memAlloc(sz, align, ::rSoundSequenceSe::DTI.::MtDTI::getID());
+}
+
+inline void rSoundSequenceSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSequenceSe::DTI)->memFree(p_addr);
+}
+
+inline rSoundSequenceSe::rSoundSequenceSe() {
+    this->::cResource::setAttribute(22u);
+    this->mHeader.Magic = 0x52515353;
+    this->mHeader.Version = 1;
+    this->mpRequest = nullptr;
+    this->mPauseStatus = 0;
+    this->mSeqSe.::MtArray::mAutoDelete = true;
+}
+
+inline void* rSoundSequenceSe::SequenceSe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundSequenceSe::SequenceSe::DTI)->memAlloc(sz, align, ::rSoundSequenceSe::SequenceSe::DTI.::MtDTI::getID());
+}
+
+inline void rSoundSequenceSe::SequenceSe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSequenceSe::SequenceSe::DTI)->memFree(p_addr);
+}
+
+inline void rSoundSequenceSe::SequenceSe::Command::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundSequenceSe::SequenceSe::Command::DTI)->memFree(p_addr);
+}

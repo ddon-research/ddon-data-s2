@@ -25,10 +25,6 @@ void* MtGeomOBB::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomOBB::DTI)->memAlloc(sz, align, MtGeomOBB::DTI.mID);
 }
 
-inline void MtGeomOBB::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomOBB::DTI)->memFree(p_addr);
-}
-
 void MtGeomOBB::load(MtDataReader& fin) {
     mOBB.coord.m[0].x = fin.readF32();
     mOBB.coord.m[0].y = fin.readF32();

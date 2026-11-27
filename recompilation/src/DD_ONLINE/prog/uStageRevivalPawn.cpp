@@ -48,16 +48,8 @@ const MtDTI& uStageRevivalPawn::getDTI() const {
     return uStageRevivalPawn::DTI;
 }
 
-inline MtAllocator* uStageRevivalPawn::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uStageRevivalPawn::DTI);
-}
-
 void* uStageRevivalPawn::operator new(size_t sz, u32 align) {
     return uStageRevivalPawn::getAllocator()->memAlloc(sz, align, uStageRevivalPawn::DTI.getID());
-}
-
-inline void uStageRevivalPawn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uStageRevivalPawn::DTI)->memFree(p_addr);
 }
 
 uStageRevivalPawn::uStageRevivalPawn() {

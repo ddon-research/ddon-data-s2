@@ -194,3 +194,31 @@ inline void* cSplitLot::operator new(size_t sz, void* p_addr) {
 inline cLayoutSet* cSplitLot::getLotSet() {
     return &this->mLotSet;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cSplitArc::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cSplitArc::DTI);
+}
+
+inline void cSplitArc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSplitArc::DTI)->memFree(p_addr);
+}
+
+inline void* cSplitBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSplitBase::DTI)->memAlloc(sz, align, ::cSplitBase::DTI.::MtDTI::getID());
+}
+
+inline void cSplitBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSplitBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cSplitLot::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cSplitLot::DTI);
+}
+
+inline void cSplitLot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSplitLot::DTI)->memFree(p_addr);
+}

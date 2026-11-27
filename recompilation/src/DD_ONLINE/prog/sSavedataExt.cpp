@@ -31,10 +31,6 @@ const MtDTI& cStorageData::getDTI() const {
     return cStorageData::DTI;
 }
 
-inline void cStorageData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStorageData::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cStorageData::save(MtDataWriter& w, u32 SaveVersion) {
     DDON_STUB("cStorageData::save")
     /* stub */
@@ -172,14 +168,6 @@ const MtDTI& cStorageDataBase::getDTI() const {
     return cStorageDataBase::DTI;
 }
 
-inline void* cStorageDataBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStorageDataBase::DTI)->memAlloc(sz, align, cStorageDataBase::DTI.getID());
-}
-
-inline void cStorageDataBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStorageDataBase::DTI)->memFree(p_addr);
-}
-
 bool cStorageDataBase::isWriteUserHeader() const {
     return false;
 }
@@ -211,10 +199,6 @@ cStorageDataBase::UserHeader::UserHeader() {
 
 const MtDTI& cStorageDataEdit::getDTI() const {
     return cStorageDataEdit::DTI;
-}
-
-inline void cStorageDataEdit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStorageDataEdit::DTI)->memFree(p_addr);
 }
 
 cStorageDataEdit::~cStorageDataEdit() {
@@ -405,16 +389,8 @@ const MtDTI& sSavedataExt::getDTI() const {
     return sSavedataExt::DTI;
 }
 
-inline MtAllocator* sSavedataExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sSavedataExt::DTI);
-}
-
 void* sSavedataExt::operator new(size_t sz, u32 align) {
     return sSavedataExt::getAllocator()->memAlloc(sz, align, sSavedataExt::DTI.getID());
-}
-
-inline void sSavedataExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSavedataExt::DTI)->memFree(p_addr);
 }
 
 sSavedataExt::sSavedataExt() {

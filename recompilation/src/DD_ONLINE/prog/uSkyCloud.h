@@ -134,3 +134,15 @@ inline void uSkyCloudModel::setWeatherID(s32 weatherID) {
 inline void uSkyCloudModel::setViewType(u32 viewType) {
     this->mViewType = viewType;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uSkyCloudModel::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uSkyCloudModel::DTI);
+}
+
+inline void uSkyCloudModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSkyCloudModel::DTI)->memFree(p_addr);
+}

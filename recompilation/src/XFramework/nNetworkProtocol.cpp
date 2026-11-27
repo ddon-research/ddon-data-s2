@@ -13,6 +13,7 @@
 #include "../MT/MtRandom.h"
 #include "../MT/MtStream.h"
 #include "nNetworkCoder.h"
+#include "nNetworkPacket.h"
 #include "nNetworkQueue.h"
 #include "nNetworkRoute.h"
 #include "nNetworkSession.h"
@@ -55,10 +56,6 @@ void* nNetwork::ProtocolStandard::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nNetwork::ProtocolStandard::DTI)->memAlloc(sz, align, ::nNetwork::ProtocolStandard::DTI.mID);
 }
 
-inline void nNetwork::ProtocolStandard::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::ProtocolStandard::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) nNetwork::ProtocolStandard::~ProtocolStandard() {
     DDON_STUB("nNetwork::ProtocolStandard::~ProtocolStandard")
     /* stub */
@@ -78,9 +75,20 @@ __attribute__((weak)) void nNetwork::ProtocolStandard::move() {
     /* stub */
 }
 
-__attribute__((weak)) void nNetwork::ProtocolStandard::create(s32 index) {
-    DDON_STUB("nNetwork::ProtocolStandard::create")
-    /* stub */
+void nNetwork::ProtocolStandard::create(s32 index) {
+    nNetwork::Session* j0;
+    nNetwork::Session* t0 = mpSession;
+    if (t0 == nullptr) {
+        return;
+    }
+    if (mQueue[index].mpPool == nullptr) {
+        mQueue[index].::nNetwork::BlockBuffer::init(t0->mpPool, 128u, &mQueue[index].mBlockList[0]);
+        j0 = mpSession;
+    } else {
+        j0 = t0;
+    }
+    mBuffer[index].mpBlock = static_cast<u8*>(j0->mpPool->allocate());
+    mBuffer[index].mFatal = false;
 }
 
 void nNetwork::ProtocolStandard::remove(s32 index) {
@@ -155,10 +163,6 @@ const MtDTI& nNetwork::ProtocolStandard::Queue::getDTI() const {
     return nNetwork::ProtocolStandard::Queue::DTI;
 }
 
-inline void nNetwork::ProtocolStandard::Queue::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::ProtocolStandard::Queue::DTI)->memFree(p_addr);
-}
-
 void nNetwork::ProtocolStandard::Queue::createProperty(MtPropertyList& s) {
     this->::nNetwork::BlockQueue::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "mHeadSequence", &mHeadSequence, 0u, 0u);
@@ -171,9 +175,8 @@ inline nNetwork::ProtocolStandard::Queue::MyDTI::MyDTI(MT_CTSTR class_name, MtDT
 
 nNetwork::ProtocolStandard::Queue::MyDTI nNetwork::ProtocolStandard::Queue::DTI("nNetwork::ProtocolStandard::Queue", &::nNetwork::BlockQueue::DTI, 1184ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* nNetwork::ProtocolStandard::Queue::MyDTI::newInstance() const {
-    DDON_STUB("nNetwork::ProtocolStandard::Queue::MyDTI::newInstance")
-    return nullptr;
+MtObject* nNetwork::ProtocolStandard::Queue::MyDTI::newInstance() const {
+    return new (16u) ::nNetwork::ProtocolStandard::Queue;
 }
 
 void nNetwork::ProtocolStandard::Buffer::write(nNetwork::Decoder* pdec, u32 data_size, u16 seq) {

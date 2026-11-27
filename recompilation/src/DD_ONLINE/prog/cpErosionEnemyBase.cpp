@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cpErosionEnemyBase.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cDelegate.h"
 #include "cHitInfoAfter.h"
@@ -31,10 +29,6 @@
 
 const MtDTI& cpErosionEnemyBase::getDTI() const {
     return cpErosionEnemyBase::DTI;
-}
-
-inline void cpErosionEnemyBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpErosionEnemyBase::DTI)->memFree(p_addr);
 }
 
 cpErosionEnemyBase::cpErosionEnemyBase() {
@@ -173,18 +167,6 @@ __attribute__((weak)) void cpErosionEnemyBase::setErosionSoundRes(rSoundRequest*
 __attribute__((weak)) void cpErosionEnemyBase::setErosionAttackParam(rAttackParam* pRes, nErosionEnemyBase::EROSION_LEVEL level) {
     DDON_STUB("cpErosionEnemyBase::setErosionAttackParam")
     /* stub */
-}
-
-inline void cpErosionEnemyBase::releaseErosionAttackParam(nErosionEnemyBase::EROSION_LEVEL level) {
-    if (mpErosionAttackParamRes[level] == nullptr) {
-        return;
-    }
-    (sObjCollision::mpInstance)->sObjCollision::releaseAttackParamTable(mpErosionAttackParamRes[level]);
-    if (mpErosionAttackParamRes[level] == nullptr) {
-        return;
-    }
-    mpErosionAttackParamRes[level]->cResource::release();
-    mpErosionAttackParamRes[level] = nullptr;
 }
 
 nErosionEnemyBase::EROSION_LEVEL cpErosionEnemyBase::getErosionCurrentLevel() const {

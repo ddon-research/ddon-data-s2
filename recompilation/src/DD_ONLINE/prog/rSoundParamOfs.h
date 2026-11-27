@@ -170,3 +170,19 @@ inline void cSoundParamOfs::operator delete[](void* p_addr) {
 inline void* cSoundParamOfs::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cSoundParamOfs::DTI)->memAlloc(sz, align, ::cSoundParamOfs::DTI.::MtDTI::getID());
 }
+
+inline void* cSoundParamOfs::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSoundParamOfs::DTI)->memAlloc(sz, align, ::cSoundParamOfs::DTI.::MtDTI::getID());
+}
+
+inline void cSoundParamOfs::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cSoundParamOfs::DTI)->memFree(p_addr);
+}
+
+inline void* rSoundParamOfs::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rSoundParamOfs::DTI)->memAlloc(sz, align, ::rSoundParamOfs::DTI.::MtDTI::getID());
+}
+
+inline void rSoundParamOfs::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundParamOfs::DTI)->memFree(p_addr);
+}

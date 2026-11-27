@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../XFramework/uConstraint.h"
 #include "../../XFramework/uCoord.h"
@@ -17,16 +16,8 @@ const MtDTI& uCnsWeapon::getDTI() const {
     return uCnsWeapon::DTI;
 }
 
-inline MtAllocator* uCnsWeapon::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCnsWeapon::DTI);
-}
-
 void* uCnsWeapon::operator new(size_t sz, u32 align) {
     return uCnsWeapon::getAllocator()->memAlloc(sz, align, uCnsWeapon::DTI.getID());
-}
-
-inline void uCnsWeapon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsWeapon::DTI)->memFree(p_addr);
 }
 
 uCnsWeapon::uCnsWeapon() {

@@ -74,3 +74,20 @@ protected:
 inline void* rBowActParamList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rBowActParamList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rBowActParamList::DTI)->memAlloc(sz, align, ::rBowActParamList::DTI.::MtDTI::getID());
+}
+
+inline void rBowActParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rBowActParamList::DTI)->memFree(p_addr);
+}
+
+inline rBowActParamList::rBowActParamList() {
+    this->::cResource::setAttribute(18u);
+    this->mParamList.mAutoDelete = true;
+}

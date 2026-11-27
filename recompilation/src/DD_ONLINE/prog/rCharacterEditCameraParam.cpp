@@ -36,30 +36,6 @@ const MtDTI& cCharacterEditCameraParam::cCameraParam::getDTI() const {
     return cCharacterEditCameraParam::cCameraParam::DTI;
 }
 
-inline void* cCharacterEditCameraParam::cCameraParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCharacterEditCameraParam::cCameraParam::DTI)->memAlloc(sz, align, cCharacterEditCameraParam::cCameraParam::DTI.getID());
-}
-
-inline void cCharacterEditCameraParam::cCameraParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharacterEditCameraParam::cCameraParam::DTI)->memFree(p_addr);
-}
-
-cCharacterEditCameraParam::cCameraParam::cCameraParam() {
-    mAttachJoint = 3;
-    mTargetOffset.x = MtVector3::Zero.x;
-    mTargetOffset.y = MtVector3::Zero.y;
-    mTargetOffset.z = MtVector3::Zero.z;
-    mTargetOffset.pad_ = 0.0f;
-    mCameraOffset.x = mTargetOffset.x;
-    mCameraOffset.y = mTargetOffset.y;
-    mCameraOffset.z = mTargetOffset.z;
-    mCameraOffset.pad_ = 0.0f;
-    mGlobalOffset.x = mCameraOffset.x;
-    mGlobalOffset.y = mCameraOffset.y;
-    mGlobalOffset.z = mCameraOffset.z;
-    mGlobalOffset.pad_ = 0.0f;
-}
-
 void cCharacterEditCameraParam::cCameraParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mAttachJoint", &mAttachJoint, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mCameraOffset", &mCameraOffset, 0u, 0u);
@@ -77,10 +53,6 @@ MtObject* cCharacterEditCameraParam::cCameraParam::MyDTI::newInstance() const {
 
 const MtDTI& rCharacterEditCameraParam::getDTI() const {
     return rCharacterEditCameraParam::DTI;
-}
-
-inline void* rCharacterEditCameraParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCharacterEditCameraParam::DTI)->memAlloc(sz, align, rCharacterEditCameraParam::DTI.getID());
 }
 
 __attribute__((weak)) bool rCharacterEditCameraParam::loadData(MtDataReader& r, cCharacterEditCameraParam* pData) {

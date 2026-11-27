@@ -23,10 +23,6 @@ void* MtGeomTriangle::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomTriangle::DTI)->memAlloc(sz, align, MtGeomTriangle::DTI.mID);
 }
 
-inline void MtGeomTriangle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomTriangle::DTI)->memFree(p_addr);
-}
-
 void MtGeomTriangle::load(MtDataReader& fin) {
     mTriangle.p0.x = fin.readF32();
     mTriangle.p1.x = fin.readF32();
@@ -198,9 +194,16 @@ void MtGeomTriangle::setScale(f32 scale) {
     mTriangle.p2.z = mTriangle.p2.z * scale;
 }
 
-__attribute__((weak)) void MtGeomTriangle::addPos(const MtVector3& pos) {
-    DDON_STUB("MtGeomTriangle::addPos")
-    /* stub */
+void MtGeomTriangle::addPos(const MtVector3& pos) {
+    mTriangle.p0.x = pos.x + mTriangle.p0.x;
+    mTriangle.p0.y = pos.y + mTriangle.p0.y;
+    mTriangle.p0.z = pos.z + mTriangle.p0.z;
+    mTriangle.p1.x = pos.x + mTriangle.p1.x;
+    mTriangle.p1.y = pos.y + mTriangle.p1.y;
+    mTriangle.p1.z = pos.z + mTriangle.p1.z;
+    mTriangle.p2.x = pos.x + mTriangle.p2.x;
+    mTriangle.p2.y = pos.y + mTriangle.p2.y;
+    mTriangle.p2.z = pos.z + mTriangle.p2.z;
 }
 
 inline MtGeomTriangle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

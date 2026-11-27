@@ -16,16 +16,8 @@ const MtDTI& cCharParamEnemy::getDTI() const {
     return cCharParamEnemy::DTI;
 }
 
-inline MtAllocator* cCharParamEnemy::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCharParamEnemy::DTI);
-}
-
 void* cCharParamEnemy::operator new(size_t sz, u32 align) {
     return cCharParamEnemy::getAllocator()->memAlloc(sz, align, cCharParamEnemy::DTI.getID());
-}
-
-inline void cCharParamEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharParamEnemy::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cCharParamEnemy::cCharParamEnemy() {
@@ -155,14 +147,6 @@ const MtDTI& cCharParamEnemy::cJumpAttackSpeed::getDTI() const {
     return cCharParamEnemy::cJumpAttackSpeed::DTI;
 }
 
-inline void* cCharParamEnemy::cJumpAttackSpeed::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCharParamEnemy::cJumpAttackSpeed::DTI)->memAlloc(sz, align, cCharParamEnemy::cJumpAttackSpeed::DTI.getID());
-}
-
-inline void cCharParamEnemy::cJumpAttackSpeed::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharParamEnemy::cJumpAttackSpeed::DTI)->memFree(p_addr);
-}
-
 void cCharParamEnemy::cJumpAttackSpeed::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\346\234\211\345\212\271\343\203\225\343\203\251\343\202\260", &mIsValid, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\345\211\215\346\226\271\351\200\237\345\272\246", &mSpeedZ, 0u, 0u);
@@ -184,14 +168,6 @@ MtObject* cCharParamEnemy::cJumpAttackSpeed::MyDTI::newInstance() const {
 
 const MtDTI& cCharParamEnemy::cGuardCounter::getDTI() const {
     return cCharParamEnemy::cGuardCounter::DTI;
-}
-
-inline void* cCharParamEnemy::cGuardCounter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCharParamEnemy::cGuardCounter::DTI)->memAlloc(sz, align, cCharParamEnemy::cGuardCounter::DTI.getID());
-}
-
-inline void cCharParamEnemy::cGuardCounter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharParamEnemy::cGuardCounter::DTI)->memFree(p_addr);
 }
 
 void cCharParamEnemy::cGuardCounter::createProperty(MtPropertyList& s) {

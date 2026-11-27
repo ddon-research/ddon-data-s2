@@ -246,3 +246,15 @@ inline void* sNpcManager::operator new(size_t sz, void* p_addr) {
 inline sNpcManager* sNpcManager::getInstance() {
     return ::sNpcManager::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sNpcManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sNpcManager::DTI);
+}
+
+inline void sNpcManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sNpcManager::DTI)->memFree(p_addr);
+}

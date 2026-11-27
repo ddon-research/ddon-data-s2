@@ -120,3 +120,19 @@ inline void cNpcMeetingPlace::operator delete[](void* p_addr) {
 inline void* cNpcMeetingPlace::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cNpcMeetingPlace::DTI)->memAlloc(sz, align, ::cNpcMeetingPlace::DTI.::MtDTI::getID());
 }
+
+inline void* cNpcMeetingPlace::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cNpcMeetingPlace::DTI)->memAlloc(sz, align, ::cNpcMeetingPlace::DTI.::MtDTI::getID());
+}
+
+inline void cNpcMeetingPlace::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNpcMeetingPlace::DTI)->memFree(p_addr);
+}
+
+inline void* rNpcMeetingPlace::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNpcMeetingPlace::DTI)->memAlloc(sz, align, ::rNpcMeetingPlace::DTI.::MtDTI::getID());
+}
+
+inline void rNpcMeetingPlace::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNpcMeetingPlace::DTI)->memFree(p_addr);
+}

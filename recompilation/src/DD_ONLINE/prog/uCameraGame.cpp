@@ -229,14 +229,6 @@ const MtDTI& cCamExParamSdr::cSdrParam::getDTI() const {
     return cCamExParamSdr::cSdrParam::DTI;
 }
 
-inline void* cCamExParamSdr::cSdrParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCamExParamSdr::cSdrParam::DTI)->memAlloc(sz, align, cCamExParamSdr::cSdrParam::DTI.getID());
-}
-
-inline void cCamExParamSdr::cSdrParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamExParamSdr::cSdrParam::DTI)->memFree(p_addr);
-}
-
 void cCamExParamSdr::cSdrParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mFrame", &mFrame, 0u, 0u);
@@ -305,13 +297,32 @@ const MtDTI& cCamImpBase::getDTI() const {
     return cCamImpBase::DTI;
 }
 
-inline void cCamImpBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpBase::DTI)->memFree(p_addr);
-}
-
 cCamImpBase::cCamImpBase() {
-    DDON_STUB("cCamImpBase::cCamImpBase")
-    /* stub */
+    mIsInterporate = false;
+    mIsActEnd = false;
+    mIsFinal = false;
+    mpOwner = nullptr;
+    mpC = nullptr;
+    mIsEndWithAnm = true;
+    mpParam = nullptr;
+    mIsFinalEnd = false;
+    mCameraFrame = 0.0f;
+    mIsWallAdjust = false;
+    mAdjustCnt = 0;
+    mPriority = 1;
+    mEndInterFrame = 0.0f;
+    mEndInterType = cCamInterPreset::INTER_TYPE_PL_LINER;
+    mEndFrameType = cCamInterPreset::FRAME_NORMAL;
+    mQuakeNo = -1;
+    mSysFlag = 0;
+    mDofFilterFlag = 0;
+    mScrAdjustType = 0;
+    mScrAdjustFlag = 255;
+    mScrAdjustHeight = 0.0f;
+    mIsKeepAngle = true;
+    mKeepAngleType = 0;
+    mCameraTarget = nCameraGame::TARGET_TYPE_PLAYER;
+    mCut = 0;
 }
 
 cCamImpBase::~cCamImpBase() {
@@ -417,10 +428,6 @@ const MtDTI& cCamImpSdr::getDTI() const {
     return cCamImpSdr::DTI;
 }
 
-inline void cCamImpSdr::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpSdr::DTI)->memFree(p_addr);
-}
-
 cCamImpSdr::~cCamImpSdr() {
     if (mpImple == nullptr) {
         return;
@@ -485,17 +492,12 @@ inline cCamImpSdr::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32
 
 cCamImpSdr::MyDTI cCamImpSdr::DTI("cCamImpSdr", &::cCamImpBase::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCamImpSdr::MyDTI::newInstance() const {
-    DDON_STUB("cCamImpSdr::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCamImpSdr::MyDTI::newInstance() const {
+    return new (16u) cCamImpSdr;
 }
 
 const MtDTI& cCamImpTarget::getDTI() const {
     return cCamImpTarget::DTI;
-}
-
-inline void cCamImpTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpTarget::DTI)->memFree(p_addr);
 }
 
 cCamImpTarget::~cCamImpTarget() {
@@ -503,9 +505,10 @@ cCamImpTarget::~cCamImpTarget() {
     /* stub */
 }
 
-__attribute__((weak)) void cCamImpTarget::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cCamImpTarget::applyWorldOffset")
-    /* stub */
+void cCamImpTarget::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mLastTargetPos.x = offset.x + mLastTargetPos.x;
+    mLastTargetPos.y = offset.y + mLastTargetPos.y;
+    mLastTargetPos.z = offset.z + mLastTargetPos.z;
 }
 
 __attribute__((weak)) void cCamImpTarget::initSub(MtVector3& cameraPos, MtVector3& targetPos, f32& angX, f32& angY) {
@@ -589,10 +592,6 @@ const MtDTI& nCameraGame::cTemplateParam::getDTI() const {
     return nCameraGame::cTemplateParam::DTI;
 }
 
-inline MtAllocator* nCameraGame::cTemplateParam::getAllocator() {
-    return ::MtMemoryAllocator::getAllocator(::nCameraGame::cTemplateParam::DTI);
-}
-
 void* nCameraGame::cTemplateParam::operator new(size_t sz, u32 align) {
     return ::nCameraGame::cTemplateParam::getAllocator()->memAlloc(sz, align, ::nCameraGame::cTemplateParam::DTI.getID());
 }
@@ -642,16 +641,8 @@ const MtDTI& uCameraGame::getDTI() const {
     return uCameraGame::DTI;
 }
 
-inline MtAllocator* uCameraGame::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCameraGame::DTI);
-}
-
 void* uCameraGame::operator new(size_t sz, u32 align) {
     return uCameraGame::getAllocator()->memAlloc(sz, align, uCameraGame::DTI.getID());
-}
-
-inline void uCameraGame::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCameraGame::DTI)->memFree(p_addr);
 }
 
 uCameraGame::uCameraGame() {
@@ -674,9 +665,41 @@ __attribute__((weak)) void uCameraGame::update(const f32 deltaTime, const f32 de
     /* stub */
 }
 
-__attribute__((weak)) void uCameraGame::updatePtr() {
-    DDON_STUB("uCameraGame::updatePtr")
-    /* stub */
+void uCameraGame::updatePtr() {
+    if (mpCameraReqOwner != nullptr) {
+        if (!mpCameraReqOwner->isEnable()) {
+            mpCameraReqOwner = nullptr;
+        }
+    }
+    if (mpRequestOwner != nullptr) {
+        if (!mpRequestOwner->isEnable()) {
+            mpRequestOwner = nullptr;
+        }
+    }
+    if (mpDOFFilter != nullptr) {
+        if (!mpDOFFilter->isEnable()) {
+            mpDOFFilter = nullptr;
+        }
+    }
+    if (mpMotionBlurFilter != nullptr) {
+        if (!mpMotionBlurFilter->isEnable()) {
+            mpMotionBlurFilter = nullptr;
+        }
+    }
+    if (mpImple != nullptr) {
+        if (mpImple->mpOwner != nullptr) {
+            if (!mpImple->mpOwner->isEnable()) {
+                mpImple->mpOwner = nullptr;
+            }
+        }
+    }
+    if (mpImpEx != nullptr) {
+        if (mpImpEx->mpOwner != nullptr) {
+            if (!mpImpEx->mpOwner->isEnable()) {
+                mpImpEx->mpOwner = nullptr;
+            }
+        }
+    }
 }
 
 void uCameraGame::move() {
@@ -760,9 +783,56 @@ MtMatrix uCameraGame::getProjMat() {
     }
 }
 
-__attribute__((weak)) bool uCameraGame::requestExCamera(const cCamExParam* pParam, const uDDOModel* pResourceOwner, const uDDOModel* pOwner, bool isForceSet) {
-    DDON_STUB("uCameraGame::requestExCamera")
-    return {};
+bool uCameraGame::requestExCamera(const cCamExParam* pParam, const uDDOModel* pResourceOwner, const uDDOModel* pOwner, bool isForceSet) {
+    if (pResourceOwner != nullptr) {
+        if (pResourceOwner->isEnable()) {
+            if (pOwner != nullptr) {
+                if (pOwner->isEnable()) {
+                    if (!isForceSet && !canChangeExCamera(pParam, pOwner)) {
+                        return false;
+                    }
+                    mpRequestParam = pParam;
+                    mpRequestOwner = pOwner;
+                    mpRequestResourceOwner = pResourceOwner;
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                if (!isForceSet && !canChangeExCamera(pParam, pOwner)) {
+                    return false;
+                }
+                mpRequestParam = pParam;
+                mpRequestOwner = pOwner;
+                mpRequestResourceOwner = pResourceOwner;
+                return true;
+            }
+        } else {
+            return false;
+        }
+    } else {
+        if (pOwner != nullptr) {
+            if (pOwner->isEnable()) {
+                if (!isForceSet && !canChangeExCamera(pParam, pOwner)) {
+                    return false;
+                }
+                mpRequestParam = pParam;
+                mpRequestOwner = pOwner;
+                mpRequestResourceOwner = pResourceOwner;
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            if (!isForceSet && !canChangeExCamera(pParam, pOwner)) {
+                return false;
+            }
+            mpRequestParam = pParam;
+            mpRequestOwner = pOwner;
+            mpRequestResourceOwner = pResourceOwner;
+            return true;
+        }
+    }
 }
 
 __attribute__((weak)) bool uCameraGame::canChangeExCamera(const cCamExParam* pParam, const uDDOModel* pOwner) const {
@@ -793,9 +863,8 @@ void uCameraGame::addPhotoFov(f32 fov) {
     }
 }
 
-__attribute__((weak)) MtVector3 uCameraGame::getPushVec() const {
-    DDON_STUB("uCameraGame::getPushVec")
-    __builtin_unreachable();
+MtVector3 uCameraGame::getPushVec() const {
+    return mPushVecInter.mNow;
 }
 
 __attribute__((weak)) void uCameraGame::initDOFFilterParam() {
@@ -881,9 +950,10 @@ __attribute__((weak)) void uCameraGame::initInterParam(f32 camSpring, f32 tarSpr
     /* stub */
 }
 
-__attribute__((weak)) void uCameraGame::initInterSpring(f32 camSpring, f32 tarSpring) {
-    DDON_STUB("uCameraGame::initInterSpring")
-    /* stub */
+void uCameraGame::initInterSpring(f32 camSpring, f32 tarSpring) {
+    mInterCamAng.mSpring = camSpring;
+    mInterCamDist.mSpring = camSpring;
+    mInterRange.mSpring = tarSpring;
 }
 
 __attribute__((weak)) void uCameraGame::exeInterporate() {

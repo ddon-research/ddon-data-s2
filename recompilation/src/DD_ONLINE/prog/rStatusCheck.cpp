@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rStatusCheck.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cStatusCheck::getDTI() const {
     return cStatusCheck::DTI;
-}
-
-inline void* cStatusCheck::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cStatusCheck::DTI)->memAlloc(sz, align, cStatusCheck::DTI.getID());
-}
-
-inline void cStatusCheck::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cStatusCheck::DTI)->memFree(p_addr);
 }
 
 void cStatusCheck::createProperty(MtPropertyList& s) {
@@ -48,14 +38,6 @@ MtObject* cStatusCheck::MyDTI::newInstance() const {
 
 const MtDTI& rStatusCheck::getDTI() const {
     return rStatusCheck::DTI;
-}
-
-inline void* rStatusCheck::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rStatusCheck::DTI)->memAlloc(sz, align, rStatusCheck::DTI.getID());
-}
-
-inline void rStatusCheck::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rStatusCheck::DTI)->memFree(p_addr);
 }
 
 bool rStatusCheck::loadData(MtDataReader& in, cStatusCheck* pData) {

@@ -127,3 +127,15 @@ inline f32 cpRotateCtrl::getInterSpeed() const {
 inline void cpRotateCtrl::setBusy(bool enable) {
     this->mIsBusy = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpRotateCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpRotateCtrl::DTI);
+}
+
+inline void cpRotateCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpRotateCtrl::DTI)->memFree(p_addr);
+}

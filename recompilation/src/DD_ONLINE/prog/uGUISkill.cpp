@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUISkill.h"
 #include "Protocol/PacketData/CharacterParam.h"
 #include "Protocol/PacketData/Item.h"
@@ -64,10 +65,6 @@
 
 const MtDTI& uGUISkill::getDTI() const {
     return uGUISkill::DTI;
-}
-
-inline void uGUISkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUISkill::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUISkill::~uGUISkill() {
@@ -242,10 +239,6 @@ __attribute__((weak)) void uGUISkill::updateMove() {
 
 void uGUISkill::updateExit() {
     end();
-}
-
-inline void uGUISkill::updateJobTex() {
-    mTexLoader.update(mDeltaTime);
 }
 
 __attribute__((weak)) void uGUISkill::setFlowId(u32 flow_id) {
@@ -571,7 +564,7 @@ __attribute__((weak)) void uGUISkill::setupPresetCmd() {
 void uGUISkill::setupPresetRename() {
     cGUIObjMessage* t0 = mNameEdit.mpObjMsgTitle;
     setObjectMessage(static_cast<cGUIObject*>(t0), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGMDRes, 18u), 0u, false);
-    mNameEdit.mTextBox.setMessage(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 35464))));
+    mNameEdit.mTextBox.setMessage(&mPresetName.mStr[0]);
     mNameEdit.mButton[0].setMessage(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 3u));
     mNameEdit.mButton[1].setMessage(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(static_cast<sGUIExt*>(sGUI::getInstance())->getMsgCommonMessage(), 4u));
     if (mpDialogCtrl != nullptr) {
@@ -588,9 +581,35 @@ void uGUISkill::setupPresetRename() {
     mpDialogCtrl->setCurrentPos(0, false);
 }
 
-__attribute__((weak)) void uGUISkill::updatePresetRenameExec() {
-    DDON_STUB("uGUISkill::updatePresetRenameExec")
-    /* stub */
+void uGUISkill::updatePresetRenameExec() {
+    if (!mNameEdit.mTextBox.isEndKeyboard()) {
+        return;
+    }
+    if ((&mPresetName.mStr[0]) != mNameEdit.mTextBox.mMsg.ptr()) {
+        if (strcmp(&mPresetName.mStr[0], mNameEdit.mTextBox.mMsg.ptr()) != 0) {
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 4u);
+            MtString::STRING* t0 = mNameEdit.mTextBox.mMsg.value;
+            if ((&mPresetName.mStr[0]) != mNameEdit.mTextBox.mMsg.ptr()) {
+                size_t t1 = strlen(mNameEdit.mTextBox.mMsg.ptr());
+                mPresetName.mLength = (static_cast<int>(t1) <= 63) ? static_cast<unsigned int>(t1) : 63u;
+                if (((static_cast<int>(t1) <= 63) ? static_cast<unsigned int>(t1) : 63u) != 0) {
+                    memcpy(static_cast<void*>(&mPresetName.mStr[0]), static_cast<const void*>(mNameEdit.mTextBox.mMsg.ptr()), static_cast<size_t>((static_cast<int>(t1) <= 63) ? static_cast<unsigned int>(t1) : 63u));
+                    mPresetName.mStr[(static_cast<int>(t1) <= 63) ? static_cast<unsigned int>(t1) : 63u] = '\0';
+                } else {
+                    mPresetName.mStr[0] = '\0';
+                }
+                setFlowId(28u);
+            } else {
+                setFlowId(28u);
+            }
+        } else {
+            static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 5u);
+            setFlowId(28u);
+        }
+    } else {
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 5u);
+        setFlowId(28u);
+    }
 }
 
 __attribute__((weak)) void uGUISkill::setupJobChangeNoticeWait() {
@@ -628,23 +647,6 @@ __attribute__((weak)) void uGUISkill::setupDialog(MT_CTSTR msg_notice, MT_CTSTR 
 __attribute__((weak)) void uGUISkill::updateDialog() {
     DDON_STUB("uGUISkill::updateDialog")
     /* stub */
-}
-
-inline void uGUISkill::updateMockUp() {
-    if (mpUIMockUp == nullptr) {
-        return;
-    }
-    if (mpUIMockUp->isComplete()) {
-        if (mTop.mpObjTexMockup != nullptr) {
-            mTop.mpObjTexMockup->setVisible(true);
-        }
-        setInstanceVisible(static_cast<cGUIInstance*>(mTop.mpInstAnimLoad), false);
-    } else {
-        if (mTop.mpObjTexMockup != nullptr) {
-            mTop.mpObjTexMockup->setVisible(false);
-        }
-        setInstanceVisible(static_cast<cGUIInstance*>(mTop.mpInstAnimLoad), true);
-    }
 }
 
 __attribute__((weak)) void uGUISkill::setupMockUp(u32 job_id) {
@@ -842,22 +844,22 @@ void uGUISkill::setupListItem(uGUIBase::cScrollListItemBase* pItemBase, uGUIBase
     switch (pInfoBase->mItemType) {
         case 0:
         {
-            setupJobItem(static_cast<cListItem*>(pItemBase), static_cast<cListInfo*>(pInfoBase), index);
+            setupJobItem(pItem, static_cast<cListInfo*>(pInfoBase), index);
             break;
         }
         case 1:
         {
-            setupNormalItem(static_cast<cListItem*>(pItemBase), static_cast<cListInfo*>(pInfoBase), index);
+            setupNormalItem(pItem, static_cast<cListInfo*>(pInfoBase), index);
             break;
         }
         case 2:
         {
-            setupCustomItem(static_cast<cListItem*>(pItemBase), static_cast<cListInfo*>(pInfoBase), index);
+            setupCustomItem(pItem, static_cast<cListInfo*>(pInfoBase), index);
             break;
         }
         case 3:
         {
-            setupAbilityItem(static_cast<cListItem*>(pItemBase), static_cast<cListInfo*>(pInfoBase), index);
+            setupAbilityItem(pItem, static_cast<cListInfo*>(pInfoBase), index);
             break;
         }
         default:
@@ -1289,8 +1291,14 @@ bool uGUISkill::requestSetSkill() {
 }
 
 __attribute__((weak)) void uGUISkill::callbackSetSkill() {
-    DDON_STUB("uGUISkill::callbackSetSkill")
-    /* stub */
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(mpSeRes, 2u, reinterpret_cast<uintptr>(this), 0u, nullptr, nullptr);
+    if (mPawnId != 0) {
+        setUseIGUIExtNetFunc(static_cast<sGUIExt*>(sGUI::getInstance())->requestGetPawnSetCustomSkill(mPawnId, mJobId, true));
+    } else {
+        setUseIGUIExtNetFunc(static_cast<sGUIExt*>(sGUI::getInstance())->requestGetSetCustomSkill(mJobId, true));
+    }
+    mRequestFlag &= ~(1u << mRequestFlagNow);
+    requestServer(mFlowIdNext);
 }
 
 bool uGUISkill::requestSetAbility() {
@@ -1303,8 +1311,15 @@ bool uGUISkill::requestSetAbility() {
 }
 
 __attribute__((weak)) void uGUISkill::callbackSetAbility() {
-    DDON_STUB("uGUISkill::callbackSetAbility")
-    /* stub */
+    static_cast<sSoundExt*>(sSound::getInstance())->requestSe(
+        mpSeRes, 2, reinterpret_cast<u64>(this), 0, 0, 0);
+    
+    setUseIGUIExtNetFunc(
+        mPawnId != 0
+            ? static_cast<sGUIExt*>(sGUI::getInstance())->requestGetPawnSetAbility(mPawnId, true)
+            : static_cast<sGUIExt*>(sGUI::getInstance())->requestGetSetAbility(true));
+    mRequestFlag &= ~(1u << mRequestFlagNow);
+    requestServer(mFlowIdNext);
 }
 
 bool uGUISkill::requestRegistPreset() {
@@ -1319,7 +1334,7 @@ __attribute__((weak)) void uGUISkill::callbackRegistPreset() {
 
 bool uGUISkill::requestRegistPresetName() {
     mRequestFlagNow = 8;
-    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->setPresetAbilityName(mPresetNo, reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 35464))));
+    return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->setPresetAbilityName(mPresetNo, &mPresetName.mStr[0]);
 }
 
 __attribute__((weak)) void uGUISkill::callbackRegistPresetName() {
@@ -1392,10 +1407,6 @@ const MtDTI& uGUISkill::cListInfo::getDTI() const {
     return uGUISkill::cListInfo::DTI;
 }
 
-inline void uGUISkill::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUISkill::cListInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uGUISkill::cListInfo::addMouseTouchList(cControl* pCtrl, s32 pos) {
     DDON_STUB("uGUISkill::cListInfo::addMouseTouchList")
     /* stub */
@@ -1412,10 +1423,6 @@ __attribute__((weak)) MtObject* uGUISkill::cListInfo::MyDTI::newInstance() const
 
 const MtDTI& uGUISkill::cListItem::getDTI() const {
     return uGUISkill::cListItem::DTI;
-}
-
-inline void uGUISkill::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUISkill::cListItem::DTI)->memFree(p_addr);
 }
 
 inline uGUISkill::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1444,14 +1451,6 @@ uGUISkill::stSearch::stSearch() {
 
 const MtDTI& uGUISkill::cJobData::getDTI() const {
     return uGUISkill::cJobData::DTI;
-}
-
-inline void* uGUISkill::cJobData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUISkill::cJobData::DTI)->memAlloc(sz, align, uGUISkill::cJobData::DTI.getID());
-}
-
-inline void uGUISkill::cJobData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUISkill::cJobData::DTI)->memFree(p_addr);
 }
 
 inline uGUISkill::cJobData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cColliderParam.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
@@ -17,10 +16,6 @@ __attribute__((weak)) void cColliderGeometryParam::usage() {
 
 const MtDTI& cColliderGeometryParam::getDTI() const {
     return cColliderGeometryParam::DTI;
-}
-
-inline void cColliderGeometryParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cColliderGeometryParam::DTI)->memFree(p_addr);
 }
 
 cColliderGeometryParam::~cColliderGeometryParam() {
@@ -60,14 +55,6 @@ __attribute__((weak)) void cColliderNodeParam::usage() {
 
 const MtDTI& cColliderNodeParam::getDTI() const {
     return cColliderNodeParam::DTI;
-}
-
-inline void* cColliderNodeParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cColliderNodeParam::DTI)->memAlloc(sz, align, cColliderNodeParam::DTI.mID);
-}
-
-inline void cColliderNodeParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cColliderNodeParam::DTI)->memFree(p_addr);
 }
 
 cColliderNodeParam::~cColliderNodeParam() {

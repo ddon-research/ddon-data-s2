@@ -152,3 +152,15 @@ inline rShaderPackage::rShaderPackage() {
     this->mHeader.magic = 0;
     this->mHeader.shader_version = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rShaderPackage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rShaderPackage::DTI)->memAlloc(sz, align, ::rShaderPackage::DTI.::MtDTI::mID);
+}
+
+inline void rShaderPackage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rShaderPackage::DTI)->memFree(p_addr);
+}

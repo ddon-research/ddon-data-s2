@@ -68,16 +68,8 @@ const MtDTI& uGUICharacterEdit::getDTI() const {
     return uGUICharacterEdit::DTI;
 }
 
-inline MtAllocator* uGUICharacterEdit::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharacterEdit::DTI);
-}
-
 void* uGUICharacterEdit::operator new(size_t sz, u32 align) {
     return uGUICharacterEdit::getAllocator()->memAlloc(sz, align, uGUICharacterEdit::DTI.getID());
-}
-
-inline void uGUICharacterEdit::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharacterEdit::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICharacterEdit::~uGUICharacterEdit() {
@@ -170,9 +162,20 @@ void uGUICharacterEdit::updatePtr() {
     }
 }
 
-__attribute__((weak)) void uGUICharacterEdit::reboot() {
-    DDON_STUB("uGUICharacterEdit::reboot")
-    /* stub */
+void uGUICharacterEdit::reboot() {
+    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 17) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 17)) | 4;
+    setPlayingFlow(getFlow(1u), true);
+    mProcOld = mProc;
+    mProc = PR_MAIN;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICharacterEdit::updateInit2);
+    mSetFlow = 1;
+    if (cGUIUtility::isSalon(mEdit)) {
+        reserveFlow(3u, true);
+        mSetFlow = 41;
+    } else {
+        reserveFlow(0u, true);
+        mSetFlow = 31;
+    }
 }
 
 __attribute__((weak)) bool uGUICharacterEdit::setProc(uGUICharacterEdit::PR proc, bool force, bool isInitLight) {
@@ -1271,9 +1274,36 @@ __attribute__((weak)) void uGUICharacterEdit::evInputTopSubChild() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUICharacterEdit::evInputEditDefault() {
-    DDON_STUB("uGUICharacterEdit::evInputEditDefault")
-    /* stub */
+void uGUICharacterEdit::evInputEditDefault() {
+    if (mpCharacterEdit != nullptr) {
+        mpCharacterEdit->initEdit(false);
+        mpCharacterEdit->updatePartsAll();
+        resetVoiceIdx();
+        cEditParam* t0 = mpCharacterEdit->getEditParam();
+        if (t0 != nullptr) {
+            mPersonalitySaveIdx = t0->mPersonality;
+            uGUICharaEditPartsWrap::cPartsBase* v0_10 = mpPartsArray;
+            if (v0_10 != nullptr) {
+                u32 v0_11 = v0_10->mChildArray.mLength;
+                if (v0_11 != 0) {
+                    for (unsigned int i0_3 = 0;;) {
+                        if (v0_10->mChildArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                            static_cast<uGUICharaEditPartsWrap::cPartsBase*>(v0_10->mChildArray.getBuffer()[static_cast<int>(i0_3)])->callbackEditDefault();
+                        }
+                        if (v0_11 != (i0_3 + 1u)) {
+                            i0_3 += 1u;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+            if (mpCharacterEdit != nullptr) {
+                mpCharacterEdit->registerRedoUndo(nCharacterEdit::EDIT_TYPE_DEFAULT);
+                return;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUICharacterEdit::evInputOpenStageList() {
@@ -1287,7 +1317,7 @@ void uGUICharacterEdit::evInputCloseStageList(bool isCancel) {
         cControl* v0_9 = mpBottunCtrl_StageSub;
         for (unsigned int i0_3 = 0;;) {
             if (mListStageArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mListStageArray.getBuffer()[static_cast<int>(i0_3)]) + 121)) == 0) {
+                if (!static_cast<cListStage*>(mListStageArray.getBuffer()[static_cast<int>(i0_3)])->mIsNonRight) {
                     v0_9->eraseMouseTouchListPosVol(static_cast<s32>(i0_3), 0);
                     v0_9->eraseMouseTouchListPosVol(static_cast<s32>(i0_3), 1);
                 }
@@ -1304,14 +1334,14 @@ void uGUICharacterEdit::evInputCloseStageList(bool isCancel) {
             if (isCancel) {
                 mVCtrlPtrArray.elems[6]->setCurrentPos(mLastStagePos, false);
                 if (mListStageArray.getBuffer()[mLastStagePos] != nullptr) {
-                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mListStageArray.getBuffer()[mLastStagePos]) + 120) = static_cast<unsigned char>(mLastStageIsLeft);
+                    static_cast<cListStage*>(mListStageArray.getBuffer()[mLastStagePos])->mIsLeft = mLastStageIsLeft;
                 }
                 static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 11u);
             } else {
                 if (static_cast<unsigned int>(mVCtrlPtrArray.elems[6]->cControl::getCurrentPos()) < mListStageArray.mLength) {
-                    unsigned char t0 = *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mListStageArray.getBuffer()[mVCtrlPtrArray.elems[6]->cControl::getCurrentPos()]) + 120);
+                    bool t0 = static_cast<cListStage*>(mListStageArray.getBuffer()[mVCtrlPtrArray.elems[6]->cControl::getCurrentPos()])->mIsLeft;
                     mpCharacterEdit->mNeedStageIdx = mVCtrlPtrArray.elems[6]->cControl::getCurrentPos();
-                    mpCharacterEdit->mNeedTimeIdx = static_cast<u32>(t0 ^ 1);
+                    mpCharacterEdit->mNeedTimeIdx = static_cast<u32>(!t0);
                     static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 11u);
                 }
             }
@@ -1402,9 +1432,74 @@ __attribute__((weak)) void uGUICharacterEdit::evInputMoveVSub() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUICharacterEdit::evCloseSubChild() {
-    DDON_STUB("uGUICharacterEdit::evCloseSubChild")
-    /* stub */
+void uGUICharacterEdit::evCloseSubChild() {
+    if (mpPartsArray != nullptr) {
+        cVerticalListEx* pCtrlV = mVCtrlPtrArray.elems[1];
+        if (pCtrlV != nullptr) {
+            u32 vPos = pCtrlV->getCurrentPos();
+            if (vPos < mpPartsArray->mChildArray.mLength) {
+                uGUICharaEditPartsWrap::cPartsBase* pChild = mpPartsArray->getChildParts(vPos);
+                if (pChild != nullptr) {
+                    evParts(pChild, nCharacterEdit::PARTS_EVENT_CANCEL, false);
+                }
+                if (mProc != PR_MAIN) {
+                    mProcOld = mProc;
+                    mProc = PR_MAIN;
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICharacterEdit::updateInit2);
+                    mSetFlow = 1;
+                    if (cGUIUtility::isSalon(mEdit)) {
+                        reserveFlow(3u, false);
+                        mSetFlow = 41;
+                    } else {
+                        reserveFlow(0u, false);
+                        mSetFlow = 31;
+                    }
+                }
+            } else {
+                if (mProc != PR_MAIN) {
+                    mProcOld = mProc;
+                    mProc = PR_MAIN;
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICharacterEdit::updateInit2);
+                    mSetFlow = 1;
+                    if (cGUIUtility::isSalon(mEdit)) {
+                        reserveFlow(3u, false);
+                        mSetFlow = 41;
+                    } else {
+                        reserveFlow(0u, false);
+                        mSetFlow = 31;
+                    }
+                }
+            }
+        } else {
+            if (mProc != PR_MAIN) {
+                mProcOld = mProc;
+                mProc = PR_MAIN;
+                mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICharacterEdit::updateInit2);
+                mSetFlow = 1;
+                if (cGUIUtility::isSalon(mEdit)) {
+                    reserveFlow(3u, false);
+                    mSetFlow = 41;
+                } else {
+                    reserveFlow(0u, false);
+                    mSetFlow = 31;
+                }
+            }
+        }
+    } else {
+        if (mProc != PR_MAIN) {
+            mProcOld = mProc;
+            mProc = PR_MAIN;
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUICharacterEdit::updateInit2);
+            mSetFlow = 1;
+            if (cGUIUtility::isSalon(mEdit)) {
+                reserveFlow(3u, false);
+                mSetFlow = 41;
+            } else {
+                reserveFlow(0u, false);
+                mSetFlow = 31;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void uGUICharacterEdit::setUnderHelperUI() {
@@ -1452,10 +1547,6 @@ const MtDTI& uGUICharacterEdit::cListStage::getDTI() const {
     return uGUICharacterEdit::cListStage::DTI;
 }
 
-inline void uGUICharacterEdit::cListStage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharacterEdit::cListStage::DTI)->memFree(p_addr);
-}
-
 inline uGUICharacterEdit::cListStage::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICharacterEdit::cListStage::MyDTI uGUICharacterEdit::cListStage::DTI("uGUICharacterEdit::cListStage", &::MtObject::DTI, 128ul, 0u, 0u);
@@ -1467,10 +1558,6 @@ __attribute__((weak)) MtObject* uGUICharacterEdit::cListStage::MyDTI::newInstanc
 
 const MtDTI& uGUICharacterEdit::cListEquip::getDTI() const {
     return uGUICharacterEdit::cListEquip::DTI;
-}
-
-inline void uGUICharacterEdit::cListEquip::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharacterEdit::cListEquip::DTI)->memFree(p_addr);
 }
 
 inline uGUICharacterEdit::cListEquip::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1486,10 +1573,6 @@ const MtDTI& uGUICharacterEdit::cIndex::getDTI() const {
     return uGUICharacterEdit::cIndex::DTI;
 }
 
-inline void uGUICharacterEdit::cIndex::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharacterEdit::cIndex::DTI)->memFree(p_addr);
-}
-
 inline uGUICharacterEdit::cIndex::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICharacterEdit::cIndex::MyDTI uGUICharacterEdit::cIndex::DTI("uGUICharacterEdit::cIndex", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -1501,10 +1584,6 @@ __attribute__((weak)) MtObject* uGUICharacterEdit::cIndex::MyDTI::newInstance() 
 
 const MtDTI& uGUICharacterEdit::cGUIUnderHelpMsg::getDTI() const {
     return uGUICharacterEdit::cGUIUnderHelpMsg::DTI;
-}
-
-inline void uGUICharacterEdit::cGUIUnderHelpMsg::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharacterEdit::cGUIUnderHelpMsg::DTI)->memFree(p_addr);
 }
 
 inline uGUICharacterEdit::cGUIUnderHelpMsg::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1531,10 +1610,6 @@ __attribute__((weak)) MtObject* uGUICharacterEdit::cList::MyDTI::newInstance() c
 
 const MtDTI& uGUICharacterEdit::cVerticalListEx::getDTI() const {
     return uGUICharacterEdit::cVerticalListEx::DTI;
-}
-
-inline void uGUICharacterEdit::cVerticalListEx::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharacterEdit::cVerticalListEx::DTI)->memFree(p_addr);
 }
 
 void uGUICharacterEdit::cVerticalListEx::reqPresetSE(cControl::Message* pMsg) {

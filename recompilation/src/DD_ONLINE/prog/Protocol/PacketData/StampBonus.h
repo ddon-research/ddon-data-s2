@@ -154,3 +154,18 @@ inline CDataStampBonusTotal::CDataStampBonusTotal() {
     this->m_usStampNum = 0;
     this->m_ucRecieveState = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataStampBonus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStampBonus::DTI);
+}
+
+inline MtAllocator* CDataStampBonusDaily::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStampBonusDaily::DTI);
+}
+
+inline MtAllocator* CDataStampBonusTotal::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataStampBonusTotal::DTI);
+}

@@ -173,3 +173,32 @@ inline rLoadingParam::cDataList::cDataList() {
     mList.setAutoDelete(true);
     mList.reserve(5u);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rLoadingParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLoadingParam::DTI)->memAlloc(sz, align, ::rLoadingParam::DTI.::MtDTI::getID());
+}
+
+inline void rLoadingParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLoadingParam::DTI)->memFree(p_addr);
+}
+
+inline rLoadingParam::rLoadingParam() {
+    this->::cResource::setAttribute(18u);
+    this->mArray.::MtArray::mAutoDelete = true;
+}
+
+inline void rLoadingParam::cDataList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLoadingParam::cDataList::DTI)->memFree(p_addr);
+}
+
+inline void* rLoadingParam::cData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rLoadingParam::cData::DTI)->memAlloc(sz, align, ::rLoadingParam::cData::DTI.::MtDTI::getID());
+}
+
+inline void rLoadingParam::cData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rLoadingParam::cData::DTI)->memFree(p_addr);
+}

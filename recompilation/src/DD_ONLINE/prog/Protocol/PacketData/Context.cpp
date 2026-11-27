@@ -2,6 +2,7 @@
 #include <new>
 #include "Context.h"
 #include "CharacterCommon.h"
+#include "CharacterEdit.h"
 #include "Common.h"
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtCollection.h"
@@ -9,17 +10,36 @@
 #include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "../../../../MT/MtString.h"
+#include "Pawn.h"
 #include "../../cPacket.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
 
-const MtDTI& CDataContextBase::getDTI() const {
-    return CDataContextBase::DTI;
+const MtDTI& CDataAllContextPlayer::getDTI() const {
+    return CDataAllContextPlayer::DTI;
 }
 
-inline MtAllocator* CDataContextBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextBase::DTI);
+__attribute__((weak)) void CDataAllContextPlayer::operator delete(void* p_addr) {
+    CDataAllContextPlayer::getAllocator()->memFree(p_addr);
+}
+
+CDataAllContextPlayer::CDataAllContextPlayer() {
+    DDON_STUB("CDataAllContextPlayer::CDataAllContextPlayer")
+    /* stub */
+}
+
+inline CDataAllContextPlayer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataAllContextPlayer::MyDTI CDataAllContextPlayer::DTI("CDataAllContextPlayer", &::CPacketDataBase::DTI, 840ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataAllContextPlayer::MyDTI::newInstance() const {
+    DDON_STUB("CDataAllContextPlayer::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& CDataContextBase::getDTI() const {
+    return CDataContextBase::DTI;
 }
 
 __attribute__((weak)) void CDataContextBase::operator delete(void* p_addr) {
@@ -37,10 +57,6 @@ __attribute__((weak)) MtObject* CDataContextBase::MyDTI::newInstance() const {
 
 const MtDTI& CDataContextCrestData::getDTI() const {
     return CDataContextCrestData::DTI;
-}
-
-inline MtAllocator* CDataContextCrestData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextCrestData::DTI);
 }
 
 void* CDataContextCrestData::operator new(size_t sz, u32 align) {
@@ -61,10 +77,6 @@ MtObject* CDataContextCrestData::MyDTI::newInstance() const {
 
 const MtDTI& CDataContextEquipData::getDTI() const {
     return CDataContextEquipData::DTI;
-}
-
-inline MtAllocator* CDataContextEquipData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextEquipData::DTI);
 }
 
 void* CDataContextEquipData::operator new(size_t sz, u32 align) {
@@ -88,10 +100,6 @@ const MtDTI& CDataContextEquipJobItemData::getDTI() const {
     return CDataContextEquipJobItemData::DTI;
 }
 
-inline MtAllocator* CDataContextEquipJobItemData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextEquipJobItemData::DTI);
-}
-
 void* CDataContextEquipJobItemData::operator new(size_t sz, u32 align) {
     return CDataContextEquipJobItemData::getAllocator()->memAlloc(sz, align, CDataContextEquipJobItemData::DTI.getID());
 }
@@ -112,10 +120,6 @@ const MtDTI& CDataContextJobData::getDTI() const {
     return CDataContextJobData::DTI;
 }
 
-inline MtAllocator* CDataContextJobData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextJobData::DTI);
-}
-
 void* CDataContextJobData::operator new(size_t sz, u32 align) {
     return CDataContextJobData::getAllocator()->memAlloc(sz, align, CDataContextJobData::DTI.getID());
 }
@@ -132,12 +136,24 @@ MtObject* CDataContextJobData::MyDTI::newInstance() const {
     return new (16u) CDataContextJobData;
 }
 
-const MtDTI& CDataContextPlayerInfo::getDTI() const {
-    return CDataContextPlayerInfo::DTI;
+const MtDTI& CDataContextPawnInfo::getDTI() const {
+    return CDataContextPawnInfo::DTI;
 }
 
-inline MtAllocator* CDataContextPlayerInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextPlayerInfo::DTI);
+__attribute__((weak)) void CDataContextPawnInfo::operator delete(void* p_addr) {
+    CDataContextPawnInfo::getAllocator()->memFree(p_addr);
+}
+
+inline CDataContextPawnInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataContextPawnInfo::MyDTI CDataContextPawnInfo::DTI("CDataContextPawnInfo", &::CPacketDataBase::DTI, 40ul, 0u, 0u);
+
+MtObject* CDataContextPawnInfo::MyDTI::newInstance() const {
+    return new (16u) CDataContextPawnInfo;
+}
+
+const MtDTI& CDataContextPlayerInfo::getDTI() const {
+    return CDataContextPlayerInfo::DTI;
 }
 
 __attribute__((weak)) void CDataContextPlayerInfo::operator delete(void* p_addr) {
@@ -153,12 +169,24 @@ __attribute__((weak)) MtObject* CDataContextPlayerInfo::MyDTI::newInstance() con
     return nullptr;
 }
 
-const MtDTI& CDataContextSetAdditional::getDTI() const {
-    return CDataContextSetAdditional::DTI;
+const MtDTI& CDataContextResist::getDTI() const {
+    return CDataContextResist::DTI;
 }
 
-inline MtAllocator* CDataContextSetAdditional::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextSetAdditional::DTI);
+__attribute__((weak)) void CDataContextResist::operator delete(void* p_addr) {
+    CDataContextResist::getAllocator()->memFree(p_addr);
+}
+
+inline CDataContextResist::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataContextResist::MyDTI CDataContextResist::DTI("CDataContextResist", &::CPacketDataBase::DTI, 40ul, 0u, 0u);
+
+MtObject* CDataContextResist::MyDTI::newInstance() const {
+    return new (16u) CDataContextResist;
+}
+
+const MtDTI& CDataContextSetAdditional::getDTI() const {
+    return CDataContextSetAdditional::DTI;
 }
 
 __attribute__((weak)) void CDataContextSetAdditional::operator delete(void* p_addr) {
@@ -178,14 +206,6 @@ const MtDTI& CDataContextSetBase::getDTI() const {
     return CDataContextSetBase::DTI;
 }
 
-inline MtAllocator* CDataContextSetBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextSetBase::DTI);
-}
-
-inline void* CDataContextSetBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataContextSetBase::DTI)->memAlloc(sz, align, CDataContextSetBase::DTI.getID());
-}
-
 __attribute__((weak)) void CDataContextSetBase::operator delete(void* p_addr) {
     CDataContextSetBase::getAllocator()->memFree(p_addr);
 }
@@ -202,10 +222,6 @@ const MtDTI& CDataContextSetInfo::getDTI() const {
     return CDataContextSetInfo::DTI;
 }
 
-inline MtAllocator* CDataContextSetInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataContextSetInfo::DTI);
-}
-
 __attribute__((weak)) void CDataContextSetInfo::operator delete(void* p_addr) {
     CDataContextSetInfo::getAllocator()->memFree(p_addr);
 }
@@ -219,16 +235,25 @@ __attribute__((weak)) MtObject* CDataContextSetInfo::MyDTI::newInstance() const 
     return nullptr;
 }
 
+const MtDTI& CDataLobbyContextPlayer::getDTI() const {
+    return CDataLobbyContextPlayer::DTI;
+}
+
+__attribute__((weak)) void CDataLobbyContextPlayer::operator delete(void* p_addr) {
+    CDataLobbyContextPlayer::getAllocator()->memFree(p_addr);
+}
+
+inline CDataLobbyContextPlayer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataLobbyContextPlayer::MyDTI CDataLobbyContextPlayer::DTI("CDataLobbyContextPlayer", &::CPacketDataBase::DTI, 800ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataLobbyContextPlayer::MyDTI::newInstance() const {
+    DDON_STUB("CDataLobbyContextPlayer::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& CDataNetPos::getDTI() const {
     return CDataNetPos::DTI;
-}
-
-inline MtAllocator* CDataNetPos::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataNetPos::DTI);
-}
-
-inline void* CDataNetPos::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataNetPos::DTI)->memAlloc(sz, align, CDataNetPos::DTI.getID());
 }
 
 __attribute__((weak)) void CDataNetPos::operator delete(void* p_addr) {
@@ -245,10 +270,6 @@ MtObject* CDataNetPos::MyDTI::newInstance() const {
 
 const MtDTI& CDataOcdActive::getDTI() const {
     return CDataOcdActive::DTI;
-}
-
-inline MtAllocator* CDataOcdActive::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataOcdActive::DTI);
 }
 
 void* CDataOcdActive::operator new(size_t sz, u32 align) {
@@ -271,10 +292,6 @@ const MtDTI& CDataOcdImmuneLv::getDTI() const {
     return CDataOcdImmuneLv::DTI;
 }
 
-inline MtAllocator* CDataOcdImmuneLv::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataOcdImmuneLv::DTI);
-}
-
 void* CDataOcdImmuneLv::operator new(size_t sz, u32 align) {
     return CDataOcdImmuneLv::getAllocator()->memAlloc(sz, align, CDataOcdImmuneLv::DTI.getID());
 }
@@ -291,16 +308,52 @@ MtObject* CDataOcdImmuneLv::MyDTI::newInstance() const {
     return new (16u) CDataOcdImmuneLv;
 }
 
+const MtDTI& CDataPartyContextPawn::getDTI() const {
+    return CDataPartyContextPawn::DTI;
+}
+
+__attribute__((weak)) void CDataPartyContextPawn::operator delete(void* p_addr) {
+    CDataPartyContextPawn::getAllocator()->memFree(p_addr);
+}
+
+CDataPartyContextPawn::CDataPartyContextPawn() {
+    DDON_STUB("CDataPartyContextPawn::CDataPartyContextPawn")
+    /* stub */
+}
+
+inline CDataPartyContextPawn::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataPartyContextPawn::MyDTI CDataPartyContextPawn::DTI("CDataPartyContextPawn", &::CPacketDataBase::DTI, 880ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataPartyContextPawn::MyDTI::newInstance() const {
+    DDON_STUB("CDataPartyContextPawn::MyDTI::newInstance")
+    return nullptr;
+}
+
+const MtDTI& CDataPartyContextPlayer::getDTI() const {
+    return CDataPartyContextPlayer::DTI;
+}
+
+__attribute__((weak)) void CDataPartyContextPlayer::operator delete(void* p_addr) {
+    CDataPartyContextPlayer::getAllocator()->memFree(p_addr);
+}
+
+CDataPartyContextPlayer::CDataPartyContextPlayer() {
+    DDON_STUB("CDataPartyContextPlayer::CDataPartyContextPlayer")
+    /* stub */
+}
+
+inline CDataPartyContextPlayer::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
+
+CDataPartyContextPlayer::MyDTI CDataPartyContextPlayer::DTI("CDataPartyContextPlayer", &::CPacketDataBase::DTI, 840ul, 0u, 0u);
+
+__attribute__((weak)) MtObject* CDataPartyContextPlayer::MyDTI::newInstance() const {
+    DDON_STUB("CDataPartyContextPlayer::MyDTI::newInstance")
+    return nullptr;
+}
+
 const MtDTI& CDataVector3::getDTI() const {
     return CDataVector3::DTI;
-}
-
-inline MtAllocator* CDataVector3::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataVector3::DTI);
-}
-
-inline void* CDataVector3::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataVector3::DTI)->memAlloc(sz, align, CDataVector3::DTI.getID());
 }
 
 __attribute__((weak)) void CDataVector3::operator delete(void* p_addr) {

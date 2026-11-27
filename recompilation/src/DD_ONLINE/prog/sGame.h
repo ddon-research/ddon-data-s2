@@ -30,6 +30,8 @@ class MtPropertyList;
 class MtUI;
 class MtVector2;
 class MtVector3;
+class aCharacterEditGame;
+class aLobby;
 class aStage;
 class cAbilityData;
 class cCharacterData;
@@ -39,9 +41,11 @@ class cGUIUtility;
 class cGameMoonAge;
 class cGameTime;
 class cGameWeather;
+class cGatherItemList;
 class cNetGameServer;
 class cPlayPointInfo;
 class cPlayerExpTable;
+class cQuestSvRequestManager;
 class cQuestTask;
 class cSeedLoginSvConnection;
 class cStageCtrl;
@@ -71,11 +75,13 @@ class rWepCateResTbl;
 class sAreaExt;
 class sCameraExt;
 class sChat;
+class sContextManager;
 class sGUIExt;
 class sItemManager;
 class sNetworkExt;
 class sPlayerManager;
 class sSetManager;
+class sTutorialGuide;
 class sWeatherManager;
 class uControl;
 class uDDOModel;
@@ -161,9 +167,13 @@ public:
 
 class sGame : public cSystem
 {
+    friend class aCharacterEditGame;
+    friend class aLobby;
     friend class aStage;
     friend class cGUIUtility;
+    friend class cGatherItemList;
     friend class cNetGameServer;
+    friend class cQuestSvRequestManager;
     friend class cQuestTask;
     friend class cSeedLoginSvConnection;
     friend class cpJob02;
@@ -173,11 +183,13 @@ class sGame : public cSystem
     friend class sAreaExt;
     friend class sCameraExt;
     friend class sChat;
+    friend class sContextManager;
     friend class sGUIExt;
     friend class sItemManager;
     friend class sNetworkExt;
     friend class sPlayerManager;
     friend class sSetManager;
+    friend class sTutorialGuide;
     friend class sWeatherManager;
     friend class uGUIEngageInfo;
     friend class uGUIMapMini;
@@ -798,6 +810,14 @@ inline s32 sGame::getReturnStartPosNo() const {
     return this->mReturnStartPosNo;
 }
 
+inline bool sGame::isReqJumpStageFromLobby() {
+    return this->mIsReqJumpStageFromLobby;
+}
+
+inline bool sGame::isStageJumpSync() const {
+    return this->mIsReqSyncAreaJump;
+}
+
 inline void sGame::setIsViaPrologue(bool flag) {
     this->mIsViaPrologue = false;
 }
@@ -828,6 +848,10 @@ inline void sGame::setLimitJobPoint(u32 jp) {
 
 inline void sGame::setChargeCourseVersion(u32 version) {
     this->mChargeCourseVersion = version;
+}
+
+inline u32 sGame::getChargeCourseNum() {
+    return this->mChargeCourseParam.::MtArray::length();
 }
 
 inline nLoginSession::CPacket_L2C_GP_COURSE_GET_INFO_RES& sGame::PacketGPCourseInfo() {
@@ -936,4 +960,24 @@ inline u32 sGame::getPartyWarpId() {
 
 inline u32 sGame::getPartyWarpSecOrigin() {
     return this->mPartyWarpSecOrigin;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cChargeEffectUID::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cChargeEffectUID::DTI)->memAlloc(sz, align, ::cChargeEffectUID::DTI.::MtDTI::getID());
+}
+
+inline void cChargeEffectUID::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cChargeEffectUID::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sGame::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sGame::DTI);
+}
+
+inline void sGame::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGame::DTI)->memFree(p_addr);
 }

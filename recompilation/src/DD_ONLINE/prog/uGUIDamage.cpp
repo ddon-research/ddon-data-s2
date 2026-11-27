@@ -44,16 +44,8 @@ const MtDTI& uGUIDamage::getDTI() const {
     return uGUIDamage::DTI;
 }
 
-inline MtAllocator* uGUIDamage::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIDamage::DTI);
-}
-
 void* uGUIDamage::operator new(size_t sz, u32 align) {
     return uGUIDamage::getAllocator()->memAlloc(sz, align, uGUIDamage::DTI.getID());
-}
-
-inline void uGUIDamage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIDamage::DTI)->memFree(p_addr);
 }
 
 uGUIDamage::~uGUIDamage() {
@@ -85,9 +77,49 @@ void uGUIDamage::kill() {
     mpGUIRes = nullptr;
 }
 
-__attribute__((weak)) void uGUIDamage::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uGUIDamage::applyWorldOffset")
-    /* stub */
+void uGUIDamage::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    for (unsigned int i0_0 = 0;;) {
+        if (mInstInfos[i0_0].mEnable) {
+            mInstInfos[i0_0].mPos.x = offset.x + mInstInfos[i0_0].mPos.x;
+            mInstInfos[i0_0].mPos.y = offset.y + mInstInfos[i0_0].mPos.y;
+            mInstInfos[i0_0].mPos.z = offset.z + mInstInfos[i0_0].mPos.z;
+        }
+        if (i0_0 != 31) {
+            i0_0 = i0_0 + 1u;
+        } else {
+            break;
+        }
+    }
+    if (mSlipInstInfos[0].mEnable) {
+        mSlipInstInfos[0].mPos.x = offset.x + mSlipInstInfos[0].mPos.x;
+        mSlipInstInfos[0].mPos.y = offset.y + mSlipInstInfos[0].mPos.y;
+        mSlipInstInfos[0].mPos.z = offset.z + mSlipInstInfos[0].mPos.z;
+    }
+    if (mSlipInstInfos[1].mEnable) {
+        mSlipInstInfos[1].mPos.x = offset.x + mSlipInstInfos[1].mPos.x;
+        mSlipInstInfos[1].mPos.y = offset.y + mSlipInstInfos[1].mPos.y;
+        mSlipInstInfos[1].mPos.z = offset.z + mSlipInstInfos[1].mPos.z;
+    }
+    if (mTextInstInfos[0].mEnable) {
+        mTextInstInfos[0].mPos.x = offset.x + mTextInstInfos[0].mPos.x;
+        mTextInstInfos[0].mPos.y = offset.y + mTextInstInfos[0].mPos.y;
+        mTextInstInfos[0].mPos.z = offset.z + mTextInstInfos[0].mPos.z;
+    }
+    if (mTextInstInfos[1].mEnable) {
+        mTextInstInfos[1].mPos.x = offset.x + mTextInstInfos[1].mPos.x;
+        mTextInstInfos[1].mPos.y = offset.y + mTextInstInfos[1].mPos.y;
+        mTextInstInfos[1].mPos.z = offset.z + mTextInstInfos[1].mPos.z;
+    }
+    if (mTextInstInfos[2].mEnable) {
+        mTextInstInfos[2].mPos.x = offset.x + mTextInstInfos[2].mPos.x;
+        mTextInstInfos[2].mPos.y = offset.y + mTextInstInfos[2].mPos.y;
+        mTextInstInfos[2].mPos.z = offset.z + mTextInstInfos[2].mPos.z;
+    }
+    if (mTextInstInfos[3].mEnable) {
+        mTextInstInfos[3].mPos.x = offset.x + mTextInstInfos[3].mPos.x;
+        mTextInstInfos[3].mPos.y = offset.y + mTextInstInfos[3].mPos.y;
+        mTextInstInfos[3].mPos.z = offset.z + mTextInstInfos[3].mPos.z;
+    }
 }
 
 __attribute__((weak)) void uGUIDamage::generateInstance(u8 uType, s32 sValue, f32 fRate, u32 uFlags, const MtVector3* vPos) {

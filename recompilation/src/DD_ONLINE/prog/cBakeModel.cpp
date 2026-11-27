@@ -2,12 +2,10 @@
 #include <new>
 #include <string.h>
 #include "cBakeModel.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDebug.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "../../MT/MtScalableAllocator.h"
@@ -43,14 +41,6 @@ static MtScalableAllocator* gCESAllocator;
 
 const MtDTI& cBakeModel::getDTI() const {
     return cBakeModel::DTI;
-}
-
-inline void* cBakeModel::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cBakeModel::DTI)->memAlloc(sz, align, cBakeModel::DTI.getID());
-}
-
-inline void cBakeModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBakeModel::DTI)->memFree(p_addr);
 }
 
 cBakeModel::cBakeModel() {
@@ -94,8 +84,50 @@ cBakeModel::~cBakeModel() {
 }
 
 __attribute__((weak)) void cBakeModel::finalize() {
-    DDON_STUB("cBakeModel::finalize")
-    /* stub */
+    if (mpModel != nullptr) {
+        mpModel->release();
+        mpModel = nullptr;
+    }
+    if (mpVertexBuffer != nullptr) {
+        mpVertexBuffer->release();
+        mpVertexBuffer = nullptr;
+    }
+    if (mpIndexBuffer != nullptr) {
+        mpIndexBuffer->release();
+        mpIndexBuffer = nullptr;
+    }
+    if (mMaterialNum != 0) {
+        u32 v0_0 = mMaterialNum;
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mpaMaterials[i0_3] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                mpaMaterials[i0_3]->release();
+                mpaMaterials[i0_3] = nullptr;
+                v1_0 = mMaterialNum;
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    (gCESAllocator)->memFree(static_cast<void*>(mpaMaterials));
+    mpaMaterials = nullptr;
+    mMaterialNum = 0;
+    if (mpPrimitiveInfo != nullptr) {
+        (gCESAllocator)->memFree(static_cast<void*>(mpPrimitiveInfo));
+        mpPrimitiveInfo = nullptr;
+    }
+    mQuantPosScale = 1.0f;
+    mQuantPosOffset.x = MtVector4::Zero.x;
+    mQuantPosOffset.y = MtVector4::Zero.y;
+    mQuantPosOffset.z = MtVector4::Zero.z;
+    mQuantPosOffset.w = MtVector4::Zero.w;
 }
 
 __attribute__((weak)) bool cBakeModel::setModel(rModel* pmod, bool material_flag) {
@@ -245,9 +277,8 @@ u32 cBakeModelEx::getJointNum() {
     return mpCallBack->getSkinJointNum();
 }
 
-__attribute__((weak)) bool cBakeModelEx::isPartsDisp(u32 no) {
-    DDON_STUB("cBakeModelEx::isPartsDisp")
-    return {};
+bool cBakeModelEx::isPartsDisp(u32 no) {
+    return ((static_cast<unsigned long>(mpCallerUnit->mPartsDisp[no >> 5]) >> static_cast<unsigned long>(no & 31u)) & 1ul) != 0;
 }
 
 const MtVector3& cBakeModelEx::getPos() {

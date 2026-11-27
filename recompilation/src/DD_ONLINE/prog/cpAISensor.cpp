@@ -30,10 +30,6 @@ const MtDTI& cAISensorNode::getDTI() const {
     return cAISensorNode::DTI;
 }
 
-inline void cAISensorNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAISensorNode::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cAISensorNode::searchSensor(MtTypedArray<uDDOModel>& dst, const cAISensorGetParam& param, cAISensorCheckFuncPtr& func, void* pParam) {
     DDON_STUB("cAISensorNode::searchSensor")
     /* stub */
@@ -62,16 +58,8 @@ const MtDTI& cpAISensor::getDTI() const {
     return cpAISensor::DTI;
 }
 
-inline MtAllocator* cpAISensor::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpAISensor::DTI);
-}
-
 void* cpAISensor::operator new(size_t sz, u32 align) {
     return cpAISensor::getAllocator()->memAlloc(sz, align, cpAISensor::DTI.getID());
-}
-
-inline void cpAISensor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpAISensor::DTI)->memFree(p_addr);
 }
 
 cpAISensor::cpAISensor() {

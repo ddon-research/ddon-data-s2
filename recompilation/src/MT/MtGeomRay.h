@@ -189,3 +189,15 @@ inline void* MtGeomRay::operator new(size_t sz, void* p_addr) {
 inline void* MtGeomRayY::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "MtAllocator.h"
+#include "MtMemoryAllocator.h"
+
+inline void MtGeomRay::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtGeomRay::DTI)->memFree(p_addr);
+}
+
+inline void MtGeomRayY::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::MtGeomRayY::DTI)->memFree(p_addr);
+}

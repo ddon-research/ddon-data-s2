@@ -50,10 +50,6 @@ const MtDTI& uGUIPick01::getDTI() const {
     return uGUIPick01::DTI;
 }
 
-inline void uGUIPick01::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPick01::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIPick01::~uGUIPick01() {
     static_cast<sGUIExt*>(sGUI::getInstance())->releaseGatheringData(static_cast<MtObject*>(this));
     if (mpGUIRes == nullptr) {
@@ -329,29 +325,212 @@ __attribute__((weak)) u32 uGUIPick01::evCtrlCancel(cControl::Message* msg) {
     return {};
 }
 
-__attribute__((weak)) u32 uGUIPick01::evCtrlMoveFocusCtrl(cControl::Message* msg) {
-    DDON_STUB("uGUIPick01::evCtrlMoveFocusCtrl")
-    return {};
+u32 uGUIPick01::evCtrlMoveFocusCtrl(cControl::Message* msg) {
+    if (mProc != PR_PICK) {
+        return 0;
+    }
+    if (msg == nullptr) {
+        return 0;
+    }
+    if (mpMatCtrl == nullptr) {
+        return 0;
+    }
+    if (mpVCtrlPick == nullptr) {
+        return 0;
+    }
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 2u);
+    if (mCtrlFocus == 1) {
+        if (msg->reason == nGUIExt::BTN_START) {
+            if (!mpMatCtrl->isUpperRow()) {
+                if (msg->reason != nGUIExt::TRG_DOWN) {
+                    return 0;
+                }
+                if (!mpMatCtrl->isLastRow()) {
+                    return 0;
+                }
+            }
+        } else {
+            if (msg->reason != nGUIExt::TRG_DOWN) {
+                return 0;
+            }
+            if (!mpMatCtrl->isLastRow()) {
+                return 0;
+            }
+        }
+        if (mGUIItemArray.mLength != 0) {
+            for (unsigned int i0_3 = 0;;) {
+                static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[static_cast<int>(i0_3)])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+                if ((i0_3 + 1u) < mGUIItemArray.mLength) {
+                    i0_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        mCtrlFocus = 0;
+    } else {
+        if (mCtrlFocus != 0) {
+            return 0;
+        }
+        mCtrlFocus = 1;
+        if (msg->reason == nGUIExt::TRG_DOWN) {
+            mpMatCtrl->setCurrentRow(0);
+        } else {
+            if (msg->reason == nGUIExt::BTN_START) {
+                mpMatCtrl->setCurrentRow(mpMatCtrl->getRow() - 1);
+            }
+        }
+        s32 v2_10 = mpMatCtrl->getCurrentPos();
+        mMatrixSelPos = v2_10;
+        u32 v3_0;
+        if (mGUIItemArray.mLength == 0) {
+            v3_0 = 0;
+        } else {
+            for (unsigned int i2_3 = 0;;) {
+                static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[static_cast<int>(i2_3)])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+                if ((i2_3 + 1u) < mGUIItemArray.mLength) {
+                    i2_3 += 1u;
+                } else {
+                    v3_0 = mGUIItemArray.mLength;
+                    break;
+                }
+            }
+        }
+        if (v2_10 > -1) {
+            if (v2_10 < static_cast<int>(v3_0)) {
+                static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[mMatrixSelPos])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(true);
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 uGUIPick01::evCtrlMove(cControl::Message* msg) {
-    DDON_STUB("uGUIPick01::evCtrlMove")
-    return {};
+u32 uGUIPick01::evCtrlMove(cControl::Message* msg) {
+    if (msg != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 2u);
+        s32 v0_11 = msg->current;
+        mMatrixSelPos = v0_11;
+        u32 v1_10;
+        if (mGUIItemArray.mLength == 0) {
+            v1_10 = 0;
+        } else {
+            for (unsigned int i0_3 = 0;;) {
+                static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[static_cast<int>(i0_3)])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+                if ((i0_3 + 1u) < mGUIItemArray.mLength) {
+                    i0_3 += 1u;
+                } else {
+                    v1_10 = mGUIItemArray.mLength;
+                    break;
+                }
+            }
+        }
+        if (v0_11 > -1) {
+            if (v0_11 < static_cast<int>(v1_10)) {
+                static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[mMatrixSelPos])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(true);
+            }
+        }
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 uGUIPick01::evCtrlMouseOver(cControl::Message* msg) {
-    DDON_STUB("uGUIPick01::evCtrlMouseOver")
-    return {};
+u32 uGUIPick01::evCtrlMouseOver(cControl::Message* msg) {
+    if (msg != nullptr) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 2u);
+        s32 v0_11 = msg->mouse_hit_id;
+        mMatrixSelPos = v0_11;
+        u32 v1_10;
+        if (mGUIItemArray.mLength == 0) {
+            v1_10 = 0;
+        } else {
+            for (unsigned int i0_3 = 0;;) {
+                static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[static_cast<int>(i0_3)])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+                if ((i0_3 + 1u) < mGUIItemArray.mLength) {
+                    i0_3 += 1u;
+                } else {
+                    v1_10 = mGUIItemArray.mLength;
+                    break;
+                }
+            }
+        }
+        if (v0_11 > -1) {
+            if (v0_11 < static_cast<int>(v1_10)) {
+                static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[mMatrixSelPos])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(true);
+            }
+        }
+        mCtrlFocus = 1;
+    }
+    return 0;
 }
 
-__attribute__((weak)) u32 uGUIPick01::evCtrlMouseOverBtn(cControl::Message* msg) {
-    DDON_STUB("uGUIPick01::evCtrlMouseOverBtn")
-    return {};
+u32 uGUIPick01::evCtrlMouseOverBtn(cControl::Message* msg) {
+    if (msg == nullptr) {
+        return 0;
+    }
+    if (msg->mouse_hit_id == 1) {
+        mCtrlFocus = 1;
+        return 0;
+    }
+    if (msg->mouse_hit_id != 0) {
+        return 0;
+    }
+    mCtrlFocus = 0;
+    if (mGUIItemArray.mLength == 0) {
+        static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 2u);
+        return 0;
+    }
+    unsigned int i3 = 0;
+    do {
+        static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[static_cast<int>(i3)])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+        i3 += 1u;
+    } while (i3 < mGUIItemArray.mLength);
+    static_cast<sGUIExt*>(sGUI::getInstance())->requestSE(0u, 2u);
+    return 0;
 }
 
-__attribute__((weak)) u32 uGUIPick01::evCtrlMouseDecide(cControl::Message* msg) {
-    DDON_STUB("uGUIPick01::evCtrlMouseDecide")
-    return {};
+u32 uGUIPick01::evCtrlMouseDecide(cControl::Message* msg) {
+    if (msg->reason == nGUIExt::MOUSE_LCLICK) {
+        if (mProc == PR_PICK) {
+            if (mpMatCtrl != nullptr) {
+                if (mpVCtrlPick != nullptr) {
+                    if (msg->mouse_hit_id == 1) {
+                        mCtrlFocus = 1;
+                        (&mRefButton)->setFocus(false);
+                        s32 t0 = msg->click_vol;
+                        mMatrixSelPos = t0;
+                        mpMatCtrl->setCurrentPos(t0, false);
+                    } else {
+                        if (msg->mouse_hit_id == 0) {
+                            mCtrlFocus = 0;
+                            (&mRefButton)->setFocus(true);
+                            s32 v0_10 = msg->click_vol;
+                            mMatrixSelPos = v0_10;
+                            u32 v1_0;
+                            if (mGUIItemArray.mLength == 0) {
+                                v1_0 = 0;
+                            } else {
+                                for (unsigned int i0_3 = 0;;) {
+                                    static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[static_cast<int>(i0_3)])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(false);
+                                    if ((i0_3 + 1u) < mGUIItemArray.mLength) {
+                                        i0_3 += 1u;
+                                    } else {
+                                        v1_0 = mGUIItemArray.mLength;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (v0_10 > -1) {
+                                if (v0_10 < static_cast<int>(v1_0)) {
+                                    static_cast<cGUIItem*>(mGUIItemArray.getBuffer()[mMatrixSelPos])->mIcon.uGUIBase::cReferenceUIIconItem::setFocus(true);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        evCtrlDecide(msg);
+    }
+    return 0;
 }
 
 inline uGUIPick01::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -367,10 +546,6 @@ const MtDTI& uGUIPick01::cGUIUseItem::getDTI() const {
     return uGUIPick01::cGUIUseItem::DTI;
 }
 
-inline void uGUIPick01::cGUIUseItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPick01::cGUIUseItem::DTI)->memFree(p_addr);
-}
-
 inline uGUIPick01::cGUIUseItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIPick01::cGUIUseItem::MyDTI uGUIPick01::cGUIUseItem::DTI("uGUIPick01::cGUIUseItem", &::MtObject::DTI, 88ul, 0u, 0u);
@@ -382,10 +557,6 @@ __attribute__((weak)) MtObject* uGUIPick01::cGUIUseItem::MyDTI::newInstance() co
 
 const MtDTI& uGUIPick01::cGUIItem::getDTI() const {
     return uGUIPick01::cGUIItem::DTI;
-}
-
-inline void uGUIPick01::cGUIItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPick01::cGUIItem::DTI)->memFree(p_addr);
 }
 
 inline uGUIPick01::cGUIItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

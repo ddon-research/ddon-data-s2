@@ -276,3 +276,23 @@ inline void* cEventParam::operator new[](size_t sz, u32 align) {
 inline void* cEventParam::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEventParam::DTI)->memAlloc(sz, align, ::cEventParam::DTI.::MtDTI::getID());
 }
+
+inline void cEventParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEventParam::DTI)->memFree(p_addr);
+}
+
+inline void* cEventParam::cOmList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEventParam::cOmList::DTI)->memAlloc(sz, align, ::cEventParam::cOmList::DTI.::MtDTI::getID());
+}
+
+inline void cEventParam::cOmList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEventParam::cOmList::DTI)->memFree(p_addr);
+}
+
+inline void* rEventParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEventParam::DTI)->memAlloc(sz, align, ::rEventParam::DTI.::MtDTI::getID());
+}
+
+inline void rEventParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEventParam::DTI)->memFree(p_addr);
+}

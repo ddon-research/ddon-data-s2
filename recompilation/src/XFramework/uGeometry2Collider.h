@@ -220,3 +220,23 @@ inline uGeometry2Collider::cNodeGeometryInfo::cNodeGeometryInfo() {
     this->mpRegistGeometryParam = nullptr;
     this->mpRegistGeometry = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uGeometry2Collider::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGeometry2Collider::DTI)->memFree(p_addr);
+}
+
+inline void uGeometry2Collider::cContactInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGeometry2Collider::cContactInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uGeometry2Collider::cNodeGeometryInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGeometry2Collider::cNodeGeometryInfo::DTI)->memAlloc(sz, align, ::uGeometry2Collider::cNodeGeometryInfo::DTI.::MtDTI::mID);
+}
+
+inline void uGeometry2Collider::cNodeGeometryInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGeometry2Collider::cNodeGeometryInfo::DTI)->memFree(p_addr);
+}

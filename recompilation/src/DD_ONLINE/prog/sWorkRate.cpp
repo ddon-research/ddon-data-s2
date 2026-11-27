@@ -17,16 +17,8 @@ const MtDTI& sWorkRate::getDTI() const {
     return sWorkRate::DTI;
 }
 
-inline MtAllocator* sWorkRate::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sWorkRate::DTI);
-}
-
 void* sWorkRate::operator new(size_t sz, u32 align) {
     return sWorkRate::getAllocator()->memAlloc(sz, align, sWorkRate::DTI.getID());
-}
-
-inline void sWorkRate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sWorkRate::DTI)->memFree(p_addr);
 }
 
 sWorkRate::sWorkRate() {

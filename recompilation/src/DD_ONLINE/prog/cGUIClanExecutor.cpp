@@ -4,7 +4,6 @@
 #include "Protocol/PacketData/Clan.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cMenuBaseClan.h"
 #include "cNetGameServer.h"
@@ -30,16 +29,8 @@ const MtDTI& cGUIClanExecutor::getDTI() const {
     return cGUIClanExecutor::DTI;
 }
 
-inline MtAllocator* cGUIClanExecutor::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGUIClanExecutor::DTI);
-}
-
 void* cGUIClanExecutor::operator new(size_t sz, u32 align) {
     return cGUIClanExecutor::getAllocator()->memAlloc(sz, align, cGUIClanExecutor::DTI.getID());
-}
-
-inline void cGUIClanExecutor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIClanExecutor::DTI)->memFree(p_addr);
 }
 
 cGUIClanExecutor::cGUIClanExecutor() {

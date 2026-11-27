@@ -186,3 +186,28 @@ inline void* cZoneCategoryDayNightHemiSphere::operator new(size_t sz, void* p_ad
 inline void* cZoneCategoryLight::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cZoneCategoryDayNightColorFog::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneCategoryDayNightColorFog::DTI)->memFree(p_addr);
+}
+
+inline void cZoneCategoryDayNightHemiSphere::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneCategoryDayNightHemiSphere::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneCategoryLight::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneCategoryLight::DTI)->memAlloc(sz, align, ::cZoneCategoryLight::DTI.::MtDTI::getID());
+}
+
+inline void cZoneCategoryLight::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneCategoryLight::DTI)->memFree(p_addr);
+}
+
+inline cZoneCategoryLight::cZoneCategoryLight() {
+    this->::cZoneContents::setAttribute(32768u, true);
+    this->::cZoneContents::setAttribute(0x10000u, true);
+}

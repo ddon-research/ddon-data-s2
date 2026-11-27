@@ -35,10 +35,6 @@ const MtDTI& cContextInstChar::getDTI() const {
     return cContextInstChar::DTI;
 }
 
-inline void cContextInstChar::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContextInstChar::DTI)->memFree(p_addr);
-}
-
 cContextInstChar::~cContextInstChar() {
 }
 
@@ -320,10 +316,6 @@ const MtDTI& cContextInstEm::getDTI() const {
     return cContextInstEm::DTI;
 }
 
-inline void cContextInstEm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContextInstEm::DTI)->memFree(p_addr);
-}
-
 cContextInstEm::~cContextInstEm() {
 }
 
@@ -354,10 +346,6 @@ const MtDTI& cContextInstHm::getDTI() const {
 
 void* cContextInstHm::operator new(size_t sz, void* p_addr) {
     return p_addr;
-}
-
-inline void cContextInstHm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContextInstHm::DTI)->memFree(p_addr);
 }
 
 cContextInstHm::cContextInstHm() {
@@ -446,10 +434,6 @@ const MtDTI& cContextInstNpc::getDTI() const {
     return cContextInstNpc::DTI;
 }
 
-inline void cContextInstNpc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContextInstNpc::DTI)->memFree(p_addr);
-}
-
 cContextInstNpc::~cContextInstNpc() {
 }
 
@@ -477,14 +461,6 @@ __attribute__((weak)) MtObject* cContextInstNpc::MyDTI::newInstance() const {
 
 const MtDTI& cContextInstance::getDTI() const {
     return cContextInstance::DTI;
-}
-
-inline void* cContextInstance::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cContextInstance::DTI)->memAlloc(sz, align, cContextInstance::DTI.getID());
-}
-
-inline void cContextInstance::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cContextInstance::DTI)->memFree(p_addr);
 }
 
 cContextInstance::~cContextInstance() {

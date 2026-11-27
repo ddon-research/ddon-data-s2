@@ -603,6 +603,10 @@ inline u32 uCnsTinyChain::cChainNode::getAngleMode() const {
     return this->mAngleMode;
 }
 
+inline f32 uCnsTinyChain::cChainNode::getAngleLimit() const {
+    return this->mAngleLimit * 57.295776f;
+}
+
 inline u32 uCnsTinyChain::cChainNode::getShapeObject() const {
     return this->mShapeObject;
 }
@@ -613,4 +617,20 @@ inline void uCnsTinyChain::cChainNode::setShapeScroll(u32 shape) {
 
 inline u32 uCnsTinyChain::cChainNode::getShapeScroll() const {
     return this->mShapeScroll;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uCnsTinyChain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsTinyChain::DTI)->memFree(p_addr);
+}
+
+inline void uCnsTinyChain::cChainGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsTinyChain::cChainGroup::DTI)->memFree(p_addr);
+}
+
+inline void uCnsTinyChain::cChainNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uCnsTinyChain::cChainNode::DTI)->memFree(p_addr);
 }

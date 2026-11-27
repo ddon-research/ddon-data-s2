@@ -138,3 +138,19 @@ inline void cCatchInfoParam::operator delete[](void* p_addr) {
 inline void* cCatchInfoParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCatchInfoParam::DTI)->memAlloc(sz, align, ::cCatchInfoParam::DTI.::MtDTI::getID());
 }
+
+inline void* cCatchInfoParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCatchInfoParam::DTI)->memAlloc(sz, align, ::cCatchInfoParam::DTI.::MtDTI::getID());
+}
+
+inline void cCatchInfoParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCatchInfoParam::DTI)->memFree(p_addr);
+}
+
+inline void* rCatchInfoParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCatchInfoParam::DTI)->memAlloc(sz, align, ::rCatchInfoParam::DTI.::MtDTI::getID());
+}
+
+inline void rCatchInfoParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCatchInfoParam::DTI)->memFree(p_addr);
+}

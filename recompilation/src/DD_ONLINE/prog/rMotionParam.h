@@ -131,3 +131,19 @@ inline void cMotionParam::operator delete[](void* p_addr) {
 inline void* cMotionParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cMotionParam::DTI)->memAlloc(sz, align, ::cMotionParam::DTI.::MtDTI::getID());
 }
+
+inline void* cMotionParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMotionParam::DTI)->memAlloc(sz, align, ::cMotionParam::DTI.::MtDTI::getID());
+}
+
+inline void cMotionParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMotionParam::DTI)->memFree(p_addr);
+}
+
+inline void* rMotionParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMotionParam::DTI)->memAlloc(sz, align, ::rMotionParam::DTI.::MtDTI::getID());
+}
+
+inline void rMotionParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMotionParam::DTI)->memFree(p_addr);
+}

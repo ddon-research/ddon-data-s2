@@ -480,3 +480,38 @@ inline void* cOmTreeControl::operator new(size_t sz, void* p_addr) {
 
 inline stInsValue::Data::Data() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "sWeatherManager.h"
+#include "uSoundGenerator.h"
+
+inline MtAllocator* cOmControl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cOmControl::DTI);
+}
+
+inline void cOmControl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOmControl::DTI)->memFree(p_addr);
+}
+
+inline void cOmControl::eraseZone() {
+    (::sWeatherManager::mpInstance)->::sWeatherManager::eraseZoneIndoorRes(this->mhZone);
+    if (this->mpuSndGen == nullptr) {
+        return;
+    }
+    this->mpuSndGen->kill();
+    this->mpuSndGen = nullptr;
+}
+
+inline void cOmControl::InputLot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOmControl::InputLot::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cOmTreeControl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cOmTreeControl::DTI);
+}
+
+inline void cOmTreeControl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOmTreeControl::DTI)->memFree(p_addr);
+}

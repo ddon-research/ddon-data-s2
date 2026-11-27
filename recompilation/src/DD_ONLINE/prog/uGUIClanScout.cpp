@@ -37,10 +37,6 @@ const MtDTI& uGUIClanScout::getDTI() const {
     return uGUIClanScout::DTI;
 }
 
-inline void uGUIClanScout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIClanScout::DTI)->memFree(p_addr);
-}
-
 uGUIClanScout::uGUIClanScout() {
     DDON_STUB("uGUIClanScout::uGUIClanScout")
     /* stub */
@@ -203,14 +199,6 @@ const MtDTI& uGUIClanScout::cGUIPageListScoutEntry::getDTI() const {
     return uGUIClanScout::cGUIPageListScoutEntry::DTI;
 }
 
-inline void* uGUIClanScout::cGUIPageListScoutEntry::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIClanScout::cGUIPageListScoutEntry::DTI)->memAlloc(sz, align, uGUIClanScout::cGUIPageListScoutEntry::DTI.getID());
-}
-
-inline void uGUIClanScout::cGUIPageListScoutEntry::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIClanScout::cGUIPageListScoutEntry::DTI)->memFree(p_addr);
-}
-
 s32 uGUIClanScout::cGUIPageListScoutEntry::getItemNum() const {
     return static_cast<s32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getClanScoutEntryListPacket()->m_SearchResult.size());
 }
@@ -244,10 +232,6 @@ MtObject* uGUIClanScout::cGUIPageListScoutEntry::MyDTI::newInstance() const {
 
 const MtDTI& uGUIClanScoutBase::getDTI() const {
     return uGUIClanScoutBase::DTI;
-}
-
-inline void uGUIClanScoutBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIClanScoutBase::DTI)->memFree(p_addr);
 }
 
 uGUIClanScoutBase::~uGUIClanScoutBase() {
@@ -336,10 +320,6 @@ __attribute__((weak)) MtObject* uGUIClanScoutBase::MyDTI::newInstance() const {
 
 const MtDTI& uGUIClanScoutEntry::getDTI() const {
     return uGUIClanScoutEntry::DTI;
-}
-
-inline void uGUIClanScoutEntry::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIClanScoutEntry::DTI)->memFree(p_addr);
 }
 
 uGUIClanScoutEntry::uGUIClanScoutEntry() {
@@ -605,17 +585,19 @@ __attribute__((weak)) void uGUIClanScoutEntry::updateFocus() {
     /* stub */
 }
 
-inline void uGUIClanScoutEntry::updateKeyword() {
-    mClanPolicyMessages.applyPolicy(sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unMotto, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveDays, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unActiveTime, sMenu::getInstance()->mMenuClanScoutEntry.mEntryParam.m_unCharacteristic);
-}
-
 void uGUIClanScoutEntry::onUpdateInit() {
     updateKeyword();
 }
 
-__attribute__((weak)) void uGUIClanScoutEntry::onUpdateWait() {
-    DDON_STUB("uGUIClanScoutEntry::onUpdateWait")
-    /* stub */
+void uGUIClanScoutEntry::onUpdateWait() {
+    updateFocus();
+    u32 i = 0;
+    if (mRefrenceUIArray.mLength != 0) {
+        do {
+            static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i)])->update();
+            i += 1u;
+        } while (i < mRefrenceUIArray.mLength);
+    }
 }
 
 __attribute__((weak)) void uGUIClanScoutEntry::onDecide() {

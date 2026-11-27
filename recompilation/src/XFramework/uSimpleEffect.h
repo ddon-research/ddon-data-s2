@@ -266,3 +266,15 @@ inline bool uSimpleEffect::getOfsInvalidMode() const {
 inline void uSimpleEffect::setOfsInvalidMode(bool Mode) {
     this->mOfsInvalidMode = Mode;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uSimpleEffect::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSimpleEffect::DTI)->memFree(p_addr);
+}
+
+inline void uSimpleEffect::Particle::operator delete(void* pObj) {
+    ::MtMemoryAllocator::getAllocator(::uSimpleEffect::DTI)->memFree(pObj);
+}

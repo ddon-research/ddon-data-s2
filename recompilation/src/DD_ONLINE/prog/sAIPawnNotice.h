@@ -83,3 +83,15 @@ inline void* sAIPawnNotice::operator new(size_t sz, void* p_addr) {
 inline sAIPawnNotice* sAIPawnNotice::getInstance() {
     return ::sAIPawnNotice::mpInstance;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sAIPawnNotice::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sAIPawnNotice::DTI);
+}
+
+inline void sAIPawnNotice::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sAIPawnNotice::DTI)->memFree(p_addr);
+}

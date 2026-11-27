@@ -250,3 +250,43 @@ inline void* rDungeonMarker::cWarpInfo::cIndex::operator new(size_t sz, u32 alig
 inline void rDungeonMarker::cWarpInfo::cIndex::save(MtDataWriter& w) {
     nDDOIO::writeData(w, mIndex);
 }
+
+inline void* rDungeonMarker::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDungeonMarker::DTI)->memAlloc(sz, align, ::rDungeonMarker::DTI.::MtDTI::getID());
+}
+
+inline void rDungeonMarker::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDungeonMarker::DTI)->memFree(p_addr);
+}
+
+inline rDungeonMarker::rDungeonMarker() {
+    this->mWarpStageNo = 0;
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rDungeonMarker::cWarpInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cWarpInfo::DTI)->memAlloc(sz, align, ::rDungeonMarker::cWarpInfo::DTI.::MtDTI::getID());
+}
+
+inline void rDungeonMarker::cWarpInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cWarpInfo::DTI)->memFree(p_addr);
+}
+
+inline void rDungeonMarker::cWarpInfo::cIndex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cWarpInfo::cIndex::DTI)->memFree(p_addr);
+}
+
+inline void* rDungeonMarker::cPosition::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cPosition::DTI)->memAlloc(sz, align, ::rDungeonMarker::cPosition::DTI.::MtDTI::getID());
+}
+
+inline void rDungeonMarker::cPosition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rDungeonMarker::cPosition::DTI)->memFree(p_addr);
+}
+
+inline rDungeonMarker::cPosition::cPosition() {
+    this->mPos.x = ::MtVector3::Zero.x;
+    this->mPos.y = ::MtVector3::Zero.y;
+    this->mPos.z = ::MtVector3::Zero.z;
+    this->mPos.pad_ = 0.0f;
+}

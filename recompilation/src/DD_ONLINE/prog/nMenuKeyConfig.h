@@ -44,6 +44,8 @@ namespace nMenuKeyConfig {
 namespace nMenuKeyConfig {
     class KeyCustomManagers
     {
+        friend class nMenuKeyConfig::CategoryListItems;
+        friend class nMenuKeyConfig::KeyListItems;
     public:
         KeyCustomManagers();
         ~KeyCustomManagers();

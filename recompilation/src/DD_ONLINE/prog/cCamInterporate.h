@@ -17,7 +17,11 @@ class MtProperty;
 class MtPropertyList;
 class MtUI;
 class MtVector3;
+class cCamImpAnimTar;
+class cCamImpLock;
+class cCamImpMotTar;
 class uCamera;
+class uCameraGame;
 
 // Declarations
 class cCamInterAll;
@@ -43,6 +47,11 @@ using u32 = unsigned int;
 template <>
 class cCamInterporate<MtVector3> : public MtObject
 {
+    friend class cCamImpAnimTar;
+    friend class cCamImpLock;
+    friend class cCamImpMotTar;
+    friend class cCamInterAll;
+    friend class uCameraGame;
 public:
     class MyDTI;
 public:
@@ -99,6 +108,11 @@ public:
 template <>
 class cCamInterporate<float> : public MtObject
 {
+    friend class cCamImpAnimTar;
+    friend class cCamImpLock;
+    friend class cCamImpMotTar;
+    friend class cCamInterAll;
+    friend class uCameraGame;
 public:
     class MyDTI;
 public:
@@ -498,7 +512,31 @@ inline void* cCamInterporateVec3::operator new(size_t sz, void* p_addr) {
 inline cCamInterporateVec3::cCamInterporateVec3() {
 }
 
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
 template <typename Type>
 const MtDTI& cCamInterporateTime<Type>::getDTI() const {
     return cCamInterporateTime<Type>::DTI;
+}
+
+inline MtAllocator* cCamInterporateRange::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamInterporateRange::DTI);
+}
+
+inline void* cCamInterporateRange::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCamInterporateRange::DTI)->memAlloc(sz, align, ::cCamInterporateRange::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* cCamInterporateRangeAng::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamInterporateRangeAng::DTI);
+}
+
+inline MtAllocator* cCamInterporateVec3::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCamInterporateVec3::DTI);
+}
+
+inline void* cCamInterporateVec3::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCamInterporateVec3::DTI)->memAlloc(sz, align, ::cCamInterporateVec3::DTI.::MtDTI::getID());
 }

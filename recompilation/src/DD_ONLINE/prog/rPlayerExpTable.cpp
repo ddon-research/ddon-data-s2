@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rPlayerExpTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cPlayerExpTable::getDTI() const {
     return cPlayerExpTable::DTI;
-}
-
-inline void* cPlayerExpTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPlayerExpTable::DTI)->memAlloc(sz, align, cPlayerExpTable::DTI.getID());
-}
-
-inline void cPlayerExpTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPlayerExpTable::DTI)->memFree(p_addr);
 }
 
 void cPlayerExpTable::createProperty(MtPropertyList& s) {
@@ -41,14 +31,6 @@ MtObject* cPlayerExpTable::MyDTI::newInstance() const {
 
 const MtDTI& rPlayerExpTable::getDTI() const {
     return rPlayerExpTable::DTI;
-}
-
-inline void* rPlayerExpTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPlayerExpTable::DTI)->memAlloc(sz, align, rPlayerExpTable::DTI.getID());
-}
-
-inline void rPlayerExpTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPlayerExpTable::DTI)->memFree(p_addr);
 }
 
 bool rPlayerExpTable::loadData(MtDataReader& in, cPlayerExpTable* pData) {

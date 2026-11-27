@@ -4085,8 +4085,7 @@ inline sCollision::ActiveNodeInfo::ActiveNodeInfo() {
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 56) = 0;
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 48) = 0;
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 40) = 0;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 32) = 0;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 24) = 0;
+    this->mpCallbackFunc = static_cast<sCollision::OBJ_FUNC>(0);
     this->mpCallbackOwner = nullptr;
     this->mpActiveNode = nullptr;
     this->mContactFunctionType = 1;
@@ -4145,4 +4144,208 @@ inline void* sCollision::SbcLockInfo::operator new(size_t sz, void* p_addr) {
 }
 
 inline sCollision::SbcLockInfoLight::SbcLockInfoLight() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sCollision::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::cSbcArrayBP::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcArrayBP::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcArrayBP::cDBVTMaster::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcArrayBP::cDBVTMaster::DTI)->memAlloc(sz, align, ::sCollision::cSbcArrayBP::cDBVTMaster::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::cSbcArrayBP::cDBVTMaster::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcArrayBP::cDBVTMaster::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::cColArray::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cColArray::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcMoveReserveInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfo::DTI)->memAlloc(sz, align, ::sCollision::cSbcMoveReserveInfo::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::cSbcMoveReserveInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::Sbc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::Sbc::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::Sbc::Parts::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::Sbc::Parts::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcMoveMatrix::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveMatrix::DTI)->memAlloc(sz, align, ::sCollision::cSbcMoveMatrix::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::cSbcMoveMatrix::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveMatrix::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcMoveResetReserveInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveResetReserveInfo::DTI)->memAlloc(sz, align, ::sCollision::cSbcMoveResetReserveInfo::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::cSbcMoveResetReserveInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveResetReserveInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcRegistReserveInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcRegistReserveInfo::DTI)->memAlloc(sz, align, ::sCollision::cSbcRegistReserveInfo::DTI.::MtDTI::mID);
+}
+
+inline void* sCollision::cSbcMoveReserveInfoAll::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfoAll::DTI)->memAlloc(sz, align, ::sCollision::cSbcMoveReserveInfoAll::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::cSbcMoveReserveInfoAll::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveReserveInfoAll::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::cSbcMoveResetReserveInfoAll::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcMoveResetReserveInfoAll::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::SbcObject::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::SbcObject::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::SbcObject::cRegisterInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::SbcObject::cRegisterInfo::DTI)->memAlloc(sz, align, ::sCollision::SbcObject::cRegisterInfo::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::SbcObject::cRegisterInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::SbcObject::cRegisterInfo::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::cSbcSkinMesh::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcSkinMesh::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcSkinMesh::cRegisterInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcSkinMesh::cRegisterInfo::DTI)->memAlloc(sz, align, ::sCollision::cSbcSkinMesh::cRegisterInfo::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::cSbcSkinMesh::cRegisterInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcSkinMesh::cRegisterInfo::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::cSbcHeightField::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcHeightField::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::cSbcHeightField::cHeightField::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::cSbcHeightField::cHeightField::DTI)->memAlloc(sz, align, ::sCollision::cSbcHeightField::cHeightField::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::cSbcHeightField::cHeightField::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSbcHeightField::cHeightField::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::Collider::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::Collider::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::Collider::cNodeListArray::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::Collider::cNodeListArray::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::Node::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::Node::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::TriangleInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::TriangleInfo::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::SbcInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::SbcInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::SbcInfoBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::SbcInfoBase::DTI)->memAlloc(sz, align, ::sCollision::SbcInfoBase::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::SbcInfoBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::SbcInfoBase::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::ColliderPassiveNodeInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::ColliderPassiveNodeInfo::DTI)->memAlloc(sz, align, ::sCollision::ColliderPassiveNodeInfo::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::ColliderPassiveNodeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ColliderPassiveNodeInfo::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ColliderActiveNodeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ColliderActiveNodeInfo::DTI)->memFree(p_addr);
+}
+
+inline void* sCollision::ActiveNodeInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCollision::ActiveNodeInfo::DTI)->memAlloc(sz, align, ::sCollision::ActiveNodeInfo::DTI.::MtDTI::mID);
+}
+
+inline void sCollision::ActiveNodeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ActiveNodeInfo::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::NodeList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::NodeList::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfo::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfoBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoBase::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfoFind::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoFind::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfoCastConvex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoCastConvex::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfoAdjustPosition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoAdjustPosition::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfoGetAreaPoly::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoGetAreaPoly::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfoOriginal::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoOriginal::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfoPreTraverse::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoPreTraverse::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::ScrCollisionInfoFind4::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::ScrCollisionInfoFind4::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::cSystemInitializeParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::cSystemInitializeParam::DTI)->memFree(p_addr);
+}
+
+inline void sCollision::SbcLockInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCollision::SbcLockInfo::DTI)->memFree(p_addr);
 }

@@ -26,10 +26,6 @@ void* cDynamicBVHCollision::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cDynamicBVHCollision::DTI)->memAlloc(sz, align, cDynamicBVHCollision::DTI.mID);
 }
 
-inline void cDynamicBVHCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDynamicBVHCollision::DTI)->memFree(p_addr);
-}
-
 cDynamicBVHCollision::cDynamicBVHCollision() {
     DDON_STUB("cDynamicBVHCollision::cDynamicBVHCollision")
     /* stub */
@@ -178,8 +174,24 @@ void cDynamicBVHCollision::applyWorldOffset(const MtVector3& offset) {
 }
 
 __attribute__((weak)) void cDynamicBVHCollision::applyWorldOffsetCore(const MtVector3& offset, cDynamicBVHCollision::Node* pNowNode) {
-    DDON_STUB("cDynamicBVHCollision::applyWorldOffsetCore")
-    /* stub */
+    for (Node* v0_3 = pNowNode;;) {
+        if (v0_3 == nullptr) {
+            break;
+        } else {
+            v0_3->mAABB.minpos.x = offset.x + v0_3->mAABB.minpos.x;
+            v0_3->mAABB.minpos.y = offset.y + v0_3->mAABB.minpos.y;
+            v0_3->mAABB.minpos.z = offset.z + v0_3->mAABB.minpos.z;
+            v0_3->mAABB.maxpos.x = offset.x + v0_3->mAABB.maxpos.x;
+            v0_3->mAABB.maxpos.y = offset.y + v0_3->mAABB.maxpos.y;
+            v0_3->mAABB.maxpos.z = offset.z + v0_3->mAABB.maxpos.z;
+            if (v0_3->mpChild[1] == nullptr) {
+                break;
+            } else {
+                applyWorldOffsetCore(offset, reinterpret_cast<Node*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_3) + 16)));
+                v0_3 = v0_3->mpChild[1];
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cDynamicBVHCollision::insertLeaf(cDynamicBVHCollision::Node* pStartNode, cDynamicBVHCollision::Node* pInsertLeafNode) {
@@ -367,7 +379,15 @@ inline cDynamicBVHCollision::Node::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, 
 cDynamicBVHCollision::Node::MyDTI cDynamicBVHCollision::Node::DTI("cDynamicBVHCollision::Node", &::nCollision::cAllocaterIntermediate::DTI, 64ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cDynamicBVHCollision::Node::MyDTI::newInstance() const {
-    DDON_STUB("cDynamicBVHCollision::Node::MyDTI::newInstance")
-    return nullptr;
+    cDynamicBVHCollision::Node* t1 = static_cast<cDynamicBVHCollision::Node*>(
+        MtMemoryAllocator::getAllocator(cDynamicBVHCollision::Node::DTI)->memAlloc(sizeof(cDynamicBVHCollision::Node), 16u, cDynamicBVHCollision::Node::DTI.getID())
+    );
+    // workaround
+    new (static_cast<void*>(t1)) cDynamicBVHCollision::Node(*t1);
+    t1->mAABB = MtAABB::Empty;
+    t1->mpChild[1] = nullptr;
+    t1->mpChild[0] = nullptr;
+    t1->mpParent = nullptr;
+    return t1;
 }
 

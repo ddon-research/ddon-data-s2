@@ -31,16 +31,8 @@ const MtDTI& uGUICaplinkTrophyList::getDTI() const {
     return uGUICaplinkTrophyList::DTI;
 }
 
-inline MtAllocator* uGUICaplinkTrophyList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::DTI);
-}
-
 void* uGUICaplinkTrophyList::operator new(size_t sz, u32 align) {
     return uGUICaplinkTrophyList::getAllocator()->memAlloc(sz, align, uGUICaplinkTrophyList::DTI.getID());
-}
-
-inline void uGUICaplinkTrophyList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkTrophyList::~uGUICaplinkTrophyList() {
@@ -159,14 +151,6 @@ const MtDTI& uGUICaplinkTrophyList::cListItem::getDTI() const {
     return uGUICaplinkTrophyList::cListItem::DTI;
 }
 
-inline void* uGUICaplinkTrophyList::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::cListItem::DTI)->memAlloc(sz, align, uGUICaplinkTrophyList::cListItem::DTI.getID());
-}
-
-inline void uGUICaplinkTrophyList::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUICaplinkTrophyList::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkTrophyList::cListItem::MyDTI uGUICaplinkTrophyList::cListItem::DTI("uGUICaplinkTrophyList::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 112ul, 0u, 0u);
@@ -177,10 +161,6 @@ MtObject* uGUICaplinkTrophyList::cListItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUICaplinkTrophyList::cListInfo::getDTI() const {
     return uGUICaplinkTrophyList::cListInfo::DTI;
-}
-
-inline void uGUICaplinkTrophyList::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyList::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkTrophyList::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

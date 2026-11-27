@@ -19,10 +19,6 @@ const MtDTI& CDataGameSetting::getDTI() const {
     return CDataGameSetting::DTI;
 }
 
-inline MtAllocator* CDataGameSetting::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataGameSetting::DTI);
-}
-
 __attribute__((weak)) void CDataGameSetting::operator delete(void* p_addr) {
     CDataGameSetting::getAllocator()->memFree(p_addr);
 }
@@ -38,10 +34,6 @@ __attribute__((weak)) MtObject* CDataGameSetting::MyDTI::newInstance() const {
 
 const MtDTI& CDataLoginSetting::getDTI() const {
     return CDataLoginSetting::DTI;
-}
-
-inline MtAllocator* CDataLoginSetting::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataLoginSetting::DTI);
 }
 
 __attribute__((weak)) void CDataLoginSetting::operator delete(void* p_addr) {

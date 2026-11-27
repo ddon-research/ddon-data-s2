@@ -184,3 +184,23 @@ inline cpReaction::cTriggerFree::cTriggerFree() {
     this->mF32Free = 0.0f;
     this->mU32Free = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpReaction::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpReaction::DTI);
+}
+
+inline void cpReaction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpReaction::DTI)->memFree(p_addr);
+}
+
+inline void* cpReaction::cTriggerFree::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpReaction::cTriggerFree::DTI)->memAlloc(sz, align, ::cpReaction::cTriggerFree::DTI.::MtDTI::getID());
+}
+
+inline void cpReaction::cTriggerFree::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpReaction::cTriggerFree::DTI)->memFree(p_addr);
+}

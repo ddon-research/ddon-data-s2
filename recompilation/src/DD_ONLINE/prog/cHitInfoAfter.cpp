@@ -27,14 +27,6 @@ const MtDTI& cHealedInfo::getDTI() const {
     return cHealedInfo::DTI;
 }
 
-inline void* cHealedInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cHealedInfo::DTI)->memAlloc(sz, align, cHealedInfo::DTI.getID());
-}
-
-inline void cHealedInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHealedInfo::DTI)->memFree(p_addr);
-}
-
 inline cHealedInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cHealedInfo::MyDTI cHealedInfo::DTI("cHealedInfo", &::MtObject::DTI, 96ul, 0u, 0u);
@@ -45,10 +37,6 @@ MtObject* cHealedInfo::MyDTI::newInstance() const {
 
 const MtDTI& cHitInfoAfter::getDTI() const {
     return cHitInfoAfter::DTI;
-}
-
-inline MtAllocator* cHitInfoAfter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cHitInfoAfter::DTI);
 }
 
 __attribute__((weak)) void cHitInfoAfter::operator delete(void* p_addr) {
@@ -185,10 +173,6 @@ const MtDTI& cHitInfoAfterCommon::getDTI() const {
     return cHitInfoAfterCommon::DTI;
 }
 
-inline void cHitInfoAfterCommon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHitInfoAfterCommon::DTI)->memFree(p_addr);
-}
-
 cHitInfoAfterCommon::~cHitInfoAfterCommon() {
     if (mpAttackParam == nullptr) {
         return;
@@ -229,14 +213,6 @@ __attribute__((weak)) MtObject* cHitInfoAfterCommon::MyDTI::newInstance() const 
 
 const MtDTI& cHpDamageInfo::getDTI() const {
     return cHpDamageInfo::DTI;
-}
-
-inline void* cHpDamageInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cHpDamageInfo::DTI)->memAlloc(sz, align, cHpDamageInfo::DTI.getID());
-}
-
-inline void cHpDamageInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHpDamageInfo::DTI)->memFree(p_addr);
 }
 
 void cHpDamageInfo::addDamageAttackAdj(nObjCollision::HP_DAMAGE_ATTACK_ADJ_TYPE type, f32 Adj) {

@@ -7,7 +7,7 @@
 #include "Protocol/PacketData/Clan.h"
 #include "../../generated/shared/Error.h"
 #include "../../MT/MtAllocator.h"
-#include "../../MT/MtCharset.h"
+#include "../../MT/MtCharSet.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
@@ -112,10 +112,6 @@ static const u32 EQUIP_SLOT_TABLE[17] = {
 
 const MtDTI& uGUIBase::getDTI() const {
     return uGUIBase::DTI;
-}
-
-inline void uGUIBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::DTI)->memFree(p_addr);
 }
 
 bool uGUIBase::isSMENUdecide() {
@@ -748,15 +744,15 @@ __attribute__((weak)) void uGUIBase::deleteDuplicateInstance(cGUIInstance* pInst
 }
 
 void uGUIBase::deleteDuplicateInstanceAll() {
-    if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 1576)) == 0) {
+    if (mDuplicates.mLength == 0) {
         deleteDuplicateAll();
         return;
     }
     u32 i = 0;
     do {
-        deleteInstance(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 1592)) + (static_cast<unsigned long>(i) * 8)) + 0)) + 0)));
+        deleteInstance(mDuplicates.mpArray[i]->mpInst);
         i += 1u;
-    } while (i < (*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 1576)));
+    } while (i < mDuplicates.mLength);
     deleteDuplicateAll();
 }
 
@@ -1115,9 +1111,19 @@ cGUIObject* uGUIBase::getObjectFromId(u32 uInstId, u32 uId) {
     return nullptr;
 }
 
-__attribute__((weak)) MtVector2 uGUIBase::getObjectScreenPos(cGUIObject* pObj, const MtVector3& offset) {
-    DDON_STUB("uGUIBase::getObjectScreenPos")
-    __builtin_unreachable();
+MtVector2 uGUIBase::getObjectScreenPos(cGUIObject* pObj, const MtVector3& offset) {
+    MtVector2 obj_pos;
+    if (pObj != nullptr) {
+        const f32 t0 = offset.y;
+        f32 t1 = pObj->mMat.m[3].y;
+        obj_pos.x = offset.x + pObj->mMat.m[3].x;
+        obj_pos.y = t0 + t1;
+        return obj_pos;
+    } else {
+        obj_pos.x = MtVector2::Zero.x;
+        obj_pos.y = MtVector2::Zero.y;
+        return obj_pos;
+    }
 }
 
 __attribute__((weak)) MtVector2 uGUIBase::getInstanceScreenPos(cGUIInstance* pInst, const MtVector3& offset) {
@@ -1125,9 +1131,32 @@ __attribute__((weak)) MtVector2 uGUIBase::getInstanceScreenPos(cGUIInstance* pIn
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void uGUIBase::setMsgAnalyzerWork(u32 uIdx, MT_CTSTR pAnalyzeMsg) {
-    DDON_STUB("uGUIBase::setMsgAnalyzerWork")
-    /* stub */
+void uGUIBase::setMsgAnalyzerWork(u32 uIdx, MT_CTSTR pAnalyzeMsg) {
+    if (uIdx <= 9u) {
+        mMsgAnalyzerWork[uIdx].mEnable = true;
+        if (pAnalyzeMsg != mMsgAnalyzerWork[uIdx].mAnalyzeMsg.ptr()) {
+            if (mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value != nullptr) {
+                if (sceAtomicAdd32Relaxed(&mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value->ref, -1) == 1) {
+                    (MtString::mpAllocator)->memFree(static_cast<void*>(mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value));
+                }
+                mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value = nullptr;
+            }
+            if (pAnalyzeMsg != nullptr) {
+                size_t t0 = strlen(pAnalyzeMsg);
+                if (static_cast<unsigned int>(t0) != 0) {
+                    void* t1 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t0)) + 12, 16u);
+                    mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value = static_cast<MtString::STRING*>(t1);
+                    mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value->ref = 1;
+                    mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value->length = static_cast<unsigned int>(t0);
+                    strcpy(reinterpret_cast<char*>(mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value->str), pAnalyzeMsg);
+                } else {
+                    mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value = nullptr;
+                }
+            } else {
+                mMsgAnalyzerWork[uIdx].mAnalyzeMsg.value = nullptr;
+            }
+        }
+    }
 }
 
 void uGUIBase::setMsgAnalyzerWork(u32 uIdx, s32 sAnalyzeNum) {
@@ -1290,9 +1319,8 @@ __attribute__((weak)) void uGUIBase::setMessageHorizontalInterval(cGUIObj2D* pOb
     /* stub */
 }
 
-__attribute__((weak)) s32 uGUIBase::convertJobID2ResJobFrame(nHuman::JOB_ENUM val) {
-    DDON_STUB("uGUIBase::convertJobID2ResJobFrame")
-    return {};
+s32 uGUIBase::convertJobID2ResJobFrame(nHuman::JOB_ENUM val) {
+    return val - 1;
 }
 
 void uGUIBase::setArcTag(u32 tagId, u32 index, bool isKeep) {
@@ -1310,9 +1338,39 @@ u32 uGUIBase::getArcTag(u32 index) {
     }
 }
 
-__attribute__((weak)) cResource* uGUIBase::uiCreateResource(u32 arcTag, u32 searchId, u32 mode, t64 update_time) {
-    DDON_STUB("uGUIBase::uiCreateResource")
-    return nullptr;
+cResource* uGUIBase::uiCreateResource(u32 arcTag, u32 searchId, u32 mode, t64 update_time) {
+    cResource* pRes = sArchiveManager::getInstance()->createRes(arcTag, searchId, mode, false);
+    cResource* v2_3;
+    if (pRes == nullptr) {
+        v2_3 = nullptr;
+        return v2_3;
+    } else {
+        if ((pRes->mState & 1u) != 0) {
+            if (update_time != 0) {
+                const MtDTI& t0 = pRes->getDTI();
+                MT_CTSTR v0_1 = rGUI::DTI.mName;
+                for (const MtDTI* v0_0 = &t0;;) {
+                    if (v0_1 != v0_0->mName) {
+                        if (v0_0->mpParent != nullptr) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        setResourceWithCheck(static_cast<rGUI*>(pRes), update_time, true);
+                        v2_3 = pRes;
+                        return v2_3;
+                    }
+                }
+            } else {
+                v2_3 = pRes;
+                return v2_3;
+            }
+        }
+    }
+    pRes->release();
+    v2_3 = nullptr;
+    return v2_3;
 }
 
 bool uGUIBase::loadGMD(MT_CTSTR str, u32 aryIdx) {
@@ -1404,39 +1462,6 @@ bool uGUIBase::isNoRegistSystemCallBack() {
         return !cQuestSvRequestManager::hasRequest(static_cast<const MtObject*>(this));
     }
     return false;
-}
-
-inline void uGUIBase::releaseRegistSystemCallBack() {
-    if (mpItemMgrRequest != nullptr) {
-        if (!mpItemMgrRequest->isExit(static_cast<void*>(this))) {
-            mpItemMgrRequest->mIsResultCancel = true;
-        }
-        mpItemMgrRequest = nullptr;
-    }
-    if ((sQuestManagerExt::mpInstance) == nullptr) {
-        return;
-    }
-    cQuestSvRequestManager::popRequest(static_cast<const MtObject*>(this));
-}
-
-inline void uGUIBase::manageIItemManagerNetReq() {
-    if (mpItemMgrRequest == nullptr) {
-        return;
-    }
-    if (!mpItemMgrRequest->isExit(static_cast<void*>(this))) {
-        return;
-    }
-    mpItemMgrRequest = nullptr;
-}
-
-inline void uGUIBase::deleteItemManagerNetReq() {
-    if (mpItemMgrRequest == nullptr) {
-        return;
-    }
-    if (!mpItemMgrRequest->isExit(static_cast<void*>(this))) {
-        mpItemMgrRequest->mIsResultCancel = true;
-    }
-    mpItemMgrRequest = nullptr;
 }
 
 __attribute__((weak)) void uGUIBase::manageCommunicateServer() {
@@ -1548,12 +1573,6 @@ void uGUIBase::moveTextBox() {
     }
 }
 
-inline void uGUIBase::initInputTextKey() {
-    mInputTextKeyboardHook.mOwner = this;
-    mInputTextKey.init();
-    mInputTextKeyReq.init();
-}
-
 __attribute__((weak)) bool uGUIBase::onKeyEvent(const nInputTextKeyboardHook::Keycode& keycode) {
     DDON_STUB("uGUIBase::onKeyEvent")
     return {};
@@ -1566,14 +1585,6 @@ __attribute__((weak)) MtObject* uGUIBase::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIBase::getDTI() const {
     return uGUIBase::cReferenceUIBase::DTI;
-}
-
-inline void* uGUIBase::cReferenceUIBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIBase::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIBase::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIBase::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUIBase::setFocus(bool b) {
@@ -1645,22 +1656,6 @@ const MtDTI& uGUIBase::cSupportInstAnim::getDTI() const {
     return uGUIBase::cSupportInstAnim::DTI;
 }
 
-inline void* uGUIBase::cSupportInstAnim::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cSupportInstAnim::DTI)->memAlloc(sz, align, uGUIBase::cSupportInstAnim::DTI.getID());
-}
-
-inline void uGUIBase::cSupportInstAnim::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cSupportInstAnim::DTI)->memFree(p_addr);
-}
-
-uGUIBase::cSupportInstAnim::cSupportInstAnim() {
-    mpObjNullPointer = nullptr;
-    mpInstance = nullptr;
-    mPosPointer = MtVector2::Zero;
-    mIsPosPointerReqAuto = true;
-    mPrioPointer = 11;
-}
-
 void uGUIBase::cSupportInstAnim::setExecute(bool b) {
     if (mpInstance == nullptr) {
         return;
@@ -1716,14 +1711,6 @@ MtObject* uGUIBase::cSupportInstAnim::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cSupportBase::getDTI() const {
     return uGUIBase::cSupportBase::DTI;
-}
-
-inline MtAllocator* uGUIBase::cSupportBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cSupportBase::DTI);
-}
-
-inline void* uGUIBase::cSupportBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cSupportBase::DTI)->memAlloc(sz, align, uGUIBase::cSupportBase::DTI.getID());
 }
 
 __attribute__((weak)) void uGUIBase::cSupportBase::operator delete(void* p_addr) {
@@ -2003,10 +1990,6 @@ const MtDTI& uGUIBase::cAdjustableWindow::getDTI() const {
     return uGUIBase::cAdjustableWindow::DTI;
 }
 
-inline void uGUIBase::cAdjustableWindow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cAdjustableWindow::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cAdjustableWindow::cAdjustableWindow() {
     DDON_STUB("uGUIBase::cAdjustableWindow::cAdjustableWindow")
     /* stub */
@@ -2065,14 +2048,6 @@ const MtDTI& uGUIBase::cReferenceUIWndwDrag::getDTI() const {
     return uGUIBase::cReferenceUIWndwDrag::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIWndwDrag::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIWndwDrag::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIWndwDrag::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIWndwDrag::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIWndwDrag::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIWndwDrag::cReferenceUIWndwDrag() {
     mDragOld = false;
     mDragEnable = false;
@@ -2109,10 +2084,6 @@ const MtDTI& uGUIBase::cKeepInScreen::getDTI() const {
     return uGUIBase::cKeepInScreen::DTI;
 }
 
-inline void uGUIBase::cKeepInScreen::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cKeepInScreen::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) uGUIBase::cKeepInScreen::~cKeepInScreen() {
     DDON_STUB("uGUIBase::cKeepInScreen::~cKeepInScreen")
     /* stub */
@@ -2146,14 +2117,6 @@ bool uGUIBase::InputTextKeyboardHook::onKeyEvent(const nInputTextKeyboardHook::K
 
 const MtDTI& uGUIBase::cReferenceUIIconJob::getDTI() const {
     return uGUIBase::cReferenceUIIconJob::DTI;
-}
-
-inline void* uGUIBase::cReferenceUIIconJob::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconJob::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconJob::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconJob::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconJob::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIIconJob::cReferenceUIIconJob() {
@@ -2220,14 +2183,6 @@ const MtDTI& uGUIBase::cScrollListItemBase::getDTI() const {
     return uGUIBase::cScrollListItemBase::DTI;
 }
 
-inline MtAllocator* uGUIBase::cScrollListItemBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cScrollListItemBase::DTI);
-}
-
-inline void* uGUIBase::cScrollListItemBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cScrollListItemBase::DTI)->memAlloc(sz, align, uGUIBase::cScrollListItemBase::DTI.getID());
-}
-
 __attribute__((weak)) void uGUIBase::cScrollListItemBase::operator delete(void* p_addr) {
     uGUIBase::cScrollListItemBase::getAllocator()->memFree(p_addr);
 }
@@ -2244,16 +2199,8 @@ const MtDTI& uGUIBase::cScrollListInfoBase::getDTI() const {
     return uGUIBase::cScrollListInfoBase::DTI;
 }
 
-inline MtAllocator* uGUIBase::cScrollListInfoBase::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cScrollListInfoBase::DTI);
-}
-
 void* uGUIBase::cScrollListInfoBase::operator new(size_t sz, u32 align) {
     return uGUIBase::cScrollListInfoBase::getAllocator()->memAlloc(sz, align, uGUIBase::cScrollListInfoBase::DTI.getID());
-}
-
-inline void uGUIBase::cScrollListInfoBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cScrollListInfoBase::DTI)->memFree(p_addr);
 }
 
 void uGUIBase::cScrollListInfoBase::addMouseTouchList(cControl* pCtrl, s32 pos) {
@@ -2287,16 +2234,8 @@ const MtDTI& uGUIBase::cReferenceUIPullDown::getDTI() const {
     return uGUIBase::cReferenceUIPullDown::DTI;
 }
 
-inline MtAllocator* uGUIBase::cReferenceUIPullDown::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPullDown::DTI);
-}
-
 void* uGUIBase::cReferenceUIPullDown::operator new(size_t sz, u32 align) {
     return uGUIBase::cReferenceUIPullDown::getAllocator()->memAlloc(sz, align, uGUIBase::cReferenceUIPullDown::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIPullDown::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPullDown::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIPullDown::cReferenceUIPullDown() {
@@ -2616,14 +2555,6 @@ const MtDTI& uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::getDTI() con
     return uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI)->memFree(p_addr);
-}
-
 MtObject* uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::MyDTI::newInstance() const {
     return new (16u) uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD;
 }
@@ -2648,10 +2579,6 @@ const MtDTI& uGUIBase::cReferenceUIVlCursor::getDTI() const {
     return uGUIBase::cReferenceUIVlCursor::DTI;
 }
 
-inline void uGUIBase::cReferenceUIVlCursor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIVlCursor::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIVlCursor::cReferenceUIVlCursor() {
     DDON_STUB("uGUIBase::cReferenceUIVlCursor::cReferenceUIVlCursor")
     /* stub */
@@ -2672,9 +2599,16 @@ __attribute__((weak)) void uGUIBase::cReferenceUIVlCursor::update() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUIVlCursor::setPointerPosOfs(const MtVector2& v2Ofs) {
-    DDON_STUB("uGUIBase::cReferenceUIVlCursor::setPointerPosOfs")
-    /* stub */
+void uGUIBase::cReferenceUIVlCursor::setPointerPosOfs(const MtVector2& v2Ofs) {
+    if (mpUnit != nullptr) {
+        f32 t0 = cGUIUtility::getScaleForDefaultResolution(1.0f);
+        const f32 t1 = v2Ofs.y;
+        mPosPointerOfs.x = v2Ofs.x * t0;
+        mPosPointerOfs.y = t1 * t0;
+    } else {
+        mPosPointerOfs.x = v2Ofs.x;
+        mPosPointerOfs.y = v2Ofs.y;
+    }
 }
 
 MtVector2 uGUIBase::cReferenceUIVlCursor::getPointerPos() {
@@ -3327,14 +3261,6 @@ const MtDTI& uGUIBase::cReferenceUIScrollBar::getDTI() const {
     return uGUIBase::cReferenceUIScrollBar::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIScrollBar::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIScrollBar::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIScrollBar::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIScrollBar::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIScrollBar::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIScrollBar::cReferenceUIScrollBar() {
     mDragOld = false;
     mDragEnable = false;
@@ -3400,16 +3326,8 @@ const MtDTI& uGUIBase::cVerticalList::getDTI() const {
     return uGUIBase::cVerticalList::DTI;
 }
 
-MtAllocator* uGUIBase::cVerticalList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cVerticalList::DTI);
-}
-
 void* uGUIBase::cVerticalList::operator new(size_t sz, u32 align) {
     return uGUIBase::cVerticalList::getAllocator()->memAlloc(sz, align, uGUIBase::cVerticalList::DTI.getID());
-}
-
-inline void uGUIBase::cVerticalList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cVerticalList::DTI)->memFree(p_addr);
 }
 
 void uGUIBase::cVerticalList::setUsePresetSE(bool bUse) {
@@ -3445,14 +3363,6 @@ MtObject* uGUIBase::cVerticalList::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUICloseBtn::getDTI() const {
     return uGUIBase::cReferenceUICloseBtn::DTI;
-}
-
-inline void* uGUIBase::cReferenceUICloseBtn::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUICloseBtn::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUICloseBtn::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUICloseBtn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUICloseBtn::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUICloseBtn::cReferenceUICloseBtn() {
@@ -3500,10 +3410,6 @@ MtObject* uGUIBase::cReferenceUICloseBtn::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIIconQuest::getDTI() const {
     return uGUIBase::cReferenceUIIconQuest::DTI;
-}
-
-inline void uGUIBase::cReferenceUIIconQuest::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconQuest::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIIconQuest::cReferenceUIIconQuest() {
@@ -3718,10 +3624,6 @@ const MtDTI& uGUIBase::cReferenceUIButton::getDTI() const {
     return uGUIBase::cReferenceUIButton::DTI;
 }
 
-inline void uGUIBase::cReferenceUIButton::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIButton::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIButton::cReferenceUIButton() {
     DDON_STUB("uGUIBase::cReferenceUIButton::cReferenceUIButton")
     /* stub */
@@ -3803,10 +3705,6 @@ const MtDTI& uGUIBase::cMsgAnalyzer::getDTI() const {
     return uGUIBase::cMsgAnalyzer::DTI;
 }
 
-inline MtAllocator* uGUIBase::cMsgAnalyzer::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cMsgAnalyzer::DTI);
-}
-
 __attribute__((weak)) void uGUIBase::cMsgAnalyzer::operator delete(void* p_addr) {
     uGUIBase::cMsgAnalyzer::getAllocator()->memFree(p_addr);
 }
@@ -3816,9 +3714,32 @@ uGUIBase::cMsgAnalyzer::~cMsgAnalyzer() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cMsgAnalyzer::setMsgAnalyzerWork(u32 uIdx, MT_CTSTR pAnalyzeMsg) {
-    DDON_STUB("uGUIBase::cMsgAnalyzer::setMsgAnalyzerWork")
-    /* stub */
+void uGUIBase::cMsgAnalyzer::setMsgAnalyzerWork(u32 uIdx, MT_CTSTR pAnalyzeMsg) {
+    if (uIdx <= 9u) {
+        mMAW[uIdx].mEnable = true;
+        if (pAnalyzeMsg != mMAW[uIdx].mAnalyzeMsg.ptr()) {
+            if (mMAW[uIdx].mAnalyzeMsg.value != nullptr) {
+                if (sceAtomicAdd32Relaxed(&mMAW[uIdx].mAnalyzeMsg.value->ref, -1) == 1) {
+                    (MtString::mpAllocator)->memFree(static_cast<void*>(mMAW[uIdx].mAnalyzeMsg.value));
+                }
+                mMAW[uIdx].mAnalyzeMsg.value = nullptr;
+            }
+            if (pAnalyzeMsg != nullptr) {
+                size_t t0 = strlen(pAnalyzeMsg);
+                if (static_cast<unsigned int>(t0) != 0) {
+                    void* t1 = (MtString::mpAllocator)->memAlloc(static_cast<size_t>(static_cast<unsigned int>(t0)) + 12, 16u);
+                    mMAW[uIdx].mAnalyzeMsg.value = static_cast<MtString::STRING*>(t1);
+                    mMAW[uIdx].mAnalyzeMsg.value->ref = 1;
+                    mMAW[uIdx].mAnalyzeMsg.value->length = static_cast<unsigned int>(t0);
+                    strcpy(reinterpret_cast<char*>(mMAW[uIdx].mAnalyzeMsg.value->str), pAnalyzeMsg);
+                } else {
+                    mMAW[uIdx].mAnalyzeMsg.value = nullptr;
+                }
+            } else {
+                mMAW[uIdx].mAnalyzeMsg.value = nullptr;
+            }
+        }
+    }
 }
 
 void uGUIBase::cMsgAnalyzer::setMsgAnalyzerWork(u32 uIdx, s32 sAnalyzeNum) {
@@ -3845,16 +3766,8 @@ const MtDTI& uGUIBase::cHorizontalList::getDTI() const {
     return uGUIBase::cHorizontalList::DTI;
 }
 
-inline MtAllocator* uGUIBase::cHorizontalList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cHorizontalList::DTI);
-}
-
 void* uGUIBase::cHorizontalList::operator new(size_t sz, u32 align) {
     return uGUIBase::cHorizontalList::getAllocator()->memAlloc(sz, align, uGUIBase::cHorizontalList::DTI.getID());
-}
-
-inline void uGUIBase::cHorizontalList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cHorizontalList::DTI)->memFree(p_addr);
 }
 
 bool uGUIBase::cHorizontalList::isTabType() const {
@@ -3897,10 +3810,6 @@ MtObject* uGUIBase::cHorizontalList::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUITab::getDTI() const {
     return uGUIBase::cReferenceUITab::DTI;
-}
-
-inline void uGUIBase::cReferenceUITab::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUITab::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUITab::cReferenceUITab() {
@@ -3963,7 +3872,7 @@ void uGUIBase::cReferenceUITab::setFocus(u32 uIdx, bool bFocus, bool bAutoFocus)
     u32 i = 0;
     do {
         if (mWork.mpArray[i] != nullptr) {
-            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i]) + 8)) != 0) {
+            if (static_cast<cTabWork*>(mWork.mpArray[i])->mpInst != nullptr) {
                 if (uIdx == i) {
                     _setSequenceIdPrivate(static_cast<cTabWork*>(mWork.mpArray[i]), static_cast<u32>((bFocus * 3) + 1), uIdx);
                     mFocusIdx = static_cast<s32>(uIdx);
@@ -3978,9 +3887,20 @@ void uGUIBase::cReferenceUITab::setFocus(u32 uIdx, bool bFocus, bool bAutoFocus)
     } while (i < mWork.mLength);
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUITab::setVisible(bool bVisible) {
-    DDON_STUB("uGUIBase::cReferenceUITab::setVisible")
-    /* stub */
+void uGUIBase::cReferenceUITab::setVisible(bool bVisible) {
+    u32 i = 0;
+    if (mWork.mLength != 0) {
+        do {
+            if (mWork.mpArray[i] != nullptr) {
+                if (static_cast<cTabWork*>(mWork.mpArray[i])->mpInst != nullptr) {
+                    if (mpUnit != nullptr) {
+                        static_cast<cTabWork*>(mWork.mpArray[i])->mpInst->setVisible(bVisible);
+                    }
+                }
+            }
+            i += 1u;
+        } while (i < mWork.mLength);
+    }
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUITab::setVisibleTabMax(u32 max) {
@@ -4002,18 +3922,36 @@ __attribute__((weak)) void uGUIBase::cReferenceUITab::resizeForVisible() {
     /* stub */
 }
 
-__attribute__((weak)) cGUIInstAnimation* uGUIBase::cReferenceUITab::getInstance(u32 uIdx) {
-    DDON_STUB("uGUIBase::cReferenceUITab::getInstance")
+cGUIInstAnimation* uGUIBase::cReferenceUITab::getInstance(u32 uIdx) {
+    if (mWork.mLength != 0) {
+        if (uIdx < mWork.mLength) {
+            if (mWork.mpArray[uIdx] != nullptr) {
+                return static_cast<cTabWork*>(mWork.mpArray[uIdx])->mpInst;
+            }
+        }
+    }
     return nullptr;
 }
 
-__attribute__((weak)) cGUIObjPolygon* uGUIBase::cReferenceUITab::getMouseOverObj(u32 uIdx) {
-    DDON_STUB("uGUIBase::cReferenceUITab::getMouseOverObj")
+cGUIObjPolygon* uGUIBase::cReferenceUITab::getMouseOverObj(u32 uIdx) {
+    if (mWork.mLength != 0) {
+        if (uIdx < mWork.mLength) {
+            if (mWork.mpArray[uIdx] != nullptr) {
+                return static_cast<cTabWork*>(mWork.mpArray[uIdx])->mpMouseOver;
+            }
+        }
+    }
     return nullptr;
 }
 
-__attribute__((weak)) cGUIObjNull* uGUIBase::cReferenceUITab::getNullPointerObj(u32 uIdx) {
-    DDON_STUB("uGUIBase::cReferenceUITab::getNullPointerObj")
+cGUIObjNull* uGUIBase::cReferenceUITab::getNullPointerObj(u32 uIdx) {
+    if (mWork.mLength != 0) {
+        if (uIdx < mWork.mLength) {
+            if (mWork.mpArray[uIdx] != nullptr) {
+                return static_cast<cTabWork*>(mWork.mpArray[uIdx])->mpNullPointer;
+            }
+        }
+    }
     return nullptr;
 }
 
@@ -4035,13 +3973,13 @@ void uGUIBase::cReferenceUITab::setupMouseTouchList(cControl* pCtrl, s32 vol) {
                     if (i0_3 < v0_0) {
                         if (mWork.mpArray[i0_3] != nullptr) {
                             if (mWork.mpArray[i0_3] != nullptr) {
-                                pCtrl->addMouseTouchListLight(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 8)), reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 16)), static_cast<s32>(i0_3), vol);
+                                pCtrl->addMouseTouchListLight(static_cast<cGUIInstance*>(static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpInst), static_cast<cGUIObject*>(static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpMouseOver), static_cast<s32>(i0_3), vol);
                             } else {
-                                pCtrl->addMouseTouchListLight(reinterpret_cast<cGUIInstance*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 8)), static_cast<cGUIObject*>(nullptr), static_cast<s32>(i0_3), vol);
+                                pCtrl->addMouseTouchListLight(static_cast<cGUIInstance*>(static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpInst), static_cast<cGUIObject*>(nullptr), static_cast<s32>(i0_3), vol);
                             }
                         } else {
                             if (mWork.mpArray[i0_3] != nullptr) {
-                                pCtrl->addMouseTouchListLight(static_cast<cGUIInstance*>(nullptr), reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 16)), static_cast<s32>(i0_3), vol);
+                                pCtrl->addMouseTouchListLight(static_cast<cGUIInstance*>(nullptr), static_cast<cGUIObject*>(static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpMouseOver), static_cast<s32>(i0_3), vol);
                             } else {
                                 pCtrl->addMouseTouchListLight(static_cast<cGUIInstance*>(nullptr), static_cast<cGUIObject*>(nullptr), static_cast<s32>(i0_3), vol);
                             }
@@ -4071,7 +4009,7 @@ __attribute__((weak)) void uGUIBase::cReferenceUITab::updateButtonGuide() {
 void uGUIBase::cReferenceUITab::setShape(u32 index, uGUIBase::cReferenceUITab::SHAPE shape) {
     if (index < mWork.mLength) {
         if (mWork.getBuffer()[static_cast<int>(index)] != nullptr) {
-            *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mWork.getBuffer()[static_cast<int>(index)]) + 336) = static_cast<unsigned int>(shape);
+            static_cast<cTabWork*>(mWork.getBuffer()[static_cast<int>(index)])->mShape = shape;
         }
     }
 }
@@ -4086,14 +4024,14 @@ void uGUIBase::cReferenceUITab::setAnalyzeTag(bool isAnalyzeTag) {
             if (mWork.mpArray[i0_3] == nullptr) {
                 v1_0 = v0_0;
             } else {
-                if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 72)) == 0) {
+                if (static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpObjMsg == nullptr) {
                     v1_0 = v0_0;
                 } else {
-                    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 72)) + 296) = !isAnalyzeTag ? ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 72)) + 296)) & 0xFFFFFFF7u) : ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 72)) + 296)) | 8u);
+                    static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpObjMsg->mMsgAttr = !isAnalyzeTag ? (static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpObjMsg->mMsgAttr & 0xFFFFFFF7u) : (static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpObjMsg->mMsgAttr | 8u);
                     if (mpUnit == nullptr) {
                         v1_0 = v0_0;
                     } else {
-                        mpUnit->setObjectMessage(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 72)), reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mWork.mpArray[i0_3]) + 80))), 0u, false);
+                        mpUnit->setObjectMessage(static_cast<cGUIObject*>(static_cast<cTabWork*>(mWork.mpArray[i0_3])->mpObjMsg), &static_cast<cTabWork*>(mWork.mpArray[i0_3])->mMsg[0], 0u, false);
                         v1_0 = mWork.size();
                     }
                 }
@@ -4131,14 +4069,6 @@ const MtDTI& uGUIBase::cReferenceUITab::cTabWork::getDTI() const {
     return uGUIBase::cReferenceUITab::cTabWork::DTI;
 }
 
-inline void* uGUIBase::cReferenceUITab::cTabWork::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUITab::cTabWork::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUITab::cTabWork::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUITab::cTabWork::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUITab::cTabWork::DTI)->memFree(p_addr);
-}
-
 inline uGUIBase::cReferenceUITab::cTabWork::cTabWork() {
     memset(static_cast<void*>(&mpInst), 0, 332ul);
 }
@@ -4158,10 +4088,6 @@ __attribute__((weak)) bool uGUIBase::cInputGuideMonitor::checkUpdate() {
 
 const MtDTI& uGUIBase::cReferenceUIBtnGuide::getDTI() const {
     return uGUIBase::cReferenceUIBtnGuide::DTI;
-}
-
-inline void uGUIBase::cReferenceUIBtnGuide::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIBtnGuide::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIBtnGuide::cReferenceUIBtnGuide() {
@@ -4226,9 +4152,21 @@ __attribute__((weak)) u32 uGUIBase::cReferenceUIBtnGuide::getGuideNum() {
     return {};
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUIBtnGuide::setVisible(bool bVisible) {
-    DDON_STUB("uGUIBase::cReferenceUIBtnGuide::setVisible")
-    /* stub */
+void uGUIBase::cReferenceUIBtnGuide::setVisible(bool bVisible) {
+    mIsBaseVisible = bVisible;
+    unsigned int i3 = 0;
+    if (mWork.mLength != 0) {
+        do {
+            if (mWork.mpArray[i3] != nullptr) {
+                if (static_cast<cWork*>(mWork.mpArray[i3])->mpInst != nullptr) {
+                    if (mpUnit != nullptr) {
+                        static_cast<cWork*>(mWork.mpArray[i3])->mpInst->setVisible(bVisible);
+                    }
+                }
+            }
+            i3 += 1u;
+        } while (i3 < mWork.mLength);
+    }
 }
 
 __attribute__((weak)) f32 uGUIBase::cReferenceUIBtnGuide::getCenterX() const {
@@ -4269,10 +4207,6 @@ const MtDTI& uGUIBase::cReferenceUIBtnGuide::cWork::getDTI() const {
     return uGUIBase::cReferenceUIBtnGuide::cWork::DTI;
 }
 
-inline void uGUIBase::cReferenceUIBtnGuide::cWork::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIBtnGuide::cWork::DTI)->memFree(p_addr);
-}
-
 inline uGUIBase::cReferenceUIBtnGuide::cWork::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBase::cReferenceUIBtnGuide::cWork::MyDTI uGUIBase::cReferenceUIBtnGuide::cWork::DTI("uGUIBase::cReferenceUIBtnGuide::cWork", &::MtObject::DTI, 368ul, 0u, 0u);
@@ -4284,10 +4218,6 @@ __attribute__((weak)) MtObject* uGUIBase::cReferenceUIBtnGuide::cWork::MyDTI::ne
 
 const MtDTI& uGUIBase::cReferenceUITooltip::getDTI() const {
     return uGUIBase::cReferenceUITooltip::DTI;
-}
-
-inline void uGUIBase::cReferenceUITooltip::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUITooltip::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUITooltip::cReferenceUITooltip() {
@@ -4337,10 +4267,6 @@ __attribute__((weak)) MtObject* uGUIBase::cReferenceUITooltip::MyDTI::newInstanc
 
 const MtDTI& uGUIBase::cMatrix::getDTI() const {
     return uGUIBase::cMatrix::DTI;
-}
-
-inline void uGUIBase::cMatrix::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cMatrix::DTI)->memFree(p_addr);
 }
 
 bool uGUIBase::cMatrix::execute() {
@@ -4414,8 +4340,13 @@ void uGUIBase::cMatrix::setTrgLoop(bool flag) {
 }
 
 __attribute__((weak)) s32 uGUIBase::cMatrix::getInputDirection(nGUIExt::MSG_REASON Reason) const {
-    DDON_STUB("uGUIBase::cMatrix::getInputDirection")
-    return {};
+    s32 dir = 0;
+    if (Reason == nGUIExt::TRG_UP || Reason == nGUIExt::TRG_LEFT) {
+        dir = -1;
+    } else if (Reason == nGUIExt::TRG_DOWN || Reason == nGUIExt::TRG_RIGHT) {
+        dir = 1;
+    }
+    return dir;
 }
 
 inline uGUIBase::cMatrix::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4428,10 +4359,6 @@ MtObject* uGUIBase::cMatrix::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cMaskScroll::getDTI() const {
     return uGUIBase::cMaskScroll::DTI;
-}
-
-inline MtAllocator* uGUIBase::cMaskScroll::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cMaskScroll::DTI);
 }
 
 __attribute__((weak)) void uGUIBase::cMaskScroll::operator delete(void* p_addr) {
@@ -4455,56 +4382,52 @@ const MtDTI& uGUIBase::cValueList::getDTI() const {
     return uGUIBase::cValueList::DTI;
 }
 
-inline void uGUIBase::cValueList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cValueList::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cValueList::cValueList(MT_CTSTR v0, MT_CTSTR v1, MT_CTSTR v2, MT_CTSTR v3, MT_CTSTR v4, MT_CTSTR v5, MT_CTSTR v6, MT_CTSTR v7, MT_CTSTR v8, MT_CTSTR v9, MT_CTSTR v10, MT_CTSTR v11, MT_CTSTR v12, MT_CTSTR v13, MT_CTSTR v14, MT_CTSTR v15, MT_CTSTR v16, MT_CTSTR v17, MT_CTSTR v18, MT_CTSTR v19) {
     DDON_STUB("uGUIBase::cValueList::cValueList")
     /* stub */
 }
 
 void uGUIBase::cValueList::clearStr() {
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 12) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 8) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 48) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 44) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 84) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 80) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 120) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 116) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 156) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 152) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 192) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 188) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 228) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 224) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 264) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 260) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 300) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 296) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 336) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 332) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 372) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 368) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 408) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 404) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 444) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 440) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 480) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 476) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 516) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 512) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 552) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 548) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 588) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 584) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 624) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 620) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 660) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 656) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 696) = 0;
-    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(this) + 692) = 0;
+    mValues.elems[0].mStr[0] = 0;
+    mValues.elems[0].mLength = 0;
+    mValues.elems[1].mStr[0] = 0;
+    mValues.elems[1].mLength = 0;
+    mValues.elems[2].mStr[0] = 0;
+    mValues.elems[2].mLength = 0;
+    mValues.elems[3].mStr[0] = 0;
+    mValues.elems[3].mLength = 0;
+    mValues.elems[4].mStr[0] = 0;
+    mValues.elems[4].mLength = 0;
+    mValues.elems[5].mStr[0] = 0;
+    mValues.elems[5].mLength = 0;
+    mValues.elems[6].mStr[0] = 0;
+    mValues.elems[6].mLength = 0;
+    mValues.elems[7].mStr[0] = 0;
+    mValues.elems[7].mLength = 0;
+    mValues.elems[8].mStr[0] = 0;
+    mValues.elems[8].mLength = 0;
+    mValues.elems[9].mStr[0] = 0;
+    mValues.elems[9].mLength = 0;
+    mValues.elems[10].mStr[0] = 0;
+    mValues.elems[10].mLength = 0;
+    mValues.elems[11].mStr[0] = 0;
+    mValues.elems[11].mLength = 0;
+    mValues.elems[12].mStr[0] = 0;
+    mValues.elems[12].mLength = 0;
+    mValues.elems[13].mStr[0] = 0;
+    mValues.elems[13].mLength = 0;
+    mValues.elems[14].mStr[0] = 0;
+    mValues.elems[14].mLength = 0;
+    mValues.elems[15].mStr[0] = 0;
+    mValues.elems[15].mLength = 0;
+    mValues.elems[16].mStr[0] = 0;
+    mValues.elems[16].mLength = 0;
+    mValues.elems[17].mStr[0] = 0;
+    mValues.elems[17].mLength = 0;
+    mValues.elems[18].mStr[0] = 0;
+    mValues.elems[18].mLength = 0;
+    mValues.elems[19].mStr[0] = 0;
+    mValues.elems[19].mLength = 0;
     mNum = 0;
 }
 
@@ -4521,18 +4444,16 @@ const MtDTI& uGUIBase::cInterpolationValue::getDTI() const {
     return uGUIBase::cInterpolationValue::DTI;
 }
 
-inline void uGUIBase::cInterpolationValue::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cInterpolationValue::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cInterpolationValue::cInterpolationValue() {
     DDON_STUB("uGUIBase::cInterpolationValue::cInterpolationValue")
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cInterpolationValue::set(f32 val, f32 speed) {
-    DDON_STUB("uGUIBase::cInterpolationValue::set")
-    /* stub */
+void uGUIBase::cInterpolationValue::set(f32 val, f32 speed) {
+    mMax = val;
+    mSpeed = speed;
+    mPow = 0.0f;
+    mDifference = __builtin_fabsf(val - mValue);
 }
 
 __attribute__((weak)) f32 uGUIBase::cInterpolationValue::execute() {
@@ -4551,10 +4472,6 @@ __attribute__((weak)) MtObject* uGUIBase::cInterpolationValue::MyDTI::newInstanc
 
 const MtDTI& uGUIBase::cUnitWatcher::getDTI() const {
     return uGUIBase::cUnitWatcher::DTI;
-}
-
-inline void uGUIBase::cUnitWatcher::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cUnitWatcher::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cUnitWatcher::cUnitWatcher() {
@@ -4649,8 +4566,39 @@ void uGUIBase::cTexRefJpegDownloader::setup(cGUIObject* objTexRef) {
 }
 
 __attribute__((weak)) void uGUIBase::cTexRefJpegDownloader::request(MT_CTSTR url) {
-    DDON_STUB("uGUIBase::cTexRefJpegDownloader::request")
-    /* stub */
+    // workaround
+    MT_STR t1 = reinterpret_cast<MT_STR>(&mURL_Jpeg) + sizeof(u32);
+    if (url[0] != '\0' && (t1 == url || (url != nullptr ? strcmp(t1, url) : static_cast<s32>(reinterpret_cast<u32&>(mURL_Jpeg))) == 0)) {
+        return;
+    }
+    
+    if (url == nullptr) {
+        t1[0] = '\0';
+        reinterpret_cast<u32&>(mURL_Jpeg) = 0;
+    } else if (t1 != url) {
+        s32 t2 = static_cast<s32>(strlen(url));
+        t2 = t2 <= static_cast<s32>(sizeof(mURL_Jpeg) - sizeof(u32) - 1)
+            ? t2 : static_cast<s32>(sizeof(mURL_Jpeg) - sizeof(u32) - 1);
+        reinterpret_cast<u32&>(mURL_Jpeg) = static_cast<u32>(t2);
+        if (t2 != 0) {
+            memcpy(t1, url, static_cast<u32>(t2));
+            t1[static_cast<u32>(t2)] = '\0';
+        } else {
+            t1[0] = '\0';
+        }
+    }
+    
+    if (mDlTicket == sGUIExt::BLANK_TICKET_NO) {
+        mIsRequest = true;
+        mDlTicket = static_cast<sGUIExt*>(sGUI::getInstance())->dlTicketRequest();
+    } else {
+        mIsRequestBuf = true;
+    }
+    mIsRequest = true;
+    mWaitTime = 0.0f;
+    if (mpObjTexRef != nullptr) {
+        mpObjTexRef->setVisible(false);
+    }
 }
 
 __attribute__((weak)) void uGUIBase::cTexRefJpegDownloader::update(f32 delta_time) {
@@ -4681,14 +4629,6 @@ const MtDTI& uGUIBase::cReferenceUISlider::getDTI() const {
     return uGUIBase::cReferenceUISlider::DTI;
 }
 
-inline void* uGUIBase::cReferenceUISlider::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUISlider::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUISlider::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUISlider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUISlider::DTI)->memFree(p_addr);
-}
-
 inline uGUIBase::cReferenceUISlider::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBase::cReferenceUISlider::MyDTI uGUIBase::cReferenceUISlider::DTI("uGUIBase::cReferenceUISlider", &::uGUIBase::cSupportInstAnim::DTI, 88ul, 0u, 0u);
@@ -4699,14 +4639,6 @@ MtObject* uGUIBase::cReferenceUISlider::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIDropIcon::getDTI() const {
     return uGUIBase::cReferenceUIDropIcon::DTI;
-}
-
-inline void* uGUIBase::cReferenceUIDropIcon::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIDropIcon::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIDropIcon::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIDropIcon::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIDropIcon::DTI)->memFree(p_addr);
 }
 
 inline uGUIBase::cReferenceUIDropIcon::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -4721,14 +4653,6 @@ const MtDTI& uGUIBase::cReferenceUICursor::getDTI() const {
     return uGUIBase::cReferenceUICursor::DTI;
 }
 
-inline void* uGUIBase::cReferenceUICursor::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUICursor::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUICursor::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUICursor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUICursor::DTI)->memFree(p_addr);
-}
-
 inline uGUIBase::cReferenceUICursor::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBase::cReferenceUICursor::MyDTI uGUIBase::cReferenceUICursor::DTI("uGUIBase::cReferenceUICursor", &::uGUIBase::cSupportInstAnim::DTI, 224ul, 0u, 0u);
@@ -4741,10 +4665,6 @@ const MtDTI& uGUIBase::cReferenceUISelector::getDTI() const {
     return uGUIBase::cReferenceUISelector::DTI;
 }
 
-inline void uGUIBase::cReferenceUISelector::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUISelector::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uGUIBase::cReferenceUISelector::setup(uGUIBase* pUnit, cGUIInstance* pInst) {
     DDON_STUB("uGUIBase::cReferenceUISelector::setup")
     /* stub */
@@ -4755,9 +4675,13 @@ __attribute__((weak)) void uGUIBase::cReferenceUISelector::setMessage(u32 index,
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUISelector::setIndex(u32 index) {
-    DDON_STUB("uGUIBase::cReferenceUISelector::setIndex")
-    /* stub */
+void uGUIBase::cReferenceUISelector::setIndex(u32 index) {
+    if (index < mMsgList.mNum) {
+        if (mpUnit != nullptr) {
+            mpUnit->setObjectMessage(static_cast<cGUIObject*>(mpObjMsg), &mMsgList.mValues.elems[(index <= 19u) ? index : 0u].mStr[0], 0u, false);
+        }
+        mIndex = index;
+    }
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUISelector::setFocus(bool isFocus) {
@@ -4765,9 +4689,20 @@ __attribute__((weak)) void uGUIBase::cReferenceUISelector::setFocus(bool isFocus
     /* stub */
 }
 
-__attribute__((weak)) MtVector2 uGUIBase::cReferenceUISelector::getPointerPos() {
-    DDON_STUB("uGUIBase::cReferenceUISelector::getPointerPos")
-    __builtin_unreachable();
+MtVector2 uGUIBase::cReferenceUISelector::getPointerPos() {
+    MtVector2 result;
+    if (mpUnit != nullptr) {
+        if (mpObjNullPointer != nullptr) {
+            const f32 t0 = MtVector3::Zero.y;
+            f32 t1 = mpObjNullPointer->mMat.m[3].y;
+            result.x = MtVector3::Zero.x + mpObjNullPointer->mMat.m[3].x;
+            result.y = t0 + t1;
+            return result;
+        }
+    }
+    result.x = MtVector2::Zero.x;
+    result.y = MtVector2::Zero.y;
+    return result;
 }
 
 void uGUIBase::cReferenceUISelector::addMouseTouchList(cControl* pCtrl, s32 pos) {
@@ -4792,10 +4727,6 @@ const MtDTI& uGUIBase::cReferenceUIGoldRim::getDTI() const {
     return uGUIBase::cReferenceUIGoldRim::DTI;
 }
 
-inline void uGUIBase::cReferenceUIGoldRim::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIGoldRim::DTI)->memFree(p_addr);
-}
-
 inline uGUIBase::cReferenceUIGoldRim::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBase::cReferenceUIGoldRim::MyDTI uGUIBase::cReferenceUIGoldRim::DTI("uGUIBase::cReferenceUIGoldRim", &::uGUIBase::cSupportInstAnim::DTI, 144ul, 0u, 0u);
@@ -4809,16 +4740,8 @@ const MtDTI& uGUIBase::cReferenceUIChargesInfo::getDTI() const {
     return uGUIBase::cReferenceUIChargesInfo::DTI;
 }
 
-inline MtAllocator* uGUIBase::cReferenceUIChargesInfo::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIChargesInfo::DTI);
-}
-
 void* uGUIBase::cReferenceUIChargesInfo::operator new(size_t sz, u32 align) {
     return uGUIBase::cReferenceUIChargesInfo::getAllocator()->memAlloc(sz, align, uGUIBase::cReferenceUIChargesInfo::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIChargesInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIChargesInfo::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIChargesInfo::cReferenceUIChargesInfo() {
@@ -4969,10 +4892,6 @@ const MtDTI& uGUIBase::cReferenceUIChargesInfo::cData::getDTI() const {
     return uGUIBase::cReferenceUIChargesInfo::cData::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIChargesInfo::cData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIChargesInfo::cData::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIChargesInfo::cData::DTI.getID());
-}
-
 uGUIBase::cReferenceUIChargesInfo::cData::~cData() {
 }
 
@@ -4986,10 +4905,6 @@ MtObject* uGUIBase::cReferenceUIChargesInfo::cData::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIIconItem::getDTI() const {
     return uGUIBase::cReferenceUIIconItem::DTI;
-}
-
-inline void uGUIBase::cReferenceUIIconItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconItem::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIIconItem::cReferenceUIIconItem() {
@@ -5438,10 +5353,6 @@ const MtDTI& uGUIBase::cReferenceUIIconEquip::getDTI() const {
     return uGUIBase::cReferenceUIIconEquip::DTI;
 }
 
-inline void uGUIBase::cReferenceUIIconEquip::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconEquip::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIIconEquip::cReferenceUIIconEquip() {
     DDON_STUB("uGUIBase::cReferenceUIIconEquip::cReferenceUIIconEquip")
     /* stub */
@@ -5544,10 +5455,6 @@ const MtDTI& uGUIBase::cReferenceUIIconItemCharges::getDTI() const {
     return uGUIBase::cReferenceUIIconItemCharges::DTI;
 }
 
-inline void uGUIBase::cReferenceUIIconItemCharges::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconItemCharges::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIIconItemCharges::cReferenceUIIconItemCharges() {
     DDON_STUB("uGUIBase::cReferenceUIIconItemCharges::cReferenceUIIconItemCharges")
     /* stub */
@@ -5581,14 +5488,6 @@ __attribute__((weak)) MtObject* uGUIBase::cReferenceUIIconItemCharges::MyDTI::ne
 
 const MtDTI& uGUIBase::cReferenceUIIconSkill::getDTI() const {
     return uGUIBase::cReferenceUIIconSkill::DTI;
-}
-
-inline void* uGUIBase::cReferenceUIIconSkill::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconSkill::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconSkill::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconSkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconSkill::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIIconSkill::cReferenceUIIconSkill() {
@@ -5749,14 +5648,6 @@ const MtDTI& uGUIBase::cReferenceUIIconStatus::getDTI() const {
     return uGUIBase::cReferenceUIIconStatus::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIIconStatus::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconStatus::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconStatus::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconStatus::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIIconStatus::cReferenceUIIconStatus() {
     mpNull_gauge_up = nullptr;
     mOcdId = 0;
@@ -5799,22 +5690,27 @@ const MtDTI& uGUIBase::cReferenceUIIconCraftLv::getDTI() const {
     return uGUIBase::cReferenceUIIconCraftLv::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIIconCraftLv::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconCraftLv::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconCraftLv::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconCraftLv::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconCraftLv::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uGUIBase::cReferenceUIIconCraftLv::setup(uGUIBase* pUnit, cGUIInstance* pInst) {
     DDON_STUB("uGUIBase::cReferenceUIIconCraftLv::setup")
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUIIconCraftLv::setLevel(u32 level) {
-    DDON_STUB("uGUIBase::cReferenceUIIconCraftLv::setLevel")
-    /* stub */
+void uGUIBase::cReferenceUIIconCraftLv::setLevel(u32 level) {
+    cGUIObject* t0 = mpObjIcon;
+    if (t0 == nullptr) {
+        return;
+    }
+    if (level != 0) {
+        t0->mAttr = t0->mAttr | 8u;
+        if (static_cast<unsigned int>(((static_cast<unsigned long>(level) * 0xCCCCCCCDul) >> 35) + 1ul) > 2) {
+            t0->setCurrentFrame(3.0f, false);
+        } else {
+            t0->setCurrentFrame(static_cast<float>(static_cast<unsigned int>(((static_cast<unsigned long>(level) * 0xCCCCCCCDul) >> 35) + 1ul)), false);
+        }
+        mpObjIcon->setVisible(true);
+    } else {
+        t0->setVisible(false);
+    }
 }
 
 inline uGUIBase::cReferenceUIIconCraftLv::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -5827,14 +5723,6 @@ MtObject* uGUIBase::cReferenceUIIconCraftLv::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIIconStorage::getDTI() const {
     return uGUIBase::cReferenceUIIconStorage::DTI;
-}
-
-inline void* uGUIBase::cReferenceUIIconStorage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconStorage::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconStorage::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconStorage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconStorage::DTI)->memFree(p_addr);
 }
 
 void uGUIBase::cReferenceUIIconStorage::setup(uGUIBase* pUnit, cGUIInstance* pInst) {
@@ -5858,10 +5746,6 @@ MtObject* uGUIBase::cReferenceUIIconStorage::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIIconShake::getDTI() const {
     return uGUIBase::cReferenceUIIconShake::DTI;
-}
-
-inline void uGUIBase::cReferenceUIIconShake::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconShake::DTI)->memFree(p_addr);
 }
 
 void uGUIBase::cReferenceUIIconShake::setup(uGUIBase* pUnit, cGUIInstance* pInstShake00, cGUIInstance* pInstShake01) {
@@ -5914,14 +5798,6 @@ const MtDTI& uGUIBase::cReferenceUIIconSCM::getDTI() const {
     return uGUIBase::cReferenceUIIconSCM::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIIconSCM::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconSCM::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconSCM::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconSCM::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconSCM::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIIconSCM::cReferenceUIIconSCM() {
 }
 
@@ -5946,14 +5822,6 @@ const MtDTI& uGUIBase::cReferenceUIIconGameMenu::getDTI() const {
     return uGUIBase::cReferenceUIIconGameMenu::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIIconGameMenu::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconGameMenu::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconGameMenu::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconGameMenu::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconGameMenu::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIIconGameMenu::cReferenceUIIconGameMenu() {
 }
 
@@ -5974,14 +5842,6 @@ const MtDTI& uGUIBase::cReferenceUIIconComm::getDTI() const {
     return uGUIBase::cReferenceUIIconComm::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIIconComm::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconComm::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconComm::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconComm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconComm::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIIconComm::cReferenceUIIconComm() {
 }
 
@@ -6000,14 +5860,6 @@ MtObject* uGUIBase::cReferenceUIIconComm::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIIconOnlineStatus::getDTI() const {
     return uGUIBase::cReferenceUIIconOnlineStatus::DTI;
-}
-
-inline void* uGUIBase::cReferenceUIIconOnlineStatus::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconOnlineStatus::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconOnlineStatus::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconOnlineStatus::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconOnlineStatus::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIIconOnlineStatus::cReferenceUIIconOnlineStatus() {
@@ -6067,14 +5919,6 @@ const MtDTI& uGUIBase::cReferenceUIIconClanTitle::getDTI() const {
     return uGUIBase::cReferenceUIIconClanTitle::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIIconClanTitle::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconClanTitle::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconClanTitle::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconClanTitle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconClanTitle::DTI)->memFree(p_addr);
-}
-
 inline uGUIBase::cReferenceUIIconClanTitle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBase::cReferenceUIIconClanTitle::MyDTI uGUIBase::cReferenceUIIconClanTitle::DTI("uGUIBase::cReferenceUIIconClanTitle", &::uGUIBase::cReferenceUIBase::DTI, 80ul, 0u, 0u);
@@ -6085,14 +5929,6 @@ MtObject* uGUIBase::cReferenceUIIconClanTitle::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIGammaBoard::getDTI() const {
     return uGUIBase::cReferenceUIGammaBoard::DTI;
-}
-
-inline void* uGUIBase::cReferenceUIGammaBoard::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIGammaBoard::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIGammaBoard::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIGammaBoard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIGammaBoard::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIGammaBoard::cReferenceUIGammaBoard() {
@@ -6117,16 +5953,8 @@ const MtDTI& uGUIBase::cReferenceUICheckbox::getDTI() const {
     return uGUIBase::cReferenceUICheckbox::DTI;
 }
 
-inline MtAllocator* uGUIBase::cReferenceUICheckbox::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUICheckbox::DTI);
-}
-
 void* uGUIBase::cReferenceUICheckbox::operator new(size_t sz, u32 align) {
     return uGUIBase::cReferenceUICheckbox::getAllocator()->memAlloc(sz, align, uGUIBase::cReferenceUICheckbox::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUICheckbox::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUICheckbox::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUICheckbox::cReferenceUICheckbox() {
@@ -6181,10 +6009,6 @@ const MtDTI& uGUIBase::cReferenceUIButton2::getDTI() const {
     return uGUIBase::cReferenceUIButton2::DTI;
 }
 
-inline void uGUIBase::cReferenceUIButton2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIButton2::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uGUIBase::cReferenceUIButton2::setup(uGUIBase* pParentGUI, cGUIInstance* pInst, MT_CTSTR pMsgInit, f32 fSize) {
     DDON_STUB("uGUIBase::cReferenceUIButton2::setup")
     /* stub */
@@ -6201,14 +6025,6 @@ __attribute__((weak)) MtObject* uGUIBase::cReferenceUIButton2::MyDTI::newInstanc
 
 const MtDTI& uGUIBase::cReferenceUIToggleBtn::getDTI() const {
     return uGUIBase::cReferenceUIToggleBtn::DTI;
-}
-
-inline void* uGUIBase::cReferenceUIToggleBtn::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIToggleBtn::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIToggleBtn::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIToggleBtn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIToggleBtn::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIToggleBtn::cReferenceUIToggleBtn() {
@@ -6319,10 +6135,6 @@ const MtDTI& uGUIBase::cReferenceUIPullDownSkill::getDTI() const {
     return uGUIBase::cReferenceUIPullDownSkill::DTI;
 }
 
-inline void uGUIBase::cReferenceUIPullDownSkill::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPullDownSkill::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIPullDownSkill::cReferenceUIPullDownSkill() {
     DDON_STUB("uGUIBase::cReferenceUIPullDownSkill::cReferenceUIPullDownSkill")
     /* stub */
@@ -6410,10 +6222,6 @@ const MtDTI& uGUIBase::cReferenceUISimpleBtn::getDTI() const {
     return uGUIBase::cReferenceUISimpleBtn::DTI;
 }
 
-inline void uGUIBase::cReferenceUISimpleBtn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUISimpleBtn::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUISimpleBtn::cReferenceUISimpleBtn() {
     DDON_STUB("uGUIBase::cReferenceUISimpleBtn::cReferenceUISimpleBtn")
     /* stub */
@@ -6456,14 +6264,6 @@ const MtDTI& uGUIBase::cReferenceUIEditBtn::getDTI() const {
     return uGUIBase::cReferenceUIEditBtn::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIEditBtn::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIEditBtn::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIEditBtn::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIEditBtn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIEditBtn::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIEditBtn::cReferenceUIEditBtn() {
     mFocus = false;
     mDisable = false;
@@ -6498,10 +6298,6 @@ MtObject* uGUIBase::cReferenceUIEditBtn::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUICheckList::getDTI() const {
     return uGUIBase::cReferenceUICheckList::DTI;
-}
-
-inline void uGUIBase::cReferenceUICheckList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUICheckList::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUICheckList::cReferenceUICheckList() {
@@ -6559,9 +6355,19 @@ __attribute__((weak)) void uGUIBase::cReferenceUICheckList::updateDisp() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUICheckList::initAllCheck() {
-    DDON_STUB("uGUIBase::cReferenceUICheckList::initAllCheck")
-    /* stub */
+void uGUIBase::cReferenceUICheckList::initAllCheck() {
+    u32 i = 0;
+    if (mListArray.size() != 0) {
+        do {
+            if (mListArray.getBuffer()[static_cast<int>(i)] != nullptr) {
+                if (!static_cast<cList*>(mListArray.getBuffer()[static_cast<int>(i)])->mCheckbox.mIsForbid) {
+                    static_cast<cList*>(mListArray.getBuffer()[static_cast<int>(i)])->mCheckbox.mCheck = false;
+                    static_cast<cList*>(mListArray.getBuffer()[static_cast<int>(i)])->mCheckbox._update();
+                }
+            }
+            i += 1u;
+        } while (i < mListArray.size());
+    }
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUICheckList::addFactor(MT_CTSTR str, s32 posX, s32 posY) {
@@ -6574,9 +6380,15 @@ __attribute__((weak)) void uGUIBase::cReferenceUICheckList::setMessage(MT_CTSTR 
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUICheckList::setCheck(s32 idx, bool b) {
-    DDON_STUB("uGUIBase::cReferenceUICheckList::setCheck")
-    /* stub */
+void uGUIBase::cReferenceUICheckList::setCheck(s32 idx, bool b) {
+    if (idx < static_cast<int>(mListArray.mLength)) {
+        if (mListArray.getBuffer()[idx] != nullptr) {
+            if (!static_cast<cList*>(mListArray.getBuffer()[idx])->mCheckbox.mIsForbid) {
+                static_cast<cList*>(mListArray.getBuffer()[idx])->mCheckbox.mCheck = b;
+                static_cast<cList*>(mListArray.getBuffer()[idx])->mCheckbox._update();
+            }
+        }
+    }
 }
 
 __attribute__((weak)) bool uGUIBase::cReferenceUICheckList::isCheck(s32 idx) {
@@ -6656,10 +6468,6 @@ const MtDTI& uGUIBase::cReferenceUICheckListForClan::getDTI() const {
     return uGUIBase::cReferenceUICheckListForClan::DTI;
 }
 
-inline void uGUIBase::cReferenceUICheckListForClan::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUICheckListForClan::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUICheckListForClan::cReferenceUICheckListForClan() {
     DDON_STUB("uGUIBase::cReferenceUICheckListForClan::cReferenceUICheckListForClan")
     /* stub */
@@ -6712,10 +6520,6 @@ __attribute__((weak)) MtObject* uGUIBase::cReferenceUICheckListForClan::MyDTI::n
 
 const MtDTI& uGUIBase::cReferenceUIClanEmblem::getDTI() const {
     return uGUIBase::cReferenceUIClanEmblem::DTI;
-}
-
-inline void uGUIBase::cReferenceUIClanEmblem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIClanEmblem::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIClanEmblem::cReferenceUIClanEmblem() {
@@ -6868,9 +6672,91 @@ void uGUIBase::cTexRefArcLoader::setup(cGUIObject* objTexRef) {
     objTexRef->setVisible(false);
 }
 
-__attribute__((weak)) void uGUIBase::cTexRefArcLoader::request(MT_CTSTR arcName, MT_CTSTR searchId, f32 waitFrame) {
-    DDON_STUB("uGUIBase::cTexRefArcLoader::request")
-    /* stub */
+void uGUIBase::cTexRefArcLoader::request(MT_CTSTR arcName, MT_CTSTR searchId, f32 waitFrame) {
+    if (searchId != nullptr) {
+        if (searchId != (&mSearchId.mStr[0])) {
+            size_t t0 = strlen(searchId);
+            mSearchId.mLength = (static_cast<int>(t0) <= 63) ? static_cast<unsigned int>(t0) : 63u;
+            if (((static_cast<int>(t0) <= 63) ? static_cast<unsigned int>(t0) : 63u) != 0) {
+                memcpy(static_cast<void*>(&mSearchId.mStr[0]), static_cast<const void*>(searchId), static_cast<size_t>((static_cast<int>(t0) <= 63) ? static_cast<unsigned int>(t0) : 63u));
+                mSearchId.mStr[(static_cast<int>(t0) <= 63) ? static_cast<unsigned int>(t0) : 63u] = 0;
+                ARC_TAGID t1 = rArchiveListArray::convTagId(arcName);
+                if (mArcTagIdReq != t1) {
+                    if (mArcTagId != t1) {
+                        if (t1 != 1) {
+                            mArcTagIdReq = t1;
+                            mTimer = waitFrame;
+                            mIsLoading = true;
+                        } else {
+                            mArcTagIdReq = 1;
+                        }
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                }
+                if (mpObjTexRef != nullptr) {
+                    mpObjTexRef->setVisible(false);
+                }
+            } else {
+                mSearchId.mStr[0] = 0;
+                ARC_TAGID t1 = rArchiveListArray::convTagId(arcName);
+                if (mArcTagIdReq != t1) {
+                    if (mArcTagId != t1) {
+                        if (t1 != 1) {
+                            mArcTagIdReq = t1;
+                            mTimer = waitFrame;
+                            mIsLoading = true;
+                        } else {
+                            mArcTagIdReq = 1;
+                        }
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                }
+                if (mpObjTexRef != nullptr) {
+                    mpObjTexRef->setVisible(false);
+                }
+            }
+        } else {
+            ARC_TAGID t1 = rArchiveListArray::convTagId(arcName);
+            if (mArcTagIdReq != t1) {
+                if (mArcTagId != t1) {
+                    if (t1 != 1) {
+                        mArcTagIdReq = t1;
+                        mTimer = waitFrame;
+                        mIsLoading = true;
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                } else {
+                    mArcTagIdReq = 1;
+                }
+            }
+            if (mpObjTexRef != nullptr) {
+                mpObjTexRef->setVisible(false);
+            }
+        }
+    } else {
+        mSearchId.mStr[0] = 0;
+        mSearchId.mLength = 0;
+        ARC_TAGID t1 = rArchiveListArray::convTagId(arcName);
+        if (mArcTagIdReq != t1) {
+            if (mArcTagId != t1) {
+                if (t1 != 1) {
+                    mArcTagIdReq = t1;
+                    mTimer = waitFrame;
+                    mIsLoading = true;
+                } else {
+                    mArcTagIdReq = 1;
+                }
+            } else {
+                mArcTagIdReq = 1;
+            }
+        }
+        if (mpObjTexRef != nullptr) {
+            mpObjTexRef->setVisible(false);
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIBase::cTexRefArcLoader::update(f32 deltaTime) {
@@ -6878,9 +6764,33 @@ __attribute__((weak)) void uGUIBase::cTexRefArcLoader::update(f32 deltaTime) {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cTexRefArcLoader::release() {
-    DDON_STUB("uGUIBase::cTexRefArcLoader::release")
-    /* stub */
+void uGUIBase::cTexRefArcLoader::release() {
+    if ("" != (&mSearchId.mStr[0])) {
+        mSearchId.mLength = 0;
+        mSearchId.mStr[0] = 0;
+    }
+    if (mpObjTexRef != nullptr) {
+        mpObjTexRef->setVisible(false);
+        cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+        if (mTicket != t0) {
+            sArchiveManager::getInstance()->returnTicket(mTicket);
+            mTicket = t0;
+        }
+        mArcTagId = 1;
+        mArcTagIdReq = 1;
+        mIsLoading = false;
+        mIsComplete = false;
+    } else {
+        cArcLoaderBase* const t0 = sArchiveManager::INVALID_TICKET;
+        if (mTicket != t0) {
+            sArchiveManager::getInstance()->returnTicket(mTicket);
+            mTicket = t0;
+        }
+        mArcTagId = 1;
+        mArcTagIdReq = 1;
+        mIsLoading = false;
+        mIsComplete = false;
+    }
 }
 
 uGUIBase::cArcLoader::~cArcLoader() {
@@ -6937,16 +6847,8 @@ const MtDTI& uGUIBase::cReferenceUINumBox::getDTI() const {
     return uGUIBase::cReferenceUINumBox::DTI;
 }
 
-inline MtAllocator* uGUIBase::cReferenceUINumBox::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUINumBox::DTI);
-}
-
 void* uGUIBase::cReferenceUINumBox::operator new(size_t sz, u32 align) {
     return uGUIBase::cReferenceUINumBox::getAllocator()->memAlloc(sz, align, uGUIBase::cReferenceUINumBox::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUINumBox::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUINumBox::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUINumBox::cReferenceUINumBox() {
@@ -7244,14 +7146,6 @@ const MtDTI& uGUIBase::cReferenceUIPageDot::getDTI() const {
     return uGUIBase::cReferenceUIPageDot::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIPageDot::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPageDot::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIPageDot::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIPageDot::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPageDot::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIPageDot::cReferenceUIPageDot() {
     mWork.mAutoDelete = true;
     mpInstPager = nullptr;
@@ -7284,9 +7178,18 @@ __attribute__((weak)) void uGUIBase::cReferenceUIPageDot::setDispPageNum(u32 uNu
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cReferenceUIPageDot::setVisible(bool visible) {
-    DDON_STUB("uGUIBase::cReferenceUIPageDot::setVisible")
-    /* stub */
+void uGUIBase::cReferenceUIPageDot::setVisible(bool visible) {
+    u32 i = 0;
+    if (mWork.mLength != 0) {
+        do {
+            if (mWork.mpArray[i] != nullptr) {
+                if (static_cast<cPageDotWork*>(mWork.mpArray[i])->mpInst != nullptr) {
+                    static_cast<cPageDotWork*>(mWork.mpArray[i])->mpInst->setVisible(visible);
+                }
+            }
+            i += 1u;
+        } while (i < mWork.mLength);
+    }
 }
 
 __attribute__((weak)) void uGUIBase::cReferenceUIPageDot::setFocus(bool b) {
@@ -7324,14 +7227,6 @@ const MtDTI& uGUIBase::cReferenceUIPageDot::cPageDotWork::getDTI() const {
     return uGUIBase::cReferenceUIPageDot::cPageDotWork::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIPageDot::cPageDotWork::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPageDot::cPageDotWork::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIPageDot::cPageDotWork::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIPageDot::cPageDotWork::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIPageDot::cPageDotWork::DTI)->memFree(p_addr);
-}
-
 inline uGUIBase::cReferenceUIPageDot::cPageDotWork::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIBase::cReferenceUIPageDot::cPageDotWork::MyDTI uGUIBase::cReferenceUIPageDot::cPageDotWork::DTI("uGUIBase::cReferenceUIPageDot::cPageDotWork", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -7342,10 +7237,6 @@ MtObject* uGUIBase::cReferenceUIPageDot::cPageDotWork::MyDTI::newInstance() cons
 
 const MtDTI& uGUIBase::cReferenceUIRadioButton::getDTI() const {
     return uGUIBase::cReferenceUIRadioButton::DTI;
-}
-
-inline void uGUIBase::cReferenceUIRadioButton::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIRadioButton::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIBase::cReferenceUIRadioButton::~cReferenceUIRadioButton() {
@@ -7379,7 +7270,7 @@ void uGUIBase::cReferenceUIRadioButton::setMessage(u32 idx, MT_CTSTR msg) {
         }
     } else {
         if (mpUnit != nullptr) {
-            mpUnit->setObjectMessage(reinterpret_cast<cGUIObject*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mArray.getBuffer()[static_cast<int>(idx)]) + 64)), msg, 0u, false);
+            mpUnit->setObjectMessage(static_cast<cGUIObject*>(static_cast<cObject*>(mArray.getBuffer()[static_cast<int>(idx)])->mpObjMsgTitle), msg, 0u, false);
         }
     }
 }
@@ -7490,14 +7381,6 @@ const MtDTI& uGUIBase::cReferenceUINumPager::getDTI() const {
     return uGUIBase::cReferenceUINumPager::DTI;
 }
 
-inline void* uGUIBase::cReferenceUINumPager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUINumPager::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUINumPager::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUINumPager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUINumPager::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uGUIBase::cReferenceUINumPager::setup(uGUIBase* pBase, cGUIInstance* pInst, s32 num, s32 max, u8 uColorType) {
     DDON_STUB("uGUIBase::cReferenceUINumPager::setup")
     /* stub */
@@ -7596,14 +7479,6 @@ const MtDTI& uGUIBase::cReferenceUIIconButton::getDTI() const {
     return uGUIBase::cReferenceUIIconButton::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIIconButton::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconButton::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconButton::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconButton::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconButton::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIIconButton::cReferenceUIIconButton() {
     mIsFocus = false;
     mIsSelected = false;
@@ -7697,10 +7572,6 @@ MtObject* uGUIBase::cReferenceUIIconButton::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cReferenceUIEditSlider::getDTI() const {
     return uGUIBase::cReferenceUIEditSlider::DTI;
-}
-
-inline void uGUIBase::cReferenceUIEditSlider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIEditSlider::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cReferenceUIEditSlider::cReferenceUIEditSlider() {
@@ -7833,14 +7704,6 @@ const MtDTI& uGUIBase::cReferenceUIIconFriend::getDTI() const {
     return uGUIBase::cReferenceUIIconFriend::DTI;
 }
 
-inline void* uGUIBase::cReferenceUIIconFriend::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconFriend::DTI)->memAlloc(sz, align, uGUIBase::cReferenceUIIconFriend::DTI.getID());
-}
-
-inline void uGUIBase::cReferenceUIIconFriend::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cReferenceUIIconFriend::DTI)->memFree(p_addr);
-}
-
 uGUIBase::cReferenceUIIconFriend::cReferenceUIIconFriend() {
 }
 
@@ -7866,10 +7729,6 @@ MtObject* uGUIBase::cReferenceUIIconFriend::MyDTI::newInstance() const {
 
 const MtDTI& uGUIBase::cScreenAdjustPos::getDTI() const {
     return uGUIBase::cScreenAdjustPos::DTI;
-}
-
-inline void uGUIBase::cScreenAdjustPos::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIBase::cScreenAdjustPos::DTI)->memFree(p_addr);
 }
 
 uGUIBase::cScreenAdjustPos::cScreenAdjustPos() {
@@ -7983,9 +7842,120 @@ __attribute__((weak)) void uGUIBase::cTexArcLoader::update(f32 delta_time) {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIBase::cTexArcLoader::request(MT_CTSTR arc_name, MT_CTSTR search_id, f32 wait_frame) {
-    DDON_STUB("uGUIBase::cTexArcLoader::request")
-    /* stub */
+void uGUIBase::cTexArcLoader::request(MT_CTSTR arc_name, MT_CTSTR search_id, f32 wait_frame) {
+    if (search_id != nullptr) {
+        if (search_id != (&mSearchId.mStr[0])) {
+            size_t t0 = strlen(search_id);
+            mSearchId.mLength = (static_cast<int>(t0) <= 63) ? static_cast<unsigned int>(t0) : 63u;
+            if (((static_cast<int>(t0) <= 63) ? static_cast<unsigned int>(t0) : 63u) != 0) {
+                memcpy(static_cast<void*>(&mSearchId.mStr[0]), static_cast<const void*>(search_id), static_cast<size_t>((static_cast<int>(t0) <= 63) ? static_cast<unsigned int>(t0) : 63u));
+                mSearchId.mStr[(static_cast<int>(t0) <= 63) ? static_cast<unsigned int>(t0) : 63u] = 0;
+            } else {
+                mSearchId.mStr[0] = 0;
+            }
+            if (mpObjTex != nullptr) {
+                mpObjTex->setVisible(false);
+                ARC_TAGID t1 = rArchiveListArray::convTagId(arc_name);
+                if (mArcTagIdReq != t1) {
+                    if (mArcTagId != t1) {
+                        if (t1 != 1) {
+                            mArcTagIdReq = t1;
+                            mTimer = wait_frame;
+                            mIsLoading = true;
+                        } else {
+                            mArcTagIdReq = 1;
+                        }
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                }
+            } else {
+                ARC_TAGID t1 = rArchiveListArray::convTagId(arc_name);
+                if (mArcTagIdReq != t1) {
+                    if (mArcTagId != t1) {
+                        if (t1 != 1) {
+                            mArcTagIdReq = t1;
+                            mTimer = wait_frame;
+                            mIsLoading = true;
+                        } else {
+                            mArcTagIdReq = 1;
+                        }
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                }
+            }
+        } else {
+            if (mpObjTex != nullptr) {
+                mpObjTex->setVisible(false);
+                ARC_TAGID t1 = rArchiveListArray::convTagId(arc_name);
+                if (mArcTagIdReq != t1) {
+                    if (mArcTagId != t1) {
+                        if (t1 != 1) {
+                            mArcTagIdReq = t1;
+                            mTimer = wait_frame;
+                            mIsLoading = true;
+                        } else {
+                            mArcTagIdReq = 1;
+                        }
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                }
+            } else {
+                ARC_TAGID t1 = rArchiveListArray::convTagId(arc_name);
+                if (mArcTagIdReq != t1) {
+                    if (mArcTagId != t1) {
+                        if (t1 != 1) {
+                            mArcTagIdReq = t1;
+                            mTimer = wait_frame;
+                            mIsLoading = true;
+                        } else {
+                            mArcTagIdReq = 1;
+                        }
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                }
+            }
+        }
+    } else {
+        mSearchId.mStr[0] = 0;
+        mSearchId.mLength = 0;
+        if (mpObjTex != nullptr) {
+            mpObjTex->setVisible(false);
+            ARC_TAGID t1 = rArchiveListArray::convTagId(arc_name);
+            if (mArcTagIdReq != t1) {
+                if (mArcTagId != t1) {
+                    if (t1 != 1) {
+                        mArcTagIdReq = t1;
+                        mTimer = wait_frame;
+                        mIsLoading = true;
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                } else {
+                    mArcTagIdReq = 1;
+                }
+            }
+        } else {
+            ARC_TAGID t1 = rArchiveListArray::convTagId(arc_name);
+            if (mArcTagIdReq != t1) {
+                if (mArcTagId != t1) {
+                    if (t1 != 1) {
+                        mArcTagIdReq = t1;
+                        mTimer = wait_frame;
+                        mIsLoading = true;
+                    } else {
+                        mArcTagIdReq = 1;
+                    }
+                } else {
+                    mArcTagIdReq = 1;
+                }
+            }
+        }
+    }
+    update(0.0f);
 }
 
 rTexture* uGUIBase::cTexArcLoader::replaceTex(rTexture* pTex, bool IsReleaseOldTex) {

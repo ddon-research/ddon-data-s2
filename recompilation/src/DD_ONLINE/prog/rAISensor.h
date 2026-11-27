@@ -171,3 +171,22 @@ inline void cAISensorNodeRes::load(MtDataReader& r) {
 inline void* cAISensorNodeRes::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cAISensorNodeRes::DTI)->memAlloc(sz, align, cAISensorNodeRes::DTI.getID());
 }
+
+inline void cAISensorNodeRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAISensorNodeRes::DTI)->memFree(p_addr);
+}
+
+inline void* rAISensor::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAISensor::DTI)->memAlloc(sz, align, ::rAISensor::DTI.::MtDTI::getID());
+}
+
+inline void rAISensor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAISensor::DTI)->memFree(p_addr);
+}
+
+inline rAISensor::rAISensor() {
+    this->::cResource::setAttribute(16u);
+    this->mMagic = 0x32524E53;
+    this->mVersion = 1;
+    this->mNodes.::MtArray::mAutoDelete = true;
+}

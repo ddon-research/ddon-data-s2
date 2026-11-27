@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "MtDtiSelecter.h"
-#include "MtAllocator.h"
 #include "MtDTI.h"
 #include "MtMemoryAllocator.h"
 #include "MtObject.h"
@@ -15,13 +14,8 @@ const MtDTI& MtDtiSelecter::getDTI() const {
     return MtDtiSelecter::DTI;
 }
 
-inline void MtDtiSelecter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtDtiSelecter::DTI)->memFree(p_addr);
-}
-
 MtDtiSelecter::MtDtiSelecter() {
-    DDON_STUB("MtDtiSelecter::MtDtiSelecter")
-    /* stub */
+    mpUseDTI = nullptr;
 }
 
 MtDtiSelecter::~MtDtiSelecter() {
@@ -58,14 +52,19 @@ u32 MtDtiSelecter::getSelectDtiID() const {
     }
 }
 
-__attribute__((weak)) void MtDtiSelecter::setSelectDtiID(u32 NewDtiID) {
-    DDON_STUB("MtDtiSelecter::setSelectDtiID")
-    /* stub */
+void MtDtiSelecter::setSelectDtiID(u32 NewDtiID) {
+    const MtDTI* t0 = MtDTI::from(NewDtiID);
+    if (mpUseDTI == t0) {
+        return;
+    }
+    mpUseDTI = t0;
 }
 
-__attribute__((weak)) void MtDtiSelecter::setSelectDti(const MtDTI* pNewDti) {
-    DDON_STUB("MtDtiSelecter::setSelectDti")
-    /* stub */
+void MtDtiSelecter::setSelectDti(const MtDTI* pNewDti) {
+    if (pNewDti == mpUseDTI) {
+        return;
+    }
+    mpUseDTI = pNewDti;
 }
 
 inline MtDtiSelecter::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

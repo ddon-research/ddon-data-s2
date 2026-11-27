@@ -19,22 +19,6 @@ const MtDTI& rSoundHitInfo::getDTI() const {
     return rSoundHitInfo::DTI;
 }
 
-inline void* rSoundHitInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundHitInfo::DTI)->memAlloc(sz, align, rSoundHitInfo::DTI.getID());
-}
-
-inline void rSoundHitInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundHitInfo::DTI)->memFree(p_addr);
-}
-
-inline rSoundHitInfo::rSoundHitInfo() {
-    setAttribute(22u);
-    this->cResource::clear();
-    mpArrayData = nullptr;
-    mArrayDataNum = 0;
-    mVersion = 5;
-}
-
 rSoundHitInfo::~rSoundHitInfo() {
     unsigned int i3 = 0;
     if (mArrayDataNum != 0) {
@@ -103,14 +87,6 @@ MtObject* rSoundHitInfo::MyDTI::newInstance() const {
 
 const MtDTI& rSoundHitInfo::cSoundHitInfo::getDTI() const {
     return rSoundHitInfo::cSoundHitInfo::DTI;
-}
-
-inline void* rSoundHitInfo::cSoundHitInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundHitInfo::cSoundHitInfo::DTI)->memAlloc(sz, align, rSoundHitInfo::cSoundHitInfo::DTI.getID());
-}
-
-inline void rSoundHitInfo::cSoundHitInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundHitInfo::cSoundHitInfo::DTI)->memFree(p_addr);
 }
 
 rSoundHitInfo::cSoundHitInfo::~cSoundHitInfo() {

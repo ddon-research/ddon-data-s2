@@ -37,6 +37,7 @@ using u32 = unsigned int;
 
 class cParentRegionStatus : public MtObject
 {
+    friend class cpHpDamageCtrl;
     friend class uHuman;
 public:
     class MyDTI;
@@ -133,4 +134,16 @@ inline nRegionStatus::P_REGION_CATEGORY cParentRegionStatus::getRegionCategory()
 
 inline nRegionStatus::REGION_REGENERATE_PRIORITY cParentRegionStatus::getRegenerateProprity() const {
     return this->mRegenerateProprirty;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cParentRegionStatus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cParentRegionStatus::DTI);
+}
+
+inline void cParentRegionStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cParentRegionStatus::DTI)->memFree(p_addr);
 }

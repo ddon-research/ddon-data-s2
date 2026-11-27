@@ -28,10 +28,6 @@ const MtDTI& cShlParamDamageSync::getDTI() const {
     return cShlParamDamageSync::DTI;
 }
 
-inline void* cShlParamDamageSync::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamDamageSync::DTI)->memAlloc(sz, align, cShlParamDamageSync::DTI.getID());
-}
-
 inline void cShlParamDamageSync::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamDamageSync::DTI)->memFree(p_addr);
 }
@@ -63,10 +59,6 @@ const MtDTI& cShlParamDamageSyncBreak::getDTI() const {
     return cShlParamDamageSyncBreak::DTI;
 }
 
-inline void* cShlParamDamageSyncBreak::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamDamageSyncBreak::DTI)->memAlloc(sz, align, cShlParamDamageSyncBreak::DTI.getID());
-}
-
 inline void cShlParamDamageSyncBreak::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamDamageSyncBreak::DTI)->memFree(p_addr);
 }
@@ -96,10 +88,6 @@ MtObject* cShlParamDamageSyncBreak::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamDamageSyncCtrl::getDTI() const {
     return cShlParamDamageSyncCtrl::DTI;
-}
-
-inline void* cShlParamDamageSyncCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamDamageSyncCtrl::DTI)->memAlloc(sz, align, cShlParamDamageSyncCtrl::DTI.getID());
 }
 
 inline void cShlParamDamageSyncCtrl::operator delete(void* p_addr) {
@@ -150,14 +138,6 @@ const MtDTI& uShlDamageSync::getDTI() const {
     return uShlDamageSync::DTI;
 }
 
-inline void* uShlDamageSync::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlDamageSync::DTI)->memAlloc(sz, align, uShlDamageSync::DTI.getID());
-}
-
-inline void uShlDamageSync::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlDamageSync::DTI)->memFree(p_addr);
-}
-
 void uShlDamageSync::updateSub() {
     this->uShlBase::updateSub();
     if (!isMaster()) {
@@ -196,14 +176,6 @@ const MtDTI& uShlDamageSyncBreak::getDTI() const {
     return uShlDamageSyncBreak::DTI;
 }
 
-inline void* uShlDamageSyncBreak::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlDamageSyncBreak::DTI)->memAlloc(sz, align, uShlDamageSyncBreak::DTI.getID());
-}
-
-inline void uShlDamageSyncBreak::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlDamageSyncBreak::DTI)->memFree(p_addr);
-}
-
 void uShlDamageSyncBreak::updateSub() {
     this->uShlBase::updateSub();
 }
@@ -237,18 +209,6 @@ MtObject* uShlDamageSyncBreak::MyDTI::newInstance() const {
 
 const MtDTI& uShlDamageSyncCtrl::getDTI() const {
     return uShlDamageSyncCtrl::DTI;
-}
-
-inline void* uShlDamageSyncCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlDamageSyncCtrl::DTI)->memAlloc(sz, align, uShlDamageSyncCtrl::DTI.getID());
-}
-
-inline void uShlDamageSyncCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlDamageSyncCtrl::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamDamageSyncCtrl* uShlDamageSyncCtrl::getShlParam() const {
-    return static_cast<const cShlParamDamageSyncCtrl*>(mpShlParam2);
 }
 
 __attribute__((weak)) void uShlDamageSyncCtrl::setup() {

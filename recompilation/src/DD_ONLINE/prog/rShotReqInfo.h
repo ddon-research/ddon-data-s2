@@ -123,3 +123,36 @@ inline void cShotReqInfo::operator delete[](void* p_addr) {
 inline void* cShotReqInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cShotReqInfo::DTI)->memAlloc(sz, align, ::cShotReqInfo::DTI.::MtDTI::getID());
 }
+
+inline void* cShotReqInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShotReqInfo::DTI)->memAlloc(sz, align, ::cShotReqInfo::DTI.::MtDTI::getID());
+}
+
+inline void cShotReqInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cShotReqInfo::DTI)->memFree(p_addr);
+}
+
+inline cShotReqInfo::cShotReqInfo() {
+    this->mShotGroup = 0;
+    this->mShotIndex = 0;
+    this->mSetTarget = 0;
+    this->mJointNo = 255;
+    this->mIsConst = false;
+    this->mOffsetPos.x = ::MtVector3::Zero.x;
+    this->mOffsetPos.y = ::MtVector3::Zero.y;
+    this->mOffsetPos.z = ::MtVector3::Zero.z;
+    this->mOffsetPos.pad_ = 0.0f;
+    this->mOffsetDir.x = ::MtVector3::Zero.x;
+    this->mOffsetDir.y = ::MtVector3::Zero.y;
+    this->mOffsetDir.z = ::MtVector3::Zero.z;
+    this->mOffsetDir.pad_ = 0.0f;
+    this->mIsLockOnTarget = false;
+}
+
+inline void* rShotReqInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rShotReqInfo::DTI)->memAlloc(sz, align, ::rShotReqInfo::DTI.::MtDTI::getID());
+}
+
+inline void rShotReqInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rShotReqInfo::DTI)->memFree(p_addr);
+}

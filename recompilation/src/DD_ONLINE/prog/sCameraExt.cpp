@@ -39,16 +39,8 @@ const MtDTI& sCameraExt::getDTI() const {
     return sCameraExt::DTI;
 }
 
-inline MtAllocator* sCameraExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sCameraExt::DTI);
-}
-
 void* sCameraExt::operator new(size_t sz, u32 align) {
     return sCameraExt::getAllocator()->memAlloc(sz, align, sCameraExt::DTI.getID());
-}
-
-inline void sCameraExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCameraExt::DTI)->memFree(p_addr);
 }
 
 sCameraExt::sCameraExt() {

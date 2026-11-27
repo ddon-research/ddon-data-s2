@@ -12,6 +12,7 @@ class MtAllocator;
 class MtDTI;
 class MtPropertyList;
 class cOcdBase;
+class cOcdStatusParam;
 class rOcdImmuneParamRes;
 class rOcdStatusParamRes;
 class sPlayerManager;
@@ -71,6 +72,7 @@ public:
 
 class cOcdStatusParamRes : public MtObject
 {
+    friend class cOcdStatusParam;
     friend class rOcdStatusParamRes;
     friend class sPlayerManager;
 public:
@@ -184,6 +186,14 @@ inline void cOcdStatusParamRes::setOcdUID(u32 OcdUID) {
     this->mOcdUID = OcdUID;
 }
 
+inline bool cOcdStatusParamRes::isEffective() const {
+    return this->mIsEffective;
+}
+
+inline bool cOcdStatusParamRes::isTimeRecover() const {
+    return this->mIsTimeRecover;
+}
+
 inline f32 cOcdStatusParamRes::getCureWaitTime() const {
     return this->mCureWaitTime;
 }
@@ -290,4 +300,32 @@ inline f32 cOcdStatusParamRes::getFreeParam1CheatCheckPrivate() const {
 
 inline void cOcdStatusParamRes::setFreeParam1CheatCheckPrivate(f32 NewValue) {
     this->mFreeParam1CheatCheck = NewValue;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cOcdImmuneParamRes::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cOcdImmuneParamRes::DTI);
+}
+
+inline void* cOcdImmuneParamRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdImmuneParamRes::DTI)->memAlloc(sz, align, ::cOcdImmuneParamRes::DTI.::MtDTI::getID());
+}
+
+inline void cOcdImmuneParamRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdImmuneParamRes::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cOcdStatusParamRes::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cOcdStatusParamRes::DTI);
+}
+
+inline void* cOcdStatusParamRes::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cOcdStatusParamRes::DTI)->memAlloc(sz, align, ::cOcdStatusParamRes::DTI.::MtDTI::getID());
+}
+
+inline void cOcdStatusParamRes::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdStatusParamRes::DTI)->memFree(p_addr);
 }

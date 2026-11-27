@@ -153,3 +153,23 @@ inline uGUIGaugeExp::cGaugeInfo::cGaugeInfo() {
     this->mJobIdLatest = 0xFF;
     this->mPlayPointLatest = 0xFFFFFFFF;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIGaugeExp::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeExp::DTI);
+}
+
+inline void uGUIGaugeExp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGaugeExp::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIGaugeExp::cGaugeInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeExp::cGaugeInfo::DTI)->memAlloc(sz, align, ::uGUIGaugeExp::cGaugeInfo::DTI.::MtDTI::getID());
+}
+
+inline void uGUIGaugeExp::cGaugeInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGaugeExp::cGaugeInfo::DTI)->memFree(p_addr);
+}

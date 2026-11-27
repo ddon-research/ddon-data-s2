@@ -18,14 +18,6 @@ const MtDTI& kTHINKDATA::getDTI() const {
     return kTHINKDATA::DTI;
 }
 
-inline MtAllocator* kTHINKDATA::getAllocator() {
-    return MtMemoryAllocator::getAllocator(kTHINKDATA::DTI);
-}
-
-inline void* kTHINKDATA::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(kTHINKDATA::DTI)->memAlloc(sz, align, kTHINKDATA::DTI.getID());
-}
-
 __attribute__((weak)) void kTHINKDATA::operator delete(void* p_addr) {
     kTHINKDATA::getAllocator()->memFree(p_addr);
 }
@@ -119,10 +111,6 @@ MtObject* kTHINKDATA::MyDTI::newInstance() const {
 
 const MtDTI& rkThinkData::getDTI() const {
     return rkThinkData::DTI;
-}
-
-inline void rkThinkData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rkThinkData::DTI)->memFree(p_addr);
 }
 
 rkThinkData::~rkThinkData() {

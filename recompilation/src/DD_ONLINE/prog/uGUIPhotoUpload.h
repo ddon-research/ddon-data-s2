@@ -247,3 +247,19 @@ inline void uGUIPhotoUpload::setupPulldown() {
 inline void* uGUIPhotoUpload::cCate::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIPhotoUpload::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIPhotoUpload::DTI);
+}
+
+inline void uGUIPhotoUpload::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPhotoUpload::DTI)->memFree(p_addr);
+}
+
+inline void uGUIPhotoUpload::cCate::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIPhotoUpload::cCate::DTI)->memFree(p_addr);
+}

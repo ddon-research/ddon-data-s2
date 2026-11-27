@@ -85,16 +85,8 @@ const MtDTI& uGUIMap::getDTI() const {
     return uGUIMap::DTI;
 }
 
-inline MtAllocator* uGUIMap::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMap::DTI);
-}
-
 void* uGUIMap::operator new(size_t sz, u32 align) {
     return uGUIMap::getAllocator()->memAlloc(sz, align, uGUIMap::DTI.getID());
-}
-
-inline void uGUIMap::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMap::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMap::~uGUIMap() {
@@ -428,13 +420,6 @@ __attribute__((weak)) void uGUIMap::execPrimitiveMask(MtFloat2 wh, MtFloat4 rect
     /* stub */
 }
 
-inline void uGUIMap::execZoomSlider() {
-    if (mpObjZoomSlider == nullptr) {
-        return;
-    }
-    mpObjZoomSlider->setCurrentFrame(100.0f * (static_cast<float>(mpCtrlZoom->mCurrentPos) / static_cast<float>(mpCtrlZoom->mItemNum - 1)), true);
-}
-
 __attribute__((weak)) void uGUIMap::execPointerCursor() {
     DDON_STUB("uGUIMap::execPointerCursor")
     /* stub */
@@ -677,14 +662,6 @@ const MtDTI& uGUIMap::cLandId::getDTI() const {
     return uGUIMap::cLandId::DTI;
 }
 
-inline void* uGUIMap::cLandId::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMap::cLandId::DTI)->memAlloc(sz, align, uGUIMap::cLandId::DTI.getID());
-}
-
-inline void uGUIMap::cLandId::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMap::cLandId::DTI)->memFree(p_addr);
-}
-
 inline uGUIMap::cLandId::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUIMap::cLandId::MyDTI uGUIMap::cLandId::DTI("uGUIMap::cLandId", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -718,27 +695,6 @@ const MtDTI& uGUIMap::cMarkerUpdInfo::getDTI() const {
     return uGUIMap::cMarkerUpdInfo::DTI;
 }
 
-inline void* uGUIMap::cMarkerUpdInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMap::cMarkerUpdInfo::DTI)->memAlloc(sz, align, uGUIMap::cMarkerUpdInfo::DTI.getID());
-}
-
-inline void uGUIMap::cMarkerUpdInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMap::cMarkerUpdInfo::DTI)->memFree(p_addr);
-}
-
-inline uGUIMap::cMarkerUpdInfo::cMarkerUpdInfo() {
-    mEnable = false;
-    mIsDefFloor = false;
-    mQuestId = 0;
-    mIdx = 0;
-    mGroupNo = 0;
-    mDist = MtVector2::Zero;
-    mEffectiveRange = 0.0f;
-    mPosIdx = 0;
-    mSaveId = -1;
-    mpUnit = nullptr;
-}
-
 uGUIMap::cMarkerUpdInfo::~cMarkerUpdInfo() {
 }
 
@@ -754,22 +710,6 @@ const MtDTI& uGUIMap::cMarkerLandInfo::getDTI() const {
     return uGUIMap::cMarkerLandInfo::DTI;
 }
 
-inline void* uGUIMap::cMarkerLandInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMap::cMarkerLandInfo::DTI)->memAlloc(sz, align, uGUIMap::cMarkerLandInfo::DTI.getID());
-}
-
-inline void uGUIMap::cMarkerLandInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMap::cMarkerLandInfo::DTI)->memFree(p_addr);
-}
-
-inline uGUIMap::cMarkerLandInfo::cMarkerLandInfo() {
-    mWorldPos = MtVector3::Zero;
-    mDist = MtVector2::Zero;
-    mType = 0;
-    mSpotMessId = 0;
-    mMessId = -1;
-}
-
 uGUIMap::cMarkerLandInfo::~cMarkerLandInfo() {
 }
 
@@ -783,10 +723,6 @@ MtObject* uGUIMap::cMarkerLandInfo::MyDTI::newInstance() const {
 
 const MtDTI& uGUIMap::cPointerCursor::getDTI() const {
     return uGUIMap::cPointerCursor::DTI;
-}
-
-inline void uGUIMap::cPointerCursor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMap::cPointerCursor::DTI)->memFree(p_addr);
 }
 
 uGUIMap::cPointerCursor::~cPointerCursor() {
@@ -813,23 +749,6 @@ __attribute__((weak)) MtObject* uGUIMap::cPointerCursor::MyDTI::newInstance() co
 
 const MtDTI& uGUIMap::cQuestMarkerData::getDTI() const {
     return uGUIMap::cQuestMarkerData::DTI;
-}
-
-inline void* uGUIMap::cQuestMarkerData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMap::cQuestMarkerData::DTI)->memAlloc(sz, align, uGUIMap::cQuestMarkerData::DTI.getID());
-}
-
-inline void uGUIMap::cQuestMarkerData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMap::cQuestMarkerData::DTI)->memFree(p_addr);
-}
-
-inline uGUIMap::cQuestMarkerData::cQuestMarkerData() {
-    mScheduleId = 0;
-    mPrio = 0;
-    mIndex = -1;
-    mDist.x = MtVector2::Zero.x;
-    mDist.y = MtVector2::Zero.y;
-    mDefFloor = false;
 }
 
 inline uGUIMap::cQuestMarkerData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

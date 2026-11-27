@@ -185,6 +185,7 @@ public:
 
 class uGUICaplinkTopMenu : public uGUIBase
 {
+    friend class uGUICaplinkTrophyTop;
 public:
     enum
     {
@@ -426,4 +427,44 @@ inline uGUICaplinkTopMenu::stVariable::stVariable() {
 }
 
 inline uGUICaplinkTopMenu::stListItem::stListItem() {
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cCaptrophyContentData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaptrophyContentData::DTI)->memAlloc(sz, align, ::cCaptrophyContentData::DTI.::MtDTI::getID());
+}
+
+inline void cCaptrophyContentData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCaptrophyContentData::DTI)->memFree(p_addr);
+}
+
+inline void* cCaptrophyData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaptrophyData::DTI)->memAlloc(sz, align, ::cCaptrophyData::DTI.::MtDTI::getID());
+}
+
+inline void cCaptrophyData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCaptrophyData::DTI)->memFree(p_addr);
+}
+
+inline void* cCaptrophyRelationData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaptrophyRelationData::DTI)->memAlloc(sz, align, ::cCaptrophyRelationData::DTI.::MtDTI::getID());
+}
+
+inline void cCaptrophyRelationData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCaptrophyRelationData::DTI)->memFree(p_addr);
+}
+
+inline void* cCaptrophyRewardData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCaptrophyRewardData::DTI)->memAlloc(sz, align, ::cCaptrophyRewardData::DTI.::MtDTI::getID());
+}
+
+inline void cCaptrophyRewardData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCaptrophyRewardData::DTI)->memFree(p_addr);
+}
+
+inline void uGUICaplinkTopMenu::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUICaplinkTopMenu::DTI)->memFree(p_addr);
 }

@@ -26,10 +26,6 @@ const MtDTI& cCamExParamTemplate::getDTI() const {
     return cCamExParamTemplate::DTI;
 }
 
-inline MtAllocator* cCamExParamTemplate::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCamExParamTemplate::DTI);
-}
-
 void* cCamExParamTemplate::operator new(size_t sz, u32 align) {
     return cCamExParamTemplate::getAllocator()->memAlloc(sz, align, cCamExParamTemplate::DTI.getID());
 }
@@ -75,10 +71,6 @@ const MtDTI& cCamImpTemplate::getDTI() const {
     return cCamImpTemplate::DTI;
 }
 
-inline void cCamImpTemplate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCamImpTemplate::DTI)->memFree(p_addr);
-}
-
 cCamImpTemplate::~cCamImpTemplate() {
     if (mpImple == nullptr) {
         return;
@@ -98,8 +90,17 @@ __attribute__((weak)) void cCamImpTemplate::ctrlSub(MtVector3& idealCam, MtVecto
 }
 
 __attribute__((weak)) void cCamImpTemplate::moveSub(MtVector3& idealCam, MtVector3& idealTar, f32& angX, f32& angY) {
-    DDON_STUB("cCamImpTemplate::moveSub")
-    /* stub */
+    // workaround
+    constexpr size_t t1 = 0xdbc;
+    bool stop = (*reinterpret_cast<u32*>(reinterpret_cast<u8*>(static_cast<sCameraExt*>(sCamera::getInstance())) + t1) & (1u << sCameraExt::GCF_PAUSE)) != 0;
+    if (mpImple != nullptr) {
+        mpImple->move(idealCam, idealTar, angX, angY);
+    }
+    if (stop) {
+        *reinterpret_cast<u32*>(reinterpret_cast<u8*>(static_cast<sCameraExt*>(sCamera::getInstance())) + t1) &= ~(1u << sCameraExt::GCF_PAUSE);
+    } else {
+        mFrame += sWorkRate::getInstance()->calc(sWorkRate::WRB_GLOBAL);
+    }
 }
 
 void cCamImpTemplate::interporateSub(MtVector3& cameraPos, MtVector3& targetPos) {
@@ -116,9 +117,17 @@ void cCamImpTemplate::adjustSub(MtVector3& cameraPos, MtVector3& targetPos, MtVe
     mpImple->adjust(cameraPos, targetPos, idealCam, idealTar);
 }
 
-__attribute__((weak)) void cCamImpTemplate::finalSub() {
-    DDON_STUB("cCamImpTemplate::finalSub")
-    /* stub */
+void cCamImpTemplate::finalSub() {
+    mpC->mpTemplateParam = nullptr;
+    if (mpImple == nullptr) {
+        return;
+    }
+    mpImple->final(true);
+    if (mpImple == nullptr) {
+        return;
+    }
+    delete mpImple;
+    mpImple = nullptr;
 }
 
 nCameraGame::CAMERA_TYPE cCamImpTemplate::getType() const {
@@ -132,8 +141,7 @@ inline cCamImpTemplate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size
 
 cCamImpTemplate::MyDTI cCamImpTemplate::DTI("cCamImpTemplate", &::cCamImpBase::DTI, 208ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cCamImpTemplate::MyDTI::newInstance() const {
-    DDON_STUB("cCamImpTemplate::MyDTI::newInstance")
-    return nullptr;
+MtObject* cCamImpTemplate::MyDTI::newInstance() const {
+    return new (16u) cCamImpTemplate;
 }
 

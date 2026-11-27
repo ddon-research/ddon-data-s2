@@ -212,3 +212,19 @@ inline void uEffect2DExt::setColorUpdateFlag(bool flag) {
 inline bool uEffect2DExt::getColorUpdateFlag() {
     return this->mColorUpdate;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uEffect2DExt::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI);
+}
+
+inline void uEffect2DExt::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI)->memFree(p_addr);
+}
+
+inline void uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
+    ::MtMemoryAllocator::getAllocator(::uEffect2DExt::DTI)->memFree(padr);
+}

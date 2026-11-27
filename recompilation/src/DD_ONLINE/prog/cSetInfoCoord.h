@@ -112,3 +112,11 @@ inline s32 cSetInfoCoord::getUnitID() const {
 inline s32 cSetInfoCoord::getAreaHitNo() const {
     return this->mAreaHitNo;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cSetInfoCoord::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cSetInfoCoord::DTI)->memAlloc(sz, align, ::cSetInfoCoord::DTI.::MtDTI::getID());
+}

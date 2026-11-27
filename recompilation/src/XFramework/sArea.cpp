@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "sArea.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
@@ -15,10 +14,6 @@
 
 const MtDTI& sArea::getDTI() const {
     return sArea::DTI;
-}
-
-inline void sArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sArea::DTI)->memFree(p_addr);
 }
 
 sArea::sArea() {
@@ -46,9 +41,8 @@ __attribute__((weak)) void sArea::reset() {
     /* stub */
 }
 
-__attribute__((weak)) void sArea::jump(const MtDTI& dti) {
-    DDON_STUB("sArea::jump")
-    /* stub */
+void sArea::jump(const MtDTI& dti) {
+    mpJumpArea = &dti;
 }
 
 void sArea::createMenu(MtPropertyList& s) {
@@ -106,16 +100,11 @@ const MtDTI& sArea::AreaInfo::getDTI() const {
     return sArea::AreaInfo::DTI;
 }
 
-inline void sArea::AreaInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sArea::AreaInfo::DTI)->memFree(p_addr);
-}
-
 inline sArea::AreaInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sArea::AreaInfo::MyDTI sArea::AreaInfo::DTI("sArea::AreaInfo", &::MtObject::DTI, 56ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* sArea::AreaInfo::MyDTI::newInstance() const {
-    DDON_STUB("sArea::AreaInfo::MyDTI::newInstance")
-    return nullptr;
+MtObject* sArea::AreaInfo::MyDTI::newInstance() const {
+    return new (16u) sArea::AreaInfo;
 }
 

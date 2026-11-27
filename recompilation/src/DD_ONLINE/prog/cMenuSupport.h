@@ -29,6 +29,7 @@ class cMenuQuickMatchRetry;
 class cMenuQuitClan;
 class cMenuRecreateEntryBoardItem;
 class cMenuReleasePassEntryBoardItem;
+class cMenuRentalPawnList;
 class cMenuStartEntryBoardItem;
 class cMenuUILargeSetting;
 class cNetGameServer;
@@ -90,6 +91,7 @@ class cMenuSupportMenu : public cMenuSupport
     friend class cMenuBase;
     friend class cMenuQuickMatchCancel;
     friend class cMenuQuickMatchRetry;
+    friend class cMenuRentalPawnList;
     friend class cMenuSupportList;
 public:
     class MyDTI;
@@ -414,4 +416,40 @@ inline void cMenuSupportMenu::clearMenuList() {
 
 inline void cMenuSupportMenu::setAutoUpdate(bool isUpdate) {
     this->mAutoUpdateMenu = false;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cMenuDialogFlow::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cMenuDialogFlow::DTI);
+}
+
+inline void cMenuDialogFlow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuDialogFlow::DTI)->memFree(p_addr);
+}
+
+inline void* cMenuSupport::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cMenuSupport::DTI)->memAlloc(sz, align, ::cMenuSupport::DTI.::MtDTI::getID());
+}
+
+inline void cMenuSupport::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuSupport::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cMenuSupportList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cMenuSupportList::DTI);
+}
+
+inline void cMenuSupportList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuSupportList::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cMenuSupportMenu::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI);
+}
+
+inline void cMenuSupportMenu::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cMenuSupportMenu::DTI)->memFree(p_addr);
 }

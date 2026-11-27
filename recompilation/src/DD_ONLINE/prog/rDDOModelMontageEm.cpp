@@ -20,23 +20,6 @@ const MtDTI& rDDOModelMontageEm::getDTI() const {
     return rDDOModelMontageEm::DTI;
 }
 
-inline MtAllocator* rDDOModelMontageEm::getAllocator() {
-    return MtMemoryAllocator::getAllocator(rDDOModelMontageEm::DTI);
-}
-
-inline void* rDDOModelMontageEm::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDDOModelMontageEm::DTI)->memAlloc(sz, align, rDDOModelMontageEm::DTI.getID());
-}
-
-inline void rDDOModelMontageEm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDDOModelMontageEm::DTI)->memFree(p_addr);
-}
-
-inline rDDOModelMontageEm::rDDOModelMontageEm() {
-    setAttribute(16u);
-    mpHeader = nullptr;
-}
-
 rDDOModelMontageEm::~rDDOModelMontageEm() {
     MtMemoryAllocator::getAllocator(rDDOModelMontageEm::DTI)->memFree(static_cast<void*>(mpHeader));
     mpHeader = nullptr;

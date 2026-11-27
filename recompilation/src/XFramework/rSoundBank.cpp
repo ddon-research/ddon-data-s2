@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rSoundBank.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
@@ -27,14 +26,6 @@ __attribute__((weak)) void rSoundBank::usage() {
 
 const MtDTI& rSoundBank::getDTI() const {
     return rSoundBank::DTI;
-}
-
-inline void* rSoundBank::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundBank::DTI)->memAlloc(sz, align, rSoundBank::DTI.mID);
-}
-
-inline void rSoundBank::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundBank::DTI)->memFree(p_addr);
 }
 
 rSoundBank::~rSoundBank() {

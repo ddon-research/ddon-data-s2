@@ -15,10 +15,6 @@ const MtDTI& cOcdDamageInfo::getDTI() const {
     return cOcdDamageInfo::DTI;
 }
 
-inline void cOcdDamageInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdDamageInfo::DTI)->memFree(p_addr);
-}
-
 cOcdDamageInfo::cOcdDamageInfo() {
     DDON_STUB("cOcdDamageInfo::cOcdDamageInfo")
     /* stub */
@@ -33,9 +29,33 @@ cOcdDamageInfo::stDamageData* cOcdDamageInfo::getOcdDataFromIndex(u32 index) {
     return &mOcdBadData[index];
 }
 
-__attribute__((weak)) cOcdDamageInfo::stDamageData* cOcdDamageInfo::getOcdDataEnchantTarget(nDDOGame::ELEMENT_TYPE type) {
-    DDON_STUB("cOcdDamageInfo::getOcdDataEnchantTarget")
-    return nullptr;
+cOcdDamageInfo::stDamageData* cOcdDamageInfo::getOcdDataEnchantTarget(nDDOGame::ELEMENT_TYPE type) {
+    switch (static_cast<unsigned int>(type - 2)) {
+        case 0:
+        {
+            return &mOcdBadData[11];
+        }
+        case 1:
+        {
+            return &mOcdBadData[12];
+        }
+        case 2:
+        {
+            return &mOcdBadData[13];
+        }
+        case 3:
+        {
+            return &mOcdBadData[14];
+        }
+        case 4:
+        {
+            return &mOcdBadData[15];
+        }
+        default:
+        {
+            return nullptr;
+        }
+    }
 }
 
 __attribute__((weak)) void cOcdDamageInfo::getInfoFromCM(const cHitInfoAfterCommon& info) {

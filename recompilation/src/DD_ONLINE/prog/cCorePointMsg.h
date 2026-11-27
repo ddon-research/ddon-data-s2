@@ -101,3 +101,10 @@ inline void cCorePointMsg::notifySended() {
 inline void cCorePointMsg::requestErace() {
     this->mIsErase = true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCorePointMsg::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCorePointMsg::DTI);
+}

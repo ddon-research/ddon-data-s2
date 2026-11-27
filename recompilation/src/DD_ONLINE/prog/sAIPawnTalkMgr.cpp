@@ -46,16 +46,8 @@ const MtDTI& sAIPawnTalkMgr::getDTI() const {
     return sAIPawnTalkMgr::DTI;
 }
 
-inline MtAllocator* sAIPawnTalkMgr::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sAIPawnTalkMgr::DTI);
-}
-
 void* sAIPawnTalkMgr::operator new(size_t sz, u32 align) {
     return sAIPawnTalkMgr::getAllocator()->memAlloc(sz, align, sAIPawnTalkMgr::DTI.getID());
-}
-
-inline void sAIPawnTalkMgr::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sAIPawnTalkMgr::DTI)->memFree(p_addr);
 }
 
 sAIPawnTalkMgr::sAIPawnTalkMgr() {

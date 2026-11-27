@@ -50,8 +50,23 @@ u32 cSoundSilentDetectFilter::getAudioGranularitySamples() {
     }
 }
 
-__attribute__((weak)) bool cSoundSilentDetectFilter::isSilent(f32 threshold) {
-    DDON_STUB("cSoundSilentDetectFilter::isSilent")
-    return {};
+bool cSoundSilentDetectFilter::isSilent(f32 threshold) {
+    mpRms300->measure();
+    if (mChannelNum != 6) {
+        if (mChannelNum == 2) {
+            const cSoundMeterRms::VolumeStereo& t0 = mpRms300->getRmsStereo();
+            return threshold > (0.5f * (t0.l + t0.r));
+        } else {
+            if (mChannelNum == 1) {
+                const cSoundMeterRms::Volume& t2 = mpRms300->getRmsMono();
+                return threshold > t2.v;
+            } else {
+                return threshold > 0.0f;
+            }
+        }
+    } else {
+        const cSoundMeterRms::VolumeSurround51& t1 = mpRms300->getRmsSurround51();
+        return threshold > ((t1.rs + (t1.ls + (t1.lf + (t1.c + (t1.l + t1.r))))) / 6.0f);
+    }
 }
 

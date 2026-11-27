@@ -209,3 +209,27 @@ inline bool rCycleQuestInfo::cCycleQuestSituationInfo::load(MtDataReader& r) {
     mSituationDetailIdx = r.readU32();
     return true;
 }
+
+inline void* rCycleQuestInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCycleQuestInfo::DTI)->memAlloc(sz, align, ::rCycleQuestInfo::DTI.::MtDTI::getID());
+}
+
+inline void rCycleQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCycleQuestInfo::DTI)->memFree(p_addr);
+}
+
+inline rCycleQuestInfo::rCycleQuestInfo() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void rCycleQuestInfo::cCycleQuestInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCycleQuestInfo::cCycleQuestInfo::DTI)->memFree(p_addr);
+}
+
+inline void* rCycleQuestInfo::cCycleQuestSituationInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCycleQuestInfo::cCycleQuestSituationInfo::DTI)->memAlloc(sz, align, ::rCycleQuestInfo::cCycleQuestSituationInfo::DTI.::MtDTI::getID());
+}
+
+inline void rCycleQuestInfo::cCycleQuestSituationInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCycleQuestInfo::cCycleQuestSituationInfo::DTI)->memFree(p_addr);
+}

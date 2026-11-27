@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uConstraint.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -19,10 +18,6 @@
 
 const MtDTI& uConstraint::getDTI() const {
     return uConstraint::DTI;
-}
-
-inline void uConstraint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uConstraint::DTI)->memFree(p_addr);
 }
 
 void uConstraint::initMember() {
@@ -292,10 +287,6 @@ MtObject* uConstraint::MyDTI::newInstance() const {
 
 const MtDTI& uConstraint::cConstraint::getDTI() const {
     return uConstraint::cConstraint::DTI;
-}
-
-inline void uConstraint::cConstraint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uConstraint::cConstraint::DTI)->memFree(p_addr);
 }
 
 void uConstraint::cConstraint::adjust(uModel::Joint* pjnt, uModel* pmod) {

@@ -131,3 +131,19 @@ inline void cCraftQualityData::operator delete[](void* p_addr) {
 inline void* cCraftQualityData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCraftQualityData::DTI)->memAlloc(sz, align, ::cCraftQualityData::DTI.::MtDTI::getID());
 }
+
+inline void* cCraftQualityData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftQualityData::DTI)->memAlloc(sz, align, ::cCraftQualityData::DTI.::MtDTI::getID());
+}
+
+inline void cCraftQualityData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftQualityData::DTI)->memFree(p_addr);
+}
+
+inline void* rCraftQuality::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCraftQuality::DTI)->memAlloc(sz, align, ::rCraftQuality::DTI.::MtDTI::getID());
+}
+
+inline void rCraftQuality::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCraftQuality::DTI)->memFree(p_addr);
+}

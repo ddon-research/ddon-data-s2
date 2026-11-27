@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cZoneListenerLight.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cZoneCategoryLight.h"
 #include "../../XFramework/cZoneContents.h"
@@ -19,14 +17,6 @@
 
 const MtDTI& cZoneListenerLight::getDTI() const {
     return cZoneListenerLight::DTI;
-}
-
-inline void* cZoneListenerLight::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneListenerLight::DTI)->memAlloc(sz, align, cZoneListenerLight::DTI.getID());
-}
-
-inline void cZoneListenerLight::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneListenerLight::DTI)->memFree(p_addr);
 }
 
 cZoneListenerLight::cZoneListenerLight() {

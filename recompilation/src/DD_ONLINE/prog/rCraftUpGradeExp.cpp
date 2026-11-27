@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCraftUpGradeExp.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cCraftUpGradeExpData::getDTI() const {
     return cCraftUpGradeExpData::DTI;
-}
-
-inline void* cCraftUpGradeExpData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCraftUpGradeExpData::DTI)->memAlloc(sz, align, cCraftUpGradeExpData::DTI.getID());
-}
-
-inline void cCraftUpGradeExpData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCraftUpGradeExpData::DTI)->memFree(p_addr);
 }
 
 void cCraftUpGradeExpData::createProperty(MtPropertyList& s) {
@@ -39,14 +29,6 @@ MtObject* cCraftUpGradeExpData::MyDTI::newInstance() const {
 
 const MtDTI& rCraftUpGradeExp::getDTI() const {
     return rCraftUpGradeExp::DTI;
-}
-
-inline void* rCraftUpGradeExp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCraftUpGradeExp::DTI)->memAlloc(sz, align, rCraftUpGradeExp::DTI.getID());
-}
-
-inline void rCraftUpGradeExp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCraftUpGradeExp::DTI)->memFree(p_addr);
 }
 
 bool rCraftUpGradeExp::loadData(MtDataReader& in, cCraftUpGradeExpData* pData) {

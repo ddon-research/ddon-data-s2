@@ -1,7 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <kernel.h>
 #include "sSavedata.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCRC.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
@@ -21,10 +21,6 @@
 
 const MtDTI& sSavedata::getDTI() const {
     return sSavedata::DTI;
-}
-
-inline void sSavedata::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sSavedata::DTI)->memFree(p_addr);
 }
 
 sSavedata::sSavedata() {
@@ -236,12 +232,66 @@ __attribute__((weak)) MtObject* sSavedata::MyDTI::newInstance() const {
 }
 
 sSavedata::cStorageThread::~cStorageThread() {
-    DDON_STUB("sSavedata::cStorageThread::~cStorageThread")
-    /* stub */
+    sceKernelDeleteSema(mEvent);
 }
 
-__attribute__((weak)) void sSavedata::cStorageThread::execute(void* pcontext) {
-    DDON_STUB("sSavedata::cStorageThread::execute")
-    /* stub */
+void sSavedata::cStorageThread::execute(void* pcontext) {
+    for (;;) {
+        sceKernelWaitSema(mEvent, 1, static_cast<SceKernelUseconds*>(nullptr));
+        switch (mTask - 1u) {
+            case 0:
+            {
+                (sSavedata::mpInstance)->sSavedata::processLoad();
+                mTask = 0;
+                break;
+            }
+            case 1:
+            {
+                (sSavedata::mpInstance)->sSavedata::processSave();
+                mTask = 0;
+                break;
+            }
+            case 2:
+            {
+                (sSavedata::mpInstance)->sSavedata::processDelete();
+                mTask = 0;
+                break;
+            }
+            case 3:
+            {
+                (sSavedata::mpInstance)->sSavedata::processListLoad();
+                mTask = 0;
+                break;
+            }
+            case 4:
+            {
+                (sSavedata::mpInstance)->sSavedata::processListSave();
+                mTask = 0;
+                break;
+            }
+            case 5:
+            {
+                (sSavedata::mpInstance)->sSavedata::processListDelete();
+                mTask = 0;
+                break;
+            }
+            case 6:
+            {
+                (sSavedata::mpInstance)->sSavedata::processExistCheck();
+                mTask = 0;
+                break;
+            }
+            case 7:
+            {
+                goto loop_e4fbe7_end;
+            }
+            default:
+            {
+                mTask = 0;
+                break;
+            }
+        }
+    }
+    loop_e4fbe7_end:;
 }
 

@@ -37,10 +37,6 @@ void* uBaseModel::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uBaseModel::DTI)->memAlloc(sz, align, uBaseModel::DTI.mID);
 }
 
-inline void uBaseModel::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uBaseModel::DTI)->memFree(p_addr);
-}
-
 uBaseModel::uBaseModel() {
     DDON_STUB("uBaseModel::uBaseModel")
     /* stub */
@@ -51,9 +47,27 @@ __attribute__((noinline)) uBaseModel::~uBaseModel() {
     /* stub */
 }
 
-__attribute__((weak)) MT_CTSTR uBaseModel::getName() {
-    DDON_STUB("uBaseModel::getName")
-    return {};
+MT_CTSTR uBaseModel::getName() {
+    rModel* v0_0 = mpModel;
+    unsigned int i0_1;
+    int v0_3;
+    if (v0_0 == nullptr) {
+        return this->cUnit::getName();
+    } else {
+        i0_1 = 0;
+        v0_3 = 0;
+    }
+    for (;;) {
+        if (v0_0->mPath[i0_1] == 0) {
+            break;
+        } else {
+            if (v0_0->mPath[i0_1] == 92) {
+                v0_3 = static_cast<int>(i0_1 + 1u);
+            }
+            i0_1 = i0_1 + 1u;
+        }
+    }
+    return &v0_0->mPath[v0_3];
 }
 
 u64 uBaseModel::getSystemUnitGroup() const {

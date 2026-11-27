@@ -138,3 +138,28 @@ inline rFieldAreaMarkerInfo::cMarkerInfo::cMarkerInfo() {
     this->mPos.pad_ = 0.0f;
     this->mStageNo = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rFieldAreaMarkerInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFieldAreaMarkerInfo::DTI)->memAlloc(sz, align, ::rFieldAreaMarkerInfo::DTI.::MtDTI::getID());
+}
+
+inline void rFieldAreaMarkerInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldAreaMarkerInfo::DTI)->memFree(p_addr);
+}
+
+inline rFieldAreaMarkerInfo::rFieldAreaMarkerInfo() {
+    this->mFieldAreaId = 0;
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rFieldAreaMarkerInfo::cMarkerInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rFieldAreaMarkerInfo::cMarkerInfo::DTI)->memAlloc(sz, align, ::rFieldAreaMarkerInfo::cMarkerInfo::DTI.::MtDTI::getID());
+}
+
+inline void rFieldAreaMarkerInfo::cMarkerInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rFieldAreaMarkerInfo::cMarkerInfo::DTI)->memFree(p_addr);
+}

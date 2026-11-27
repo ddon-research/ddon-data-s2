@@ -22,16 +22,8 @@ const MtDTI& cpRotateCtrl::getDTI() const {
     return cpRotateCtrl::DTI;
 }
 
-inline MtAllocator* cpRotateCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpRotateCtrl::DTI);
-}
-
 void* cpRotateCtrl::operator new(size_t sz, u32 align) {
     return cpRotateCtrl::getAllocator()->memAlloc(sz, align, cpRotateCtrl::DTI.getID());
-}
-
-inline void cpRotateCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpRotateCtrl::DTI)->memFree(p_addr);
 }
 
 cpRotateCtrl::cpRotateCtrl() {
@@ -78,14 +70,45 @@ void cpRotateCtrl::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mDisableReset", &mDisableReset, 0u, 0u);
 }
 
-__attribute__((weak)) void cpRotateCtrl::setFinalQuat(const MtQuaternion& FinalQuat, f32 speed) {
-    DDON_STUB("cpRotateCtrl::setFinalQuat")
-    /* stub */
+void cpRotateCtrl::setFinalQuat(const MtQuaternion& FinalQuat, f32 speed) {
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (0.0f > speed) {
+        mInterSpeed = mDefaultInterSpeed;
+    } else {
+        mInterSpeed = speed;
+    }
+    mIsBusy = true;
+    mFinalQuat.x = FinalQuat.x;
+    mFinalQuat.y = FinalQuat.y;
+    mFinalQuat.z = FinalQuat.z;
+    mFinalQuat.w = FinalQuat.w;
+    mLastQuat.x = mpModel->mQuat.x;
+    mLastQuat.y = mpModel->mQuat.y;
+    mLastQuat.z = mpModel->mQuat.z;
+    mLastQuat.w = mpModel->mQuat.w;
 }
 
-__attribute__((weak)) void cpRotateCtrl::setFinalQuatByFrame(const MtQuaternion& FinalQuat, f32 frame) {
-    DDON_STUB("cpRotateCtrl::setFinalQuatByFrame")
-    /* stub */
+void cpRotateCtrl::setFinalQuatByFrame(const MtQuaternion& FinalQuat, f32 frame) {
+    f32 speed = convertFrameToSpeed(FinalQuat, frame);
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (0.0f > speed) {
+        mInterSpeed = mDefaultInterSpeed;
+    } else {
+        mInterSpeed = speed;
+    }
+    mIsBusy = true;
+    mFinalQuat.x = FinalQuat.x;
+    mFinalQuat.y = FinalQuat.y;
+    mFinalQuat.z = FinalQuat.z;
+    mFinalQuat.w = FinalQuat.w;
+    mLastQuat.x = mpModel->mQuat.x;
+    mLastQuat.y = mpModel->mQuat.y;
+    mLastQuat.z = mpModel->mQuat.z;
+    mLastQuat.w = mpModel->mQuat.w;
 }
 
 void cpRotateCtrl::setFinalAngleY(f32 AngleY, f32 speed) {

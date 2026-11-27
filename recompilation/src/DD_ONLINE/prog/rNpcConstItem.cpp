@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rNpcConstItem.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cNpcConstItem::getDTI() const {
     return cNpcConstItem::DTI;
-}
-
-inline void* cNpcConstItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cNpcConstItem::DTI)->memAlloc(sz, align, cNpcConstItem::DTI.getID());
-}
-
-inline void cNpcConstItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cNpcConstItem::DTI)->memFree(p_addr);
 }
 
 cNpcConstItem::~cNpcConstItem() {
@@ -43,14 +33,6 @@ MtObject* cNpcConstItem::MyDTI::newInstance() const {
 
 const MtDTI& rNpcConstItem::getDTI() const {
     return rNpcConstItem::DTI;
-}
-
-inline void* rNpcConstItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNpcConstItem::DTI)->memAlloc(sz, align, rNpcConstItem::DTI.getID());
-}
-
-inline void rNpcConstItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNpcConstItem::DTI)->memFree(p_addr);
 }
 
 bool rNpcConstItem::loadData(MtDataReader& in, cNpcConstItem* pData) {

@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtPrimitive3D.h"
 #include "cBakeModel.h"
@@ -20,24 +19,8 @@ const MtDTI& uCustomSimSoftBody::getDTI() const {
     return uCustomSimSoftBody::DTI;
 }
 
-inline MtAllocator* uCustomSimSoftBody::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uCustomSimSoftBody::DTI);
-}
-
 void* uCustomSimSoftBody::operator new(size_t sz, u32 align) {
     return uCustomSimSoftBody::getAllocator()->memAlloc(sz, align, uCustomSimSoftBody::DTI.getID());
-}
-
-inline void uCustomSimSoftBody::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCustomSimSoftBody::DTI)->memFree(p_addr);
-}
-
-uCustomSimSoftBody::uCustomSimSoftBody() {
-    mBakeRebuildComplete = false;
-    mIsPause = false;
-    mIsDeleteComplete = false;
-    mpBakeModel = nullptr;
-    enableResetRestart();
 }
 
 uCustomSimSoftBody::~uCustomSimSoftBody() {

@@ -5,7 +5,6 @@
 #include "../../../../MT/MtAllocator.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
-#include "../../../../MT/MtMemoryAllocator.h"
 #include "../../../../MT/MtObject.h"
 #include "Pawn.h"
 #include "../../cPacket.h"
@@ -15,14 +14,6 @@
 
 const MtDTI& CDataCharacterSearchParameter::getDTI() const {
     return CDataCharacterSearchParameter::DTI;
-}
-
-inline MtAllocator* CDataCharacterSearchParameter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataCharacterSearchParameter::DTI);
-}
-
-inline void* CDataCharacterSearchParameter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataCharacterSearchParameter::DTI)->memAlloc(sz, align, CDataCharacterSearchParameter::DTI.getID());
 }
 
 __attribute__((weak)) void CDataCharacterSearchParameter::operator delete(void* p_addr) {
@@ -41,14 +32,6 @@ const MtDTI& CDataPartySearchParameter::getDTI() const {
     return CDataPartySearchParameter::DTI;
 }
 
-inline MtAllocator* CDataPartySearchParameter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPartySearchParameter::DTI);
-}
-
-inline void* CDataPartySearchParameter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPartySearchParameter::DTI)->memAlloc(sz, align, CDataPartySearchParameter::DTI.getID());
-}
-
 __attribute__((weak)) void CDataPartySearchParameter::operator delete(void* p_addr) {
     CDataPartySearchParameter::getAllocator()->memFree(p_addr);
 }
@@ -65,14 +48,6 @@ const MtDTI& CDataPawnSearchParameter::getDTI() const {
     return CDataPawnSearchParameter::DTI;
 }
 
-inline MtAllocator* CDataPawnSearchParameter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataPawnSearchParameter::DTI);
-}
-
-inline void* CDataPawnSearchParameter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataPawnSearchParameter::DTI)->memAlloc(sz, align, CDataPawnSearchParameter::DTI.getID());
-}
-
 __attribute__((weak)) void CDataPawnSearchParameter::operator delete(void* p_addr) {
     CDataPawnSearchParameter::getAllocator()->memFree(p_addr);
 }
@@ -87,14 +62,6 @@ MtObject* CDataPawnSearchParameter::MyDTI::newInstance() const {
 
 const MtDTI& CDataQuickMatchSearchParameter::getDTI() const {
     return CDataQuickMatchSearchParameter::DTI;
-}
-
-inline MtAllocator* CDataQuickMatchSearchParameter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(CDataQuickMatchSearchParameter::DTI);
-}
-
-inline void* CDataQuickMatchSearchParameter::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(CDataQuickMatchSearchParameter::DTI)->memAlloc(sz, align, CDataQuickMatchSearchParameter::DTI.getID());
 }
 
 __attribute__((weak)) void CDataQuickMatchSearchParameter::operator delete(void* p_addr) {

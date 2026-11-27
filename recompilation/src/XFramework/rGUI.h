@@ -577,3 +577,15 @@ inline nGUI::FRAMERATE_MODE rGUI::getFramerateMode() const {
 inline void rGUI::setFramerateMode(nGUI::FRAMERATE_MODE mode) {
     this->mFramerateMode = mode;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rGUI::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rGUI::DTI)->memAlloc(sz, align, ::rGUI::DTI.::MtDTI::mID);
+}
+
+inline void rGUI::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rGUI::DTI)->memFree(p_addr);
+}

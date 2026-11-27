@@ -431,3 +431,47 @@ inline CDataDispelResultInfo::CDataDispelResultInfo() {
     this->m_unItemID = 0;
     this->m_unItemNum = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataDispelBaseItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelBaseItem::DTI);
+}
+
+inline MtAllocator* CDataDispelBaseItemData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelBaseItemData::DTI);
+}
+
+inline MtAllocator* CDataDispelCategoryInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelCategoryInfo::DTI);
+}
+
+inline MtAllocator* CDataDispelLotColor::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotColor::DTI);
+}
+
+inline MtAllocator* CDataDispelLotCrest::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotCrest::DTI);
+}
+
+inline MtAllocator* CDataDispelLotData::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotData::DTI);
+}
+
+inline MtAllocator* CDataDispelLotItem::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotItem::DTI);
+}
+
+inline void* CDataDispelLotItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotItem::DTI)->memAlloc(sz, align, ::CDataDispelLotItem::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataDispelLotPlus::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelLotPlus::DTI);
+}
+
+inline MtAllocator* CDataDispelResultInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataDispelResultInfo::DTI);
+}

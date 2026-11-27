@@ -14,6 +14,7 @@ class MtAllocator;
 class MtDTI;
 class cHitInfoAfterCommon;
 class cpOcdCtrl;
+class uEnemy;
 class uHuman;
 
 // Declarations
@@ -53,6 +54,7 @@ public:
 public:
     struct stDamageData
     {
+        friend class uEnemy;
     public:
         stDamageData();
         f32 getOcdAttackAdj(nObjCollision::OCD_ATTACK_ADJ_TYPE type) const;
@@ -118,4 +120,12 @@ inline void* cOcdDamageInfo::operator new(size_t sz, void* p_addr) {
 
 inline void cOcdDamageInfo::setElementFinalType(cOcdDamageInfo::ELEMENT_FINAL_TYPE type) {
     this->mElementFinalType = type;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cOcdDamageInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cOcdDamageInfo::DTI)->memFree(p_addr);
 }

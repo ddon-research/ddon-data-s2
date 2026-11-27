@@ -33,16 +33,8 @@ const MtDTI& uGUIMyRoom::getDTI() const {
     return uGUIMyRoom::DTI;
 }
 
-inline MtAllocator* uGUIMyRoom::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMyRoom::DTI);
-}
-
 void* uGUIMyRoom::operator new(size_t sz, u32 align) {
     return uGUIMyRoom::getAllocator()->memAlloc(sz, align, uGUIMyRoom::DTI.getID());
-}
-
-inline void uGUIMyRoom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMyRoom::DTI)->memFree(p_addr);
 }
 
 uGUIMyRoom::uGUIMyRoom() {
@@ -54,8 +46,32 @@ uGUIMyRoom::~uGUIMyRoom() {
 }
 
 __attribute__((weak)) void uGUIMyRoom::setPawnInfo(MT_CTSTR name, u32 jobId, u32 jobLevel, u32 craftLevel) {
-    DDON_STUB("uGUIMyRoom::setPawnInfo")
-    /* stub */
+    if (isAttachedResource()) {
+        auto* t1 = reinterpret_cast<u8*>(&mPartnerPawnInfo);
+        auto* t2 = *reinterpret_cast<cGUIObjMessage**>(t1);
+        if (t2 != nullptr) {
+            if (name != nullptr) {
+                t2->setMessage(name, static_cast<u32>(strlen(name)));
+            } else {
+                (*reinterpret_cast<void (***)(cGUIObjMessage*)>(t2))[25](t2);
+            }
+        }
+        reinterpret_cast<uGUIBase::cReferenceUIIconJob*>(t1 + 0x18)->set(jobId);
+    
+        MtStringEx<32> t3;
+        t3.format("%u", jobLevel);
+        auto* t4 = *reinterpret_cast<cGUIObjMessage**>(t1 + 0x8);
+        if (t4 != nullptr) {
+            t4->setMessage(reinterpret_cast<MT_CTSTR>(&t3) + sizeof(u32), *reinterpret_cast<const u32*>(&t3));
+        }
+    
+        MtStringEx<32> t5;
+        t5.format("%u", craftLevel);
+        auto* t6 = *reinterpret_cast<cGUIObjMessage**>(t1 + 0x10);
+        if (t6 != nullptr) {
+            t6->setMessage(reinterpret_cast<MT_CTSTR>(&t5) + sizeof(u32), *reinterpret_cast<const u32*>(&t5));
+        }
+    }
 }
 
 __attribute__((weak)) void uGUIMyRoom::setListItems(const nGUIMyRoom::cListItems& listItems) {
@@ -117,14 +133,15 @@ void uGUIMyRoom::onHide() {
     mpINST_Null_main->setExecute(false);
 }
 
-__attribute__((weak)) void uGUIMyRoom::onUpdateShow() {
-    DDON_STUB("uGUIMyRoom::onUpdateShow")
-    /* stub */
-}
-
-inline void uGUIMyRoom::setupRefrences() {
-    mCloseButton.setup(static_cast<uGUIBase*>(this), getInstance(262u, false), static_cast<cReferenceUICloseBtn::CloseFunc>(&::uGUIMyRoom::evCtrlCancel));
-    mButtonGuide.setup(static_cast<uGUIBase*>(this), getInstance(319u, false), 0.0f);
+void uGUIMyRoom::onUpdateShow() {
+    mList.mScrollList.uGUIBase::cScrollList::update(getDeltaTime());
+    u32 i = 0;
+    if (mRefrenceUIArray.mLength != 0) {
+        do {
+            static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i)])->update();
+            i += 1u;
+        } while (i < mRefrenceUIArray.mLength);
+    }
 }
 
 __attribute__((weak)) u32 uGUIMyRoom::evCtrlDecide(cControl::Message* msg) {
@@ -185,14 +202,6 @@ const MtDTI& uGUIMyRoom::cList::cItem::getDTI() const {
     return uGUIMyRoom::cList::cItem::DTI;
 }
 
-inline void* uGUIMyRoom::cList::cItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUIMyRoom::cList::cItem::DTI)->memAlloc(sz, align, uGUIMyRoom::cList::cItem::DTI.getID());
-}
-
-inline void uGUIMyRoom::cList::cItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMyRoom::cList::cItem::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void uGUIMyRoom::cList::cItem::setup(uGUIMyRoom& owner, cGUIInstNull* inst_null_list01) {
     DDON_STUB("uGUIMyRoom::cList::cItem::setup")
     /* stub */
@@ -224,10 +233,6 @@ __attribute__((weak)) MtObject* uGUIMyRoom::cList::cInfo::MyDTI::newInstance() c
 
 const MtDTI& uGUIMyRoomBase::getDTI() const {
     return uGUIMyRoomBase::DTI;
-}
-
-inline void uGUIMyRoomBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMyRoomBase::DTI)->memFree(p_addr);
 }
 
 uGUIMyRoomBase::~uGUIMyRoomBase() {
@@ -297,16 +302,8 @@ const MtDTI& uGUIMyRoomPopup::getDTI() const {
     return uGUIMyRoomPopup::DTI;
 }
 
-inline MtAllocator* uGUIMyRoomPopup::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMyRoomPopup::DTI);
-}
-
 void* uGUIMyRoomPopup::operator new(size_t sz, u32 align) {
     return uGUIMyRoomPopup::getAllocator()->memAlloc(sz, align, uGUIMyRoomPopup::DTI.getID());
-}
-
-inline void uGUIMyRoomPopup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMyRoomPopup::DTI)->memFree(p_addr);
 }
 
 uGUIMyRoomPopup::uGUIMyRoomPopup() {
@@ -389,9 +386,16 @@ void uGUIMyRoomPopup::onHide() {
     mpINST_Null_pop->setExecute(false);
 }
 
-__attribute__((weak)) void uGUIMyRoomPopup::onUpdateShow() {
-    DDON_STUB("uGUIMyRoomPopup::onUpdateShow")
-    /* stub */
+void uGUIMyRoomPopup::onUpdateShow() {
+    mList.mScrollList.uGUIBase::cScrollList::update(getDeltaTime());
+    updateFocus();
+    u32 i = 0;
+    if (mRefrenceUIArray.mLength != 0) {
+        do {
+            static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i)])->update();
+            i += 1u;
+        } while (i < mRefrenceUIArray.mLength);
+    }
 }
 
 __attribute__((weak)) void uGUIMyRoomPopup::setupControls() {
@@ -472,9 +476,25 @@ u32 uGUIMyRoomPopup::evCtrlButtonMouseDecide(cControl::Message* msg) {
     }
 }
 
-__attribute__((weak)) bool uGUIMyRoomPopup::evCtrlScrollList(cControl::Message* msg) {
-    DDON_STUB("uGUIMyRoomPopup::evCtrlScrollList")
-    return {};
+bool uGUIMyRoomPopup::evCtrlScrollList(cControl::Message* msg) {
+    if (msg != nullptr) {
+        if (static_cast<unsigned int>(msg->reason - 37) <= 1) {
+            const s32 click_vol = msg->click_vol;
+            if (click_vol > -1) {
+                const s32 layout_id = mControlMgr.getCurrentPos(1u);
+                if (click_vol != layout_id) {
+                    mControlMgr.setCurrentPos(1u, click_vol);
+                }
+                return true;
+            } else {
+                return true;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return true;
+    }
 }
 
 __attribute__((weak)) void uGUIMyRoomPopup::updateFocus() {
@@ -509,12 +529,6 @@ __attribute__((weak)) void uGUIMyRoomPopup::cList::setup(uGUIMyRoomPopup& owner)
 __attribute__((weak)) void uGUIMyRoomPopup::cList::setItems(const nGUIMyRoom::cPopupListItems& listItems, MT_CTSTR removeString, cGUIControlMgr& controlMgr, u32 controlId, u32 parentId, s32 movePos) {
     DDON_STUB("uGUIMyRoomPopup::cList::setItems")
     /* stub */
-}
-
-inline void uGUIMyRoomPopup::cList::resetDisp() {
-    mScrollList.setupList(mMaskHeight, mMaskHeight, false);
-    mScrollList.setSliderPos(mScrollList.getSliderPos(), true);
-    mScrollList.setListPos(true);
 }
 
 const MtDTI& uGUIMyRoomPopup::cList::cInfo::getDTI() const {
@@ -552,10 +566,6 @@ __attribute__((weak)) MtObject* uGUIMyRoomPopup::cList::cInfo::MyDTI::newInstanc
 
 const MtDTI& uGUIMyRoomPopup::cList::cItem::getDTI() const {
     return uGUIMyRoomPopup::cList::cItem::DTI;
-}
-
-inline void uGUIMyRoomPopup::cList::cItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMyRoomPopup::cList::cItem::DTI)->memFree(p_addr);
 }
 
 uGUIMyRoomPopup::cList::cItem::~cItem() {
@@ -640,9 +650,39 @@ bool uGUIMyRoomPopup::cList::cItem::moveEvent(uGUIMyRoomPopup& owner, uGUIMyRoom
     }
 }
 
-__attribute__((weak)) bool uGUIMyRoomPopup::cList::cItem::onDecide(uGUIMyRoomPopup& owner, uGUIMyRoomPopup::cList& list, uGUIMyRoomPopup::cList::cInfo& info, nGUIMyRoom::cPopupListInputEventHandler* popupListInputEventHandler) {
-    DDON_STUB("uGUIMyRoomPopup::cList::cItem::onDecide")
-    return {};
+bool uGUIMyRoomPopup::cList::cItem::onDecide(uGUIMyRoomPopup& owner, uGUIMyRoomPopup::cList& list, uGUIMyRoomPopup::cList::cInfo& info, nGUIMyRoom::cPopupListInputEventHandler* popupListInputEventHandler) {
+    if (mMode == MODE_PULLDOWN) {
+        if (!mPulldown.mIsForbid && (mPulldown.mState == uGUIBase::cReferenceUIPullDown::STATE_NONE)) {
+            mPulldown.mState = uGUIBase::cReferenceUIPullDown::STATE_OPEN_INIT;
+            const f32 bottom_pos = info.mBottomPos;
+            mDefaultItemSpacing = bottom_pos - info.mTopPos;
+            info.mBottomPos = bottom_pos + mPulldown.mListSizeH;
+            if (mpINST_Null_list03 != nullptr) {
+                mpINST_Null_list03->setPriority(mDefaultNullPriority + 1u);
+            }
+            list.mScrollList.setupList(list.mMaskHeight, list.mMaskHeight, false);
+            list.mScrollList.setSliderPos(list.mScrollList.getSliderPos(), true);
+            list.mScrollList.setListPos(true);
+            return true;
+        }
+    } else {
+        if (mMode == MODE_CHECKBOX) {
+            if (!mCheckbox.mIsForbid) {
+                mCheckbox.mCheck = !mCheckbox.mCheck;
+                mCheckbox._update();
+            }
+            info.mListIndex = mCheckbox.mCheck;
+            if (popupListInputEventHandler != nullptr) {
+                if (list.mScrollList.mpVCtrl != nullptr) {
+                    const u32 item_index = list.mScrollList.mpVCtrl->getCurrentPos();
+                    popupListInputEventHandler->onPopupListInputEventChange(owner, item_index, mCheckbox.mCheck);
+                    return false;
+                }
+                popupListInputEventHandler->onPopupListInputEventChange(owner, 0u, mCheckbox.mCheck);
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void uGUIMyRoomPopup::cList::cItem::show(uGUIMyRoomPopup::cList::cInfo& info) {

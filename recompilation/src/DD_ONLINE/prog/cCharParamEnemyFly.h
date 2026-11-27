@@ -70,3 +70,15 @@ public:
 inline void* cCharParamEnemyFly::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cCharParamEnemyFly::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cCharParamEnemyFly::DTI);
+}
+
+inline void cCharParamEnemyFly::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharParamEnemyFly::DTI)->memFree(p_addr);
+}

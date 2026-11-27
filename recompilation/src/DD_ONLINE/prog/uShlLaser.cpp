@@ -26,10 +26,6 @@ const MtDTI& cShlParamLaser::getDTI() const {
     return cShlParamLaser::DTI;
 }
 
-inline void* cShlParamLaser::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamLaser::DTI)->memAlloc(sz, align, cShlParamLaser::DTI.getID());
-}
-
 inline void cShlParamLaser::operator delete(void* p_addr) {
     ::MtMemoryAllocator::getAllocator(cShlParamLaser::DTI)->memFree(p_addr);
 }
@@ -69,24 +65,6 @@ const MtDTI& uShlLaser::getDTI() const {
     return uShlLaser::DTI;
 }
 
-inline void* uShlLaser::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlLaser::DTI)->memAlloc(sz, align, uShlLaser::DTI.getID());
-}
-
-inline void uShlLaser::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlLaser::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamLaser* uShlLaser::getShlParam() const {
-    return static_cast<const cShlParamLaser*>(mpShlParam2);
-}
-
-inline uShlLaser::uShlLaser() {
-    mHitLandPos = MtVector3::Zero;
-    mFlgHitLand = false;
-    mpEfcHandleLand = nullptr;
-}
-
 void uShlLaser::setup() {
     this->uShlBase::setup();
 }
@@ -117,9 +95,11 @@ void uShlLaser::updateEfcHandle() {
     mpEfcHandleLand = nullptr;
 }
 
-__attribute__((weak)) void uShlLaser::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uShlLaser::applyWorldOffset")
-    /* stub */
+void uShlLaser::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    this->uShlBase::applyWorldOffset(offset, absolute_offset);
+    mHitLandPos.x = offset.x + mHitLandPos.x;
+    mHitLandPos.y = offset.y + mHitLandPos.y;
+    mHitLandPos.z = offset.z + mHitLandPos.z;
 }
 
 inline uShlLaser::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

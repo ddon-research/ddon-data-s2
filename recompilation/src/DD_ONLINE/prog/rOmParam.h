@@ -288,3 +288,20 @@ inline bool rOmParam::saveData(MtDataWriter& out) {
     }
     return true;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/cResource.h"
+
+inline void* rOmParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rOmParam::DTI)->memAlloc(sz, align, ::rOmParam::DTI.::MtDTI::getID());
+}
+
+inline void rOmParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rOmParam::DTI)->memFree(p_addr);
+}
+
+inline rOmParam::rOmParam() {
+    this->::cResource::setAttribute(16u);
+}

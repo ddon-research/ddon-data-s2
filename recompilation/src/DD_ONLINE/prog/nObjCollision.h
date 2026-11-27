@@ -3,9 +3,6 @@
 #include <cstdint>
 #include <cstddef>
 
-// Declarations
-namespace nObjCollision { struct stDmageVecInfo; }
-
 namespace nObjCollision {
     enum BLOW_ATTACK_ADJ_TYPE
     {
@@ -536,6 +533,9 @@ namespace nObjCollision {
         INV_TYPE_NUM = 24,
     };
 }  // namespace nObjCollision
+
+// Declarations
+namespace nObjCollision { struct stDmageVecInfo; }
 
 // Type aliases from DWARF
 using f32 = float;

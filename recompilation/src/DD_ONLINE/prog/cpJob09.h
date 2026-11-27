@@ -562,3 +562,31 @@ inline cpJob09::cJob09ShlInfo::cJob09ShlInfo() {
     this->mpJob09Shl = nullptr;
     this->mJob09ShlType = static_cast<cpJob09::JOB09_SHL_TYPE>(0);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob09::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob09::DTI);
+}
+
+inline void cpJob09::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob09::DTI)->memFree(p_addr);
+}
+
+inline void* cpJob09::cAlchemyEvaluationData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJob09::cAlchemyEvaluationData::DTI)->memAlloc(sz, align, ::cpJob09::cAlchemyEvaluationData::DTI.::MtDTI::getID());
+}
+
+inline void cpJob09::cAlchemyEvaluationData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob09::cAlchemyEvaluationData::DTI)->memFree(p_addr);
+}
+
+inline void* cpJob09::cJob09ShlInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cpJob09::cJob09ShlInfo::DTI)->memAlloc(sz, align, ::cpJob09::cJob09ShlInfo::DTI.::MtDTI::getID());
+}
+
+inline void cpJob09::cJob09ShlInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob09::cJob09ShlInfo::DTI)->memFree(p_addr);
+}

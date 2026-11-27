@@ -351,10 +351,30 @@ inline rSky* uSky::getResource() const {
     return this->mpResource;
 }
 
+inline u32 uSky::getMinute() const {
+    return static_cast<unsigned int>(((static_cast<unsigned long>(this->mTime) * 0x45E7B273) >> 46) + (((((static_cast<unsigned long>(this->mTime) * 0x45E7B273) >> 46) * 0x88888889ul) >> 37) * 0xFFFFFFC4ul));
+}
+
+inline u32 uSky::getSecond() const {
+    return static_cast<unsigned int>(((static_cast<unsigned long>(this->mTime) * 0x10624DD3) >> 38) + (((((static_cast<unsigned long>(this->mTime) * 0x10624DD3) >> 38) * 0x88888889ul) >> 37) * 0xFFFFFFC4ul));
+}
+
 inline f32 uSky::getHeightOffset() const {
     return this->mHeightOffset;
 }
 
 inline void* uSkyFog::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uSky::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSky::DTI)->memFree(p_addr);
+}
+
+inline void uSkyFog::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSkyFog::DTI)->memFree(p_addr);
 }

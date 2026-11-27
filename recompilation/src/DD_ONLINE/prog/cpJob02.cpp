@@ -182,16 +182,8 @@ const MtDTI& cpJob02::getDTI() const {
     return cpJob02::DTI;
 }
 
-inline MtAllocator* cpJob02::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpJob02::DTI);
-}
-
 void* cpJob02::operator new(size_t sz, u32 align) {
     return cpJob02::getAllocator()->memAlloc(sz, align, cpJob02::DTI.getID());
-}
-
-inline void cpJob02::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob02::DTI)->memFree(p_addr);
 }
 
 cpJob02::cpJob02() {
@@ -311,17 +303,23 @@ __attribute__((weak)) void cpJob02::init() {
     /* stub */
 }
 
-__attribute__((weak)) void cpJob02::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpJob02::applyWorldOffset")
-    /* stub */
+void cpJob02::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mWireHitPos.x = offset.x + mWireHitPos.x;
+    mWireHitPos.y = offset.y + mWireHitPos.y;
+    mWireHitPos.z = offset.z + mWireHitPos.z;
+    mLookAtPos.x = offset.x + mLookAtPos.x;
+    mLookAtPos.y = offset.y + mLookAtPos.y;
+    mLookAtPos.z = offset.z + mLookAtPos.z;
 }
 
 __attribute__((weak)) void cpJob02::callbackCatch(cHitInfo* pHitInfo) {
 }
 
 __attribute__((weak)) void cpJob02::callbackCatch_Shl(cShlNotifyInfo* pInfo) {
-    DDON_STUB("cpJob02::callbackCatch_Shl")
-    /* stub */
+    const cAttackParam* pAtkParam = *reinterpret_cast<const cAttackParam* const*>(reinterpret_cast<const char*>(pInfo) + 0x8);
+    uDDOModel* pDfdModel = *reinterpret_cast<uDDOModel* const*>(reinterpret_cast<const char*>(pInfo) + 0x18);
+    MtVector3 hitPos = *reinterpret_cast<const MtVector3*>(reinterpret_cast<const char*>(pInfo) + 0x30);
+    callbackCatch_sub(pAtkParam, pDfdModel, hitPos);
 }
 
 __attribute__((weak)) void cpJob02::callbackDamage(cHitInfo* pHitInfo) {
@@ -583,14 +581,128 @@ bool cpJob02::checkTransCS06(s32 ActNo) {
     }
 }
 
-__attribute__((weak)) void cpJob02::setCS06WaitTimer(nHuman::HM_SKILL_LV skillLv) {
-    DDON_STUB("cpJob02::setCS06WaitTimer")
-    /* stub */
+void cpJob02::setCS06WaitTimer(nHuman::HM_SKILL_LV skillLv) {
+    switch (static_cast<unsigned int>(skillLv - 1)) {
+        case 0:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(59u);
+            break;
+        }
+        case 1:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(60u);
+            break;
+        }
+        case 2:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(61u);
+            break;
+        }
+        case 3:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(62u);
+            break;
+        }
+        case 4:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(63u);
+            break;
+        }
+        case 5:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(64u);
+            break;
+        }
+        case 6:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(65u);
+            break;
+        }
+        case 7:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(66u);
+            break;
+        }
+        case 8:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(67u);
+            break;
+        }
+        case 9:
+        {
+            mCustom06WaitTime = mpHuman->getJobAdjustParam(68u);
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
-__attribute__((weak)) f32 cpJob02::getCS06WaitTimeMax() const {
-    DDON_STUB("cpJob02::getCS06WaitTimeMax")
-    return {};
+f32 cpJob02::getCS06WaitTimeMax() const {
+    nHuman::CUSTOM_SKILL_ENUM skillID = cHumanActId::getCustomSkillId(4110u, nHuman::JOB_ID_02);
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mpHuman) + 13376);
+    if (t0 != 0) {
+        if (static_cast<int>(skillID) <= 20) {
+            if (static_cast<unsigned char>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)) + 255) <= 9) {
+                u32 t1 = nHuman::getJobArrayIndex(static_cast<nHuman::JOB_ENUM>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 40)));
+                nHuman::HM_SKILL_LV SkillLv = static_cast<nHuman::HM_SKILL_LV>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((t0 + (static_cast<unsigned long>(t1) * 80)) + (static_cast<unsigned long>(nHuman::getCustomSkillIdArrayIndex(skillID)) * 4)) + 2376));
+                switch (static_cast<unsigned int>(SkillLv - 1)) {
+                    case 0:
+                    {
+                        return mpHuman->getJobAdjustParam(59u);
+                    }
+                    case 1:
+                    {
+                        return mpHuman->getJobAdjustParam(60u);
+                    }
+                    case 2:
+                    {
+                        return mpHuman->getJobAdjustParam(61u);
+                    }
+                    case 3:
+                    {
+                        return mpHuman->getJobAdjustParam(62u);
+                    }
+                    case 4:
+                    {
+                        return mpHuman->getJobAdjustParam(63u);
+                    }
+                    case 5:
+                    {
+                        return mpHuman->getJobAdjustParam(64u);
+                    }
+                    case 6:
+                    {
+                        return mpHuman->getJobAdjustParam(65u);
+                    }
+                    case 7:
+                    {
+                        return mpHuman->getJobAdjustParam(66u);
+                    }
+                    case 8:
+                    {
+                        return mpHuman->getJobAdjustParam(67u);
+                    }
+                    case 9:
+                    {
+                        return mpHuman->getJobAdjustParam(68u);
+                    }
+                    default:
+                    {
+                        return mpHuman->getJobAdjustParam(59u);
+                    }
+                }
+            } else {
+                return mpHuman->getJobAdjustParam(59u);
+            }
+        } else {
+            return mpHuman->getJobAdjustParam(59u);
+        }
+    } else {
+        return mpHuman->getJobAdjustParam(59u);
+    }
 }
 
 bool cpJob02::checkForceTransCS12() {
@@ -709,10 +821,6 @@ const MtDTI& cpJob02::cPullUpInfo::getDTI() const {
     return cpJob02::cPullUpInfo::DTI;
 }
 
-inline void cpJob02::cPullUpInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob02::cPullUpInfo::DTI)->memFree(p_addr);
-}
-
 inline cpJob02::cPullUpInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cpJob02::cPullUpInfo::MyDTI cpJob02::cPullUpInfo::DTI("cpJob02::cPullUpInfo", &::MtObject::DTI, 128ul, 0u, 0u);
@@ -724,14 +832,6 @@ __attribute__((weak)) MtObject* cpJob02::cPullUpInfo::MyDTI::newInstance() const
 
 const MtDTI& cpJob02::cKaenKoromoInfo::getDTI() const {
     return cpJob02::cKaenKoromoInfo::DTI;
-}
-
-inline void* cpJob02::cKaenKoromoInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpJob02::cKaenKoromoInfo::DTI)->memAlloc(sz, align, cpJob02::cKaenKoromoInfo::DTI.getID());
-}
-
-inline void cpJob02::cKaenKoromoInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpJob02::cKaenKoromoInfo::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cpJob02::cKaenKoromoInfo::update(uHuman& human) {

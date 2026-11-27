@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlShortCharge.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,10 +14,6 @@
 
 const MtDTI& cShlParamShortCharge::getDTI() const {
     return cShlParamShortCharge::DTI;
-}
-
-inline void* cShlParamShortCharge::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamShortCharge::DTI)->memAlloc(sz, align, cShlParamShortCharge::DTI.getID());
 }
 
 inline void cShlParamShortCharge::operator delete(void* p_addr) {
@@ -54,14 +48,6 @@ MtObject* cShlParamShortCharge::MyDTI::newInstance() const {
 
 const MtDTI& uShlShortCharge::getDTI() const {
     return uShlShortCharge::DTI;
-}
-
-inline void* uShlShortCharge::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlShortCharge::DTI)->memAlloc(sz, align, uShlShortCharge::DTI.getID());
-}
-
-inline void uShlShortCharge::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlShortCharge::DTI)->memFree(p_addr);
 }
 
 uShlShortCharge::~uShlShortCharge() {

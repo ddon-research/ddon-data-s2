@@ -1,5 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
+#include <ymath.h>
 #include "cDDMaterialCtrl.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -29,10 +31,13 @@
 #include "sWeatherManager.h"
 #include "../../XFramework/uBaseModel.h"
 #include "../../XFramework/uCoord.h"
+#include "uDDOActorModel.h"
 #include "uDDOModel.h"
 #include "uEnemy.h"
 #include "uHuman.h"
 #include "uJobEquip.h"
+#include "uScrModel.h"
+#include "uSkyWaterModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
@@ -41,16 +46,8 @@ const MtDTI& cDDMaterialCtrl::getDTI() const {
     return cDDMaterialCtrl::DTI;
 }
 
-inline MtAllocator* cDDMaterialCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::DTI);
-}
-
 void* cDDMaterialCtrl::operator new(size_t sz, u32 align) {
     return cDDMaterialCtrl::getAllocator()->memAlloc(sz, align, cDDMaterialCtrl::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::DTI)->memFree(p_addr);
 }
 
 cDDMaterialCtrl::cDDMaterialCtrl() {
@@ -114,11 +111,11 @@ __attribute__((weak)) void cDDMaterialCtrl::setCommonState(nDraw::Material* pmat
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::setCacheNone() {
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mBaseShaderData.mpArray[mBaseShaderMode]) + 32)) == 0) {
-        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mShaderData.mpArray[mShaderMode]) + 32)) == 0) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mEmissionData.mpArray[mEmissionMode]) + 32)) == 0) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mOutlineData.mpArray[mOutlineMode]) + 32)) == 0) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mMaterialData.mpArray[mMaterialMode]) + 32)) == 0) {
+    if (!static_cast<cShaderDataDamage*>(mBaseShaderData.mpArray[mBaseShaderMode])->mIsCacheNone) {
+        if (!static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[mShaderMode])->mIsCacheNone) {
+            if (!static_cast<cShaderDataEmission*>(mEmissionData.mpArray[mEmissionMode])->mIsCacheNone) {
+                if (!static_cast<cShaderDataOutline*>(mOutlineData.mpArray[mOutlineMode])->mIsCacheNone) {
+                    if (!static_cast<cShaderDataMaterial*>(mMaterialData.mpArray[mMaterialMode])->mIsCacheNone) {
                         if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mAnimAdvData.mpArray) + 32)) == 0) {
                             if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mAnimRetData.mpArray) + 32)) == 0) {
                                 if (static_cast<cDDMaterialCtrl::cShaderData*>(*mOldData.mpArray)->getCacheFlag()) {
@@ -161,11 +158,11 @@ __attribute__((weak)) void cDDMaterialCtrl::setCacheNone() {
             mpOwner->mCommandCacheOffNow = true;
         }
     }
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mBaseShaderData.mpArray[mBaseShaderMode]) + 32) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mShaderData.mpArray[mShaderMode]) + 32) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mEmissionData.mpArray[mEmissionMode]) + 32) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mOutlineData.mpArray[mOutlineMode]) + 32) = 0;
-    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mMaterialData.mpArray[mMaterialMode]) + 32) = 0;
+    static_cast<cShaderDataDamage*>(mBaseShaderData.mpArray[mBaseShaderMode])->mIsCacheNone = false;
+    static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[mShaderMode])->mIsCacheNone = false;
+    static_cast<cShaderDataEmission*>(mEmissionData.mpArray[mEmissionMode])->mIsCacheNone = false;
+    static_cast<cShaderDataOutline*>(mOutlineData.mpArray[mOutlineMode])->mIsCacheNone = false;
+    static_cast<cShaderDataMaterial*>(mMaterialData.mpArray[mMaterialMode])->mIsCacheNone = false;
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mAnimAdvData.mpArray) + 32) = 0;
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mAnimRetData.mpArray) + 32) = 0;
     *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*mOldData.mpArray) + 32) = 0;
@@ -179,33 +176,55 @@ __attribute__((weak)) void cDDMaterialCtrl::setBaseShaderMode(u32 mode) {
 static auto ddon_emit_0x01964320 __attribute__((used)) = &cDDMaterialCtrl::getBaseShaderMode;
 
 void cDDMaterialCtrl::setShaderMode(u32 mode) {
-        if (mode <= 7 && mode != mShaderMode) {
+    if (mode <= 7u) {
+        if (mShaderMode != mode) {
             static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[mShaderMode])->end(mpOwner, mode);
             static_cast<cShaderDataStatusAilments*>(mShaderData.mpArray[mode])->init(mpOwner, mpBakeModel, this);
             mShaderMode = mode;
-            copyModeToEquip(1);
+            copyModeToEquip(1u);
         }
+    }
 }
 
 static auto ddon_emit_0x01964330 __attribute__((used)) = &cDDMaterialCtrl::getShaderMode;
 
-__attribute__((weak)) void cDDMaterialCtrl::setEmissionMode(u32 mode) {
-    DDON_STUB("cDDMaterialCtrl::setEmissionMode")
-    /* stub */
+void cDDMaterialCtrl::setEmissionMode(u32 mode) {
+    if (mode <= 1u) {
+        if (mEmissionMode != mode) {
+            static_cast<cShaderDataEmission*>(mEmissionData.mpArray[mEmissionMode])->end(mpOwner, mode);
+            static_cast<cShaderDataEmission*>(mEmissionData.mpArray[mode])->init(mpOwner, mpBakeModel, this);
+            mEmissionMode = mode;
+            getTargetModelArray(static_cast<MtTypedArray<uDDOModel>*>(nullptr));
+        }
+    }
 }
 
 static auto ddon_emit_0x01964340 __attribute__((used)) = &cDDMaterialCtrl::getEmissionMode;
 
-__attribute__((weak)) void cDDMaterialCtrl::setOutlineMode(u32 mode) {
-    DDON_STUB("cDDMaterialCtrl::setOutlineMode")
-    /* stub */
+void cDDMaterialCtrl::setOutlineMode(u32 mode) {
+    if (mode <= 2u) {
+        if (mOutlineMode != mode) {
+            if (mOutlineMode != 2) {
+                static_cast<cShaderDataOutline*>(mOutlineData.mpArray[mOutlineMode])->end(mpOwner, mode);
+                static_cast<cShaderDataOutline*>(mOutlineData.mpArray[mode])->init(mpOwner, mpBakeModel, this);
+                mOutlineMode = mode;
+                getTargetModelArray(static_cast<MtTypedArray<uDDOModel>*>(nullptr));
+            }
+        }
+    }
 }
 
 static auto ddon_emit_0x01964350 __attribute__((used)) = &cDDMaterialCtrl::getOutlineMode;
 
-__attribute__((weak)) void cDDMaterialCtrl::setOutlineModeFromSdl(u32 mode) {
-    DDON_STUB("cDDMaterialCtrl::setOutlineModeFromSdl")
-    /* stub */
+void cDDMaterialCtrl::setOutlineModeFromSdl(u32 mode) {
+    if (mode <= 2u) {
+        if (mOutlineMode != mode) {
+            static_cast<cShaderDataOutline*>(mOutlineData.mpArray[mOutlineMode])->end(mpOwner, mode);
+            static_cast<cShaderDataOutline*>(mOutlineData.mpArray[mode])->init(mpOwner, mpBakeModel, this);
+            mOutlineMode = mode;
+            getTargetModelArray(static_cast<MtTypedArray<uDDOModel>*>(nullptr));
+        }
+    }
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::setMaterialMode(u32 mode) {
@@ -325,14 +344,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataDamage::getDTI() const {
     return cDDMaterialCtrl::cShaderDataDamage::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderDataDamage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamage::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataDamage::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataDamage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamage::DTI)->memFree(p_addr);
-}
-
 bool cDDMaterialCtrl::cShaderDataDamage::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     unsigned long v2_0;
     if (pm != nullptr) {
@@ -418,14 +429,6 @@ const MtDTI& cDDMaterialCtrl::cShaderData::getDTI() const {
     return cDDMaterialCtrl::cShaderData::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderData::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderData::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderData::DTI)->memFree(p_addr);
-}
-
 void cDDMaterialCtrl::cShaderData::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     mpOwner = bm;
     mpBakeModel = pBakeModel;
@@ -439,10 +442,6 @@ bool cDDMaterialCtrl::cShaderData::isEnd() {
 
 bool cDDMaterialCtrl::cShaderData::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     return true;
-}
-
-inline uDDOModel* cDDMaterialCtrl::cShaderData::getOwnerDDO() {
-    return static_cast<uDDOModel*>(mpOwner);
 }
 
 __attribute__((weak)) MtVector3 cDDMaterialCtrl::cShaderData::getDefDiffuseColor(u32 index) {
@@ -485,10 +484,6 @@ MtObject* cDDMaterialCtrl::cShaderData::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataStatusAilments::getDTI() const {
     return cDDMaterialCtrl::cShaderDataStatusAilments::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataStatusAilments::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataStatusAilments::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStatusAilments::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -656,10 +651,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataOutline::getDTI() const {
     return cDDMaterialCtrl::cShaderDataOutline::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataOutline::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataOutline::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutline::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataOutline::setCommonState")
     /* stub */
@@ -726,36 +717,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataEmission::getDTI() const {
     return cDDMaterialCtrl::cShaderDataEmission::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderDataEmission::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmission::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataEmission::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataEmission::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmission::DTI)->memFree(p_addr);
-}
-
-inline cDDMaterialCtrl::cShaderDataEmission::cShaderDataEmission() {
-    mEmissionColor.x = MtVector3::Zero.x;
-    mEmissionColor.y = MtVector3::Zero.y;
-    mEmissionColor.z = MtVector3::Zero.z;
-    mEmissionColor.pad_ = 0.0f;
-    mEmissionBlendColor.x = MtVector3::Zero.x;
-    mEmissionBlendColor.y = MtVector3::Zero.y;
-    mEmissionBlendColor.z = MtVector3::Zero.z;
-    mEmissionBlendColor.pad_ = 0.0f;
-    mEmissionBlendFactor = 0.0f;
-    mEmissionIntensity = 1.0f;
-    mDiffuseColor.x = MtVector3::Zero.x;
-    mDiffuseColor.y = MtVector3::Zero.y;
-    mDiffuseColor.z = MtVector3::Zero.z;
-    mDiffuseColor.pad_ = 0.0f;
-    mDiffuseBlendColor.x = MtVector3::Zero.x;
-    mDiffuseBlendColor.y = MtVector3::Zero.y;
-    mDiffuseBlendColor.z = MtVector3::Zero.z;
-    mDiffuseBlendColor.pad_ = 0.0f;
-    mDiffuseBlendFactor = 0.0f;
-}
-
 void cDDMaterialCtrl::cShaderDataEmission::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mEmissionColor", &mEmissionColor, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mEmissionBlendColor", &mEmissionBlendColor, 0u, 0u);
@@ -776,14 +737,6 @@ MtObject* cDDMaterialCtrl::cShaderDataEmission::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterial::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterial::DTI;
-}
-
-inline void* cDDMaterialCtrl::cShaderDataMaterial::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterial::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterial::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterial::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterial::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterial::end(uBaseModel* bm, u32 next) {
@@ -817,10 +770,6 @@ MtObject* cDDMaterialCtrl::cShaderDataMaterial::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataAnimation::getDTI() const {
     return cDDMaterialCtrl::cShaderDataAnimation::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataAnimation::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataAnimation::DTI)->memFree(p_addr);
 }
 
 cDDMaterialCtrl::cShaderDataAnimation::~cShaderDataAnimation() {
@@ -924,9 +873,15 @@ __attribute__((weak)) MtFloat4 cDDMaterialCtrl::cShaderDataAnimation::getEndValu
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataAnimation::setAnimation(cDDMaterialCtrl::TitleMaterial* pm, s32 AnimIndex, MT_CTSTR AnimName, f32 StartFrame) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataAnimation::setAnimation")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataAnimation::setAnimation(cDDMaterialCtrl::TitleMaterial* pm, s32 AnimIndex, MT_CTSTR AnimName, f32 StartFrame) {
+    if (AnimName != nullptr) {
+        int t0 = strcmp(AnimName, "Death");
+        pm->setAnimation(static_cast<nDraw::Material::SLOT_TYPE>(t0 == 0), AnimIndex);
+        pm->mAnimationState[t0 == 0].frame = StartFrame;
+    } else {
+        pm->setAnimation(nDraw::Material::SLOT_0, AnimIndex);
+        pm->mAnimationState[0].frame = StartFrame;
+    }
 }
 
 inline cDDMaterialCtrl::cShaderDataAnimation::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -942,14 +897,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataAnimation::cAnimData::getDTI() const {
     return cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataAnimation::cAnimData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI)->memFree(p_addr);
-}
-
 inline cDDMaterialCtrl::cShaderDataAnimation::cAnimData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cDDMaterialCtrl::cShaderDataAnimation::cAnimData::MyDTI cDDMaterialCtrl::cShaderDataAnimation::cAnimData::DTI("cDDMaterialCtrl::cShaderDataAnimation::cAnimData", &::MtObject::DTI, 280ul, 0u, 0u);
@@ -960,10 +907,6 @@ MtObject* cDDMaterialCtrl::cShaderDataAnimation::cAnimData::MyDTI::newInstance()
 
 const MtDTI& cDDMaterialCtrl::cShaderDataAnimationToDefault::getDTI() const {
     return cDDMaterialCtrl::cShaderDataAnimationToDefault::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataAnimationToDefault::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataAnimationToDefault::DTI)->memFree(p_addr);
 }
 
 cDDMaterialCtrl::cShaderDataAnimationToDefault::~cShaderDataAnimationToDefault() {
@@ -1007,14 +950,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialOldData::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialOldData::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderDataMaterialOldData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialOldData::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterialOldData::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialOldData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialOldData::DTI)->memFree(p_addr);
-}
-
 cDDMaterialCtrl::cShaderDataMaterialOldData::~cShaderDataMaterialOldData() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialOldData::~cShaderDataMaterialOldData")
     /* stub */
@@ -1052,14 +987,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataDamageDrawOn::getDTI() const {
     return cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderDataDamageDrawOn::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataDamageDrawOn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDamageDrawOn::DTI)->memFree(p_addr);
-}
-
 u32 cDDMaterialCtrl::cShaderDataDamageDrawOn::getMyShaderMode() {
     return 1;
 }
@@ -1074,14 +1001,6 @@ MtObject* cDDMaterialCtrl::cShaderDataDamageDrawOn::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataDead::getDTI() const {
     return cDDMaterialCtrl::cShaderDataDead::DTI;
-}
-
-inline void* cDDMaterialCtrl::cShaderDataDead::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDead::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataDead::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataDead::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataDead::DTI)->memFree(p_addr);
 }
 
 void cDDMaterialCtrl::cShaderDataDead::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -1116,14 +1035,6 @@ MtObject* cDDMaterialCtrl::cShaderDataDead::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataBloodStain::getDTI() const {
     return cDDMaterialCtrl::cShaderDataBloodStain::DTI;
-}
-
-inline void* cDDMaterialCtrl::cShaderDataBloodStain::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataBloodStain::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataBloodStain::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataBloodStain::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataBloodStain::DTI)->memFree(p_addr);
 }
 
 u32 cDDMaterialCtrl::cShaderDataBloodStain::getMyShaderMode() {
@@ -1186,14 +1097,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataHakuryuStone::getDTI() const {
     return cDDMaterialCtrl::cShaderDataHakuryuStone::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderDataHakuryuStone::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataHakuryuStone::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataHakuryuStone::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataHakuryuStone::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataHakuryuStone::DTI)->memFree(p_addr);
-}
-
 void cDDMaterialCtrl::cShaderDataHakuryuStone::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     if (!isSetCommonState(pm, pBaseModel, index)) {
         return;
@@ -1224,14 +1127,6 @@ MtObject* cDDMaterialCtrl::cShaderDataHakuryuStone::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataFireDamage::getDTI() const {
     return cDDMaterialCtrl::cShaderDataFireDamage::DTI;
-}
-
-inline void* cDDMaterialCtrl::cShaderDataFireDamage::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataFireDamage::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataFireDamage::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataFireDamage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataFireDamage::DTI)->memFree(p_addr);
 }
 
 u32 cDDMaterialCtrl::cShaderDataFireDamage::getMyShaderMode() {
@@ -1271,10 +1166,6 @@ MtObject* cDDMaterialCtrl::cShaderDataFireDamage::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataFire::getDTI() const {
     return cDDMaterialCtrl::cShaderDataFire::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataFire::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataFire::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataFire::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -1333,10 +1224,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataFreeze::getDTI() const {
     return cDDMaterialCtrl::cShaderDataFreeze::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataFreeze::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataFreeze::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataFreeze::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataFreeze::init")
     /* stub */
@@ -1392,10 +1279,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataGeneral::getDTI() const {
     return cDDMaterialCtrl::cShaderDataGeneral::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataGeneral::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataGeneral::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataGeneral::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataGeneral::init")
     /* stub */
@@ -1426,10 +1309,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataGeneral::MyDTI::newI
 
 const MtDTI& cDDMaterialCtrl::cShaderDataWetOil::getDTI() const {
     return cDDMaterialCtrl::cShaderDataWetOil::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataWetOil::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataWetOil::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataWetOil::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -1547,10 +1426,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataStone::getDTI() const {
     return cDDMaterialCtrl::cShaderDataStone::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataStone::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataStone::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataStone::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataStone::init")
     /* stub */
@@ -1619,10 +1494,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataGold::getDTI() const {
     return cDDMaterialCtrl::cShaderDataGold::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataGold::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataGold::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataGold::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataGold::init")
     /* stub */
@@ -1665,10 +1536,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataGold::MyDTI::newInst
 
 const MtDTI& cDDMaterialCtrl::cShaderDataErosion::getDTI() const {
     return cDDMaterialCtrl::cShaderDataErosion::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataErosion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataErosion::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataErosion::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -1730,16 +1597,44 @@ inline cDDMaterialCtrl::cShaderDataErosion::MyDTI::MyDTI(MT_CTSTR class_name, Mt
 cDDMaterialCtrl::cShaderDataErosion::MyDTI cDDMaterialCtrl::cShaderDataErosion::DTI("cDDMaterialCtrl::cShaderDataErosion", &::cDDMaterialCtrl::cShaderDataStatusAilments::DTI, 128ul, 0u, 0u);
 
 __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataErosion::MyDTI::newInstance() const {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataErosion::MyDTI::newInstance")
-    return nullptr;
+    cDDMaterialCtrl::cShaderDataErosion* t1 = static_cast<cDDMaterialCtrl::cShaderDataErosion*>(
+        MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataErosion::DTI)->memAlloc(
+            sizeof(cDDMaterialCtrl::cShaderDataErosion), 16u, cDDMaterialCtrl::cShaderDataErosion::DTI.getID()));
+    new (t1) cDDMaterialCtrl::cShaderData();
+    new (t1) cDDMaterialCtrl::cShaderDataStatusAilments(*static_cast<cDDMaterialCtrl::cShaderDataStatusAilments*>(t1));
+    t1->mApplicateA = 0.0f;
+    t1->mFactorN = 0.0f;
+    t1->mFactorS = 0.0f;
+    t1->mUVOffset = MtFloat2::One;
+    t1->mUVScale = 1.0f;
+    t1->mResetFactorS = 0.0f;
+    t1->mpTexture = reinterpret_cast<sEffectExt::cStatusAilmentsTexture*>(reinterpret_cast<char*>(sEffect::getInstance()) + 0x440);
+    t1->mIsEnd = false;
+    new (t1) cDDMaterialCtrl::cShaderDataErosion(*t1);
+    MtFloat2 t2 = MtFloat2::Zero;
+    t1->mApplicateA = 0.5f;
+    t1->mFactorN = 0.5f;
+    t1->mFactorS = 0.5f;
+    t1->mUVOffset = t2;
+    t1->mUVScale = 1.5f;
+    t1->mpTexture = reinterpret_cast<sEffectExt::cStatusAilmentsTexture*>(reinterpret_cast<char*>(sEffect::getInstance()) + 0x4b8);
+    t1->mLevel = -1;
+    t1->USE_FRAME = 30.0f;
+    t1->mPassageFrame = 0.0f;
+    t1->mApplicateATbl[0] = 0.4f;
+    t1->mFactorNTbl[0] = 0.4f;
+    t1->mFactorSTbl[0] = 0.1f;
+    t1->mApplicateATbl[1] = 0.6f;
+    t1->mApplicateATbl[2] = 0.8f;
+    t1->mFactorNTbl[1] = 0.6f;
+    t1->mFactorNTbl[2] = 0.8f;
+    t1->mFactorSTbl[1] = 0.1f;
+    t1->mFactorSTbl[2] = 0.1f;
+    return t1;
 }
 
 const MtDTI& cDDMaterialCtrl::cShaderDataOutlineOn::getDTI() const {
     return cDDMaterialCtrl::cShaderDataOutlineOn::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataOutlineOn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataOutlineOn::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataOutlineOn::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
@@ -1758,14 +1653,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataOutlineOn::MyDTI::ne
 
 const MtDTI& cDDMaterialCtrl::cShaderDataEmissionEye::getDTI() const {
     return cDDMaterialCtrl::cShaderDataEmissionEye::DTI;
-}
-
-inline void* cDDMaterialCtrl::cShaderDataEmissionEye::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmissionEye::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataEmissionEye::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataEmissionEye::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataEmissionEye::DTI)->memFree(p_addr);
 }
 
 bool cDDMaterialCtrl::cShaderDataEmissionEye::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
@@ -1791,14 +1678,6 @@ MtObject* cDDMaterialCtrl::cShaderDataEmissionEye::MyDTI::newInstance() const {
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI;
-}
-
-inline void* cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cDDMaterialCtrl::cShaderDataMaterialToDefaultColor::~cShaderDataMaterialToDefaultColor() {
@@ -1904,10 +1783,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialColor::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialColor::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialColor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialColor::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialColor::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialColor::setCommonState")
     /* stub */
@@ -1942,21 +1817,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialDead::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialDead::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderDataMaterialDead::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialDead::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterialDead::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialDead::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialDead::DTI)->memFree(p_addr);
-}
-
-inline cDDMaterialCtrl::cShaderDataMaterialDead::cShaderDataMaterialDead() {
-    mSubColor.x = MtVector4::Zero.x;
-    mSubColor.y = MtVector4::Zero.y;
-    mSubColor.z = MtVector4::Zero.z;
-    mSubColor.pad_ = 0.0f;
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialDead::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialDead::init")
     /* stub */
@@ -1979,10 +1839,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantFire::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchantFire::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantFire::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantFire::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantFire::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantFire::setCommonState")
     /* stub */
@@ -1999,10 +1855,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialEnchantFire:
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchant::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchant::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchant::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchant::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchant::update() {
@@ -2036,10 +1888,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantIce::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchantIce::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantIce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantIce::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantIce::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantIce::setCommonState")
     /* stub */
@@ -2056,10 +1904,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialEnchantIce::
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantThunder::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
@@ -2080,10 +1924,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantHoly::setCommonState")
     /* stub */
@@ -2100,10 +1940,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialEnchantHoly:
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantDark::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchantDark::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantDark::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantDark::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialEnchantDark::setCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
@@ -2124,22 +1960,50 @@ const MtDTI& cDDMaterialCtrl::cShaderDataWaterColor::getDTI() const {
     return cDDMaterialCtrl::cShaderDataWaterColor::DTI;
 }
 
-inline void* cDDMaterialCtrl::cShaderDataWaterColor::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataWaterColor::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataWaterColor::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataWaterColor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataWaterColor::DTI)->memFree(p_addr);
-}
-
 cDDMaterialCtrl::cShaderDataWaterColor::~cShaderDataWaterColor() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataWaterColor::~cShaderDataWaterColor")
     /* stub */
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataWaterColor::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataWaterColor::init")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataWaterColor::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
+    mpOwner = bm;
+    mpBakeModel = pBakeModel;
+    mpMaterialCtrl = pMaterialCtrl;
+    mIsCacheNone = true;
+    if (mpDefWaterColorBottom == nullptr) {
+        if (mpDefReflectiveColor == nullptr) {
+            if (mpDefWaterColorTop == nullptr) {
+                const MtDTI& t0 = bm->getDTI();
+                MT_CTSTR v0_1 = uSkyWaterModel::DTI.mName;
+                for (const MtDTI* v0_0 = &t0;;) {
+                    if (v0_1 == v0_0->mName) {
+                        createDefaultColors();
+                        return;
+                    } else {
+                        if (v0_0->mpParent != nullptr) {
+                            v0_0 = v0_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+                const MtDTI& t1 = getOwner()->getDTI();
+                MT_CTSTR v2_1 = uScrBaseModel::DTI.mName;
+                for (const MtDTI* v2_0 = &t1;;) {
+                    if (v2_1 == v2_0->mName) {
+                        createDefaultColors();
+                        return;
+                    } else {
+                        if (v2_0->mpParent != nullptr) {
+                            v2_0 = v2_0->mpParent;
+                        } else {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 bool cDDMaterialCtrl::cShaderDataWaterColor::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
@@ -2183,10 +2047,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataConstantMaterialColor::getDTI() const {
     return cDDMaterialCtrl::cShaderDataConstantMaterialColor::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataConstantMaterialColor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataConstantMaterialColor::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool cDDMaterialCtrl::cShaderDataConstantMaterialColor::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {
     DDON_STUB("cDDMaterialCtrl::cShaderDataConstantMaterialColor::isSetCommonState")
     return {};
@@ -2203,10 +2063,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataConstantMaterialColo
 
 const MtDTI& cDDMaterialCtrl::cShaderDataSdl::getDTI() const {
     return cDDMaterialCtrl::cShaderDataSdl::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataSdl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataSdl::DTI)->memFree(p_addr);
 }
 
 cDDMaterialCtrl::cShaderDataSdl::~cShaderDataSdl() {
@@ -2304,10 +2160,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataSdl::MyDTI::newInsta
 
 const MtDTI& cDDMaterialCtrl::cShaderDataSdlData::getDTI() const {
     return cDDMaterialCtrl::cShaderDataSdlData::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataSdlData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataSdlData::DTI)->memFree(p_addr);
 }
 
 static auto ddon_emit_0x019646a0 __attribute__((used)) = &cDDMaterialCtrl::cShaderDataSdlData::getTargetMaterialId;
@@ -2468,10 +2320,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::getDTI() cons
     return cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::DTI)->memFree(p_addr);
-}
-
 cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::cShaderDataMaterialEnchantCraftFire() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraftFire::cShaderDataMaterialEnchantCraftFire")
     /* stub */
@@ -2488,10 +2336,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialEnchantCraft
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::DTI)->memFree(p_addr);
 }
 
 void cDDMaterialCtrl::cShaderDataMaterialEnchantCraft::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -2536,10 +2380,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::getDTI() const
     return cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::DTI)->memFree(p_addr);
-}
-
 cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::cShaderDataMaterialEnchantCraftIce() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraftIce::cShaderDataMaterialEnchantCraftIce")
     /* stub */
@@ -2556,10 +2396,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialEnchantCraft
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::DTI)->memFree(p_addr);
 }
 
 cDDMaterialCtrl::cShaderDataMaterialEnchantCraftThunder::cShaderDataMaterialEnchantCraftThunder() {
@@ -2580,10 +2416,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::getDTI() cons
     return cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::DTI)->memFree(p_addr);
-}
-
 cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::cShaderDataMaterialEnchantCraftHoly() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialEnchantCraftHoly::cShaderDataMaterialEnchantCraftHoly")
     /* stub */
@@ -2600,10 +2432,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialEnchantCraft
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::DTI)->memFree(p_addr);
 }
 
 cDDMaterialCtrl::cShaderDataMaterialEnchantCraftDark::cShaderDataMaterialEnchantCraftDark() {
@@ -2627,10 +2455,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialEnchantCraft
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialAlchemyShell::update() {
@@ -2665,10 +2489,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::getDTI() cons
     return cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::DTI)->memFree(p_addr);
-}
-
 cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::cShaderDataMaterialElementEnemyFire() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemyFire::cShaderDataMaterialElementEnemyFire")
     /* stub */
@@ -2685,26 +2505,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialElementEnemy
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemy::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI;
-}
-
-inline void* cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI)->memAlloc(sz, align, cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI.getID());
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemy::DTI)->memFree(p_addr);
-}
-
-inline cDDMaterialCtrl::cShaderDataMaterialElementEnemy::cShaderDataMaterialElementEnemy() {
-    mEmissionColor.x = MtVector3::Zero.x;
-    mEmissionColor.y = MtVector3::Zero.y;
-    mEmissionColor.z = MtVector3::Zero.z;
-    mEmissionColor.pad_ = 0.0f;
-    mStartEmissionIntensity = 10.0f;
-    mEndEmissionIntensity = 40.0f;
-    mPastFrame = 0.0f;
-    mAnimationFrame = 20.0f;
-    mInterpolateFrame = 15.0f;
 }
 
 void cDDMaterialCtrl::cShaderDataMaterialElementEnemy::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
@@ -2745,10 +2545,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::getDTI() const
     return cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::DTI)->memFree(p_addr);
-}
-
 cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::cShaderDataMaterialElementEnemyIce() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemyIce::cShaderDataMaterialElementEnemyIce")
     /* stub */
@@ -2765,10 +2561,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialElementEnemy
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::DTI)->memFree(p_addr);
 }
 
 cDDMaterialCtrl::cShaderDataMaterialElementEnemyThunder::cShaderDataMaterialElementEnemyThunder() {
@@ -2789,10 +2581,6 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::getDTI() cons
     return cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::DTI)->memFree(p_addr);
-}
-
 cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::cShaderDataMaterialElementEnemyHoly() {
     DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialElementEnemyHoly::cShaderDataMaterialElementEnemyHoly")
     /* stub */
@@ -2809,10 +2597,6 @@ __attribute__((weak)) MtObject* cDDMaterialCtrl::cShaderDataMaterialElementEnemy
 
 const MtDTI& cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::DTI;
-}
-
-inline void cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::DTI)->memFree(p_addr);
 }
 
 cDDMaterialCtrl::cShaderDataMaterialElementEnemyDark::cShaderDataMaterialElementEnemyDark() {
@@ -2833,19 +2617,21 @@ const MtDTI& cDDMaterialCtrl::cShaderDataMaterialOmBlink::getDTI() const {
     return cDDMaterialCtrl::cShaderDataMaterialOmBlink::DTI;
 }
 
-inline void cDDMaterialCtrl::cShaderDataMaterialOmBlink::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cDDMaterialCtrl::cShaderDataMaterialOmBlink::DTI)->memFree(p_addr);
-}
-
 void cDDMaterialCtrl::cShaderDataMaterialOmBlink::init(uBaseModel* bm, cBakeModel* pBakeModel, cDDMaterialCtrl* pMaterialCtrl) {
     mPassageFrame = 0.0f;
     mLoopFrame = sOmManager::getInstance()->getDiffuseTime() + sOmManager::getInstance()->getDiffuseTime();
     mIntensity = 1.0f;
 }
 
-__attribute__((weak)) void cDDMaterialCtrl::cShaderDataMaterialOmBlink::update() {
-    DDON_STUB("cDDMaterialCtrl::cShaderDataMaterialOmBlink::update")
-    /* stub */
+void cDDMaterialCtrl::cShaderDataMaterialOmBlink::update() {
+    if ((mPassageFrame * (360.0f / mLoopFrame)) >= 0.0f) {
+        float t0 = _FSin(0.017453294f * ((mPassageFrame * (360.0f / mLoopFrame)) - (360.0f * static_cast<float>(static_cast<int>((mPassageFrame * (360.0f / mLoopFrame)) / 360.0f)))), 0u, 0);
+        mIntensity = nDDOMath::lerp(sOmManager::getInstance()->getDiffuseIntensityMin(), sOmManager::getInstance()->getDiffuseIntensityMax(), __builtin_fabsf(t0));
+    } else {
+        float t0 = _FSin(0.017453294f * (360.0f + ((mPassageFrame * (360.0f / mLoopFrame)) - (360.0f * static_cast<float>(static_cast<int>((mPassageFrame * (360.0f / mLoopFrame)) / 360.0f))))), 0u, 0);
+        mIntensity = nDDOMath::lerp(sOmManager::getInstance()->getDiffuseIntensityMin(), sOmManager::getInstance()->getDiffuseIntensityMax(), __builtin_fabsf(t0));
+    }
+    mPassageFrame = sMain::getInstance()->mDeltaTime + mPassageFrame;
 }
 
 bool cDDMaterialCtrl::cShaderDataMaterialOmBlink::isSetCommonState(cDDMaterialCtrl::TitleMaterial* pm, rModel* pBaseModel, const u32 index) {

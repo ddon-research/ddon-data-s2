@@ -273,6 +273,10 @@ inline sControlManager* sControlManager::getInstance() {
     return ::sControlManager::mpInstance;
 }
 
+inline u32 sControlManager::getUnitNum() {
+    return this->mRefArray.::MtArray::length();
+}
+
 inline void* sControlManager::cDispPriorityData::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -281,4 +285,24 @@ inline sControlManager::cDispPriorityData::cDispPriorityData() {
     this->mPriorityType = 0;
     this->mCameraLengthType = 0;
     this->mPriority = 0xFFFF;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sControlManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sControlManager::DTI);
+}
+
+inline void sControlManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sControlManager::DTI)->memFree(p_addr);
+}
+
+inline void* sControlManager::cDispPriorityData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sControlManager::cDispPriorityData::DTI)->memAlloc(sz, align, ::sControlManager::cDispPriorityData::DTI.::MtDTI::getID());
+}
+
+inline void sControlManager::cDispPriorityData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sControlManager::cDispPriorityData::DTI)->memFree(p_addr);
 }

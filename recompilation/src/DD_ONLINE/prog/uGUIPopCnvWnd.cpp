@@ -42,16 +42,8 @@ const MtDTI& uGUIPopCnvWnd::getDTI() const {
     return uGUIPopCnvWnd::DTI;
 }
 
-inline MtAllocator* uGUIPopCnvWnd::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopCnvWnd::DTI);
-}
-
 void* uGUIPopCnvWnd::operator new(size_t sz, u32 align) {
     return uGUIPopCnvWnd::getAllocator()->memAlloc(sz, align, uGUIPopCnvWnd::DTI.getID());
-}
-
-inline void uGUIPopCnvWnd::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopCnvWnd::DTI)->memFree(p_addr);
 }
 
 uGUIPopCnvWnd::~uGUIPopCnvWnd() {
@@ -89,9 +81,18 @@ void uGUIPopCnvWnd::adjustScale() {
     mInst.null_all->setScaleY(scale);
 }
 
-__attribute__((weak)) void uGUIPopCnvWnd::applyCandidateList(const nInputText::CandidateList& candidateList, const MtRectF& compositionRect, bool isDispCompositionRectSide) {
-    DDON_STUB("uGUIPopCnvWnd::applyCandidateList")
-    /* stub */
+void uGUIPopCnvWnd::applyCandidateList(const nInputText::CandidateList& candidateList, const MtRectF& compositionRect, bool isDispCompositionRectSide) {
+    if (candidateList.getCandidateListCount() == 0) {
+        return;
+    }
+    mCandidateList = candidateList;
+    mCompositionRect.l = compositionRect.l;
+    mCompositionRect.t = compositionRect.t;
+    mCompositionRect.r = compositionRect.r;
+    mCompositionRect.b = compositionRect.b;
+    mIsDispCompositionRectSide = isDispCompositionRectSide;
+    mIsVisible = true;
+    replacePriority(14u);
 }
 
 void uGUIPopCnvWnd::updateInit() {

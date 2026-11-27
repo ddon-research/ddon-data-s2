@@ -20,20 +20,8 @@ const MtDTI& rTutorialList::getDTI() const {
     return rTutorialList::DTI;
 }
 
-inline void* rTutorialList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTutorialList::DTI)->memAlloc(sz, align, rTutorialList::DTI.getID());
-}
-
-inline void rTutorialList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTutorialList::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rTutorialList::getExt() const {
     return "tlt";
-}
-
-inline rTutorialList::rTutorialList() {
-    setAttribute(22u);
 }
 
 rTutorialList::~rTutorialList() {
@@ -112,14 +100,6 @@ MtObject* rTutorialList::MyDTI::newInstance() const {
 
 const MtDTI& rTutorialList::cTutorialNode::getDTI() const {
     return rTutorialList::cTutorialNode::DTI;
-}
-
-void* rTutorialList::cTutorialNode::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTutorialList::cTutorialNode::DTI)->memAlloc(sz, align, rTutorialList::cTutorialNode::DTI.getID());
-}
-
-inline void rTutorialList::cTutorialNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTutorialList::cTutorialNode::DTI)->memFree(p_addr);
 }
 
 rTutorialList::cTutorialNode::~cTutorialNode() {

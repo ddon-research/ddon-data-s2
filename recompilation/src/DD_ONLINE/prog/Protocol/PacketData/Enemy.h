@@ -15,11 +15,6 @@ class MtDTI;
 class MtObject;
 class MtString;
 
-// Declarations
-class CDataNamedEnemyParamClient;
-class CDataTraningRoomEnemyHeader;
-namespace nEnemy { struct stRegionBreakActList; }
-
 namespace nEnemy {
     enum E_ENEMY_TARGET_TYPE
     {
@@ -29,6 +24,11 @@ namespace nEnemy {
         ENEMY_TARGET_TYPE_MAX = 8,
     };
 }  // namespace nEnemy
+
+// Declarations
+class CDataNamedEnemyParamClient;
+class CDataTraningRoomEnemyHeader;
+namespace nEnemy { struct stRegionBreakActList; }
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -183,4 +183,15 @@ inline void* CDataTraningRoomEnemyHeader::operator new(size_t sz, void* p_addr) 
 
 inline CDataTraningRoomEnemyHeader::CDataTraningRoomEnemyHeader() {
     this->m_unID = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataNamedEnemyParamClient::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataNamedEnemyParamClient::DTI);
+}
+
+inline MtAllocator* CDataTraningRoomEnemyHeader::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataTraningRoomEnemyHeader::DTI);
 }

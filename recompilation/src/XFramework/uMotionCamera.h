@@ -129,3 +129,15 @@ inline void* uMotionCamera::operator new(size_t sz, void* p_addr) {
 inline rCameraList* uMotionCamera::getCameraList() {
     return this->mpCameraList;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* uMotionCamera::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uMotionCamera::DTI)->memAlloc(sz, align, ::uMotionCamera::DTI.::MtDTI::mID);
+}
+
+inline void uMotionCamera::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uMotionCamera::DTI)->memFree(p_addr);
+}

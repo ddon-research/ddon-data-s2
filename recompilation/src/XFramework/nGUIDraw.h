@@ -207,3 +207,11 @@ namespace nGUI {
 inline void* nGUI::Draw::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void nGUI::Draw::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nGUI::Draw::DTI)->memFree(p_addr);
+}

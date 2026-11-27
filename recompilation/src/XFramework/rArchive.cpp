@@ -24,10 +24,6 @@ const MtDTI& rArchive::getDTI() const {
     return rArchive::DTI;
 }
 
-inline void* rArchive::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rArchive::DTI)->memAlloc(sz, align, rArchive::DTI.mID);
-}
-
 __attribute__((weak)) bool rArchive::load(MtStream& in) {
     ARCHIVE_HDR hdr;
     if (in.read(&hdr, sizeof(hdr)) != sizeof(hdr)) {

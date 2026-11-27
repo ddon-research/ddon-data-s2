@@ -129,3 +129,19 @@ inline void cCharacterEditModelPalette::operator delete[](void* p_addr) {
 inline void* cCharacterEditModelPalette::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCharacterEditModelPalette::DTI)->memAlloc(sz, align, ::cCharacterEditModelPalette::DTI.::MtDTI::getID());
 }
+
+inline void* cCharacterEditModelPalette::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCharacterEditModelPalette::DTI)->memAlloc(sz, align, ::cCharacterEditModelPalette::DTI.::MtDTI::getID());
+}
+
+inline void cCharacterEditModelPalette::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCharacterEditModelPalette::DTI)->memFree(p_addr);
+}
+
+inline void* rCharacterEditModelPalette::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCharacterEditModelPalette::DTI)->memAlloc(sz, align, ::rCharacterEditModelPalette::DTI.::MtDTI::getID());
+}
+
+inline void rCharacterEditModelPalette::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCharacterEditModelPalette::DTI)->memFree(p_addr);
+}

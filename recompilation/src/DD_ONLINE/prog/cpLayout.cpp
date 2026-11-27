@@ -26,16 +26,8 @@ const MtDTI& cpLayout::getDTI() const {
     return cpLayout::DTI;
 }
 
-inline MtAllocator* cpLayout::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpLayout::DTI);
-}
-
 void* cpLayout::operator new(size_t sz, u32 align) {
     return cpLayout::getAllocator()->memAlloc(sz, align, cpLayout::DTI.getID());
-}
-
-inline void cpLayout::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpLayout::DTI)->memFree(p_addr);
 }
 
 cpLayout::cpLayout() {

@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rAcquirement.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cUIObject.h"
 #include "../../generated/shared/nDDOIO.h"
@@ -23,20 +21,6 @@ const MtDTI& rAcquirement::cSkillLevelData::getDTI() const {
     return rAcquirement::cSkillLevelData::DTI;
 }
 
-void* rAcquirement::cSkillLevelData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cSkillLevelData::DTI)->memAlloc(sz, align, ::rAcquirement::cSkillLevelData::DTI.getID());
-}
-
-inline void rAcquirement::cSkillLevelData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::cSkillLevelData::DTI)->memFree(p_addr);
-}
-
-void rAcquirement::cSkillLevelData::load(MtDataReader& r) {
-    mMsgExpIndex = r.readU16();
-    mNeedLv = r.readU16();
-    mNeedJp = r.readU32();
-}
-
 inline rAcquirement::cSkillLevelData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rAcquirement::cSkillLevelData::MyDTI rAcquirement::cSkillLevelData::DTI("rAcquirement::cSkillLevelData", &::cUIResource::DTI, 16ul, 0u, 0u);
@@ -47,14 +31,6 @@ MtObject* rAcquirement::cSkillLevelData::MyDTI::newInstance() const {
 
 const MtDTI& rAcquirement::cCustomSkillData::getDTI() const {
     return rAcquirement::cCustomSkillData::DTI;
-}
-
-inline void* rAcquirement::cCustomSkillData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cCustomSkillData::DTI.getID());
-}
-
-inline void rAcquirement::cCustomSkillData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::cCustomSkillData::DTI)->memFree(p_addr);
 }
 
 inline rAcquirement::cCustomSkillData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -69,14 +45,6 @@ const MtDTI& rAcquirement::cNormalSkillData::getDTI() const {
     return rAcquirement::cNormalSkillData::DTI;
 }
 
-inline void* rAcquirement::cNormalSkillData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cNormalSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::cNormalSkillData::DTI.getID());
-}
-
-inline void rAcquirement::cNormalSkillData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::cNormalSkillData::DTI)->memFree(p_addr);
-}
-
 inline rAcquirement::cNormalSkillData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rAcquirement::cNormalSkillData::MyDTI rAcquirement::cNormalSkillData::DTI("rAcquirement::cNormalSkillData", &::cUIResource::DTI, 24ul, 0u, 0u);
@@ -87,19 +55,6 @@ MtObject* rAcquirement::cNormalSkillData::MyDTI::newInstance() const {
 
 const MtDTI& rAcquirement::cAbilityLevelData::getDTI() const {
     return rAcquirement::cAbilityLevelData::DTI;
-}
-
-void* rAcquirement::cAbilityLevelData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityLevelData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityLevelData::DTI.getID());
-}
-
-inline void rAcquirement::cAbilityLevelData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityLevelData::DTI)->memFree(p_addr);
-}
-
-void rAcquirement::cAbilityLevelData::load(MtDataReader& r) {
-    mNeedLv = r.readU16();
-    mNeedJp = r.readU32();
 }
 
 inline rAcquirement::cAbilityLevelData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -114,14 +69,6 @@ const MtDTI& rAcquirement::cAbilityData::getDTI() const {
     return rAcquirement::cAbilityData::DTI;
 }
 
-inline void* rAcquirement::cAbilityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityData::DTI.getID());
-}
-
-inline void rAcquirement::cAbilityData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityData::DTI)->memFree(p_addr);
-}
-
 inline rAcquirement::cAbilityData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rAcquirement::cAbilityData::MyDTI rAcquirement::cAbilityData::DTI("rAcquirement::cAbilityData", &::cUIResource::DTI, 24ul, 0u, 0u);
@@ -134,14 +81,6 @@ const MtDTI& rAcquirement::cAbilityAddData::getDTI() const {
     return rAcquirement::cAbilityAddData::DTI;
 }
 
-inline void* rAcquirement::cAbilityAddData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::cAbilityAddData::DTI.getID());
-}
-
-inline void rAcquirement::cAbilityAddData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::cAbilityAddData::DTI)->memFree(p_addr);
-}
-
 inline rAcquirement::cAbilityAddData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 rAcquirement::cAbilityAddData::MyDTI rAcquirement::cAbilityAddData::DTI("rAcquirement::cAbilityAddData", &::cUIResource::DTI, 48ul, 0u, 0u);
@@ -152,14 +91,6 @@ MtObject* rAcquirement::cAbilityAddData::MyDTI::newInstance() const {
 
 const MtDTI& rAcquirement::rCustomSkillData::getDTI() const {
     return rAcquirement::rCustomSkillData::DTI;
-}
-
-inline void* rAcquirement::rCustomSkillData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rCustomSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::rCustomSkillData::DTI.getID());
-}
-
-inline void rAcquirement::rCustomSkillData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::rCustomSkillData::DTI)->memFree(p_addr);
 }
 
 bool rAcquirement::rCustomSkillData::loadData(MtDataReader& r, rAcquirement::cCustomSkillData* pData) {
@@ -188,14 +119,6 @@ MtObject* rAcquirement::rCustomSkillData::MyDTI::newInstance() const {
 
 const MtDTI& rAcquirement::rNormalSkillData::getDTI() const {
     return rAcquirement::rNormalSkillData::DTI;
-}
-
-inline void* rAcquirement::rNormalSkillData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rNormalSkillData::DTI)->memAlloc(sz, align, ::rAcquirement::rNormalSkillData::DTI.getID());
-}
-
-inline void rAcquirement::rNormalSkillData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::rNormalSkillData::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rAcquirement::rNormalSkillData::loadData(MtDataReader& r, rAcquirement::cNormalSkillData* pData) {
@@ -231,14 +154,6 @@ const MtDTI& rAcquirement::rAbilityData::getDTI() const {
     return rAcquirement::rAbilityData::DTI;
 }
 
-inline void* rAcquirement::rAbilityData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityData::DTI)->memAlloc(sz, align, ::rAcquirement::rAbilityData::DTI.getID());
-}
-
-inline void rAcquirement::rAbilityData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityData::DTI)->memFree(p_addr);
-}
-
 bool rAcquirement::rAbilityData::loadData(MtDataReader& r, rAcquirement::cAbilityData* pData) {
     ::nDDOIO::readData(r, pData->mId);
     ::nDDOIO::readData(r, pData->mMsgNameIndex);
@@ -268,14 +183,6 @@ MtObject* rAcquirement::rAbilityData::MyDTI::newInstance() const {
 
 const MtDTI& rAcquirement::rAbilityAddData::getDTI() const {
     return rAcquirement::rAbilityAddData::DTI;
-}
-
-inline void* rAcquirement::rAbilityAddData::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityAddData::DTI)->memAlloc(sz, align, ::rAcquirement::rAbilityAddData::DTI.getID());
-}
-
-inline void rAcquirement::rAbilityAddData::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::rAcquirement::rAbilityAddData::DTI)->memFree(p_addr);
 }
 
 bool rAcquirement::rAbilityAddData::loadData(MtDataReader& r, rAcquirement::cAbilityAddData* pData) {

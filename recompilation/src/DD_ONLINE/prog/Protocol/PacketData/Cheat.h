@@ -70,3 +70,10 @@ inline CDataCheatInfo::CDataCheatInfo() {
     this->m_unParam2 = 0;
     this->m_unParam3 = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataCheatInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCheatInfo::DTI);
+}

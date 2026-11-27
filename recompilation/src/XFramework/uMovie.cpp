@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <_kernel.h>
 #include <string.h>
 #include "uMovie.h"
 #include "../MT/MtAllocator.h"
@@ -33,14 +34,6 @@ __attribute__((weak)) void uMovie::usage() {
 
 const MtDTI& uMovie::getDTI() const {
     return uMovie::DTI;
-}
-
-inline void* uMovie::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uMovie::DTI)->memAlloc(sz, align, uMovie::DTI.mID);
-}
-
-inline void uMovie::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uMovie::DTI)->memFree(p_addr);
 }
 
 uMovie::uMovie() {
@@ -267,9 +260,52 @@ __attribute__((weak)) void* uMovie::soundDecode::threadEntry(void* pArg) {
     return nullptr;
 }
 
-__attribute__((weak)) void uMovie::soundDecode::threadExecute() {
-    DDON_STUB("uMovie::soundDecode::threadExecute")
-    /* stub */
+void uMovie::soundDecode::threadExecute() {
+    mSoundLatestFrameTimeStamp = 0;
+    mVideoLatestFrameTimeStamp = 0;
+    STATE v1_0;
+    for (;;) {
+        v1_0 = mState;
+        for (;;) {
+            switch (static_cast<unsigned int>(v1_0 - 1)) {
+                case 0:
+                {
+                    if ((sSound::mpInstance)->sSound::isAvailableWriteExternalVoice(mSoundID, 8u)) {
+                        getAvPlayerSoundData();
+                        goto loop_f5754a_next;
+                    } else {
+                        mState = PLAYABLE;
+                        v1_0 = PLAYABLE;
+                    }
+                    break;
+                }
+                case 1:
+                {
+                    sceKernelUsleep(16000u);
+                    goto loop_f5754a_next;
+                }
+                case 2:
+                {
+                    goto loop_f57560_end;
+                }
+                case 3:
+                {
+                    return;
+                }
+                default:
+                {
+                    break;
+                }
+            }
+        }
+        loop_f57560_end:;
+        if ((sSound::mpInstance)->sSound::isAvailableWriteExternalVoice(mSoundID, 8u)) {
+            getAvPlayerSoundData();
+        } else {
+            sceKernelUsleep(16000u);
+        }
+        loop_f5754a_next:;
+    }
 }
 
 __attribute__((weak)) void uMovie::soundDecode::getAvPlayerSoundData() {

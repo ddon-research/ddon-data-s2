@@ -108,3 +108,20 @@ inline void* uShlTarasukuLight::operator new(size_t sz, void* p_addr) {
 
 inline uShlTarasukuLight::uShlTarasukuLight() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "uShlBase.h"
+
+inline void* uShlTarasukuLight::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlTarasukuLight::DTI)->memAlloc(sz, align, ::uShlTarasukuLight::DTI.::MtDTI::getID());
+}
+
+inline void uShlTarasukuLight::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlTarasukuLight::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamTarasukuLight* uShlTarasukuLight::getShlParam() const {
+    return static_cast<const cShlParamTarasukuLight*>(this->::uShlBase::mpShlParam2);
+}

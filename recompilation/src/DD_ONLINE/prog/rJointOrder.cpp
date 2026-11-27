@@ -20,14 +20,6 @@ const MtDTI& cJointOrder::getDTI() const {
     return cJointOrder::DTI;
 }
 
-inline void* cJointOrder::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cJointOrder::DTI)->memAlloc(sz, align, cJointOrder::DTI.getID());
-}
-
-inline void cJointOrder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cJointOrder::DTI)->memFree(p_addr);
-}
-
 cJointOrder::~cJointOrder() {
     if (mpJointTable == nullptr) {
         return;
@@ -46,14 +38,6 @@ MtObject* cJointOrder::MyDTI::newInstance() const {
 
 const MtDTI& rJointOrder::getDTI() const {
     return rJointOrder::DTI;
-}
-
-inline void* rJointOrder::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rJointOrder::DTI)->memAlloc(sz, align, rJointOrder::DTI.getID());
-}
-
-inline void rJointOrder::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rJointOrder::DTI)->memFree(p_addr);
 }
 
 rJointOrder::~rJointOrder() {

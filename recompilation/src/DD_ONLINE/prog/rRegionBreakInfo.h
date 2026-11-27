@@ -130,3 +130,19 @@ inline void cRegionBreakInfo::operator delete[](void* p_addr) {
 inline void* cRegionBreakInfo::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cRegionBreakInfo::DTI)->memAlloc(sz, align, ::cRegionBreakInfo::DTI.::MtDTI::getID());
 }
+
+inline void* cRegionBreakInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cRegionBreakInfo::DTI)->memAlloc(sz, align, ::cRegionBreakInfo::DTI.::MtDTI::getID());
+}
+
+inline void cRegionBreakInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cRegionBreakInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* rRegionBreakInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::rRegionBreakInfo::DTI);
+}
+
+inline void rRegionBreakInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rRegionBreakInfo::DTI)->memFree(p_addr);
+}

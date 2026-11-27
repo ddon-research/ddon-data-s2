@@ -92,10 +92,6 @@ void* sShadow::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sShadow::DTI)->memAlloc(sz, align, sShadow::DTI.mID);
 }
 
-inline void sShadow::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShadow::DTI)->memFree(p_addr);
-}
-
 void sShadow::reset() {
     if (mThreadSafe || (cSystem::mJobSafe)) {
         if (scePthreadMutexLock(&mCS.mCSection) != 0) {
@@ -611,10 +607,6 @@ const MtDTI& sShadow::ResourceGroup::getDTI() const {
     return sShadow::ResourceGroup::DTI;
 }
 
-inline void sShadow::ResourceGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShadow::ResourceGroup::DTI)->memFree(p_addr);
-}
-
 sShadow::ResourceGroup::~ResourceGroup() {
     releaseResources();
 }
@@ -674,10 +666,6 @@ const MtDTI& sShadow::Resource::getDTI() const {
     return sShadow::Resource::DTI;
 }
 
-inline void sShadow::Resource::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShadow::Resource::DTI)->memFree(p_addr);
-}
-
 void sShadow::Resource::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mDepthMap", reinterpret_cast<MtObject* *>(&mDepthMap), 3u, 0u);
 }
@@ -697,10 +685,6 @@ __attribute__((weak)) MtObject* sShadow::Resource::MyDTI::newInstance() const {
 
 const MtDTI& sShadow::ViewConsistentResource::getDTI() const {
     return sShadow::ViewConsistentResource::DTI;
-}
-
-inline void sShadow::ViewConsistentResource::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShadow::ViewConsistentResource::DTI)->memFree(p_addr);
 }
 
 void sShadow::ViewConsistentResource::createProperty(MtPropertyList& s) {
@@ -723,14 +707,6 @@ __attribute__((weak)) MtObject* sShadow::ViewConsistentResource::MyDTI::newInsta
 
 const MtDTI& sShadow::Node::getDTI() const {
     return sShadow::Node::DTI;
-}
-
-inline void* sShadow::Node::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sShadow::Node::DTI)->memAlloc(sz, align, sShadow::Node::DTI.mID);
-}
-
-inline void sShadow::Node::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sShadow::Node::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) sShadow::Node::~Node() {
@@ -824,13 +800,40 @@ nDraw::Texture* sShadow::Parameter::getDepthStencilMapCache() const {
     return nullptr;
 }
 
-__attribute__((weak)) f32 sShadow::Parameter::getAttenuation() const {
-    DDON_STUB("sShadow::Parameter::getAttenuation")
-    return {};
+f32 sShadow::Parameter::getAttenuation() const {
+    if (mpNode != nullptr) {
+        if (mViewNum <= 7u) {
+            if (mpNode->mpState[mViewNum] != nullptr) {
+                if (mpNode->mpShadow != nullptr) {
+                    if (mpNode->mpShadow->mManagedType != 1) {
+                        return mpNode->mpState[mViewNum]->mAttenuationDistance * mpNode->mpState[mViewNum]->mAttenuationFade;
+                    } else {
+                        return mpNode->mpState[mViewNum]->mAttenuationDistance;
+                    }
+                } else {
+                    return 0.0f;
+                }
+            } else {
+                return 0.0f;
+            }
+        } else {
+            return 0.0f;
+        }
+    } else {
+        return 0.0f;
+    }
 }
 
-__attribute__((weak)) bool sShadow::Parameter::isExecution() const {
-    DDON_STUB("sShadow::Parameter::isExecution")
-    return {};
+bool sShadow::Parameter::isExecution() const {
+    if (mpNode != nullptr) {
+        if (mViewNum <= 7u) {
+            if (mpNode->mpState[mViewNum] != nullptr) {
+                if ((mpNode->mpState[mViewNum]->mVisibleHistory & 1u) != 0) {
+                    return (mpNode->mpState[mViewNum]->mOcclusionVisibleHistory & 31u) != 0;
+                }
+            }
+        }
+    }
+    return false;
 }
 

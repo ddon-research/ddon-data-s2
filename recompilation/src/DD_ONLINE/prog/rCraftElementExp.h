@@ -127,3 +127,19 @@ inline void cCraftElementExpData::operator delete[](void* p_addr) {
 inline void* cCraftElementExpData::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cCraftElementExpData::DTI)->memAlloc(sz, align, ::cCraftElementExpData::DTI.::MtDTI::getID());
 }
+
+inline void* cCraftElementExpData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cCraftElementExpData::DTI)->memAlloc(sz, align, ::cCraftElementExpData::DTI.::MtDTI::getID());
+}
+
+inline void cCraftElementExpData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cCraftElementExpData::DTI)->memFree(p_addr);
+}
+
+inline void* rCraftElementExp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCraftElementExp::DTI)->memAlloc(sz, align, ::rCraftElementExp::DTI.::MtDTI::getID());
+}
+
+inline void rCraftElementExp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCraftElementExp::DTI)->memFree(p_addr);
+}

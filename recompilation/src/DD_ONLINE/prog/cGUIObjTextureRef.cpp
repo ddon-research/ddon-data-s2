@@ -16,10 +16,6 @@ const MtDTI& cGUIObjTextureRef::getDTI() const {
     return cGUIObjTextureRef::DTI;
 }
 
-inline void cGUIObjTextureRef::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGUIObjTextureRef::DTI)->memFree(p_addr);
-}
-
 cGUIObjTextureRef::~cGUIObjTextureRef() {
     if (mTexReplace.pTexture != nullptr) {
         mTexReplace.pTexture->release();

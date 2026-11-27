@@ -358,3 +358,51 @@ inline void* cZoneIndoorWindCtrl::operator new(size_t sz, void* p_addr) {
 
 inline cZoneIndoorWindCtrl::cZoneIndoorWindCtrl() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cIndoorSkyFogParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cIndoorSkyFogParam::DTI)->memAlloc(sz, align, ::cIndoorSkyFogParam::DTI.::MtDTI::getID());
+}
+
+inline void cIndoorSkyFogParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cIndoorSkyFogParam::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneIndoorGrassOff::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneIndoorGrassOff::DTI)->memAlloc(sz, align, ::cZoneIndoorGrassOff::DTI.::MtDTI::getID());
+}
+
+inline void cZoneIndoorGrassOff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneIndoorGrassOff::DTI)->memFree(p_addr);
+}
+
+inline void cZoneIndoorLight::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneIndoorLight::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneIndoorScrlEfcOff::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneIndoorScrlEfcOff::DTI)->memAlloc(sz, align, ::cZoneIndoorScrlEfcOff::DTI.::MtDTI::getID());
+}
+
+inline void cZoneIndoorScrlEfcOff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneIndoorScrlEfcOff::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneIndoorWeatherEffectOff::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneIndoorWeatherEffectOff::DTI)->memAlloc(sz, align, ::cZoneIndoorWeatherEffectOff::DTI.::MtDTI::getID());
+}
+
+inline void cZoneIndoorWeatherEffectOff::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneIndoorWeatherEffectOff::DTI)->memFree(p_addr);
+}
+
+inline void* cZoneIndoorWindCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cZoneIndoorWindCtrl::DTI)->memAlloc(sz, align, ::cZoneIndoorWindCtrl::DTI.::MtDTI::getID());
+}
+
+inline void cZoneIndoorWindCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cZoneIndoorWindCtrl::DTI)->memFree(p_addr);
+}

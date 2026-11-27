@@ -38,16 +38,8 @@ const MtDTI& cpInput::getDTI() const {
     return cpInput::DTI;
 }
 
-inline MtAllocator* cpInput::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpInput::DTI);
-}
-
 void* cpInput::operator new(size_t sz, u32 align) {
     return cpInput::getAllocator()->memAlloc(sz, align, cpInput::DTI.getID());
-}
-
-inline void cpInput::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpInput::DTI)->memFree(p_addr);
 }
 
 cpInput::cpInput() {
@@ -89,9 +81,20 @@ __attribute__((weak)) cpInput::STICK_ANGLE_TYPE cpInput::getLeftStickAngle() con
     return {};
 }
 
-__attribute__((weak)) cpInput::STICK_ANGLE_TYPE cpInput::getLeftStickRelativeAngle() const {
-    DDON_STUB("cpInput::getLeftStickRelativeAngle")
-    return {};
+cpInput::STICK_ANGLE_TYPE cpInput::getLeftStickRelativeAngle() const {
+    if (mMoveInfo.type != 0) {
+        if (0.78539824f >= __builtin_fabsf(mMoveInfo.relativeAngle)) {
+            return LV_UP;
+        } else {
+            if (__builtin_fabsf(mMoveInfo.relativeAngle) >= 2.3561947f) {
+                return LV_DOWN;
+            } else {
+                return static_cast<STICK_ANGLE_TYPE>((mMoveInfo.relativeAngle > 0.0f) + 3);
+            }
+        }
+    } else {
+        return LV_NONE;
+    }
 }
 
 __attribute__((weak)) cpInput::STICK_ANGLE_TYPE cpInput::getLeftStickRelativeAngleFB() const {

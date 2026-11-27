@@ -130,11 +130,29 @@ inline rWaypoint2::cRoute2::cRoute2() {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
 #include "../../generated/shared/nDDOIO.h"
 
 inline bool rWaypoint2::cRoute2::load(MtDataReader& r) {
     nDDOIO::readDataArray(r, mPointIdx, ROUTE_PARAM_NUM2);
     nDDOIO::readDataArray(r, mWeight, ROUTE_PARAM_NUM2);
     return true;
+}
+
+inline void* rWaypoint2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWaypoint2::DTI)->memAlloc(sz, align, ::rWaypoint2::DTI.::MtDTI::getID());
+}
+
+inline void rWaypoint2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWaypoint2::DTI)->memFree(p_addr);
+}
+
+inline void* rWaypoint2::cRoute2::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rWaypoint2::cRoute2::DTI)->memAlloc(sz, align, ::rWaypoint2::cRoute2::DTI.::MtDTI::getID());
+}
+
+inline void rWaypoint2::cRoute2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rWaypoint2::cRoute2::DTI)->memFree(p_addr);
 }

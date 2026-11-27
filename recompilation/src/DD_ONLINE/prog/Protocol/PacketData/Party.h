@@ -16,12 +16,6 @@ class MtAllocator;
 class MtDTI;
 class MtObject;
 
-// Declarations
-class CDataPartyListInfo;
-class CDataPartyMember;
-class CDataPartyMemberMaxNum;
-class CDataPartyMemberMinimum;
-
 namespace nParty {
     enum E_JOIN_STATE
     {
@@ -30,6 +24,12 @@ namespace nParty {
         JOIN_STATE_ON = 2,
     };
 }  // namespace nParty
+
+// Declarations
+class CDataPartyListInfo;
+class CDataPartyMember;
+class CDataPartyMemberMaxNum;
+class CDataPartyMemberMinimum;
 
 // Type aliases from DWARF
 using CCharacterListElement = CDataCharacterListElement;
@@ -218,4 +218,35 @@ inline CDataPartyMemberMaxNum::CDataPartyMemberMaxNum() {
 
 inline void* CDataPartyMemberMinimum::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+#include "../../../../MT/MtString.h"
+
+inline MtAllocator* CDataPartyListInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartyListInfo::DTI);
+}
+
+inline MtAllocator* CDataPartyMember::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartyMember::DTI);
+}
+
+inline MtAllocator* CDataPartyMemberMaxNum::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartyMemberMaxNum::DTI);
+}
+
+inline MtAllocator* CDataPartyMemberMinimum::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataPartyMemberMinimum::DTI);
+}
+
+inline CDataPartyMemberMinimum::CDataPartyMemberMinimum() {
+    this->m_ucMemberType = 0;
+    this->m_CommunityCharacterBaseInfo.m_wstrClanName.value = nullptr;
+    this->m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_CommunityCharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+    this->m_bIsLeader = false;
+    this->m_bIsPawn = false;
+    this->m_nMemberIndex = 0;
+    this->m_unPawnId = 0;
 }

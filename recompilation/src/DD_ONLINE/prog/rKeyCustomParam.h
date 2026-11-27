@@ -211,3 +211,19 @@ inline void cKeyCustomParam::operator delete[](void* p_addr) {
 inline void* cKeyCustomParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cKeyCustomParam::DTI)->memAlloc(sz, align, ::cKeyCustomParam::DTI.::MtDTI::getID());
 }
+
+inline void* cKeyCustomParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cKeyCustomParam::DTI)->memAlloc(sz, align, ::cKeyCustomParam::DTI.::MtDTI::getID());
+}
+
+inline void cKeyCustomParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cKeyCustomParam::DTI)->memFree(p_addr);
+}
+
+inline void* rKeyCustomParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rKeyCustomParam::DTI)->memAlloc(sz, align, ::rKeyCustomParam::DTI.::MtDTI::getID());
+}
+
+inline void rKeyCustomParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rKeyCustomParam::DTI)->memFree(p_addr);
+}

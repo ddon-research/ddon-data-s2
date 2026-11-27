@@ -4,7 +4,7 @@
 #include "sNpcManager.h"
 #include "Protocol/PacketData/JobMaster.h"
 #include "../../MT/MtAllocator.h"
-#include "../../MT/MtCharset.h"
+#include "../../MT/MtCharSet.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMemoryAllocator.h"
@@ -47,11 +47,13 @@
 #include "sArchiveManager.h"
 #include "../../XFramework/sArea.h"
 #include "sAreaExt.h"
+#include "sClanKyoten.h"
 #include "sContextManager.h"
 #include "sControlManager.h"
 #include "../../XFramework/sGUI.h"
 #include "sGUIExt.h"
 #include "sGame.h"
+#include "sMyRoom.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sQuestManagerExt.h"
@@ -67,6 +69,12 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
+
+namespace nNpc {
+extern const nNpc::FuncReleaseTable FuncReleaseTbl[1] = {
+    {50, 37},
+};
+}
 
 namespace nNpc {
 extern const u32 commonVoiceLoadDataNum = 36;
@@ -93,16 +101,8 @@ const MtDTI& sNpcManager::getDTI() const {
     return sNpcManager::DTI;
 }
 
-inline MtAllocator* sNpcManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sNpcManager::DTI);
-}
-
 void* sNpcManager::operator new(size_t sz, u32 align) {
     return sNpcManager::getAllocator()->memAlloc(sz, align, sNpcManager::DTI.getID());
-}
-
-inline void sNpcManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sNpcManager::DTI)->memFree(p_addr);
 }
 
 sNpcManager::sNpcManager() {
@@ -722,9 +722,38 @@ void sNpcManager::clearNoraPawnList() {
     mIsRegisterdNoraPawnList = false;
 }
 
-__attribute__((weak)) cTalkMsgData* sNpcManager::getPawnTalkMsgData(const uDDOModel* pModel) {
-    DDON_STUB("sNpcManager::getPawnTalkMsgData")
-    return nullptr;
+cTalkMsgData* sNpcManager::getPawnTalkMsgData(const uDDOModel* pModel) {
+    if (pModel != nullptr) {
+        if (pModel->getCtrl() != nullptr) {
+            if (pModel->getCtrl()->mCtrlType == 16) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pModel->getCtrl()) + 746)) <= 19) {
+                    if (((0xC3E40ul >> static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pModel->getCtrl()) + 746)) & 63)) & 1ul) != 0) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pModel->getCtrl()) + 746)) == 19) {
+                            sClanKyoten* t0 = sClanKyoten::getInstance();
+                            return t0->getPawnClanBaseTalkMsgData(cContextInterface::getPawnPersonality(static_cast<const cContextInstHm*>(pModel->getCtrl()->getContextInst())));
+                        } else {
+                            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(pModel->getCtrl()) + 746)) == 18) {
+                                sClanKyoten* t1 = sClanKyoten::getInstance();
+                                return t1->getPawnExpeditionTalkMsgData(cContextInterface::getPawnPersonality(static_cast<const cContextInstHm*>(pModel->getCtrl()->getContextInst())));
+                            } else {
+                                return &mPawnTalkData[cContextInterface::getPawnPersonality(static_cast<const cContextInstHm*>(pModel->getCtrl()->getContextInst()))];
+                            }
+                        }
+                    } else {
+                        return nullptr;
+                    }
+                } else {
+                    return nullptr;
+                }
+            } else {
+                return nullptr;
+            }
+        } else {
+            return nullptr;
+        }
+    } else {
+        return nullptr;
+    }
 }
 
 __attribute__((weak)) void sNpcManager::initPawnTalkMsgDataCore(cTalkMsgData* pTalkData, u32 Personality) {
@@ -1221,11 +1250,11 @@ void sNpcManager::checkCheckCollision() {
     if (sControlManager::getInstance()->mRefArray.mLength != 0) {
         sControlManager* v0_0 = sControlManager::getInstance();
         for (unsigned int i0_3 = 0;;) {
-            if (v0_0->mRefArray.mpArray[static_cast<int>(i0_3)] != nullptr) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_0->mRefArray.mpArray[static_cast<int>(i0_3)]) + 104)) == 16) {
-                    uDDOModel* t0 = static_cast<uControl*>(v0_0->mRefArray.mpArray[static_cast<int>(i0_3)])->getObjModel();
+            if (v0_0->mRefArray.getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                if (static_cast<uControl*>(v0_0->mRefArray.getBuffer()[static_cast<int>(i0_3)])->mCtrlType == 16) {
+                    uDDOModel* t0 = static_cast<uControl*>(v0_0->mRefArray.getBuffer()[static_cast<int>(i0_3)])->getObjModel();
                     if (t0 != nullptr) {
-                        if (static_cast<uControl*>(v0_0->mRefArray.mpArray[static_cast<int>(i0_3)])->isMaster()) {
+                        if (static_cast<uControl*>(v0_0->mRefArray.getBuffer()[static_cast<int>(i0_3)])->isMaster()) {
                             t0->getObjCollisionPtr()->createNodeFromIndex(15u, 0, false, 0xFFFFFFFFu);
                         } else {
                             t0->getObjCollisionPtr()->killNode(15u, 0u);

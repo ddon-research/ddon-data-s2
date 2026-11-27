@@ -122,3 +122,19 @@ inline void* uShlShiftCircleBit::operator new(size_t sz, void* p_addr) {
 inline uShlShiftCircleBit::uShlShiftCircleBit() {
     this->mShiftCircleBitTimer = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamShiftCircleBit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamShiftCircleBit::DTI)->memAlloc(sz, align, ::cShlParamShiftCircleBit::DTI.::MtDTI::getID());
+}
+
+inline void* uShlShiftCircleBit::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlShiftCircleBit::DTI)->memAlloc(sz, align, ::uShlShiftCircleBit::DTI.::MtDTI::getID());
+}
+
+inline void uShlShiftCircleBit::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlShiftCircleBit::DTI)->memFree(p_addr);
+}

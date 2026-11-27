@@ -405,3 +405,11 @@ __attribute__((always_inline)) inline rCollision::rCollision() {
     mpVertex = nullptr;
     mpSbcModifyClassIDArray = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rCollision::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCollision::DTI)->memFree(p_addr);
+}

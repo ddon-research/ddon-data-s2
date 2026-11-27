@@ -28,10 +28,6 @@ inline void* rGUIFont::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rGUIFont::DTI)->memAlloc(sz, align, rGUIFont::DTI.getID());
 }
 
-inline void rGUIFont::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGUIFont::DTI)->memFree(p_addr);
-}
-
 rGUIFont::~rGUIFont() {
     this->rGUIFont::clear();
 }

@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uSky.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtColor.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
@@ -33,10 +32,6 @@ __attribute__((weak)) void uSky::usage() {
 
 const MtDTI& uSky::getDTI() const {
     return uSky::DTI;
-}
-
-inline void uSky::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSky::DTI)->memFree(p_addr);
 }
 
 uSky::uSky(u32 depth_map_width, u32 depth_map_height) {
@@ -198,9 +193,8 @@ void uSky::setNorthAxis(uSky::NORTH_AXIS n) {
     mNorthAxis = static_cast<u32>(n);
 }
 
-__attribute__((weak)) u32 uSky::getHour() const {
-    DDON_STUB("uSky::getHour")
-    return {};
+u32 uSky::getHour() const {
+    return static_cast<u32>((static_cast<unsigned long>(mTime) * 0x95217CB1ul) >> 53);
 }
 
 __attribute__((weak)) void uSky::setHour(u32 h) {
@@ -208,20 +202,14 @@ __attribute__((weak)) void uSky::setHour(u32 h) {
     /* stub */
 }
 
-__attribute__((weak)) u32 uSky::getMinute() const {
-    DDON_STUB("uSky::getMinute")
-    return {};
-}
+static auto ddon_emit_0x01b64e50 __attribute__((used)) = &uSky::getMinute;
 
 __attribute__((weak)) void uSky::setMinute(u32 m) {
     DDON_STUB("uSky::setMinute")
     /* stub */
 }
 
-__attribute__((weak)) u32 uSky::getSecond() const {
-    DDON_STUB("uSky::getSecond")
-    return {};
-}
+static auto ddon_emit_0x01b64e80 __attribute__((used)) = &uSky::getSecond;
 
 __attribute__((weak)) void uSky::setSecond(u32 s) {
     DDON_STUB("uSky::setSecond")
@@ -476,10 +464,6 @@ __attribute__((weak)) MtObject* uSky::MyDTI::newInstance() const {
 
 const MtDTI& uSkyFog::getDTI() const {
     return uSkyFog::DTI;
-}
-
-inline void uSkyFog::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSkyFog::DTI)->memFree(p_addr);
 }
 
 uSkyFog::~uSkyFog() {

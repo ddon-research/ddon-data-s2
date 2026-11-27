@@ -1416,3 +1416,87 @@ inline sCraftManager::PawnCost::PawnCost() {
     this->mPawnId = 0;
     this->mCostLv = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sCraftManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::DTI);
+}
+
+inline void sCraftManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::DTI)->memFree(p_addr);
+}
+
+inline void* sCraftManager::cCraftFinishNotice::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftFinishNotice::DTI)->memAlloc(sz, align, ::sCraftManager::cCraftFinishNotice::DTI.::MtDTI::getID());
+}
+
+inline void sCraftManager::cCraftFinishNotice::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftFinishNotice::DTI)->memFree(p_addr);
+}
+
+inline void* sCraftManager::cAddExp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cAddExp::DTI)->memAlloc(sz, align, ::sCraftManager::cAddExp::DTI.::MtDTI::getID());
+}
+
+inline void sCraftManager::cAddExp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::cAddExp::DTI)->memFree(p_addr);
+}
+
+inline void* sCraftManager::RecordRecipe::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::RecordRecipe::DTI)->memAlloc(sz, align, ::sCraftManager::RecordRecipe::DTI.::MtDTI::getID());
+}
+
+inline void sCraftManager::RecordRecipe::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::RecordRecipe::DTI)->memFree(p_addr);
+}
+
+inline void sCraftManager::CreateItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::CreateItem::DTI)->memFree(p_addr);
+}
+
+inline void sCraftManager::cCraftPawnCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftPawnCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* sCraftManager::cCraftRankUp::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftRankUp::DTI)->memAlloc(sz, align, ::sCraftManager::cCraftRankUp::DTI.::MtDTI::getID());
+}
+
+inline void sCraftManager::cCraftRankUp::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftRankUp::DTI)->memFree(p_addr);
+}
+
+inline void* sCraftManager::cCraftUpGradeItemList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftUpGradeItemList::DTI)->memAlloc(sz, align, ::sCraftManager::cCraftUpGradeItemList::DTI.::MtDTI::getID());
+}
+
+inline void* sCraftManager::cCraftIrReductionData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftIrReductionData::DTI)->memAlloc(sz, align, ::sCraftManager::cCraftIrReductionData::DTI.::MtDTI::getID());
+}
+
+inline void sCraftManager::cCraftIrReductionData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftIrReductionData::DTI)->memFree(p_addr);
+}
+
+inline void sCraftManager::cCraftRecipeControl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::cCraftRecipeControl::DTI)->memFree(p_addr);
+}
+
+inline void* sCraftManager::stRecipeRequest::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::stRecipeRequest::DTI)->memAlloc(sz, align, ::sCraftManager::stRecipeRequest::DTI.::MtDTI::getID());
+}
+
+inline void sCraftManager::stRecipeRequest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::stRecipeRequest::DTI)->memFree(p_addr);
+}
+
+inline void* sCraftManager::PawnCost::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::sCraftManager::PawnCost::DTI)->memAlloc(sz, align, ::sCraftManager::PawnCost::DTI.::MtDTI::getID());
+}
+
+inline void sCraftManager::PawnCost::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sCraftManager::PawnCost::DTI)->memFree(p_addr);
+}

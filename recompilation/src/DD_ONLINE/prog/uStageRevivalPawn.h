@@ -180,3 +180,15 @@ inline void uStageRevivalPawn::setRevivingNpcIdPrivate(u32 NewValue) {
 inline u32 uStageRevivalPawn::getRevivalNpcIdPrivate() const {
     return this->mRevivalNpcId.NpcId;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uStageRevivalPawn::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uStageRevivalPawn::DTI);
+}
+
+inline void uStageRevivalPawn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uStageRevivalPawn::DTI)->memFree(p_addr);
+}

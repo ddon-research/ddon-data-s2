@@ -58,3 +58,15 @@ public:
 inline void* cQuestFunctionManagerBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cQuestFunctionManagerBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestFunctionManagerBase::DTI)->memAlloc(sz, align, ::cQuestFunctionManagerBase::DTI.::MtDTI::getID());
+}
+
+inline void cQuestFunctionManagerBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestFunctionManagerBase::DTI)->memFree(p_addr);
+}

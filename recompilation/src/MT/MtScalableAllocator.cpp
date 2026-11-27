@@ -18,10 +18,6 @@ void* MtScalableAllocator::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtScalableAllocator::DTI)->memAlloc(sz, align, MtScalableAllocator::DTI.mID);
 }
 
-inline void MtScalableAllocator::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtScalableAllocator::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) MtScalableAllocator::~MtScalableAllocator() {
     DDON_STUB("MtScalableAllocator::~MtScalableAllocator")
     /* stub */

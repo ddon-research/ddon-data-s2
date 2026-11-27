@@ -25,21 +25,6 @@ class MtDTI;
 class MtObject;
 class MtString;
 
-// Declarations
-class CDataCharacterLevelParam;
-class CDataCharacterListInfo;
-class CDataCharacterMessage;
-class CDataCharacterMsgSet;
-class CDataCharacterSearchParam;
-class CDataCommunicationShortCut;
-class CDataItemStorageIndicateNum;
-class CDataMasterInfo;
-class CDataMatchingProfile;
-class CDataMyRoomOption;
-class CDataShortCut;
-class CDataUpdateWalletPoint;
-class CDataWalletPoint;
-
 namespace nCharacter {
     enum E_EDIT_BODY_TYPE
     {
@@ -123,6 +108,25 @@ namespace nCharacter {
     };
 }  // namespace nCharacter
 
+// Declarations
+class CDataCharacterLevelParam;
+class CDataCharacterListInfo;
+class CDataCharacterMessage;
+class CDataCharacterMsgSet;
+class CDataCharacterReleaseElement;
+class CDataCharacterSearchParam;
+class CDataCommunicationShortCut;
+class CDataEditParts;
+class CDataHistoryElement;
+class CDataItemStorageIndicateNum;
+class CDataMasterInfo;
+class CDataMatchingProfile;
+class CDataMyRoomOption;
+class CDataShortCut;
+class CDataUnlockEmotion;
+class CDataUpdateWalletPoint;
+class CDataWalletPoint;
+
 // Type aliases from DWARF
 using CCharacterListElement = CDataCharacterListElement;
 using CEditInfo = CDataEditInfo;
@@ -131,12 +135,14 @@ using CWalletPoint = CDataWalletPoint;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
+using __uint64_t = long unsigned int;
 using b8 = bool;
 using s32 = int;
 using s8 = signed char;
 using size_t = _Sizet;
 using u16 = unsigned short;
 using u32 = unsigned int;
+using u64 = __uint64_t;
 using u8 = unsigned char;
 
 class CDataCharacterLevelParam : public CPacketDataBase
@@ -249,6 +255,38 @@ public:
     static MyDTI DTI;
 };
 
+class CDataCharacterReleaseElement : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataCharacterReleaseElement();
+    explicit CDataCharacterReleaseElement(u32);
+public:
+    u32 m_unReleaseElementNo;  // offset: 0x8
+    static MyDTI DTI;
+};
+
 class CDataCharacterSearchParam : public CPacketDataBase
 {
 public:
@@ -315,6 +353,74 @@ public:
     u8 m_ucType;  // offset: 0x10
     u8 m_ucCategory;  // offset: 0x11
     u32 m_unId;  // offset: 0x14
+    static MyDTI DTI;
+};
+
+class CDataEditParts : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataEditParts();
+    explicit CDataEditParts(u32, const MtTypedArray<CDataCommonU32>&);
+public:
+    u32 m_unParamType;  // offset: 0x8
+    MtTypedArray<CDataCommonU32> m_PartsIdList;  // offset: 0x10
+    static MyDTI DTI;
+};
+
+class CDataHistoryElement : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataHistoryElement();
+    explicit CDataHistoryElement(u8, u32, u32, u64);
+public:
+    u8 m_ucType;  // offset: 0x8
+    u32 m_unTargetID;  // offset: 0xc
+    u32 m_unParam;  // offset: 0x10
+    u64 m_ullDateTime;  // offset: 0x18
     static MyDTI DTI;
 };
 
@@ -494,6 +600,39 @@ public:
     static MyDTI DTI;
 };
 
+class CDataUnlockEmotion : public CPacketDataBase
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    explicit CDataUnlockEmotion();
+    explicit CDataUnlockEmotion(u32, u8);
+public:
+    u32 m_unEmotionId;  // offset: 0x8
+    u8 m_ucUnlockType;  // offset: 0xc
+    static MyDTI DTI;
+};
+
 class CDataWalletPoint : public CPacketDataBase
 {
 public:
@@ -640,6 +779,14 @@ inline CDataCharacterMsgSet::CDataCharacterMsgSet() {
     this->m_unSetNo = 0;
 }
 
+inline void* CDataCharacterReleaseElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataCharacterReleaseElement::CDataCharacterReleaseElement() {
+    this->m_unReleaseElementNo = 0;
+}
+
 inline void* CDataCharacterSearchParam::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -657,6 +804,25 @@ inline CDataCommunicationShortCut::CDataCommunicationShortCut() {
     this->m_ucCategory = 0;
     this->m_unPageNo = 0;
     this->m_unButtonNo = 0;
+}
+
+inline void* CDataEditParts::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataEditParts::CDataEditParts() {
+    this->m_unParamType = 0;
+}
+
+inline void* CDataHistoryElement::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataHistoryElement::CDataHistoryElement() {
+    this->m_ucType = 0;
+    this->m_unTargetID = 0;
+    this->m_unParam = 0;
+    this->m_ullDateTime = 0;
 }
 
 inline void* CDataItemStorageIndicateNum::operator new(size_t sz, void* p_addr) {
@@ -713,6 +879,15 @@ inline CDataShortCut::CDataShortCut() {
     this->m_unButtonNo = 0;
 }
 
+inline void* CDataUnlockEmotion::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CDataUnlockEmotion::CDataUnlockEmotion() {
+    this->m_unEmotionId = 0;
+    this->m_ucUnlockType = 0;
+}
+
 inline void* CDataUpdateWalletPoint::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -724,4 +899,96 @@ inline void* CDataWalletPoint::operator new(size_t sz, void* p_addr) {
 inline CDataWalletPoint::CDataWalletPoint() {
     this->m_ucType = 0;
     this->m_unValue = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataCharacterLevelParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterLevelParam::DTI);
+}
+
+inline void* CDataCharacterLevelParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterLevelParam::DTI)->memAlloc(sz, align, ::CDataCharacterLevelParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataCharacterListInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterListInfo::DTI);
+}
+
+inline MtAllocator* CDataCharacterMessage::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterMessage::DTI);
+}
+
+inline MtAllocator* CDataCharacterMsgSet::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterMsgSet::DTI);
+}
+
+inline MtAllocator* CDataCharacterReleaseElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterReleaseElement::DTI);
+}
+
+inline MtAllocator* CDataCharacterSearchParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterSearchParam::DTI);
+}
+
+inline void* CDataCharacterSearchParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterSearchParam::DTI)->memAlloc(sz, align, ::CDataCharacterSearchParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataCommunicationShortCut::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCommunicationShortCut::DTI);
+}
+
+inline MtAllocator* CDataEditParts::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataEditParts::DTI);
+}
+
+inline MtAllocator* CDataHistoryElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataHistoryElement::DTI);
+}
+
+inline MtAllocator* CDataItemStorageIndicateNum::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataItemStorageIndicateNum::DTI);
+}
+
+inline void CDataItemStorageIndicateNum::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::CDataItemStorageIndicateNum::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* CDataMasterInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMasterInfo::DTI);
+}
+
+inline MtAllocator* CDataMatchingProfile::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMatchingProfile::DTI);
+}
+
+inline void* CDataMatchingProfile::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataMatchingProfile::DTI)->memAlloc(sz, align, ::CDataMatchingProfile::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataMyRoomOption::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataMyRoomOption::DTI);
+}
+
+inline void* CDataMyRoomOption::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataMyRoomOption::DTI)->memAlloc(sz, align, ::CDataMyRoomOption::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataShortCut::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataShortCut::DTI);
+}
+
+inline MtAllocator* CDataUnlockEmotion::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUnlockEmotion::DTI);
+}
+
+inline MtAllocator* CDataUpdateWalletPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUpdateWalletPoint::DTI);
+}
+
+inline MtAllocator* CDataWalletPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataWalletPoint::DTI);
 }

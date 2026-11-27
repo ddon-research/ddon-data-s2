@@ -326,3 +326,27 @@ inline uGUIUseItemBase::cGetItemInfo::cGetItemInfo() {
     this->mNum = 0;
     this->mpParam = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIUseItemBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIUseItemBase::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIUseItemBase::cEquipInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIUseItemBase::cEquipInfo::DTI)->memAlloc(sz, align, ::uGUIUseItemBase::cEquipInfo::DTI.::MtDTI::getID());
+}
+
+inline void uGUIUseItemBase::cEquipInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIUseItemBase::cEquipInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIUseItemBase::cGetItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIUseItemBase::cGetItemInfo::DTI);
+}
+
+inline void* uGUIUseItemBase::cGetItemInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIUseItemBase::cGetItemInfo::DTI)->memAlloc(sz, align, ::uGUIUseItemBase::cGetItemInfo::DTI.::MtDTI::getID());
+}

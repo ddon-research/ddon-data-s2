@@ -69,6 +69,7 @@ class cInputTextKeyboardHook;
 class cItemParam;
 class cMenuBase;
 class cMenuCancelClanScoutEntry;
+class cMenuClanInfoManager;
 class cMenuLeaveGroupChat;
 class cMenuOnlineShop;
 class cMenuReadyCheck;
@@ -93,7 +94,16 @@ class sTalkManager;
 class uCharacterEdit;
 class uEditSaveLoadFlow;
 class uGUIAim;
+class uGUIAnnounce;
 class uGUIAreaMaster;
+class uGUIArisenCard;
+class uGUIArisenCardPop;
+class uGUIBazaar;
+class uGUIBazaarItem;
+class uGUIBazaarItemSearch;
+class uGUIBazaarPopBuy;
+class uGUIBazaarPopItemList;
+class uGUIBazaarPopPriceSetting;
 class uGUIBoughtBox;
 class uGUIBoxGachaInfo;
 class uGUIBrowserBG;
@@ -109,13 +119,21 @@ class uGUICharacterEdit;
 class uGUICharacterEditPopCard;
 class uGUIChargesHUD;
 class uGUIChat;
+class uGUIClanEditBase;
+class uGUIClanEditInputName;
+class uGUIClanEditInputNickname;
 class uGUIClanScout;
 class uGUIClanScoutEntry;
 class uGUIClanSearch;
+class uGUIClanStatus;
+class uGUIClanStatusBase;
 class uGUICommunityList;
 class uGUIContentsBoard;
 class uGUICraft;
+class uGUIEntryBoardRecruit;
+class uGUIFreeGroupChat;
 class uGUIGPShop;
+class uGUIGPShopDialog;
 class uGUIGameMenu;
 class uGUIGaugeEnemy;
 class uGUIGaugeSkill;
@@ -125,19 +143,27 @@ class uGUIItem01;
 class uGUIItemBase01;
 class uGUIJobSelect;
 class uGUIKeyConfig;
+class uGUIMail;
 class uGUIMenuAreaInfo;
 class uGUIMenuComm;
 class uGUIMenuTutorial;
+class uGUIMissionResult;
 class uGUIMyRoom;
 class uGUIMyRoomPopup;
 class uGUINewspaper;
 class uGUINpcWindow;
 class uGUIOption;
+class uGUIPSStore;
+class uGUIPartyList;
 class uGUIPhoto;
 class uGUIPhotoAlbum;
 class uGUIPhotoUpload;
 class uGUIPopCmd01;
+class uGUIPopFilter;
 class uGUIPopNumber01;
+class uGUIPopPartyList;
+class uGUIPopPawnList;
+class uGUIPopPawnPoint;
 class uGUIPopTopSel;
 class uGUIQuestBoard;
 class uGUIQuestDelivery;
@@ -146,11 +172,16 @@ class uGUIQuestList;
 class uGUIRankingBoard;
 class uGUIRetry;
 class uGUISaveListComment;
+class uGUIServerSelectBase;
+class uGUIServerSelectSMENU;
+class uGUIServerUIBase;
+class uGUIServerUIDialog;
 class uGUIShopBuy;
 class uGUIShopTitle;
 class uGUISkill;
 class uGUIStorage;
 class uGUISystemMsg;
+class uGUITitle;
 class uGUIUseItemBase;
 class uUIMockUp;
 
@@ -193,6 +224,7 @@ class uGUIBase : public uGUI
     friend class cCycleQuestManagerBase;
     friend class cMenuBase;
     friend class cMenuCancelClanScoutEntry;
+    friend class cMenuClanInfoManager;
     friend class cMenuLeaveGroupChat;
     friend class cMenuOnlineShop;
     friend class cMenuReadyCheck;
@@ -202,7 +234,12 @@ class uGUIBase : public uGUI
     friend class uCharacterEdit;
     friend class uEditSaveLoadFlow;
     friend class uGUIAim;
+    friend class uGUIAnnounce;
     friend class uGUIAreaMaster;
+    friend class uGUIArisenCard;
+    friend class uGUIArisenCardPop;
+    friend class uGUIBazaar;
+    friend class uGUIBazaarItem;
     friend class uGUIBoughtBox;
     friend class uGUIBoxGachaInfo;
     friend class uGUIBrowserBG;
@@ -216,32 +253,47 @@ class uGUIBase : public uGUI
     friend class uGUICharacterEdit;
     friend class uGUICharacterEditPopCard;
     friend class uGUIChat;
+    friend class uGUIClanEditBase;
+    friend class uGUIClanEditInputName;
+    friend class uGUIClanEditInputNickname;
     friend class uGUIClanScout;
     friend class uGUIClanScoutEntry;
     friend class uGUIClanSearch;
+    friend class uGUIClanStatus;
+    friend class uGUIClanStatusBase;
     friend class uGUICommunityList;
     friend class uGUIContentsBoard;
     friend class uGUICraft;
+    friend class uGUIFreeGroupChat;
     friend class uGUIGPShop;
+    friend class uGUIGPShopDialog;
+    friend class uGUIGameMenu;
     friend class uGUIGaugeEnemy;
     friend class uGUIItem01;
     friend class uGUIItemBase01;
     friend class uGUIJobSelect;
     friend class uGUIKeyConfig;
+    friend class uGUIMail;
     friend class uGUIMenuAreaInfo;
     friend class uGUIMenuTutorial;
     friend class uGUINewspaper;
     friend class uGUIOption;
+    friend class uGUIPSStore;
+    friend class uGUIPartyList;
     friend class uGUIPopCmd01;
     friend class uGUIQuestDelivery;
     friend class uGUIQuestInfo;
+    friend class uGUIQuestList;
     friend class uGUIRankingBoard;
     friend class uGUIRetry;
     friend class uGUISaveListComment;
+    friend class uGUIServerUIBase;
+    friend class uGUIServerUIDialog;
     friend class uGUIShopBuy;
     friend class uGUISkill;
     friend class uGUIStorage;
     friend class uGUISystemMsg;
+    friend class uGUITitle;
     friend class uGUIUseItemBase;
 public:
     enum GUI_RESULT
@@ -516,6 +568,7 @@ public:
     {
         friend class uGUIBase;
         friend class uGUICharaEditPartsWrap;
+        friend class uGUIPartyList;
     public:
         class MyDTI;
     public:
@@ -868,6 +921,7 @@ public:
 public:
     class cVerticalList : public cControl
     {
+        friend class uGUIArisenCard;
         friend class uGUIMenuComm;
         friend class uGUISkill;
     public:
@@ -1148,6 +1202,7 @@ public:
 public:
     class cValueList : public MtObject
     {
+        friend class uGUIBase;
     public:
         class MyDTI;
     public:
@@ -1327,6 +1382,7 @@ public:
 public:
     class cArcLoader : public cUIObject
     {
+        friend class uGUIBase;
     public:
         cArcLoader();
         virtual ~cArcLoader();
@@ -1548,6 +1604,7 @@ public:
         cGUIObjMessage* getObjMessage();
         uGUIBase::cExGUIMessageObj<_size>& operator=(MT_CTSTR str);
         uGUIBase::cExGUIMessageObj<_size>& operator=(s32 num);
+        uGUIBase::cExGUIMessageObj<_size>& operator=(u32 num);
     private:
         cGUIObjMessage* mpMesObj;  // offset: 0x18
         MtStringEx<_size> mString;  // offset: 0x20
@@ -1561,8 +1618,10 @@ public:
         friend class uGUICaplinkProfile;
         friend class uGUICaplinkTalk;
         friend class uGUICraft;
+        friend class uGUIEntryBoardRecruit;
         friend class uGUIGPShop;
         friend class uGUIGameMenu;
+        friend class uGUIMissionResult;
         friend class uGUINewspaper;
         friend class uGUINpcWindow;
         friend class uGUIPhoto;
@@ -2026,7 +2085,10 @@ public:
         friend class uGUICaplinkMessage;
         friend class uGUICharaEditPartsWrap;
         friend class uGUIChat;
+        friend class uGUIClanEditInputName;
+        friend class uGUIClanEditInputNickname;
         friend class uGUISaveListComment;
+        friend class uGUISkill;
     public:
         enum STATE
         {
@@ -2272,7 +2334,9 @@ public:
 public:
     class cReferenceUICloseBtn : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIBazaarPopItemList;
         friend class uGUIContentsBoard;
+        friend class uGUIItem01;
         friend class uGUIPhoto;
     public:
         class MyDTI;
@@ -2529,6 +2593,7 @@ public:
 public:
     class cReferenceUITab : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIItem01;
     public:
         enum SHAPE
         {
@@ -2662,6 +2727,7 @@ public:
 public:
     class cReferenceUIBtnGuide : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIBazaarItem;
         friend class uGUIShopBuy;
     public:
         enum GUIDE_TYPE
@@ -3116,6 +3182,8 @@ public:
 public:
     class cReferenceUIIconItem : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIBazaarPopPriceSetting;
+        friend class uGUIMissionResult;
     public:
         enum SIZE
         {
@@ -3359,6 +3427,7 @@ public:
 public:
     class cReferenceUIIconSkill : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIArisenCard;
     public:
         enum TYPE
         {
@@ -3801,6 +3870,8 @@ public:
 public:
     class cReferenceUICheckbox : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIBase;
+        friend class uGUIMyRoomPopup;
     public:
         class MyDTI;
     public:
@@ -3884,6 +3955,7 @@ public:
     class cReferenceUIToggleBtn : public uGUIBase::cReferenceUIBase
     {
         friend class uGUIGiveAndTake;
+        friend class uGUIQuestList;
     public:
         enum
         {
@@ -4365,6 +4437,9 @@ public:
 public:
     class cReferenceUINumBox : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIBazaarPopBuy;
+        friend class uGUIBazaarPopPriceSetting;
+        friend class uGUIEntryBoardRecruit;
         friend class uGUIPopNumber01;
         friend class uGUIShopBuy;
     public:
@@ -4723,6 +4798,7 @@ public:
         friend class uGUICaplinkTalk;
         friend class uGUIPhotoAlbum;
         friend class uGUIRankingBoard;
+        friend class uGUIServerSelectBase;
     public:
         enum
         {
@@ -5010,6 +5086,7 @@ public:
     {
         friend class uGUICaplinkProfile;
         friend class uGUINewspaper;
+        friend class uGUIPSStore;
         friend class uGUIQuestInfo;
         friend class uGUIQuestList;
         friend class uGUISkill;
@@ -5050,13 +5127,17 @@ public:
     class cScrollList : public uGUIBase::cScrollCtrl
     {
         friend class uGUIAreaMaster;
+        friend class uGUIArisenCard;
+        friend class uGUIArisenCardPop;
         friend class uGUIBase;
         friend class uGUIBoxGachaInfo;
         friend class uGUICaplinkProfile;
         friend class uGUICaplinkProfileEdit;
         friend class uGUICaplinkTrophyReceive;
+        friend class uGUIClanStatus;
         friend class uGUICommunityList;
         friend class uGUIContentsBoard;
+        friend class uGUIGPShopDialog;
         friend class uGUIInfo;
         friend class uGUIKeyConfig;
         friend class uGUIMenuComm;
@@ -5064,10 +5145,14 @@ public:
         friend class uGUIMyRoom;
         friend class uGUIMyRoomPopup;
         friend class uGUINewspaper;
+        friend class uGUIPSStore;
+        friend class uGUIPopFilter;
         friend class uGUIQuestBoard;
         friend class uGUIQuestDelivery;
         friend class uGUIQuestInfo;
         friend class uGUIRankingBoard;
+        friend class uGUIServerSelectBase;
+        friend class uGUIServerSelectSMENU;
         friend class uGUISkill;
         friend class uGUISystemMsg;
     public:
@@ -5214,12 +5299,17 @@ public:
 public:
     class cReferenceUIPullDown : public uGUIBase::cReferenceUIBase
     {
+        friend class uGUIBazaarItemSearch;
         friend class uGUICharaEditPartsWrap;
         friend class uGUICharacterEditPopCard;
         friend class uGUIKeyConfig;
         friend class uGUIMenuComm;
         friend class uGUIMyRoomPopup;
         friend class uGUIPhotoUpload;
+        friend class uGUIPopFilter;
+        friend class uGUIPopPartyList;
+        friend class uGUIPopPawnList;
+        friend class uGUIPopPawnPoint;
         friend class uGUISkill;
     public:
         enum STATE
@@ -6317,8 +6407,16 @@ inline void* uGUIBase::cReferenceUIVlCursor::operator new(size_t sz, void* p_add
     return p_addr;
 }
 
+inline f32 uGUIBase::cReferenceUIVlCursor::getDistY() {
+    return this->mDistY;
+}
+
 inline u32 uGUIBase::cScrollList::getListPos() const {
     return this->mListPos;
+}
+
+inline u32 uGUIBase::cScrollList::length() const {
+    return this->mInfoArray.::MtArray::length();
 }
 
 inline uGUIBase::cVerticalList* uGUIBase::cScrollList::getCtrl() {
@@ -6378,6 +6476,10 @@ inline void* uGUIBase::cHorizontalList::operator new(size_t sz, void* p_addr) {
 
 inline void* uGUIBase::cReferenceUITab::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline u32 uGUIBase::cReferenceUITab::getVisibleNum() {
+    return this->mVisibleNum;
 }
 
 inline void* uGUIBase::cReferenceUITab::cTabWork::operator new(size_t sz, void* p_addr) {
@@ -6622,6 +6724,10 @@ inline uGUIBase::cReferenceUINumBox::MODE uGUIBase::cReferenceUINumBox::getMode(
     return this->mMode;
 }
 
+inline s32 uGUIBase::cReferenceUINumBox::getNum() const {
+    return this->mCurrentNum;
+}
+
 inline void uGUIBase::cReferenceUINumBox::setMaxNum(s32 Num) {
     this->mMaxNum = Num;
 }
@@ -6707,4 +6813,481 @@ inline void* uGUIBase::cReferenceUIIconFriend::operator new(size_t sz, void* p_a
 
 inline void* uGUIBase::cScreenAdjustPos::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cQuestSvRequestManager.h"
+#include "sQuestManagerExt.h"
+
+inline void uGUIBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::releaseRegistSystemCallBack() {
+    if (this->mpItemMgrRequest != nullptr) {
+        if (!this->mpItemMgrRequest->::sItemManager::stRequest::isExit(static_cast<void*>(this))) {
+            this->mpItemMgrRequest->mIsResultCancel = true;
+        }
+        this->mpItemMgrRequest = nullptr;
+    }
+    if ((::sQuestManagerExt::mpInstance) == nullptr) {
+        return;
+    }
+    ::cQuestSvRequestManager::popRequest(static_cast<const MtObject*>(this));
+}
+
+inline void uGUIBase::manageIItemManagerNetReq() {
+    if (this->mpItemMgrRequest == nullptr) {
+        return;
+    }
+    if (!this->mpItemMgrRequest->::sItemManager::stRequest::isExit(static_cast<void*>(this))) {
+        return;
+    }
+    this->mpItemMgrRequest = nullptr;
+}
+
+inline void uGUIBase::deleteItemManagerNetReq() {
+    if (this->mpItemMgrRequest == nullptr) {
+        return;
+    }
+    if (!this->mpItemMgrRequest->::sItemManager::stRequest::isExit(static_cast<void*>(this))) {
+        this->mpItemMgrRequest->mIsResultCancel = true;
+    }
+    this->mpItemMgrRequest = nullptr;
+}
+
+inline void uGUIBase::initInputTextKey() {
+    this->mInputTextKeyboardHook.mOwner = this;
+    this->mInputTextKey.::nInputTextKeyboardHook::Keycode::init();
+    this->mInputTextKeyReq.::nInputTextKeyboardHook::Keycode::init();
+}
+
+inline void* uGUIBase::cReferenceUIBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIBase::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIBase::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIBase::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cSupportInstAnim::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cSupportInstAnim::DTI)->memAlloc(sz, align, ::uGUIBase::cSupportInstAnim::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cSupportInstAnim::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cSupportInstAnim::DTI)->memFree(p_addr);
+}
+
+inline uGUIBase::cSupportInstAnim::cSupportInstAnim() {
+    this->mpObjNullPointer = nullptr;
+    this->mpInstance = nullptr;
+    this->mPosPointer = ::MtVector2::Zero;
+    this->mIsPosPointerReqAuto = true;
+    this->mPrioPointer = 11;
+}
+
+inline MtAllocator* uGUIBase::cSupportBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cSupportBase::DTI);
+}
+
+inline void* uGUIBase::cSupportBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cSupportBase::DTI)->memAlloc(sz, align, ::uGUIBase::cSupportBase::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cAdjustableWindow::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cAdjustableWindow::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIWndwDrag::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIWndwDrag::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIWndwDrag::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIWndwDrag::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIWndwDrag::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cKeepInScreen::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cKeepInScreen::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconJob::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconJob::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconJob::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconJob::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconJob::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIBase::cScrollListItemBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cScrollListItemBase::DTI);
+}
+
+inline void* uGUIBase::cScrollListItemBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cScrollListItemBase::DTI)->memAlloc(sz, align, ::uGUIBase::cScrollListItemBase::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* uGUIBase::cScrollListInfoBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cScrollListInfoBase::DTI);
+}
+
+inline void uGUIBase::cScrollListInfoBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cScrollListInfoBase::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIBase::cReferenceUIPullDown::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPullDown::DTI);
+}
+
+inline void uGUIBase::cReferenceUIPullDown::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPullDown::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPullDown::cScrollListItemBasePD::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIVlCursor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIVlCursor::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIScrollBar::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIScrollBar::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIScrollBar::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIScrollBar::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIScrollBar::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIBase::cVerticalList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cVerticalList::DTI);
+}
+
+inline void uGUIBase::cVerticalList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cVerticalList::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUICloseBtn::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUICloseBtn::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUICloseBtn::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUICloseBtn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUICloseBtn::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIIconQuest::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconQuest::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIButton::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIButton::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIBase::cMsgAnalyzer::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cMsgAnalyzer::DTI);
+}
+
+inline MtAllocator* uGUIBase::cHorizontalList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cHorizontalList::DTI);
+}
+
+inline void uGUIBase::cHorizontalList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cHorizontalList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUITab::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUITab::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUITab::cTabWork::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUITab::cTabWork::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUITab::cTabWork::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUITab::cTabWork::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUITab::cTabWork::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIBtnGuide::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIBtnGuide::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIBtnGuide::cWork::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIBtnGuide::cWork::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUITooltip::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUITooltip::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cMatrix::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cMatrix::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIBase::cMaskScroll::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cMaskScroll::DTI);
+}
+
+inline void uGUIBase::cValueList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cValueList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cInterpolationValue::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cInterpolationValue::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cUnitWatcher::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cUnitWatcher::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUISlider::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUISlider::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUISlider::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUISlider::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUISlider::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIDropIcon::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIDropIcon::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIDropIcon::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIDropIcon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIDropIcon::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUICursor::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUICursor::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUICursor::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUICursor::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUICursor::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUISelector::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUISelector::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIGoldRim::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIGoldRim::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIBase::cReferenceUIChargesInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIChargesInfo::DTI);
+}
+
+inline void uGUIBase::cReferenceUIChargesInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIChargesInfo::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIChargesInfo::cData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIChargesInfo::cData::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIChargesInfo::cData::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconItem::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIIconEquip::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconEquip::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIIconItemCharges::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconItemCharges::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconSkill::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconSkill::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconSkill::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconSkill::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconSkill::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconStatus::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconStatus::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconStatus::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconStatus::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconCraftLv::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconCraftLv::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconCraftLv::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconCraftLv::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconCraftLv::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconStorage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconStorage::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconStorage::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconStorage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconStorage::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIIconShake::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconShake::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconSCM::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconSCM::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconSCM::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconSCM::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconSCM::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconGameMenu::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconGameMenu::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconGameMenu::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconGameMenu::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconGameMenu::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconComm::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconComm::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconComm::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconComm::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconComm::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconOnlineStatus::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconOnlineStatus::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconOnlineStatus::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconOnlineStatus::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconOnlineStatus::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconClanTitle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconClanTitle::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconClanTitle::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconClanTitle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconClanTitle::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIGammaBoard::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIGammaBoard::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIGammaBoard::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIGammaBoard::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIGammaBoard::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIBase::cReferenceUICheckbox::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUICheckbox::DTI);
+}
+
+inline void uGUIBase::cReferenceUICheckbox::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUICheckbox::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIButton2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIButton2::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIToggleBtn::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIToggleBtn::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIToggleBtn::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIToggleBtn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIToggleBtn::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIPullDownSkill::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPullDownSkill::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUISimpleBtn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUISimpleBtn::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIEditBtn::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIEditBtn::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIEditBtn::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIEditBtn::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIEditBtn::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUICheckList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUICheckList::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUICheckListForClan::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUICheckListForClan::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIClanEmblem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIClanEmblem::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* uGUIBase::cReferenceUINumBox::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUINumBox::DTI);
+}
+
+inline void uGUIBase::cReferenceUINumBox::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUINumBox::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIPageDot::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPageDot::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIPageDot::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIPageDot::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPageDot::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIPageDot::cPageDotWork::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPageDot::cPageDotWork::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIPageDot::cPageDotWork::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIPageDot::cPageDotWork::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIPageDot::cPageDotWork::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIRadioButton::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIRadioButton::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUINumPager::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUINumPager::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUINumPager::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUINumPager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUINumPager::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconButton::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconButton::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconButton::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconButton::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconButton::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cReferenceUIEditSlider::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIEditSlider::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIBase::cReferenceUIIconFriend::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconFriend::DTI)->memAlloc(sz, align, ::uGUIBase::cReferenceUIIconFriend::DTI.::MtDTI::getID());
+}
+
+inline void uGUIBase::cReferenceUIIconFriend::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cReferenceUIIconFriend::DTI)->memFree(p_addr);
+}
+
+inline void uGUIBase::cScreenAdjustPos::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIBase::cScreenAdjustPos::DTI)->memFree(p_addr);
 }

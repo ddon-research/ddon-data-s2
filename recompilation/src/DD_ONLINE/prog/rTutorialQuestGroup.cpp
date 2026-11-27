@@ -21,14 +21,6 @@ const MtDTI& rTutorialQuestGroup::getDTI() const {
     return rTutorialQuestGroup::DTI;
 }
 
-inline void* rTutorialQuestGroup::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTutorialQuestGroup::DTI)->memAlloc(sz, align, rTutorialQuestGroup::DTI.getID());
-}
-
-inline void rTutorialQuestGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTutorialQuestGroup::DTI)->memFree(p_addr);
-}
-
 const rTutorialQuestGroup::cGroup* rTutorialQuestGroup::getGroup(u32 groupId) const {
     if (mGroups.mLength != 0) {
         u32 i = 0;
@@ -46,10 +38,6 @@ const rTutorialQuestGroup::cGroup* rTutorialQuestGroup::getGroup(u32 groupId) co
 
 MT_CTSTR rTutorialQuestGroup::getExt() const {
     return "tqg";
-}
-
-inline rTutorialQuestGroup::rTutorialQuestGroup() {
-    setAttribute(22u);
 }
 
 rTutorialQuestGroup::~rTutorialQuestGroup() {
@@ -118,14 +106,6 @@ const MtDTI& rTutorialQuestGroup::cGroup::getDTI() const {
     return rTutorialQuestGroup::cGroup::DTI;
 }
 
-void* rTutorialQuestGroup::cGroup::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rTutorialQuestGroup::cGroup::DTI)->memAlloc(sz, align, rTutorialQuestGroup::cGroup::DTI.getID());
-}
-
-inline void rTutorialQuestGroup::cGroup::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTutorialQuestGroup::cGroup::DTI)->memFree(p_addr);
-}
-
 u32 rTutorialQuestGroup::cGroup::getQuestIdNum() const {
     return mQuestIds.mLength;
 }
@@ -168,13 +148,16 @@ void rTutorialQuestGroup::cGroup::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mQuestIds", static_cast<MtObject*>(&mQuestIds), 0u, 0u);
 }
 
-__attribute__((weak)) void rTutorialQuestGroup::cGroup::save(MtDataWriter& w) {
-    u32 t2 = mGroupId;
-    w.writeU32(t2);
+void rTutorialQuestGroup::cGroup::save(MtDataWriter& w) {
+    w.writeU32(mGroupId);
     w.writeU32(mQuestIds.mLength);
-    for (u32 t1 = 0; t1 < mQuestIds.mLength; ++t1) {
-        static_cast<cQuestId*>(mQuestIds.mpArray[t1])->save(w);
-        }
+    unsigned int i3 = 0;
+    if (mQuestIds.mLength != 0) {
+        do {
+            static_cast<cQuestId*>(mQuestIds.getBuffer()[static_cast<int>(i3)])->save(w);
+            i3 += 1u;
+        } while (i3 < mQuestIds.mLength);
+    }
 }
 
 void rTutorialQuestGroup::cGroup::load(MtDataReader& r) {
@@ -192,10 +175,6 @@ MtObject* rTutorialQuestGroup::cGroup::MyDTI::newInstance() const {
 
 const MtDTI& rTutorialQuestGroup::cGroup::cQuestId::getDTI() const {
     return rTutorialQuestGroup::cGroup::cQuestId::DTI;
-}
-
-inline void rTutorialQuestGroup::cGroup::cQuestId::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rTutorialQuestGroup::cGroup::cQuestId::DTI)->memFree(p_addr);
 }
 
 rTutorialQuestGroup::cGroup::cQuestId::~cQuestId() {

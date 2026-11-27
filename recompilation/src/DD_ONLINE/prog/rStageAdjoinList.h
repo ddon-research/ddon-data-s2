@@ -253,3 +253,40 @@ inline void rStageAdjoinList::cJumpPosition::load(MtDataReader& r) {
     mQuestId = r.readU32();
     mFlagId = r.readU32();
 }
+
+inline void* rStageAdjoinList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::DTI)->memAlloc(sz, align, ::rStageAdjoinList::DTI.::MtDTI::getID());
+}
+
+inline void rStageAdjoinList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::DTI)->memFree(p_addr);
+}
+
+inline rStageAdjoinList::rStageAdjoinList() {
+    this->::cResource::setAttribute(22u);
+    this->mStageNo = 0;
+}
+
+inline void* rStageAdjoinList::cAdjoinInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cAdjoinInfo::DTI)->memAlloc(sz, align, ::rStageAdjoinList::cAdjoinInfo::DTI.::MtDTI::getID());
+}
+
+inline void rStageAdjoinList::cAdjoinInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cAdjoinInfo::DTI)->memFree(p_addr);
+}
+
+inline void rStageAdjoinList::cAdjoinInfo::cIndex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cAdjoinInfo::cIndex::DTI)->memFree(p_addr);
+}
+
+inline void rStageAdjoinList::cAdjoinInfo::cIndex::load(MtDataReader& r) {
+    this->mIndex = r.readU16();
+}
+
+inline void* rStageAdjoinList::cJumpPosition::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cJumpPosition::DTI)->memAlloc(sz, align, ::rStageAdjoinList::cJumpPosition::DTI.::MtDTI::getID());
+}
+
+inline void rStageAdjoinList::cJumpPosition::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStageAdjoinList::cJumpPosition::DTI)->memFree(p_addr);
+}

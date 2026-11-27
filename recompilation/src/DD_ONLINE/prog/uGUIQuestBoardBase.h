@@ -271,3 +271,27 @@ inline uGUIQuestBoardBase::cListItem::cListItem() {
     this->mpInstAnimTitle = nullptr;
     this->mpInstNull = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIQuestBoardBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestBoardBase::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIQuestBoardBase::cListHeader::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIQuestBoardBase::cListHeader::DTI)->memAlloc(sz, align, ::uGUIQuestBoardBase::cListHeader::DTI.::MtDTI::getID());
+}
+
+inline void uGUIQuestBoardBase::cListHeader::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestBoardBase::cListHeader::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIQuestBoardBase::cListItem::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIQuestBoardBase::cListItem::DTI)->memAlloc(sz, align, ::uGUIQuestBoardBase::cListItem::DTI.::MtDTI::getID());
+}
+
+inline void uGUIQuestBoardBase::cListItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIQuestBoardBase::cListItem::DTI)->memFree(p_addr);
+}

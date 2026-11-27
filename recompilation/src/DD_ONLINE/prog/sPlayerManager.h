@@ -210,3 +210,15 @@ inline sPlayerManager* sPlayerManager::getInstance() {
 inline uPlayer* sPlayerManager::getMyPlayer() const {
     return this->mpMyPlayer;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sPlayerManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sPlayerManager::DTI);
+}
+
+inline void sPlayerManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sPlayerManager::DTI)->memFree(p_addr);
+}

@@ -16,12 +16,17 @@ class MtObject;
 class cControl;
 class cGUIInstance;
 class cGUIObject;
+class cGUIPageList;
+class uGUIArisenCard;
 class uGUIBase;
+class uGUIClanEditBase;
 class uGUIClanScout;
 class uGUIClanScoutBase;
 class uGUIClanSearch;
 class uGUIClanSearchBase;
+class uGUIClanStatusBase;
 class uGUIPSStore;
+class uGUIRimStone;
 
 // Declarations
 class cGUIControlMgr;
@@ -38,11 +43,16 @@ using u8 = unsigned char;
 
 class cGUIControlMgr : public cUIObject
 {
+    friend class cGUIPageList;
+    friend class uGUIArisenCard;
+    friend class uGUIClanEditBase;
     friend class uGUIClanScout;
     friend class uGUIClanScoutBase;
     friend class uGUIClanSearch;
     friend class uGUIClanSearchBase;
+    friend class uGUIClanStatusBase;
     friend class uGUIPSStore;
+    friend class uGUIRimStone;
 public:
     enum CONTROL_TYPE
     {
@@ -198,4 +208,12 @@ private:
 
 inline void* cGUIControlMgr::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cGUIControlMgr::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cGUIControlMgr::DTI)->memFree(p_addr);
 }

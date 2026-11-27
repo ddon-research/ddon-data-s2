@@ -14,6 +14,7 @@ class MtDTI;
 class MtDataReader;
 class MtObject;
 class MtPropertyList;
+class cCycle04QuestManager;
 
 // Declarations
 class cNamedParam;
@@ -29,6 +30,7 @@ using u32 = unsigned int;
 
 class cNamedParam : public MtObject
 {
+    friend class cCycle04QuestManager;
     friend class rNamedParam;
 public:
     enum NAMED_TYPE
@@ -388,4 +390,20 @@ inline void cNamedParam::operator delete[](void* p_addr) {
 
 inline void* cNamedParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cNamedParam::DTI)->memAlloc(sz, align, ::cNamedParam::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* cNamedParam::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cNamedParam::DTI);
+}
+
+inline void cNamedParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNamedParam::DTI)->memFree(p_addr);
+}
+
+inline void* rNamedParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rNamedParam::DTI)->memAlloc(sz, align, ::rNamedParam::DTI.::MtDTI::getID());
+}
+
+inline void rNamedParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rNamedParam::DTI)->memFree(p_addr);
 }

@@ -80,3 +80,15 @@ inline void* cpBakeJointHuman::operator new(size_t sz, void* p_addr) {
 inline u32 cpBakeJointHuman::getBakeType() {
     return this->mBakeType;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpBakeJointHuman::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpBakeJointHuman::DTI);
+}
+
+inline void cpBakeJointHuman::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpBakeJointHuman::DTI)->memFree(p_addr);
+}

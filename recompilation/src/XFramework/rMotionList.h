@@ -91,3 +91,15 @@ inline rMotionList::rMotionList() {
     this->::cResource::mAttr = 16;
     this->mpHdr = nullptr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void* rMotionList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rMotionList::DTI)->memAlloc(sz, align, ::rMotionList::DTI.::MtDTI::mID);
+}
+
+inline void rMotionList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rMotionList::DTI)->memFree(p_addr);
+}

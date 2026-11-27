@@ -61,8 +61,12 @@ class cHitGeom;
 class cHitInfo;
 class cHitInfoAfter;
 class cHumanActBase;
+class cHumanActEmotionLoop;
+class cHumanActEmotionLoopEndNoIK;
+class cHumanActEnemyClimbBase;
 class cHumanActSetNpcMotMyRoom;
 class cHumanActSetNpcMotion;
+class cJob10ExecuteBoost;
 class cJumpParam;
 class cJumpParamCtrl;
 class cOcdDamageInfo;
@@ -138,8 +142,12 @@ class uHuman : public uCharacter
 {
     friend class cFSMUnit;
     friend class cHumanActBase;
+    friend class cHumanActEmotionLoop;
+    friend class cHumanActEmotionLoopEndNoIK;
+    friend class cHumanActEnemyClimbBase;
     friend class cHumanActSetNpcMotMyRoom;
     friend class cHumanActSetNpcMotion;
+    friend class cJob10ExecuteBoost;
     friend class cJumpParamCtrl;
     friend class cPlActWpnBow;
     friend class cPlActWpnBowBase;
@@ -447,6 +455,7 @@ public:
 public:
     class cLimitActCtrl : public MtObject
     {
+        friend class uHuman;
     public:
         class MyDTI;
         struct stInfo;
@@ -1695,4 +1704,76 @@ inline uHuman::cBlendMotionCtrl::cBlendMotionCtrl() {
     this->mIsMotionEnd = false;
     this->mIsActive = false;
     this->mEndHokan = -1.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "cpActionRequest.h"
+#include "cpItemThrow.h"
+#include "cpTransparencyCtrl.h"
+
+inline void uHuman::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uHuman::DTI)->memFree(p_addr);
+}
+
+inline void uHuman::setClimbJointOffset(const MtVector3& offset) {
+    this->mClimbJointOffset.x = offset.x;
+    this->mClimbJointOffset.y = offset.y;
+    this->mClimbJointOffset.z = offset.z;
+    this->mClimbJointOffset.pad_ = 0.0f;
+}
+
+inline void uHuman::setSafePosFootWork() {
+    this->resetPos(this->::uDDOModel::getSafePos());
+    if (this->mpTransparencyCtrl != nullptr) {
+        this->mpTransparencyCtrl->::cpTransparencyCtrl::startChangeTrp(0.0f, 1.0f, 15.0f);
+    }
+    if (this->::uDDOModel::mGuardComponent.mpActionRequest != nullptr) {
+        this->::uDDOModel::mGuardComponent.mpActionRequest->mDamageAction = 1;
+        this->::uDDOModel::mGuardComponent.mpActionRequest->mDamageActionReq = 1;
+    }
+    this->mInsuranceTimer = 0.0f;
+    if (!this->::uDDOModel::isMaster()) {
+        return;
+    }
+    if ((this->::uDDOModel::mUnitId & 1024u) != 0) {
+        return;
+    }
+    this->::uDDOModel::countUpSafePosWarpLoop();
+}
+
+inline void uHuman::checkItemMode() {
+    if (this->mpItemThrow == nullptr) {
+        return;
+    }
+    this->mpItemThrow->::cpItemThrow::checkItemMode();
+}
+
+inline MtAllocator* uHuman::cEnemyClimbInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uHuman::cEnemyClimbInfo::DTI);
+}
+
+inline void* uHuman::cHealSeCaller::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uHuman::cHealSeCaller::DTI)->memAlloc(sz, align, ::uHuman::cHealSeCaller::DTI.::MtDTI::getID());
+}
+
+inline void uHuman::cHealSeCaller::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uHuman::cHealSeCaller::DTI)->memFree(p_addr);
+}
+
+inline void* uHuman::cLimitActCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uHuman::cLimitActCtrl::DTI)->memAlloc(sz, align, ::uHuman::cLimitActCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uHuman::cLimitActCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uHuman::cLimitActCtrl::DTI)->memFree(p_addr);
+}
+
+inline void* uHuman::cBlendMotionCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uHuman::cBlendMotionCtrl::DTI)->memAlloc(sz, align, ::uHuman::cBlendMotionCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uHuman::cBlendMotionCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uHuman::cBlendMotionCtrl::DTI)->memFree(p_addr);
 }

@@ -117,10 +117,32 @@ inline rAreaInfoStage::cAreaInfoStage::cAreaInfoStage() {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 inline bool rAreaInfoStage::cAreaInfoStage::load(MtDataReader& r) {
     mStageNo = r.readU32();
     mAreaId = r.readU32();
     return true;
+}
+
+inline void* rAreaInfoStage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaInfoStage::DTI)->memAlloc(sz, align, ::rAreaInfoStage::DTI.::MtDTI::getID());
+}
+
+inline void rAreaInfoStage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaInfoStage::DTI)->memFree(p_addr);
+}
+
+inline rAreaInfoStage::rAreaInfoStage() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rAreaInfoStage::cAreaInfoStage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaInfoStage::cAreaInfoStage::DTI)->memAlloc(sz, align, ::rAreaInfoStage::cAreaInfoStage::DTI.::MtDTI::getID());
+}
+
+inline void rAreaInfoStage::cAreaInfoStage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaInfoStage::cAreaInfoStage::DTI)->memFree(p_addr);
 }

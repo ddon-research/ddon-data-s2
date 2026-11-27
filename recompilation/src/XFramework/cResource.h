@@ -45,6 +45,8 @@ class rNpcEditData;
 class rOccluder;
 class rRenderTargetTexture;
 class rScheduler;
+class rShader2;
+class rShaderCache;
 class rShaderPackage;
 class rShlParamList;
 class rSky;
@@ -65,10 +67,15 @@ class rkThinkData;
 class sArchiveManager;
 class sResource;
 class sSoundExt;
+class uBaseEffect;
+class uBaseModel;
 class uCnsDDOIK;
 class uCnsIK;
 class uEffect;
+class uEffect2D;
+class uGUI;
 class uGUIBase;
+class uModel;
 class uSimSoftBody;
 
 // Declarations
@@ -116,6 +123,8 @@ class cResource : public MtObject
     friend class rOccluder;
     friend class rRenderTargetTexture;
     friend class rScheduler;
+    friend class rShader2;
+    friend class rShaderCache;
     friend class rShaderPackage;
     friend class rShlParamList;
     friend class rSky;
@@ -145,10 +154,15 @@ class cResource : public MtObject
     friend class sArchiveManager;
     friend class sResource;
     friend class sSoundExt;
+    friend class uBaseEffect;
+    friend class uBaseModel;
     friend class uCnsDDOIK;
     friend class uCnsIK;
     friend class uEffect;
+    friend class uEffect2D;
+    friend class uGUI;
     friend class uGUIBase;
+    friend class uModel;
     friend class uSimSoftBody;
 public:
     enum CONVERT_TYPE
@@ -357,4 +371,12 @@ inline void cResource::cancelRequest() {
 
 inline u32 cResource::getSize() const {
     return this->mSize;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void cResource::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cResource::DTI)->memFree(p_addr);
 }

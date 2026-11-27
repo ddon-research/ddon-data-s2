@@ -19,14 +19,6 @@ const MtDTI& rDynamicSbc::getDTI() const {
     return rDynamicSbc::DTI;
 }
 
-inline void* rDynamicSbc::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDynamicSbc::DTI)->memAlloc(sz, align, rDynamicSbc::DTI.mID);
-}
-
-inline void rDynamicSbc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDynamicSbc::DTI)->memFree(p_addr);
-}
-
 inline rDynamicSbc::rDynamicSbc() {
     mAttr = 18;
     mpMaterialInfo = nullptr;

@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rJointInfo.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -17,22 +15,6 @@
 
 const MtDTI& cJointInfo::getDTI() const {
     return cJointInfo::DTI;
-}
-
-inline void* cJointInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cJointInfo::DTI)->memAlloc(sz, align, cJointInfo::DTI.getID());
-}
-
-inline void cJointInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cJointInfo::DTI)->memFree(p_addr);
-}
-
-cJointInfo::cJointInfo() {
-    mJntNo = 255;
-    mAttr = 0;
-    mRadius = 0.0f;
-    mOfsPos = MtVector3::Zero;
-    mJointInfoID = 0;
 }
 
 void cJointInfo::createProperty(MtPropertyList& s) {
@@ -53,14 +35,6 @@ MtObject* cJointInfo::MyDTI::newInstance() const {
 
 const MtDTI& rJointInfo::getDTI() const {
     return rJointInfo::DTI;
-}
-
-inline void* rJointInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rJointInfo::DTI)->memAlloc(sz, align, rJointInfo::DTI.getID());
-}
-
-inline void rJointInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rJointInfo::DTI)->memFree(p_addr);
 }
 
 bool rJointInfo::loadData(MtDataReader& in, cJointInfo* pData) {

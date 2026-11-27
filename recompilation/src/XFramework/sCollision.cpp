@@ -37,6 +37,7 @@
 #include "cSystem.h"
 #include "nCollision.h"
 #include "nCollisionNode.h"
+#include "nPhysicsThread.h"
 #include "rCollision.h"
 #include "rCollisionHeightField.h"
 #include "sMain.h"
@@ -56,10 +57,6 @@
 
 const MtDTI& sCollision::getDTI() const {
     return sCollision::DTI;
-}
-
-inline void sCollision::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::DTI)->memFree(p_addr);
 }
 
 sCollision::sCollision(bool FlgSetDefaultMaterialEnum, sCollision::cSystemInitializeParam* pInitializeParam) {
@@ -474,8 +471,36 @@ __attribute__((weak)) bool sCollision::reserveMatrixByIndexWithIndex(u32 SbcInde
 }
 
 __attribute__((weak)) bool sCollision::reserveMatrixByIndexWithIndexRotTransQt(u32 SbcIndex, u32 PartsIndex, const MtVector3& trans, const MtQuaternion& qt, bool reset) {
-    DDON_STUB("sCollision::reserveMatrixByIndexWithIndexRotTransQt")
-    return {};
+    MtMatrix mat;
+    f32 t1 = qt.x + qt.x;
+    f32 t2 = qt.y + qt.y;
+    f32 t3 = qt.z + qt.z;
+    f32 t4 = t1 * qt.w;
+    f32 t5 = t2 * qt.w;
+    f32 t6 = t3 * qt.w;
+    f32 t7 = qt.x * t1;
+    f32 t8 = qt.x * t2;
+    f32 t9 = qt.x * t3;
+    f32 t10 = qt.y * t2;
+    f32 t11 = qt.y * t3;
+    f32 t12 = qt.z * t3;
+    mat.m[0].x = 1.0f - (t10 + t12);
+    mat.m[0].y = t8 + t6;
+    mat.m[0].z = t9 - t5;
+    mat.m[0].w = 0.0f;
+    mat.m[1].x = t8 - t6;
+    mat.m[1].y = 1.0f - (t7 + t12);
+    mat.m[1].z = t11 + t4;
+    mat.m[1].w = 0.0f;
+    mat.m[2].x = t9 + t5;
+    mat.m[2].y = t11 - t4;
+    mat.m[2].z = 1.0f - (t7 + t10);
+    mat.m[2].w = 0.0f;
+    mat.m[3].x = trans.x;
+    mat.m[3].y = trans.y;
+    mat.m[3].z = trans.z;
+    mat.m[3].w = 1.0f;
+    return reserveMatrixByIndexWithIndex(SbcIndex, PartsIndex, mat, reset);
 }
 
 bool sCollision::reserveMatrixAll(sCollision::SBC_HANDLE SbcHandle, const MtMatrix& MoveMat, bool reset) {
@@ -779,9 +804,18 @@ __attribute__((weak)) u32 sCollision::callbackBvhPartsCore(uintptr SendDataPtr, 
     return {};
 }
 
-__attribute__((weak)) u32 sCollision::callbackSbcBvhTriangle(uintptr SendUPTR, u32 HitLeafIndex, uintptr SystemParam) {
-    DDON_STUB("sCollision::callbackSbcBvhTriangle")
-    return {};
+u32 sCollision::callbackSbcBvhTriangle(uintptr SendUPTR, u32 HitLeafIndex, uintptr SystemParam) {
+    unsigned long t0 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(SendUPTR) + 400);
+    unsigned short t1 = *reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(((static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>((static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 16)) * 96) + (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)]) + 136)) + 216))) + 56)) * 10) + (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)]) + 136)) + 232))) + (static_cast<unsigned long>(HitLeafIndex) * 10)) + 8);
+    unsigned long t2 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)]) + 136)) + 224);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 88) = (static_cast<unsigned long>(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 72)) + 72)) * 16) + (*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mSbcArray.mpArray[*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 12)]) + 136)) + 248));
+    *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(t0) + 20) = HitLeafIndex;
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t0) + 96) = (static_cast<long>(t1) * 32) + t2;
+    if (callbackSbcBvhTriangleCore_CommonAttributeCheck(SendUPTR, HitLeafIndex, SystemParam, true)) {
+        return callbackSbcBvhTriangleCore_HitCheck(SendUPTR, HitLeafIndex, SystemParam, true);
+    } else {
+        return 0;
+    }
 }
 
 __attribute__((weak)) bool sCollision::callbackSbcBvhTriangleCore_CommonAttributeCheck(uintptr SendUPTR, u32 HitLeafIndex, uintptr SystemParam, bool FlgEnableSystemCheck) {
@@ -1533,10 +1567,6 @@ const MtDTI& sCollision::cSbcArrayBP::getDTI() const {
     return sCollision::cSbcArrayBP::DTI;
 }
 
-inline void sCollision::cSbcArrayBP::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcArrayBP::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcArrayBP::cSbcArrayBP() {
     DDON_STUB("sCollision::cSbcArrayBP::cSbcArrayBP")
     /* stub */
@@ -1655,14 +1685,6 @@ const MtDTI& sCollision::cSbcArrayBP::cDBVTMaster::getDTI() const {
     return sCollision::cSbcArrayBP::cDBVTMaster::DTI;
 }
 
-inline void* sCollision::cSbcArrayBP::cDBVTMaster::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::cSbcArrayBP::cDBVTMaster::DTI)->memAlloc(sz, align, sCollision::cSbcArrayBP::cDBVTMaster::DTI.mID);
-}
-
-inline void sCollision::cSbcArrayBP::cDBVTMaster::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcArrayBP::cDBVTMaster::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcArrayBP::cDBVTMaster::~cDBVTMaster() {
 }
 
@@ -1676,10 +1698,6 @@ MtObject* sCollision::cSbcArrayBP::cDBVTMaster::MyDTI::newInstance() const {
 
 const MtDTI& sCollision::cColArray::getDTI() const {
     return sCollision::cColArray::DTI;
-}
-
-inline void sCollision::cColArray::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cColArray::DTI)->memFree(p_addr);
 }
 
 sCollision::cColArray::cColArray() {
@@ -1711,14 +1729,6 @@ void sCollision::cSbcMoveReserveInfo::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
 }
 
-inline void* sCollision::cSbcMoveReserveInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memAlloc(sz, align, sCollision::cSbcMoveReserveInfo::DTI.mID);
-}
-
-inline void sCollision::cSbcMoveReserveInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfo::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcMoveReserveInfo::cSbcMoveReserveInfo() {
 }
 
@@ -1730,9 +1740,27 @@ __attribute__((weak)) bool sCollision::cSbcMoveReserveInfo::registReserveInfo(sC
     return {};
 }
 
-__attribute__((weak)) const sCollision::cSbcMoveReserveInfo& sCollision::cSbcMoveReserveInfo::operator=(const sCollision::cSbcMoveReserveInfo& src) {
-    DDON_STUB("sCollision::cSbcMoveReserveInfo::operator=")
-    __builtin_unreachable();
+const sCollision::cSbcMoveReserveInfo& sCollision::cSbcMoveReserveInfo::operator=(const sCollision::cSbcMoveReserveInfo& src) {
+    mpTargetSbc = src.mpTargetSbc;
+    mpTargetParts = src.mpTargetParts;
+    mFlgResetSet = src.mFlgResetSet;
+    mRegistMatrix.m[0].x = src.mRegistMatrix.m[0].x;
+    mRegistMatrix.m[0].y = src.mRegistMatrix.m[0].y;
+    mRegistMatrix.m[0].z = src.mRegistMatrix.m[0].z;
+    mRegistMatrix.m[0].w = src.mRegistMatrix.m[0].w;
+    mRegistMatrix.m[1].x = src.mRegistMatrix.m[1].x;
+    mRegistMatrix.m[1].y = src.mRegistMatrix.m[1].y;
+    mRegistMatrix.m[1].z = src.mRegistMatrix.m[1].z;
+    mRegistMatrix.m[1].w = src.mRegistMatrix.m[1].w;
+    mRegistMatrix.m[2].x = src.mRegistMatrix.m[2].x;
+    mRegistMatrix.m[2].y = src.mRegistMatrix.m[2].y;
+    mRegistMatrix.m[2].z = src.mRegistMatrix.m[2].z;
+    mRegistMatrix.m[2].w = src.mRegistMatrix.m[2].w;
+    mRegistMatrix.m[3].x = src.mRegistMatrix.m[3].x;
+    mRegistMatrix.m[3].y = src.mRegistMatrix.m[3].y;
+    mRegistMatrix.m[3].z = src.mRegistMatrix.m[3].z;
+    mRegistMatrix.m[3].w = src.mRegistMatrix.m[3].w;
+    return *this;
 }
 
 inline sCollision::cSbcMoveReserveInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1745,10 +1773,6 @@ MtObject* sCollision::cSbcMoveReserveInfo::MyDTI::newInstance() const {
 
 const MtDTI& sCollision::Sbc::getDTI() const {
     return sCollision::Sbc::DTI;
-}
-
-inline void sCollision::Sbc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::Sbc::DTI)->memFree(p_addr);
 }
 
 sCollision::Sbc::~Sbc() {
@@ -1794,10 +1818,6 @@ const MtDTI& sCollision::Sbc::Parts::getDTI() const {
     return sCollision::Sbc::Parts::DTI;
 }
 
-inline void sCollision::Sbc::Parts::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::Sbc::Parts::DTI)->memFree(p_addr);
-}
-
 sCollision::Sbc::Parts::~Parts() {
     DDON_STUB("sCollision::Sbc::Parts::~Parts")
     /* stub */
@@ -1838,14 +1858,6 @@ const MtDTI& sCollision::cSbcMoveMatrix::getDTI() const {
     return sCollision::cSbcMoveMatrix::DTI;
 }
 
-inline void* sCollision::cSbcMoveMatrix::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveMatrix::DTI)->memAlloc(sz, align, sCollision::cSbcMoveMatrix::DTI.mID);
-}
-
-inline void sCollision::cSbcMoveMatrix::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveMatrix::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcMoveMatrix::cSbcMoveMatrix() {
 }
 
@@ -1864,23 +1876,20 @@ const MtDTI& sCollision::cSbcMoveResetReserveInfo::getDTI() const {
     return sCollision::cSbcMoveResetReserveInfo::DTI;
 }
 
-inline void* sCollision::cSbcMoveResetReserveInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveResetReserveInfo::DTI)->memAlloc(sz, align, sCollision::cSbcMoveResetReserveInfo::DTI.mID);
-}
-
-inline void sCollision::cSbcMoveResetReserveInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveResetReserveInfo::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcMoveResetReserveInfo::cSbcMoveResetReserveInfo() {
 }
 
 sCollision::cSbcMoveResetReserveInfo::~cSbcMoveResetReserveInfo() {
 }
 
-__attribute__((weak)) bool sCollision::cSbcMoveResetReserveInfo::registReserveInfo(sCollision::Sbc& TargetSbc, sCollision::Sbc::Parts& TargetParts) {
-    DDON_STUB("sCollision::cSbcMoveResetReserveInfo::registReserveInfo")
-    return {};
+bool sCollision::cSbcMoveResetReserveInfo::registReserveInfo(sCollision::Sbc& TargetSbc, sCollision::Sbc::Parts& TargetParts) {
+    if (TargetParts.mMatrixInfo.mFlgMoveEnable) {
+        mpTargetSbc = &TargetSbc;
+        mpTargetParts = &TargetParts;
+        return true;
+    } else {
+        return false;
+    }
 }
 
 const sCollision::cSbcMoveResetReserveInfo& sCollision::cSbcMoveResetReserveInfo::operator=(const sCollision::cSbcMoveResetReserveInfo& src) {
@@ -1907,10 +1916,6 @@ void* sCollision::cSbcRegistReserveInfo::operator new[](size_t sz, u32 align) {
 
 void sCollision::cSbcRegistReserveInfo::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcRegistReserveInfo::DTI)->memFree(p_addr);
-}
-
-inline void* sCollision::cSbcRegistReserveInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::cSbcRegistReserveInfo::DTI)->memAlloc(sz, align, sCollision::cSbcRegistReserveInfo::DTI.mID);
 }
 
 sCollision::cSbcRegistReserveInfo::cSbcRegistReserveInfo() {
@@ -1973,28 +1978,59 @@ void sCollision::cSbcMoveReserveInfoAll::operator delete[](void* p_addr) {
     MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfoAll::DTI)->memFree(p_addr);
 }
 
-inline void* sCollision::cSbcMoveReserveInfoAll::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfoAll::DTI)->memAlloc(sz, align, sCollision::cSbcMoveReserveInfoAll::DTI.mID);
-}
-
-inline void sCollision::cSbcMoveReserveInfoAll::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveReserveInfoAll::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcMoveReserveInfoAll::cSbcMoveReserveInfoAll() {
 }
 
 sCollision::cSbcMoveReserveInfoAll::~cSbcMoveReserveInfoAll() {
 }
 
-__attribute__((weak)) bool sCollision::cSbcMoveReserveInfoAll::registReserveInfo(sCollision::Sbc& TargetSbc, const MtMatrix& MoveMatrix, bool FlgResetSet) {
-    DDON_STUB("sCollision::cSbcMoveReserveInfoAll::registReserveInfo")
-    return {};
+bool sCollision::cSbcMoveReserveInfoAll::registReserveInfo(sCollision::Sbc& TargetSbc, const MtMatrix& MoveMatrix, bool FlgResetSet) {
+    if (TargetSbc.mpRSbc != nullptr) {
+        if (TargetSbc.mActive) {
+            mpTargetSbc = &TargetSbc;
+            mRegistMatrix.m[0].x = MoveMatrix.m[0].x;
+            mRegistMatrix.m[0].y = MoveMatrix.m[0].y;
+            mRegistMatrix.m[0].z = MoveMatrix.m[0].z;
+            mRegistMatrix.m[0].w = MoveMatrix.m[0].w;
+            mRegistMatrix.m[1].x = MoveMatrix.m[1].x;
+            mRegistMatrix.m[1].y = MoveMatrix.m[1].y;
+            mRegistMatrix.m[1].z = MoveMatrix.m[1].z;
+            mRegistMatrix.m[1].w = MoveMatrix.m[1].w;
+            mRegistMatrix.m[2].x = MoveMatrix.m[2].x;
+            mRegistMatrix.m[2].y = MoveMatrix.m[2].y;
+            mRegistMatrix.m[2].z = MoveMatrix.m[2].z;
+            mRegistMatrix.m[2].w = MoveMatrix.m[2].w;
+            mRegistMatrix.m[3].x = MoveMatrix.m[3].x;
+            mRegistMatrix.m[3].y = MoveMatrix.m[3].y;
+            mRegistMatrix.m[3].z = MoveMatrix.m[3].z;
+            mRegistMatrix.m[3].w = MoveMatrix.m[3].w;
+            mFlgResetSet = FlgResetSet;
+            return true;
+        }
+    }
+    return false;
 }
 
-__attribute__((weak)) const sCollision::cSbcMoveReserveInfoAll& sCollision::cSbcMoveReserveInfoAll::operator=(const sCollision::cSbcMoveReserveInfoAll& src) {
-    DDON_STUB("sCollision::cSbcMoveReserveInfoAll::operator=")
-    __builtin_unreachable();
+const sCollision::cSbcMoveReserveInfoAll& sCollision::cSbcMoveReserveInfoAll::operator=(const sCollision::cSbcMoveReserveInfoAll& src) {
+    mpTargetSbc = src.mpTargetSbc;
+    mFlgResetSet = src.mFlgResetSet;
+    mRegistMatrix.m[0].x = src.mRegistMatrix.m[0].x;
+    mRegistMatrix.m[0].y = src.mRegistMatrix.m[0].y;
+    mRegistMatrix.m[0].z = src.mRegistMatrix.m[0].z;
+    mRegistMatrix.m[0].w = src.mRegistMatrix.m[0].w;
+    mRegistMatrix.m[1].x = src.mRegistMatrix.m[1].x;
+    mRegistMatrix.m[1].y = src.mRegistMatrix.m[1].y;
+    mRegistMatrix.m[1].z = src.mRegistMatrix.m[1].z;
+    mRegistMatrix.m[1].w = src.mRegistMatrix.m[1].w;
+    mRegistMatrix.m[2].x = src.mRegistMatrix.m[2].x;
+    mRegistMatrix.m[2].y = src.mRegistMatrix.m[2].y;
+    mRegistMatrix.m[2].z = src.mRegistMatrix.m[2].z;
+    mRegistMatrix.m[2].w = src.mRegistMatrix.m[2].w;
+    mRegistMatrix.m[3].x = src.mRegistMatrix.m[3].x;
+    mRegistMatrix.m[3].y = src.mRegistMatrix.m[3].y;
+    mRegistMatrix.m[3].z = src.mRegistMatrix.m[3].z;
+    mRegistMatrix.m[3].w = src.mRegistMatrix.m[3].w;
+    return *this;
 }
 
 inline sCollision::cSbcMoveReserveInfoAll::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -2009,19 +2045,15 @@ const MtDTI& sCollision::cSbcMoveResetReserveInfoAll::getDTI() const {
     return sCollision::cSbcMoveResetReserveInfoAll::DTI;
 }
 
-inline void sCollision::cSbcMoveResetReserveInfoAll::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcMoveResetReserveInfoAll::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcMoveResetReserveInfoAll::cSbcMoveResetReserveInfoAll() {
 }
 
 sCollision::cSbcMoveResetReserveInfoAll::~cSbcMoveResetReserveInfoAll() {
 }
 
-__attribute__((weak)) bool sCollision::cSbcMoveResetReserveInfoAll::registReserveInfo(sCollision::Sbc& TargetSbc) {
-    DDON_STUB("sCollision::cSbcMoveResetReserveInfoAll::registReserveInfo")
-    return {};
+bool sCollision::cSbcMoveResetReserveInfoAll::registReserveInfo(sCollision::Sbc& TargetSbc) {
+    mpTargetSbc = &TargetSbc;
+    return true;
 }
 
 const sCollision::cSbcMoveResetReserveInfoAll& sCollision::cSbcMoveResetReserveInfoAll::operator=(const sCollision::cSbcMoveResetReserveInfoAll& src) {
@@ -2040,10 +2072,6 @@ __attribute__((weak)) MtObject* sCollision::cSbcMoveResetReserveInfoAll::MyDTI::
 
 const MtDTI& sCollision::SbcObject::getDTI() const {
     return sCollision::SbcObject::DTI;
-}
-
-inline void sCollision::SbcObject::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::SbcObject::DTI)->memFree(p_addr);
 }
 
 sCollision::SbcObject::SbcObject() {
@@ -2120,14 +2148,6 @@ const MtDTI& sCollision::SbcObject::cRegisterInfo::getDTI() const {
     return sCollision::SbcObject::cRegisterInfo::DTI;
 }
 
-inline void* sCollision::SbcObject::cRegisterInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::SbcObject::cRegisterInfo::DTI)->memAlloc(sz, align, sCollision::SbcObject::cRegisterInfo::DTI.mID);
-}
-
-inline void sCollision::SbcObject::cRegisterInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::SbcObject::cRegisterInfo::DTI)->memFree(p_addr);
-}
-
 sCollision::SbcObject::cRegisterInfo::~cRegisterInfo() {
 }
 
@@ -2145,10 +2165,6 @@ MtObject* sCollision::SbcObject::cRegisterInfo::MyDTI::newInstance() const {
 
 const MtDTI& sCollision::cSbcSkinMesh::getDTI() const {
     return sCollision::cSbcSkinMesh::DTI;
-}
-
-inline void sCollision::cSbcSkinMesh::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcSkinMesh::DTI)->memFree(p_addr);
 }
 
 sCollision::cSbcSkinMesh::cSbcSkinMesh() {
@@ -2282,14 +2298,6 @@ const MtDTI& sCollision::cSbcSkinMesh::cRegisterInfo::getDTI() const {
     return sCollision::cSbcSkinMesh::cRegisterInfo::DTI;
 }
 
-inline void* sCollision::cSbcSkinMesh::cRegisterInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::cSbcSkinMesh::cRegisterInfo::DTI)->memAlloc(sz, align, sCollision::cSbcSkinMesh::cRegisterInfo::DTI.mID);
-}
-
-inline void sCollision::cSbcSkinMesh::cRegisterInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcSkinMesh::cRegisterInfo::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcSkinMesh::cRegisterInfo::~cRegisterInfo() {
 }
 
@@ -2303,10 +2311,6 @@ MtObject* sCollision::cSbcSkinMesh::cRegisterInfo::MyDTI::newInstance() const {
 
 const MtDTI& sCollision::cSbcHeightField::getDTI() const {
     return sCollision::cSbcHeightField::DTI;
-}
-
-inline void sCollision::cSbcHeightField::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcHeightField::DTI)->memFree(p_addr);
 }
 
 sCollision::cSbcHeightField::cSbcHeightField() {
@@ -2372,14 +2376,6 @@ const MtDTI& sCollision::cSbcHeightField::cHeightField::getDTI() const {
     return sCollision::cSbcHeightField::cHeightField::DTI;
 }
 
-inline void* sCollision::cSbcHeightField::cHeightField::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::cSbcHeightField::cHeightField::DTI)->memAlloc(sz, align, sCollision::cSbcHeightField::cHeightField::DTI.mID);
-}
-
-inline void sCollision::cSbcHeightField::cHeightField::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSbcHeightField::cHeightField::DTI)->memFree(p_addr);
-}
-
 sCollision::cSbcHeightField::cHeightField::~cHeightField() {
     if (mpHeightField == nullptr) {
         return;
@@ -2406,10 +2402,6 @@ MtObject* sCollision::cSbcHeightField::cHeightField::MyDTI::newInstance() const 
 
 const MtDTI& sCollision::Collider::getDTI() const {
     return sCollision::Collider::DTI;
-}
-
-inline void sCollision::Collider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::Collider::DTI)->memFree(p_addr);
 }
 
 sCollision::Collider::Collider() {
@@ -2535,10 +2527,6 @@ const MtDTI& sCollision::Collider::cNodeListArray::getDTI() const {
     return sCollision::Collider::cNodeListArray::DTI;
 }
 
-inline void sCollision::Collider::cNodeListArray::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::Collider::cNodeListArray::DTI)->memFree(p_addr);
-}
-
 sCollision::Collider::cNodeListArray::~cNodeListArray() {
 }
 
@@ -2557,10 +2545,6 @@ const MtDTI& sCollision::Node::getDTI() const {
 
 void* sCollision::Node::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sCollision::Node::DTI)->memAlloc(sz, align, sCollision::Node::DTI.mID);
-}
-
-inline void sCollision::Node::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::Node::DTI)->memFree(p_addr);
 }
 
 sCollision::Node::Node(MtGeomConvex* pGeometry, u32 GeometryAttribute, u32 GeometryUserID, MtObject* pGeometryUserPtr) {
@@ -2623,10 +2607,6 @@ const MtDTI& sCollision::TriangleInfo::getDTI() const {
     return sCollision::TriangleInfo::DTI;
 }
 
-inline void sCollision::TriangleInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::TriangleInfo::DTI)->memFree(p_addr);
-}
-
 sCollision::TriangleInfo::TriangleInfo() {
     DDON_STUB("sCollision::TriangleInfo::TriangleInfo")
     /* stub */
@@ -2651,10 +2631,6 @@ __attribute__((weak)) MtObject* sCollision::TriangleInfo::MyDTI::newInstance() c
 
 const MtDTI& sCollision::SbcInfo::getDTI() const {
     return sCollision::SbcInfo::DTI;
-}
-
-inline void sCollision::SbcInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::SbcInfo::DTI)->memFree(p_addr);
 }
 
 sCollision::SbcInfo::SbcInfo() {
@@ -2687,9 +2663,15 @@ __attribute__((weak)) void sCollision::SbcInfo::setHitScrInfoSbcPartsIndexForAll
     /* stub */
 }
 
-__attribute__((weak)) void sCollision::SbcInfo::setHitScrInfoObject(uScrollCollisionGeometry* _pHitScrGeometry, u32 MatIDNow, u32 MatIDOld) {
-    DDON_STUB("sCollision::SbcInfo::setHitScrInfoObject")
-    /* stub */
+void sCollision::SbcInfo::setHitScrInfoObject(uScrollCollisionGeometry* _pHitScrGeometry, u32 MatIDNow, u32 MatIDOld) {
+    clearHitInfo();
+    pHitScrGeometry = _pHitScrGeometry;
+    FlgMove = _pHitScrGeometry->isMoveByScrMatrix();
+    FlgResetSet = _pHitScrGeometry->isResetSetByScrMatrix();
+    pMoveMatrix = _pHitScrGeometry->mScrMatrix.mpaMatrix[MatIDNow];
+    pMoveMatrixO = _pHitScrGeometry->mScrMatrix.mpaMatrix[MatIDOld];
+    pMoveMatrixInverse = _pHitScrGeometry->mScrMatrix.mpaMatrixInverse[MatIDNow];
+    pMoveMatrixOInverse = _pHitScrGeometry->mScrMatrix.mpaMatrixInverse[MatIDOld];
 }
 
 void sCollision::SbcInfo::setHitScrInfoObjectGeomID(u32 HitGeometryID) {
@@ -2706,9 +2688,15 @@ void sCollision::SbcInfo::setHitScrInfoHeightField(u32 HitHeightFieldNo, u32 Hit
     HitHeightFieldV = static_cast<s32>(v);
 }
 
-__attribute__((weak)) void sCollision::SbcInfo::setHitScrInfoDyamicSbc(uDynamicSbc& HitDynamicSbc, u32 PartsID, u32 BvhID, u32 TriID) {
-    DDON_STUB("sCollision::SbcInfo::setHitScrInfoDyamicSbc")
-    /* stub */
+void sCollision::SbcInfo::setHitScrInfoDyamicSbc(uDynamicSbc& HitDynamicSbc, u32 PartsID, u32 BvhID, u32 TriID) {
+    clearHitInfo();
+    FlgMove = true;
+    FlgResetSet = false;
+    pHitDSbc = &HitDynamicSbc;
+    PartsNo = PartsID;
+    RTriNo = TriID;
+    DSbcBvhID = static_cast<unsigned short>(BvhID);
+    FlgHitDynamicSbc = true;
 }
 
 bool sCollision::SbcInfo::isHitDynamicSbc() const {
@@ -2804,14 +2792,6 @@ const MtDTI& sCollision::SbcInfoBase::getDTI() const {
     return sCollision::SbcInfoBase::DTI;
 }
 
-inline void* sCollision::SbcInfoBase::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::SbcInfoBase::DTI)->memAlloc(sz, align, sCollision::SbcInfoBase::DTI.mID);
-}
-
-inline void sCollision::SbcInfoBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::SbcInfoBase::DTI)->memFree(p_addr);
-}
-
 sCollision::SbcInfoBase::~SbcInfoBase() {
 }
 
@@ -2869,14 +2849,6 @@ const MtDTI& sCollision::ColliderPassiveNodeInfo::getDTI() const {
     return sCollision::ColliderPassiveNodeInfo::DTI;
 }
 
-inline void* sCollision::ColliderPassiveNodeInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::ColliderPassiveNodeInfo::DTI)->memAlloc(sz, align, sCollision::ColliderPassiveNodeInfo::DTI.mID);
-}
-
-inline void sCollision::ColliderPassiveNodeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ColliderPassiveNodeInfo::DTI)->memFree(p_addr);
-}
-
 sCollision::ColliderPassiveNodeInfo::~ColliderPassiveNodeInfo() {
 }
 
@@ -2890,10 +2862,6 @@ MtObject* sCollision::ColliderPassiveNodeInfo::MyDTI::newInstance() const {
 
 const MtDTI& sCollision::ColliderActiveNodeInfo::getDTI() const {
     return sCollision::ColliderActiveNodeInfo::DTI;
-}
-
-inline void sCollision::ColliderActiveNodeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ColliderActiveNodeInfo::DTI)->memFree(p_addr);
 }
 
 sCollision::ColliderActiveNodeInfo::~ColliderActiveNodeInfo() {
@@ -2912,14 +2880,6 @@ const MtDTI& sCollision::ActiveNodeInfo::getDTI() const {
     return sCollision::ActiveNodeInfo::DTI;
 }
 
-inline void* sCollision::ActiveNodeInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sCollision::ActiveNodeInfo::DTI)->memAlloc(sz, align, sCollision::ActiveNodeInfo::DTI.mID);
-}
-
-inline void sCollision::ActiveNodeInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ActiveNodeInfo::DTI)->memFree(p_addr);
-}
-
 sCollision::ActiveNodeInfo::~ActiveNodeInfo() {
 }
 
@@ -2933,10 +2893,6 @@ MtObject* sCollision::ActiveNodeInfo::MyDTI::newInstance() const {
 
 const MtDTI& sCollision::NodeList::getDTI() const {
     return sCollision::NodeList::DTI;
-}
-
-inline void sCollision::NodeList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::NodeList::DTI)->memFree(p_addr);
 }
 
 sCollision::NodeList::NodeList() {
@@ -3232,9 +3188,65 @@ __attribute__((weak)) bool sCollision::Param::isRegistAdjPosAxisSphereCheck() co
     return AdjPosRegistAxisCollisionCheckMode == 2;
 }
 
-__attribute__((weak)) sCollision::Param& sCollision::Param::operator=(const sCollision::Param& src) {
-    DDON_STUB("sCollision::Param::operator=")
-    __builtin_unreachable();
+sCollision::Param& sCollision::Param::operator=(const sCollision::Param& src) {
+    type = src.type;
+    filter = src.filter;
+    checkGroupBit = src.checkGroupBit;
+    hitTarget = src.hitTarget;
+    pObject = src.pObject;
+    const unsigned long t0 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + 48);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 56) = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + 56);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 48) = t0;
+    param = src.param;
+    mpScrFilteringCallbackOwnerObject = src.mpScrFilteringCallbackOwnerObject;
+    const unsigned long t1 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + 96);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 104) = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(&src) + 104);
+    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 96) = t1;
+    mpScrFilteringCallbackFunctionParam = src.mpScrFilteringCallbackFunctionParam;
+    mSkipTarget = src.mSkipTarget;
+    mpSkipTargetPhase0 = src.mpSkipTargetPhase0;
+    mpSkipTargetPhase1 = src.mpSkipTargetPhase1;
+    FlgEnableFlatEdgeCheck = src.FlgEnableFlatEdgeCheck;
+    contact_mode = src.contact_mode;
+    correctionNum = src.correctionNum;
+    adjPosRepairSinkInAvailNum = src.adjPosRepairSinkInAvailNum;
+    adjPosEpsilon = src.adjPosEpsilon;
+    adjConvexLimitP0 = src.adjConvexLimitP0;
+    adjConvexLimitP1 = src.adjConvexLimitP1;
+    adjConvexLimitR = src.adjConvexLimitR;
+    adjPosWallHitDownLen = src.adjPosWallHitDownLen;
+    adjPosVibrationStopDotArea = src.adjPosVibrationStopDotArea;
+    adjPosVibrationStopCheckMoveLenSq = src.adjPosVibrationStopCheckMoveLenSq;
+    adjPosCharaVibrationStopDotArea = src.adjPosCharaVibrationStopDotArea;
+    AdjPosRegistAxisCollisionCheckMode = src.AdjPosRegistAxisCollisionCheckMode;
+    AdjPosAxisCheckLS.p0.x = src.AdjPosAxisCheckLS.p0.x;
+    AdjPosAxisCheckLS.p0.y = src.AdjPosAxisCheckLS.p0.y;
+    AdjPosAxisCheckLS.p0.z = src.AdjPosAxisCheckLS.p0.z;
+    AdjPosAxisCheckLS.p0.pad_ = 0.0f;
+    AdjPosAxisCheckLS.p1.x = src.AdjPosAxisCheckLS.p1.x;
+    AdjPosAxisCheckLS.p1.y = src.AdjPosAxisCheckLS.p1.y;
+    AdjPosAxisCheckLS.p1.z = src.AdjPosAxisCheckLS.p1.z;
+    AdjPosAxisCheckLS.p1.pad_ = 0.0f;
+    AdjPosAxisCheckSphere.pos.x = src.AdjPosAxisCheckSphere.pos.x;
+    AdjPosAxisCheckSphere.pos.y = src.AdjPosAxisCheckSphere.pos.y;
+    AdjPosAxisCheckSphere.pos.z = src.AdjPosAxisCheckSphere.pos.z;
+    AdjPosAxisCheckSphere.r = src.AdjPosAxisCheckSphere.r;
+    AdjPosAxisCheckConvexMoveVec.x = src.AdjPosAxisCheckConvexMoveVec.x;
+    AdjPosAxisCheckConvexMoveVec.y = src.AdjPosAxisCheckConvexMoveVec.y;
+    AdjPosAxisCheckConvexMoveVec.z = src.AdjPosAxisCheckConvexMoveVec.z;
+    AdjPosAxisCheckConvexMoveVec.pad_ = 0.0f;
+    FlgAdjPosWallEdgeStop = src.FlgAdjPosWallEdgeStop;
+    FlgAdjPosLsNoHitFallFlickEnable = src.FlgAdjPosLsNoHitFallFlickEnable;
+    FlgAdjPosForceWallFlick = src.FlgAdjPosForceWallFlick;
+    FlgAdjPosAntiStopEnable = src.FlgAdjPosAntiStopEnable;
+    FlgAdjPosWallStop = src.FlgAdjPosWallStop;
+    FlgAdjPosWallStopForceAttrOnly = src.FlgAdjPosWallStopForceAttrOnly;
+    FlgPathBackSinkIn = src.FlgPathBackSinkIn;
+    FlgObjHitEnable = src.FlgObjHitEnable;
+    FlgSkinMeshEnable = src.FlgSkinMeshEnable;
+    adjPosMvMode = src.adjPosMvMode;
+    FlgInsideAdjustPositionOK = src.FlgInsideAdjustPositionOK;
+    return *this;
 }
 
 void sCollision::Param::setCollisionTarget(u32 _type, u32 _filter, u32 _checkGroupBit, bool _FlgObjHitEnable) {
@@ -3260,10 +3272,6 @@ __attribute__((weak)) MtObject* sCollision::Param::MyDTI::newInstance() const {
 
 const MtDTI& sCollision::ScrCollisionInfo::getDTI() const {
     return sCollision::ScrCollisionInfo::DTI;
-}
-
-inline void sCollision::ScrCollisionInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfo::DTI)->memFree(p_addr);
 }
 
 sCollision::ScrCollisionInfo::ScrCollisionInfo(const MtVector3& _cpos, const MtVector3& _cspeed, MtGeometry* _pGeomOrg, MtGeometry* _pGeomTrans) {
@@ -3321,10 +3329,6 @@ const MtDTI& sCollision::ScrCollisionInfoBase::getDTI() const {
     return sCollision::ScrCollisionInfoBase::DTI;
 }
 
-inline void sCollision::ScrCollisionInfoBase::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoBase::DTI)->memFree(p_addr);
-}
-
 sCollision::ScrCollisionInfoBase::~ScrCollisionInfoBase() {
     DDON_STUB("sCollision::ScrCollisionInfoBase::~ScrCollisionInfoBase")
     /* stub */
@@ -3357,10 +3361,6 @@ const MtDTI& sCollision::ScrCollisionInfoFind::getDTI() const {
     return sCollision::ScrCollisionInfoFind::DTI;
 }
 
-inline void sCollision::ScrCollisionInfoFind::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoFind::DTI)->memFree(p_addr);
-}
-
 sCollision::ScrCollisionInfoFind::ScrCollisionInfoFind(const MtVector3& _cpos, const MtVector3& _cspeed, MtGeometry* _pGeomOrg, MtGeometry* _pGeomTrans, sCollision::TriangleInfo* _pTriangleInfo) {
     DDON_STUB("sCollision::ScrCollisionInfoFind::ScrCollisionInfoFind")
     /* stub */
@@ -3385,10 +3385,6 @@ __attribute__((weak)) MtObject* sCollision::ScrCollisionInfoFind::MyDTI::newInst
 
 const MtDTI& sCollision::ScrCollisionInfoCastConvex::getDTI() const {
     return sCollision::ScrCollisionInfoCastConvex::DTI;
-}
-
-inline void sCollision::ScrCollisionInfoCastConvex::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoCastConvex::DTI)->memFree(p_addr);
 }
 
 sCollision::ScrCollisionInfoCastConvex::ScrCollisionInfoCastConvex() {
@@ -3425,10 +3421,6 @@ __attribute__((weak)) MtObject* sCollision::ScrCollisionInfoCastConvex::MyDTI::n
 
 const MtDTI& sCollision::ScrCollisionInfoAdjustPosition::getDTI() const {
     return sCollision::ScrCollisionInfoAdjustPosition::DTI;
-}
-
-inline void sCollision::ScrCollisionInfoAdjustPosition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoAdjustPosition::DTI)->memFree(p_addr);
 }
 
 sCollision::ScrCollisionInfoAdjustPosition::ScrCollisionInfoAdjustPosition(const MtVector3& _cpos, const MtVector3& _cspeed, MtGeometry* _pGeomOrg, MtGeometry* _pGeomTrans, sCollision::TriangleInfo* _pTriangleInfo, f32 _HitEpsilon, f32 _HitRetValue, bool _FlgAntiStopEnable) {
@@ -3516,10 +3508,6 @@ const MtDTI& sCollision::ScrCollisionInfoGetAreaPoly::getDTI() const {
     return sCollision::ScrCollisionInfoGetAreaPoly::DTI;
 }
 
-inline void sCollision::ScrCollisionInfoGetAreaPoly::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoGetAreaPoly::DTI)->memFree(p_addr);
-}
-
 sCollision::ScrCollisionInfoGetAreaPoly::ScrCollisionInfoGetAreaPoly(const MtVector3& _cpos, const MtVector3& _cspeed, MtGeometry* _pGeomOrg, MtGeometry* _pGeomTrans, u32 _ArraySize, bool _FlgCullingEnable, const MtVector3& _CullingNormal, f32 _CullingArea) {
     DDON_STUB("sCollision::ScrCollisionInfoGetAreaPoly::ScrCollisionInfoGetAreaPoly")
     /* stub */
@@ -3541,10 +3529,6 @@ __attribute__((weak)) MtObject* sCollision::ScrCollisionInfoGetAreaPoly::MyDTI::
 
 const MtDTI& sCollision::ScrCollisionInfoOriginal::getDTI() const {
     return sCollision::ScrCollisionInfoOriginal::DTI;
-}
-
-inline void sCollision::ScrCollisionInfoOriginal::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoOriginal::DTI)->memFree(p_addr);
 }
 
 sCollision::ScrCollisionInfoOriginal::ScrCollisionInfoOriginal(MtObject* _pCallbackOwnerObj, sCollision::CONTACT_CALLBACK_ORGFUNC _pScrHitCallback, sCollision::CONTACT_CALLBACK_ORGFUNC_PARTS _pScrPartsHitCallback, uintptr _CallbackParam) {
@@ -3583,10 +3567,6 @@ const MtDTI& sCollision::ScrCollisionInfoPreTraverse::getDTI() const {
     return sCollision::ScrCollisionInfoPreTraverse::DTI;
 }
 
-inline void sCollision::ScrCollisionInfoPreTraverse::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoPreTraverse::DTI)->memFree(p_addr);
-}
-
 sCollision::ScrCollisionInfoPreTraverse::ScrCollisionInfoPreTraverse() {
     DDON_STUB("sCollision::ScrCollisionInfoPreTraverse::ScrCollisionInfoPreTraverse")
     /* stub */
@@ -3608,10 +3588,6 @@ const MtDTI& sCollision::ScrCollisionInfoFind4::getDTI() const {
     return sCollision::ScrCollisionInfoFind4::DTI;
 }
 
-inline void sCollision::ScrCollisionInfoFind4::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::ScrCollisionInfoFind4::DTI)->memFree(p_addr);
-}
-
 sCollision::ScrCollisionInfoFind4::~ScrCollisionInfoFind4() {
 }
 
@@ -3626,10 +3602,6 @@ __attribute__((weak)) MtObject* sCollision::ScrCollisionInfoFind4::MyDTI::newIns
 
 const MtDTI& sCollision::cSystemInitializeParam::getDTI() const {
     return sCollision::cSystemInitializeParam::DTI;
-}
-
-inline void sCollision::cSystemInitializeParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::cSystemInitializeParam::DTI)->memFree(p_addr);
 }
 
 sCollision::cSystemInitializeParam::cSystemInitializeParam() {
@@ -3699,10 +3671,6 @@ __attribute__((weak)) MtObject* sCollision::cSystemInitializeParam::MyDTI::newIn
 
 const MtDTI& sCollision::SbcLockInfo::getDTI() const {
     return sCollision::SbcLockInfo::DTI;
-}
-
-inline void sCollision::SbcLockInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sCollision::SbcLockInfo::DTI)->memFree(p_addr);
 }
 
 sCollision::SbcLockInfo::~SbcLockInfo() {

@@ -26,10 +26,6 @@ class uCnsIKTarget;
 class uFullbodyIKHumanDDO;
 class uModel;
 
-// Declarations
-class cIKHandle;
-class cpIKCtrl;
-
 namespace nIKCtrl {
     enum EFF_BEHAVIOR
     {
@@ -58,6 +54,10 @@ namespace nIKCtrl {
         FOUR_LEG = 1,
     };
 }  // namespace nIKCtrl
+
+// Declarations
+class cIKHandle;
+class cpIKCtrl;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
@@ -247,4 +247,59 @@ inline bool cpIKCtrl::isIKCtrlActive() {
 
 inline rIKCtrl* cpIKCtrl::getResource() {
     return this->mpResource;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cIKHandle::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cIKHandle::DTI)->memAlloc(sz, align, ::cIKHandle::DTI.::MtDTI::getID());
+}
+
+inline void cIKHandle::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cIKHandle::DTI)->memFree(p_addr);
+}
+
+inline cIKHandle::cIKHandle() {
+    this->mActive = false;
+    this->mType = static_cast<nIKCtrl::IK_TYPE>(0);
+    this->mEff.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mEff.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mEff.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mEff.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mEff.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mEff.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mEff.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mEff.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mEff.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mEff.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mEff.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mEff.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mEff.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mEff.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mEff.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mEff.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mOffset.x = ::MtVector3::Zero.x;
+    this->mOffset.y = ::MtVector3::Zero.y;
+    this->mOffset.z = ::MtVector3::Zero.z;
+    this->mOffset.pad_ = 0.0f;
+    this->mpTargetModel = nullptr;
+    this->mTargetJntNo = 255;
+    this->mJntNo = 255;
+    this->mBlend = 1.0f;
+    this->mBlendSpeed = 0.2f;
+    this->mResist = 0.9f;
+    this->mBehavior = 0;
+    this->mpIKTarget = nullptr;
+    this->mpCnsIK = nullptr;
+    this->mpIKCtrl = nullptr;
+}
+
+inline MtAllocator* cpIKCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpIKCtrl::DTI);
+}
+
+inline void cpIKCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpIKCtrl::DTI)->memFree(p_addr);
 }

@@ -37,10 +37,6 @@ const MtDTI& SCE_AH_LIST::getDTI() const {
     return SCE_AH_LIST::DTI;
 }
 
-inline void* SCE_AH_LIST::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(SCE_AH_LIST::DTI)->memAlloc(sz, align, SCE_AH_LIST::DTI.getID());
-}
-
 SCE_AH_LIST::~SCE_AH_LIST() {
 }
 
@@ -73,16 +69,8 @@ const MtDTI& sScenario::getDTI() const {
     return sScenario::DTI;
 }
 
-inline MtAllocator* sScenario::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sScenario::DTI);
-}
-
 void* sScenario::operator new(size_t sz, u32 align) {
     return sScenario::getAllocator()->memAlloc(sz, align, sScenario::DTI.getID());
-}
-
-inline void sScenario::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sScenario::DTI)->memFree(p_addr);
 }
 
 sScenario::sScenario() {

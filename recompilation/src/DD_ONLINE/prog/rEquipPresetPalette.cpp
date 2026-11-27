@@ -17,10 +17,6 @@ const MtDTI& cEquipPresetPalette::getDTI() const {
     return cEquipPresetPalette::DTI;
 }
 
-inline void cEquipPresetPalette::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEquipPresetPalette::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) bool cEquipPresetPalette::isActive(nCharacterEdit::EQUIP_PRESET_OPOTION option) const {
     DDON_STUB("cEquipPresetPalette::isActive")
     return {};
@@ -36,14 +32,6 @@ __attribute__((weak)) MtObject* cEquipPresetPalette::MyDTI::newInstance() const 
 
 const MtDTI& rEquipPresetPalette::getDTI() const {
     return rEquipPresetPalette::DTI;
-}
-
-inline void* rEquipPresetPalette::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEquipPresetPalette::DTI)->memAlloc(sz, align, rEquipPresetPalette::DTI.getID());
-}
-
-inline void rEquipPresetPalette::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEquipPresetPalette::DTI)->memFree(p_addr);
 }
 
 bool rEquipPresetPalette::loadData(MtDataReader& r, cEquipPresetPalette* pData) {

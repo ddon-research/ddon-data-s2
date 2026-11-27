@@ -18,14 +18,6 @@ const MtDTI& nNetwork::BlockBuffer::getDTI() const {
     return nNetwork::BlockBuffer::DTI;
 }
 
-inline void* nNetwork::BlockBuffer::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nNetwork::BlockBuffer::DTI)->memAlloc(sz, align, ::nNetwork::BlockBuffer::DTI.mID);
-}
-
-inline void nNetwork::BlockBuffer::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nNetwork::BlockBuffer::DTI)->memFree(p_addr);
-}
-
 nNetwork::BlockBuffer::~BlockBuffer() {
     mHead = mTail;
     adjust(0u);

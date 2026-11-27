@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmWorkRateTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cEmWorkRateTable::getDTI() const {
     return cEmWorkRateTable::DTI;
-}
-
-inline void* cEmWorkRateTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmWorkRateTable::DTI)->memAlloc(sz, align, cEmWorkRateTable::DTI.getID());
-}
-
-inline void cEmWorkRateTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmWorkRateTable::DTI)->memFree(p_addr);
 }
 
 void cEmWorkRateTable::createProperty(MtPropertyList& s) {
@@ -40,14 +30,6 @@ MtObject* cEmWorkRateTable::MyDTI::newInstance() const {
 
 const MtDTI& rEmWorkRateTable::getDTI() const {
     return rEmWorkRateTable::DTI;
-}
-
-inline void* rEmWorkRateTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmWorkRateTable::DTI)->memAlloc(sz, align, rEmWorkRateTable::DTI.getID());
-}
-
-inline void rEmWorkRateTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmWorkRateTable::DTI)->memFree(p_addr);
 }
 
 bool rEmWorkRateTable::loadData(MtDataReader& in, cEmWorkRateTable* pData) {

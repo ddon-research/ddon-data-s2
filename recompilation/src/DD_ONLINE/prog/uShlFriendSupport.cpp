@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlFriendSupport.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -22,10 +20,6 @@
 
 const MtDTI& cShlParamFriendSupport::getDTI() const {
     return cShlParamFriendSupport::DTI;
-}
-
-inline void* cShlParamFriendSupport::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamFriendSupport::DTI)->memAlloc(sz, align, cShlParamFriendSupport::DTI.getID());
 }
 
 inline void cShlParamFriendSupport::operator delete(void* p_addr) {
@@ -71,14 +65,6 @@ MtObject* cShlParamFriendSupport::MyDTI::newInstance() const {
 
 const MtDTI& uShlFriendSupport::getDTI() const {
     return uShlFriendSupport::DTI;
-}
-
-inline void* uShlFriendSupport::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlFriendSupport::DTI)->memAlloc(sz, align, uShlFriendSupport::DTI.getID());
-}
-
-inline void uShlFriendSupport::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlFriendSupport::DTI)->memFree(p_addr);
 }
 
 const cShlParamFriendSupport* uShlFriendSupport::getShlParam() const {

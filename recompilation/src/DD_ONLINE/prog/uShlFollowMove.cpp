@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlFollowMove.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -22,10 +20,6 @@
 
 const MtDTI& cShlParamFollowMove::getDTI() const {
     return cShlParamFollowMove::DTI;
-}
-
-inline void* cShlParamFollowMove::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamFollowMove::DTI)->memAlloc(sz, align, cShlParamFollowMove::DTI.getID());
 }
 
 inline void cShlParamFollowMove::operator delete(void* p_addr) {
@@ -68,14 +62,6 @@ MtObject* cShlParamFollowMove::MyDTI::newInstance() const {
 
 const MtDTI& uShlFollowMove::getDTI() const {
     return uShlFollowMove::DTI;
-}
-
-inline void* uShlFollowMove::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlFollowMove::DTI)->memAlloc(sz, align, uShlFollowMove::DTI.getID());
-}
-
-inline void uShlFollowMove::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlFollowMove::DTI)->memFree(p_addr);
 }
 
 const cShlParamFollowMove* uShlFollowMove::getShlParam() const {

@@ -23,6 +23,7 @@ class MtAllocator;
 class MtDTI;
 struct MtNetError;
 class MtObject;
+class aStage;
 class cNetGameServer;
 class cPartyMemberInfo;
 namespace nNet { class cProgress; }
@@ -145,6 +146,7 @@ namespace nSessionManager {
 namespace nSessionManager {
     class cNetSessionManager : public ::MtObject
     {
+        friend class ::aStage;
         friend class ::cNetGameServer;
         friend class nSessionManager::MyListener;
         friend class ::uGUINewspaper;
@@ -416,4 +418,36 @@ inline void nSessionManager::cNetSessionManager::setQuickMatchJob(s32 job) {
 
 inline u32 nSessionManager::cNetSessionManager::getSessionChannel() {
     return this->mSessionChannel;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* nSessionManager::MyListener::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSessionManager::MyListener::DTI)->memAlloc(sz, align, ::nSessionManager::MyListener::DTI.::MtDTI::getID());
+}
+
+inline void nSessionManager::MyListener::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSessionManager::MyListener::DTI)->memFree(p_addr);
+}
+
+inline void* nSessionManager::cLobbyDataMessage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nSessionManager::cLobbyDataMessage::DTI)->memAlloc(sz, align, ::nSessionManager::cLobbyDataMessage::DTI.::MtDTI::getID());
+}
+
+inline void nSessionManager::cLobbyDataMessage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSessionManager::cLobbyDataMessage::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* nSessionManager::cNetSessionManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nSessionManager::cNetSessionManager::DTI);
+}
+
+inline void nSessionManager::cNetSessionManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nSessionManager::cNetSessionManager::DTI)->memFree(p_addr);
+}
+
+inline CDataClientPartyListInfo& nSessionManager::cNetSessionManager::getPartyReqInfo(s32 index) {
+    return this->mPartyReqInfo[index];
 }

@@ -6,15 +6,19 @@
 // Dependencies
 #include "../PacketData/Achievement.h"
 #include "../PacketData/AreaMaster.h"
+#include "../PacketData/Bazaar.h"
 #include "../PacketData/BoxGacha.h"
 #include "../PacketData/Character.h"
 #include "../PacketData/CharacterCommon.h"
+#include "../PacketData/CharacterEdit.h"
+#include "../PacketData/CharacterItem.h"
 #include "../PacketData/CharacterParam.h"
 #include "../PacketData/Clan.h"
 #include "../PacketData/Common.h"
 #include "../PacketData/Community.h"
 #include "../PacketData/Context.h"
 #include "../PacketData/Craft.h"
+#include "../PacketData/DLCLineup.h"
 #include "../PacketData/DispelItem.h"
 #include "../PacketData/Enemy.h"
 #include "../PacketData/EntryBoard.h"
@@ -27,12 +31,14 @@
 #include "../PacketData/Loading.h"
 #include "../PacketData/Lobby.h"
 #include "../PacketData/Mail.h"
+#include "../PacketData/Message.h"
 #include "../../../../MT/MtCollection.h"
 #include "../../../../MT/MtDTI.h"
 #include "../../../../MT/MtString.h"
 #include "../PacketData/Party.h"
 #include "../PacketData/Pawn.h"
 #include "../PacketData/Quest.h"
+#include "../PacketData/RaidBoss.h"
 #include "../PacketData/Ranking.h"
 #include "../PacketData/ScreenShot.h"
 #include "../PacketData/Server.h"
@@ -48,11 +54,14 @@
 #include "../../cPacket.h"
 
 // Forward declarations
+class CDataAbilityLevelBaseParam;
 class CDataAbilityParam;
+class CDataAchieveCategoryStatus;
 class CDataAchieveRewardCommon;
 class CDataAchievementFurnitureReward;
 class CDataAchievementProgress;
 class CDataAchievementRewardProgress;
+class CDataAreaBaseInfo;
 class CDataAreaBonus;
 class CDataAreaInfoList;
 class CDataAreaQuestHint;
@@ -60,16 +69,24 @@ class CDataAreaRank;
 class CDataAreaRankUpQuestInfo;
 class CDataAreaSpotSet;
 class CDataAreaWarpPoint;
+class CDataArisenProfile;
 class CDataBattleResultInfo;
+class CDataBazaarCharacterInfo;
+class CDataBazaarItemHistoryInfo;
+class CDataBazaarItemInfo;
+class CDataBazaarItemNumOfExhibitionInfo;
 class CDataBorderRewardRecord;
 class CDataBorderSupplyItem;
 class CDataBoxGachaInfo;
 class CDataBoxGachaItemInfo;
 class CDataCAPtoGPChangeElement;
+class CDataCharacterEquipData;
 class CDataCharacterJobData;
 class CDataCharacterLevelParam;
 class CDataCharacterListElement;
 class CDataCharacterMsgSet;
+class CDataCharacterName;
+class CDataCharacterReleaseElement;
 class CDataClanConciergeInfo;
 class CDataClanDungeonInfo;
 class CDataClanFunctionInfo;
@@ -88,12 +105,14 @@ class CDataClanShopInfo;
 class CDataClanShopLineupName;
 class CDataClanValueInfo;
 class CDataCommonU32;
+class CDataCommonU8;
 class CDataCommunicationShortCut;
 class CDataCommunityCharacterBaseInfo;
 class CDataContentsPlayEnd;
 class CDataContextAcquirementData;
 class CDataContextNormalSkillData;
 class CDataContextSetBase;
+class CDataContextSetInfo;
 class CDataCraftPawnList;
 class CDataCraftProduct;
 class CDataCraftProductInfo;
@@ -108,29 +127,43 @@ class CDataCycleContentsPlayEnd;
 class CDataCycleContentsReward;
 class CDataCycleContentsRewardRecord;
 class CDataCycleContentsStateList;
+class CDataDLCLineupBought;
+class CDataDLCLineupHistory;
 class CDataDeliveredItemRecord;
 class CDataDispelBaseItem;
 class CDataDispelCategoryInfo;
 class CDataDispelResultInfo;
+class CDataDropItemSetInfo;
+class CDataEditInfo;
+class CDataEditParam;
+class CDataEditParts;
 class CDataEncounterPawnInfo;
 class CDataEndContentsGroup;
 class CDataEntryItem;
 class CDataEntryMemberData;
+class CDataEquipBindNotice;
+class CDataEquipElementParam;
+class CDataEquipItemInfo;
 class CDataEquipJobItem;
+class CDataEquipPreset;
 class CDataExpiredQuestList;
 class CDataFavoriteWarpPoint;
 class CDataFortDefenseNoticeData;
 class CDataFortDefensePlayStartData;
 class CDataFreeRentalPawnList;
 class CDataFriendInfo;
+class CDataFurnitureLayout;
 class CDataGPCourseAvailable;
 class CDataGPCourseValid;
 class CDataGPDetail;
+class CDataGPEditVoiceBuyHistory;
 class CDataGPPeriod;
 class CDataGPShopBuyHistoryElement;
 class CDataGPShopDisplayLineup;
 class CDataGPShopDisplayType;
 class CDataGPShopLineupElementCourse;
+class CDataGPShopLineupElementItem;
+class CDataGPShopLineupElementPawn;
 class CDataGachaInfo;
 class CDataGachaItemInfo;
 class CDataGameItemStorageInfo;
@@ -141,34 +174,53 @@ class CDataGameTimeBaseInfo;
 class CDataGatheringItemElement;
 class CDataGatheringItemGetRequest;
 class CDataGoodsParam;
+class CDataHistoryElement;
 class CDataItemEquipElement;
 class CDataItemList;
 class CDataItemSort;
 class CDataItemUpdateResult;
+class CDataJobBaseInfo;
 class CDataJobChangeInfo;
 class CDataJobOrbDevoteElement;
 class CDataJobOrbTreeStatus;
 class CDataJobPlayPoint;
 class CDataJobValueShopItem;
+class CDataJumpLocation;
+class CDataLayoutEnemyData;
+class CDataLayoutItemData;
 class CDataLearnNormalSkillParam;
 class CDataLearnedAcquirementParam;
+class CDataLightQuestClearList;
 class CDataLightQuestList;
 class CDataLightQuestOrderList;
 class CDataLoadingInfoSchedules;
+class CDataLobbyContextPlayer;
 class CDataLobbyMemberInfo;
 class CDataLostPawnList;
 class CDataLotQuestList;
 class CDataLotQuestOrderList;
+class CDataMDataCraftGradeupRecipe;
+class CDataMDataCraftRecipe;
 class CDataMailAttachmentInfo;
 class CDataMailAttachmentList;
 class CDataMailInfo;
 class CDataMailTextInfo;
+class CDataMainQuestCompleteInfo;
 class CDataMainQuestList;
 class CDataMainQuestOrderList;
+class CDataMasterInfo;
 class CDataMatchingProfile;
+class CDataMoonSchedule;
+class CDataMyRoomOption;
+class CDataNGWordInfo;
+class CDataNamedEnemyParamClient;
+class CDataNoraPawnInfo;
 class CDataNormalSkillParam;
 class CDataOmData;
+class CDataOrbElement;
+class CDataOrbElementGroup;
 class CDataOrbGainExtendParam;
+class CDataOrbPageStatus;
 class CDataOrderConditionInfo;
 class CDataPartnerPawnData;
 class CDataPartnerPawnReward;
@@ -198,6 +250,7 @@ class CDataQuestFlag;
 class CDataQuestId;
 class CDataQuestIdScheduleId;
 class CDataQuestLayoutFlag;
+class CDataQuestListDetail;
 class CDataQuestPartyBonusInfo;
 class CDataQuestPhaseEvent;
 class CDataQuestPointDetail;
@@ -205,6 +258,7 @@ class CDataQuestProcessState;
 class CDataQuestProgressWork;
 class CDataRaidBossNoticeData;
 class CDataRaidBossPlayStartData;
+class CDataRaidBossUnitInfo;
 class CDataRandomStageInfo;
 class CDataRankingBoard;
 class CDataRankingData;
@@ -220,6 +274,7 @@ class CDataRewardBoxRecord;
 class CDataRewardItemInfo;
 class CDataS2CCharacterEquipInfo;
 class CDataS2CPawnEquipInfo;
+class CDataSameLetterInfo;
 class CDataScreenShotCategory;
 class CDataSetAcquirementParam;
 class CDataSetQuestInfoList;
@@ -227,13 +282,16 @@ class CDataSetQuestList;
 class CDataSetQuestOpenDate;
 class CDataSetQuestOrderList;
 class CDataShortCut;
+class CDataSkillLevelBaseParam;
 class CDataSkillParam;
 class CDataSpotInfo;
 class CDataStageInfo;
 class CDataStageLayoutID;
 class CDataStampBonusDaily;
 class CDataStampBonusTotal;
+class CDataStatusInfo;
 class CDataSupportRate;
+class CDataSwitchStorage;
 class CDataTimeGainQuestPlayStartData;
 class CDataTimeLimitedQuestList;
 class CDataTimeLimitedQuestOrderList;
@@ -242,11 +300,17 @@ class CDataTutorialQuestList;
 class CDataTutorialQuestOrderList;
 class CDataUIListCommand;
 class CDataUIListElement;
+class CDataURLInfo;
+class CDataUnlockEditParam;
+class CDataUnlockEmotion;
+class CDataUnlockPawnTalk;
 class CDataUpdateMatchingProfileInfo;
 class CDataUpdateWalletPoint;
 class CDataUseSupportPointRes;
 class CDataWarpPoint;
 class CDataWeatherForecast;
+class CDataWeatherLoop;
+class CDataWeatherSchedule;
 class CDataWorldInfo;
 class CDataWorldManageQuestList;
 class CDataWorldManageQuestOrderList;
@@ -267,24 +331,39 @@ namespace nSessionManager { class cNetSessionManager; }
 class sCraftManager;
 class sNetworkExt;
 class sQuestManagerExt;
+class uGUIArisenCardPop;
 class uGUIClanScout;
 class uGUIClanSearch;
 class uGUIGPShop;
 
 // Declarations
+namespace nUserSession { class CPacket_S2C_ABILITY_SET_NTC; }
+namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC; }
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC; }
 namespace nUserSession { class CPacket_S2C_ACHIEVEMENT_REWARD_RECEIVE_RES; }
+namespace nUserSession { class CPacket_S2C_ACQUIREMENT_LEARN_NTC; }
 namespace nUserSession { class CPacket_S2C_ACTIVATE_JOB_ORDER_RES; }
 namespace nUserSession { class CPacket_S2C_ADD_BLACK_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_APPLY_FRIEND_NOTICE; }
+namespace nUserSession { class CPacket_S2C_APPLY_FRIEND_RES; }
+namespace nUserSession { class CPacket_S2C_APPROVE_FRIEND_NOTICE; }
+namespace nUserSession { class CPacket_S2C_APPROVE_FRIEND_RES; }
 namespace nUserSession { class CPacket_S2C_AREA_CHANGE_RES; }
+namespace nUserSession { class CPacket_S2C_AREA_POINT_UP_NTC; }
+namespace nUserSession { class CPacket_S2C_AREA_RANK_UP_READY_NTC; }
 namespace nUserSession { class CPacket_S2C_AREA_RANK_UP_RES; }
 namespace nUserSession { class CPacket_S2C_AREA_WARP_RES; }
 namespace nUserSession { class CPacket_S2C_BAZAAR_CANCEL_RES; }
 namespace nUserSession { class CPacket_S2C_BAZAAR_EXHIBIT_RES; }
+namespace nUserSession { class CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES; }
+namespace nUserSession { class CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES; }
+namespace nUserSession { class CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES; }
+namespace nUserSession { class CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES; }
 namespace nUserSession { class CPacket_S2C_BAZAAR_PROCEEDS_NTC; }
 namespace nUserSession { class CPacket_S2C_BAZAAR_PROCEEDS_RES; }
@@ -297,19 +376,28 @@ namespace nUserSession { class CPacket_S2C_BOX_GACHA_RESET_RES; }
 namespace nUserSession { class CPacket_S2C_BUY_AREA_QUEST_HINT_RES; }
 namespace nUserSession { class CPacket_S2C_BUY_SHOP_GOODS_RES; }
 namespace nUserSession { class CPacket_S2C_CANCEL_CRAFT_RES; }
+namespace nUserSession { class CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES; }
 namespace nUserSession { class CPacket_S2C_CANCEL_PRIORITY_QUEST_RES; }
 namespace nUserSession { class CPacket_S2C_CHANGE_CAP_TO_GP_RES; }
+namespace nUserSession { class CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES; }
 namespace nUserSession { class CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES; }
+namespace nUserSession { class CPacket_S2C_CHANGE_JOB_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHANGE_JOB_RES; }
+namespace nUserSession { class CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHANGE_PAWN_EQUIP_RES; }
+namespace nUserSession { class CPacket_S2C_CHANGE_PAWN_JOB_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHANGE_PAWN_JOB_RES; }
 namespace nUserSession { class CPacket_S2C_CHANGE_PAWN_STORAGE_EQUIP_RES; }
 namespace nUserSession { class CPacket_S2C_CHARACTER_ADD_WALLET_POINT_NOTICE; }
+namespace nUserSession { class CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES; }
 namespace nUserSession { class CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE; }
+namespace nUserSession { class CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES; }
@@ -319,6 +407,7 @@ namespace nUserSession { class CPacket_S2C_CHARACTER_SEARCH_RES; }
 namespace nUserSession { class CPacket_S2C_CHARACTER_SUB_WALLET_POINT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CHARGE_REVIVE_POINT_RES; }
 namespace nUserSession { class CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_APPROVE_JOIN_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_BASE_GET_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_BASE_RELEASE_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC; }
@@ -326,6 +415,7 @@ namespace nUserSession { class CPacket_S2C_CLAN_CANCEL_JOIN_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_CANCEL_JOIN_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_CREATE_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_EXPEL_MEMBER_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_GET_HISTORY_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_GET_INFO_RES; }
@@ -334,21 +424,34 @@ namespace nUserSession { class CPacket_S2C_CLAN_GET_MEMBER_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_GET_MEMBER_NUM_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_GET_MY_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_INVITE_ACCEPT_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_INVITE_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_INVITE_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_JOIN_DISAPPROVE_NTC; }
+namespace nUserSession { class CPacket_S2C_CLAN_JOIN_MEMBER_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_JOIN_NOTICE; }
+namespace nUserSession { class CPacket_S2C_CLAN_JOIN_SELF_NTC; }
+namespace nUserSession { class CPacket_S2C_CLAN_LEAVE_MEMBER_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_LEAVE_MEMBER_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_LEVEL_UP_NTC; }
+namespace nUserSession { class CPacket_S2C_CLAN_NEGOTIATE_MASTER_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_POINT_ADD_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_QUEST_CLEAR_NTC; }
+namespace nUserSession { class CPacket_S2C_CLAN_REGISTER_JOIN_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_REGISTER_JOIN_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES; }
@@ -356,11 +459,16 @@ namespace nUserSession { class CPacket_S2C_CLAN_SEARCH_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SETTING_UPDATE_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_SET_MEMBER_RANK_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_CLAN_UPDATE_NTC; }
 namespace nUserSession { class CPacket_S2C_CLAN_UPDATE_RES; }
 namespace nUserSession { class CPacket_S2C_CLIENT_CHALLENGE_RES; }
+namespace nUserSession { class CPacket_S2C_COG_GET_ID_RES; }
+namespace nUserSession { class CPacket_S2C_COG_GET_SESSION_KEY_RES; }
 namespace nUserSession { class CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES; }
 namespace nUserSession { class CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES; }
 namespace nUserSession { class CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES; }
@@ -372,6 +480,8 @@ namespace nUserSession { class CPacket_S2C_CRAFT_SKILL_ANALYZE_RES; }
 namespace nUserSession { class CPacket_S2C_CRAFT_SKILL_UP_RES; }
 namespace nUserSession { class CPacket_S2C_CRAFT_TIME_SAVE_RES; }
 namespace nUserSession { class CPacket_S2C_CREATE_MYPAWN_RES; }
+namespace nUserSession { class CPacket_S2C_CRITICAL_ERROR_NOTICE; }
+namespace nUserSession { class CPacket_S2C_CUSTOM_SKILL_SET_NTC; }
 namespace nUserSession { class CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CYCLE_CONTENTS_END_NOTICE; }
 namespace nUserSession { class CPacket_S2C_CYCLE_CONTENTS_PLAY_END_NOTICE; }
@@ -391,16 +501,31 @@ namespace nUserSession { class CPacket_S2C_DELETE_FAVORITE_PAWN_RES; }
 namespace nUserSession { class CPacket_S2C_DELETE_MYPAWN_RES; }
 namespace nUserSession { class CPacket_S2C_DELIVER_ITEM_NOTICE; }
 namespace nUserSession { class CPacket_S2C_DELIVER_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_DLC_GET_BOUGHT_RES; }
+namespace nUserSession { class CPacket_S2C_DLC_GET_HISTORY_RES; }
+namespace nUserSession { class CPacket_S2C_DLC_USE_RES; }
 namespace nUserSession { class CPacket_S2C_EJECTION_NTC; }
 namespace nUserSession { class CPacket_S2C_ENCOUNTER_PAWN_NOTICE; }
 namespace nUserSession { class CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES; }
+namespace nUserSession { class CPacket_S2C_ENEMY_BREAK_REGION_NTC; }
+namespace nUserSession { class CPacket_S2C_ENEMY_DIE_NTC; }
+namespace nUserSession { class CPacket_S2C_ENEMY_GROUP_DESTROY_NTC; }
+namespace nUserSession { class CPacket_S2C_ENEMY_GROUP_RESET_NOTICE; }
 namespace nUserSession { class CPacket_S2C_ENEMY_KILL_RES; }
+namespace nUserSession { class CPacket_S2C_ENEMY_REPOP_NOTICE; }
 namespace nUserSession { class CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC; }
+namespace nUserSession { class CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NOTICE; }
+namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_CREATE_RES; }
+namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_ENTRY_RES; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES; }
+namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_NTC; }
+namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_RES; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES; }
+namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_MYSELF_RES; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_RES; }
+namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_NTC; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES; }
@@ -408,9 +533,13 @@ namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES; }
+namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_NOTICE; }
+namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_RES; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE; }
+namespace nUserSession { class CPacket_S2C_EQUIP_BIND_NOTICE; }
+namespace nUserSession { class CPacket_S2C_EVENT_CODE_INPUT_RES; }
 namespace nUserSession { class CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES; }
 namespace nUserSession { class CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES; }
 namespace nUserSession { class CPacket_S2C_EXTEND_EQUIP_SLOT_NTC; }
@@ -418,6 +547,7 @@ namespace nUserSession { class CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC; }
 namespace nUserSession { class CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC; }
 namespace nUserSession { class CPacket_S2C_FAVORITE_WARP_RES; }
 namespace nUserSession { class CPacket_S2C_FINISH_CRAFT_NOTICE; }
+namespace nUserSession { class CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FINISH_LANTERN_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE; }
@@ -425,20 +555,27 @@ namespace nUserSession { class CPacket_S2C_FORT_DEFENSE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FORT_DEFENSE_PLAY_START_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE; }
 namespace nUserSession { class CPacket_S2C_FURNITURE_LAYOUT_RES; }
+namespace nUserSession { class CPacket_S2C_FURNITURE_LIST_GET_RES; }
 namespace nUserSession { class CPacket_S2C_GACHA_BUY_RES; }
 namespace nUserSession { class CPacket_S2C_GACHA_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GAIN_CHARACTER_PARAM_NTC; }
 namespace nUserSession { class CPacket_S2C_GAIN_PAWN_PARAM_NTC; }
 namespace nUserSession { class CPacket_S2C_GAME_TIME_BASEINFO_NTC; }
+namespace nUserSession { class CPacket_S2C_GAME_TIME_GET_BASEINFO_RES; }
+namespace nUserSession { class CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE; }
 namespace nUserSession { class CPacket_S2C_GET_ABILITY_COST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_AREA_BONUS_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_AREA_INFO_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_AREA_MASTER_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_GET_AREA_POINT_DEBUG_RES; }
 namespace nUserSession { class CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_AREA_RELEASE_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_AREA_SUPPLY_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_GET_AREA_SUPPLY_RES; }
 namespace nUserSession { class CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES; }
@@ -447,16 +584,28 @@ namespace nUserSession { class CPacket_S2C_GET_BLACK_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CAP_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC; }
 namespace nUserSession { class CPacket_S2C_GET_CHARACTER_BINARY_STATUS_NTC; }
+namespace nUserSession { class CPacket_S2C_GET_CHARACTER_BIN_SAVEDATA_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC; }
+namespace nUserSession { class CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC; }
+namespace nUserSession { class CPacket_S2C_GET_CHARACTER_PROFILE_RES; }
+namespace nUserSession { class CPacket_S2C_GET_CHARACTER_SKILL_INFO_NTC; }
+namespace nUserSession { class CPacket_S2C_GET_CHARACTER_STATUS_NTC; }
 namespace nUserSession { class CPacket_S2C_GET_CHEAT_INFO_REQ; }
 namespace nUserSession { class CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CRAFT_IR_COLLECTION_VALUE_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CRAFT_PRODUCT_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES; }
+namespace nUserSession { class CPacket_S2C_GET_CRAFT_RECIPE_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CRAFT_SETTING_RES; }
+namespace nUserSession { class CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_CURRENT_SET_SKILL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES; }
@@ -468,7 +617,11 @@ namespace nUserSession { class CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_DISPEL_ITEM_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES; }
 namespace nUserSession { class CPacket_S2C_GET_DROP_ITEM_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_DROP_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_END_CONTENTS_GROUP_RES; }
+namespace nUserSession { class CPacket_S2C_GET_ENEMY_SET_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_EQUIP_PRESET_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_EXP_MODE_RES; }
 namespace nUserSession { class CPacket_S2C_GET_FAVORITE_PAWN_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES; }
@@ -480,19 +633,25 @@ namespace nUserSession { class CPacket_S2C_GET_GATHERING_ITEM_RES; }
 namespace nUserSession { class CPacket_S2C_GET_GP_DETAIL_RES; }
 namespace nUserSession { class CPacket_S2C_GET_GP_PERIOD_RES; }
 namespace nUserSession { class CPacket_S2C_GET_GP_RES; }
+namespace nUserSession { class CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES; }
 namespace nUserSession { class CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES; }
+namespace nUserSession { class CPacket_S2C_GET_ITEM_SET_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_ITEM_SORTDATA_BIN_RES; }
 namespace nUserSession { class CPacket_S2C_GET_ITEM_STORAGE_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_GET_JOB_CHANGE_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LEARNED_SKILL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LEGEND_PAWN_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LIGHT_QUEST_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_NOTICE; }
+namespace nUserSession { class CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LOST_PAWN_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_LOT_QUEST_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE; }
 namespace nUserSession { class CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE; }
 namespace nUserSession { class CPacket_S2C_GET_MAIN_QUEST_LIST_RES; }
@@ -500,6 +659,8 @@ namespace nUserSession { class CPacket_S2C_GET_MATCHING_PROFILE_RES; }
 namespace nUserSession { class CPacket_S2C_GET_MESSAGE_SET_RES; }
 namespace nUserSession { class CPacket_S2C_GET_MYPAWN_DATA_RES; }
 namespace nUserSession { class CPacket_S2C_GET_MYPAWN_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES; }
+namespace nUserSession { class CPacket_S2C_GET_NORA_PAWN_DATA_RES; }
 namespace nUserSession { class CPacket_S2C_GET_NORA_PAWN_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES; }
 namespace nUserSession { class CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES; }
@@ -511,20 +672,25 @@ namespace nUserSession { class CPacket_S2C_GET_PARTY_PAWN_DATA_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_ABILITY_COST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_EQUIP_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_HISTORY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_PROFILE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC; }
 namespace nUserSession { class CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES; }
+namespace nUserSession { class CPacket_S2C_GET_PLAY_POINT_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_POST_ITEM_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PRESET_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_PRIORITY_QUEST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_QUEST_DETAIL_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES; }
 namespace nUserSession { class CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES; }
@@ -532,12 +698,15 @@ namespace nUserSession { class CPacket_S2C_GET_REAL_TIME_RES; }
 namespace nUserSession { class CPacket_S2C_GET_RECENT_CHARACTER_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_REGISTERED_PAWN_DATA_RES; }
+namespace nUserSession { class CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES; }
 namespace nUserSession { class CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_RELEASE_SKILL_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_RENTED_PAWN_DATA_RES; }
 namespace nUserSession { class CPacket_S2C_GET_RENTED_PAWN_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_RETURN_LOCATION_RES; }
 namespace nUserSession { class CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES; }
 namespace nUserSession { class CPacket_S2C_GET_REVIVE_POINT_RES; }
 namespace nUserSession { class CPacket_S2C_GET_REWARD_BOX_ITEM_RES; }
@@ -560,11 +729,15 @@ namespace nUserSession { class CPacket_S2C_GET_STAY_PRICE_RES; }
 namespace nUserSession { class CPacket_S2C_GET_STORAGE_ITEM_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_UNLOCKED_EDIT_PARTS_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GET_USER_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_WARP_POINT_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GET_WORLD_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE; }
 namespace nUserSession { class CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_END_NTC; }
+namespace nUserSession { class CPacket_S2C_GP_COURSE_END_PARTY_NTC; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_EXTEND_NTC; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES; }
@@ -573,13 +746,18 @@ namespace nUserSession { class CPacket_S2C_GP_COURSE_START_NTC; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_START_PARTY_NTC; }
 namespace nUserSession { class CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES; }
 namespace nUserSession { class CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES; }
+namespace nUserSession { class CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES; }
+namespace nUserSession { class CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES; }
 namespace nUserSession { class CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES; }
+namespace nUserSession { class CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES; }
+namespace nUserSession { class CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES; }
 namespace nUserSession { class CPacket_S2C_GROUP_CHAT_BREAKUP_GROUP_NTC; }
 namespace nUserSession { class CPacket_S2C_GROUP_CHAT_GET_MEMBER_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_NTC; }
@@ -588,7 +766,9 @@ namespace nUserSession { class CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_NTC; }
 namespace nUserSession { class CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES; }
 namespace nUserSession { class CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_NTC; }
 namespace nUserSession { class CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_RES; }
+namespace nUserSession { class CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES; }
 namespace nUserSession { class CPacket_S2C_INSTANCE_AREA_RESET_NTC; }
+namespace nUserSession { class CPacket_S2C_JOB_ORDER_COMPLETE_NTC; }
 namespace nUserSession { class CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES; }
 namespace nUserSession { class CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES; }
 namespace nUserSession { class CPacket_S2C_JOIN_LOBBY_QUEST_INFO_NOTICE; }
@@ -597,6 +777,7 @@ namespace nUserSession { class CPacket_S2C_JOIN_PARTY_PAWN_NOTICE; }
 namespace nUserSession { class CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES; }
 namespace nUserSession { class CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE; }
 namespace nUserSession { class CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES; }
+namespace nUserSession { class CPacket_S2C_LEADER_WARP_NTC; }
 namespace nUserSession { class CPacket_S2C_LEARN_ABILITY_RES; }
 namespace nUserSession { class CPacket_S2C_LEARN_NORMAL_SKILL_RES; }
 namespace nUserSession { class CPacket_S2C_LEARN_PAWN_ABILITY_RES; }
@@ -605,10 +786,12 @@ namespace nUserSession { class CPacket_S2C_LEARN_PAWN_SKILL_RES; }
 namespace nUserSession { class CPacket_S2C_LEARN_SKILL_RES; }
 namespace nUserSession { class CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES; }
 namespace nUserSession { class CPacket_S2C_LOADING_GET_INFO_RES; }
+namespace nUserSession { class CPacket_S2C_LOBBY_CHAT_MSG_NOTICE; }
 namespace nUserSession { class CPacket_S2C_LOBBY_CHAT_MSG_RES; }
 namespace nUserSession { class CPacket_S2C_LOBBY_JOIN_RES; }
 namespace nUserSession { class CPacket_S2C_LOBBY_LEAVE_RES; }
 namespace nUserSession { class CPacket_S2C_LOGIN_RES; }
+namespace nUserSession { class CPacket_S2C_LOGOUT_RES; }
 namespace nUserSession { class CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES; }
 namespace nUserSession { class CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES; }
 namespace nUserSession { class CPacket_S2C_LOST_PAWN_REVIVE_RES; }
@@ -619,11 +802,20 @@ namespace nUserSession { class CPacket_S2C_MAIL_GET_LIST_FOOT_RES; }
 namespace nUserSession { class CPacket_S2C_MAIL_GET_LIST_HEAD_RES; }
 namespace nUserSession { class CPacket_S2C_MAIL_GET_TEXT_RES; }
 namespace nUserSession { class CPacket_S2C_MAIL_SEND_NTC; }
+namespace nUserSession { class CPacket_S2C_MAIL_SEND_RES; }
+namespace nUserSession { class CPacket_S2C_MASTER_CHANGE_NOTICE; }
+namespace nUserSession { class CPacket_S2C_MASTER_INFO_NOTICE; }
+namespace nUserSession { class CPacket_S2C_MASTER_THROW_NOTICE; }
 namespace nUserSession { class CPacket_S2C_MASTER_THROW_RES; }
+namespace nUserSession { class CPacket_S2C_MOON_LOOP_SCHEDULE_NTC; }
 namespace nUserSession { class CPacket_S2C_MOVE_IN_SERVER_RES; }
 namespace nUserSession { class CPacket_S2C_MOVE_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_MOVE_OUT_SERVER_RES; }
 namespace nUserSession { class CPacket_S2C_MY_ROOM_BGM_UPDATE_RES; }
 namespace nUserSession { class CPacket_S2C_MY_ROOM_RELEASE_RES; }
+namespace nUserSession { class CPacket_S2C_NETCAFE_ERROR_NTC; }
+namespace nUserSession { class CPacket_S2C_NG_WORD_GET_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_NORMAL_SKILL_LEARN_NTC; }
 namespace nUserSession { class CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE; }
 namespace nUserSession { class CPacket_S2C_OPEN_UI_NTC; }
 namespace nUserSession { class CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES; }
@@ -635,6 +827,7 @@ namespace nUserSession { class CPacket_S2C_PARTY_CHANGE_LEADER_NTC; }
 namespace nUserSession { class CPacket_S2C_PARTY_CHANGE_LEADER_RES; }
 namespace nUserSession { class CPacket_S2C_PARTY_CREATE_RES; }
 namespace nUserSession { class CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES; }
+namespace nUserSession { class CPacket_S2C_PARTY_INVITE_ACCEPT_NTC; }
 namespace nUserSession { class CPacket_S2C_PARTY_INVITE_CANCEL_NTC; }
 namespace nUserSession { class CPacket_S2C_PARTY_INVITE_CANCEL_RES; }
 namespace nUserSession { class CPacket_S2C_PARTY_INVITE_CHARACTER_RES; }
@@ -657,6 +850,7 @@ namespace nUserSession { class CPacket_S2C_PARTY_MEMBER_KICK_NTC; }
 namespace nUserSession { class CPacket_S2C_PARTY_MEMBER_KICK_RES; }
 namespace nUserSession { class CPacket_S2C_PARTY_MEMBER_LOST_NTC; }
 namespace nUserSession { class CPacket_S2C_PARTY_MEMBER_SESSION_STATUS_NTC; }
+namespace nUserSession { class CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC; }
 namespace nUserSession { class CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES; }
 namespace nUserSession { class CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE; }
@@ -669,13 +863,18 @@ namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES; }
+namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES; }
+namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_EXPEDITION_SALLY_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_GOLDEN_REVIVE_RES; }
+namespace nUserSession { class CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES; }
+namespace nUserSession { class CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_LIKABILITY_REWARD_LIST_GET_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_LIKABILITY_UP_NTC; }
 namespace nUserSession { class CPacket_S2C_PAWN_LOST_NOTICE; }
@@ -683,6 +882,7 @@ namespace nUserSession { class CPacket_S2C_PAWN_LOST_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC; }
 namespace nUserSession { class CPacket_S2C_PAWN_POINT_REVIVE_RES; }
 namespace nUserSession { class CPacket_S2C_PAWN_REVIVE_NOTICE; }
+namespace nUserSession { class CPacket_S2C_PHOTO_GET_AUTH_ADDRESS_RES; }
 namespace nUserSession { class CPacket_S2C_PING_RES; }
 namespace nUserSession { class CPacket_S2C_PLAY_ADD_TIMER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PLAY_END_NOTICE; }
@@ -693,6 +893,7 @@ namespace nUserSession { class CPacket_S2C_PLAY_ENTRY_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PLAY_ENTRY_RES; }
 namespace nUserSession { class CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES; }
+namespace nUserSession { class CPacket_S2C_PLAY_INTERRUPT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PLAY_INTERRUPT_RES; }
 namespace nUserSession { class CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PLAY_RESTART_TIMER_NOTICE; }
@@ -701,12 +902,14 @@ namespace nUserSession { class CPacket_S2C_PLAY_START_TIMER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PLAY_START_TIMER_RES; }
 namespace nUserSession { class CPacket_S2C_PLAY_STOP_TIMER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PLAY_TIMEUP_NOTICE; }
+namespace nUserSession { class CPacket_S2C_POP_DROP_ITEM_NOTICE; }
 namespace nUserSession { class CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES; }
 namespace nUserSession { class CPacket_S2C_QUEST_CANCEL_NOTICE; }
 namespace nUserSession { class CPacket_S2C_QUEST_CANCEL_RES; }
 namespace nUserSession { class CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES; }
 namespace nUserSession { class CPacket_S2C_QUEST_COMPLETE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_QUEST_ENABLE_NOTICE; }
+namespace nUserSession { class CPacket_S2C_QUEST_LOG_INFO_RES; }
 namespace nUserSession { class CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE; }
 namespace nUserSession { class CPacket_S2C_QUEST_ORDER_NOTICE; }
 namespace nUserSession { class CPacket_S2C_QUEST_ORDER_RES; }
@@ -724,6 +927,7 @@ namespace nUserSession { class CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC; }
 namespace nUserSession { class CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES; }
 namespace nUserSession { class CPacket_S2C_QUICK_PARTY_REGISTER_RES; }
 namespace nUserSession { class CPacket_S2C_QUICK_PARTY_UNREADY_NTC; }
+namespace nUserSession { class CPacket_S2C_RAID_BOSS_INFO_NOTICE; }
 namespace nUserSession { class CPacket_S2C_RAID_BOSS_NOTICE; }
 namespace nUserSession { class CPacket_S2C_RAID_BOSS_PLAY_START_NOTICE; }
 namespace nUserSession { class CPacket_S2C_RAID_BOSS_POINT_NOTICE; }
@@ -736,15 +940,24 @@ namespace nUserSession { class CPacket_S2C_RANKING_DATA_RANK_RES; }
 namespace nUserSession { class CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES; }
 namespace nUserSession { class CPacket_S2C_REGISTER_FAVORITE_WARP_RES; }
 namespace nUserSession { class CPacket_S2C_REGISTER_PRESET_ABILITY_RES; }
+namespace nUserSession { class CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES; }
+namespace nUserSession { class CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES; }
+namespace nUserSession { class CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES; }
+namespace nUserSession { class CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES; }
 namespace nUserSession { class CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_RELEASE_ORB_ELEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE; }
+namespace nUserSession { class CPacket_S2C_RELEASE_WARP_POINT_RES; }
 namespace nUserSession { class CPacket_S2C_REMOVE_BLACK_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_REMOVE_FRIEND_NTC; }
+namespace nUserSession { class CPacket_S2C_REMOVE_FRIEND_RES; }
 namespace nUserSession { class CPacket_S2C_RENTAL_PAWN_LOST_NOTICE; }
 namespace nUserSession { class CPacket_S2C_RENTAL_PAWN_LOST_RES; }
 namespace nUserSession { class CPacket_S2C_RENT_REGISTERED_PAWN_RES; }
 namespace nUserSession { class CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES; }
+namespace nUserSession { class CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES; }
+namespace nUserSession { class CPacket_S2C_RESERVE_SERVER_RES; }
 namespace nUserSession { class CPacket_S2C_RESET_CRAFTPOINT_RES; }
 namespace nUserSession { class CPacket_S2C_RESET_JOBPOINT_RES; }
 namespace nUserSession { class CPacket_S2C_RETURN_RENTED_PAWN_RES; }
@@ -759,10 +972,14 @@ namespace nUserSession { class CPacket_S2C_SERVER_UI_COMMAND_RES; }
 namespace nUserSession { class CPacket_S2C_SESSION_STATUS_NTC; }
 namespace nUserSession { class CPacket_S2C_SET_ABILITY_RES; }
 namespace nUserSession { class CPacket_S2C_SET_ARISEN_PROFILE_RES; }
+namespace nUserSession { class CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC; }
 namespace nUserSession { class CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES; }
 namespace nUserSession { class CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_SET_CONTEXT_BASE_NOTICE; }
+namespace nUserSession { class CPacket_S2C_SET_CONTEXT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_SET_FAVORITE_PAWN_RES; }
+namespace nUserSession { class CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES; }
+namespace nUserSession { class CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES; }
 namespace nUserSession { class CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES; }
 namespace nUserSession { class CPacket_S2C_SET_MATCHING_PROFILE_RES; }
 namespace nUserSession { class CPacket_S2C_SET_MESSAGE_SET_RES; }
@@ -775,10 +992,15 @@ namespace nUserSession { class CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES; }
 namespace nUserSession { class CPacket_S2C_SET_ONLINE_STATUS_RES; }
 namespace nUserSession { class CPacket_S2C_SET_PAWN_ABILITY_RES; }
+namespace nUserSession { class CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES; }
 namespace nUserSession { class CPacket_S2C_SET_PAWN_PROFILE_RES; }
 namespace nUserSession { class CPacket_S2C_SET_PAWN_SKILL_RES; }
+namespace nUserSession { class CPacket_S2C_SET_PRESET_ABILITY_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_SET_PRESET_ABILITY_NAME_RES; }
+namespace nUserSession { class CPacket_S2C_SET_PRESET_ABILITY_NTC; }
+namespace nUserSession { class CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC; }
+namespace nUserSession { class CPacket_S2C_SET_PRIORITY_QUEST_NOTICE; }
 namespace nUserSession { class CPacket_S2C_SET_PRIORITY_QUEST_RES; }
 namespace nUserSession { class CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE; }
 namespace nUserSession { class CPacket_S2C_SET_RAID_BOSS_INFO_RES; }
@@ -788,8 +1010,12 @@ namespace nUserSession { class CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES; }
 namespace nUserSession { class CPacket_S2C_STAMP_BONUS_CHECK_RES; }
 namespace nUserSession { class CPacket_S2C_STAMP_BONUS_GET_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_STAMP_BONUS_RECIEVE_RES; }
+namespace nUserSession { class CPacket_S2C_START_ATTACH_ELEMENT_RES; }
 namespace nUserSession { class CPacket_S2C_START_CRAFT_RES; }
+namespace nUserSession { class CPacket_S2C_START_DEATH_PENALTY_NOTICE; }
 namespace nUserSession { class CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE; }
+namespace nUserSession { class CPacket_S2C_START_DETACH_ELEMENT_RES; }
+namespace nUserSession { class CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES; }
 namespace nUserSession { class CPacket_S2C_START_EQUIP_GRADE_UP_RES; }
 namespace nUserSession { class CPacket_S2C_START_LANTERN_NOTICE; }
 namespace nUserSession { class CPacket_S2C_START_LANTERN_OTHER_NOTICE; }
@@ -797,6 +1023,7 @@ namespace nUserSession { class CPacket_S2C_STAY_INN_RES; }
 namespace nUserSession { class CPacket_S2C_STAY_PENALTY_HEAL_INN_RES; }
 namespace nUserSession { class CPacket_S2C_SUPPORT_POINT_GET_RATE_RES; }
 namespace nUserSession { class CPacket_S2C_SUPPORT_POINT_USE_RES; }
+namespace nUserSession { class CPacket_S2C_SWITCH_STORAGE_NTC; }
 namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_DELETE_RES; }
 namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES; }
 namespace nUserSession { class CPacket_S2C_SYSTEM_MAIL_GET_ITEM_RES; }
@@ -812,19 +1039,27 @@ namespace nUserSession { class CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE; }
+namespace nUserSession { class CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE; }
+namespace nUserSession { class CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES; }
+namespace nUserSession { class CPacket_S2C_UPDATE_EQUIP_PRESET_RES; }
+namespace nUserSession { class CPacket_S2C_UPDATE_EXP_MODE_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE; }
+namespace nUserSession { class CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES; }
+namespace nUserSession { class CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_PAWN_REACTION_LIST_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_PAWN_REACTION_LIST_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES; }
 namespace nUserSession { class CPacket_S2C_UPDATE_PLAY_POINT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_RENTAL_PAWN_ADVENTURE_COUNT_NOTICE; }
 namespace nUserSession { class CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE; }
+namespace nUserSession { class CPacket_S2C_URL_GET_LIST_RES; }
+namespace nUserSession { class CPacket_S2C_USER_LIST_JOIN_NTC; }
 namespace nUserSession { class CPacket_S2C_USER_LIST_LEAVE_NTC; }
 namespace nUserSession { class CPacket_S2C_USER_LIST_MAX_NUM_RES; }
 namespace nUserSession { class CPacket_S2C_USE_BAG_ITEM_NOTICE; }
@@ -832,43 +1067,60 @@ namespace nUserSession { class CPacket_S2C_USE_BAG_ITEM_RES; }
 namespace nUserSession { class CPacket_S2C_USE_JOB_ITEMS_RES; }
 namespace nUserSession { class CPacket_S2C_WARP_RES; }
 namespace nUserSession { class CPacket_S2C_WEATHER_FORECAST_GET_RES; }
+namespace nUserSession { class CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC; }
 namespace nUserSession { class CPacket_S2C_WEATHER_UPDATE_NOTICE; }
 
 // Type aliases from DWARF
 using CAreaSpotSet = CDataAreaSpotSet;
+using CArisenProfile = CDataArisenProfile;
 using CBattleResultInfo = CDataBattleResultInfo;
+using CCharacterEquipData = CDataCharacterEquipData;
 using CCharacterJobData = CDataCharacterJobData;
 using CCharacterLevelParam = CDataCharacterLevelParam;
 using CCharacterListElement = CDataCharacterListElement;
+using CCharacterName = CDataCharacterName;
 using CClanConciergeInfo = CDataClanConciergeInfo;
 using CClanDungeonInfo = CDataClanDungeonInfo;
 using CClanFunctionInfo = CDataClanFunctionInfo;
+using CClanJoinRequest = CDataClanJoinRequest;
+using CClanMemberInfo = CDataClanMemberInfo;
 using CClanParam = CDataClanParam;
 using CClanPartnerPawnInfo = CDataClanPartnerPawnInfo;
+using CClanSearchResult = CDataClanSearchResult;
 using CClanShopInfo = CDataClanShopInfo;
 using CCommunityCharacterBaseInfo = CDataCommunityCharacterBaseInfo;
 using CContentsPlayEnd = CDataContentsPlayEnd;
 using CContextAcquirementData = CDataContextAcquirementData;
 using CContextNormalSkillData = CDataContextNormalSkillData;
 using CContextSetBase = CDataContextSetBase;
+using CContextSetInfo = CDataContextSetInfo;
 using CCraftProduct = CDataCraftProduct;
 using CCraftProductInfo = CDataCraftProductInfo;
 using CCurrentEquipInfo = CDataCurrentEquipInfo;
 using CCycleContentsPlayEnd = CDataCycleContentsPlayEnd;
 using CDeliveredItemRecord = CDataDeliveredItemRecord;
+using CEditInfo = CDataEditInfo;
 using CEncounterPawnInfo = CDataEncounterPawnInfo;
 using CEndContentsGroup = CDataEndContentsGroup;
 using CEntryItem = CDataEntryItem;
 using CEntryMemberData = CDataEntryMemberData;
+using CEquipPreset = CDataEquipPreset;
 using CFortDefensePlayStartData = CDataFortDefensePlayStartData;
+using CFriendInfo = CDataFriendInfo;
 using CGameSetting = CDataGameSetting;
 using CGameTime = CDataGameTime;
 using CGameTimeBaseInfo = CDataGameTimeBaseInfo;
 using CJobOrbTreeStatus = CDataJobOrbTreeStatus;
+using CJumpLocation = CDataJumpLocation;
+using CLayoutEnemyData = CDataLayoutEnemyData;
+using CLobbyContextPlayer = CDataLobbyContextPlayer;
 using CMailAttachmentList = CDataMailAttachmentList;
 using CMailInfo = CDataMailInfo;
 using CMailTextInfo = CDataMailTextInfo;
+using CMainQuestCompleteInfo = CDataMainQuestCompleteInfo;
 using CMatchingProfile = CDataMatchingProfile;
+using CMyRoomOption = CDataMyRoomOption;
+using CNoraPawnInfo = CDataNoraPawnInfo;
 using COmData = CDataOmData;
 using COrbGainExtendParam = CDataOrbGainExtendParam;
 using CPartnerPawnData = CDataPartnerPawnData;
@@ -881,20 +1133,29 @@ using CPawnInfo = CDataPawnInfo;
 using CPawnProfile = CDataPawnProfile;
 using CPawnTotalScore = CDataPawnTotalScore;
 using CPlayPointData = CDataPlayPointData;
+using CPriorityQuestSetting = CDataPriorityQuestSetting;
 using CQuestDefine = CDataQuestDefine;
+using CQuestListDetail = CDataQuestListDetail;
 using CQuestPointDetail = CDataQuestPointDetail;
 using CRaidBossPlayStartData = CDataRaidBossPlayStartData;
+using CRaidBossUnitInfo = CDataRaidBossUnitInfo;
 using CStageLayoutID = CDataStageLayoutID;
+using CStatusInfo = CDataStatusInfo;
 using CTimeGainQuestPlayStartData = CDataTimeGainQuestPlayStartData;
 using CUpdateWalletPoint = CDataUpdateWalletPoint;
 using CWorldInfo = CDataWorldInfo;
+using LightQuestClearListVec = MtTypedArray<CDataLightQuestClearList>;
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
+using OrbElementGroupVec = MtTypedArray<CDataOrbElementGroup>;
+using OrbElementVec = MtTypedArray<CDataOrbElement>;
 using StageInfoVec = MtTypedArray<CDataStageInfo>;
 using _Sizet = long unsigned int;
 using __int64_t = long int;
 using __uint64_t = long unsigned int;
 using b8 = bool;
+using f32 = float;
+using f64 = double;
 using s32 = int;
 using s64 = __int64_t;
 using size_t = _Sizet;
@@ -902,6 +1163,92 @@ using u16 = unsigned short;
 using u32 = unsigned int;
 using u64 = __uint64_t;
 using u8 = unsigned char;
+
+namespace nUserSession {
+    class CPacket_S2C_ABILITY_SET_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ABILITY_SET_NTC();
+        s32 WritePacket(CPacket*, u32, const CContextAcquirementData&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        const CContextAcquirementData& AbilityData() const;
+        CContextAcquirementData& AbilityData();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        CContextAcquirementData m_AbilityData;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x28
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataCommonU32>& AchievementIdList() const;
+        MtTypedArray<CDataCommonU32>& AchievementIdList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataCommonU32> m_AchievementIdList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
 
 namespace nUserSession {
     class CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES : public ::CPacketDataBase
@@ -1080,6 +1427,48 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataAchieveRewardCommon>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataAchieveRewardCommon>& RewardList() const;
+        MtTypedArray<CDataAchieveRewardCommon>& RewardList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataAchieveRewardCommon> m_RewardList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_ACHIEVEMENT_REWARD_RECEIVE_RES : public ::CPacketDataBase
     {
     public:
@@ -1120,6 +1509,51 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataAchieveRewardCommon> m_RecievedRewardList;  // offset: 0x10
         MtTypedArray<CDataAchieveRewardCommon> m_RewardList;  // offset: 0x30
+        bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ACQUIREMENT_LEARN_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ACQUIREMENT_LEARN_NTC();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataSkillLevelBaseParam>&, const MtTypedArray<CDataAbilityLevelBaseParam>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataSkillLevelBaseParam>& SkillParamList() const;
+        MtTypedArray<CDataSkillLevelBaseParam>& SkillParamList();
+        const MtTypedArray<CDataAbilityLevelBaseParam>& AbilityParamList() const;
+        MtTypedArray<CDataAbilityLevelBaseParam>& AbilityParamList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataSkillLevelBaseParam> m_SkillParamList;  // offset: 0x10
+        MtTypedArray<CDataAbilityLevelBaseParam> m_AbilityParamList;  // offset: 0x30
         bool m_bIsReceived;  // offset: 0x50
     public:
         static MyDTI DTI;
@@ -1220,6 +1654,180 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_APPLY_FRIEND_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_APPLY_FRIEND_NOTICE();
+        s32 WritePacket(CPacket*, const CFriendInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CFriendInfo& ApprovingFriendInfo() const;
+        CFriendInfo& ApprovingFriendInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CFriendInfo m_ApprovingFriendInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x90
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_APPLY_FRIEND_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_APPLY_FRIEND_RES();
+        s32 WritePacket(CPacket*, s32, const CFriendInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CFriendInfo& ApplingFriendInfo() const;
+        CFriendInfo& ApplingFriendInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CFriendInfo m_ApplingFriendInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x90
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_APPROVE_FRIEND_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_APPROVE_FRIEND_NOTICE();
+        s32 WritePacket(CPacket*, b8, const CFriendInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        b8 IsApproved() const;
+        const CFriendInfo& FriendInfo() const;
+        CFriendInfo& FriendInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        b8 m_bIsApproved;  // offset: 0xa
+        CFriendInfo m_FriendInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x90
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_APPROVE_FRIEND_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_APPROVE_FRIEND_RES();
+        s32 WritePacket(CPacket*, s32, const CFriendInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CFriendInfo& FriendInfo() const;
+        CFriendInfo& FriendInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CFriendInfo m_FriendInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x90
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_AREA_CHANGE_RES : public ::CPacketDataBase
     {
     public:
@@ -1262,6 +1870,99 @@ namespace nUserSession {
         b8 m_bIsBase;  // offset: 0x14
         MtTypedArray<CDataCommonU32> m_StageFeatureList;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_AREA_POINT_UP_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_AREA_POINT_UP_NTC();
+        s32 WritePacket(CPacket*, u32, u32, u32, u32, u32, b8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 AreaID() const;
+        u32 AddPoint() const;
+        u32 AddPointByCharge() const;
+        u32 TotalPoint() const;
+        u32 WeekPoint() const;
+        b8 CanRankUp() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unAreaID;  // offset: 0xc
+        u32 m_unAddPoint;  // offset: 0x10
+        u32 m_unAddPointByCharge;  // offset: 0x14
+        u32 m_unTotalPoint;  // offset: 0x18
+        u32 m_unWeekPoint;  // offset: 0x1c
+        b8 m_bCanRankUp;  // offset: 0x20
+        bool m_bIsReceived;  // offset: 0x21
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_AREA_RANK_UP_READY_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_AREA_RANK_UP_READY_NTC();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataAreaRank>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataAreaRank>& AreaRankList() const;
+        MtTypedArray<CDataAreaRank>& AreaRankList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataAreaRank> m_AreaRankList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
     };
@@ -1454,6 +2155,50 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataBazaarCharacterInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataBazaarCharacterInfo>& BazaarList() const;
+        MtTypedArray<CDataBazaarCharacterInfo>& BazaarList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataBazaarCharacterInfo> m_BazaarList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES : public ::CPacketDataBase
     {
     public:
@@ -1493,6 +2238,142 @@ namespace nUserSession {
         u32 m_unNum;  // offset: 0x10
         u32 m_unAdd;  // offset: 0x14
         bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataBazaarItemHistoryInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 ItemId() const;
+        const MtTypedArray<CDataBazaarItemHistoryInfo>& BazaarItemHistoryList() const;
+        MtTypedArray<CDataBazaarItemHistoryInfo>& BazaarItemHistoryList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unItemId;  // offset: 0x10
+        MtTypedArray<CDataBazaarItemHistoryInfo> m_BazaarItemHistoryList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataBazaarItemInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 ItemId() const;
+        const MtTypedArray<CDataBazaarItemInfo>& BazaarItemList() const;
+        MtTypedArray<CDataBazaarItemInfo>& BazaarItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unItemId;  // offset: 0x10
+        MtTypedArray<CDataBazaarItemInfo> m_BazaarItemList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataBazaarItemNumOfExhibitionInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataBazaarItemNumOfExhibitionInfo>& ItemList() const;
+        MtTypedArray<CDataBazaarItemNumOfExhibitionInfo>& ItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataBazaarItemNumOfExhibitionInfo> m_ItemList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
     };
@@ -2030,6 +2911,47 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES();
+        s32 WritePacket(CPacket*, s32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CANCEL_PRIORITY_QUEST_RES : public ::CPacketDataBase
     {
     public:
@@ -2120,6 +3042,50 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataEquipJobItem>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        const MtTypedArray<CDataEquipJobItem>& EquipJobItemList() const;
+        MtTypedArray<CDataEquipJobItem>& EquipJobItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        MtTypedArray<CDataEquipJobItem> m_EquipJobItemList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES : public ::CPacketDataBase
     {
         friend class ::cNetGameServer;
@@ -2159,6 +3125,55 @@ namespace nUserSession {
         u32 m_unResult;  // offset: 0xc
         MtTypedArray<CDataEquipJobItem> m_EquipJobItemList;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE();
+        s32 WritePacket(CPacket*, u32, u8, const MtTypedArray<CDataEquipItemInfo>&, const MtTypedArray<CDataEquipItemInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        u8 Job() const;
+        const MtTypedArray<CDataEquipItemInfo>& EquipItemList() const;
+        MtTypedArray<CDataEquipItemInfo>& EquipItemList();
+        const MtTypedArray<CDataEquipItemInfo>& VisualEquipItemList() const;
+        MtTypedArray<CDataEquipItemInfo>& VisualEquipItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        u8 m_ucJob;  // offset: 0x10
+        MtTypedArray<CDataEquipItemInfo> m_EquipItemList;  // offset: 0x18
+        MtTypedArray<CDataEquipItemInfo> m_VisualEquipItemList;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
     public:
         static MyDTI DTI;
     };
@@ -2253,6 +3268,68 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CHANGE_JOB_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CHANGE_JOB_NOTICE();
+        s32 WritePacket(CPacket*, u32, const CCharacterJobData&, const MtTypedArray<CDataEquipItemInfo>&, const MtTypedArray<CDataEquipItemInfo>&, const MtTypedArray<CDataSetAcquirementParam>&, const MtTypedArray<CDataSetAcquirementParam>&, const MtTypedArray<CDataLearnNormalSkillParam>&, const MtTypedArray<CDataEquipJobItem>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        const CCharacterJobData& CharacterJobData() const;
+        CCharacterJobData& CharacterJobData();
+        const MtTypedArray<CDataEquipItemInfo>& EquipItemList() const;
+        MtTypedArray<CDataEquipItemInfo>& EquipItemList();
+        const MtTypedArray<CDataEquipItemInfo>& VisualEquipItemList() const;
+        MtTypedArray<CDataEquipItemInfo>& VisualEquipItemList();
+        const MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList();
+        const MtTypedArray<CDataSetAcquirementParam>& SetAbilityParamList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAbilityParamList();
+        const MtTypedArray<CDataLearnNormalSkillParam>& LearnNormalSkillParamList() const;
+        MtTypedArray<CDataLearnNormalSkillParam>& LearnNormalSkillParamList();
+        const MtTypedArray<CDataEquipJobItem>& EquipJobItemList() const;
+        MtTypedArray<CDataEquipJobItem>& EquipJobItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        CCharacterJobData m_CharacterJobData;  // offset: 0x10
+        MtTypedArray<CDataEquipItemInfo> m_EquipItemList;  // offset: 0x60
+        MtTypedArray<CDataEquipItemInfo> m_VisualEquipItemList;  // offset: 0x80
+        MtTypedArray<CDataSetAcquirementParam> m_SetAcquirementParamList;  // offset: 0xa0
+        MtTypedArray<CDataSetAcquirementParam> m_SetAbilityParamList;  // offset: 0xc0
+        MtTypedArray<CDataLearnNormalSkillParam> m_LearnNormalSkillParamList;  // offset: 0xe0
+        MtTypedArray<CDataEquipJobItem> m_EquipJobItemList;  // offset: 0x100
+        bool m_bIsReceived;  // offset: 0x120
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CHANGE_JOB_RES : public ::CPacketDataBase
     {
     public:
@@ -2327,6 +3404,52 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE();
+        s32 WritePacket(CPacket*, u32, u32, const MtTypedArray<CDataEquipJobItem>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        u32 PawnID() const;
+        const MtTypedArray<CDataEquipJobItem>& EquipJobItemList() const;
+        MtTypedArray<CDataEquipJobItem>& EquipJobItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        u32 m_unPawnID;  // offset: 0x10
+        MtTypedArray<CDataEquipJobItem> m_EquipJobItemList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES : public ::CPacketDataBase
     {
         friend class ::cNetGameServer;
@@ -2374,6 +3497,55 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE();
+        s32 WritePacket(CPacket*, u32, u32, const MtTypedArray<CDataEquipItemInfo>&, const MtTypedArray<CDataEquipItemInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        u32 PawnID() const;
+        const MtTypedArray<CDataEquipItemInfo>& EquipItemList() const;
+        MtTypedArray<CDataEquipItemInfo>& EquipItemList();
+        const MtTypedArray<CDataEquipItemInfo>& VisualEquipItemList() const;
+        MtTypedArray<CDataEquipItemInfo>& VisualEquipItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        u32 m_unPawnID;  // offset: 0x10
+        MtTypedArray<CDataEquipItemInfo> m_EquipItemList;  // offset: 0x18
+        MtTypedArray<CDataEquipItemInfo> m_VisualEquipItemList;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CHANGE_PAWN_EQUIP_RES : public ::CPacketDataBase
     {
     public:
@@ -2414,6 +3586,70 @@ namespace nUserSession {
         u32 m_unPawnID;  // offset: 0x10
         MtTypedArray<CDataS2CCharacterEquipInfo> m_CharacterEquipList;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CHANGE_PAWN_JOB_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CHANGE_PAWN_JOB_NOTICE();
+        s32 WritePacket(CPacket*, u32, u32, const CCharacterJobData&, const MtTypedArray<CDataEquipItemInfo>&, const MtTypedArray<CDataEquipItemInfo>&, const MtTypedArray<CDataSetAcquirementParam>&, const MtTypedArray<CDataSetAcquirementParam>&, const MtTypedArray<CDataLearnNormalSkillParam>&, const MtTypedArray<CDataEquipJobItem>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        u32 PawnID() const;
+        const CCharacterJobData& CharacterJobData() const;
+        CCharacterJobData& CharacterJobData();
+        const MtTypedArray<CDataEquipItemInfo>& EquipItemList() const;
+        MtTypedArray<CDataEquipItemInfo>& EquipItemList();
+        const MtTypedArray<CDataEquipItemInfo>& VisualEquipItemList() const;
+        MtTypedArray<CDataEquipItemInfo>& VisualEquipItemList();
+        const MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList();
+        const MtTypedArray<CDataSetAcquirementParam>& SetAbilityParamList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAbilityParamList();
+        const MtTypedArray<CDataLearnNormalSkillParam>& LearnNormalSkillParamList() const;
+        MtTypedArray<CDataLearnNormalSkillParam>& LearnNormalSkillParamList();
+        const MtTypedArray<CDataEquipJobItem>& EquipJobItemList() const;
+        MtTypedArray<CDataEquipJobItem>& EquipJobItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        u32 m_unPawnID;  // offset: 0x10
+        CCharacterJobData m_CharacterJobData;  // offset: 0x18
+        MtTypedArray<CDataEquipItemInfo> m_EquipItemList;  // offset: 0x68
+        MtTypedArray<CDataEquipItemInfo> m_VisualEquipItemList;  // offset: 0x88
+        MtTypedArray<CDataSetAcquirementParam> m_SetAcquirementParamList;  // offset: 0xa8
+        MtTypedArray<CDataSetAcquirementParam> m_SetAbilityParamList;  // offset: 0xc8
+        MtTypedArray<CDataLearnNormalSkillParam> m_LearnNormalSkillParamList;  // offset: 0xe8
+        MtTypedArray<CDataEquipJobItem> m_EquipJobItemList;  // offset: 0x108
+        bool m_bIsReceived;  // offset: 0x128
     public:
         static MyDTI DTI;
     };
@@ -2581,6 +3817,48 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataCharacterReleaseElement>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataCharacterReleaseElement>& CharacterReleaseElementList() const;
+        MtTypedArray<CDataCharacterReleaseElement>& CharacterReleaseElementList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataCharacterReleaseElement> m_CharacterReleaseElementList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES : public ::CPacketDataBase
     {
     public:
@@ -2667,6 +3945,54 @@ namespace nUserSession {
         u32 m_unTotalExp;  // offset: 0x14
         u8 m_ucType;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x19
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE();
+        s32 WritePacket(CPacket*, u32, u8, u32, const CCharacterLevelParam&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        u8 Job() const;
+        u32 Level() const;
+        const CCharacterLevelParam& CharacterLevelParam() const;
+        CCharacterLevelParam& CharacterLevelParam();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        u8 m_ucJob;  // offset: 0x10
+        u32 m_unLevel;  // offset: 0x14
+        CCharacterLevelParam m_CharacterLevelParam;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
     public:
         static MyDTI DTI;
     };
@@ -3066,6 +4392,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CLAN_APPROVE_JOIN_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_APPROVE_JOIN_RES();
+        s32 WritePacket(CPacket*, s32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 ClanID() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unClanID;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x14
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CLAN_BASE_GET_INFO_RES : public ::CPacketDataBase
     {
         friend class ::sNetworkExt;
@@ -3378,6 +4747,53 @@ namespace nUserSession {
         u32 m_unNpcId;  // offset: 0x10
         u32 m_unClanPoint;  // offset: 0x14
         bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_CREATE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_CREATE_RES();
+        s32 WritePacket(CPacket*, s32, const CClanParam&, const MtTypedArray<CDataClanMemberInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CClanParam& ClanParam() const;
+        CClanParam& ClanParam();
+        const MtTypedArray<CDataClanMemberInfo>& MemberList() const;
+        MtTypedArray<CDataClanMemberInfo>& MemberList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CClanParam m_ClanParam;  // offset: 0x10
+        MtTypedArray<CDataClanMemberInfo> m_MemberList;  // offset: 0x118
+        bool m_bIsReceived;  // offset: 0x138
     public:
         static MyDTI DTI;
     };
@@ -3734,6 +5150,50 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataClanMemberInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataClanMemberInfo>& MemberList() const;
+        MtTypedArray<CDataClanMemberInfo>& MemberList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataClanMemberInfo> m_MemberList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CLAN_INVITE_ACCEPT_RES : public ::CPacketDataBase
     {
     public:
@@ -3769,6 +5229,52 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_INVITE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_INVITE_NTC();
+        s32 WritePacket(CPacket*, u32, const char*, const CCharacterListElement&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 ClanId() const;
+        const char* ClanName() const;
+        const CCharacterListElement& CharacterListElement() const;
+        CCharacterListElement& CharacterListElement();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unClanId;  // offset: 0xc
+        MtString m_wstrClanName;  // offset: 0x10
+        CCharacterListElement m_CharacterListElement;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x80
     public:
         static MyDTI DTI;
     };
@@ -3816,6 +5322,92 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CLAN_JOIN_DISAPPROVE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_JOIN_DISAPPROVE_NTC();
+        s32 WritePacket(CPacket*, const CClanJoinRequest&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CClanJoinRequest& JoinReq() const;
+        CClanJoinRequest& JoinReq();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CClanJoinRequest m_JoinReq;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x60
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_JOIN_MEMBER_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_JOIN_MEMBER_NTC();
+        s32 WritePacket(CPacket*, u32, const CClanMemberInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 ClanID() const;
+        const CClanMemberInfo& MemberInfo() const;
+        CClanMemberInfo& MemberInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unClanID;  // offset: 0xc
+        CClanMemberInfo m_MemberInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0xa8
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CLAN_JOIN_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -3851,6 +5443,98 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         u32 m_unCharacterID;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_JOIN_SELF_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_JOIN_SELF_NTC();
+        s32 WritePacket(CPacket*, const CClanParam&, const CClanMemberInfo&, const MtTypedArray<CDataClanMemberInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CClanParam& ClanParam() const;
+        CClanParam& ClanParam();
+        const CClanMemberInfo& SelfInfo() const;
+        CClanMemberInfo& SelfInfo();
+        const MtTypedArray<CDataClanMemberInfo>& MemberList() const;
+        MtTypedArray<CDataClanMemberInfo>& MemberList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CClanParam m_ClanParam;  // offset: 0x10
+        CClanMemberInfo m_SelfInfo;  // offset: 0x118
+        MtTypedArray<CDataClanMemberInfo> m_MemberList;  // offset: 0x1b0
+        bool m_bIsReceived;  // offset: 0x1d0
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_LEAVE_MEMBER_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_LEAVE_MEMBER_NTC();
+        s32 WritePacket(CPacket*, u32, const CCharacterListElement&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 ClanID() const;
+        const CCharacterListElement& CharacterListElement() const;
+        CCharacterListElement& CharacterListElement();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unClanID;  // offset: 0xc
+        CCharacterListElement m_CharacterListElement;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x78
     public:
         static MyDTI DTI;
     };
@@ -3941,6 +5625,50 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CLAN_NEGOTIATE_MASTER_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_NEGOTIATE_MASTER_NTC();
+        s32 WritePacket(CPacket*, u32, const CClanMemberInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 ClanID() const;
+        const CClanMemberInfo& MemberInfo() const;
+        CClanMemberInfo& MemberInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unClanID;  // offset: 0xc
+        CClanMemberInfo m_MemberInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0xa8
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES : public ::CPacketDataBase
     {
     public:
@@ -3978,6 +5706,99 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         u32 m_unMemberID;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x14
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES();
+        s32 WritePacket(CPacket*, s32, u32, const CNoraPawnInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 PawnID() const;
+        const CNoraPawnInfo& PawnInfo() const;
+        CNoraPawnInfo& PawnInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unPawnID;  // offset: 0x10
+        CNoraPawnInfo m_PawnInfo;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0xe0
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataCommonU32>&, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataCommonU32>& MyPartnerPawnList() const;
+        MtTypedArray<CDataCommonU32>& MyPartnerPawnList();
+        const MtTypedArray<CDataCommonU32>& MemberPartnerPawnList() const;
+        MtTypedArray<CDataCommonU32>& MemberPartnerPawnList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataCommonU32> m_MyPartnerPawnList;  // offset: 0x10
+        MtTypedArray<CDataCommonU32> m_MemberPartnerPawnList;  // offset: 0x30
+        bool m_bIsReceived;  // offset: 0x50
     public:
         static MyDTI DTI;
     };
@@ -4070,6 +5891,48 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CLAN_REGISTER_JOIN_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_REGISTER_JOIN_NTC();
+        s32 WritePacket(CPacket*, const CCharacterListElement&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CCharacterListElement& CharacterListElement() const;
+        CCharacterListElement& CharacterListElement();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CCharacterListElement m_CharacterListElement;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x78
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CLAN_REGISTER_JOIN_RES : public ::CPacketDataBase
     {
     public:
@@ -4105,6 +5968,49 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES();
+        s32 WritePacket(CPacket*, s32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 InviteID() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unInviteID;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x14
     public:
         static MyDTI DTI;
     };
@@ -4359,6 +6265,94 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataClanScoutEntryInviteInfo> m_InviteInfo;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataClanScoutEntrySearchResult>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataClanScoutEntrySearchResult>& MyEntries() const;
+        MtTypedArray<CDataClanScoutEntrySearchResult>& MyEntries();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataClanScoutEntrySearchResult> m_MyEntries;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC();
+        s32 WritePacket(CPacket*, u32, const CClanSearchResult&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 InviteID() const;
+        const CClanSearchResult& ClanInfo() const;
+        CClanSearchResult& ClanInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unInviteID;  // offset: 0xc
+        CClanSearchResult m_ClanInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x58
     public:
         static MyDTI DTI;
     };
@@ -4673,6 +6667,151 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 ClanPoint() const;
+        const MtTypedArray<CDataCommonU32>& LineupBuffList() const;
+        MtTypedArray<CDataCommonU32>& LineupBuffList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unClanPoint;  // offset: 0x10
+        MtTypedArray<CDataCommonU32> m_LineupBuffList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 ClanPoint() const;
+        const MtTypedArray<CDataCommonU32>& LineupFunctionList() const;
+        MtTypedArray<CDataCommonU32>& LineupFunctionList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unClanPoint;  // offset: 0x10
+        MtTypedArray<CDataCommonU32> m_LineupFunctionList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataClanShopFunctionItem>&, const MtTypedArray<CDataClanShopBuffItem>&, const MtTypedArray<CDataClanShopConciergeItem>&, const CCharacterName&, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataClanShopFunctionItem>& FunctionList() const;
+        MtTypedArray<CDataClanShopFunctionItem>& FunctionList();
+        const MtTypedArray<CDataClanShopBuffItem>& BuffList() const;
+        MtTypedArray<CDataClanShopBuffItem>& BuffList();
+        const MtTypedArray<CDataClanShopConciergeItem>& ConciergeList() const;
+        MtTypedArray<CDataClanShopConciergeItem>& ConciergeList();
+        const CCharacterName& BuyerName() const;
+        CCharacterName& BuyerName();
+        u32 ClanPoint() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataClanShopFunctionItem> m_FunctionList;  // offset: 0x10
+        MtTypedArray<CDataClanShopBuffItem> m_BuffList;  // offset: 0x30
+        MtTypedArray<CDataClanShopConciergeItem> m_ConciergeList;  // offset: 0x50
+        CCharacterName m_BuyerName;  // offset: 0x70
+        u32 m_unClanPoint;  // offset: 0x88
+        bool m_bIsReceived;  // offset: 0x8c
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES : public ::CPacketDataBase
     {
     public:
@@ -4892,6 +7031,92 @@ namespace nUserSession {
         u8 m_ucPasswordEncSize;  // offset: 0x11
         u8 m_ucPasswordEnc[62];  // offset: 0x12
         bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_COG_GET_ID_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_COG_GET_ID_RES();
+        s32 WritePacket(CPacket*, u32, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 Result() const;
+        const char* CogId() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unResult;  // offset: 0xc
+        MtString m_wstrCogId;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_COG_GET_SESSION_KEY_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_COG_GET_SESSION_KEY_RES();
+        s32 WritePacket(CPacket*, s32, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* SessionKey() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrSessionKey;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
     public:
         static MyDTI DTI;
     };
@@ -5382,6 +7607,91 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CRITICAL_ERROR_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CRITICAL_ERROR_NOTICE();
+        s32 WritePacket(CPacket*, s32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 ErrorNo() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nErrorNo;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_CUSTOM_SKILL_SET_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_CUSTOM_SKILL_SET_NTC();
+        s32 WritePacket(CPacket*, u32, const CContextAcquirementData&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        const CContextAcquirementData& CustomSkillData() const;
+        CContextAcquirementData& CustomSkillData();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        CContextAcquirementData m_CustomSkillData;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x28
     public:
         static MyDTI DTI;
     };
@@ -6191,6 +8501,138 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_DLC_GET_BOUGHT_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_DLC_GET_BOUGHT_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataDLCLineupBought>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataDLCLineupBought>& Boughts() const;
+        MtTypedArray<CDataDLCLineupBought>& Boughts();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataDLCLineupBought> m_Boughts;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_DLC_GET_HISTORY_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_DLC_GET_HISTORY_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataDLCLineupHistory>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataDLCLineupHistory>& Historys() const;
+        MtTypedArray<CDataDLCLineupHistory>& Historys();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataDLCLineupHistory> m_Historys;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_DLC_USE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_DLC_USE_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataDLCLineupBought>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataDLCLineupBought>& Boughts() const;
+        MtTypedArray<CDataDLCLineupBought>& Boughts();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataDLCLineupBought> m_Boughts;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_EJECTION_NTC : public ::CPacketDataBase
     {
     public:
@@ -6321,6 +8763,182 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_ENEMY_BREAK_REGION_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENEMY_BREAK_REGION_NTC();
+        s32 WritePacket(CPacket*, const CStageLayoutID&, u32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        u32 SetId() const;
+        u32 RegionNo() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        u32 m_unSetId;  // offset: 0x28
+        u32 m_unRegionNo;  // offset: 0x2c
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENEMY_DIE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENEMY_DIE_NTC();
+        s32 WritePacket(CPacket*, const CStageLayoutID&, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        u32 SetId() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        u32 m_unSetId;  // offset: 0x28
+        bool m_bIsReceived;  // offset: 0x2c
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENEMY_GROUP_DESTROY_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENEMY_GROUP_DESTROY_NTC();
+        s32 WritePacket(CPacket*, const CStageLayoutID&, b8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        b8 IsAreaBoss() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        b8 m_bIsAreaBoss;  // offset: 0x28
+        bool m_bIsReceived;  // offset: 0x29
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENEMY_GROUP_RESET_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENEMY_GROUP_RESET_NOTICE();
+        s32 WritePacket(CPacket*, const CStageLayoutID&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x28
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_ENEMY_KILL_RES : public ::CPacketDataBase
     {
     public:
@@ -6360,6 +8978,53 @@ namespace nUserSession {
         u32 m_unEnemyID;  // offset: 0x10
         u32 m_unKillNum;  // offset: 0x14
         bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENEMY_REPOP_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENEMY_REPOP_NOTICE();
+        s32 WritePacket(CPacket*, const CStageLayoutID&, const CLayoutEnemyData&, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        const CLayoutEnemyData& EnemyData() const;
+        CLayoutEnemyData& EnemyData();
+        u32 WaitSecond() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        CLayoutEnemyData m_EnemyData;  // offset: 0x28
+        u32 m_unWaitSecond;  // offset: 0x60
+        bool m_bIsReceived;  // offset: 0x64
     public:
         static MyDTI DTI;
     };
@@ -6408,6 +9073,50 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE();
+        s32 WritePacket(CPacket*, const CStageLayoutID&, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        u8 SubGroupId() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        u8 m_ucSubGroupId;  // offset: 0x28
+        bool m_bIsReceived;  // offset: 0x29
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -6446,6 +9155,96 @@ namespace nUserSession {
         b8 m_bEntryFlag;  // offset: 0xa
         CEntryMemberData m_MemberData;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x88
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENTRY_BOARD_ITEM_CREATE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENTRY_BOARD_ITEM_CREATE_RES();
+        s32 WritePacket(CPacket*, s32, u64, const CEntryItem&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u64 BoardID() const;
+        const CEntryItem& EntryItem() const;
+        CEntryItem& EntryItem();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u64 m_ullBoardID;  // offset: 0x10
+        CEntryItem m_EntryItem;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x98
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENTRY_BOARD_ITEM_ENTRY_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENTRY_BOARD_ITEM_ENTRY_RES();
+        s32 WritePacket(CPacket*, s32, const CEntryItem&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CEntryItem& EntryItem() const;
+        CEntryItem& EntryItem();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CEntryItem m_EntryItem;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x90
     public:
         static MyDTI DTI;
     };
@@ -6536,6 +9335,94 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_NTC();
+        s32 WritePacket(CPacket*, u64, const CEntryItem&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u64 BoardID() const;
+        const CEntryItem& EntryItemData() const;
+        CEntryItem& EntryItemData();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u64 m_ullBoardID;  // offset: 0x10
+        CEntryItem m_EntryItemData;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x98
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_RES();
+        s32 WritePacket(CPacket*, s32, const CEntryItem&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CEntryItem& EntryItemData() const;
+        CEntryItem& EntryItemData();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CEntryItem m_EntryItemData;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x90
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES : public ::CPacketDataBase
     {
     public:
@@ -6571,6 +9458,52 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENTRY_BOARD_ITEM_INFO_MYSELF_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENTRY_BOARD_ITEM_INFO_MYSELF_RES();
+        s32 WritePacket(CPacket*, s32, u64, const CEntryItem&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u64 BoardID() const;
+        const CEntryItem& EntryItemData() const;
+        CEntryItem& EntryItemData();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u64 m_ullBoardID;  // offset: 0x10
+        CEntryItem m_EntryItemData;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x98
     public:
         static MyDTI DTI;
     };
@@ -6617,6 +9550,52 @@ namespace nUserSession {
         u64 m_ullBoardID;  // offset: 0x10
         CEntryItem m_EntryItemData;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x98
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_NTC();
+        s32 WritePacket(CPacket*, const CCharacterListElement&, u64, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CCharacterListElement& Character() const;
+        CCharacterListElement& Character();
+        u64 BoardID() const;
+        u32 ItemId() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CCharacterListElement m_Character;  // offset: 0x10
+        u64 m_ullBoardID;  // offset: 0x78
+        u32 m_unItemId;  // offset: 0x80
+        bool m_bIsReceived;  // offset: 0x84
     public:
         static MyDTI DTI;
     };
@@ -6916,6 +9895,96 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_NOTICE();
+        s32 WritePacket(CPacket*, u64, const CEntryItem&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u64 BoardID() const;
+        const CEntryItem& EntryItem() const;
+        CEntryItem& EntryItem();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u64 m_ullBoardID;  // offset: 0x10
+        CEntryItem m_EntryItem;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x98
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_RES();
+        s32 WritePacket(CPacket*, s32, u64, const CEntryItem&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u64 BoardID() const;
+        const CEntryItem& EntryItem() const;
+        CEntryItem& EntryItem();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u64 m_ullBoardID;  // offset: 0x10
+        CEntryItem m_EntryItem;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x98
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -7033,6 +10102,93 @@ namespace nUserSession {
     private:
         u16 m_usError;  // offset: 0x8
         bool m_bIsReceived;  // offset: 0xa
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_EQUIP_BIND_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_EQUIP_BIND_NOTICE();
+        s32 WritePacket(CPacket*, u8, const MtTypedArray<CDataEquipBindNotice>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 Type() const;
+        const MtTypedArray<CDataEquipBindNotice>& EquipBindList() const;
+        MtTypedArray<CDataEquipBindNotice>& EquipBindList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucType;  // offset: 0xa
+        MtTypedArray<CDataEquipBindNotice> m_EquipBindList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_EVENT_CODE_INPUT_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_EVENT_CODE_INPUT_RES();
+        s32 WritePacket(CPacket*, s32, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* Name() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrName;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
     public:
         static MyDTI DTI;
     };
@@ -7348,6 +10504,45 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE();
+        s32 WritePacket(CPacket*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        bool m_bIsReceived;  // offset: 0xa
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -7641,6 +10836,53 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_FURNITURE_LIST_GET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_FURNITURE_LIST_GET_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataFurnitureLayout>&, const CMyRoomOption&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataFurnitureLayout>& FurnitureList() const;
+        MtTypedArray<CDataFurnitureLayout>& FurnitureList();
+        const CMyRoomOption& MyRoomOption() const;
+        CMyRoomOption& MyRoomOption();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataFurnitureLayout> m_FurnitureList;  // offset: 0x10
+        CMyRoomOption m_MyRoomOption;  // offset: 0x30
+        bool m_bIsReceived;  // offset: 0x60
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GACHA_BUY_RES : public ::CPacketDataBase
     {
     public:
@@ -7725,6 +10967,59 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataGachaInfo> m_GachaList;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GAIN_CHARACTER_PARAM_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GAIN_CHARACTER_PARAM_NTC();
+        s32 WritePacket(CPacket*, u32, u32, u32, u32, u32, u32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        u32 HpMaxGain() const;
+        u32 StaminaMaxGain() const;
+        u32 AttackGain() const;
+        u32 DefenseGain() const;
+        u32 MagicAttackGain() const;
+        u32 MagicDefenseGain() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        u32 m_unHpMaxGain;  // offset: 0x10
+        u32 m_unStaminaMaxGain;  // offset: 0x14
+        u32 m_unAttackGain;  // offset: 0x18
+        u32 m_unDefenseGain;  // offset: 0x1c
+        u32 m_unMagicAttackGain;  // offset: 0x20
+        u32 m_unMagicDefenseGain;  // offset: 0x24
+        bool m_bIsReceived;  // offset: 0x28
     public:
         static MyDTI DTI;
     };
@@ -7820,6 +11115,110 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         CGameTimeBaseInfo m_GameTimeBaseInfo;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x48
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GAME_TIME_GET_BASEINFO_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GAME_TIME_GET_BASEINFO_RES();
+        s32 WritePacket(CPacket*, s32, const CGameTimeBaseInfo&, const MtTypedArray<CDataWeatherLoop>&, const MtTypedArray<CDataWeatherSchedule>&, u32, const MtTypedArray<CDataMoonSchedule>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CGameTimeBaseInfo& GameTimeBaseInfo() const;
+        CGameTimeBaseInfo& GameTimeBaseInfo();
+        const MtTypedArray<CDataWeatherLoop>& WeatherLoop() const;
+        MtTypedArray<CDataWeatherLoop>& WeatherLoop();
+        const MtTypedArray<CDataWeatherSchedule>& WeatherSchedule() const;
+        MtTypedArray<CDataWeatherSchedule>& WeatherSchedule();
+        u32 MoonAgeLoopSec() const;
+        const MtTypedArray<CDataMoonSchedule>& MoonSchedule() const;
+        MtTypedArray<CDataMoonSchedule>& MoonSchedule();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CGameTimeBaseInfo m_GameTimeBaseInfo;  // offset: 0x10
+        MtTypedArray<CDataWeatherLoop> m_WeatherLoop;  // offset: 0x48
+        MtTypedArray<CDataWeatherSchedule> m_WeatherSchedule;  // offset: 0x68
+        u32 m_unMoonAgeLoopSec;  // offset: 0x88
+        MtTypedArray<CDataMoonSchedule> m_MoonSchedule;  // offset: 0x90
+        bool m_bIsReceived;  // offset: 0xb0
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE();
+        s32 WritePacket(CPacket*, const CStageLayoutID&, u32, const CStageLayoutID&, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CStageLayoutID& GatheringLayoutId() const;
+        CStageLayoutID& GatheringLayoutId();
+        u32 GatheringPosId() const;
+        const CStageLayoutID& EnemyLayoutId() const;
+        CStageLayoutID& EnemyLayoutId();
+        u32 EnemyPosId() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CStageLayoutID m_GatheringLayoutId;  // offset: 0x10
+        u32 m_unGatheringPosId;  // offset: 0x28
+        CStageLayoutID m_EnemyLayoutId;  // offset: 0x30
+        u32 m_unEnemyPosId;  // offset: 0x48
+        bool m_bIsReceived;  // offset: 0x4c
     public:
         static MyDTI DTI;
     };
@@ -8038,6 +11437,100 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataJobOrbDevoteElement> m_ElementList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const CDataOrbElement&, const OrbElementVec&, const OrbElementGroupVec&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CDataOrbElement& LastElement() const;
+        CDataOrbElement& LastElement();
+        const OrbElementVec& TrunkElementList() const;
+        OrbElementVec& TrunkElementList();
+        const OrbElementGroupVec& ElementGroupList() const;
+        OrbElementGroupVec& ElementGroupList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CDataOrbElement m_LastElement;  // offset: 0x10
+        OrbElementVec m_TrunkElementList;  // offset: 0x30
+        OrbElementGroupVec m_ElementGroupList;  // offset: 0x50
+        bool m_bIsReceived;  // offset: 0x70
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataAreaBaseInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataAreaBaseInfo>& AreaBaseInfoList() const;
+        MtTypedArray<CDataAreaBaseInfo>& AreaBaseInfoList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataAreaBaseInfo> m_AreaBaseInfoList;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
@@ -8284,6 +11777,50 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_AREA_RELEASE_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_AREA_RELEASE_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataReleaseAreaInfoSet>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataReleaseAreaInfoSet>& ReleaseAreaInfoSetList() const;
+        MtTypedArray<CDataReleaseAreaInfoSet>& ReleaseAreaInfoSetList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataReleaseAreaInfoSet> m_ReleaseAreaInfoSetList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_AREA_SUPPLY_INFO_RES : public ::CPacketDataBase
     {
     public:
@@ -8417,6 +11954,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::uGUIArisenCardPop;
     public:
         class MyDTI;
     public:
@@ -8589,6 +12127,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::uGUIGPShop;
     public:
         class MyDTI;
     public:
@@ -8624,6 +12163,50 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         u32 m_unResult;  // offset: 0xc
         MtTypedArray<CDataCAPtoGPChangeElement> m_List;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataAchieveCategoryStatus>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        const MtTypedArray<CDataAchieveCategoryStatus>& AchieveCategoryStatusList() const;
+        MtTypedArray<CDataAchieveCategoryStatus>& AchieveCategoryStatusList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        MtTypedArray<CDataAchieveCategoryStatus> m_AchieveCategoryStatusList;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
@@ -8676,6 +12259,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_CHARACTER_BIN_SAVEDATA_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CHARACTER_BIN_SAVEDATA_RES();
+        s32 WritePacket(CPacket*, s32, const u8(&)[1024]);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        auto Bin() -> u8(&)[1024];
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u8 m_ucBin[1024];  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x410
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES : public ::CPacketDataBase
     {
         friend class ::cNetGameServer;
@@ -8721,6 +12347,285 @@ namespace nUserSession {
         MtTypedArray<CDataEquipJobItem> m_EquipJobItemList;  // offset: 0x30
         MtTypedArray<CDataS2CPawnEquipInfo> m_PawnEquipItemList;  // offset: 0x50
         bool m_bIsReceived;  // offset: 0x70
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataHistoryElement>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        const MtTypedArray<CDataHistoryElement>& HistoryElementList() const;
+        MtTypedArray<CDataHistoryElement>& HistoryElementList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        MtTypedArray<CDataHistoryElement> m_HistoryElementList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataOrbPageStatus>&, const MtTypedArray<CDataJobOrbTreeStatus>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        const MtTypedArray<CDataOrbPageStatus>& OrbStatusList() const;
+        MtTypedArray<CDataOrbPageStatus>& OrbStatusList();
+        const MtTypedArray<CDataJobOrbTreeStatus>& JobOrbStatusList() const;
+        MtTypedArray<CDataJobOrbTreeStatus>& JobOrbStatusList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        MtTypedArray<CDataOrbPageStatus> m_OrbStatusList;  // offset: 0x10
+        MtTypedArray<CDataJobOrbTreeStatus> m_JobOrbStatusList;  // offset: 0x30
+        bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CHARACTER_PROFILE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CHARACTER_PROFILE_RES();
+        s32 WritePacket(CPacket*, s32, u32, const CCharacterName&, u8, u8, const CClanParam&, u32, const MtTypedArray<CDataJobBaseInfo>&, const CMatchingProfile&, const CArisenProfile&, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 CharacterID() const;
+        const CCharacterName& CharacterName() const;
+        CCharacterName& CharacterName();
+        u8 Job() const;
+        u8 JobLevel() const;
+        const CClanParam& ClanParam() const;
+        CClanParam& ClanParam();
+        u32 ClanMemberRank() const;
+        const MtTypedArray<CDataJobBaseInfo>& JobLevelList() const;
+        MtTypedArray<CDataJobBaseInfo>& JobLevelList();
+        const CMatchingProfile& MatchingProfile() const;
+        CMatchingProfile& MatchingProfile();
+        const CArisenProfile& ArisenProfile() const;
+        CArisenProfile& ArisenProfile();
+        const char* OnlineId() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unCharacterID;  // offset: 0x10
+        CCharacterName m_CharacterName;  // offset: 0x18
+        u8 m_ucJob;  // offset: 0x30
+        u8 m_ucJobLevel;  // offset: 0x31
+        CClanParam m_ClanParam;  // offset: 0x38
+        u32 m_unClanMemberRank;  // offset: 0x140
+        MtTypedArray<CDataJobBaseInfo> m_JobLevelList;  // offset: 0x148
+        CMatchingProfile m_MatchingProfile;  // offset: 0x168
+        CArisenProfile m_ArisenProfile;  // offset: 0x1a0
+        MtString m_wstrOnlineId;  // offset: 0x1c8
+        bool m_bIsReceived;  // offset: 0x1d0
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CHARACTER_SKILL_INFO_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CHARACTER_SKILL_INFO_NTC();
+        s32 WritePacket(CPacket*, u32, u8, const MtTypedArray<CDataNormalSkillParam>&, const MtTypedArray<CDataSetAcquirementParam>&, const MtTypedArray<CDataSetAcquirementParam>&, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        u8 JobID() const;
+        const MtTypedArray<CDataNormalSkillParam>& NormalSkillList() const;
+        MtTypedArray<CDataNormalSkillParam>& NormalSkillList();
+        const MtTypedArray<CDataSetAcquirementParam>& SetCustomSkillList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetCustomSkillList();
+        const MtTypedArray<CDataSetAcquirementParam>& SetAbilityList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAbilityList();
+        u32 AbilityCostMax() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        u8 m_ucJobID;  // offset: 0x10
+        MtTypedArray<CDataNormalSkillParam> m_NormalSkillList;  // offset: 0x18
+        MtTypedArray<CDataSetAcquirementParam> m_SetCustomSkillList;  // offset: 0x38
+        MtTypedArray<CDataSetAcquirementParam> m_SetAbilityList;  // offset: 0x58
+        u32 m_unAbilityCostMax;  // offset: 0x78
+        bool m_bIsReceived;  // offset: 0x7c
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CHARACTER_STATUS_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CHARACTER_STATUS_NTC();
+        s32 WritePacket(CPacket*, u32, const CStatusInfo&, const CCharacterJobData&, const CCharacterLevelParam&, const CEditInfo&, const CCharacterEquipData&, const CCharacterEquipData&, const MtTypedArray<CDataEquipJobItem>&, b8, b8, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        const CStatusInfo& StatusInfo() const;
+        CStatusInfo& StatusInfo();
+        const CCharacterJobData& JobParam() const;
+        CCharacterJobData& JobParam();
+        const CCharacterLevelParam& CharacterParam() const;
+        CCharacterLevelParam& CharacterParam();
+        const CEditInfo& EditInfo() const;
+        CEditInfo& EditInfo();
+        const CCharacterEquipData& EquipData() const;
+        CCharacterEquipData& EquipData();
+        const CCharacterEquipData& VisualEquipData() const;
+        CCharacterEquipData& VisualEquipData();
+        const MtTypedArray<CDataEquipJobItem>& EquipJobItemList() const;
+        MtTypedArray<CDataEquipJobItem>& EquipJobItemList();
+        b8 HideHead() const;
+        b8 HideLantern() const;
+        u32 JewelryNum() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        CStatusInfo m_StatusInfo;  // offset: 0x10
+        CCharacterJobData m_JobParam;  // offset: 0x48
+        CCharacterLevelParam m_CharacterParam;  // offset: 0x98
+        CEditInfo m_EditInfo;  // offset: 0xb8
+        CCharacterEquipData m_EquipData;  // offset: 0x140
+        CCharacterEquipData m_VisualEquipData;  // offset: 0x168
+        MtTypedArray<CDataEquipJobItem> m_EquipJobItemList;  // offset: 0x190
+        b8 m_bHideHead;  // offset: 0x1b0
+        b8 m_bHideLantern;  // offset: 0x1b1
+        u32 m_unJewelryNum;  // offset: 0x1b4
+        bool m_bIsReceived;  // offset: 0x1b8
     public:
         static MyDTI DTI;
     };
@@ -8804,6 +12709,57 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataCommunicationShortCut> m_ShortcutList;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES();
+        s32 WritePacket(CPacket*, s32, u8, const MtTypedArray<CDataMDataCraftGradeupRecipe>&, const MtTypedArray<CDataCommonU32>&, b8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u8 Category() const;
+        const MtTypedArray<CDataMDataCraftGradeupRecipe>& RecipeList() const;
+        MtTypedArray<CDataMDataCraftGradeupRecipe>& RecipeList();
+        const MtTypedArray<CDataCommonU32>& UnknownItemList() const;
+        MtTypedArray<CDataCommonU32>& UnknownItemList();
+        b8 IsEnd() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u8 m_ucCategory;  // offset: 0x10
+        MtTypedArray<CDataMDataCraftGradeupRecipe> m_RecipeList;  // offset: 0x18
+        MtTypedArray<CDataCommonU32> m_UnknownItemList;  // offset: 0x38
+        b8 m_bIsEnd;  // offset: 0x58
+        bool m_bIsReceived;  // offset: 0x59
     public:
         static MyDTI DTI;
     };
@@ -9042,6 +12998,103 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES();
+        s32 WritePacket(CPacket*, s32, u8, const MtTypedArray<CDataMDataCraftRecipe>&, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u8 Category() const;
+        const MtTypedArray<CDataMDataCraftRecipe>& RecipeList() const;
+        MtTypedArray<CDataMDataCraftRecipe>& RecipeList();
+        const MtTypedArray<CDataCommonU32>& ItemList() const;
+        MtTypedArray<CDataCommonU32>& ItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u8 m_ucCategory;  // offset: 0x10
+        MtTypedArray<CDataMDataCraftRecipe> m_RecipeList;  // offset: 0x18
+        MtTypedArray<CDataCommonU32> m_ItemList;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CRAFT_RECIPE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CRAFT_RECIPE_RES();
+        s32 WritePacket(CPacket*, s32, u8, const MtTypedArray<CDataMDataCraftRecipe>&, b8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u8 Category() const;
+        const MtTypedArray<CDataMDataCraftRecipe>& RecipeList() const;
+        MtTypedArray<CDataMDataCraftRecipe>& RecipeList();
+        b8 IsEnd() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u8 m_ucCategory;  // offset: 0x10
+        MtTypedArray<CDataMDataCraftRecipe> m_RecipeList;  // offset: 0x18
+        b8 m_bIsEnd;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x39
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_CRAFT_SETTING_RES : public ::CPacketDataBase
     {
     public:
@@ -9089,6 +13142,100 @@ namespace nUserSession {
         u32 m_unCraftItemLv;  // offset: 0x54
         u8 m_ucCreateCountMax;  // offset: 0x58
         bool m_bIsReceived;  // offset: 0x59
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataSetAcquirementParam>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataSetAcquirementParam> m_SetAcquirementParamList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_CURRENT_SET_SKILL_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_CURRENT_SET_SKILL_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataNormalSkillParam>&, const MtTypedArray<CDataSetAcquirementParam>&, const MtTypedArray<CDataSetAcquirementParam>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataNormalSkillParam>& NormalSkillList() const;
+        MtTypedArray<CDataNormalSkillParam>& NormalSkillList();
+        const MtTypedArray<CDataSetAcquirementParam>& SetCustomSkillList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetCustomSkillList();
+        const MtTypedArray<CDataSetAcquirementParam>& SetAbilityList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAbilityList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataNormalSkillParam> m_NormalSkillList;  // offset: 0x10
+        MtTypedArray<CDataSetAcquirementParam> m_SetCustomSkillList;  // offset: 0x30
+        MtTypedArray<CDataSetAcquirementParam> m_SetAbilityList;  // offset: 0x50
+        bool m_bIsReceived;  // offset: 0x70
     public:
         static MyDTI DTI;
     };
@@ -9602,6 +13749,102 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_DROP_ITEM_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_DROP_ITEM_RES();
+        s32 WritePacket(CPacket*, s32, const CStageLayoutID&, u32, const MtTypedArray<CDataGatheringItemGetRequest>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        u32 Id() const;
+        const MtTypedArray<CDataGatheringItemGetRequest>& GatheringItemGetRequestList() const;
+        MtTypedArray<CDataGatheringItemGetRequest>& GatheringItemGetRequestList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        u32 m_unId;  // offset: 0x28
+        MtTypedArray<CDataGatheringItemGetRequest> m_GatheringItemGetRequestList;  // offset: 0x30
+        bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const CStageLayoutID&, const MtTypedArray<CDataLayoutItemData>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        const MtTypedArray<CDataLayoutItemData>& SetList() const;
+        MtTypedArray<CDataLayoutItemData>& SetList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        MtTypedArray<CDataLayoutItemData> m_SetList;  // offset: 0x28
+        bool m_bIsReceived;  // offset: 0x48
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_END_CONTENTS_GROUP_RES : public ::CPacketDataBase
     {
         friend class ::cEndContentsManager;
@@ -9645,6 +13888,109 @@ namespace nUserSession {
         u32 m_unEndContentsType;  // offset: 0x14
         CEndContentsGroup m_EndContentsGroup;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x40
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_ENEMY_SET_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_ENEMY_SET_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const CStageLayoutID&, u8, u32, u32, const MtTypedArray<CDataLayoutEnemyData>&, const MtTypedArray<CDataDropItemSetInfo>&, const MtTypedArray<CDataNamedEnemyParamClient>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        u8 SubGroupId() const;
+        u32 RandomSeed() const;
+        u32 QuestId() const;
+        const MtTypedArray<CDataLayoutEnemyData>& EnemyList() const;
+        MtTypedArray<CDataLayoutEnemyData>& EnemyList();
+        const MtTypedArray<CDataDropItemSetInfo>& DropItemSetList() const;
+        MtTypedArray<CDataDropItemSetInfo>& DropItemSetList();
+        const MtTypedArray<CDataNamedEnemyParamClient>& NamedparamList() const;
+        MtTypedArray<CDataNamedEnemyParamClient>& NamedparamList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        u8 m_ucSubGroupId;  // offset: 0x28
+        u32 m_unRandomSeed;  // offset: 0x2c
+        u32 m_unQuestId;  // offset: 0x30
+        MtTypedArray<CDataLayoutEnemyData> m_EnemyList;  // offset: 0x38
+        MtTypedArray<CDataDropItemSetInfo> m_DropItemSetList;  // offset: 0x58
+        MtTypedArray<CDataNamedEnemyParamClient> m_NamedparamList;  // offset: 0x78
+        bool m_bIsReceived;  // offset: 0x98
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_EQUIP_PRESET_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_EQUIP_PRESET_LIST_RES();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataEquipPreset>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 Result() const;
+        const MtTypedArray<CDataEquipPreset>& EquipPresetList() const;
+        MtTypedArray<CDataEquipPreset>& EquipPresetList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unResult;  // offset: 0xc
+        MtTypedArray<CDataEquipPreset> m_EquipPresetList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
     };
@@ -10166,6 +14512,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES();
+        s32 WritePacket(CPacket*, u8, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 Result() const;
+        const char* Value() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucResult;  // offset: 0xa
+        MtString m_wstrValue;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES : public ::CPacketDataBase
     {
     public:
@@ -10203,6 +14592,53 @@ namespace nUserSession {
         u8 m_ucResult;  // offset: 0xa
         u32 m_unValue;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_ITEM_SET_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_ITEM_SET_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const CStageLayoutID&, const MtTypedArray<CDataLayoutItemData>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        const MtTypedArray<CDataLayoutItemData>& SetList() const;
+        MtTypedArray<CDataLayoutItemData>& SetList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        MtTypedArray<CDataLayoutItemData> m_SetList;  // offset: 0x28
+        bool m_bIsReceived;  // offset: 0x48
     public:
         static MyDTI DTI;
     };
@@ -10345,6 +14781,50 @@ namespace nUserSession {
         MtTypedArray<CDataPawnJobChangeInfo> m_PawnJobChangeInfoList;  // offset: 0x50
         MtTypedArray<CDataJobPlayPoint> m_PlayPointList;  // offset: 0x70
         bool m_bIsReceived;  // offset: 0x90
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataJobOrbTreeStatus>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataJobOrbTreeStatus>& TreeStatusList() const;
+        MtTypedArray<CDataJobOrbTreeStatus>& TreeStatusList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataJobOrbTreeStatus> m_TreeStatusList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
     };
@@ -10627,6 +15107,96 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_NOTICE();
+        s32 WritePacket(CPacket*, u32, const CLobbyContextPlayer&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        const CLobbyContextPlayer& Context() const;
+        CLobbyContextPlayer& Context();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        CLobbyContextPlayer m_Context;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x330
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_RES();
+        s32 WritePacket(CPacket*, s32, u32, const CLobbyContextPlayer&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 CharacterID() const;
+        const CLobbyContextPlayer& Context() const;
+        CLobbyContextPlayer& Context();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unCharacterID;  // offset: 0x10
+        CLobbyContextPlayer m_Context;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x338
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES : public ::CPacketDataBase
     {
     public:
@@ -10755,6 +15325,50 @@ namespace nUserSession {
         u32 m_unLotQuestType;  // offset: 0x10
         MtTypedArray<CDataLotQuestList> m_LotQuestList;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES();
+        s32 WritePacket(CPacket*, s32, const CMainQuestCompleteInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CMainQuestCompleteInfo& MainQuestCompleteInfo() const;
+        CMainQuestCompleteInfo& MainQuestCompleteInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CMainQuestCompleteInfo m_MainQuestCompleteInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x40
     public:
         static MyDTI DTI;
     };
@@ -11066,6 +15680,109 @@ namespace nUserSession {
         MtTypedArray<CDataPawnList> m_PawnList;  // offset: 0x10
         CPartnerPawnData m_PartnerInfo;  // offset: 0x30
         bool m_bIsReceived;  // offset: 0x48
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataHistoryElement>&, const char*, u32, const MtTypedArray<CDataAchieveCategoryStatus>&, const MtTypedArray<CDataOrbPageStatus>&, const MtTypedArray<CDataJobOrbTreeStatus>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataHistoryElement>& HistoryElementList() const;
+        MtTypedArray<CDataHistoryElement>& HistoryElementList();
+        const char* OnlineId() const;
+        u32 AbilityCostMax() const;
+        const MtTypedArray<CDataAchieveCategoryStatus>& AchieveCategoryStatusList() const;
+        MtTypedArray<CDataAchieveCategoryStatus>& AchieveCategoryStatusList();
+        const MtTypedArray<CDataOrbPageStatus>& OrbStatusList() const;
+        MtTypedArray<CDataOrbPageStatus>& OrbStatusList();
+        const MtTypedArray<CDataJobOrbTreeStatus>& JobOrbTreeStatusList() const;
+        MtTypedArray<CDataJobOrbTreeStatus>& JobOrbTreeStatusList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataHistoryElement> m_HistoryElementList;  // offset: 0x10
+        MtString m_wstrOnlineId;  // offset: 0x30
+        u32 m_unAbilityCostMax;  // offset: 0x38
+        MtTypedArray<CDataAchieveCategoryStatus> m_AchieveCategoryStatusList;  // offset: 0x40
+        MtTypedArray<CDataOrbPageStatus> m_OrbStatusList;  // offset: 0x60
+        MtTypedArray<CDataJobOrbTreeStatus> m_JobOrbTreeStatusList;  // offset: 0x80
+        bool m_bIsReceived;  // offset: 0xa0
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_NORA_PAWN_DATA_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_NORA_PAWN_DATA_RES();
+        s32 WritePacket(CPacket*, s32, u32, const CNoraPawnInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 PawnID() const;
+        const CNoraPawnInfo& PawnInfo() const;
+        CNoraPawnInfo& PawnInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unPawnID;  // offset: 0x10
+        CNoraPawnInfo m_PawnInfo;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0xe0
     public:
         static MyDTI DTI;
     };
@@ -11573,6 +16290,52 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC();
+        s32 WritePacket(CPacket*, u32, u32, const MtTypedArray<CDataPawnHistory>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        u32 PawnId() const;
+        const MtTypedArray<CDataPawnHistory>& PawnHistoryList() const;
+        MtTypedArray<CDataPawnHistory>& PawnHistoryList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        u32 m_unPawnId;  // offset: 0x10
+        MtTypedArray<CDataPawnHistory> m_PawnHistoryList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_PAWN_HISTORY_LIST_RES : public ::CPacketDataBase
     {
     public:
@@ -11752,6 +16515,55 @@ namespace nUserSession {
         u32 m_unPawnID;  // offset: 0x10
         MtTypedArray<CDataLearnedAcquirementParam> m_LearnedAcquirementParamList;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC();
+        s32 WritePacket(CPacket*, u32, u32, const MtTypedArray<CDataOrbPageStatus>&, const MtTypedArray<CDataJobOrbTreeStatus>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        u32 PawnId() const;
+        const MtTypedArray<CDataOrbPageStatus>& OrbStatusList() const;
+        MtTypedArray<CDataOrbPageStatus>& OrbStatusList();
+        const MtTypedArray<CDataJobOrbTreeStatus>& JobOrbStatusList() const;
+        MtTypedArray<CDataJobOrbTreeStatus>& JobOrbStatusList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        u32 m_unPawnId;  // offset: 0x10
+        MtTypedArray<CDataOrbPageStatus> m_OrbStatusList;  // offset: 0x18
+        MtTypedArray<CDataJobOrbTreeStatus> m_JobOrbStatusList;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
     public:
         static MyDTI DTI;
     };
@@ -11943,6 +16755,52 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC();
+        s32 WritePacket(CPacket*, u32, u32, const CPawnTotalScore&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        u32 PawnId() const;
+        const CPawnTotalScore& TotalScore() const;
+        CPawnTotalScore& TotalScore();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        u32 m_unPawnId;  // offset: 0x10
+        CPawnTotalScore m_TotalScore;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES : public ::CPacketDataBase
     {
     public:
@@ -12028,6 +16886,50 @@ namespace nUserSession {
         u8 m_ucPointType;  // offset: 0x10
         u32 m_unPoint;  // offset: 0x14
         bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_PLAY_POINT_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_PLAY_POINT_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataJobPlayPoint>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataJobPlayPoint>& PlayPointList() const;
+        MtTypedArray<CDataJobPlayPoint>& PlayPointList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataJobPlayPoint> m_PlayPointList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
     };
@@ -12207,6 +17109,50 @@ namespace nUserSession {
         u8 m_ucQuestType;  // offset: 0x10
         MtTypedArray<CDataQuestId> m_QuestIdList;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_QUEST_DETAIL_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_QUEST_DETAIL_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const CQuestListDetail&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CQuestListDetail& QuestListDetail() const;
+        CQuestListDetail& QuestListDetail();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CQuestListDetail m_QuestListDetail;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x80
     public:
         static MyDTI DTI;
     };
@@ -12520,6 +17466,50 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataRegisterdPawnList>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataRegisterdPawnList>& RegisterdPawnList() const;
+        MtTypedArray<CDataRegisterdPawnList>& RegisterdPawnList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataRegisterdPawnList> m_RegisterdPawnList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES : public ::CPacketDataBase
     {
     public:
@@ -12696,6 +17686,50 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataCommonU32>& WarpPointReleaseList() const;
+        MtTypedArray<CDataCommonU32>& WarpPointReleaseList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataCommonU32> m_WarpPointReleaseList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_RENTED_PAWN_DATA_RES : public ::CPacketDataBase
     {
     public:
@@ -12780,6 +17814,50 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataRentedPawnList> m_RentedPawnList;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_RETURN_LOCATION_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_RETURN_LOCATION_RES();
+        s32 WritePacket(CPacket*, s32, const CJumpLocation&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const CJumpLocation& jumpLocation() const;
+        CJumpLocation& jumpLocation();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        CJumpLocation m_jumpLocation;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x20
     public:
         static MyDTI DTI;
     };
@@ -13764,6 +18842,144 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GET_UNLOCKED_EDIT_PARTS_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_UNLOCKED_EDIT_PARTS_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataEditParts>&, const MtTypedArray<CDataEditParts>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataEditParts>& MalePartsList() const;
+        MtTypedArray<CDataEditParts>& MalePartsList();
+        const MtTypedArray<CDataEditParts>& FemalePartsList() const;
+        MtTypedArray<CDataEditParts>& FemalePartsList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataEditParts> m_MalePartsList;  // offset: 0x10
+        MtTypedArray<CDataEditParts> m_FemalePartsList;  // offset: 0x30
+        bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataEditParts>&, const MtTypedArray<CDataEditParts>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataEditParts>& MalePartsList() const;
+        MtTypedArray<CDataEditParts>& MalePartsList();
+        const MtTypedArray<CDataEditParts>& FemalePartsList() const;
+        MtTypedArray<CDataEditParts>& FemalePartsList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataEditParts> m_MalePartsList;  // offset: 0x10
+        MtTypedArray<CDataEditParts> m_FemalePartsList;  // offset: 0x30
+        bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GET_USER_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GET_USER_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataLobbyMemberInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataLobbyMemberInfo>& LobbyMemberInfoList() const;
+        MtTypedArray<CDataLobbyMemberInfo>& LobbyMemberInfoList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataLobbyMemberInfo> m_LobbyMemberInfoList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GET_WARP_POINT_LIST_RES : public ::CPacketDataBase
     {
     public:
@@ -13984,6 +19200,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GP_COURSE_END_PARTY_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GP_COURSE_END_PARTY_NTC();
+        s32 WritePacket(CPacket*, u8, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 MemberIndex() const;
+        u32 CourseID() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucMemberIndex;  // offset: 0xa
+        u32 m_unCourseID;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GP_COURSE_EXTEND_NTC : public ::CPacketDataBase
     {
     public:
@@ -14029,6 +19288,7 @@ namespace nUserSession {
 namespace nUserSession {
     class CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES : public ::CPacketDataBase
     {
+        friend class ::uGUIGPShop;
     public:
         class MyDTI;
     public:
@@ -14336,6 +19596,94 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataEditParam>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 Result() const;
+        const MtTypedArray<CDataEditParam>& VoiceList() const;
+        MtTypedArray<CDataEditParam>& VoiceList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unResult;  // offset: 0xc
+        MtTypedArray<CDataEditParam> m_VoiceList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataGPEditVoiceBuyHistory>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 Result() const;
+        const MtTypedArray<CDataGPEditVoiceBuyHistory>& Items() const;
+        MtTypedArray<CDataGPEditVoiceBuyHistory>& Items();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unResult;  // offset: 0xc
+        MtTypedArray<CDataGPEditVoiceBuyHistory> m_Items;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES : public ::CPacketDataBase
     {
     public:
@@ -14609,6 +19957,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES();
+        s32 WritePacket(CPacket*, u32, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 Result() const;
+        const char* Url() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unResult;  // offset: 0xc
+        MtString m_wstrUrl;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES : public ::CPacketDataBase
     {
     public:
@@ -14646,6 +20037,94 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         u32 m_unResult;  // offset: 0xc
         MtTypedArray<CDataGPShopLineupElementCourse> m_Items;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataGPShopLineupElementItem>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 Result() const;
+        const MtTypedArray<CDataGPShopLineupElementItem>& Items() const;
+        MtTypedArray<CDataGPShopLineupElementItem>& Items();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unResult;  // offset: 0xc
+        MtTypedArray<CDataGPShopLineupElementItem> m_Items;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataGPShopLineupElementPawn>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 Result() const;
+        const MtTypedArray<CDataGPShopLineupElementPawn>& Items() const;
+        MtTypedArray<CDataGPShopLineupElementPawn>& Items();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unResult;  // offset: 0xc
+        MtTypedArray<CDataGPShopLineupElementPawn> m_Items;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
@@ -14996,6 +20475,52 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataOmData>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 StageId() const;
+        const MtTypedArray<CDataOmData>& Values() const;
+        MtTypedArray<CDataOmData>& Values();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unStageId;  // offset: 0x10
+        MtTypedArray<CDataOmData> m_Values;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_INSTANCE_AREA_RESET_NTC : public ::CPacketDataBase
     {
     public:
@@ -15029,6 +20554,53 @@ namespace nUserSession {
     private:
         u16 m_usError;  // offset: 0x8
         bool m_bIsReceived;  // offset: 0xa
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_JOB_ORDER_COMPLETE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_JOB_ORDER_COMPLETE_NTC();
+        s32 WritePacket(CPacket*, u8, u8, u32, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 JobID() const;
+        u8 RewardType() const;
+        u32 RewardNo() const;
+        u8 RewardLv() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucJobID;  // offset: 0xa
+        u8 m_ucRewardType;  // offset: 0xb
+        u32 m_unRewardNo;  // offset: 0xc
+        u8 m_ucRewardLv;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x11
     public:
         static MyDTI DTI;
     };
@@ -15428,6 +21000,51 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_LEADER_WARP_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_LEADER_WARP_NTC();
+        s32 WritePacket(CPacket*, u32, u32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterID() const;
+        u32 DestPointID() const;
+        u32 RestSecond() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterID;  // offset: 0xc
+        u32 m_unDestPointID;  // offset: 0x10
+        u32 m_unRestSecond;  // offset: 0x14
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_LEARN_ABILITY_RES : public ::CPacketDataBase
     {
     public:
@@ -15814,6 +21431,54 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_LOBBY_CHAT_MSG_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_LOBBY_CHAT_MSG_NOTICE();
+        s32 WritePacket(CPacket*, u8, u32, const CCommunityCharacterBaseInfo&, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 Type() const;
+        u32 HandleId() const;
+        const CCommunityCharacterBaseInfo& CharacterBaseInfo() const;
+        CCommunityCharacterBaseInfo& CharacterBaseInfo();
+        const char* Message() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucType;  // offset: 0xa
+        u32 m_unHandleId;  // offset: 0xc
+        CCommunityCharacterBaseInfo m_CharacterBaseInfo;  // offset: 0x10
+        MtString m_wstrMessage;  // offset: 0x40
+        bool m_bIsReceived;  // offset: 0x48
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_LOBBY_CHAT_MSG_RES : public ::CPacketDataBase
     {
     public:
@@ -15981,6 +21646,47 @@ namespace nUserSession {
         b8 m_bIsCogLogin;  // offset: 0x10
         MtString m_wstrOnetimeToken;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x20
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_LOGOUT_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_LOGOUT_RES();
+        s32 WritePacket(CPacket*, s32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
     public:
         static MyDTI DTI;
     };
@@ -16426,6 +22132,176 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_MAIL_SEND_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_MAIL_SEND_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataCommonU32>& CharacterIdList() const;
+        MtTypedArray<CDataCommonU32>& CharacterIdList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataCommonU32> m_CharacterIdList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_MASTER_CHANGE_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_MASTER_CHANGE_NOTICE();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataMasterInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataMasterInfo>& Info() const;
+        MtTypedArray<CDataMasterInfo>& Info();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataMasterInfo> m_Info;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_MASTER_INFO_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_MASTER_INFO_NOTICE();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataMasterInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataMasterInfo>& Info() const;
+        MtTypedArray<CDataMasterInfo>& Info();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataMasterInfo> m_Info;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_MASTER_THROW_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_MASTER_THROW_NOTICE();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataMasterInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataMasterInfo>& Info() const;
+        MtTypedArray<CDataMasterInfo>& Info();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataMasterInfo> m_Info;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_MASTER_THROW_RES : public ::CPacketDataBase
     {
     public:
@@ -16461,6 +22337,50 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_MOON_LOOP_SCHEDULE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_MOON_LOOP_SCHEDULE_NTC();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataMoonSchedule>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 MoonAgeLoopSec() const;
+        const MtTypedArray<CDataMoonSchedule>& MoonSchedule() const;
+        MtTypedArray<CDataMoonSchedule>& MoonSchedule();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unMoonAgeLoopSec;  // offset: 0xc
+        MtTypedArray<CDataMoonSchedule> m_MoonSchedule;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
     };
@@ -16549,6 +22469,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_MOVE_OUT_SERVER_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_MOVE_OUT_SERVER_RES();
+        s32 WritePacket(CPacket*, s32, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* SessionKey() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrSessionKey;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_MY_ROOM_BGM_UPDATE_RES : public ::CPacketDataBase
     {
     public:
@@ -16625,6 +22588,140 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_NETCAFE_ERROR_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_NETCAFE_ERROR_NTC();
+        s32 WritePacket(CPacket*, s32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 ErrorNo() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nErrorNo;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_NG_WORD_GET_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_NG_WORD_GET_LIST_RES();
+        s32 WritePacket(CPacket*, s32, u64, const MtTypedArray<CDataNGWordInfo>&, const MtTypedArray<CDataSameLetterInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u64 VersionNo() const;
+        const MtTypedArray<CDataNGWordInfo>& NGWordInfoList() const;
+        MtTypedArray<CDataNGWordInfo>& NGWordInfoList();
+        const MtTypedArray<CDataSameLetterInfo>& SameLetterInfoList() const;
+        MtTypedArray<CDataSameLetterInfo>& SameLetterInfoList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u64 m_ullVersionNo;  // offset: 0x10
+        MtTypedArray<CDataNGWordInfo> m_NGWordInfoList;  // offset: 0x18
+        MtTypedArray<CDataSameLetterInfo> m_SameLetterInfoList;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_NORMAL_SKILL_LEARN_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_NORMAL_SKILL_LEARN_NTC();
+        s32 WritePacket(CPacket*, u32, const CContextNormalSkillData&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        const CContextNormalSkillData& NormalSkillData() const;
+        CContextNormalSkillData& NormalSkillData();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        CContextNormalSkillData m_NormalSkillData;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x20
     public:
         static MyDTI DTI;
     };
@@ -17103,6 +23200,55 @@ namespace nUserSession {
         u32 m_unPartyId;  // offset: 0x10
         u64 m_ullContentNumber;  // offset: 0x18
         bool m_bIsReceived;  // offset: 0x20
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_PARTY_INVITE_ACCEPT_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PARTY_INVITE_ACCEPT_NTC();
+        s32 WritePacket(CPacket*, u16, u32, u32, u32, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u16 ServerId() const;
+        u32 PartyId() const;
+        u32 StageId() const;
+        u32 PositionId() const;
+        u8 MemberIndex() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u16 m_usServerId;  // offset: 0xa
+        u32 m_unPartyId;  // offset: 0xc
+        u32 m_unStageId;  // offset: 0x10
+        u32 m_unPositionId;  // offset: 0x14
+        u8 m_ucMemberIndex;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x19
     public:
         static MyDTI DTI;
     };
@@ -18048,6 +24194,51 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC();
+        s32 WritePacket(CPacket*, u32, u8, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        u8 Index() const;
+        u8 Value() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        u8 m_ucIndex;  // offset: 0x10
+        u8 m_ucValue;  // offset: 0x11
+        bool m_bIsReceived;  // offset: 0x12
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES : public ::CPacketDataBase
     {
     public:
@@ -18581,6 +24772,149 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataGatheringItemElement>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 PawnRewardBoxId() const;
+        const MtTypedArray<CDataGatheringItemElement>& GatheringItemList() const;
+        MtTypedArray<CDataGatheringItemElement>& GatheringItemList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unPawnRewardBoxId;  // offset: 0x10
+        MtTypedArray<CDataGatheringItemElement> m_GatheringItemList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataGatheringItemGetRequest>&, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 PawnRewardBoxId() const;
+        const MtTypedArray<CDataGatheringItemGetRequest>& GatheringItemListAfterRequest() const;
+        MtTypedArray<CDataGatheringItemGetRequest>& GatheringItemListAfterRequest();
+        u8 PawnExpeditionStatus() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unPawnRewardBoxId;  // offset: 0x10
+        MtTypedArray<CDataGatheringItemGetRequest> m_GatheringItemListAfterRequest;  // offset: 0x18
+        u8 m_ucPawnExpeditionStatus;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x39
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataCommonU32>&, const MtTypedArray<CDataCommonU8>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 RewardDropNum() const;
+        const MtTypedArray<CDataCommonU32>& BoxIdVec() const;
+        MtTypedArray<CDataCommonU32>& BoxIdVec();
+        const MtTypedArray<CDataCommonU8>& MdlTypeVec() const;
+        MtTypedArray<CDataCommonU8>& MdlTypeVec();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unRewardDropNum;  // offset: 0x10
+        MtTypedArray<CDataCommonU32> m_BoxIdVec;  // offset: 0x18
+        MtTypedArray<CDataCommonU8> m_MdlTypeVec;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x58
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES : public ::CPacketDataBase
     {
     public:
@@ -18773,6 +25107,57 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE();
+        s32 WritePacket(CPacket*, u32, u8, u32, u32, u32, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 PawnID() const;
+        u8 Job() const;
+        u32 AddExp() const;
+        u32 ExtraBonusExp() const;
+        u32 TotalExp() const;
+        u8 Type() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unPawnID;  // offset: 0xc
+        u8 m_ucJob;  // offset: 0x10
+        u32 m_unAddExp;  // offset: 0x14
+        u32 m_unExtraBonusExp;  // offset: 0x18
+        u32 m_unTotalExp;  // offset: 0x1c
+        u8 m_ucType;  // offset: 0x20
+        bool m_bIsReceived;  // offset: 0x21
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -18912,6 +25297,50 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataPartnerPawnReward> m_ReleasedRewardList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataPartnerPawnReward>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataPartnerPawnReward>& RewardList() const;
+        MtTypedArray<CDataPartnerPawnReward>& RewardList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataPartnerPawnReward> m_RewardList;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
@@ -19220,6 +25649,51 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         u32 m_unPawnId;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_PHOTO_GET_AUTH_ADDRESS_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PHOTO_GET_AUTH_ADDRESS_RES();
+        s32 WritePacket(CPacket*, s32, const char*, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* Address() const;
+        const char* Token() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrAddress;  // offset: 0x10
+        MtString m_wstrToken;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x20
     public:
         static MyDTI DTI;
     };
@@ -19635,6 +26109,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_PLAY_INTERRUPT_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_PLAY_INTERRUPT_NOTICE();
+        s32 WritePacket(CPacket*, u32, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        u8 DeadlineSec() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        u8 m_ucDeadlineSec;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x11
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_PLAY_INTERRUPT_RES : public ::CPacketDataBase
     {
     public:
@@ -19961,6 +26478,58 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_POP_DROP_ITEM_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_POP_DROP_ITEM_NOTICE();
+        s32 WritePacket(CPacket*, const CStageLayoutID&, u32, u8, f64, f32, f64);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CStageLayoutID& LayoutId() const;
+        CStageLayoutID& LayoutId();
+        u32 Id() const;
+        u8 MdlType() const;
+        f64 PosX() const;
+        f32 PosY() const;
+        f64 PosZ() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CStageLayoutID m_LayoutId;  // offset: 0x10
+        u32 m_unId;  // offset: 0x28
+        u8 m_ucMdlType;  // offset: 0x2c
+        f64 m_dPosX;  // offset: 0x30
+        f32 m_fPosY;  // offset: 0x38
+        f64 m_dPosZ;  // offset: 0x40
+        bool m_bIsReceived;  // offset: 0x48
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES : public ::CPacketDataBase
     {
     public:
@@ -20226,6 +26795,50 @@ namespace nUserSession {
         u32 m_unQuestScheduleId;  // offset: 0xc
         b8 m_bIsEnable;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x11
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_QUEST_LOG_INFO_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_QUEST_LOG_INFO_RES();
+        s32 WritePacket(CPacket*, s32, const LightQuestClearListVec&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const LightQuestClearListVec& ClanQuestClearNumList() const;
+        LightQuestClearListVec& ClanQuestClearNumList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        LightQuestClearListVec m_ClanQuestClearNumList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
     };
@@ -20967,6 +27580,48 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_RAID_BOSS_INFO_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RAID_BOSS_INFO_NOTICE();
+        s32 WritePacket(CPacket*, const CRaidBossUnitInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CRaidBossUnitInfo& RaidBossInfo() const;
+        CRaidBossUnitInfo& RaidBossInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CRaidBossUnitInfo m_RaidBossInfo;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x40
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_RAID_BOSS_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -21500,6 +28155,182 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataCommonU32>& RecipeIdList() const;
+        MtTypedArray<CDataCommonU32>& RecipeIdList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataCommonU32> m_RecipeIdList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataUnlockEditParam>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataUnlockEditParam>& EditPartsList() const;
+        MtTypedArray<CDataUnlockEditParam>& EditPartsList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataUnlockEditParam> m_EditPartsList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataUnlockEmotion>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataUnlockEmotion>& EmotionList() const;
+        MtTypedArray<CDataUnlockEmotion>& EmotionList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataUnlockEmotion> m_EmotionList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataUnlockPawnTalk>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataUnlockPawnTalk>& PawnTalkList() const;
+        MtTypedArray<CDataUnlockPawnTalk>& PawnTalkList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataUnlockPawnTalk> m_PawnTalkList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES : public ::CPacketDataBase
     {
     public:
@@ -21686,6 +28517,49 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_RELEASE_WARP_POINT_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RELEASE_WARP_POINT_RES();
+        s32 WritePacket(CPacket*, s32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 WarpPointID() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unWarpPointID;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x14
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_REMOVE_BLACK_LIST_RES : public ::CPacketDataBase
     {
     public:
@@ -21723,6 +28597,88 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         u32 m_unRemoveCharacterID;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x14
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_REMOVE_FRIEND_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_REMOVE_FRIEND_NTC();
+        s32 WritePacket(CPacket*, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_REMOVE_FRIEND_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_REMOVE_FRIEND_RES();
+        s32 WritePacket(CPacket*, s32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
     public:
         static MyDTI DTI;
     };
@@ -21907,6 +28863,95 @@ namespace nUserSession {
         MtTypedArray<CDataReleaseElement> m_ReleaseElementList;  // offset: 0x18
         MtTypedArray<CDataCommonU32> m_NewOrderIdList;  // offset: 0x38
         bool m_bIsReceived;  // offset: 0x58
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES();
+        s32 WritePacket(CPacket*, s32, const char*);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const char* Address() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtString m_wstrAddress;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x18
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_RESERVE_SERVER_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_RESERVE_SERVER_RES();
+        s32 WritePacket(CPacket*, s32, u16, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u16 GameServerUniqueID() const;
+        const MtTypedArray<CDataCommonU32>& ReserveInfoList() const;
+        MtTypedArray<CDataCommonU32>& ReserveInfoList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u16 m_usGameServerUniqueID;  // offset: 0x10
+        MtTypedArray<CDataCommonU32> m_ReserveInfoList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
     public:
         static MyDTI DTI;
     };
@@ -22511,6 +29556,48 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataCommonU32>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataCommonU32>& CaplinkAchievementID() const;
+        MtTypedArray<CDataCommonU32>& CaplinkAchievementID();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataCommonU32> m_CaplinkAchievementID;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES : public ::CPacketDataBase
     {
     public:
@@ -22635,6 +29722,48 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_SET_CONTEXT_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_CONTEXT_NOTICE();
+        s32 WritePacket(CPacket*, const CContextSetInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CContextSetInfo& Context() const;
+        CContextSetInfo& Context();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CContextSetInfo m_Context;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x328
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_SET_FAVORITE_PAWN_RES : public ::CPacketDataBase
     {
     public:
@@ -22670,6 +29799,88 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES();
+        s32 WritePacket(CPacket*, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 Result() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucResult;  // offset: 0xa
+        bool m_bIsReceived;  // offset: 0xb
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES();
+        s32 WritePacket(CPacket*, u8);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 Result() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucResult;  // offset: 0xa
+        bool m_bIsReceived;  // offset: 0xb
     public:
         static MyDTI DTI;
     };
@@ -23202,6 +30413,52 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES();
+        s32 WritePacket(CPacket*, u8, u32, const MtTypedArray<CDataSetAcquirementParam>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u8 Result() const;
+        u32 PawnID() const;
+        const MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u8 m_ucResult;  // offset: 0xa
+        u32 m_unPawnID;  // offset: 0xc
+        MtTypedArray<CDataSetAcquirementParam> m_SetAcquirementParamList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES : public ::CPacketDataBase
     {
     public:
@@ -23335,6 +30592,52 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_SET_PRESET_ABILITY_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_PRESET_ABILITY_LIST_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataSetAcquirementParam>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 PawnID() const;
+        const MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList() const;
+        MtTypedArray<CDataSetAcquirementParam>& SetAcquirementParamList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unPawnID;  // offset: 0x10
+        MtTypedArray<CDataSetAcquirementParam> m_SetAcquirementParamList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_SET_PRESET_ABILITY_NAME_RES : public ::CPacketDataBase
     {
     public:
@@ -23370,6 +30673,136 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_SET_PRESET_ABILITY_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_PRESET_ABILITY_NTC();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataContextAcquirementData>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        const MtTypedArray<CDataContextAcquirementData>& AbilityDataList() const;
+        MtTypedArray<CDataContextAcquirementData>& AbilityDataList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        MtTypedArray<CDataContextAcquirementData> m_AbilityDataList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC();
+        s32 WritePacket(CPacket*, u32, const MtTypedArray<CDataContextAcquirementData>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 PawnId() const;
+        const MtTypedArray<CDataContextAcquirementData>& AbilityDataList() const;
+        MtTypedArray<CDataContextAcquirementData>& AbilityDataList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unPawnId;  // offset: 0xc
+        MtTypedArray<CDataContextAcquirementData> m_AbilityDataList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_SET_PRIORITY_QUEST_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SET_PRIORITY_QUEST_NOTICE();
+        s32 WritePacket(CPacket*, const CPriorityQuestSetting&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const CPriorityQuestSetting& PriorityQuestSetting() const;
+        CPriorityQuestSetting& PriorityQuestSetting();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        CPriorityQuestSetting m_PriorityQuestSetting;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x40
     public:
         static MyDTI DTI;
     };
@@ -23772,6 +31205,55 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_START_ATTACH_ELEMENT_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_START_ATTACH_ELEMENT_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataEquipElementParam>&, const CCurrentEquipInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 Gold() const;
+        const MtTypedArray<CDataEquipElementParam>& EquipElementParamList() const;
+        MtTypedArray<CDataEquipElementParam>& EquipElementParamList();
+        const CCurrentEquipInfo& CurrentEquip() const;
+        CCurrentEquipInfo& CurrentEquip();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unGold;  // offset: 0x10
+        MtTypedArray<CDataEquipElementParam> m_EquipElementParamList;  // offset: 0x18
+        CCurrentEquipInfo m_CurrentEquip;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x60
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_START_CRAFT_RES : public ::CPacketDataBase
     {
     public:
@@ -23806,6 +31288,47 @@ namespace nUserSession {
     private:
         u16 m_usError;  // offset: 0x8
         s32 m_nResult;  // offset: 0xc
+        bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_START_DEATH_PENALTY_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_START_DEATH_PENALTY_NOTICE();
+        s32 WritePacket(CPacket*, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 RemainTime() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unRemainTime;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
     public:
         static MyDTI DTI;
@@ -23848,6 +31371,101 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         u32 m_unCharacterID;  // offset: 0xc
         bool m_bIsReceived;  // offset: 0x10
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_START_DETACH_ELEMENT_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_START_DETACH_ELEMENT_RES();
+        s32 WritePacket(CPacket*, s32, u32, const MtTypedArray<CDataEquipElementParam>&, const CCurrentEquipInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 Gold() const;
+        const MtTypedArray<CDataEquipElementParam>& EquipElementParamList() const;
+        MtTypedArray<CDataEquipElementParam>& EquipElementParamList();
+        const CCurrentEquipInfo& CurrentEquip() const;
+        CCurrentEquipInfo& CurrentEquip();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unGold;  // offset: 0x10
+        MtTypedArray<CDataEquipElementParam> m_EquipElementParamList;  // offset: 0x18
+        CCurrentEquipInfo m_CurrentEquip;  // offset: 0x38
+        bool m_bIsReceived;  // offset: 0x60
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES();
+        s32 WritePacket(CPacket*, s32, u8, const CCurrentEquipInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u8 ColorNo() const;
+        const CCurrentEquipInfo& CurrentEquip() const;
+        CCurrentEquipInfo& CurrentEquip();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u8 m_ucColorNo;  // offset: 0x10
+        CCurrentEquipInfo m_CurrentEquip;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x40
     public:
         static MyDTI DTI;
     };
@@ -24171,6 +31789,52 @@ namespace nUserSession {
         s32 m_nResult;  // offset: 0xc
         MtTypedArray<CDataUseSupportPointRes> m_UsePoint;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_SWITCH_STORAGE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_SWITCH_STORAGE_NTC();
+        s32 WritePacket(CPacket*, s32, b8, const MtTypedArray<CDataSwitchStorage>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        b8 IsStart() const;
+        const MtTypedArray<CDataSwitchStorage>& ChangeList() const;
+        MtTypedArray<CDataSwitchStorage>& ChangeList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        b8 m_bIsStart;  // offset: 0x10
+        MtTypedArray<CDataSwitchStorage> m_ChangeList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
     public:
         static MyDTI DTI;
     };
@@ -24832,6 +32496,52 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE();
+        s32 WritePacket(CPacket*, u32, u32, const CEditInfo&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        u32 PawnId() const;
+        const CEditInfo& EditInfo() const;
+        CEditInfo& EditInfo();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        u32 m_unPawnId;  // offset: 0x10
+        CEditInfo m_EditInfo;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0xa0
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -24875,6 +32585,56 @@ namespace nUserSession {
         u8 m_ucEquipSlot;  // offset: 0x15
         u8 m_ucColor;  // offset: 0x16
         bool m_bIsReceived;  // offset: 0x17
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE();
+        s32 WritePacket(CPacket*, u32, u32, u8, u8, const MtTypedArray<CDataEquipElementParam>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 CharacterId() const;
+        u32 PawnId() const;
+        u8 EquipType() const;
+        u8 EquipSlot() const;
+        const MtTypedArray<CDataEquipElementParam>& EquipElementParamList() const;
+        MtTypedArray<CDataEquipElementParam>& EquipElementParamList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unCharacterId;  // offset: 0xc
+        u32 m_unPawnId;  // offset: 0x10
+        u8 m_ucEquipType;  // offset: 0x14
+        u8 m_ucEquipSlot;  // offset: 0x15
+        MtTypedArray<CDataEquipElementParam> m_EquipElementParamList;  // offset: 0x18
+        bool m_bIsReceived;  // offset: 0x38
     public:
         static MyDTI DTI;
     };
@@ -25020,6 +32780,94 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_UPDATE_EQUIP_PRESET_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_UPDATE_EQUIP_PRESET_RES();
+        s32 WritePacket(CPacket*, u32, const CEquipPreset&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 Result() const;
+        const CEquipPreset& EquipPreset() const;
+        CEquipPreset& EquipPreset();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unResult;  // offset: 0xc
+        CEquipPreset m_EquipPreset;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x70
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_UPDATE_EXP_MODE_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_UPDATE_EXP_MODE_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataJobPlayPoint>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataJobPlayPoint>& PlayPointList() const;
+        MtTypedArray<CDataJobPlayPoint>& PlayPointList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataJobPlayPoint> m_PlayPointList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES : public ::CPacketDataBase
     {
     public:
@@ -25142,6 +32990,98 @@ namespace nUserSession {
         u16 m_usError;  // offset: 0x8
         CMatchingProfile m_MatchingProfile;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x48
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES();
+        s32 WritePacket(CPacket*, s32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        u32 GP() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        u32 m_unGP;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x14
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE();
+        s32 WritePacket(CPacket*, u32, u8, u32, u32, u32);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        u32 PawnID() const;
+        u8 Job() const;
+        u32 AddJobPoint() const;
+        u32 ExtraBonusPoint() const;
+        u32 TotalJobPoint() const;
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        u32 m_unPawnID;  // offset: 0xc
+        u8 m_ucJob;  // offset: 0x10
+        u32 m_unAddJobPoint;  // offset: 0x14
+        u32 m_unExtraBonusPoint;  // offset: 0x18
+        u32 m_unTotalJobPoint;  // offset: 0x1c
+        bool m_bIsReceived;  // offset: 0x20
     public:
         static MyDTI DTI;
     };
@@ -25414,6 +33354,92 @@ namespace nUserSession {
         u32 m_unCharacterId;  // offset: 0xc
         u8 m_ucRevivePoint;  // offset: 0x10
         bool m_bIsReceived;  // offset: 0x11
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_URL_GET_LIST_RES : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_URL_GET_LIST_RES();
+        s32 WritePacket(CPacket*, s32, const MtTypedArray<CDataURLInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        s32 Result() const;
+        const MtTypedArray<CDataURLInfo>& URLInfoList() const;
+        MtTypedArray<CDataURLInfo>& URLInfoList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        s32 m_nResult;  // offset: 0xc
+        MtTypedArray<CDataURLInfo> m_URLInfoList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
+    class CPacket_S2C_USER_LIST_JOIN_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_USER_LIST_JOIN_NTC();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataLobbyMemberInfo>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataLobbyMemberInfo>& LobbyMemberInfoList() const;
+        MtTypedArray<CDataLobbyMemberInfo>& LobbyMemberInfoList();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataLobbyMemberInfo> m_LobbyMemberInfoList;  // offset: 0x10
+        bool m_bIsReceived;  // offset: 0x30
     public:
         static MyDTI DTI;
     };
@@ -25725,6 +33751,51 @@ namespace nUserSession {
 }  // namespace nUserSession
 
 namespace nUserSession {
+    class CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC : public ::CPacketDataBase
+    {
+    public:
+        class MyDTI;
+    public:
+        class MyDTI : public ::MtDTI
+        {
+        public:
+            MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+            virtual MtObject* newInstance() const;  // vtable slot 2
+        };
+    public:
+        static MtDTI* getMyDTIPtr();
+        static void usage();
+        virtual const MtDTI& getDTI() const;  // vtable slot 5
+        static MtAllocator* getAllocator();
+        static void setAllocator(u32);
+        static void* operator new(size_t sz, u32 align);
+        static void* operator new[](size_t sz, u32 align);
+        static void* operator new(size_t sz, void* p_addr);
+        static void* operator new[](size_t sz, void* p_addr);
+        static void operator delete(void* p_addr);
+        static void operator delete[](void* p_addr);
+        static void operator delete(void* p_addr, u32 align);
+        static void operator delete[](void* p_addr, u32 align);
+        CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC();
+        s32 WritePacket(CPacket*, const MtTypedArray<CDataWeatherLoop>&, const MtTypedArray<CDataWeatherSchedule>&);
+        s32 ReadPacket(CPacket* pPacket);
+        u16 Error() const;
+        const MtTypedArray<CDataWeatherLoop>& WeatherLoop() const;
+        MtTypedArray<CDataWeatherLoop>& WeatherLoop();
+        const MtTypedArray<CDataWeatherSchedule>& WeatherSchedule() const;
+        MtTypedArray<CDataWeatherSchedule>& WeatherSchedule();
+        bool isReceived() const;
+    private:
+        u16 m_usError;  // offset: 0x8
+        MtTypedArray<CDataWeatherLoop> m_WeatherLoop;  // offset: 0x10
+        MtTypedArray<CDataWeatherSchedule> m_WeatherSchedule;  // offset: 0x30
+        bool m_bIsReceived;  // offset: 0x50
+    public:
+        static MyDTI DTI;
+    };
+}  // namespace nUserSession
+
+namespace nUserSession {
     class CPacket_S2C_WEATHER_UPDATE_NOTICE : public ::CPacketDataBase
     {
     public:
@@ -25764,6 +33835,25 @@ namespace nUserSession {
         static MyDTI DTI;
     };
 }  // namespace nUserSession
+
+inline void* nUserSession::CPacket_S2C_ABILITY_SET_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ABILITY_SET_NTC::CPacket_S2C_ABILITY_SET_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC::CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
 
 inline void* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
@@ -25809,12 +33899,30 @@ inline nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::CPacket_S2C_AC
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC::CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_ACHIEVEMENT_REWARD_RECEIVE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline const MtTypedArray<CDataAchieveRewardCommon>& nUserSession::CPacket_S2C_ACHIEVEMENT_REWARD_RECEIVE_RES::RewardList() const {
     return this->m_RewardList;
+}
+
+inline void* nUserSession::CPacket_S2C_ACQUIREMENT_LEARN_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ACQUIREMENT_LEARN_NTC::CPacket_S2C_ACQUIREMENT_LEARN_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator new(size_t sz, void* p_addr) {
@@ -25835,6 +33943,26 @@ inline void* nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::operator new(size_t s
     return p_addr;
 }
 
+inline CCommunityCharacterBaseInfo& nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::CharacterBaseInfo() {
+    return this->m_CharacterBaseInfo;
+}
+
+inline void* nUserSession::CPacket_S2C_APPLY_FRIEND_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_APPLY_FRIEND_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_APPROVE_FRIEND_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_APPROVE_FRIEND_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nUserSession::CPacket_S2C_AREA_CHANGE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -25844,6 +33972,34 @@ inline nUserSession::CPacket_S2C_AREA_CHANGE_RES::CPacket_S2C_AREA_CHANGE_RES() 
     this->m_nResult = 0;
     this->m_unStageNo = 0;
     this->m_bIsBase = false;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataCommonU32>& nUserSession::CPacket_S2C_AREA_CHANGE_RES::StageFeatureList() {
+    return this->m_StageFeatureList;
+}
+
+inline void* nUserSession::CPacket_S2C_AREA_POINT_UP_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_AREA_POINT_UP_NTC::CPacket_S2C_AREA_POINT_UP_NTC() {
+    this->m_usError = 0;
+    this->m_bCanRankUp = false;
+    this->m_bIsReceived = false;
+    this->m_unWeekPoint = 0;
+    this->m_unAddPointByCharge = 0;
+    this->m_unTotalPoint = 0;
+    this->m_unAreaID = 0;
+    this->m_unAddPoint = 0;
+}
+
+inline void* nUserSession::CPacket_S2C_AREA_RANK_UP_READY_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_AREA_RANK_UP_READY_NTC::CPacket_S2C_AREA_RANK_UP_READY_NTC() {
+    this->m_usError = 0;
     this->m_bIsReceived = false;
 }
 
@@ -25899,6 +34055,16 @@ inline nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::CPacket_S2C_BAZAAR_EXHIBIT_
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES::CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -25909,6 +34075,38 @@ inline nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::CPacket_S2
     this->m_unAdd = 0;
     this->m_nResult = 0;
     this->m_unNum = 0;
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES::CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unItemId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES::CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unItemId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES::CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::operator new(size_t sz, void* p_addr) {
@@ -26046,6 +34244,16 @@ inline nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::CPacket_S2C_CANCEL_CRAFT_RES(
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES::CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26074,6 +34282,16 @@ inline u32 nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::CAP() const {
     return this->m_unCAP;
 }
 
+inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26088,6 +34306,17 @@ inline MtTypedArray<CDataEquipJobItem>& nUserSession::CPacket_S2C_CHANGE_CHARACT
     return this->m_EquipJobItemList;
 }
 
+inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE::CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_ucJob = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26096,6 +34325,10 @@ inline nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::CPacket_S2C_CHANGE_
     this->m_usError = 0;
     this->m_unResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataS2CCharacterEquipInfo>& nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::CharacterEquipList() {
+    return this->m_CharacterEquipList;
 }
 
 inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES::operator new(size_t sz, void* p_addr) {
@@ -26108,8 +34341,31 @@ inline nUserSession::CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES::CPacket_S2C
     this->m_bIsReceived = false;
 }
 
+inline MtTypedArray<CDataS2CCharacterEquipInfo>& nUserSession::CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES::CharacterEquipList() {
+    return this->m_CharacterEquipList;
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_JOB_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline MtTypedArray<CDataEquipItemInfo>& nUserSession::CPacket_S2C_CHANGE_JOB_NOTICE::EquipItemList() {
+    return this->m_EquipItemList;
+}
+
 inline void* nUserSession::CPacket_S2C_CHANGE_JOB_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_unPawnID = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::operator new(size_t sz, void* p_addr) {
@@ -26131,6 +34387,17 @@ inline MtTypedArray<CDataEquipJobItem>& nUserSession::CPacket_S2C_CHANGE_PAWN_EQ
     return this->m_EquipJobItemList;
 }
 
+inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE::CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_unPawnID = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26140,6 +34407,18 @@ inline nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::CPacket_S2C_CHANGE_PAWN_
     this->m_unResult = 0;
     this->m_unPawnID = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataS2CCharacterEquipInfo>& nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::CharacterEquipList() {
+    return this->m_CharacterEquipList;
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_JOB_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline MtTypedArray<CDataEquipItemInfo>& nUserSession::CPacket_S2C_CHANGE_PAWN_JOB_NOTICE::EquipItemList() {
+    return this->m_EquipItemList;
 }
 
 inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_JOB_RES::operator new(size_t sz, void* p_addr) {
@@ -26157,8 +34436,21 @@ inline nUserSession::CPacket_S2C_CHANGE_PAWN_STORAGE_EQUIP_RES::CPacket_S2C_CHAN
     this->m_bIsReceived = false;
 }
 
+inline MtTypedArray<CDataS2CCharacterEquipInfo>& nUserSession::CPacket_S2C_CHANGE_PAWN_STORAGE_EQUIP_RES::CharacterEquipList() {
+    return this->m_CharacterEquipList;
+}
+
 inline void* nUserSession::CPacket_S2C_CHARACTER_ADD_WALLET_POINT_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE::CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::operator new(size_t sz, void* p_addr) {
@@ -26184,6 +34476,18 @@ inline nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::CPacket_S2C_CHARAC
     this->m_unTotalExp = 0;
     this->m_unAddExp = 0;
     this->m_unExtraBonusExp = 0;
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_ucJob = 0;
+    this->m_unLevel = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -26278,6 +34582,17 @@ inline nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::CPacket_S2C_CHECK
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_CLAN_APPROVE_JOIN_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_APPROVE_JOIN_RES::CPacket_S2C_CLAN_APPROVE_JOIN_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unClanID = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26367,6 +34682,18 @@ inline nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::CPacket_S2C_CLAN_CON
     this->m_unNpcId = 0;
 }
 
+inline void* nUserSession::CPacket_S2C_CLAN_CREATE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CClanParam& nUserSession::CPacket_S2C_CLAN_CREATE_RES::ClanParam() {
+    return this->m_ClanParam;
+}
+
+inline MtTypedArray<CDataClanMemberInfo>& nUserSession::CPacket_S2C_CLAN_CREATE_RES::MemberList() {
+    return this->m_MemberList;
+}
+
 inline void* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26440,6 +34767,20 @@ inline nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES::CPacket_S2C_
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataClanMemberInfo>& nUserSession::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES::MemberList() {
+    return this->m_MemberList;
+}
+
 inline void* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26448,6 +34789,10 @@ inline nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::CPacket_S2C_CLAN_INVITE
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_INVITE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* nUserSession::CPacket_S2C_CLAN_INVITE_RES::operator new(size_t sz, void* p_addr) {
@@ -26460,6 +34805,18 @@ inline nUserSession::CPacket_S2C_CLAN_INVITE_RES::CPacket_S2C_CLAN_INVITE_RES() 
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_CLAN_JOIN_DISAPPROVE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_JOIN_MEMBER_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CClanMemberInfo& nUserSession::CPacket_S2C_CLAN_JOIN_MEMBER_NTC::MemberInfo() {
+    return this->m_MemberInfo;
+}
+
 inline void* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26468,6 +34825,22 @@ inline nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::CPacket_S2C_CLAN_JOIN_NOTICE(
     this->m_usError = 0;
     this->m_unCharacterID = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_JOIN_SELF_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CClanParam& nUserSession::CPacket_S2C_CLAN_JOIN_SELF_NTC::ClanParam() {
+    return this->m_ClanParam;
+}
+
+inline MtTypedArray<CDataClanMemberInfo>& nUserSession::CPacket_S2C_CLAN_JOIN_SELF_NTC::MemberList() {
+    return this->m_MemberList;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::operator new(size_t sz, void* p_addr) {
@@ -26491,6 +34864,10 @@ inline nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::CPacket_S2C_CLAN_LEVEL_UP_NT
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26499,6 +34876,27 @@ inline nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::CPacket_S2C_CLAN_NEG
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_unMemberID = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES::CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unPawnID = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES::CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -26524,6 +34922,10 @@ inline nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::CPacket_S2C_CLAN_QUEST_CL
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26531,6 +34933,17 @@ inline void* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::operator new(size
 inline nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::CPacket_S2C_CLAN_REGISTER_JOIN_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unInviteID = 0;
     this->m_bIsReceived = false;
 }
 
@@ -26593,6 +35006,20 @@ inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES::CPacket_S
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::operator new(size_t sz, void* p_addr) {
@@ -26669,6 +35096,32 @@ inline nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::CPacket_S2C_CLAN_SET_
     this->m_unRank = 0;
     this->m_nResult = 0;
     this->m_unMemberID = 0;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES::CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unClanPoint = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES::CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unClanPoint = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -26810,6 +35263,26 @@ inline nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::CPacket_S2C_CLIENT_CHALLE
     this->m_ucPasswordEnc[1] = 0;
 }
 
+inline void* nUserSession::CPacket_S2C_COG_GET_ID_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_COG_GET_ID_RES::CPacket_S2C_COG_GET_ID_RES() {
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_COG_GET_SESSION_KEY_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_COG_GET_SESSION_KEY_RES::CPacket_S2C_COG_GET_SESSION_KEY_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -26932,6 +35405,26 @@ inline void* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::operator new(size_t sz
 inline nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::CPacket_S2C_CREATE_MYPAWN_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CRITICAL_ERROR_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CRITICAL_ERROR_NOTICE::CPacket_S2C_CRITICAL_ERROR_NOTICE() {
+    this->m_usError = 0;
+    this->m_nErrorNo = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_CUSTOM_SKILL_SET_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_CUSTOM_SKILL_SET_NTC::CPacket_S2C_CUSTOM_SKILL_SET_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
     this->m_bIsReceived = false;
 }
 
@@ -27125,6 +35618,48 @@ inline nUserSession::CPacket_S2C_DELIVER_ITEM_RES::CPacket_S2C_DELIVER_ITEM_RES(
     this->m_unQuestScheduleId = 0;
 }
 
+inline void* nUserSession::CPacket_S2C_DLC_GET_BOUGHT_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_DLC_GET_BOUGHT_RES::CPacket_S2C_DLC_GET_BOUGHT_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataDLCLineupBought>& nUserSession::CPacket_S2C_DLC_GET_BOUGHT_RES::Boughts() {
+    return this->m_Boughts;
+}
+
+inline void* nUserSession::CPacket_S2C_DLC_GET_HISTORY_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_DLC_GET_HISTORY_RES::CPacket_S2C_DLC_GET_HISTORY_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataDLCLineupHistory>& nUserSession::CPacket_S2C_DLC_GET_HISTORY_RES::Historys() {
+    return this->m_Historys;
+}
+
+inline void* nUserSession::CPacket_S2C_DLC_USE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_DLC_USE_RES::CPacket_S2C_DLC_USE_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataDLCLineupBought>& nUserSession::CPacket_S2C_DLC_USE_RES::Boughts() {
+    return this->m_Boughts;
+}
+
 inline void* nUserSession::CPacket_S2C_EJECTION_NTC::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27153,6 +35688,46 @@ inline nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES::CPacket_S2C_
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_ENEMY_BREAK_REGION_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ENEMY_BREAK_REGION_NTC::CPacket_S2C_ENEMY_BREAK_REGION_NTC() {
+    this->m_usError = 0;
+    this->m_unSetId = 0;
+    this->m_unRegionNo = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_DIE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ENEMY_DIE_NTC::CPacket_S2C_ENEMY_DIE_NTC() {
+    this->m_usError = 0;
+    this->m_unSetId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_GROUP_DESTROY_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ENEMY_GROUP_DESTROY_NTC::CPacket_S2C_ENEMY_GROUP_DESTROY_NTC() {
+    this->m_usError = 0;
+    this->m_bIsAreaBoss = false;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_GROUP_RESET_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ENEMY_GROUP_RESET_NOTICE::CPacket_S2C_ENEMY_GROUP_RESET_NOTICE() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_ENEMY_KILL_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27165,6 +35740,16 @@ inline nUserSession::CPacket_S2C_ENEMY_KILL_RES::CPacket_S2C_ENEMY_KILL_RES() {
     this->m_unEnemyID = 0;
 }
 
+inline void* nUserSession::CPacket_S2C_ENEMY_REPOP_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ENEMY_REPOP_NOTICE::CPacket_S2C_ENEMY_REPOP_NOTICE() {
+    this->m_usError = 0;
+    this->m_unWaitSecond = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27174,12 +35759,38 @@ inline nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::CPacket_S2C_EN
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE::CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE() {
+    this->m_usError = 0;
+    this->m_ucSubGroupId = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline CEntryMemberData& nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NOTICE::MemberData() {
     return this->m_MemberData;
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_CREATE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CEntryItem& nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_CREATE_RES::EntryItem() {
+    return this->m_EntryItem;
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_ENTRY_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CEntryItem& nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_ENTRY_RES::EntryItem() {
+    return this->m_EntryItem;
 }
 
 inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::operator new(size_t sz, void* p_addr) {
@@ -27203,6 +35814,18 @@ inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::CPacket_S2C_E
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CEntryItem& nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_NTC::EntryItemData() {
+    return this->m_EntryItemData;
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27213,12 +35836,24 @@ inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::CPacket_S2C_ENT
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_MYSELF_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CEntryItem& nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_MYSELF_RES::EntryItemData() {
+    return this->m_EntryItemData;
+}
+
 inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline CEntryItem& nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_RES::EntryItemData() {
     return this->m_EntryItemData;
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::operator new(size_t sz, void* p_addr) {
@@ -27292,6 +35927,22 @@ inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::CPacket_S2C_ENTRY_B
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CEntryItem& nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_NOTICE::EntryItem() {
+    return this->m_EntryItem;
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CEntryItem& nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_RES::EntryItem() {
+    return this->m_EntryItem;
+}
+
 inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27322,6 +35973,26 @@ inline nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::CPacket_S2C_EN
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_EQUIP_BIND_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_EQUIP_BIND_NOTICE::CPacket_S2C_EQUIP_BIND_NOTICE() {
+    this->m_usError = 0;
+    this->m_ucType = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_EVENT_CODE_INPUT_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_EVENT_CODE_INPUT_RES::CPacket_S2C_EVENT_CODE_INPUT_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27342,6 +36013,10 @@ inline nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::CPacket_S2C_
     this->m_unStageId = 0;
     this->m_bIsReceived = false;
     this->m_ulValueOld = 0;
+}
+
+inline COmData& nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::Value() {
+    return this->m_Value;
 }
 
 inline void* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::operator new(size_t sz, void* p_addr) {
@@ -27397,6 +36072,15 @@ inline void* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::operator new(size_t 
 inline nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::CPacket_S2C_FINISH_CRAFT_NOTICE() {
     this->m_usError = 0;
     this->m_unPawnID = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE::CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE() {
+    this->m_usError = 0;
     this->m_bIsReceived = false;
 }
 
@@ -27462,6 +36146,24 @@ inline nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::CPacket_S2C_FURNITURE_LAY
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::CPacket_S2C_FURNITURE_LIST_GET_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataFurnitureLayout>& nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::FurnitureList() {
+    return this->m_FurnitureList;
+}
+
+inline CMyRoomOption& nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::MyRoomOption() {
+    return this->m_MyRoomOption;
+}
+
 inline void* nUserSession::CPacket_S2C_GACHA_BUY_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27485,6 +36187,22 @@ inline nUserSession::CPacket_S2C_GACHA_LIST_RES::CPacket_S2C_GACHA_LIST_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GAIN_CHARACTER_PARAM_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GAIN_CHARACTER_PARAM_NTC::CPacket_S2C_GAIN_CHARACTER_PARAM_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+    this->m_unMagicDefenseGain = 0;
+    this->m_unDefenseGain = 0;
+    this->m_unMagicAttackGain = 0;
+    this->m_unStaminaMaxGain = 0;
+    this->m_unAttackGain = 0;
+    this->m_unCharacterId = 0;
+    this->m_unHpMaxGain = 0;
 }
 
 inline void* nUserSession::CPacket_S2C_GAIN_PAWN_PARAM_NTC::operator new(size_t sz, void* p_addr) {
@@ -27520,6 +36238,40 @@ inline nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::CPacket_S2C_GAME_TIME_B
     this->m_GameTimeBaseInfo.m_unGameTimeDayHour = 0;
     this->m_GameTimeBaseInfo.m_unGameTimeOneDayMin = 0;
     this->m_GameTimeBaseInfo.m_unGameTimeYearMonth = 0;
+}
+
+inline void* nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unMoonAgeLoopSec = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataWeatherLoop>& nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::WeatherLoop() {
+    return this->m_WeatherLoop;
+}
+
+inline MtTypedArray<CDataWeatherSchedule>& nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::WeatherSchedule() {
+    return this->m_WeatherSchedule;
+}
+
+inline MtTypedArray<CDataMoonSchedule>& nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::MoonSchedule() {
+    return this->m_MoonSchedule;
+}
+
+inline void* nUserSession::CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE::CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE() {
+    this->m_usError = 0;
+    this->m_unGatheringPosId = 0;
+    this->m_unEnemyPosId = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::operator new(size_t sz, void* p_addr) {
@@ -27572,6 +36324,26 @@ inline void* nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::operato
 }
 
 inline nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES::CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES::CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
@@ -27638,6 +36410,16 @@ inline void* nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::operator ne
 }
 
 inline nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_AREA_RELEASE_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_AREA_RELEASE_LIST_RES::CPacket_S2C_GET_AREA_RELEASE_LIST_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
@@ -27725,7 +36507,21 @@ inline nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES::CPacket_S2C_GET_
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC::CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_CHARACTER_BINARY_STATUS_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_BIN_SAVEDATA_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
@@ -27747,6 +36543,55 @@ inline MtTypedArray<CDataEquipJobItem>& nUserSession::CPacket_S2C_GET_CHARACTER_
     return this->m_EquipJobItemList;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC::CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC::CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_PROFILE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CClanParam& nUserSession::CPacket_S2C_GET_CHARACTER_PROFILE_RES::ClanParam() {
+    return this->m_ClanParam;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_SKILL_INFO_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_STATUS_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_CHARACTER_STATUS_NTC::CPacket_S2C_GET_CHARACTER_STATUS_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterID = 0;
+    this->m_bHideHead = false;
+    this->m_bHideLantern = false;
+    this->m_unJewelryNum = 0;
+    this->m_bIsReceived = false;
+}
+
+inline CEditInfo& nUserSession::CPacket_S2C_GET_CHARACTER_STATUS_NTC::EditInfo() {
+    return this->m_EditInfo;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27763,6 +36608,18 @@ inline void* nUserSession::CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES::oper
 inline nUserSession::CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES::CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES::CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_ucCategory = 0;
+    this->m_bIsEnd = false;
     this->m_bIsReceived = false;
 }
 
@@ -27832,6 +36689,29 @@ inline MtTypedArray<CDataCommonU32>& nUserSession::CPacket_S2C_GET_CRAFT_PROGRES
     return this->m_CreatedReicpeList;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES::CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_ucCategory = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_RES::CPacket_S2C_GET_CRAFT_RECIPE_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_ucCategory = 0;
+    this->m_bIsEnd = false;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27855,6 +36735,20 @@ inline u32 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CraftItemLv() const 
 
 inline u8 nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::CreateCountMax() const {
     return this->m_ucCreateCountMax;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES::CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CURRENT_SET_SKILL_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -27944,6 +36838,10 @@ inline nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_RES::CPa
     this->m_bIsReceived = false;
 }
 
+inline MtTypedArray<CDataQuestContentsSituationInfo>& nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_RES::QuestContentsSituationInfoList() {
+    return this->m_QuestContentsSituationInfoList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -27952,6 +36850,10 @@ inline nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES::CPacket_S2C_
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataCycleContentsStateList>& nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES::CycleContentsStateList() {
+    return this->m_CycleContentsStateList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -27989,6 +36891,27 @@ inline u32 nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::Id() const {
     return this->m_unId;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_DROP_ITEM_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_DROP_ITEM_RES::CPacket_S2C_GET_DROP_ITEM_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES::CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28013,6 +36936,33 @@ inline CEndContentsGroup& nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::
     return this->m_EndContentsGroup;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_ENEMY_SET_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_ENEMY_SET_LIST_RES::CPacket_S2C_GET_ENEMY_SET_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_ucSubGroupId = 0;
+    this->m_unRandomSeed = 0;
+    this->m_unQuestId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES() {
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataEquipPreset>& nUserSession::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES::EquipPresetList() {
+    return this->m_EquipPresetList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28032,6 +36982,10 @@ inline nUserSession::CPacket_S2C_GET_FAVORITE_PAWN_LIST_RES::CPacket_S2C_GET_FAV
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataRegisterdPawnList>& nUserSession::CPacket_S2C_GET_FAVORITE_PAWN_LIST_RES::FavoritePawnList() {
+    return this->m_FavoritePawnList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -28101,6 +37055,10 @@ inline nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::CPacket_S2C_GET_GA
     this->m_bIsReceived = false;
 }
 
+inline MtTypedArray<CDataGatheringItemElement>& nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::ItemList() {
+    return this->m_ItemList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28110,6 +37068,10 @@ inline nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::CPacket_S2C_GET_GATHERI
     this->m_nResult = 0;
     this->m_unPosId = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataGatheringItemGetRequest>& nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::GatheringItemGetRequestList() {
+    return this->m_GatheringItemGetRequestList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::operator new(size_t sz, void* p_addr) {
@@ -28146,6 +37108,16 @@ inline nUserSession::CPacket_S2C_GET_GP_RES::CPacket_S2C_GET_GP_RES() {
     this->m_llUseLimit = 0;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES::CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES() {
+    this->m_usError = 0;
+    this->m_ucResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28154,6 +37126,16 @@ inline nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::CPacket_S2C_GET_I
     this->m_usError = 0;
     this->m_ucResult = 0;
     this->m_unValue = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_ITEM_SET_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_ITEM_SET_LIST_RES::CPacket_S2C_GET_ITEM_SET_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -28195,6 +37177,20 @@ inline const MtTypedArray<CDataJobChangeInfo>& nUserSession::CPacket_S2C_GET_JOB
 
 inline const MtTypedArray<CDataPawnJobChangeInfo>& nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::PawnJobChangeInfoList() const {
     return this->m_PawnJobChangeInfoList;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataJobOrbTreeStatus>& nUserSession::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES::TreeStatusList() {
+    return this->m_TreeStatusList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -28259,6 +37255,10 @@ inline nUserSession::CPacket_S2C_GET_LEGEND_PAWN_LIST_RES::CPacket_S2C_GET_LEGEN
     this->m_bIsReceived = false;
 }
 
+inline MtTypedArray<CDataRegisterdPawnList>& nUserSession::CPacket_S2C_GET_LEGEND_PAWN_LIST_RES::LegendPawnList() {
+    return this->m_LegendPawnList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28281,6 +37281,14 @@ inline MtTypedArray<CDataLightQuestList>& nUserSession::CPacket_S2C_GET_LIGHT_QU
     return this->m_LightQuestList;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28301,6 +37309,10 @@ inline nUserSession::CPacket_S2C_GET_LOST_PAWN_LIST_RES::CPacket_S2C_GET_LOST_PA
     this->m_bIsReceived = false;
 }
 
+inline MtTypedArray<CDataLostPawnList>& nUserSession::CPacket_S2C_GET_LOST_PAWN_LIST_RES::PawnList() {
+    return this->m_PawnList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28314,6 +37326,16 @@ inline nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::CPacket_S2C_GET_LOT_QUE
 
 inline MtTypedArray<CDataLotQuestList>& nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::LotQuestList() {
     return this->m_LotQuestList;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES::CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -28396,6 +37418,28 @@ inline MtTypedArray<CDataPawnList>& nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RE
     return this->m_PawnList;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES::CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unAbilityCostMax = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_NORA_PAWN_DATA_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_NORA_PAWN_DATA_RES::CPacket_S2C_GET_NORA_PAWN_DATA_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unPawnID = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_NORA_PAWN_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28404,6 +37448,10 @@ inline nUserSession::CPacket_S2C_GET_NORA_PAWN_LIST_RES::CPacket_S2C_GET_NORA_PA
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataRegisterdPawnList>& nUserSession::CPacket_S2C_GET_NORA_PAWN_LIST_RES::NoraPawnList() {
+    return this->m_NoraPawnList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES::operator new(size_t sz, void* p_addr) {
@@ -28455,6 +37503,10 @@ inline nUserSession::CPacket_S2C_GET_OFFICIAL_PAWN_LIST_RES::CPacket_S2C_GET_OFF
     this->m_bIsReceived = false;
 }
 
+inline MtTypedArray<CDataRegisterdPawnList>& nUserSession::CPacket_S2C_GET_OFFICIAL_PAWN_LIST_RES::OfficialPawnList() {
+    return this->m_OfficialPawnList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28478,6 +37530,10 @@ inline nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::CPacket_S2C_GET_
 
 inline void* nUserSession::CPacket_S2C_GET_PARTY_PAWN_DATA_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline CPawnInfo& nUserSession::CPacket_S2C_GET_PARTY_PAWN_DATA_RES::PawnInfo() {
+    return this->m_PawnInfo;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES::operator new(size_t sz, void* p_addr) {
@@ -28529,6 +37585,17 @@ inline MtTypedArray<CDataEquipJobItem>& nUserSession::CPacket_S2C_GET_PAWN_EQUIP
     return this->m_EquipJobItemList;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC::CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_unPawnId = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_PAWN_HISTORY_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28537,6 +37604,10 @@ inline nUserSession::CPacket_S2C_GET_PAWN_HISTORY_LIST_RES::CPacket_S2C_GET_PAWN
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataPawnHistory>& nUserSession::CPacket_S2C_GET_PAWN_HISTORY_LIST_RES::PawnHistoryList() {
+    return this->m_PawnHistoryList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -28582,6 +37653,17 @@ inline nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::CPacket_S2C_GE
 
 inline const MtTypedArray<CDataLearnedAcquirementParam>& nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::LearnedAcquirementParamList() const {
     return this->m_LearnedAcquirementParamList;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC::CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_unPawnId = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -28632,6 +37714,17 @@ inline nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES::CPacket_S2C_GET_PA
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC::CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_unPawnId = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28659,6 +37752,16 @@ inline nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::CPacket_S2C_GE
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_PLAY_POINT_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_PLAY_POINT_LIST_RES::CPacket_S2C_GET_PLAY_POINT_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_POST_ITEM_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28667,6 +37770,10 @@ inline nUserSession::CPacket_S2C_GET_POST_ITEM_LIST_RES::CPacket_S2C_GET_POST_IT
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataItemList>& nUserSession::CPacket_S2C_GET_POST_ITEM_LIST_RES::ItemList() {
+    return this->m_ItemList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -28702,6 +37809,10 @@ inline nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES::CPacket_S2C_GET_QU
     this->m_nResult = 0;
     this->m_ucQuestType = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_QUEST_DETAIL_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::operator new(size_t sz, void* p_addr) {
@@ -28779,6 +37890,20 @@ inline CPawnInfo& nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_DATA_RES::PawnIn
     return this->m_PawnInfo;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataRegisterdPawnList>& nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES::RegisterdPawnList() {
+    return this->m_RegisterdPawnList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28787,6 +37912,10 @@ inline nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::CPacket_S2C_GET_R
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataRegisterdPawnList>& nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::RegisterdPawnList() {
+    return this->m_RegisterdPawnList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -28819,6 +37948,20 @@ inline nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::CPacket_S2C_GET_REL
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataCommonU32>& nUserSession::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES::WarpPointReleaseList() {
+    return this->m_WarpPointReleaseList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_RENTED_PAWN_DATA_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -28832,6 +37975,20 @@ inline void* nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::operator new(si
 }
 
 inline nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::CPacket_S2C_GET_RENTED_PAWN_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataRentedPawnList>& nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::RentedPawnList() {
+    return this->m_RentedPawnList;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_RETURN_LOCATION_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_RETURN_LOCATION_RES::CPacket_S2C_GET_RETURN_LOCATION_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
@@ -29053,6 +38210,10 @@ inline nUserSession::CPacket_S2C_GET_STAGE_LIST_RES::CPacket_S2C_GET_STAGE_LIST_
     this->m_bIsReceived = false;
 }
 
+inline StageInfoVec& nUserSession::CPacket_S2C_GET_STAGE_LIST_RES::StageInfoList() {
+    return this->m_StageInfoList;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29073,6 +38234,10 @@ inline nUserSession::CPacket_S2C_GET_STORAGE_ITEM_LIST_RES::CPacket_S2C_GET_STOR
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataItemList>& nUserSession::CPacket_S2C_GET_STORAGE_ITEM_LIST_RES::ItemList() {
+    return this->m_ItemList;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES::operator new(size_t sz, void* p_addr) {
@@ -29100,6 +38265,24 @@ inline MtTypedArray<CDataTutorialQuestList>& nUserSession::CPacket_S2C_GET_TUTOR
     return this->m_TutorialQuestList;
 }
 
+inline void* nUserSession::CPacket_S2C_GET_UNLOCKED_EDIT_PARTS_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline void* nUserSession::CPacket_S2C_GET_USER_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GET_USER_LIST_RES::CPacket_S2C_GET_USER_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29119,6 +38302,10 @@ inline nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::CPacket_S2C_GET_WORLD_INFO_
     this->m_nResult = 0;
     this->m_unWorldID = 0;
     this->m_bIsReceived = false;
+}
+
+inline CWorldInfo& nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::WorldInfo() {
+    return this->m_WorldInfo;
 }
 
 inline void* nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -29152,6 +38339,17 @@ inline nUserSession::CPacket_S2C_GP_COURSE_END_NTC::CPacket_S2C_GP_COURSE_END_NT
     this->m_usError = 0;
     this->m_unCourseID = 0;
     this->m_unannounceType = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GP_COURSE_END_PARTY_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GP_COURSE_END_PARTY_NTC::CPacket_S2C_GP_COURSE_END_PARTY_NTC() {
+    this->m_usError = 0;
+    this->m_ucMemberIndex = 0;
+    this->m_unCourseID = 0;
     this->m_bIsReceived = false;
 }
 
@@ -29244,6 +38442,26 @@ inline nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::CPacket_S2C_GP_EDIT_G
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES::CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES() {
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES::CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES() {
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29314,11 +38532,41 @@ inline nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES::CPacket_S2C_GP_SHO
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES::CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES() {
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES() {
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES::CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES() {
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES::CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES() {
     this->m_usError = 0;
     this->m_unResult = 0;
     this->m_bIsReceived = false;
@@ -29417,6 +38665,21 @@ inline nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_RES::CPacket_S2C_GRO
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unStageId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataOmData>& nUserSession::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES::Values() {
+    return this->m_Values;
+}
+
 inline void* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29424,6 +38687,19 @@ inline void* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::operator new(siz
 inline nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::CPacket_S2C_INSTANCE_AREA_RESET_NTC() {
     this->m_usError = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_JOB_ORDER_COMPLETE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_JOB_ORDER_COMPLETE_NTC::CPacket_S2C_JOB_ORDER_COMPLETE_NTC() {
+    this->m_ucRewardLv = 0;
+    this->m_bIsReceived = false;
+    this->m_usError = 0;
+    this->m_ucJobID = 0;
+    this->m_ucRewardType = 0;
+    this->m_unRewardNo = 0;
 }
 
 inline void* nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::operator new(size_t sz, void* p_addr) {
@@ -29461,6 +38737,11 @@ inline s32 nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::Result() con
 
 inline void* nUserSession::CPacket_S2C_JOIN_LOBBY_QUEST_INFO_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_JOIN_LOBBY_QUEST_INFO_NOTICE::CPacket_S2C_JOIN_LOBBY_QUEST_INFO_NOTICE() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::operator new(size_t sz, void* p_addr) {
@@ -29516,6 +38797,18 @@ inline nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::CPacket_S2C_
     this->m_unQuestScheduleId = 0;
     this->m_usProcessNo = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_LEADER_WARP_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_LEADER_WARP_NTC::CPacket_S2C_LEADER_WARP_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+    this->m_unRestSecond = 0;
+    this->m_unCharacterID = 0;
+    this->m_unDestPointID = 0;
 }
 
 inline void* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::operator new(size_t sz, void* p_addr) {
@@ -29624,6 +38917,14 @@ inline nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::CPacket_S2C_LOADING_GET_I
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline CCommunityCharacterBaseInfo& nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE::CharacterBaseInfo() {
+    return this->m_CharacterBaseInfo;
+}
+
 inline void* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29671,6 +38972,16 @@ inline nUserSession::CPacket_S2C_LOGIN_RES::CPacket_S2C_LOGIN_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsCogLogin = false;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_LOGOUT_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_LOGOUT_RES::CPacket_S2C_LOGOUT_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -29780,6 +39091,43 @@ inline void* nUserSession::CPacket_S2C_MAIL_SEND_NTC::operator new(size_t sz, vo
     return p_addr;
 }
 
+inline void* nUserSession::CPacket_S2C_MAIL_SEND_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_MAIL_SEND_RES::CPacket_S2C_MAIL_SEND_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_MASTER_CHANGE_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_MASTER_CHANGE_NOTICE::CPacket_S2C_MASTER_CHANGE_NOTICE() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_MASTER_INFO_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_MASTER_INFO_NOTICE::CPacket_S2C_MASTER_INFO_NOTICE() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_MASTER_THROW_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_MASTER_THROW_NOTICE::CPacket_S2C_MASTER_THROW_NOTICE() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_MASTER_THROW_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29788,6 +39136,20 @@ inline nUserSession::CPacket_S2C_MASTER_THROW_RES::CPacket_S2C_MASTER_THROW_RES(
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC() {
+    this->m_usError = 0;
+    this->m_unMoonAgeLoopSec = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataMoonSchedule>& nUserSession::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC::MoonSchedule() {
+    return this->m_MoonSchedule;
 }
 
 inline void* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::operator new(size_t sz, void* p_addr) {
@@ -29810,6 +39172,16 @@ inline nUserSession::CPacket_S2C_MOVE_ITEM_RES::CPacket_S2C_MOVE_ITEM_RES() {
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_MOVE_OUT_SERVER_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_MOVE_OUT_SERVER_RES::CPacket_S2C_MOVE_OUT_SERVER_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29827,6 +39199,37 @@ inline void* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::operator new(size_t 
 inline nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::CPacket_S2C_MY_ROOM_RELEASE_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_NETCAFE_ERROR_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_NETCAFE_ERROR_NTC::CPacket_S2C_NETCAFE_ERROR_NTC() {
+    this->m_usError = 0;
+    this->m_nErrorNo = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_NG_WORD_GET_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_NG_WORD_GET_LIST_RES::CPacket_S2C_NG_WORD_GET_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_ullVersionNo = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_NORMAL_SKILL_LEARN_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_NORMAL_SKILL_LEARN_NTC::CPacket_S2C_NORMAL_SKILL_LEARN_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
     this->m_bIsReceived = false;
 }
 
@@ -29959,6 +39362,20 @@ inline nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::CPacket_S2C_PARTY
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ACCEPT_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PARTY_INVITE_ACCEPT_NTC::CPacket_S2C_PARTY_INVITE_ACCEPT_NTC() {
+    this->m_ucMemberIndex = 0;
+    this->m_bIsReceived = false;
+    this->m_unStageId = 0;
+    this->m_unPositionId = 0;
+    this->m_usError = 0;
+    this->m_usServerId = 0;
+    this->m_unPartyId = 0;
+}
+
 inline void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -29988,6 +39405,10 @@ inline nUserSession::CPacket_S2C_PARTY_INVITE_CHARACTER_RES::CPacket_S2C_PARTY_I
     this->m_nResult = 0;
     this->m_usTimeoutSec = 0;
     this->m_bIsReceived = false;
+}
+
+inline CPartyListInfo& nUserSession::CPacket_S2C_PARTY_INVITE_CHARACTER_RES::PartyInfo() {
+    return this->m_PartyInfo;
 }
 
 inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_NTC::operator new(size_t sz, void* p_addr) {
@@ -30206,6 +39627,18 @@ inline u32 nUserSession::CPacket_S2C_PARTY_MEMBER_SESSION_STATUS_NTC::CharacterI
     return this->m_unCharacterID;
 }
 
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC::CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+    this->m_ucIndex = 0;
+    this->m_ucValue = 0;
+    this->m_unCharacterId = 0;
+}
+
 inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -30342,6 +39775,44 @@ inline s32 nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::Resu
     return this->m_nResult;
 }
 
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unPawnRewardBoxId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataGatheringItemElement>& nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES::GatheringItemList() {
+    return this->m_GatheringItemList;
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unPawnRewardBoxId = 0;
+    this->m_ucPawnExpeditionStatus = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unRewardDropNum = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -30395,6 +39866,21 @@ inline nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::CPacket_S2C_PAWN_GOLDEN
     this->m_unPawnId = 0;
 }
 
+inline void* nUserSession::CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE::CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE() {
+    this->m_usError = 0;
+    this->m_unPawnID = 0;
+    this->m_ucJob = 0;
+    this->m_ucType = 0;
+    this->m_bIsReceived = false;
+    this->m_unTotalExp = 0;
+    this->m_unAddExp = 0;
+    this->m_unExtraBonusExp = 0;
+}
+
 inline void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -30406,6 +39892,10 @@ inline nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::CPacket_S2C_PA
     this->m_ucJob = 0;
     this->m_unLevel = 0;
     this->m_bIsReceived = false;
+}
+
+inline CCharacterLevelParam& nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::CharacterLevelParam() {
+    return this->m_CharacterLevelParam;
 }
 
 inline void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -30422,11 +39912,29 @@ inline nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::CPacket_S2C_PAWN_JOB_
     this->m_bIsReceived = false;
 }
 
+inline CCharacterLevelParam& nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::CharacterLevelParam() {
+    return this->m_CharacterLevelParam;
+}
+
 inline void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
 inline nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataPartnerPawnReward>& nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES::ReleasedRewardList() {
+    return this->m_ReleasedRewardList;
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES::CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
@@ -30440,6 +39948,10 @@ inline nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_LIST_GET_RES::CPacket_S2
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataPartnerPawnReward>& nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_LIST_GET_RES::RewardList() {
+    return this->m_RewardList;
 }
 
 inline void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::operator new(size_t sz, void* p_addr) {
@@ -30498,6 +40010,10 @@ inline nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::CPacket_S2C_PAWN_REVIVE_NOT
     this->m_usError = 0;
     this->m_unPawnId = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_PHOTO_GET_AUTH_ADDRESS_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
 }
 
 inline void* nUserSession::CPacket_S2C_PING_RES::operator new(size_t sz, void* p_addr) {
@@ -30593,6 +40109,17 @@ inline nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::CPacket_S2C_PLAY_INT
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_PLAY_INTERRUPT_NOTICE::CPacket_S2C_PLAY_INTERRUPT_NOTICE() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_ucDeadlineSec = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -30672,6 +40199,20 @@ inline nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::CPacket_S2C_PLAY_TIMEUP_NOT
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_POP_DROP_ITEM_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_POP_DROP_ITEM_NOTICE::CPacket_S2C_POP_DROP_ITEM_NOTICE() {
+    this->m_usError = 0;
+    this->m_unId = 0;
+    this->m_ucMdlType = 0;
+    this->m_dPosX = 0.0;
+    this->m_fPosY = 0.0f;
+    this->m_dPosZ = 0.0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -30740,6 +40281,16 @@ inline nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::CPacket_S2C_QUEST_ENABLE_N
     this->m_usError = 0;
     this->m_unQuestScheduleId = 0;
     this->m_bIsEnable = false;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_QUEST_LOG_INFO_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_QUEST_LOG_INFO_RES::CPacket_S2C_QUEST_LOG_INFO_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -30931,6 +40482,15 @@ inline nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::CPacket_S2C_QUICK_PART
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_RAID_BOSS_INFO_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_RAID_BOSS_INFO_NOTICE::CPacket_S2C_RAID_BOSS_INFO_NOTICE() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31071,6 +40631,46 @@ inline nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::CPacket_S2C_REGIST
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES::CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES::CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES::CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES::CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31081,6 +40681,10 @@ inline nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::CPacket_S2C_RELEAS
     this->m_ucJobID = 0;
     this->m_unRestOrb = 0;
     this->m_bIsReceived = false;
+}
+
+inline CJobOrbTreeStatus& nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::TreeStatus() {
+    return this->m_TreeStatus;
 }
 
 inline void* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::operator new(size_t sz, void* p_addr) {
@@ -31119,6 +40723,17 @@ inline nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::CPacket_S2C_RELE
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_RELEASE_WARP_POINT_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_RELEASE_WARP_POINT_RES::CPacket_S2C_RELEASE_WARP_POINT_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unWarpPointID = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_REMOVE_BLACK_LIST_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31127,6 +40742,26 @@ inline nUserSession::CPacket_S2C_REMOVE_BLACK_LIST_RES::CPacket_S2C_REMOVE_BLACK
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_unRemoveCharacterID = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_REMOVE_FRIEND_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_REMOVE_FRIEND_NTC::CPacket_S2C_REMOVE_FRIEND_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_REMOVE_FRIEND_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_REMOVE_FRIEND_RES::CPacket_S2C_REMOVE_FRIEND_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -31165,6 +40800,27 @@ inline nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::CPacket_S2C_REPO
     this->m_usError = 0;
     this->m_nResult = 0;
     this->m_ucJobID = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES::CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_RESERVE_SERVER_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_RESERVE_SERVER_RES::CPacket_S2C_RESERVE_SERVER_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_usGameServerUniqueID = 0;
     this->m_bIsReceived = false;
 }
 
@@ -31308,6 +40964,15 @@ inline nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::CPacket_S2C_SET_ARISEN_
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC::CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31337,6 +41002,10 @@ inline nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::CPacket_S2C_SET_CONTEX
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_SET_CONTEXT_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31344,6 +41013,26 @@ inline void* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::operator new(size_
 inline nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::CPacket_S2C_SET_FAVORITE_PAWN_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES::CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES() {
+    this->m_usError = 0;
+    this->m_ucResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES::CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES() {
+    this->m_usError = 0;
+    this->m_ucResult = 0;
     this->m_bIsReceived = false;
 }
 
@@ -31445,6 +41134,10 @@ inline nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::CPacket_S2C_SE
     this->m_bIsReceived = false;
 }
 
+inline COmData& nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::Value() {
+    return this->m_Value;
+}
+
 inline void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31478,6 +41171,17 @@ inline nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::CPacket_S2C_SET_PAWN_ABIL
     this->m_ucSlotNo = 0;
     this->m_unAbilityID = 0;
     this->m_ucAbilityLv = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES::CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES() {
+    this->m_usError = 0;
+    this->m_ucResult = 0;
+    this->m_unPawnID = 0;
     this->m_bIsReceived = false;
 }
 
@@ -31516,6 +41220,17 @@ inline nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::CPacket_S2C_SET_PAWN_SKILL_
     this->m_unPawnID = 0;
 }
 
+inline void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SET_PRESET_ABILITY_LIST_RES::CPacket_S2C_SET_PRESET_ABILITY_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unPawnID = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31523,6 +41238,35 @@ inline void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::operator new
 inline nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NTC::CPacket_S2C_SET_PRESET_ABILITY_NTC() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC::CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC() {
+    this->m_usError = 0;
+    this->m_unPawnId = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_NOTICE::CPacket_S2C_SET_PRIORITY_QUEST_NOTICE() {
+    this->m_usError = 0;
     this->m_bIsReceived = false;
 }
 
@@ -31629,6 +41373,21 @@ inline nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::CPacket_S2C_STAMP_BONU
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_START_ATTACH_ELEMENT_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_START_ATTACH_ELEMENT_RES::CPacket_S2C_START_ATTACH_ELEMENT_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unGold = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataEquipElementParam>& nUserSession::CPacket_S2C_START_ATTACH_ELEMENT_RES::EquipElementParamList() {
+    return this->m_EquipElementParamList;
+}
+
 inline void* nUserSession::CPacket_S2C_START_CRAFT_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31639,6 +41398,16 @@ inline nUserSession::CPacket_S2C_START_CRAFT_RES::CPacket_S2C_START_CRAFT_RES() 
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_START_DEATH_PENALTY_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_START_DEATH_PENALTY_NOTICE::CPacket_S2C_START_DEATH_PENALTY_NOTICE() {
+    this->m_usError = 0;
+    this->m_unRemainTime = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31646,6 +41415,32 @@ inline void* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::operato
 inline nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE() {
     this->m_usError = 0;
     this->m_unCharacterID = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_START_DETACH_ELEMENT_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_START_DETACH_ELEMENT_RES::CPacket_S2C_START_DETACH_ELEMENT_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unGold = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataEquipElementParam>& nUserSession::CPacket_S2C_START_DETACH_ELEMENT_RES::EquipElementParamList() {
+    return this->m_EquipElementParamList;
+}
+
+inline void* nUserSession::CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES::CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_ucColorNo = 0;
     this->m_bIsReceived = false;
 }
 
@@ -31738,6 +41533,17 @@ inline void* nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::operator new(size_
 inline nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::CPacket_S2C_SUPPORT_POINT_USE_RES() {
     this->m_usError = 0;
     this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_SWITCH_STORAGE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_SWITCH_STORAGE_NTC::CPacket_S2C_SWITCH_STORAGE_NTC() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsStart = false;
     this->m_bIsReceived = false;
 }
 
@@ -31904,6 +41710,17 @@ inline nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::CPacket_S2C_
     this->m_unExtraBonusPoint = 0;
 }
 
+inline void* nUserSession::CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE::CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE() {
+    this->m_usError = 0;
+    this->m_unCharacterId = 0;
+    this->m_unPawnId = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31916,6 +41733,19 @@ inline nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::CPacket_S2C_UPDATE_E
     this->m_bIsReceived = false;
     this->m_unCharacterId = 0;
     this->m_unPawnId = 0;
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE::CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE() {
+    this->m_usError = 0;
+    this->m_ucEquipType = 0;
+    this->m_ucEquipSlot = 0;
+    this->m_unCharacterId = 0;
+    this->m_unPawnId = 0;
+    this->m_bIsReceived = false;
 }
 
 inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -31956,6 +41786,30 @@ inline nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::CPacket_S2C_UPDAT
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_RES::CPacket_S2C_UPDATE_EQUIP_PRESET_RES() {
+    this->m_usError = 0;
+    this->m_unResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline CEquipPreset& nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_RES::EquipPreset() {
+    return this->m_EquipPreset;
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EXP_MODE_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_UPDATE_EXP_MODE_RES::CPacket_S2C_UPDATE_EXP_MODE_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
 inline void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -31985,6 +41839,31 @@ inline void* nUserSession::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE::operator 
 inline nUserSession::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE() {
     this->m_usError = 0;
     this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES::CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_unGP = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE::CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE() {
+    this->m_usError = 0;
+    this->m_unPawnID = 0;
+    this->m_ucJob = 0;
+    this->m_bIsReceived = false;
+    this->m_unTotalJobPoint = 0;
+    this->m_unAddJobPoint = 0;
+    this->m_unExtraBonusPoint = 0;
 }
 
 inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_NOTICE::operator new(size_t sz, void* p_addr) {
@@ -32046,6 +41925,25 @@ inline nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::CPacket_S2C_UPDATE_
     this->m_usError = 0;
     this->m_unCharacterId = 0;
     this->m_ucRevivePoint = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_URL_GET_LIST_RES::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_URL_GET_LIST_RES::CPacket_S2C_URL_GET_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+}
+
+inline void* nUserSession::CPacket_S2C_USER_LIST_JOIN_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_USER_LIST_JOIN_NTC::CPacket_S2C_USER_LIST_JOIN_NTC() {
+    this->m_usError = 0;
     this->m_bIsReceived = false;
 }
 
@@ -32125,6 +42023,19 @@ inline nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::CPacket_S2C_WEATHER_F
     this->m_bIsReceived = false;
 }
 
+inline void* nUserSession::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline nUserSession::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+}
+
+inline MtTypedArray<CDataWeatherSchedule>& nUserSession::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC::WeatherSchedule() {
+    return this->m_WeatherSchedule;
+}
+
 inline void* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -32133,4 +42044,4991 @@ inline nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::CPacket_S2C_WEATHER_UPDA
     this->m_usError = 0;
     this->m_unWeatherID = 0;
     this->m_bIsReceived = false;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* nUserSession::CPacket_S2C_ABILITY_SET_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ABILITY_SET_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ABILITY_SET_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ABILITY_SET_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ABILITY_SET_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ACHIEVEMENT_COMPLETE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_GET_FURNITURE_REWARD_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_GET_PROGRESS_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_GET_RECEIVABLE_REWARD_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_GET_REWARD_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ACHIEVEMENT_RECEIVABLE_REWARD_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACHIEVEMENT_REWARD_RECEIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACHIEVEMENT_REWARD_RECEIVE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACQUIREMENT_LEARN_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACQUIREMENT_LEARN_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ACQUIREMENT_LEARN_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACQUIREMENT_LEARN_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ACQUIREMENT_LEARN_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ACTIVATE_JOB_ORDER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline nUserSession::CPacket_S2C_ADD_BLACK_LIST_RES::CPacket_S2C_ADD_BLACK_LIST_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+    this->m_CharacterBaseInfo.m_wstrClanName.value = nullptr;
+    this->m_CharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_CharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_APPLY_FRIEND_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_APPLY_FRIEND_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_APPLY_FRIEND_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_APPLY_FRIEND_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_APPROVE_FRIEND_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_APPROVE_FRIEND_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_APPROVE_FRIEND_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_APPROVE_FRIEND_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_AREA_CHANGE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_CHANGE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_AREA_CHANGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_CHANGE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_AREA_CHANGE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_AREA_POINT_UP_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_POINT_UP_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_AREA_POINT_UP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_POINT_UP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_AREA_POINT_UP_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_AREA_RANK_UP_READY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_RANK_UP_READY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_AREA_RANK_UP_READY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_RANK_UP_READY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_AREA_RANK_UP_READY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_AREA_RANK_UP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_RANK_UP_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_AREA_WARP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_WARP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_AREA_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_AREA_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_AREA_WARP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_CANCEL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_EXHIBIT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_GET_CHARACTER_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_GET_EXHIBIT_POSSIBLE_NUM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_HISTORY_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_GET_ITEM_PRICE_LIMIT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_PROCEEDS_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_RECEIVE_PROCEEDS_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BAZAAR_RE_EXHIBIT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BOX_GACHA_BUY_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BOX_GACHA_DRAW_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BOX_GACHA_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BOX_GACHA_RESET_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BUY_AREA_QUEST_HINT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_BUY_SHOP_GOODS_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CANCEL_CRAFT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CANCEL_FRIEND_APPLICATION_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CANCEL_PRIORITY_QUEST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CAP_TO_GP_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_JOB_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_LOBBY_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_CHARACTER_EQUIP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_CHARACTER_STORAGE_EQUIP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_JOB_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_JOB_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_JOB_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_JOB_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_JOB_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_PAWN_EQUIP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_PAWN_JOB_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_JOB_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_PAWN_JOB_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_JOB_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHANGE_PAWN_STORAGE_EQUIP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_STORAGE_EQUIP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHANGE_PAWN_STORAGE_EQUIP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHANGE_PAWN_STORAGE_EQUIP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHANGE_PAWN_STORAGE_EQUIP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_ADD_WALLET_POINT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_ADD_WALLET_POINT_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_CONTENTS_RELEASE_ELEMENT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_GOLDEN_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_JOB_EXP_UP_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_MEMBER_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_JOB_LEVEL_UP_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_PENALTY_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_POINT_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARACTER_REVIVE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_SEARCH_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARACTER_SUB_WALLET_POINT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARACTER_SUB_WALLET_POINT_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHARGE_REVIVE_POINT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CHECK_QUEST_DISTRIBUTION_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_APPROVE_JOIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_APPROVE_JOIN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_APPROVE_JOIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_APPROVE_JOIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_APPROVE_JOIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_BASE_GET_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_BASE_RELEASE_STATE_UPDATE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_CANCEL_JOIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CONCIERGE_GET_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_CONCIERGE_UPDATE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_CREATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_CREATE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_EXPEL_MEMBER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_HISTORY_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_JOIN_REQUESTED_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_MEMBER_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_GET_MEMBER_NUM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_MY_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_MY_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_MY_JOIN_REQUEST_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_GET_MY_MEMBER_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_INVITE_ACCEPT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_INVITE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_INVITE_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_INVITE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_INVITE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_INVITE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_JOIN_DISAPPROVE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_JOIN_DISAPPROVE_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_JOIN_MEMBER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_JOIN_MEMBER_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_JOIN_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_JOIN_SELF_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_JOIN_SELF_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_LEAVE_MEMBER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_LEVEL_UP_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_NEGOTIATE_MASTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_DATA_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_PARTNER_PAWN_LIST_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_POINT_ADD_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_QUEST_CLEAR_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_REGISTER_JOIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_APPROVE_INVITED_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_INVITE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_CANCEL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_DISAPPROVE_INVITE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITED_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_INVITE_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_GET_MY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC::DTI.::MtDTI::getID());
+}
+
+inline nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_NTC() {
+    this->m_usError = 0;
+    this->m_unInviteID = 0;
+    this->m_bIsReceived = false;
+    this->m_ClanInfo.m_llCreated = 0;
+    this->m_ClanInfo.m_MasterCharacterName.m_wstrLastName.value = nullptr;
+    this->m_ClanInfo.m_MasterCharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_INVITE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_REGISTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SCOUT_ENTRY_SEARCH_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SEARCH_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SEARCH_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SETTING_UPDATE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SET_MEMBER_RANK_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_BUFF_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_FUNCTION_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC::DTI.::MtDTI::getID());
+}
+
+inline nUserSession::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC::CPacket_S2C_CLAN_SHOP_BUY_ITEM_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+    this->m_unClanPoint = 0;
+    this->m_BuyerName.m_wstrLastName.value = nullptr;
+    this->m_BuyerName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SHOP_GET_BUFF_ITEM_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_SHOP_GET_FUNCTION_ITEM_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_UPDATE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLAN_UPDATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_UPDATE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLAN_UPDATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLAN_UPDATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLAN_UPDATE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CLIENT_CHALLENGE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_COG_GET_ID_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_GET_ID_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_COG_GET_ID_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_GET_ID_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COG_GET_ID_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_COG_GET_SESSION_KEY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_GET_SESSION_KEY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_COG_GET_SESSION_KEY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_GET_SESSION_KEY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COG_GET_SESSION_KEY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_DISABLE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COG_LOGIN_SKIP_FLAG_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_UPDATE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_UPDATE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_UPDATE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_UPDATE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_COMMUNITY_CHARACTER_STATUS_UPDATE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CONSUME_STORAGE_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRAFT_EXP_UP_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRAFT_RANK_UP_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_SKILL_ANALYZE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRAFT_SKILL_UP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRAFT_TIME_SAVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CREATE_MYPAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CRITICAL_ERROR_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRITICAL_ERROR_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CRITICAL_ERROR_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CRITICAL_ERROR_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CRITICAL_ERROR_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CUSTOM_SKILL_SET_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CUSTOM_SKILL_SET_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CUSTOM_SKILL_SET_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CUSTOM_SKILL_SET_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CUSTOM_SKILL_SET_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_ENABLE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_END_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_END_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_CYCLE_CONTENTS_PLAY_START_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_COMMAND_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_COMMAND_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DEBUG_COMMAND_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_COMMAND_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_COMMAND_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_CYCLE_CONTENTS_POINT_UPLOAD_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_ENEMY_SET_PRESET_FIX_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_GET_QUEST_FLAG_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_GET_QUEST_LAYOUT_FLAG_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_MAIN_QUEST_JUMP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_ALL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DEBUG_QUEST_RESET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DECIDE_DELIVERY_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DELETE_FAVORITE_PAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DELETE_MYPAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DELIVER_ITEM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELIVER_ITEM_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DELIVER_ITEM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELIVER_ITEM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DELIVER_ITEM_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DELIVER_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELIVER_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DELIVER_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DELIVER_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DELIVER_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DLC_GET_BOUGHT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DLC_GET_BOUGHT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DLC_GET_BOUGHT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DLC_GET_BOUGHT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DLC_GET_BOUGHT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DLC_GET_HISTORY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DLC_GET_HISTORY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DLC_GET_HISTORY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DLC_GET_HISTORY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DLC_GET_HISTORY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_DLC_USE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DLC_USE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_DLC_USE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_DLC_USE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_DLC_USE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_EJECTION_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EJECTION_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_EJECTION_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EJECTION_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EJECTION_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENCOUNTER_PAWN_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_END_DISTRIBUTION_QUEST_CANCEL_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_BREAK_REGION_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_BREAK_REGION_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_BREAK_REGION_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_BREAK_REGION_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_BREAK_REGION_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_DIE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_DIE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_DIE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_DIE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_DIE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_GROUP_DESTROY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_GROUP_DESTROY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_GROUP_DESTROY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_GROUP_DESTROY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_GROUP_DESTROY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_GROUP_RESET_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_GROUP_RESET_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_GROUP_RESET_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_GROUP_RESET_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_GROUP_RESET_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_KILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_KILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_KILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_KILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_KILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_REPOP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_REPOP_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_REPOP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_REPOP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_REPOP_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_STAGE_BOSS_ANNIHILATE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENEMY_SUB_GROUP_APPEAR_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_CHANGE_MEMBER_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_CREATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_CREATE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_ENTRY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_ENTRY_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_EXTEND_TIMEOUT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_FORCE_START_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_CHANGE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_LOCK_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_MYSELF_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_MYSELF_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_INVITE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LEAVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_PARTY_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_READY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RECREATE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_RESERVE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_TIMEOUT_TIMER_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_ENTRY_BOARD_ITEM_UNREADY_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_EQUIP_BIND_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EQUIP_BIND_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_EQUIP_BIND_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EQUIP_BIND_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EQUIP_BIND_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_EVENT_CODE_INPUT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EVENT_CODE_INPUT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_EVENT_CODE_INPUT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EVENT_CODE_INPUT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EVENT_CODE_INPUT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXCHANGE_DISPEL_ITEM_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EXCHANGE_OM_INSTANT_KEY_VALUE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EXTEND_EQUIP_SLOT_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EXTEND_MAIN_PAWN_SLOT_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_EXTEND_SUPPORT_PAWN_SLOT_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FAVORITE_WARP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FAVORITE_WARP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_FAVORITE_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FAVORITE_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FAVORITE_WARP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_CRAFT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_DEATH_PENALTY_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_LANTERN_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FINISH_LANTERN_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FORT_DEFENSE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FORT_DEFENSE_PLAY_START_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FORT_DEFENSE_PLAY_START_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FORT_DEFENSE_WAR_SITUATION_LEVEL_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FURNITURE_LAYOUT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_FURNITURE_LIST_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GACHA_BUY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GACHA_BUY_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GACHA_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GACHA_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GAIN_CHARACTER_PARAM_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAIN_CHARACTER_PARAM_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GAIN_CHARACTER_PARAM_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAIN_CHARACTER_PARAM_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GAIN_CHARACTER_PARAM_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GAIN_PAWN_PARAM_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAIN_PAWN_PARAM_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GAIN_PAWN_PARAM_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAIN_PAWN_PARAM_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GAIN_PAWN_PARAM_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GAME_TIME_BASEINFO_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GAME_TIME_GET_BASEINFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GATHERING_ENEMY_APPEAR_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ABILITY_COST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ACQUIRABLE_ABILITY_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ACQUIRABLE_NORMAL_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ACQUIRABLE_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ALL_JOB_ORB_ELEMENT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_ALL_ORB_ELEMENT_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_AREA_BASE_INFO_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_BONUS_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_INFO_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_MASTER_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_AREA_POINT_DEBUG_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_QUEST_HINT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_RELEASE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_RELEASE_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_AREA_RELEASE_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_RELEASE_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_AREA_RELEASE_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_SUPPLY_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_AREA_SUPPLY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AREA_WARP_POINT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_AVAILABLE_BACKGROUND_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_BLACK_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_BLACK_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_BLACK_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_BLACK_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_BLACK_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CAPLINK_ACHIEVE_REWARD_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CAP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CAP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CAP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CAP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CAP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CAP_TO_GP_CHANGE_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CHARACTER_ACHIEVEMENT_INFO_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_BINARY_STATUS_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_BINARY_STATUS_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_BIN_SAVEDATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_BIN_SAVEDATA_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CHARACTER_EQUIP_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CHARACTER_HISTORY_INFO_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CHARACTER_ORB_DEVOTE_INFO_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_PROFILE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_PROFILE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_SKILL_INFO_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_SKILL_INFO_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHARACTER_STATUS_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_STATUS_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHARACTER_STATUS_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHARACTER_STATUS_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CHARACTER_STATUS_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CHEAT_INFO_REQ::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_COMMUNICATION_SHORTCUT_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CRAFT_GRADEUP_RECIPE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_IR_COLLECTION_VALUE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_IR_COLLECTION_VALUE_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CRAFT_IR_COLLECTION_VALUE_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_IR_COLLECTION_VALUE_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CRAFT_IR_COLLECTION_VALUE_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_LOCKED_ELEMENT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_PRODUCT_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_PROGRESS_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_DESIGNATE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CRAFT_RECIPE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CRAFT_SETTING_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CURRENT_SET_ABILITY_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CURRENT_SET_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CURRENT_SET_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_BORDER_REWARD_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NEWS_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_NOW_POINT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_POINT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_RANKING_REWARD_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_REWARD_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_SITUATION_INFO_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_CYCLE_CONTENTS_STATE_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_DISPEL_ITEM_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_DISPEL_ITEM_SETTING_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_DROP_ITEM_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_DROP_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_DROP_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_DROP_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_DROP_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_DROP_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_DROP_ITEM_SET_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_END_CONTENTS_GROUP_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ENEMY_SET_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ENEMY_SET_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_ENEMY_SET_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ENEMY_SET_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_ENEMY_SET_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_EQUIP_PRESET_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_EXP_MODE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_EXP_MODE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_EXP_MODE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_EXP_MODE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_FAVORITE_PAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_FAVORITE_PAWN_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_FAVORITE_PAWN_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_FAVORITE_PAWN_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_FAVORITE_PAWN_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_FAVORITE_WARP_POINT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_FREE_RENTAL_PAWN_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_FRIEND_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_GAME_SETTING_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GAME_SETTING_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_GATHERING_ITEM_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_GATHERING_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GP_DETAIL_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_GP_PERIOD_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GP_PERIOD_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_GP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_GP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_GP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_GP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_STR_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_INSTANT_KEY_VALUE_UL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ITEM_SET_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ITEM_SET_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_ITEM_SET_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ITEM_SET_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_ITEM_SET_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ITEM_SORTDATA_BIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ITEM_SORTDATA_BIN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_ITEM_SORTDATA_BIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ITEM_SORTDATA_BIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_ITEM_SORTDATA_BIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ITEM_STORAGE_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_JOB_CHANGE_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_JOB_ORB_TREE_STATUS_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LEADER_AREA_RELEASE_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LEARNED_ABILITY_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LEARNED_NORMAL_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LEARNED_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LEGEND_PAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LEGEND_PAWN_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_LEGEND_PAWN_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LEGEND_PAWN_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_LEGEND_PAWN_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LIGHT_QUEST_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LOBBY_PLAYER_CONTEXT_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_LOGIN_ANNOUNCEMENT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LOST_PAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LOST_PAWN_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_LOST_PAWN_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LOST_PAWN_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_LOST_PAWN_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_LOT_QUEST_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_MAIN_QUEST_COMPLETE_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_END_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MAIN_QUEST_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MATCHING_PROFILE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MESSAGE_SET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MESSAGE_SET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_MESSAGE_SET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MESSAGE_SET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_MESSAGE_SET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MYPAWN_DATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MYPAWN_DATA_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_MYPAWN_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_MY_CHARACTER_PROFILE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_NORA_PAWN_DATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NORA_PAWN_DATA_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_NORA_PAWN_DATA_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NORA_PAWN_DATA_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_NORA_PAWN_DATA_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_NORA_PAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NORA_PAWN_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_NORA_PAWN_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NORA_PAWN_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_NORA_PAWN_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_ITEM_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_OFFICIAL_PAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_OFFICIAL_PAWN_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_OFFICIAL_PAWN_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_OFFICIAL_PAWN_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_OFFICIAL_PAWN_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_OM_INSTANT_KEY_VALUE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_ORB_GAIN_EXTEND_PARAM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PARTY_PAWN_DATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PARTY_PAWN_DATA_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PARTY_QUEST_PROGRESS_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_ABILITY_COST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_PAWN_EQUIP_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_PAWN_HISTORY_INFO_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_HISTORY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_HISTORY_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_PAWN_HISTORY_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_HISTORY_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_PAWN_HISTORY_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_LEARNED_ABILITY_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_LEARNED_NORMAL_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_LEARNED_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_PAWN_ORB_DEVOTE_INFO_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_PAWN_PROFILE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_RELEASE_ORB_ELEMENT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_SET_ABILITY_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_SET_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_INFO_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PAWN_TOTAL_SCORE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PENALTY_HEAL_STAY_PRICE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PLAY_POINT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PLAY_POINT_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_PLAY_POINT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PLAY_POINT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_PLAY_POINT_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_POST_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_POST_ITEM_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_POST_ITEM_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_POST_ITEM_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_POST_ITEM_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PRESET_ABILITY_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_PRIORITY_QUEST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_QUEST_COMPLETE_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_QUEST_DETAIL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_QUEST_DETAIL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_QUEST_LAYOUT_FLAG_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_QUEST_PARTY_BONUS_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_QUEST_SCHEDULE_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REAL_TIME_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REAL_TIME_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_REAL_TIME_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REAL_TIME_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REAL_TIME_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RECENT_CHARACTER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RECENT_CHARACTER_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_RECENT_CHARACTER_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RECENT_CHARACTER_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_RECENT_CHARACTER_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RECOMMENDED_QUEST_INFO_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_DATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_DATA_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_BY_CHARACTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REGISTERED_PAWN_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RELEASE_ABILITY_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RELEASE_ORB_ELEMENT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RELEASE_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_RELEASE_WARP_POINT_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RENTED_PAWN_DATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RENTED_PAWN_DATA_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_RENTED_PAWN_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_RETURN_LOCATION_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RETURN_LOCATION_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_RETURN_LOCATION_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_RETURN_LOCATION_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_RETURN_LOCATION_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REVIVE_CHARGEABLE_TIME_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REVIVE_POINT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REWARD_BOX_ITEM_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_NUM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_REWARD_BOX_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SCREEN_SHOT_CATEGORY_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SERVER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SERVER_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_ABILITY_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_SET_CONTEXT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_QUEST_INFO_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_QUEST_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_QUEST_OPEN_DATE_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SET_SKILL_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SHOP_GOODS_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SHORTCUT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SHORTCUT_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_SHORTCUT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SHORTCUT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_SHORTCUT_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_SPOT_INFO_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_STAGE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_STAGE_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_STAGE_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_STAGE_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_STAGE_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_STAY_PRICE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_STORAGE_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_STORAGE_ITEM_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_STORAGE_ITEM_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_STORAGE_ITEM_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_STORAGE_ITEM_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_TIME_LIMITED_QUEST_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_TUTORIAL_QUEST_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_UNLOCKED_EDIT_PARTS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_UNLOCKED_EDIT_PARTS_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_UNLOCKED_PAWN_EDIT_PARTS_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_USER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_USER_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_USER_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_USER_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_USER_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_WARP_POINT_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GET_WORLD_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GET_WORLD_MANAGE_QUEST_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_END_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_END_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_COURSE_END_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_END_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_END_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_END_PARTY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_END_PARTY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_COURSE_END_PARTY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_END_PARTY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_END_PARTY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_EXTEND_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_GET_AVAILABLE_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_GET_VALID_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_GET_VERSION_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_START_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_START_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_COURSE_START_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_START_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_START_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_START_PARTY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_COURSE_USE_FROM_AVAILABLE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_EDIT_GET_GP_PRICE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_EDIT_GET_VOICE_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_EDIT_VOICE_GET_BUY_HISTORY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_SHOP_CAN_BUY_PAWN_VOICE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_BUY_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_LINEUP_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_DISPLAY_GET_TYPE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_GET_BUY_HISTORY_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_SHOP_GET_CAP_CHARGE_URL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_GET_COURSE_LINEUP_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_SHOP_GET_ITEM_LINEUP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GP_SHOP_GET_PAWN_LINEUP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_BREAKUP_GROUP_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_BREAKUP_GROUP_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_BREAKUP_GROUP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_BREAKUP_GROUP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_BREAKUP_GROUP_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_GET_MEMBER_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_GET_MEMBER_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_GET_MEMBER_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_GET_MEMBER_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_GET_MEMBER_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_INVITE_CHARACTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_KICK_CHARACTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_GROUP_CHAT_LEAVE_CHARACTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_Get_OM_INSTANT_KEY_VALUE_ALL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_INSTANCE_AREA_RESET_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_JOB_ORDER_COMPLETE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOB_ORDER_COMPLETE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_JOB_ORDER_COMPLETE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOB_ORDER_COMPLETE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_JOB_ORDER_COMPLETE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOB_VALUE_SHOP_BUY_ITEM_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOB_VALUE_SHOP_GET_LINEUP_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_JOIN_LOBBY_QUEST_INFO_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOIN_LOBBY_QUEST_INFO_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_JOIN_PARTY_MYPAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_JOIN_PARTY_PAWN_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOIN_PARTY_PAWN_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_JOIN_PARTY_RENTED_PAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEADER_QUEST_PROGRESS_REQUEST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEADER_WARP_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEADER_WARP_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LEADER_WARP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEADER_WARP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEADER_WARP_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_ABILITY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LEARN_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_ABILITY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_NORMAL_SKILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_PAWN_ABILITY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_PAWN_NORMAL_SKILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_PAWN_SKILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LEARN_SKILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_SKILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LEARN_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LEARN_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LEARN_SKILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LIGHT_QUEST_GP_COMPLETE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOADING_GET_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE::CPacket_S2C_LOBBY_CHAT_MSG_NOTICE() {
+    this->m_usError = 0;
+    this->m_ucType = 0;
+    this->m_unHandleId = 0;
+    this->m_bIsReceived = false;
+    this->m_CharacterBaseInfo.m_wstrClanName.value = nullptr;
+    this->m_CharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_CharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOBBY_CHAT_MSG_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOBBY_JOIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_JOIN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOBBY_JOIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_JOIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOBBY_JOIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOBBY_LEAVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOGIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOGIN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOGIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOGIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOGIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOGOUT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOGOUT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOGOUT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOGOUT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOGOUT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOST_PAWN_GOLDEN_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOST_PAWN_POINT_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOST_PAWN_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_LOST_PAWN_WALLET_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MAIL_DELETE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_DELETE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MAIL_DELETE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_DELETE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_DELETE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MAIL_GET_LIST_DATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_LIST_DATA_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MAIL_GET_LIST_DATA_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_LIST_DATA_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_GET_LIST_DATA_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_GET_LIST_FOOT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_GET_LIST_HEAD_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MAIL_GET_TEXT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_GET_TEXT_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MAIL_SEND_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_SEND_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MAIL_SEND_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_SEND_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_SEND_NTC::DTI.::MtDTI::getID());
+}
+
+inline nUserSession::CPacket_S2C_MAIL_SEND_NTC::CPacket_S2C_MAIL_SEND_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+    this->m_MailInfo.m_llSenderDate = 0;
+    this->m_MailInfo.m_wstrMailText.value = nullptr;
+    this->m_MailInfo.m_wstrSenderName.value = nullptr;
+    this->m_MailInfo.m_BaseInfo.m_wstrClanName.value = nullptr;
+    this->m_MailInfo.m_BaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_MailInfo.m_BaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MAIL_SEND_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_SEND_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MAIL_SEND_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MAIL_SEND_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MAIL_SEND_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MASTER_CHANGE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_CHANGE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MASTER_CHANGE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_CHANGE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MASTER_CHANGE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MASTER_INFO_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_INFO_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MASTER_INFO_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_INFO_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MASTER_INFO_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MASTER_THROW_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_THROW_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MASTER_THROW_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_THROW_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MASTER_THROW_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MASTER_THROW_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_THROW_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MASTER_THROW_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MASTER_THROW_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MASTER_THROW_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MOON_LOOP_SCHEDULE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MOVE_IN_SERVER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MOVE_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOVE_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MOVE_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOVE_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MOVE_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MOVE_OUT_SERVER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOVE_OUT_SERVER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MOVE_OUT_SERVER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MOVE_OUT_SERVER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MOVE_OUT_SERVER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MY_ROOM_BGM_UPDATE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_MY_ROOM_RELEASE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_NETCAFE_ERROR_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NETCAFE_ERROR_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_NETCAFE_ERROR_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NETCAFE_ERROR_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_NETCAFE_ERROR_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_NG_WORD_GET_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NG_WORD_GET_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_NG_WORD_GET_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NG_WORD_GET_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_NG_WORD_GET_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_NORMAL_SKILL_LEARN_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NORMAL_SKILL_LEARN_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_NORMAL_SKILL_LEARN_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NORMAL_SKILL_LEARN_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_NORMAL_SKILL_LEARN_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_NOT_RECV_CYCLE_CONTENTS_REWARD_LIST_NUM_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_OPEN_UI_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_OPEN_UI_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTNER_PAWN_NEXT_PRESENT_TIME_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTNER_PAWN_SET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_BREAKUP_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_BREAKUP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_CHANGE_HOST_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_CHANGE_LEADER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_CREATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CREATE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_CREATE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_CREATE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_CREATE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_GET_CONTENT_NUMBER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_ACCEPT_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ACCEPT_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ACCEPT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ACCEPT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_ACCEPT_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_CANCEL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_CHARACTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_CHARACTER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_CHARACTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_CHARACTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_CHARACTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_CANCEL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_ENTRY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_FAIL_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_JOIN_MEMBER_NTC::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_PREPARE_ACCEPT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_REFUSE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_INVITE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_INVITE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_INVITE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_INVITE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_JOIN_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_JOIN_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_JOIN_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_JOIN_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_JOIN_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_JOIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_JOIN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_JOIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_JOIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_JOIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_LEAVE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_LEAVE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_LEAVE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_LEAVE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_LEAVE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_LEAVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_LEAVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_LEAVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_LEAVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_LEAVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_MEMBER_KICK_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_MEMBER_LOST_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_LOST_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_LOST_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_LOST_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_MEMBER_LOST_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_MEMBER_SESSION_STATUS_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_SESSION_STATUS_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_SESSION_STATUS_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_SESSION_STATUS_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_MEMBER_SESSION_STATUS_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_MEMBER_SET_VALUE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_QUEST_COMPLETE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_QUEST_PROGRESS_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_SEARCH_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_SEARCH_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_SEARCH_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_SEARCH_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_SEARCH_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PARTY_WARP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_WARP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PARTY_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PARTY_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PARTY_WARP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_ABILITY_SET_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_CUSTOM_SKILL_SET_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_DUNGEON_REWARD_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_DUNGEON_REWARD_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CANCEL_SALLY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHANGE_GOLDEN_SALLY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_CHARGE_SALLY_COUNT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_MY_SALLY_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_REWARD_DROP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_INFO_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_GET_SALLY_REWARD_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_EXPEDITION_SALLY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_GOLDEN_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_JOB_EXP_UP_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_MEMBER_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_JOB_LEVEL_UP_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_LIKABILITY_RELEASED_REWARD_LIST_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_LIST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_LIST_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_LIST_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_LIST_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_LIKABILITY_REWARD_LIST_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_LIKABILITY_UP_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_LOST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LOST_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_LOST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LOST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_LOST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_LOST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_LOST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_NORMAL_SKILL_LEARN_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_POINT_REVIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PAWN_REVIVE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PHOTO_GET_AUTH_ADDRESS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PHOTO_GET_AUTH_ADDRESS_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PING_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PING_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PING_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PING_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PING_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ADD_TIMER_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_END_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_END_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_END_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_END_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_END_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_END_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_END_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_ENTRY_CANCEL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_ENTRY_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_ENTRY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_ENTRY_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_ENTRY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_ENTRY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_ENTRY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_ENTRY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_FORCE_INTERRUPT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_ANSWER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_INTERRUPT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_INTERRUPT_RESULT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_RESTART_TIMER_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_START_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_START_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_START_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_START_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_START_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_START_TIMER_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PLAY_START_TIMER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_STOP_TIMER_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PLAY_TIMEUP_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_POP_DROP_ITEM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_POP_DROP_ITEM_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_POP_DROP_ITEM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_POP_DROP_ITEM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_POP_DROP_ITEM_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_PRESENT_FOR_PARTNER_PAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_CANCEL_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_CANCEL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_CANCEL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUEST_CANCEL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_CANCEL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUEST_CANCEL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUEST_COMPLETE_FLAG_CLEAR_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_COMPLETE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_ENABLE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_LOG_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_LOG_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUEST_LOG_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_LOG_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUEST_LOG_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUEST_MASTER_DATA_RELOAD_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_ORDER_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_ORDER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_ORDER_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_PHASE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_PROGRESS_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_PROGRESS_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_PROGRESS_WORK_SAVE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_PROGRESS_WORK_SAVE_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUEST_TIMER_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_CANCEL_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_ENTRY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_READY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_QUEST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_REGISTER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_QUICK_PARTY_UNREADY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RAID_BOSS_INFO_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RAID_BOSS_INFO_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RAID_BOSS_INFO_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RAID_BOSS_INFO_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RAID_BOSS_INFO_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RAID_BOSS_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RAID_BOSS_PLAY_START_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RAID_BOSS_PLAY_START_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RAID_BOSS_POINT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RAID_BOSS_POINT_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RANDOM_STAGE_CLEAR_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RANDOM_STAGE_GET_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANDOM_STAGE_GET_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RANDOM_STAGE_GET_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANDOM_STAGE_GET_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RANDOM_STAGE_GET_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANKING_BOARD_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANKING_DATA_CHARACTER_ID_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANKING_DATA_RANK_BY_QUEST_SCHEDULE_ID_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RANKING_DATA_RANK_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REGISTER_FAVORITE_FRIEND_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REGISTER_FAVORITE_WARP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REGISTER_PRESET_ABILITY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASED_CRAFT_RECIPE_LIST_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASED_EDIT_PARTS_LIST_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASED_EMOTION_LIST_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASED_PAWN_TALK_LIST_GET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASE_JOB_ORB_ELEMENT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASE_ORB_ELEMENT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASE_PAWN_ORB_ELEMENT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_SET_QUEST_AREA_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RELEASE_WARP_POINT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_WARP_POINT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RELEASE_WARP_POINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RELEASE_WARP_POINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RELEASE_WARP_POINT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REMOVE_BLACK_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REMOVE_BLACK_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_REMOVE_BLACK_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REMOVE_BLACK_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REMOVE_BLACK_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REMOVE_FRIEND_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REMOVE_FRIEND_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_REMOVE_FRIEND_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REMOVE_FRIEND_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REMOVE_FRIEND_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REMOVE_FRIEND_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REMOVE_FRIEND_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_REMOVE_FRIEND_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REMOVE_FRIEND_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REMOVE_FRIEND_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RENTAL_PAWN_LOST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RENTAL_PAWN_LOST_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RENTAL_PAWN_LOST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RENTAL_PAWN_LOST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RENTAL_PAWN_LOST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RENTAL_PAWN_LOST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RENTAL_PAWN_LOST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RENT_REGISTERED_PAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REPORT_JOB_ORDER_PROGRESS_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REPORT_SITE_GET_ADDRESS_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RESERVE_SERVER_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RESERVE_SERVER_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RESERVE_SERVER_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RESERVE_SERVER_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RESERVE_SERVER_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RESET_CRAFTPOINT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RESET_JOBPOINT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_RETURN_RENTED_PAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_REWARD_BOX_LIST_NUM_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SELL_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SELL_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SELL_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SELL_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SELL_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SEND_LEADER_QUEST_ORDER_CONDITION_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SEND_LEADER_WAIT_ORDER_QUEST_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::DTI.::MtDTI::getID());
+}
+
+inline nUserSession::CPacket_S2C_SEND_TELL_MSG_RES::CPacket_S2C_SEND_TELL_MSG_RES() {
+    this->m_usError = 0;
+    this->m_nResult = 0;
+    this->m_bIsReceived = false;
+    this->m_CharacterBaseInfo.m_wstrClanName.value = nullptr;
+    this->m_CharacterBaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_CharacterBaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SERVER_UI_COMMAND_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SESSION_STATUS_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SESSION_STATUS_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SESSION_STATUS_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SESSION_STATUS_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SESSION_STATUS_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_ABILITY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ABILITY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_ABILITY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_ARISEN_PROFILE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_CAPLINK_ACHIEVE_USER_STATE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_CHARACTER_BIN_SAVEDATA_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_COMMUNICATION_SHORTCUT_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_CONTEXT_BASE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_CONTEXT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_CONTEXT_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_FAVORITE_PAWN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_STR_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_INSTANT_KEY_VALUE_UL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_ITEM_SORTDATA_BIN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_MATCHING_PROFILE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_MESSAGE_SET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OBJECTIVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OFF_ABILITY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OFF_PAWN_ABILITY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OFF_PAWN_SKILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OFF_SKILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_OM_INSTANT_KEY_VALUE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_ONLINE_STATUS_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_ABILITY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_PRESET_ABILITY_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_COMMENT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_PROFILE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PAWN_SKILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NAME_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PRESET_ABILITY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PRESET_PAWN_ABILITY_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_PRIORITY_QUEST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_QUEST_UNRELEASED_AREA_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_RAID_BOSS_INFO_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_SHORTCUT_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SET_SKILL_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_SKILL_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SET_SKILL_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SET_SKILL_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SET_SKILL_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_STAMP_BONUS_ADD_TOTAL_NUM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAMP_BONUS_CHECK_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAMP_BONUS_GET_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_STAMP_BONUS_RECIEVE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_ATTACH_ELEMENT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_ATTACH_ELEMENT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_START_ATTACH_ELEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_ATTACH_ELEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_ATTACH_ELEMENT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_CRAFT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_CRAFT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_START_CRAFT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_CRAFT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_CRAFT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_DEATH_PENALTY_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_DEATH_PENALTY_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_START_DEATH_PENALTY_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_DEATH_PENALTY_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_DEATH_PENALTY_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_DEATH_PENALTY_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_DETACH_ELEMENT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_DETACH_ELEMENT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_START_DETACH_ELEMENT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_DETACH_ELEMENT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_DETACH_ELEMENT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_EQUIP_COLOR_CHANGE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_EQUIP_GRADE_UP_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_LANTERN_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_START_LANTERN_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_LANTERN_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_LANTERN_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_START_LANTERN_OTHER_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_STAY_INN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAY_INN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_STAY_INN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAY_INN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_STAY_INN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_STAY_PENALTY_HEAL_INN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAY_PENALTY_HEAL_INN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_STAY_PENALTY_HEAL_INN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_STAY_PENALTY_HEAL_INN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_STAY_PENALTY_HEAL_INN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SUPPORT_POINT_GET_RATE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SUPPORT_POINT_USE_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SWITCH_STORAGE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SWITCH_STORAGE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SWITCH_STORAGE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SWITCH_STORAGE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SWITCH_STORAGE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_DELETE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ALL_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_DATA_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_FOOT_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_LIST_HEAD_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_GET_TEXT_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::DTI.::MtDTI::getID());
+}
+
+inline nUserSession::CPacket_S2C_SYSTEM_MAIL_SEND_NTC::CPacket_S2C_SYSTEM_MAIL_SEND_NTC() {
+    this->m_usError = 0;
+    this->m_bIsReceived = false;
+    this->m_MailInfo.m_llSenderDate = 0;
+    this->m_MailInfo.m_wstrMailText.value = nullptr;
+    this->m_MailInfo.m_wstrSenderName.value = nullptr;
+    this->m_MailInfo.m_BaseInfo.m_wstrClanName.value = nullptr;
+    this->m_MailInfo.m_BaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_MailInfo.m_BaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_TIME_GAIN_QUEST_PLAY_START_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_TIME_UPDATE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_TRANING_ROOM_GET_ENEMY_LIST_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_TRANING_ROOM_SET_ENEMY_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_ARISEN_PROFILE_SHARE_RANGE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_CHARACTER_EDIT_PARAM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_CHARACTER_JOB_POINT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EDIT_PARAM_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_COLOR_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_ELEMENT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_GRADE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_HIDE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_NAME_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EQUIP_PRESET_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_EXP_MODE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EXP_MODE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_EXP_MODE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_EXP_MODE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_EXP_MODE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_HEAD_ARMOR_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_HIDE_PAWN_LANTERN_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_MATCHING_PROFILE_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_PAWN_EDIT_PARAM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_PAWN_JOB_POINT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_PAWN_REACTION_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_PAWN_SHARE_RANGE_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_PLAY_POINT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_RENTAL_PAWN_ADVENTURE_COUNT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_RENTAL_PAWN_ADVENTURE_COUNT_NOTICE::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_UPDATE_REVIVE_POINT_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_URL_GET_LIST_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_URL_GET_LIST_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_URL_GET_LIST_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_URL_GET_LIST_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_URL_GET_LIST_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_USER_LIST_JOIN_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USER_LIST_JOIN_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_USER_LIST_JOIN_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USER_LIST_JOIN_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USER_LIST_JOIN_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_USER_LIST_LEAVE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USER_LIST_LEAVE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_USER_LIST_LEAVE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USER_LIST_LEAVE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USER_LIST_LEAVE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USER_LIST_MAX_NUM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USE_BAG_ITEM_NOTICE::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USE_BAG_ITEM_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_USE_JOB_ITEMS_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_WARP_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WARP_RES::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_WARP_RES::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WARP_RES::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_WARP_RES::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WEATHER_FORECAST_GET_RES::DTI);
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_WEATHER_LOOP_SCHEDULE_NTC::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::DTI);
+}
+
+inline void* nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::DTI)->memAlloc(sz, align, ::nUserSession::CPacket_S2C_WEATHER_UPDATE_NOTICE::DTI.::MtDTI::getID());
 }

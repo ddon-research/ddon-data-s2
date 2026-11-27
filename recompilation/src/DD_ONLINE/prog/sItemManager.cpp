@@ -59,16 +59,8 @@ const MtDTI& sItemManager::getDTI() const {
     return sItemManager::DTI;
 }
 
-inline MtAllocator* sItemManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sItemManager::DTI);
-}
-
 void* sItemManager::operator new(size_t sz, u32 align) {
     return sItemManager::getAllocator()->memAlloc(sz, align, sItemManager::DTI.getID());
-}
-
-inline void sItemManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::DTI)->memFree(p_addr);
 }
 
 sItemManager::sItemManager() {
@@ -627,9 +619,65 @@ __attribute__((weak)) nCharacterData::ITEM_BAG_TYPE sItemManager::getItemBagType
     return {};
 }
 
-__attribute__((weak)) nItem::E_STORAGE_TYPE sItemManager::getItemBagGroupeType(nItem::E_STORAGE_TYPE type) {
-    DDON_STUB("sItemManager::getItemBagGroupeType")
-    return {};
+nItem::E_STORAGE_TYPE sItemManager::getItemBagGroupeType(nItem::E_STORAGE_TYPE type) {
+    if (static_cast<int>(type) <= 219) {
+        if (static_cast<int>(type) <= 12) {
+            if (static_cast<unsigned int>(type - 1) > 2) {
+                return nItem::STORAGE_TYPE_INVALID;
+            } else {
+                return nItem::STORAGE_TYPE_GROUP_BAG;
+            }
+        } else {
+            if (static_cast<int>(type) <= 29) {
+                switch (static_cast<unsigned int>(type - 13)) {
+                    case 0:
+                    {
+                        return nItem::STORAGE_TYPE_GROUP_BAG;
+                    }
+                    case 2:
+                    {
+                        return type;
+                    }
+                    case 3:
+                    {
+                        return nItem::STORAGE_TYPE_GROUP_STORAGE;
+                    }
+                    case 4:
+                    {
+                        return type;
+                    }
+                    case 10:
+                    {
+                        return type;
+                    }
+                    default:
+                    {
+                        return nItem::STORAGE_TYPE_INVALID;
+                    }
+                }
+            } else {
+                if (type != nItem::STORAGE_TYPE_BAGGAGE_FREE) {
+                    if (type != nItem::STORAGE_TYPE_BAGGAGE_RENTAL01) {
+                        if (type == nItem::STORAGE_TYPE_BAGGAGE_RENTAL02) {
+                            return type;
+                        } else {
+                            return nItem::STORAGE_TYPE_INVALID;
+                        }
+                    } else {
+                        return type;
+                    }
+                } else {
+                    return type;
+                }
+            }
+        }
+    } else {
+        if (type == nItem::STORAGE_TYPE_GROUP_BAG) {
+            return nItem::STORAGE_TYPE_GROUP_BAG;
+        } else {
+            return nItem::STORAGE_TYPE_INVALID;
+        }
+    }
 }
 
 __attribute__((weak)) nItem::E_STORAGE_TYPE sItemManager::getItemBagGroupeType(nCharacterData::ITEM_BAG_TYPE type) {
@@ -881,7 +929,7 @@ void sItemManager::resetWaitNotice(u8 type) {
             if (v0_0 != nullptr) {
                 if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_0) + 16)) != 0) {
                     stRequest* pReq = static_cast<stRequest*>(v0_0);
-                    if (static_cast<sItemManager::stRequest*>(v0_0)->getResult()) {
+                    if (pReq->getResult()) {
                         if (i >= v0_1) {
                             return;
                         } else {
@@ -1043,9 +1091,24 @@ __attribute__((weak)) void sItemManager::getFillterStorageList(sItemManager::STO
     /* stub */
 }
 
-__attribute__((weak)) bool sItemManager::isInGameLimitBagType(nCharacterData::ITEM_BAG_TYPE type, sItemManager::LIMIT_TYPE limit) {
-    DDON_STUB("sItemManager::isInGameLimitBagType")
-    return {};
+bool sItemManager::isInGameLimitBagType(nCharacterData::ITEM_BAG_TYPE type, sItemManager::LIMIT_TYPE limit) {
+    if (static_cast<int>(type) <= 6) {
+        if (limit == LIMIT_TYPE_IN) {
+            if (static_cast<unsigned int>(type - 5) > 1) {
+                if (type != nCharacterData::ITEM_BAG_TYPE_TEMPORARY) {
+                    if ((type == nCharacterData::ITEM_BAG_TYPE_EX_STORAGE) && !sGame::getInstance()->isChargeEffect(nGpCourse::GP_COURSE_EFFECT_STRAGE_EXTEND)) {
+                        return false;
+                    }
+                    return true;
+                }
+            }
+        } else {
+            if (limit == LIMIT_TYPE_OUT) {
+                return type != nCharacterData::ITEM_BAG_TYPE_TEMPORARY;
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void sItemManager::releaseBag() {
@@ -1297,14 +1360,6 @@ void sItemManager::cShop::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mpGoodsList", reinterpret_cast<MtObject* *>(&mpGoodsList), 0u, 0u);
 }
 
-inline void sItemManager::cShop::releaseResource() {
-    if (mpGoodsList == nullptr) {
-        return;
-    }
-    mpGoodsList->release();
-    mpGoodsList = nullptr;
-}
-
 __attribute__((weak)) bool sItemManager::cShop::setGoodsList(sItemManager::stRequest* pReq) {
     DDON_STUB("sItemManager::cShop::setGoodsList")
     return {};
@@ -1319,10 +1374,6 @@ const MtDTI& sItemManager::stRequest::getDTI() const {
     return sItemManager::stRequest::DTI;
 }
 
-inline MtAllocator* sItemManager::stRequest::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sItemManager::stRequest::DTI);
-}
-
 void* sItemManager::stRequest::operator new(size_t sz, u32 align) {
     return sItemManager::stRequest::getAllocator()->memAlloc(sz, align, sItemManager::stRequest::DTI.getID());
 }
@@ -1331,8 +1382,7 @@ sItemManager::stRequest::stRequest() {
     mStatus = 0;
     mpParam[1] = nullptr;
     mpParam[0] = nullptr;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 40) = 0;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 32) = 0;
+    mpRecvFunc = static_cast<sItemManager::RECV_FUNC>(0);
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 24) = 0;
     *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 16) = 0;
     mpParent = nullptr;
@@ -1371,10 +1421,6 @@ MtObject* sItemManager::stRequest::MyDTI::newInstance() const {
 
 const MtDTI& sItemManager::cItemBag::getDTI() const {
     return sItemManager::cItemBag::DTI;
-}
-
-inline void sItemManager::cItemBag::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cItemBag::DTI)->memFree(p_addr);
 }
 
 sItemManager::cItemBag::cItemBag() {
@@ -1559,9 +1605,37 @@ cItemParam* sItemManager::cItemBag::getItemParamToSort(sItemManager::cItemBag::I
     }
 }
 
-__attribute__((weak)) u32 sItemManager::cItemBag::getItemBagSlotMaxNum(sItemManager::cItemBag::ITEM_CATEGORY category) {
-    DDON_STUB("sItemManager::cItemBag::getItemBagSlotMaxNum")
-    return {};
+u32 sItemManager::cItemBag::getItemBagSlotMaxNum(sItemManager::cItemBag::ITEM_CATEGORY category) {
+    switch (static_cast<unsigned int>(category - 2)) {
+        case 0:
+        {
+            return mMaterialItemSlotNum;
+        }
+        case 1:
+        {
+            return mArmItemSlotNum;
+        }
+        case 2:
+        {
+            return mKeyItemSlotNum;
+        }
+        case 3:
+        {
+            return mJobItemSlotNum;
+        }
+        case 6:
+        {
+            return mEquipItemSlotNum;
+        }
+        case 7:
+        {
+            return mAllItemSlotNum;
+        }
+        default:
+        {
+            return mUseItemSlotNum;
+        }
+    }
 }
 
 __attribute__((weak)) u32 sItemManager::cItemBag::getItemBagNum() {
@@ -1569,9 +1643,41 @@ __attribute__((weak)) u32 sItemManager::cItemBag::getItemBagNum() {
     return {};
 }
 
-__attribute__((weak)) u32 sItemManager::cItemBag::getSlotMaxNum(sItemManager::cItemBag::ITEM_CATEGORY category) {
-    DDON_STUB("sItemManager::cItemBag::getSlotMaxNum")
-    return {};
+u32 sItemManager::cItemBag::getSlotMaxNum(sItemManager::cItemBag::ITEM_CATEGORY category) {
+    switch (static_cast<unsigned int>(category - 1)) {
+        case 0:
+        {
+            return mUseItemSlotNum;
+        }
+        case 1:
+        {
+            return mMaterialItemSlotNum;
+        }
+        case 2:
+        {
+            return mArmItemSlotNum;
+        }
+        case 3:
+        {
+            return mKeyItemSlotNum;
+        }
+        case 4:
+        {
+            return mJobItemSlotNum;
+        }
+        case 7:
+        {
+            return mEquipItemSlotNum;
+        }
+        case 8:
+        {
+            return mAllItemSlotNum;
+        }
+        default:
+        {
+            return mUseItemSlotNum;
+        }
+    }
 }
 
 __attribute__((weak)) u32 sItemManager::cItemBag::getSlotMaxNumToUse(sItemManager::cItemBag::ITEM_CATEGORY category) {
@@ -1828,8 +1934,10 @@ __attribute__((weak)) cContextInstHm* sItemManager::cItemBag::upGradeEquipChange
 }
 
 __attribute__((weak)) bool sItemManager::cItemBag::startCraftUpGrade(sItemManager::stRequest* pReq) {
-    DDON_STUB("sItemManager::cItemBag::startCraftUpGrade")
-    return {};
+    UPGRADE_RESULT result;
+    cCraftUpGradeData CraftData = *static_cast<cCraftUpGradeData*>(pReq->mpParam[0]);
+    upGradeEquipChange(reinterpret_cast<MtString*>(reinterpret_cast<char*>(&CraftData) + 0x10)->ptr(), result, true);
+    return true;
 }
 
 __attribute__((weak)) bool sItemManager::cItemBag::startCraftElementAttach(sItemManager::stRequest* pReq) {
@@ -1894,14 +2002,6 @@ const MtDTI& sItemManager::cItemBag::cGetItemListData::getDTI() const {
     return sItemManager::cItemBag::cGetItemListData::DTI;
 }
 
-inline void* sItemManager::cItemBag::cGetItemListData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cGetItemListData::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cGetItemListData::DTI.getID());
-}
-
-inline void sItemManager::cItemBag::cGetItemListData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cGetItemListData::DTI)->memFree(p_addr);
-}
-
 sItemManager::cItemBag::cGetItemListData::~cGetItemListData() {
 }
 
@@ -1915,14 +2015,6 @@ MtObject* sItemManager::cItemBag::cGetItemListData::MyDTI::newInstance() const {
 
 const MtDTI& sItemManager::cItemBag::cGatheringItemData::getDTI() const {
     return sItemManager::cItemBag::cGatheringItemData::DTI;
-}
-
-inline MtAllocator* sItemManager::cItemBag::cGatheringItemData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cGatheringItemData::DTI);
-}
-
-inline void* sItemManager::cItemBag::cGatheringItemData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cGatheringItemData::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cGatheringItemData::DTI.getID());
 }
 
 __attribute__((weak)) void sItemManager::cItemBag::cGatheringItemData::operator delete(void* p_addr) {
@@ -1939,14 +2031,6 @@ MtObject* sItemManager::cItemBag::cGatheringItemData::MyDTI::newInstance() const
 
 const MtDTI& sItemManager::cItemBag::cCraftStartData::getDTI() const {
     return sItemManager::cItemBag::cCraftStartData::DTI;
-}
-
-inline MtAllocator* sItemManager::cItemBag::cCraftStartData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftStartData::DTI);
-}
-
-inline void* sItemManager::cItemBag::cCraftStartData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftStartData::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cCraftStartData::DTI.getID());
 }
 
 __attribute__((weak)) void sItemManager::cItemBag::cCraftStartData::operator delete(void* p_addr) {
@@ -1968,14 +2052,6 @@ const MtDTI& sItemManager::cItemBag::cCraftUpGradeData::getDTI() const {
     return sItemManager::cItemBag::cCraftUpGradeData::DTI;
 }
 
-inline MtAllocator* sItemManager::cItemBag::cCraftUpGradeData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftUpGradeData::DTI);
-}
-
-inline void* sItemManager::cItemBag::cCraftUpGradeData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftUpGradeData::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cCraftUpGradeData::DTI.getID());
-}
-
 __attribute__((weak)) void sItemManager::cItemBag::cCraftUpGradeData::operator delete(void* p_addr) {
     sItemManager::cItemBag::cCraftUpGradeData::getAllocator()->memFree(p_addr);
 }
@@ -1993,14 +2069,6 @@ MtObject* sItemManager::cItemBag::cCraftUpGradeData::MyDTI::newInstance() const 
 
 const MtDTI& sItemManager::cItemBag::cCraftColorChange::getDTI() const {
     return sItemManager::cItemBag::cCraftColorChange::DTI;
-}
-
-inline MtAllocator* sItemManager::cItemBag::cCraftColorChange::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftColorChange::DTI);
-}
-
-inline void* sItemManager::cItemBag::cCraftColorChange::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cCraftColorChange::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cCraftColorChange::DTI.getID());
 }
 
 __attribute__((weak)) void sItemManager::cItemBag::cCraftColorChange::operator delete(void* p_addr) {
@@ -2022,14 +2090,6 @@ const MtDTI& sItemManager::cItemBag::cAreaMasterSuppyData::getDTI() const {
     return sItemManager::cItemBag::cAreaMasterSuppyData::DTI;
 }
 
-inline void* sItemManager::cItemBag::cAreaMasterSuppyData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memAlloc(sz, align, sItemManager::cItemBag::cAreaMasterSuppyData::DTI.getID());
-}
-
-inline void sItemManager::cItemBag::cAreaMasterSuppyData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cItemBag::cAreaMasterSuppyData::DTI)->memFree(p_addr);
-}
-
 void sItemManager::cItemBag::cAreaMasterSuppyData::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\252\343\202\242ID", &mAreaID, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "\347\240\264\346\243\204", &mIsCancel, 0u, 0u);
@@ -2045,14 +2105,6 @@ MtObject* sItemManager::cItemBag::cAreaMasterSuppyData::MyDTI::newInstance() con
 
 const MtDTI& sItemManager::cSortParam::getDTI() const {
     return sItemManager::cSortParam::DTI;
-}
-
-inline void* sItemManager::cSortParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cSortParam::DTI)->memAlloc(sz, align, sItemManager::cSortParam::DTI.getID());
-}
-
-inline void sItemManager::cSortParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cSortParam::DTI)->memFree(p_addr);
 }
 
 bool sItemManager::cSortParam::sortBySpace(const cItemParam* src, const cItemParam* dst, u32 param) {
@@ -2121,14 +2173,6 @@ const MtDTI& sItemManager::cItemParamList::getDTI() const {
     return sItemManager::cItemParamList::DTI;
 }
 
-inline void* sItemManager::cItemParamList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemParamList::DTI)->memAlloc(sz, align, sItemManager::cItemParamList::DTI.getID());
-}
-
-inline void sItemManager::cItemParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cItemParamList::DTI)->memFree(p_addr);
-}
-
 inline sItemManager::cItemParamList::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sItemManager::cItemParamList::MyDTI sItemManager::cItemParamList::DTI("sItemManager::cItemParamList", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -2141,16 +2185,8 @@ const MtDTI& sItemManager::cEquipList::getDTI() const {
     return sItemManager::cEquipList::DTI;
 }
 
-inline MtAllocator* sItemManager::cEquipList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sItemManager::cEquipList::DTI);
-}
-
 void* sItemManager::cEquipList::operator new(size_t sz, u32 align) {
     return sItemManager::cEquipList::getAllocator()->memAlloc(sz, align, sItemManager::cEquipList::DTI.getID());
-}
-
-inline void sItemManager::cEquipList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cEquipList::DTI)->memFree(p_addr);
 }
 
 sItemManager::cEquipList::cEquipList() {
@@ -2229,14 +2265,6 @@ const MtDTI& sItemManager::cEquipList::cEquipData::getDTI() const {
     return sItemManager::cEquipList::cEquipData::DTI;
 }
 
-inline void* sItemManager::cEquipList::cEquipData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cEquipList::cEquipData::DTI)->memAlloc(sz, align, sItemManager::cEquipList::cEquipData::DTI.getID());
-}
-
-inline void sItemManager::cEquipList::cEquipData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cEquipList::cEquipData::DTI)->memFree(p_addr);
-}
-
 inline sItemManager::cEquipList::cEquipData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sItemManager::cEquipList::cEquipData::MyDTI sItemManager::cEquipList::cEquipData::DTI("sItemManager::cEquipList::cEquipData", &::MtObject::DTI, 32ul, 0u, 0u);
@@ -2249,14 +2277,6 @@ const MtDTI& sItemManager::cChangeJob::getDTI() const {
     return sItemManager::cChangeJob::DTI;
 }
 
-inline void* sItemManager::cChangeJob::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cChangeJob::DTI)->memAlloc(sz, align, sItemManager::cChangeJob::DTI.getID());
-}
-
-inline void sItemManager::cChangeJob::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cChangeJob::DTI)->memFree(p_addr);
-}
-
 inline sItemManager::cChangeJob::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 sItemManager::cChangeJob::MyDTI sItemManager::cChangeJob::DTI("sItemManager::cChangeJob", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -2267,10 +2287,6 @@ MtObject* sItemManager::cChangeJob::MyDTI::newInstance() const {
 
 const MtDTI& sItemManager::cGPDetail::getDTI() const {
     return sItemManager::cGPDetail::DTI;
-}
-
-inline void sItemManager::cGPDetail::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cGPDetail::DTI)->memFree(p_addr);
 }
 
 sItemManager::cGPDetail::~cGPDetail() {
@@ -2291,14 +2307,6 @@ const MtDTI& sItemManager::cHideEquip::getDTI() const {
     return sItemManager::cHideEquip::DTI;
 }
 
-inline void* sItemManager::cHideEquip::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sItemManager::cHideEquip::DTI)->memAlloc(sz, align, sItemManager::cHideEquip::DTI.getID());
-}
-
-inline void sItemManager::cHideEquip::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sItemManager::cHideEquip::DTI)->memFree(p_addr);
-}
-
 void sItemManager::cHideEquip::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mPlType", &mPlType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mEquipType", &mEquipType, 0u, 0u);
@@ -2315,10 +2323,6 @@ MtObject* sItemManager::cHideEquip::MyDTI::newInstance() const {
 
 const MtDTI& sItemManager::cItemList::getDTI() const {
     return sItemManager::cItemList::DTI;
-}
-
-inline MtAllocator* sItemManager::cItemList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sItemManager::cItemList::DTI);
 }
 
 void* sItemManager::cItemList::operator new(size_t sz, u32 align) {

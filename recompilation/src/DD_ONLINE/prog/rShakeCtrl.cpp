@@ -19,14 +19,6 @@ const MtDTI& cShakeCtrl::getDTI() const {
     return cShakeCtrl::DTI;
 }
 
-inline void* cShakeCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShakeCtrl::DTI)->memAlloc(sz, align, cShakeCtrl::DTI.getID());
-}
-
-inline void cShakeCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShakeCtrl::DTI)->memFree(p_addr);
-}
-
 inline cShakeCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cShakeCtrl::MyDTI cShakeCtrl::DTI("cShakeCtrl", &::MtObject::DTI, 48ul, 0u, 0u);
@@ -37,14 +29,6 @@ MtObject* cShakeCtrl::MyDTI::newInstance() const {
 
 const MtDTI& rShakeCtrl::getDTI() const {
     return rShakeCtrl::DTI;
-}
-
-inline void* rShakeCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rShakeCtrl::DTI)->memAlloc(sz, align, rShakeCtrl::DTI.getID());
-}
-
-inline void rShakeCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rShakeCtrl::DTI)->memFree(p_addr);
 }
 
 rShakeCtrl::~rShakeCtrl() {

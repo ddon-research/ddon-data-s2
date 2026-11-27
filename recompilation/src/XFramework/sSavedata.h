@@ -26,6 +26,7 @@ struct SceSaveDataFingerprint;
 struct SceSaveDataIcon;
 struct SceSaveDataTitleId;
 struct _SceKernelSema;
+class cSystemCheck;
 class sSavedataExt;
 class uGUIOption;
 
@@ -62,6 +63,7 @@ using u8 = unsigned char;
 
 class sSavedata : public cSystem
 {
+    friend class cSystemCheck;
     friend class sSavedataExt;
     friend class uGUIOption;
 public:
@@ -390,4 +392,12 @@ inline const SceSaveDataFingerprint* sSavedata::getFingerprint() const {
 
 inline void sSavedata::setListSaveCanCreateNum(u32 Num) {
     this->mListSaveCanCreateNum = 5;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void sSavedata::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sSavedata::DTI)->memFree(p_addr);
 }

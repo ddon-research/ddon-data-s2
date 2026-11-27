@@ -26,14 +26,6 @@ const MtDTI& cShlParamGenerator::getDTI() const {
     return cShlParamGenerator::DTI;
 }
 
-inline void* cShlParamGenerator::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamGenerator::DTI)->memAlloc(sz, align, cShlParamGenerator::DTI.getID());
-}
-
-inline void cShlParamGenerator::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShlParamGenerator::DTI)->memFree(p_addr);
-}
-
 MtDTI& cShlParamGenerator::getShlDTI() const {
     return uShlGenerator::DTI;
 }
@@ -91,7 +83,7 @@ void cShlParamGenerator::copy(const cShlParamBase* pParamBase) {
     shlList.mpArray = nullptr;
     shlList.mBufsiz = 0;
     shlList.mLength = 0;
-    addShlList(static_cast<const cShlParamGenerator*>(pParamBase));
+    addShlList(pParam);
 }
 
 __attribute__((weak)) void cShlParamGenerator::addShlList(const cShlParamGenerator* pParam) {
@@ -109,10 +101,6 @@ MtObject* cShlParamGenerator::MyDTI::newInstance() const {
 
 const MtDTI& cShlParamGenerator::cShootCtrlParam::getDTI() const {
     return cShlParamGenerator::cShootCtrlParam::DTI;
-}
-
-inline MtAllocator* cShlParamGenerator::cShootCtrlParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cShlParamGenerator::cShootCtrlParam::DTI);
 }
 
 void* cShlParamGenerator::cShootCtrlParam::operator new(size_t sz, u32 align) {
@@ -145,14 +133,6 @@ MtObject* cShlParamGenerator::cShootCtrlParam::MyDTI::newInstance() const {
 
 const MtDTI& uShlGenerator::getDTI() const {
     return uShlGenerator::DTI;
-}
-
-inline void* uShlGenerator::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlGenerator::DTI)->memAlloc(sz, align, uShlGenerator::DTI.getID());
-}
-
-inline void uShlGenerator::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlGenerator::DTI)->memFree(p_addr);
 }
 
 uShlGenerator::uShlGenerator() {

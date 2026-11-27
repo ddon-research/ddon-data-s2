@@ -9,6 +9,7 @@
 #include "../MT/MtNetCore.h"
 #include "../MT/MtNetDevice.h"
 #include "../MT/MtNetObject.h"
+#include "../MT/MtNetResolver.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtStream.h"
 #include "../MT/MtString.h"
@@ -170,10 +171,6 @@ const MtDTI& cWebsocketClient::getDTI() const {
 
 void* cWebsocketClient::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cWebsocketClient::DTI)->memAlloc(sz, align, cWebsocketClient::DTI.mID);
-}
-
-inline void cWebsocketClient::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWebsocketClient::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cWebsocketClient::~cWebsocketClient() {

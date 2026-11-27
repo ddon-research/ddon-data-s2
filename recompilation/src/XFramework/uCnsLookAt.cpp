@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uCnsLookAt.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -21,10 +20,6 @@ __attribute__((weak)) void uCnsLookAt::usage() {
 
 const MtDTI& uCnsLookAt::getDTI() const {
     return uCnsLookAt::DTI;
-}
-
-inline void uCnsLookAt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsLookAt::DTI)->memFree(p_addr);
 }
 
 uCnsLookAt::uCnsLookAt() {
@@ -65,9 +60,13 @@ void uCnsLookAt::move() {
 __attribute__((weak)) void uCnsLookAt::draw(cDraw* pDraw) {
 }
 
-__attribute__((weak)) void uCnsLookAt::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("uCnsLookAt::applyWorldOffset")
-    /* stub */
+void uCnsLookAt::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    if (mpTargetModel != nullptr) {
+        return;
+    }
+    mTargetPos.x = offset.x + mTargetPos.x;
+    mTargetPos.y = offset.y + mTargetPos.y;
+    mTargetPos.z = offset.z + mTargetPos.z;
 }
 
 __attribute__((weak)) void uCnsLookAt::adjust(uModel::Joint* pJnt, uModel* pModel) {
@@ -146,9 +145,84 @@ __attribute__((weak)) MtVector3 uCnsLookAt::getTargetWPos() {
     __builtin_unreachable();
 }
 
-__attribute__((weak)) void uCnsLookAt::setTargetWPos(const MtVector3& pos) {
-    DDON_STUB("uCnsLookAt::setTargetWPos")
-    /* stub */
+void uCnsLookAt::setTargetWPos(const MtVector3& pos) {
+    const f32 t0 = pos.x;
+    const f32 t1 = pos.y;
+    const f32 t2 = pos.z;
+    uModel* t3 = mpTargetModel;
+    if (t3 != nullptr) {
+        u32 t4 = mTargetJointNo;
+        const u8* t5 = t3->mJointTable;
+        const u8 t6 = t5[t4];
+        if (t6 != 0xFF) {
+            uModel::Joint* t7 = t3->mJoint;
+            if ((&t7[t6]) != nullptr) {
+                f32 t8 = t7[t6].mWmat.m[0].x;
+                f32 t9 = t7[t6].mWmat.m[0].y;
+                f32 t10 = t7[t6].mWmat.m[0].z;
+                f32 t11 = t7[t6].mWmat.m[1].x;
+                f32 t12 = t7[t6].mWmat.m[1].y;
+                f32 t13 = t7[t6].mWmat.m[1].z;
+                f32 t14 = t7[t6].mWmat.m[2].x;
+                f32 t15 = t7[t6].mWmat.m[3].x;
+                f32 t16 = t7[t6].mWmat.m[3].y;
+                f32 t17 = t7[t6].mWmat.m[3].z;
+                f32 t18 = t7[t6].mWmat.m[2].y;
+                f32 t19 = t7[t6].mWmat.m[2].z;
+                float t33 = -0.0f;
+                float t34 = 1.0f;
+                mTargetPos.x = (-(((t8 * t15) + (t9 * t16)) + (t10 * t17))) + (((t0 * t8) + (t1 * t9)) + (t2 * t10));
+                mTargetPos.y = (-(((t11 * t15) + (t12 * t16)) + (t13 * t17))) + (((t0 * t11) + (t1 * t12)) + (t2 * t13));
+                mTargetPos.z = (-(((t14 * t15) + (t16 * t18)) + (t17 * t19))) + (((t0 * t14) + (t1 * t18)) + (t2 * t19));
+                mTargetPos.pad_ = 0.0f;
+            } else {
+                const MtMatrix& t20 = t3->getWorldMatrix(-1);
+                const f32 t21 = t20.m[0].x;
+                const f32 t22 = t20.m[0].y;
+                const f32 t23 = t20.m[0].z;
+                const f32 t24 = t20.m[1].x;
+                const f32 t25 = t20.m[1].y;
+                const f32 t26 = t20.m[1].z;
+                const f32 t27 = t20.m[2].x;
+                const f32 t28 = t20.m[3].x;
+                const f32 t29 = t20.m[3].y;
+                const f32 t30 = t20.m[3].z;
+                const f32 t31 = t20.m[2].y;
+                const f32 t32 = t20.m[2].z;
+                float t33 = -0.0f;
+                float t34 = 1.0f;
+                mTargetPos.x = (-(((t21 * t28) + (t22 * t29)) + (t23 * t30))) + (((t0 * t21) + (t1 * t22)) + (t2 * t23));
+                mTargetPos.y = (-(((t24 * t28) + (t25 * t29)) + (t26 * t30))) + (((t0 * t24) + (t1 * t25)) + (t2 * t26));
+                mTargetPos.z = (-(((t27 * t28) + (t29 * t31)) + (t30 * t32))) + (((t0 * t27) + (t1 * t31)) + (t2 * t32));
+                mTargetPos.pad_ = 0.0f;
+            }
+        } else {
+            const MtMatrix& t20 = t3->getWorldMatrix(-1);
+            const f32 t21 = t20.m[0].x;
+            const f32 t22 = t20.m[0].y;
+            const f32 t23 = t20.m[0].z;
+            const f32 t24 = t20.m[1].x;
+            const f32 t25 = t20.m[1].y;
+            const f32 t26 = t20.m[1].z;
+            const f32 t27 = t20.m[2].x;
+            const f32 t28 = t20.m[3].x;
+            const f32 t29 = t20.m[3].y;
+            const f32 t30 = t20.m[3].z;
+            const f32 t31 = t20.m[2].y;
+            const f32 t32 = t20.m[2].z;
+            float t33 = -0.0f;
+            float t34 = 1.0f;
+            mTargetPos.x = (-(((t21 * t28) + (t22 * t29)) + (t23 * t30))) + (((t0 * t21) + (t1 * t22)) + (t2 * t23));
+            mTargetPos.y = (-(((t24 * t28) + (t25 * t29)) + (t26 * t30))) + (((t0 * t24) + (t1 * t25)) + (t2 * t26));
+            mTargetPos.z = (-(((t27 * t28) + (t29 * t31)) + (t30 * t32))) + (((t0 * t27) + (t1 * t31)) + (t2 * t32));
+            mTargetPos.pad_ = 0.0f;
+        }
+    } else {
+        mTargetPos.x = t0;
+        mTargetPos.y = t1;
+        mTargetPos.z = t2;
+        mTargetPos.pad_ = 0.0f;
+    }
 }
 
 void uCnsLookAt::setTargetModel(uModel* pModel) {

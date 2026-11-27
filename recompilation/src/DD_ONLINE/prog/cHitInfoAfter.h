@@ -400,3 +400,31 @@ inline cHpDamageInfo::cHpDamageInfo() {
     this->mDamageAttackAdj[1] = 0.0f;
     this->mPawnAdjFinalDamage = 1.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cHealedInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHealedInfo::DTI)->memAlloc(sz, align, ::cHealedInfo::DTI.::MtDTI::getID());
+}
+
+inline void cHealedInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHealedInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cHitInfoAfter::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cHitInfoAfter::DTI);
+}
+
+inline void cHitInfoAfterCommon::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHitInfoAfterCommon::DTI)->memFree(p_addr);
+}
+
+inline void* cHpDamageInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cHpDamageInfo::DTI)->memAlloc(sz, align, ::cHpDamageInfo::DTI.::MtDTI::getID());
+}
+
+inline void cHpDamageInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHpDamageInfo::DTI)->memFree(p_addr);
+}

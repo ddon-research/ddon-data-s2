@@ -60,16 +60,8 @@ const MtDTI& cGroupParam::getDTI() const {
     return cGroupParam::DTI;
 }
 
-inline MtAllocator* cGroupParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGroupParam::DTI);
-}
-
 void* cGroupParam::operator new(size_t sz, u32 align) {
     return cGroupParam::getAllocator()->memAlloc(sz, align, cGroupParam::DTI.getID());
-}
-
-inline void cGroupParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGroupParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cGroupParam::cGroupParam() : mGroup(0), mPriority(0), mIsDisableSplit(0), mIsParts(0), mHasMarkerPos(0), mDataLotFlag(mDataLotFlag & 0xffff0000u), mLoadStageNo(0), mLoadVersionNo(0), mMarkerPos(MtVector3::Zero), mPartsOffset(MtVector3::Zero), mLayer(0), mIsKillAreaInside(false), mKillAreaType(KILL_AREA_ALL), mInvalidFlag(INVALID_KILL_AREA), mAlivePriority(0), mAlivePriorityCnt(0), mAreaHitUseCount(0), mIsDieStageBoss(false), mRandomSeed(0), mIsRequestList(false), mIsSetupList(false), mIsResetList(false), mDriftType(0), mSubGroupRequestBit(0), mSubGroupSetupBit(0), mIsRequestDrop(false), mIsSetupDrop(false) {
@@ -245,9 +237,71 @@ __attribute__((weak)) bool cGroupParam::load(MtDataReader& r, nLayoutGroupParam:
     return true;
 }
 
-__attribute__((weak)) void cGroupParam::clearWork() {
-    DDON_STUB("cGroupParam::clearWork")
-    /* stub */
+void cGroupParam::clearWork() {
+    if (mAreaHitList.mLength != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            static_cast<cAreaHit*>(mAreaHitList.getBuffer()[static_cast<int>(i0_3)])->final();
+            if ((i0_3 + 1u) < mAreaHitList.mLength) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mAreaHitList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mAreaHitList.mpArray));
+    }
+    mAreaHitList.mpArray = nullptr;
+    mAreaHitList.mBufsiz = 0;
+    mAreaHitList.mLength = 0;
+    this->mDataPriority = (this->mDataPriority & 0xFF000000u) | 2u;
+    mAlivePriorityCnt = 0;
+    mAreaHitUseCount = 0;
+    mIsDieStageBoss = false;
+    if (mSetInfoList.mLength != 0) {
+        u32 v2_0 = mSetInfoList.mLength;
+        unsigned int i2_3 = 0;
+        u32 v3_0;
+        for (;;) {
+            if (mSetInfoList.mpArray[i2_3] == nullptr) {
+                v3_0 = v2_0;
+            } else {
+                delete mSetInfoList.mpArray[i2_3];
+                v3_0 = mSetInfoList.mLength;
+            }
+            if ((i2_3 + 1u) < v3_0) {
+                v2_0 = v3_0;
+                i2_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    if (mSetInfoList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mSetInfoList.mpArray));
+    }
+    mSetInfoList.mpArray = nullptr;
+    mSetInfoList.mBufsiz = 0;
+    mSetInfoList.mLength = 0;
+    clearDropItem();
+    if (mResetContextList.mpArray != nullptr) {
+        MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mResetContextList.mpArray));
+    }
+    mResetContextList.mpArray = nullptr;
+    mResetContextList.mBufsiz = 0;
+    mResetContextList.mLength = 0;
+    mIsLoadLotRes = false;
+    mIsKillAreaInside = false;
+    mIsRequestList = false;
+    mIsSetupList = false;
+    mIsResetList = false;
+    mDriftType = 0;
+    mSubGroupRequestBit = 0;
+    mSubGroupSetupBit = 0;
+    mIsRequestDrop = false;
+    mIsSetupDrop = false;
+    mIsDestroy = false;
+    mResetTimer = 0.0f;
 }
 
 __attribute__((weak)) void cGroupParam::setAreaOffset(MtVector3& ofs) {
@@ -334,7 +388,7 @@ __attribute__((weak)) void cGroupParam::setDummy(u32 d) {
 }
 
 void cGroupParam::setIsDisableSplit(bool b) {
-    this->mDataCommon = static_cast<unsigned int>(static_cast<unsigned long>(b * 134217728) | static_cast<unsigned long>(this->mDataCommon & 0xF7FFFFFFu));
+    this->mDataCommon = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 134217728) | static_cast<unsigned long>(this->mDataCommon & 0xF7FFFFFFu));
 }
 
 void cGroupParam::setSetMax(s32 no) {
@@ -342,7 +396,7 @@ void cGroupParam::setSetMax(s32 no) {
 }
 
 void cGroupParam::setHasMarkerPos(bool b) {
-    this->mDataCommon = static_cast<unsigned int>(static_cast<unsigned long>(b * 536870912) | static_cast<unsigned long>(this->mDataCommon & 0xDFFFFFFFu));
+    this->mDataCommon = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 536870912) | static_cast<unsigned long>(this->mDataCommon & 0xDFFFFFFFu));
 }
 
 __attribute__((weak)) void cGroupParam::initAreaHit() {
@@ -423,23 +477,23 @@ void cGroupParam::setLoadLotFlag(bool b) {
 }
 
 void cGroupParam::setLoadLayoutFlag(bool b) {
-    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * 2) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFFDu));
+    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 2) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFFDu));
 }
 
 void cGroupParam::setLoadRandomOnly(bool b) {
-    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * 4) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFFBu));
+    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 4) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFFBu));
 }
 
 void cGroupParam::setLoadStage(bool b) {
-    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * 8) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFF7u));
+    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 8) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFF7u));
 }
 
 void cGroupParam::setLoadVersion(bool b) {
-    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * 16) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFEFu));
+    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 16) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFEFu));
 }
 
 void cGroupParam::setLoadOmit(bool b) {
-    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * 32) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFDFu));
+    mLoadCondition.mLoadCondition = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 32) | static_cast<unsigned long>(mLoadCondition.mLoadCondition & 0xFFFFFFDFu));
 }
 
 __attribute__((weak)) void cGroupParam::setLotFlagNo(u32 no) {
@@ -472,7 +526,7 @@ void cGroupParam::setSetAreaHit(bool b) {
 }
 
 void cGroupParam::setSetSimpleEv(bool b) {
-    mSetCondition.mSetCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * 2) | static_cast<unsigned long>(mSetCondition.mSetCondition & 0xFFFFFFFDu));
+    mSetCondition.mSetCondition = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 2) | static_cast<unsigned long>(mSetCondition.mSetCondition & 0xFFFFFFFDu));
 }
 
 void cGroupParam::setDeleteLotFlag(bool b) {
@@ -480,7 +534,7 @@ void cGroupParam::setDeleteLotFlag(bool b) {
 }
 
 void cGroupParam::setDeleteLayoutFlag(bool b) {
-    mDeleteCondition.mDeleteCondition = static_cast<unsigned int>(static_cast<unsigned long>(b * 2) | static_cast<unsigned long>(mDeleteCondition.mDeleteCondition & 0xFFFFFFFDu));
+    mDeleteCondition.mDeleteCondition = static_cast<unsigned int>(static_cast<unsigned long>(static_cast<long>(b) * 2) | static_cast<unsigned long>(mDeleteCondition.mDeleteCondition & 0xFFFFFFFDu));
 }
 
 cGroupParam::EmSetInfo* cGroupParam::getEmSetInfo(u32 posId) {
@@ -575,24 +629,24 @@ void cGroupParam::setOmSetList(const LayoutItemDataVec& list) {
     mSetInfoList.mLength = 0;
     if (list.mLength != 0) {
         for (unsigned int i3_3 = 0;;) {
-            if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.mpArray[i3_3]) + 9)) == 0) {
-                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.mpArray[i3_3]) + 11)) == 0) {
-                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.mpArray[i3_3]) + 10)) != 0) {
-                        if (addOmSetInfo(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.mpArray[i3_3]) + 8), 2u) == nullptr) {
+            if (!static_cast<CDataLayoutItemData*>(list.mpArray[i3_3])->m_bIsEmpty) {
+                if (!static_cast<CDataLayoutItemData*>(list.mpArray[i3_3])->m_bIsAppearEnemy) {
+                    if (static_cast<CDataLayoutItemData*>(list.mpArray[i3_3])->m_bIsGathered) {
+                        if (addOmSetInfo(static_cast<CDataLayoutItemData*>(list.mpArray[i3_3])->m_ucPosID, 2u) == nullptr) {
                             return;
                         }
                     } else {
-                        if (addOmSetInfo(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.mpArray[i3_3]) + 8), 1u) == nullptr) {
+                        if (addOmSetInfo(static_cast<CDataLayoutItemData*>(list.mpArray[i3_3])->m_ucPosID, 1u) == nullptr) {
                             return;
                         }
                     }
                 } else {
-                    if (addOmSetInfo(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.mpArray[i3_3]) + 8), 3u) == nullptr) {
+                    if (addOmSetInfo(static_cast<CDataLayoutItemData*>(list.mpArray[i3_3])->m_ucPosID, 3u) == nullptr) {
                         return;
                     }
                 }
             } else {
-                if (addOmSetInfo(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(list.mpArray[i3_3]) + 8), 255u) == nullptr) {
+                if (addOmSetInfo(static_cast<CDataLayoutItemData*>(list.mpArray[i3_3])->m_ucPosID, 255u) == nullptr) {
                     return;
                 }
             }
@@ -759,16 +813,8 @@ const MtDTI& cGroupParam::cLifeArea::getDTI() const {
     return cGroupParam::cLifeArea::DTI;
 }
 
-inline MtAllocator* cGroupParam::cLifeArea::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGroupParam::cLifeArea::DTI);
-}
-
 void* cGroupParam::cLifeArea::operator new(size_t sz, u32 align) {
     return cGroupParam::cLifeArea::getAllocator()->memAlloc(sz, align, cGroupParam::cLifeArea::DTI.getID());
-}
-
-inline void cGroupParam::cLifeArea::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGroupParam::cLifeArea::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cGroupParam::cLifeArea::copy(const cGroupParam::cLifeArea* pParam) {
@@ -830,9 +876,16 @@ __attribute__((weak)) bool cGroupParam::cLifeArea::load(MtDataReader& r, nLayout
     return true;
 }
 
-__attribute__((weak)) bool cGroupParam::cLifeArea::save(MtDataWriter& w) {
-    DDON_STUB("cGroupParam::cLifeArea::save")
-    return {};
+bool cGroupParam::cLifeArea::save(MtDataWriter& w) {
+    w.writeU32(mShapeList.mLength);
+    unsigned int i3 = 0;
+    if (mShapeList.mLength != 0) {
+        do {
+            static_cast<AreaHitShape*>(mShapeList.getBuffer()[static_cast<int>(i3)])->save(w);
+            i3 += 1u;
+        } while (i3 < mShapeList.mLength);
+    }
+    return true;
 }
 
 inline cGroupParam::cLifeArea::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -847,16 +900,8 @@ const MtDTI& cGroupParam::cID::getDTI() const {
     return cGroupParam::cID::DTI;
 }
 
-inline MtAllocator* cGroupParam::cID::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGroupParam::cID::DTI);
-}
-
 void* cGroupParam::cID::operator new(size_t sz, u32 align) {
     return cGroupParam::cID::getAllocator()->memAlloc(sz, align, cGroupParam::cID::DTI.getID());
-}
-
-inline void cGroupParam::cID::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGroupParam::cID::DTI)->memFree(p_addr);
 }
 
 void cGroupParam::cID::createProperty(MtPropertyList& s) {
@@ -929,14 +974,6 @@ const MtDTI& cGroupParam::EmSetInfo::getDTI() const {
     return cGroupParam::EmSetInfo::DTI;
 }
 
-inline void* cGroupParam::EmSetInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGroupParam::EmSetInfo::DTI)->memAlloc(sz, align, cGroupParam::EmSetInfo::DTI.getID());
-}
-
-inline void cGroupParam::EmSetInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGroupParam::EmSetInfo::DTI)->memFree(p_addr);
-}
-
 inline cGroupParam::EmSetInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cGroupParam::EmSetInfo::MyDTI cGroupParam::EmSetInfo::DTI("cGroupParam::EmSetInfo", &::MtObject::DTI, 88ul, 0u, 0u);
@@ -949,14 +986,6 @@ const MtDTI& cGroupParam::OmSetInfo::getDTI() const {
     return cGroupParam::OmSetInfo::DTI;
 }
 
-inline void* cGroupParam::OmSetInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGroupParam::OmSetInfo::DTI)->memAlloc(sz, align, cGroupParam::OmSetInfo::DTI.getID());
-}
-
-inline void cGroupParam::OmSetInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGroupParam::OmSetInfo::DTI)->memFree(p_addr);
-}
-
 inline cGroupParam::OmSetInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cGroupParam::OmSetInfo::MyDTI cGroupParam::OmSetInfo::DTI("cGroupParam::OmSetInfo", &::MtObject::DTI, 16ul, 0u, 0u);
@@ -967,27 +996,6 @@ MtObject* cGroupParam::OmSetInfo::MyDTI::newInstance() const {
 
 const MtDTI& cGroupParam::DropItemInfo::getDTI() const {
     return cGroupParam::DropItemInfo::DTI;
-}
-
-inline void* cGroupParam::DropItemInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGroupParam::DropItemInfo::DTI)->memAlloc(sz, align, cGroupParam::DropItemInfo::DTI.getID());
-}
-
-inline void cGroupParam::DropItemInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGroupParam::DropItemInfo::DTI)->memFree(p_addr);
-}
-
-inline cGroupParam::DropItemInfo::DropItemInfo() {
-    mMdlType = 0;
-    mDropId = 0;
-    mSetType = 0;
-    mID = 0;
-    mStatus = 0;
-    mDropPos.x = MtVector3::Zero.x;
-    mDropPos.y = MtVector3::Zero.y;
-    mDropPos.z = MtVector3::Zero.z;
-    mDropPos.pad_ = 0.0f;
-    mpOmControl = nullptr;
 }
 
 cGroupParam::DropItemInfo::~DropItemInfo() {
@@ -1034,21 +1042,12 @@ inline cGroupParam::cUnitData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size
 
 cGroupParam::cUnitData::MyDTI cGroupParam::cUnitData::DTI("cGroupParam::cUnitData", &::MtObject::DTI, 32ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cGroupParam::cUnitData::MyDTI::newInstance() const {
-    DDON_STUB("cGroupParam::cUnitData::MyDTI::newInstance")
-    return nullptr;
+MtObject* cGroupParam::cUnitData::MyDTI::newInstance() const {
+    return new (16u) cGroupParam::cUnitData;
 }
 
 const MtDTI& rLayoutGroupParamList::getDTI() const {
     return rLayoutGroupParamList::DTI;
-}
-
-inline void* rLayoutGroupParamList::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rLayoutGroupParamList::DTI)->memAlloc(sz, align, rLayoutGroupParamList::DTI.getID());
-}
-
-inline void rLayoutGroupParamList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rLayoutGroupParamList::DTI)->memFree(p_addr);
 }
 
 inline rLayoutGroupParamList::rLayoutGroupParamList() {

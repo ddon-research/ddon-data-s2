@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rShotReqInfo.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -22,31 +20,6 @@ extern template __attribute__((noinline)) void rTbl2<cShotReqInfo>::allocData(un
 
 const MtDTI& cShotReqInfo::getDTI() const {
     return cShotReqInfo::DTI;
-}
-
-inline void* cShotReqInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShotReqInfo::DTI)->memAlloc(sz, align, cShotReqInfo::DTI.getID());
-}
-
-inline void cShotReqInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cShotReqInfo::DTI)->memFree(p_addr);
-}
-
-cShotReqInfo::cShotReqInfo() {
-    mShotGroup = 0;
-    mShotIndex = 0;
-    mSetTarget = 0;
-    mJointNo = 255;
-    mIsConst = false;
-    mOffsetPos.x = MtVector3::Zero.x;
-    mOffsetPos.y = MtVector3::Zero.y;
-    mOffsetPos.z = MtVector3::Zero.z;
-    mOffsetPos.pad_ = 0.0f;
-    mOffsetDir.x = MtVector3::Zero.x;
-    mOffsetDir.y = MtVector3::Zero.y;
-    mOffsetDir.z = MtVector3::Zero.z;
-    mOffsetDir.pad_ = 0.0f;
-    mIsLockOnTarget = false;
 }
 
 void cShotReqInfo::createProperty(MtPropertyList& s) {
@@ -70,14 +43,6 @@ MtObject* cShotReqInfo::MyDTI::newInstance() const {
 
 const MtDTI& rShotReqInfo::getDTI() const {
     return rShotReqInfo::DTI;
-}
-
-inline void* rShotReqInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rShotReqInfo::DTI)->memAlloc(sz, align, rShotReqInfo::DTI.getID());
-}
-
-inline void rShotReqInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rShotReqInfo::DTI)->memFree(p_addr);
 }
 
 bool rShotReqInfo::loadData(MtDataReader& in, cShotReqInfo* pData) {

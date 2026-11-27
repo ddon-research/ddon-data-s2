@@ -432,3 +432,23 @@ inline cDelegateBase::cNode::cNode() {
     this->mpThis = nullptr;
     this->mFuncName = "";
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cDelegateBase::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cDelegateBase::DTI);
+}
+
+inline void* cDelegateBase::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDelegateBase::DTI)->memAlloc(sz, align, ::cDelegateBase::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* cDelegateBase::cNode::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cDelegateBase::cNode::DTI);
+}
+
+inline void* cDelegateBase::cNode::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cDelegateBase::cNode::DTI)->memAlloc(sz, align, ::cDelegateBase::cNode::DTI.::MtDTI::getID());
+}

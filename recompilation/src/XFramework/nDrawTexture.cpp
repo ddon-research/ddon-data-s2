@@ -89,30 +89,27 @@ void* nDraw::Texture::operator new(size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::nDraw::Texture::DTI)->memAlloc(sz, align, ::nDraw::Texture::DTI.mID);
 }
 
-inline void nDraw::Texture::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nDraw::Texture::DTI)->memFree(p_addr);
+nDraw::Texture::Texture(u32 w, u32 miplevels, u32 arraysize, nDraw::FORMAT_TYPE fmt, nDraw::USAGE_TYPE usage, u32 misc_flags, nDraw::Texture* psharedtex, u32 share_offset, void* pinitvalues, nDraw::TEXMEMORY_TYPE memtype) : nDraw::Buffer(usage) {
+    init(static_cast<u32>((arraysize <= 1u) ? 1 : 4), w, 1u, 1u, miplevels, arraysize, fmt, misc_flags, MT_CTSTR(), MT_CTSTR());
+    create(psharedtex, u32(), pinitvalues);
 }
 
-nDraw::Texture::Texture(u32 w, u32 h, u32 miplevels, u32 arraysize, nDraw::FORMAT_TYPE fmt, nDraw::USAGE_TYPE usage, u32 misc_flags, nDraw::Texture* psharedtex, u32 share_offset, void* pinitvalues, nDraw::TEXMEMORY_TYPE memtype)
-    : nDraw::Buffer(usage)
-{
-    u32 type;
-    if ((misc_flags & 0xf00u) != 0) {
-        type = 8u | (arraysize > 1 ? 1u : 0u);
-    } else if ((misc_flags & 8u) != 0) {
-        type = nDraw::TT_CUBE;
+nDraw::Texture::Texture(u32 w, u32 h, u32 miplevels, u32 arraysize, nDraw::FORMAT_TYPE fmt, nDraw::USAGE_TYPE usage, u32 misc_flags, nDraw::Texture* psharedtex, u32 share_offset, void* pinitvalues, nDraw::TEXMEMORY_TYPE memtype) : nDraw::Buffer(usage) {
+    if (((misc_flags >> 8) & 15u) != 0) {
+        init(static_cast<u32>(static_cast<unsigned long>(arraysize > 1u) | 8), w, h, 1u, miplevels, arraysize, fmt, misc_flags, MT_CTSTR(), MT_CTSTR());
     } else {
-        type = (arraysize > 1) ? nDraw::TT_2DARRAY : nDraw::TT_2D;
+        if ((misc_flags & 8u) == 0) {
+            init(static_cast<u32>((arraysize <= 1u) ? 2 : 5), w, h, 1u, miplevels, arraysize, fmt, misc_flags, MT_CTSTR(), MT_CTSTR());
+        } else {
+            init(6u, w, h, 1u, miplevels, arraysize, fmt, misc_flags, MT_CTSTR(), MT_CTSTR());
+        }
     }
-    init(type, w, h, 1, miplevels, arraysize, fmt, misc_flags, nullptr, nullptr);
-    create(psharedtex, share_offset, pinitvalues);
+    create(psharedtex, u32(), pinitvalues);
 }
 
-nDraw::Texture::Texture(u32 w, u32 h, u32 d, u32 miplevels, u32 arraysize, nDraw::FORMAT_TYPE fmt, nDraw::USAGE_TYPE usage, u32 misc_flags, nDraw::Texture* psharedtex, u32 share_offset, void* pinitvalues)
-    : nDraw::Buffer(usage)
-{
-    init(nDraw::TT_3D, w, h, d, miplevels, arraysize, fmt, misc_flags, nullptr, nullptr);
-    create(psharedtex, share_offset, pinitvalues);
+nDraw::Texture::Texture(u32 w, u32 h, u32 d, u32 miplevels, u32 arraysize, nDraw::FORMAT_TYPE fmt, nDraw::USAGE_TYPE usage, u32 misc_flags, nDraw::Texture* psharedtex, u32 share_offset, void* pinitvalues) : nDraw::Buffer(usage) {
+    init(3u, w, h, d, miplevels, arraysize, fmt, misc_flags, MT_CTSTR(), MT_CTSTR());
+    create(psharedtex, u32(), pinitvalues);
 }
 
 __attribute__((weak)) void nDraw::Texture::release() {

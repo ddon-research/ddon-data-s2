@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uScrollCollisionSbc.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMath.h"
 #include "../MT/MtMemoryAllocator.h"
@@ -22,10 +21,6 @@ __attribute__((weak)) void uScrollCollisionSbc::usage() {
 
 const MtDTI& uScrollCollisionSbc::getDTI() const {
     return uScrollCollisionSbc::DTI;
-}
-
-inline void uScrollCollisionSbc::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uScrollCollisionSbc::DTI)->memFree(p_addr);
 }
 
 uScrollCollisionSbc::~uScrollCollisionSbc() {

@@ -284,3 +284,23 @@ inline void* uMultiFilter::operator new(size_t sz, void* p_addr) {
 inline void* uMultiGodRaysFilter::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uMultiBloomFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uMultiBloomFilter::DTI)->memFree(p_addr);
+}
+
+inline void uMultiBlurFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uMultiBlurFilter::DTI)->memFree(p_addr);
+}
+
+inline void uMultiColorCorrectFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uMultiColorCorrectFilter::DTI)->memFree(p_addr);
+}
+
+inline void uMultiGodRaysFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uMultiGodRaysFilter::DTI)->memFree(p_addr);
+}

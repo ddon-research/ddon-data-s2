@@ -163,18 +163,27 @@ inline void* rCnsIK::JointInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
 
+inline rCnsIK::JointInfo::JointInfo() {
+    this->mJntNo = -1;
+    this->mRotMin = 0.0f;
+    this->mRotMax = 0.0f;
+    this->mReverse = false;
+    this->mOffset = 0.0f;
+    this->mScaleOffset = 1.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
 #include "../MT/MtAllocator.h"
 #include "../MT/MtMemoryAllocator.h"
 
-inline void* rCnsIK::JointInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCnsIK::JointInfo::DTI)->memAlloc(sz, align, rCnsIK::JointInfo::DTI.getID());
+inline void rCnsIK::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCnsIK::DTI)->memFree(p_addr);
 }
 
-inline rCnsIK::JointInfo::JointInfo() {
-    mJntNo = -1;
-    mRotMin = 0.0f;
-    mRotMax = 0.0f;
-    mOffset = 0.0f;
-    mScaleOffset = 1.0f;
-    mReverse = false;
+inline void* rCnsIK::JointInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCnsIK::JointInfo::DTI)->memAlloc(sz, align, ::rCnsIK::JointInfo::DTI.::MtDTI::mID);
+}
+
+inline void rCnsIK::JointInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCnsIK::JointInfo::DTI)->memFree(p_addr);
 }

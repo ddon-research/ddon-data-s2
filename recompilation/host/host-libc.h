@@ -6,6 +6,10 @@
 // (`<memory>` → `<bits/gthr.h>` → `<pthread.h>`) in every unit that uses a
 // std container, so 107 of merge2b's units did not compile on the host.
 //
+// `sDDOMain.h` declares a third, `using pthread_attr_t = pthread_attr*;`
+// (aStage.cpp, which includes it, did not compile on the host beside glibc's
+// union), so it is renamed the same way.
+//
 // So every header that names them is parsed here, first, while the two names
 // are spelled differently: glibc and libstdc++ keep their own types, layouts
 // and extern "C" symbols, and the global names are left to the bundle. Later
@@ -15,12 +19,14 @@
 
 #define pthread_t ddon_host_pthread_t
 #define pthread_mutex_t ddon_host_pthread_mutex_t
+#define pthread_attr_t ddon_host_pthread_attr_t
 #include <cstddef>  // libstdc++'s configuration, before its thread layer
 #include <pthread.h>
 #include <signal.h>  // `pthread_kill(pthread_t, int)`
 #include <bits/gthr.h>
 #undef pthread_t
 #undef pthread_mutex_t
+#undef pthread_attr_t
 
 // The PS4's `wchar_t` is 2 bytes: the build compiles with
 // `-fshort-wchar`, so `nInputText::cUnicodeString`, `sKeyboardInterface` and

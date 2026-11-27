@@ -587,3 +587,11 @@ inline void uSimSoftBody::setColliderType(u32 type) {
 inline bool uSimSoftBody::getColliderCollision() {
     return this->mColliderCollision;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uSimSoftBody::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSimSoftBody::DTI)->memFree(p_addr);
+}

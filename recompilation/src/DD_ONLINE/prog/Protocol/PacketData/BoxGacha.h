@@ -188,3 +188,18 @@ inline CDataBoxGachaSettlementInfo::CDataBoxGachaSettlementInfo() {
     this->m_unPurchaseNum = 0;
     this->m_unPurchaseMaxNum = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataBoxGachaInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataBoxGachaInfo::DTI);
+}
+
+inline MtAllocator* CDataBoxGachaItemInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataBoxGachaItemInfo::DTI);
+}
+
+inline MtAllocator* CDataBoxGachaSettlementInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataBoxGachaSettlementInfo::DTI);
+}

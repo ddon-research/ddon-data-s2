@@ -338,3 +338,15 @@ inline void cpJob04::setCanFloating(bool flg) {
 inline s32 cpJob04::getAirChantCount() const {
     return this->mAirChantCount;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpJob04::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpJob04::DTI);
+}
+
+inline void cpJob04::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpJob04::DTI)->memFree(p_addr);
+}

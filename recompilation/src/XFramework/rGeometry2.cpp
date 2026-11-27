@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rGeometry2.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollisionDefine.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
@@ -23,14 +22,6 @@
 
 const MtDTI& rGeometry2::getDTI() const {
     return rGeometry2::DTI;
-}
-
-inline void* rGeometry2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rGeometry2::DTI)->memAlloc(sz, align, rGeometry2::DTI.mID);
-}
-
-inline void rGeometry2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGeometry2::DTI)->memFree(p_addr);
 }
 
 rGeometry2::~rGeometry2() {
@@ -125,10 +116,6 @@ MtObject* rGeometry2::MyDTI::newInstance() const {
 
 const MtDTI& rGeometry2::cGeometryArray::getDTI() const {
     return rGeometry2::cGeometryArray::DTI;
-}
-
-inline void rGeometry2::cGeometryArray::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGeometry2::cGeometryArray::DTI)->memFree(p_addr);
 }
 
 rGeometry2::cGeometryArray::cGeometryArray(const MtDTI* pEditGeometryDTI) : nCollision::cCollisionNode(pEditGeometryDTI) {
@@ -270,28 +257,6 @@ __attribute__((weak)) MtObject* rGeometry2::cGeometryArray::MyDTI::newInstance()
 
 const MtDTI& rGeometry2::cGeometry::getDTI() const {
     return rGeometry2::cGeometry::DTI;
-}
-
-inline void* rGeometry2::cGeometry::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rGeometry2::cGeometry::DTI)->memAlloc(sz, align, rGeometry2::cGeometry::DTI.mID);
-}
-
-inline void rGeometry2::cGeometry::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rGeometry2::cGeometry::DTI)->memFree(p_addr);
-}
-
-inline rGeometry2::cGeometry::cGeometry() {
-    mpAttachGeometry = nullptr;
-    mAttachMode = 0;
-    mJointNo0 = 0xFF;
-    mJointNo1 = 0xFF;
-    mFlgEnableScale = true;
-    mpAttachModel = nullptr;
-    mBeforeAttachPos0.x = MtVector3::Zero.x;
-    mBeforeAttachPos0.y = MtVector3::Zero.y;
-    mBeforeAttachPos0.z = MtVector3::Zero.z;
-    mBeforeAttachPos0.pad_ = 0.0f;
-    mpAddonObject = nullptr;
 }
 
 rGeometry2::cGeometry::~cGeometry() {

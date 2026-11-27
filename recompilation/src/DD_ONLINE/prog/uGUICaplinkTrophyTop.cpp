@@ -34,16 +34,8 @@ const MtDTI& uGUICaplinkTrophyTop::getDTI() const {
     return uGUICaplinkTrophyTop::DTI;
 }
 
-inline MtAllocator* uGUICaplinkTrophyTop::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkTrophyTop::DTI);
-}
-
 void* uGUICaplinkTrophyTop::operator new(size_t sz, u32 align) {
     return uGUICaplinkTrophyTop::getAllocator()->memAlloc(sz, align, uGUICaplinkTrophyTop::DTI.getID());
-}
-
-inline void uGUICaplinkTrophyTop::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyTop::DTI)->memFree(p_addr);
 }
 
 uGUICaplinkTrophyTop::~uGUICaplinkTrophyTop() {
@@ -101,8 +93,52 @@ void uGUICaplinkTrophyTop::moveInput() {
 }
 
 __attribute__((weak)) void uGUICaplinkTrophyTop::moveEvent() {
-    DDON_STUB("uGUICaplinkTrophyTop::moveEvent")
-    /* stub */
+    if (mList.mListCtrl.moveEvent()) {
+        return;
+    }
+    switch (getInputEvent()) {
+    case INPUTEVENT_DECIDE:
+        if (uGUICaplinkTopMenu* t1 = mpOwner) {
+            // workaround
+            char* t2 = reinterpret_cast<char*>(&mList.mListCtrl);
+            const u32 t3 = *reinterpret_cast<const u32*>(t2 + 0x26c);
+            const cListInfo* t4 = static_cast<cListInfo*>(reinterpret_cast<MtTypedArray<cScrollListInfoBase>*>(t2 + 0x110)->at(t3));
+            if (t4 != nullptr) {
+                const char* t5 = reinterpret_cast<const char*>(&t4->mContentId);
+                char* t6 = reinterpret_cast<char*>(t1);
+                // workaround
+                t6 += 0xb9c;
+                if (t6 != t5) {
+                    MT_CTSTR t7 = reinterpret_cast<const char*>(t4) + (0x28 + 0x4);
+                    char* t8 = t6 + 0x4;
+                    const s32 t9 = static_cast<s32>(strlen(t7));
+                    const u32 t10 = t9 <= 32 ? t9 : 32;
+                    *reinterpret_cast<u32*>(t6) = t10;
+                    if (t10 != 0) {
+                        memcpy(t8, t7, t10);
+                        t8[t10] = 0;
+                    } else {
+                        *t8 = 0;
+                    }
+                }
+            }
+        }
+        setFlowId(FLOW_END);
+        break;
+    case INPUTEVENT_CANCEL:
+        if (uGUICaplinkTopMenu* t11 = mpOwner) {
+            char* t12 = reinterpret_cast<char*>(t11);
+            // workaround
+            t12 += 0xb9c;
+            char* t13 = t12 + 0x4;
+            if (t13 != static_cast<MT_CTSTR>("")) {
+                *reinterpret_cast<u32*>(t12) = 0;
+                *t13 = 0;
+            }
+        }
+        setFlowId(FLOW_END);
+        break;
+    }
 }
 
 __attribute__((weak)) void uGUICaplinkTrophyTop::updateMove() {
@@ -152,6 +188,17 @@ void uGUICaplinkTrophyTop::hideListItem(uGUIBase::cScrollListItemBase* pListItem
     cGUIUtility::setExecuteTree(static_cast<cGUIInstance*>(pListItem->mpInstBase), false);
 }
 
+inline void uGUICaplinkTrophyTop::eventCancel() {
+    if (mpOwner == nullptr) {
+        return;
+    }
+    if ("" == (&mpOwner->mContentId.mStr[0])) {
+        return;
+    }
+    mpOwner->mContentId.mLength = 0;
+    mpOwner->mContentId.mStr[0] = 0;
+}
+
 u32 uGUICaplinkTrophyTop::evCtrlDecide(cControl::Message* msg) {
     setInputEvent(66u);
     return 0;
@@ -186,14 +233,6 @@ const MtDTI& uGUICaplinkTrophyTop::cListItem::getDTI() const {
     return uGUICaplinkTrophyTop::cListItem::DTI;
 }
 
-inline void* uGUICaplinkTrophyTop::cListItem::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkTrophyTop::cListItem::DTI)->memAlloc(sz, align, uGUICaplinkTrophyTop::cListItem::DTI.getID());
-}
-
-inline void uGUICaplinkTrophyTop::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyTop::cListItem::DTI)->memFree(p_addr);
-}
-
 uGUICaplinkTrophyTop::cListItem::~cListItem() {
 }
 
@@ -207,10 +246,6 @@ MtObject* uGUICaplinkTrophyTop::cListItem::MyDTI::newInstance() const {
 
 const MtDTI& uGUICaplinkTrophyTop::cListInfo::getDTI() const {
     return uGUICaplinkTrophyTop::cListInfo::DTI;
-}
-
-inline void uGUICaplinkTrophyTop::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkTrophyTop::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkTrophyTop::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

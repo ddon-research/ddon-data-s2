@@ -13,7 +13,11 @@
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
 #include "../../MT/MtSynchronize.h"
+#include "aCharacterEdit.h"
 #include "aGame.h"
+#include "aLobby.h"
+#include "aMenu.h"
+#include "aTitle.h"
 #include "cArcLoader.h"
 #include "../../XFramework/cArea.h"
 #include "../../XFramework/cCaplinkContext.h"
@@ -50,6 +54,7 @@
 #include "nHumanMsg.h"
 #include "nJobParam.h"
 #include "nLayout.h"
+#include "../../XFramework/nPhysicsSystem.h"
 #include "nStage.h"
 #include "rArchiveListArray.h"
 #include "rCameraParamList.h"
@@ -92,10 +97,12 @@
 #include "sCameraExt.h"
 #include "sCaplinkManager.h"
 #include "sChat.h"
+#include "sClanKyoten.h"
 #include "../../XFramework/sCollision.h"
 #include "sContextManager.h"
 #include "sControlManager.h"
 #include "sCraftManager.h"
+#include "sDDOMain.h"
 #include "sDialogBase.h"
 #include "../../XFramework/sEffect.h"
 #include "sEffectExt.h"
@@ -107,9 +114,11 @@
 #include "sGame.h"
 #include "sInputManager.h"
 #include "sItemManager.h"
+#include "sLightExt.h"
 #include "../../XFramework/sMain.h"
 #include "sMarker.h"
 #include "sMenu.h"
+#include "sMyRoom.h"
 #include "../../XFramework/sNetwork.h"
 #include "sNetworkExt.h"
 #include "sNpcManager.h"
@@ -122,6 +131,7 @@
 #include "sQuestManagerExt.h"
 #include "../../XFramework/sRender.h"
 #include "../../XFramework/sResource.h"
+#include "sReward.h"
 #include "sScenario.h"
 #include "sScreenShot.h"
 #include "sSetManager.h"
@@ -135,6 +145,7 @@
 #include "sUnitExt.h"
 #include "sWeatherManager.h"
 #include "sWorldOffset.h"
+#include "sZoneStatus.h"
 #include "sZoneUnitCtrl.h"
 #include "../../XFramework/uCamera.h"
 #include "uControl.h"
@@ -171,10 +182,6 @@
 
 const MtDTI& aStage::getDTI() const {
     return aStage::DTI;
-}
-
-inline void aStage::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(aStage::DTI)->memFree(p_addr);
 }
 
 aStage::aStage() {
@@ -232,19 +239,119 @@ __attribute__((weak)) void aStage::move_main() {
     /* stub */
 }
 
-__attribute__((weak)) void aStage::move_to_lobby() {
-    DDON_STUB("aStage::move_to_lobby")
-    /* stub */
+void aStage::move_to_lobby() {
+    if (mGuardData.mJmpStatus == 0) {
+        if (static_cast<sAreaExt*>(sArea::getInstance())->convertStageIndex(200) > -1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isLogin()) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->convertStageNoToId(200u) != 0) {
+                    mGuardData.mJmpStatus = 1;
+                    mGuardData.mJmpStageNo = 200;
+                    mGuardData.mJmpPosNo = 0;
+                    mJmpFadeType = 0;
+                    static_cast<sAreaExt*>(sArea::getInstance())->mIsAreaJumpSync = false;
+                    mpJmpDTI = static_cast<const MtDTI*>(&aStage::DTI);
+                    if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList() != nullptr) {
+                        if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList()->isLobby(200)) {
+                            mpJmpDTI = static_cast<const MtDTI*>(&aLobby::DTI);
+                        }
+                    }
+                }
+            } else {
+                mGuardData.mJmpStatus = 1;
+                mGuardData.mJmpStageNo = 200;
+                mGuardData.mJmpPosNo = 0;
+                mJmpFadeType = 0;
+                static_cast<sAreaExt*>(sArea::getInstance())->mIsAreaJumpSync = false;
+                mpJmpDTI = static_cast<const MtDTI*>(&aStage::DTI);
+                if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList() != nullptr) {
+                    if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList()->isLobby(200)) {
+                        mpJmpDTI = static_cast<const MtDTI*>(&aLobby::DTI);
+                    }
+                }
+            }
+        }
+    }
+    this->cArea::mRno = 1;
 }
 
-__attribute__((weak)) void aStage::move_to_lobby_temple() {
-    DDON_STUB("aStage::move_to_lobby_temple")
-    /* stub */
+void aStage::move_to_lobby_temple() {
+    if (mGuardData.mJmpStatus == 0) {
+        if (static_cast<sAreaExt*>(sArea::getInstance())->convertStageIndex(201) > -1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isLogin()) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->convertStageNoToId(201u) != 0) {
+                    mGuardData.mJmpStatus = 1;
+                    mGuardData.mJmpStageNo = 201;
+                    mGuardData.mJmpPosNo = 2;
+                    mJmpFadeType = 0;
+                    static_cast<sAreaExt*>(sArea::getInstance())->mIsAreaJumpSync = false;
+                    mpJmpDTI = static_cast<const MtDTI*>(&aStage::DTI);
+                    if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList() != nullptr) {
+                        if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList()->isLobby(201)) {
+                            mpJmpDTI = static_cast<const MtDTI*>(&aLobby::DTI);
+                        }
+                    }
+                }
+            } else {
+                mGuardData.mJmpStatus = 1;
+                mGuardData.mJmpStageNo = 201;
+                mGuardData.mJmpPosNo = 2;
+                mJmpFadeType = 0;
+                static_cast<sAreaExt*>(sArea::getInstance())->mIsAreaJumpSync = false;
+                mpJmpDTI = static_cast<const MtDTI*>(&aStage::DTI);
+                if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList() != nullptr) {
+                    if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList()->isLobby(201)) {
+                        mpJmpDTI = static_cast<const MtDTI*>(&aLobby::DTI);
+                    }
+                }
+            }
+        }
+    }
+    this->cArea::mRno = 1;
 }
 
-__attribute__((weak)) void aStage::move_to_stage() {
-    DDON_STUB("aStage::move_to_stage")
-    /* stub */
+void aStage::move_to_stage() {
+    if (sDialogBase::getInstance()->isDialogExecute()) {
+        return;
+    }
+    s32 t0 = mJumpToStageNo;
+    if (t0 > -1) {
+        if (mGuardData.mJmpStatus == 0) {
+            s32 t1 = mJumpToPosNo;
+            bool t2 = mJumpSync;
+            if (static_cast<sAreaExt*>(sArea::getInstance())->convertStageIndex(t0) > -1) {
+                if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isLogin()) {
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->convertStageNoToId(static_cast<u32>(t0)) != 0) {
+                        mGuardData.mJmpStatus = 1;
+                        mGuardData.mJmpStageNo = t0;
+                        mGuardData.mJmpPosNo = static_cast<u32>(t1);
+                        mJmpFadeType = 0;
+                        static_cast<sAreaExt*>(sArea::getInstance())->mIsAreaJumpSync = t2;
+                        mpJmpDTI = static_cast<const MtDTI*>(&aStage::DTI);
+                        if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList() != nullptr) {
+                            if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList()->isLobby(t0)) {
+                                mpJmpDTI = static_cast<const MtDTI*>(&aLobby::DTI);
+                            }
+                        }
+                    }
+                } else {
+                    mGuardData.mJmpStatus = 1;
+                    mGuardData.mJmpStageNo = t0;
+                    mGuardData.mJmpPosNo = static_cast<u32>(t1);
+                    mJmpFadeType = 0;
+                    static_cast<sAreaExt*>(sArea::getInstance())->mIsAreaJumpSync = t2;
+                    mpJmpDTI = static_cast<const MtDTI*>(&aStage::DTI);
+                    if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList() != nullptr) {
+                        if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList()->isLobby(t0)) {
+                            mpJmpDTI = static_cast<const MtDTI*>(&aLobby::DTI);
+                        }
+                    }
+                }
+            }
+            this->cArea::mRno = 1;
+        } else {
+            this->cArea::mRno = 1;
+        }
+    }
 }
 
 __attribute__((weak)) void aStage::move_event() {
@@ -277,9 +384,112 @@ __attribute__((weak)) void aStage::moveMain() {
     /* stub */
 }
 
-__attribute__((weak)) void aStage::execGameMenuOpen() {
-    DDON_STUB("aStage::execGameMenuOpen")
-    /* stub */
+void aStage::execGameMenuOpen() {
+    if (sInputManager::getInstance()->getKeyCommon(nKeyCustom::KEY_CUSTOM_UI_GAME_MENU, nKeyCustom::GET_TRG, nKeyCustom::MODE_CUSTOM, 0u) != 0) {
+        if (sInputManager::getInstance()->getKeyCommon(nKeyCustom::KEY_CUSTOM_UI_SC_MULTI, nKeyCustom::GET_ON, nKeyCustom::MODE_CUSTOM, 0u) != 0) {
+            sGUI* t0 = sGUI::getInstance();
+            if (static_cast<sGUIExt*>(t0)->mSCM.mReqMenuIdSCM == 0xFFFFFFFFu) {
+                *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 26620) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sGUI::getInstance()) + 26620)) & 254;
+                return;
+            }
+            static_cast<sGUIExt*>(t0)->moveMenuUIF();
+        } else {
+            static_cast<sGUIExt*>(sGUI::getInstance())->moveMenuUIF();
+        }
+    } else {
+        sGUI* t0 = sGUI::getInstance();
+        if (static_cast<sGUIExt*>(t0)->mSCM.mReqMenuIdSCM == 0xFFFFFFFFu) {
+            *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t0) + 26620) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sGUI::getInstance()) + 26620)) & 254;
+            return;
+        }
+        static_cast<sGUIExt*>(t0)->moveMenuUIF();
+    }
+    sGUI* v2_0;
+    if (static_cast<sGUIExt*>(sGUI::getInstance())->isGameMenuOpenEnable(true)) {
+        if (static_cast<sGUIExt*>(sGUI::getInstance())->getSCMReqMenuIdSCM() == 0xFFFFFFFFu) {
+            sGUIExt::ANNOUNCE_TYPE t1 = static_cast<sGUIExt*>(sGUI::getInstance())->getReqTutorialAnnounceType();
+            switch (static_cast<unsigned int>(t1 - 1)) {
+                case 0:
+                {
+                    static_cast<sGUIExt*>(sGUI::getInstance())->newSingletonMenu(static_cast<const MtDTI*>(&uGUITutorialPop::DTI));
+                    if (static_cast<sGUIExt*>(sGUI::getInstance())->getSingletonMenu() == nullptr) {
+                        v2_0 = sGUI::getInstance();
+                    } else {
+                        const MtDTI& t2 = static_cast<sGUIExt*>(sGUI::getInstance())->getSingletonMenu()->getDTI();
+                        MT_CTSTR v0_1 = uGUITutorialPop::DTI.mName;
+                        for (const MtDTI* v0_0 = &t2;;) {
+                            if (v0_1 == v0_0->mName) {
+                                *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(static_cast<sGUIExt*>(sGUI::getInstance())->getSingletonMenu()) + 2272) = sTutorialGuide::getInstance()->getDispGuideNo();
+                                static_cast<sGUIExt*>(sGUI::getInstance())->mIsTutorialPopFromTA = true;
+                                return;
+                            } else {
+                                if (v0_0->mpParent != nullptr) {
+                                    v0_0 = v0_0->mpParent;
+                                } else {
+                                    break;
+                                }
+                            }
+                        }
+                        v2_0 = sGUI::getInstance();
+                    }
+                    break;
+                }
+                case 1:
+                {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->mEntryBoardReadyWaitAnnounce = false;
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setReqTutorialAnnounce(sGUIExt::ANNOUNCE_TYPE_ENTRY_BOARD, false);
+                    static_cast<sGUIExt*>(sGUI::getInstance())->createGameMenu(0xFFFFFFFFu, 14, 0u);
+                    return;
+                }
+                case 2:
+                {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->mIsQuickMatchReadyWaitAnnounce = false;
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setReqTutorialAnnounce(sGUIExt::ANNOUNCE_TYPE_QUICK_PARTY, false);
+                    static_cast<sGUIExt*>(sGUI::getInstance())->createGameMenu(0xFFFFFFFFu, 13, 0u);
+                    return;
+                }
+                case 3:
+                {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->mIsPartyInvitedAnnounce = false;
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setReqTutorialAnnounce(sGUIExt::ANNOUNCE_TYPE_INVITE, false);
+                    static_cast<sGUIExt*>(sGUI::getInstance())->createGameMenu(0xFFFFFFFFu, 0, 0u);
+                    return;
+                }
+                case 4:
+                {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->mJoinPartyWaitAnnounce = false;
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setReqTutorialAnnounce(sGUIExt::ANNOUNCE_TYPE_INVITE_MEMBER, false);
+                    static_cast<sGUIExt*>(sGUI::getInstance())->createGameMenu(0xFFFFFFFFu, 12, 0u);
+                    return;
+                }
+                case 5:
+                {
+                    static_cast<sNetworkExt*>(sNetwork::getInstance())->mEntryInviteAnnounce = false;
+                    static_cast<sGUIExt*>(sGUI::getInstance())->setReqTutorialAnnounce(sGUIExt::ANNOUNCE_TYPE_INVITE_ENTRY, false);
+                    if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getEntryInviteIdRecent() > -1) {
+                        sGUI* t3 = sGUI::getInstance();
+                        static_cast<sGUIExt*>(t3)->createGameMenu(0xFFFFFFFFu, 39, static_cast<u32>(static_cast<sNetworkExt*>(sNetwork::getInstance())->getEntryInviteIdRecent()));
+                        return;
+                    } else {
+                        return;
+                    }
+                    break;
+                }
+                default:
+                {
+                    static_cast<sGUIExt*>(sGUI::getInstance())->createGameMenu(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sGUI::getInstance()) + 24032), -1, 0u);
+                    return;
+                }
+            }
+        } else {
+            static_cast<sGUIExt*>(sGUI::getInstance())->createGameMenu(static_cast<sGUIExt*>(sGUI::getInstance())->getSCMReqMenuIdSCM(), -1, 0u);
+            return;
+        }
+    } else {
+        *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sGUI::getInstance()) + 26620) = (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(sGUI::getInstance()) + 26620)) & 254;
+        return;
+    }
+    static_cast<sGUIExt*>(v2_0)->mIsTutorialPopFromTA = true;
 }
 
 bool aStage::execGameMenuMsg() {
@@ -614,9 +824,27 @@ void aStage::releaseStageResource() {
     }
 }
 
-__attribute__((weak)) bool aStage::requestStageJump(s32 stageNo, u32 posNo, u32 fadeType, bool isSync) {
-    DDON_STUB("aStage::requestStageJump")
-    return {};
+bool aStage::requestStageJump(s32 stageNo, u32 posNo, u32 fadeType, bool isSync) {
+    if (mGuardData.mJmpStatus == 0) {
+        if (static_cast<sAreaExt*>(sArea::getInstance())->convertStageIndex(stageNo) > -1) {
+            if (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->isLogin() && (static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->convertStageNoToId(static_cast<u32>(stageNo)) == 0)) {
+                return false;
+            }
+            mGuardData.mJmpStatus = 1;
+            mGuardData.mJmpStageNo = stageNo;
+            mGuardData.mJmpPosNo = posNo;
+            mJmpFadeType = fadeType;
+            static_cast<sAreaExt*>(sArea::getInstance())->mIsAreaJumpSync = isSync;
+            mpJmpDTI = static_cast<const MtDTI*>(&aStage::DTI);
+            if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList() != nullptr) {
+                if (static_cast<sAreaExt*>(sArea::getInstance())->getStageList()->isLobby(stageNo)) {
+                    mpJmpDTI = static_cast<const MtDTI*>(&aLobby::DTI);
+                }
+            }
+            return true;
+        }
+    }
+    return false;
 }
 
 bool aStage::requestMenuJump() {
@@ -742,15 +970,6 @@ __attribute__((weak)) void aStage::dummyCallBack(void* param) {
 __attribute__((weak)) void aStage::loadResStageEffect() {
     DDON_STUB("aStage::loadResStageEffect")
     /* stub */
-}
-
-inline void aStage::updatePtrWeather() {
-    if (mpLightSchdl == nullptr) {
-        return;
-    }
-    if ((mpLightSchdl->mBeFlag - 1u) > 1u) {
-        mpLightSchdl = nullptr;
-    }
 }
 
 __attribute__((weak)) void aStage::loadResStageWeather() {

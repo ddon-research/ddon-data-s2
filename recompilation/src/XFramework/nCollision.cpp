@@ -17,10 +17,6 @@ const MtDTI& nCollision::cAllocaterIntermediate::getDTI() const {
     return nCollision::cAllocaterIntermediate::DTI;
 }
 
-inline void nCollision::cAllocaterIntermediate::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cAllocaterIntermediate::DTI)->memFree(p_addr);
-}
-
 nCollision::cAllocaterIntermediate::cAllocaterIntermediate() {
 }
 
@@ -203,14 +199,6 @@ const MtDTI& nCollision::cScrCommonFilter::getDTI() const {
     return nCollision::cScrCommonFilter::DTI;
 }
 
-inline void* nCollision::cScrCommonFilter::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nCollision::cScrCommonFilter::DTI)->memAlloc(sz, align, ::nCollision::cScrCommonFilter::DTI.mID);
-}
-
-inline void nCollision::cScrCommonFilter::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollision::cScrCommonFilter::DTI)->memFree(p_addr);
-}
-
 nCollision::cScrCommonFilter::cScrCommonFilter() {
     mScrType = 0xFFFFFFFF;
     mScrGroup = 1;
@@ -285,14 +273,6 @@ MtObject* nCollision::cScrCommonFilter::MyDTI::newInstance() const {
 
 const MtDTI& nCollisionUtil::cOwnerSystem::getDTI() const {
     return nCollisionUtil::cOwnerSystem::DTI;
-}
-
-inline void* nCollisionUtil::cOwnerSystem::operator new(size_t sz, u32 align) {
-    return ::MtMemoryAllocator::getAllocator(::nCollisionUtil::cOwnerSystem::DTI)->memAlloc(sz, align, ::nCollisionUtil::cOwnerSystem::DTI.mID);
-}
-
-inline void nCollisionUtil::cOwnerSystem::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nCollisionUtil::cOwnerSystem::DTI)->memFree(p_addr);
 }
 
 nCollisionUtil::cOwnerSystem::cOwnerSystem() {

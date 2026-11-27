@@ -5,7 +5,7 @@
 #include "Protocol/PacketData/GP.h"
 #include "Protocol/PacketData/JobMaster.h"
 #include "../../MT/MtAllocator.h"
-#include "../../MT/MtCharset.h"
+#include "../../MT/MtCharSet.h"
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
@@ -75,98 +75,6 @@
 #ifndef DDON_STUB
 #define DDON_STUB(name)
 #endif
-
-static const CrestElementParam CrestElementParams[89] = {
-    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(2), 18},
-    {static_cast<CrestElementParam::TYPE>(1), 54},
-    {static_cast<CrestElementParam::TYPE>(1), 55},
-    {static_cast<CrestElementParam::TYPE>(1), 56},
-    {static_cast<CrestElementParam::TYPE>(1), 57},
-    {static_cast<CrestElementParam::TYPE>(1), 58},
-    {static_cast<CrestElementParam::TYPE>(1), 21},
-    {static_cast<CrestElementParam::TYPE>(1), 22},
-    {static_cast<CrestElementParam::TYPE>(1), 25},
-    {static_cast<CrestElementParam::TYPE>(1), 26},
-    {static_cast<CrestElementParam::TYPE>(1), 45},
-    {static_cast<CrestElementParam::TYPE>(1), 46},
-    {static_cast<CrestElementParam::TYPE>(1), 47},
-    {static_cast<CrestElementParam::TYPE>(1), 48},
-    {static_cast<CrestElementParam::TYPE>(1), 49},
-    {static_cast<CrestElementParam::TYPE>(1), 50},
-    {static_cast<CrestElementParam::TYPE>(1), 51},
-    {static_cast<CrestElementParam::TYPE>(1), 52},
-    {static_cast<CrestElementParam::TYPE>(1), 53},
-    {static_cast<CrestElementParam::TYPE>(1), 59},
-    {static_cast<CrestElementParam::TYPE>(1), 60},
-    {static_cast<CrestElementParam::TYPE>(1), 61},
-    {static_cast<CrestElementParam::TYPE>(1), 62},
-    {static_cast<CrestElementParam::TYPE>(1), 63},
-    {static_cast<CrestElementParam::TYPE>(1), 64},
-    {static_cast<CrestElementParam::TYPE>(1), 65},
-    {static_cast<CrestElementParam::TYPE>(1), 66},
-    {static_cast<CrestElementParam::TYPE>(1), 67},
-    {static_cast<CrestElementParam::TYPE>(1), 68},
-    {static_cast<CrestElementParam::TYPE>(1), 69},
-    {static_cast<CrestElementParam::TYPE>(1), 70},
-    {static_cast<CrestElementParam::TYPE>(1), 71},
-    {static_cast<CrestElementParam::TYPE>(1), 72},
-    {static_cast<CrestElementParam::TYPE>(1), 73},
-    {static_cast<CrestElementParam::TYPE>(1), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(1), 74},
-    {static_cast<CrestElementParam::TYPE>(1), 75},
-    {static_cast<CrestElementParam::TYPE>(1), 76},
-    {static_cast<CrestElementParam::TYPE>(1), 77},
-    {static_cast<CrestElementParam::TYPE>(1), 78},
-    {static_cast<CrestElementParam::TYPE>(1), 79},
-    {static_cast<CrestElementParam::TYPE>(1), 80},
-    {static_cast<CrestElementParam::TYPE>(1), 81},
-    {static_cast<CrestElementParam::TYPE>(1), 82},
-    {static_cast<CrestElementParam::TYPE>(1), 83},
-    {static_cast<CrestElementParam::TYPE>(1), 84},
-    {static_cast<CrestElementParam::TYPE>(1), 85},
-    {static_cast<CrestElementParam::TYPE>(1), 86},
-    {static_cast<CrestElementParam::TYPE>(1), 87},
-    {static_cast<CrestElementParam::TYPE>(1), 88},
-    {static_cast<CrestElementParam::TYPE>(1), 89},
-    {static_cast<CrestElementParam::TYPE>(1), 90},
-    {static_cast<CrestElementParam::TYPE>(1), 91},
-    {static_cast<CrestElementParam::TYPE>(1), 92},
-    {static_cast<CrestElementParam::TYPE>(1), 93},
-    {static_cast<CrestElementParam::TYPE>(1), 94},
-    {static_cast<CrestElementParam::TYPE>(1), 95},
-    {static_cast<CrestElementParam::TYPE>(1), 96},
-    {static_cast<CrestElementParam::TYPE>(1), 97},
-    {static_cast<CrestElementParam::TYPE>(1), 98},
-    {static_cast<CrestElementParam::TYPE>(1), 99},
-    {static_cast<CrestElementParam::TYPE>(1), 100},
-    {static_cast<CrestElementParam::TYPE>(1), 101},
-    {static_cast<CrestElementParam::TYPE>(1), 102},
-    {static_cast<CrestElementParam::TYPE>(1), 103},
-    {static_cast<CrestElementParam::TYPE>(1), 30},
-    {static_cast<CrestElementParam::TYPE>(1), 31},
-    {static_cast<CrestElementParam::TYPE>(1), 32},
-    {static_cast<CrestElementParam::TYPE>(1), 33},
-    {static_cast<CrestElementParam::TYPE>(1), 34},
-    {static_cast<CrestElementParam::TYPE>(1), 35},
-    {static_cast<CrestElementParam::TYPE>(1), 36},
-    {static_cast<CrestElementParam::TYPE>(1), 37},
-    {static_cast<CrestElementParam::TYPE>(1), 38},
-    {static_cast<CrestElementParam::TYPE>(1), 39},
-    {static_cast<CrestElementParam::TYPE>(1), 40},
-    {static_cast<CrestElementParam::TYPE>(1), 41},
-    {static_cast<CrestElementParam::TYPE>(1), 42},
-    {static_cast<CrestElementParam::TYPE>(1), 43},
-    {static_cast<CrestElementParam::TYPE>(1), 44},
-    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(0), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(3), 4294967295},
-    {static_cast<CrestElementParam::TYPE>(1), 215},
-};
 
 static const nGUIExt::JobParam JobParams[10] = {
     {static_cast<nHuman::JOB_ENUM>(1), 1, 1, 1, 2},
@@ -404,9 +312,8 @@ __attribute__((weak)) bool cGUIUtility::getCrestElementParamMsg(rItemList::rItem
     return {};
 }
 
-__attribute__((weak)) bool cGUIUtility::isSalon(nGUIExt::CHARA_EDIT edit) {
-    DDON_STUB("cGUIUtility::isSalon")
-    return {};
+bool cGUIUtility::isSalon(nGUIExt::CHARA_EDIT edit) {
+    return static_cast<unsigned int>(edit - 3) <= 1;
 }
 
 __attribute__((weak)) s32 cGUIUtility::getOnBitIndex(u32 bit, u32 index) {
@@ -558,10 +465,6 @@ __attribute__((weak)) void cGUIUtility::setExecuteTree(cGUIInstance* p, bool b) 
     /* stub */
 }
 
-f32 cGUIUtility::getPosY(const cGUIObj2D* p) {
-    return p->mPosition.y;
-}
-
 __attribute__((weak)) void cGUIUtility::setCurrentFrameTree(cGUIObject* pObj, f32 frame, bool fix) {
     DDON_STUB("cGUIUtility::setCurrentFrameTree")
     /* stub */
@@ -580,16 +483,6 @@ void cGUIUtility::setCurrentFrameTree(cGUIInstAnimation* pInstAnim, f32 frame, b
             }
         }
     }
-}
-
-void cGUIUtility::setColor(cGUIObjPolygon* pObj, const MtColor& color) {
-    if (pObj == nullptr) {
-        return;
-    }
-    pObj->setColor(color, 0u);
-    pObj->setColor(color, 1u);
-    pObj->setColor(color, 2u);
-    pObj->setColor(color, 3u);
 }
 
 __attribute__((weak)) void cGUIUtility::addChildUnit(uGUIBase* pParent, uGUIBase* pChild) {
@@ -1128,8 +1021,22 @@ __attribute__((weak)) void cGUIUtility::joinKeyCustomText(nGUIExt::StringKeyName
 }
 
 __attribute__((weak)) void cGUIUtility::getPadText(nGUIExt::StringKeyName& outText, nKeyCustom::KB_CUSTOM keyCustom, cGUIUtility::ICON_TAG_OUT_TYPE outType, cGUIUtility::ICON_TAG_JOINT_TYPE jointType, u32 flags) {
-    DDON_STUB("cGUIUtility::getPadText")
-    /* stub */
+    nGUIExt::StringKeyName base_name;
+    nGUIExt::StringKeyName modifier_name;
+    const bool is_blank_on = (flags & ICON_TAG_FLAG_BLANK_OFF) == 0;
+    switch (outType) {
+        case ICON_TAG_OUT_TYPE_BASE:
+            getPadText(&base_name, nullptr, keyCustom, is_blank_on, false);
+            break;
+        case ICON_TAG_OUT_TYPE_MODIFIER:
+            getPadText(nullptr, &base_name, keyCustom, false, is_blank_on);
+            break;
+        case ICON_TAG_OUT_TYPE_ALL:
+        default:
+            getPadText(&base_name, &modifier_name, keyCustom, is_blank_on, false);
+            break;
+    }
+    joinKeyCustomText(outText, reinterpret_cast<const char*>(&base_name) + 4, reinterpret_cast<const char*>(&modifier_name) + 4, jointType, (flags & ICON_TAG_FLAG_INVERT) != 0);
 }
 
 __attribute__((weak)) void cGUIUtility::getKeyText(nGUIExt::StringKeyName& outText, nKeyCustom::KB_CUSTOM keyCustom, cGUIUtility::ICON_TAG_OUT_TYPE outType, cGUIUtility::ICON_TAG_JOINT_TYPE jointType, u32 flags) {
@@ -1365,9 +1272,13 @@ __attribute__((weak)) bool cGUIUtility::GetJobItemEquipInfo(cGUIUtility::stJobIt
     return {};
 }
 
-__attribute__((weak)) bool cGUIUtility::IsItemEnableSeal(const rItemList::rItemParam* itemParam) {
-    DDON_STUB("cGUIUtility::IsItemEnableSeal")
-    return {};
+bool cGUIUtility::IsItemEnableSeal(const rItemList::rItemParam* itemParam) {
+    if (itemParam != nullptr) {
+        if (itemParam->mCategory == 1) {
+            return static_cast<unsigned int>(itemParam->getUseType() - 1) <= 1;
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) MT_CTSTR cGUIUtility::GetPawnFeedbackComment(uGUIBase* pGUI, u8 feedbackType, u8 starNum, u8 commentNo) {

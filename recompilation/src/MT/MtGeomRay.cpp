@@ -25,10 +25,6 @@ void* MtGeomRay::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(MtGeomRay::DTI)->memAlloc(sz, align, MtGeomRay::DTI.mID);
 }
 
-inline void MtGeomRay::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomRay::DTI)->memFree(p_addr);
-}
-
 void MtGeomRay::load(MtDataReader& fin) {
     mRay.from.x = fin.readF32();
     mRay.dir.x = fin.readF32();
@@ -57,8 +53,14 @@ __attribute__((weak)) void MtGeomRay::createProperty(MtPropertyList& s) {
 }
 
 __attribute__((weak)) void MtGeomRay::copy(const MtGeometry& input) {
-    DDON_STUB("MtGeomRay::copy")
-    /* stub */
+    mRay.from.x = static_cast<const MtGeomRay&>(input).mRay.from.x;
+    mRay.from.y = static_cast<const MtGeomRay&>(input).mRay.from.y;
+    mRay.from.z = static_cast<const MtGeomRay&>(input).mRay.from.z;
+    mRay.from.pad_ = 0.0f;
+    mRay.dir.x = static_cast<const MtGeomRay&>(input).mRay.dir.x;
+    mRay.dir.y = static_cast<const MtGeomRay&>(input).mRay.dir.y;
+    mRay.dir.z = static_cast<const MtGeomRay&>(input).mRay.dir.z;
+    mRay.dir.pad_ = 0.0f;
 }
 
 bool MtGeomRay::isIntersect(const MtVector3& pos) const {
@@ -324,10 +326,6 @@ __attribute__((weak)) MtObject* MtGeomRay::MyDTI::newInstance() const {
 
 const MtDTI& MtGeomRayY::getDTI() const {
     return MtGeomRayY::DTI;
-}
-
-inline void MtGeomRayY::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(MtGeomRayY::DTI)->memFree(p_addr);
 }
 
 void MtGeomRayY::load(MtDataReader& fin) {

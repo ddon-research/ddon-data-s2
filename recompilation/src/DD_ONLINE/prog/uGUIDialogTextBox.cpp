@@ -27,10 +27,6 @@ const MtDTI& uGUIDialogTextBox::getDTI() const {
     return uGUIDialogTextBox::DTI;
 }
 
-inline MtAllocator* uGUIDialogTextBox::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIDialogTextBox::DTI);
-}
-
 void* uGUIDialogTextBox::operator new(size_t sz, u32 align) {
     return uGUIDialogTextBox::getAllocator()->memAlloc(sz, align, uGUIDialogTextBox::DTI.getID());
 }
@@ -80,9 +76,61 @@ void uGUIDialogTextBox::moveInput() {
     mpHL->execute();
 }
 
-__attribute__((weak)) void uGUIDialogTextBox::moveEvent() {
-    DDON_STUB("uGUIDialogTextBox::moveEvent")
-    /* stub */
+void uGUIDialogTextBox::moveEvent() {
+    if (getInputEvent() == 68) {
+        evDecide();
+        return;
+    }
+    if (getInputEvent() == 67) {
+        mIsCancel = true;
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDialogTextBox::updateExit);
+        return;
+    }
+    if (getInputEvent() != 66) {
+        return;
+    }
+    if (mRefrenceUIArray.mLength == 0) {
+        if (mpVL != nullptr) {
+            if (mpVL->mCurrentPos != 0) {
+                if (mpHL != nullptr) {
+                    if (mpHL->mCurrentPos != 0) {
+                        mBtnN.uGUIBase::cReferenceUIButton::setFocus(true);
+                    } else {
+                        mBtnY.uGUIBase::cReferenceUIButton::setFocus(true);
+                    }
+                } else {
+                    mBtnY.uGUIBase::cReferenceUIButton::setFocus(true);
+                }
+            } else {
+                mTextBox.uGUIBase::cReferenceUITextBox::setFocus(true);
+            }
+        } else {
+            mTextBox.uGUIBase::cReferenceUITextBox::setFocus(true);
+        }
+        return;
+    }
+    unsigned int i3 = 0;
+    do {
+        static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i3)])->setFocus(false);
+        i3 += 1u;
+    } while (i3 < mRefrenceUIArray.mLength);
+    if (mpVL != nullptr) {
+        if (mpVL->mCurrentPos != 0) {
+            if (mpHL != nullptr) {
+                if (mpHL->mCurrentPos != 0) {
+                    mBtnN.uGUIBase::cReferenceUIButton::setFocus(true);
+                } else {
+                    mBtnY.uGUIBase::cReferenceUIButton::setFocus(true);
+                }
+            } else {
+                mBtnY.uGUIBase::cReferenceUIButton::setFocus(true);
+            }
+        } else {
+            mTextBox.uGUIBase::cReferenceUITextBox::setFocus(true);
+        }
+    } else {
+        mTextBox.uGUIBase::cReferenceUITextBox::setFocus(true);
+    }
 }
 
 void uGUIDialogTextBox::updateInit() {

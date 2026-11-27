@@ -100,3 +100,15 @@ inline rCameraList* rCameraParamList::getCameraListResource() {
 inline MtAllocator* rCameraParamList::getAllocator() {
     return MtMemoryAllocator::getAllocator(rCameraParamList::DTI);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* rCameraParamList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rCameraParamList::DTI)->memAlloc(sz, align, ::rCameraParamList::DTI.::MtDTI::getID());
+}
+
+inline void rCameraParamList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rCameraParamList::DTI)->memFree(p_addr);
+}

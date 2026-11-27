@@ -18,6 +18,7 @@ class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
+class aStage;
 class cDraw;
 class cGUIFontFilter;
 class cGUIMessageAnalyzer;
@@ -63,6 +64,7 @@ using u32 = unsigned int;
 
 class sGUI : public cSystem
 {
+    friend class aStage;
     friend class cGUIMessageAnalyzer;
     friend class cGUIObjMessage;
     friend class cGUIObjPolygon;
@@ -358,4 +360,16 @@ inline void sGUI::requestBufferCompaction() {
 
 inline nDraw::VertexBuffer* sGUI::getVertexBuffer() const {
     return this->mpVertexBuffer[this->mBufferIndex];
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sGUI::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sGUI::DTI);
+}
+
+inline void sGUI::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sGUI::DTI)->memFree(p_addr);
 }

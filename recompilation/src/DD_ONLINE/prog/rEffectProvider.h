@@ -934,6 +934,8 @@ inline rEffectProvider::EffectEventParam::EffectEventParam() {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
 #include "../../XFramework/rEffect2D.h"
 #include "../../XFramework/sResource.h"
 
@@ -1354,4 +1356,85 @@ inline void* rEffectProvider::EffectElement::operator new(size_t sz, u32 align) 
 
 inline void* rEffectProvider::EffectParam::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(rEffectProvider::EffectParam::DTI)->memAlloc(sz, align, rEffectProvider::EffectParam::DTI.getID());
+}
+
+inline void* rEffectProvider::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::DTI)->memAlloc(sz, align, ::rEffectProvider::DTI.::MtDTI::getID());
+}
+
+inline void rEffectProvider::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::DTI)->memFree(p_addr);
+}
+
+inline rEffectProvider::rEffectProvider() {
+    this->::cResource::setAttribute(18u);
+}
+
+inline void* rEffectProvider::INFO_PROV::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_PROV::DTI)->memAlloc(sz, align, ::rEffectProvider::INFO_PROV::DTI.::MtDTI::getID());
+}
+
+inline void rEffectProvider::INFO_PROV::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_PROV::DTI)->memFree(p_addr);
+}
+
+inline void* rEffectProvider::INFO_EFFECT::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_EFFECT::DTI)->memAlloc(sz, align, ::rEffectProvider::INFO_EFFECT::DTI.::MtDTI::getID());
+}
+
+inline void rEffectProvider::INFO_EFFECT::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_EFFECT::DTI)->memFree(p_addr);
+}
+
+inline void* rEffectProvider::INFO_BASE::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_BASE::DTI)->memAlloc(sz, align, ::rEffectProvider::INFO_BASE::DTI.::MtDTI::getID());
+}
+
+inline void rEffectProvider::INFO_BASE::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::INFO_BASE::DTI)->memFree(p_addr);
+}
+
+inline void* rEffectProvider::EffectIndex::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectIndex::DTI)->memAlloc(sz, align, ::rEffectProvider::EffectIndex::DTI.::MtDTI::getID());
+}
+
+inline void rEffectProvider::EffectIndex::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectIndex::DTI)->memFree(p_addr);
+}
+
+inline void rEffectProvider::EffectIndex::clear() {
+    unsigned int i0 = 0;
+    if (this->mEffectElementNum != 0) {
+        do {
+            this->mpEffectElement[i0].~EffectElement();
+            i0 += 1u;
+        } while (i0 < this->mEffectElementNum);
+    }
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectIndex::DTI)->memFree(static_cast<void*>(this->mpEffectElement));
+    this->mpEffectElement = nullptr;
+    this->mEffectElementNum = 0;
+}
+
+inline void rEffectProvider::EffectElement::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectElement::DTI)->memFree(p_addr);
+}
+
+inline void rEffectProvider::EffectParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectParam::DTI)->memFree(p_addr);
+}
+
+inline void* rEffectProvider::EffectMotSyncParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectMotSyncParam::DTI)->memAlloc(sz, align, ::rEffectProvider::EffectMotSyncParam::DTI.::MtDTI::getID());
+}
+
+inline void rEffectProvider::EffectMotSyncParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectMotSyncParam::DTI)->memFree(p_addr);
+}
+
+inline void* rEffectProvider::EffectEventParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectEventParam::DTI)->memAlloc(sz, align, ::rEffectProvider::EffectEventParam::DTI.::MtDTI::getID());
+}
+
+inline void rEffectProvider::EffectEventParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEffectProvider::EffectEventParam::DTI)->memFree(p_addr);
 }

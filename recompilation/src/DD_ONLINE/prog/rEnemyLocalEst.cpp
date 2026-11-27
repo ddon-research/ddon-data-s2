@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEnemyLocalEst.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cEnemyLocalEstTable::getDTI() const {
     return cEnemyLocalEstTable::DTI;
-}
-
-inline void* cEnemyLocalEstTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEnemyLocalEstTable::DTI)->memAlloc(sz, align, cEnemyLocalEstTable::DTI.getID());
-}
-
-inline void cEnemyLocalEstTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEnemyLocalEstTable::DTI)->memFree(p_addr);
 }
 
 void cEnemyLocalEstTable::createProperty(MtPropertyList& s) {
@@ -48,14 +38,6 @@ MtObject* cEnemyLocalEstTable::MyDTI::newInstance() const {
 
 const MtDTI& rEnemyLocalEst::getDTI() const {
     return rEnemyLocalEst::DTI;
-}
-
-inline void* rEnemyLocalEst::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEnemyLocalEst::DTI)->memAlloc(sz, align, rEnemyLocalEst::DTI.getID());
-}
-
-inline void rEnemyLocalEst::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEnemyLocalEst::DTI)->memFree(p_addr);
 }
 
 bool rEnemyLocalEst::loadData(MtDataReader& in, cEnemyLocalEstTable* pData) {

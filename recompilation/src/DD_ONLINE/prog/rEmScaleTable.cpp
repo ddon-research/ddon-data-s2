@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rEmScaleTable.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -16,14 +14,6 @@
 
 const MtDTI& cEmScaleTable::getDTI() const {
     return cEmScaleTable::DTI;
-}
-
-inline void* cEmScaleTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cEmScaleTable::DTI)->memAlloc(sz, align, cEmScaleTable::DTI.getID());
-}
-
-inline void cEmScaleTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmScaleTable::DTI)->memFree(p_addr);
 }
 
 void cEmScaleTable::createProperty(MtPropertyList& s) {
@@ -42,14 +32,6 @@ MtObject* cEmScaleTable::MyDTI::newInstance() const {
 
 const MtDTI& rEmScaleTable::getDTI() const {
     return rEmScaleTable::DTI;
-}
-
-inline void* rEmScaleTable::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmScaleTable::DTI)->memAlloc(sz, align, rEmScaleTable::DTI.getID());
-}
-
-inline void rEmScaleTable::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmScaleTable::DTI)->memFree(p_addr);
 }
 
 bool rEmScaleTable::loadData(MtDataReader& in, cEmScaleTable* pData) {

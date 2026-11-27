@@ -20,14 +20,6 @@ const MtDTI& rSoundAttributeSe::getDTI() const {
     return rSoundAttributeSe::DTI;
 }
 
-inline void* rSoundAttributeSe::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundAttributeSe::DTI)->memAlloc(sz, align, rSoundAttributeSe::DTI.getID());
-}
-
-inline void rSoundAttributeSe::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundAttributeSe::DTI)->memFree(p_addr);
-}
-
 rSoundAttributeSe::~rSoundAttributeSe() {
     if (mpAttributeSeData == nullptr) {
         return;
@@ -136,20 +128,8 @@ const MtDTI& rSoundAttributeSe::cSoundAttributeSeData::getDTI() const {
     return rSoundAttributeSe::cSoundAttributeSeData::DTI;
 }
 
-inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSoundAttributeSe::cSoundAttributeSeData::DTI)->memAlloc(sz, align, rSoundAttributeSe::cSoundAttributeSeData::DTI.getID());
-}
-
 inline void* rSoundAttributeSe::cSoundAttributeSeData::operator new[](size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(cSoundAttributeSeData::DTI)->memAlloc(sz, align, cSoundAttributeSeData::DTI.getID());
-}
-
-inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
-}
-
-inline void rSoundAttributeSe::cSoundAttributeSeData::operator delete[](void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundAttributeSe::cSoundAttributeSeData::DTI)->memFree(p_addr);
 }
 
 inline rSoundAttributeSe::cSoundAttributeSeData::cSoundAttributeSeData() {

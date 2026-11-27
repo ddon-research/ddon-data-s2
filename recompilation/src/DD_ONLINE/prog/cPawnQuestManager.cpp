@@ -26,16 +26,8 @@ const MtDTI& cPawnQuestManager::getDTI() const {
     return cPawnQuestManager::DTI;
 }
 
-inline MtAllocator* cPawnQuestManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cPawnQuestManager::DTI);
-}
-
 void* cPawnQuestManager::operator new(size_t sz, u32 align) {
     return cPawnQuestManager::getAllocator()->memAlloc(sz, align, cPawnQuestManager::DTI.getID());
-}
-
-inline void cPawnQuestManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnQuestManager::DTI)->memFree(p_addr);
 }
 
 u32 cPawnQuestManager::getQuestManagerType() const {
@@ -152,14 +144,6 @@ MtObject* cPawnQuestManager::MyDTI::newInstance() const {
 
 const MtDTI& cPawnQuestManager::cPawnQuestInfo::getDTI() const {
     return cPawnQuestManager::cPawnQuestInfo::DTI;
-}
-
-inline void* cPawnQuestManager::cPawnQuestInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPawnQuestManager::cPawnQuestInfo::DTI)->memAlloc(sz, align, cPawnQuestManager::cPawnQuestInfo::DTI.getID());
-}
-
-inline void cPawnQuestManager::cPawnQuestInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPawnQuestManager::cPawnQuestInfo::DTI)->memFree(p_addr);
 }
 
 u32 cPawnQuestManager::cPawnQuestInfo::getItemId() const {

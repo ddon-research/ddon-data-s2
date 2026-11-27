@@ -28,10 +28,6 @@ const MtDTI& rSoundAreaInfo::getDTI() const {
     return rSoundAreaInfo::DTI;
 }
 
-inline void rSoundAreaInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSoundAreaInfo::DTI)->memFree(p_addr);
-}
-
 __attribute__((noinline)) rSoundAreaInfo::~rSoundAreaInfo() {
     clear();
 }
@@ -307,18 +303,6 @@ __attribute__((weak)) void rSoundAreaInfo::clear() {
     mpCycleBgmSTQRes.releasePtr();
 }
 
-rZone* rSoundAreaInfo::getSndZoneOcclusion() {
-    return mpSndZoneRes[0].mpPtr;
-}
-
-rZone* rSoundAreaInfo::getSndZoneGenerator() {
-    return mpSndZoneRes[1].mpPtr;
-}
-
-rZone* rSoundAreaInfo::getSndZoneTrigger() {
-    return mpSndZoneRes[2].mpPtr;
-}
-
 rSoundRequest* rSoundAreaInfo::getAttributeRes(u32 index) {
     if (index <= 31u) {
         return mpAttributeSTQRes[index].mpPtr;
@@ -330,14 +314,6 @@ rSoundRequest* rSoundAreaInfo::getAttributeRes(u32 index) {
 __attribute__((weak)) rSoundRequest* rSoundAreaInfo::getAttributeResToScrAttr(u32 scrAttr) {
     DDON_STUB("rSoundAreaInfo::getAttributeResToScrAttr")
     return nullptr;
-}
-
-rSoundRequest* rSoundAreaInfo::getSndAmbientRes() {
-    return mpAmbientRes.mpPtr;
-}
-
-rSoundStreamRequest* rSoundAreaInfo::getSndCycleBgmRes() {
-    return mpCycleBgmSTQRes.mpPtr;
 }
 
 inline rSoundAreaInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

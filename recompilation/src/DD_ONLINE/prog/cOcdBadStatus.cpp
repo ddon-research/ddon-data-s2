@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cOcdBadStatus.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
 #include "cHitInfoAfter.h"
@@ -18,14 +16,6 @@
 
 const MtDTI& cOcdHolyAbsorp::getDTI() const {
     return cOcdHolyAbsorp::DTI;
-}
-
-inline void* cOcdHolyAbsorp::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cOcdHolyAbsorp::DTI)->memAlloc(sz, align, cOcdHolyAbsorp::DTI.getID());
-}
-
-inline void cOcdHolyAbsorp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdHolyAbsorp::DTI)->memFree(p_addr);
 }
 
 void cOcdHolyAbsorp::init(bool initFlag) {

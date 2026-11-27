@@ -120,3 +120,19 @@ inline void cStatusGain::operator delete[](void* p_addr) {
 inline void* cStatusGain::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cStatusGain::DTI)->memAlloc(sz, align, ::cStatusGain::DTI.::MtDTI::getID());
 }
+
+inline void* cStatusGain::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStatusGain::DTI)->memAlloc(sz, align, ::cStatusGain::DTI.::MtDTI::getID());
+}
+
+inline void cStatusGain::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStatusGain::DTI)->memFree(p_addr);
+}
+
+inline void* rStatusGainTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStatusGainTable::DTI)->memAlloc(sz, align, ::rStatusGainTable::DTI.::MtDTI::getID());
+}
+
+inline void rStatusGainTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStatusGainTable::DTI)->memFree(p_addr);
+}

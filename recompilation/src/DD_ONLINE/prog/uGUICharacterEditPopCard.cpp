@@ -37,16 +37,8 @@ const MtDTI& uGUICharacterEditPopCard::getDTI() const {
     return uGUICharacterEditPopCard::DTI;
 }
 
-inline MtAllocator* uGUICharacterEditPopCard::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICharacterEditPopCard::DTI);
-}
-
 void* uGUICharacterEditPopCard::operator new(size_t sz, u32 align) {
     return uGUICharacterEditPopCard::getAllocator()->memAlloc(sz, align, uGUICharacterEditPopCard::DTI.getID());
-}
-
-inline void uGUICharacterEditPopCard::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICharacterEditPopCard::DTI)->memFree(p_addr);
 }
 
 uGUICharacterEditPopCard::uGUICharacterEditPopCard() : uGUIsMenuBase(0u, false) {
@@ -273,10 +265,6 @@ u32 uGUICharacterEditPopCard::evCtrlCancel(cControl::Message* msg) {
         setInputEvent(67u);
     }
     return 0;
-}
-
-inline void uGUICharacterEditPopCard::evInputDecideBottun() {
-    static_cast<sGUIExt*>(sGUI::mpInstance)->requestSE(0u, 4u);
 }
 
 u32 uGUICharacterEditPopCard::evCtrlMouseClick(cControl::Message* msg) {

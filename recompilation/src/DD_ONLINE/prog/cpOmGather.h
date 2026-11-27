@@ -254,3 +254,23 @@ inline void* cGatherItemList::operator new(size_t sz, void* p_addr) {
 inline void* cpOmGather::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* ItemGetInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::ItemGetInfo::DTI)->memAlloc(sz, align, ::ItemGetInfo::DTI.::MtDTI::getID());
+}
+
+inline void ItemGetInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::ItemGetInfo::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cGatherItemList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cGatherItemList::DTI);
+}
+
+inline MtAllocator* cpOmGather::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpOmGather::DTI);
+}

@@ -340,3 +340,47 @@ inline void uShlDamageSyncCtrl::callbackSyncAttack() {
 inline void uShlDamageSyncCtrl::setChildBreak(uShlDamageSyncBreak* pShl) {
     this->mpShlChildBreak = pShl;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cShlParamDamageSync::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamDamageSync::DTI)->memAlloc(sz, align, ::cShlParamDamageSync::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamDamageSyncBreak::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamDamageSyncBreak::DTI)->memAlloc(sz, align, ::cShlParamDamageSyncBreak::DTI.::MtDTI::getID());
+}
+
+inline void* cShlParamDamageSyncCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cShlParamDamageSyncCtrl::DTI)->memAlloc(sz, align, ::cShlParamDamageSyncCtrl::DTI.::MtDTI::getID());
+}
+
+inline void* uShlDamageSync::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlDamageSync::DTI)->memAlloc(sz, align, ::uShlDamageSync::DTI.::MtDTI::getID());
+}
+
+inline void uShlDamageSync::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlDamageSync::DTI)->memFree(p_addr);
+}
+
+inline void* uShlDamageSyncBreak::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlDamageSyncBreak::DTI)->memAlloc(sz, align, ::uShlDamageSyncBreak::DTI.::MtDTI::getID());
+}
+
+inline void uShlDamageSyncBreak::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlDamageSyncBreak::DTI)->memFree(p_addr);
+}
+
+inline void* uShlDamageSyncCtrl::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uShlDamageSyncCtrl::DTI)->memAlloc(sz, align, ::uShlDamageSyncCtrl::DTI.::MtDTI::getID());
+}
+
+inline void uShlDamageSyncCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uShlDamageSyncCtrl::DTI)->memFree(p_addr);
+}
+
+inline const cShlParamDamageSyncCtrl* uShlDamageSyncCtrl::getShlParam() const {
+    return static_cast<const cShlParamDamageSyncCtrl*>(this->::uShlBase::mpShlParam2);
+}

@@ -60,3 +60,15 @@ public:
 inline void* cUnitDieInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cUnitDieInfo::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cUnitDieInfo::DTI)->memAlloc(sz, align, ::cUnitDieInfo::DTI.::MtDTI::getID());
+}
+
+inline void cUnitDieInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cUnitDieInfo::DTI)->memFree(p_addr);
+}

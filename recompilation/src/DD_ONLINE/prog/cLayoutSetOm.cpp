@@ -5,7 +5,6 @@
 #include "../../MT/MtCollection.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
@@ -43,16 +42,8 @@ const MtDTI& cLayoutSetOm::getDTI() const {
     return cLayoutSetOm::DTI;
 }
 
-inline MtAllocator* cLayoutSetOm::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cLayoutSetOm::DTI);
-}
-
 void* cLayoutSetOm::operator new(size_t sz, u32 align) {
     return cLayoutSetOm::getAllocator()->memAlloc(sz, align, cLayoutSetOm::DTI.getID());
-}
-
-inline void cLayoutSetOm::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cLayoutSetOm::DTI)->memFree(p_addr);
 }
 
 cLayoutSetOm::cLayoutSetOm() {

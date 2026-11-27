@@ -496,3 +496,78 @@ inline void* uFullbodyIKHuman2::uCnsFBIKMatrix::operator new(size_t sz, void* p_
 inline u32 uFullbodyIKHuman2::uCnsFBIKMatrix::getJoint() {
     return this->mJoint;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uFullbodyIKHuman2::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uFullbodyIKHuman2::DTI)->memFree(p_addr);
+}
+
+inline void* uFullbodyIKHuman2::Node::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uFullbodyIKHuman2::Node::DTI)->memAlloc(sz, align, ::uFullbodyIKHuman2::Node::DTI.::MtDTI::mID);
+}
+
+inline void uFullbodyIKHuman2::Node::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uFullbodyIKHuman2::Node::DTI)->memFree(p_addr);
+}
+
+inline uFullbodyIKHuman2::Node::Node() {
+    this->mEffOffset.pad_ = 0.0f;
+    this->mAssigned = false;
+    this->mEff.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mEff.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mEff.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mEff.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mEff.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mEff.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mEff.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mEff.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mEff.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mEff.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mEff.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mEff.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mEff.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mEff.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mEff.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mEff.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mpModel = nullptr;
+    this->mFBIKJntNo = 255;
+    this->mWMat.m[0].x = ::MtMatrix::Identity.m[0].x;
+    this->mWMat.m[0].y = ::MtMatrix::Identity.m[0].y;
+    this->mWMat.m[0].z = ::MtMatrix::Identity.m[0].z;
+    this->mWMat.m[0].w = ::MtMatrix::Identity.m[0].w;
+    this->mWMat.m[1].x = ::MtMatrix::Identity.m[1].x;
+    this->mWMat.m[1].y = ::MtMatrix::Identity.m[1].y;
+    this->mWMat.m[1].z = ::MtMatrix::Identity.m[1].z;
+    this->mWMat.m[1].w = ::MtMatrix::Identity.m[1].w;
+    this->mWMat.m[2].x = ::MtMatrix::Identity.m[2].x;
+    this->mWMat.m[2].y = ::MtMatrix::Identity.m[2].y;
+    this->mWMat.m[2].z = ::MtMatrix::Identity.m[2].z;
+    this->mWMat.m[2].w = ::MtMatrix::Identity.m[2].w;
+    this->mWMat.m[3].x = ::MtMatrix::Identity.m[3].x;
+    this->mWMat.m[3].y = ::MtMatrix::Identity.m[3].y;
+    this->mWMat.m[3].z = ::MtMatrix::Identity.m[3].z;
+    this->mWMat.m[3].w = ::MtMatrix::Identity.m[3].w;
+    this->mJntNo = 255;
+    this->mBlend = 1.0f;
+    this->mActive = false;
+    this->mEffOffset.x = ::MtVector3::Zero.x;
+    this->mEffOffset.y = ::MtVector3::Zero.y;
+    this->mEffOffset.z = ::MtVector3::Zero.z;
+    this->mEffOffset.pad_ = 0.0f;
+    this->mRotate = false;
+    this->mpEffTgtModel = nullptr;
+    this->mEffTgtJntNo = 255;
+    this->mEffTgtAlign = false;
+    this->mResist = 0.0f;
+}
+
+inline void uFullbodyIKHuman2::uCnsUpVectorCalc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uFullbodyIKHuman2::uCnsUpVectorCalc::DTI)->memFree(p_addr);
+}
+
+inline void uFullbodyIKHuman2::uCnsFBIKMatrix::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uFullbodyIKHuman2::uCnsFBIKMatrix::DTI)->memFree(p_addr);
+}

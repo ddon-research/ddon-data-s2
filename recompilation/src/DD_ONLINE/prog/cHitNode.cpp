@@ -40,21 +40,40 @@ const MtDTI& cHitNode::getDTI() const {
     return cHitNode::DTI;
 }
 
-inline MtAllocator* cHitNode::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cHitNode::DTI);
-}
-
 void* cHitNode::operator new(size_t sz, u32 align) {
     return cHitNode::getAllocator()->memAlloc(sz, align, cHitNode::DTI.getID());
 }
 
-inline void cHitNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cHitNode::DTI)->memFree(p_addr);
-}
-
 cHitNode::cHitNode() {
-    DDON_STUB("cHitNode::cHitNode")
-    /* stub */
+    mpCollNode = nullptr;
+    mpCollIndex = nullptr;
+    mpAttackParamRes = nullptr;
+    mpCollNodeRes = nullptr;
+    mpNode = nullptr;
+    mpObjCollision = nullptr;
+    mpAttackParam = new (16u) cAttackParam;
+    mpOrgAttackParam = nullptr;
+    mSeqNo = -1;
+    mKillReq = false;
+    mMotionSync = false;
+    mIsActive = true;
+    mUID = 0;
+    mWmat.m[0].x = MtMatrix::Identity.m[0].x;
+    mWmat.m[0].y = MtMatrix::Identity.m[0].y;
+    mWmat.m[0].z = MtMatrix::Identity.m[0].z;
+    mWmat.m[0].w = MtMatrix::Identity.m[0].w;
+    mWmat.m[1].x = MtMatrix::Identity.m[1].x;
+    mWmat.m[1].y = MtMatrix::Identity.m[1].y;
+    mWmat.m[1].z = MtMatrix::Identity.m[1].z;
+    mWmat.m[1].w = MtMatrix::Identity.m[1].w;
+    mWmat.m[2].x = MtMatrix::Identity.m[2].x;
+    mWmat.m[2].y = MtMatrix::Identity.m[2].y;
+    mWmat.m[2].z = MtMatrix::Identity.m[2].z;
+    mWmat.m[2].w = MtMatrix::Identity.m[2].w;
+    mWmat.m[3].x = MtMatrix::Identity.m[3].x;
+    mWmat.m[3].y = MtMatrix::Identity.m[3].y;
+    mWmat.m[3].z = MtMatrix::Identity.m[3].z;
+    mWmat.m[3].w = MtMatrix::Identity.m[3].w;
 }
 
 __attribute__((noinline)) cHitNode::~cHitNode() {
@@ -230,8 +249,7 @@ inline cHitNode::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 i
 
 cHitNode::MyDTI cHitNode::DTI("cHitNode", &::MtObject::DTI, 192ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cHitNode::MyDTI::newInstance() const {
-    DDON_STUB("cHitNode::MyDTI::newInstance")
-    return nullptr;
+MtObject* cHitNode::MyDTI::newInstance() const {
+    return new (16u) cHitNode;
 }
 

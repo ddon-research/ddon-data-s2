@@ -6,10 +6,12 @@
 // Dependencies
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtObject.h"
+#include "nDDOUtility.h"
 
 // Forward declarations
 class MtAllocator;
 class MtDTI;
+class MtObject;
 class MtProperty;
 class MtPropertyList;
 class MtUI;
@@ -17,14 +19,23 @@ class uDDOModel;
 
 // Declarations
 class cState;
+class cStateAction;
 class cStateInfo;
+class cStateLive;
+class cStateLiveAlive;
+class cStateLiveInjured;
+class cStateLiveLost;
+class cStateLiveLostEnd;
+class cStateLiveReturnTerritory;
 
 // Type aliases from DWARF
 using MT_CHAR = char;
 using MT_CTSTR = const MT_CHAR*;
 using _Sizet = long unsigned int;
+using f32 = float;
 using s32 = int;
 using size_t = _Sizet;
+using u16 = unsigned short;
 using u32 = unsigned int;
 
 class cState : public MtObject
@@ -213,6 +224,43 @@ public:
     static MyDTI DTI;
 };
 
+class cStateAction : public cState
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cStateAction();
+    virtual ~cStateAction() {}
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+public:
+    u32 mDefaultEndAction;  // offset: 0x18
+    u32 mDefaultLandAction;  // offset: 0x1c
+    u32 mDefaultFallAction;  // offset: 0x20
+    u32 mDefaultBlowAction;  // offset: 0x24
+    u32 mDefaultShrinkAction;  // offset: 0x28
+    static MyDTI DTI;
+};
+
 class cStateInfo : public MtObject
 {
 public:
@@ -250,6 +298,229 @@ public:
     static MyDTI DTI;
 };
 
+class cStateLive : public cState
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cStateLive();
+    virtual ~cStateLive() {}
+public:
+    static MyDTI DTI;
+};
+
+class cStateLiveAlive : public cStateLive
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cStateLiveAlive();
+    virtual ~cStateLiveAlive() {}
+public:
+    static MyDTI DTI;
+};
+
+class cStateLiveInjured : public cStateLive
+{
+public:
+    class MyDTI;
+public:
+    using u32Array = nDDOUtility::cArray<unsigned int, 8>;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cStateLiveInjured();
+    virtual ~cStateLiveInjured() {}
+    virtual void init();  // vtable slot 6
+    virtual void move();  // vtable slot 7
+    virtual void final();  // vtable slot 8
+    void addInjurePlayer(u32 newId);
+private:
+    f32 checkIsInjured();
+    void checkAbility();
+public:
+    f32 getNowResPawnTime();
+    f32 getNeedResPawnTime();
+    f32 getMaxResPawnTime();
+private:
+    f32 mNeedRespawnTimer;  // offset: 0x18
+    f32 mMaxRespawnTimer;  // offset: 0x1c
+    f32 mTimerRate;  // offset: 0x20
+    u32Array mUniqueId;  // offset: 0x24
+    bool mIsRescuing;  // offset: 0x44
+    bool mActionSwitch;  // offset: 0x45
+    u32 mRno;  // offset: 0x48
+public:
+    static MyDTI DTI;
+private:
+    static const u16 MAX_PLAYER = 8;
+    static const u16 MAX_GAGE = 1000;
+};
+
+class cStateLiveLost : public cStateLive
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cStateLiveLost();
+    virtual ~cStateLiveLost() {}
+    virtual void init();  // vtable slot 6
+    virtual void move();  // vtable slot 7
+    virtual void final();  // vtable slot 8
+public:
+    f32 mTimer;  // offset: 0x18
+    static MyDTI DTI;
+};
+
+class cStateLiveLostEnd : public cStateLive
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cStateLiveLostEnd();
+    virtual ~cStateLiveLostEnd() {}
+    virtual void init();  // vtable slot 6
+    virtual void move();  // vtable slot 7
+    virtual void final();  // vtable slot 8
+public:
+    static MyDTI DTI;
+};
+
+class cStateLiveReturnTerritory : public cStateLive
+{
+public:
+    class MyDTI;
+public:
+    class MyDTI : public MtDTI
+    {
+    public:
+        MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr);
+        virtual MtObject* newInstance() const;  // vtable slot 2
+    };
+public:
+    static MtDTI* getMyDTIPtr();
+    static void usage();
+    virtual const MtDTI& getDTI() const;  // vtable slot 5
+    static MtAllocator* getAllocator();
+    static void setAllocator(u32);
+    static void* operator new(size_t sz, u32 align);
+    static void* operator new[](size_t sz, u32 align);
+    static void* operator new(size_t sz, void* p_addr);
+    static void* operator new[](size_t sz, void* p_addr);
+    static void operator delete(void* p_addr);
+    static void operator delete[](void* p_addr);
+    static void operator delete(void* p_addr, u32 align);
+    static void operator delete[](void* p_addr, u32 align);
+    cStateLiveReturnTerritory();
+    virtual ~cStateLiveReturnTerritory() {}
+    virtual void init();  // vtable slot 6
+    virtual void move();  // vtable slot 7
+    virtual void final();  // vtable slot 8
+    virtual void createProperty(MtPropertyList& s);  // vtable slot 4
+private:
+    u32 mStateRno;  // offset: 0x18
+public:
+    static MyDTI DTI;
+};
+
 inline void* cState::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
@@ -258,6 +529,122 @@ inline s32 cState::getStateNo() {
     return this->mStateNo;
 }
 
+inline void* cStateAction::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
 inline void* cStateInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cStateInfo::cStateInfo() {
+    this->State = 0;
+    this->pDTI = nullptr;
+}
+
+inline void* cStateLive::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cStateLive::cStateLive() {
+}
+
+inline void* cStateLiveAlive::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cStateLiveAlive::cStateLiveAlive() {
+}
+
+inline void* cStateLiveInjured::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cStateLiveInjured::cStateLiveInjured() {
+}
+
+inline void* cStateLiveLost::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cStateLiveLost::cStateLiveLost() {
+}
+
+inline void* cStateLiveLostEnd::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cStateLiveLostEnd::cStateLiveLostEnd() {
+}
+
+inline void* cStateLiveReturnTerritory::operator new(size_t sz, void* p_addr) {
+    return p_addr;
+}
+
+inline cStateLiveReturnTerritory::cStateLiveReturnTerritory() {
+    this->mStateRno = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cState::DTI)->memFree(p_addr);
+}
+
+inline void* cStateAction::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStateAction::DTI)->memAlloc(sz, align, ::cStateAction::DTI.::MtDTI::getID());
+}
+
+inline void cStateAction::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStateAction::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cStateInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cStateInfo::DTI);
+}
+
+inline void cStateInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStateInfo::DTI)->memFree(p_addr);
+}
+
+inline void* cStateLiveAlive::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStateLiveAlive::DTI)->memAlloc(sz, align, ::cStateLiveAlive::DTI.::MtDTI::getID());
+}
+
+inline void cStateLiveAlive::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStateLiveAlive::DTI)->memFree(p_addr);
+}
+
+inline void* cStateLiveInjured::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStateLiveInjured::DTI)->memAlloc(sz, align, ::cStateLiveInjured::DTI.::MtDTI::getID());
+}
+
+inline void cStateLiveInjured::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStateLiveInjured::DTI)->memFree(p_addr);
+}
+
+inline void* cStateLiveLost::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStateLiveLost::DTI)->memAlloc(sz, align, ::cStateLiveLost::DTI.::MtDTI::getID());
+}
+
+inline void cStateLiveLost::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStateLiveLost::DTI)->memFree(p_addr);
+}
+
+inline void* cStateLiveLostEnd::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStateLiveLostEnd::DTI)->memAlloc(sz, align, ::cStateLiveLostEnd::DTI.::MtDTI::getID());
+}
+
+inline void cStateLiveLostEnd::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStateLiveLostEnd::DTI)->memFree(p_addr);
+}
+
+inline void* cStateLiveReturnTerritory::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStateLiveReturnTerritory::DTI)->memAlloc(sz, align, ::cStateLiveReturnTerritory::DTI.::MtDTI::getID());
+}
+
+inline void cStateLiveReturnTerritory::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStateLiveReturnTerritory::DTI)->memFree(p_addr);
 }

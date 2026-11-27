@@ -97,3 +97,15 @@ inline bool cpSafePos::isNowSafePos() {
 inline void cpSafePos::countUpSafePosWarpLoop() {
     this->mInfiLoopCheckCount = this->mInfiLoopCheckCount + 1u;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cpSafePos::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cpSafePos::DTI);
+}
+
+inline void cpSafePos::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cpSafePos::DTI)->memFree(p_addr);
+}

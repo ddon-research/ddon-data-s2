@@ -33,6 +33,7 @@
 #include "nDDOUtility.h"
 #include "nObjCollision.h"
 #include "nObjCondition.h"
+#include "rAttackParam.h"
 #include "rOcdElectricParam.h"
 #include "rOcdIrAdj.h"
 #include "rOcdParam.h"
@@ -57,16 +58,8 @@ const MtDTI& cpOcdCtrl::getDTI() const {
     return cpOcdCtrl::DTI;
 }
 
-inline MtAllocator* cpOcdCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpOcdCtrl::DTI);
-}
-
 void* cpOcdCtrl::operator new(size_t sz, u32 align) {
     return cpOcdCtrl::getAllocator()->memAlloc(sz, align, cpOcdCtrl::DTI.getID());
-}
-
-inline void cpOcdCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpOcdCtrl::DTI)->memFree(p_addr);
 }
 
 cpOcdCtrl::cpOcdCtrl() {
@@ -169,9 +162,72 @@ void cpOcdCtrl::callbackDamageAfter_calc(cHitInfoAfter* pHitInfo) {
     calcOcdDamage(pHitInfo);
 }
 
-__attribute__((weak)) void cpOcdCtrl::callbackDamageAfter_apply(cHitInfoAfter* pHitInfo) {
-    DDON_STUB("cpOcdCtrl::callbackDamageAfter_apply")
-    /* stub */
+void cpOcdCtrl::callbackDamageAfter_apply(cHitInfoAfter* pHitInfo) {
+    if (!isInvalid()) {
+        if (pHitInfo != nullptr) {
+            if (pHitInfo->isCalcOcd()) {
+                if (!pHitInfo->checkAttackParamFlag(0x40000000ul)) {
+                    if (mOcdList[1].mLength != 0) {
+                        for (unsigned int i0_3 = 0;;) {
+                            if (mOcdList[1].getBuffer()[static_cast<int>(i0_3)] != nullptr) {
+                                if (static_cast<cOcdInfo*>(mOcdList[1].getBuffer()[static_cast<int>(i0_3)])->mpObjCondition != nullptr) {
+                                    if (pHitInfo->mOcdDamageInfo.getOcdDataFromIndex(i0_3) != nullptr) {
+                                        static_cast<cOcdInfo*>(mOcdList[1].getBuffer()[static_cast<int>(i0_3)])->mpObjCondition->callbackDamage(pHitInfo);
+                                    }
+                                }
+                            }
+                            if ((i0_3 + 1u) < mOcdList[1].mLength) {
+                                i0_3 += 1u;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+                const cAttackParam* pAttackParam = pHitInfo->mCommonInfo.mpAttackParam;
+                if (pAttackParam != nullptr) {
+                    if (pAttackParam->mAttackID == 60) {
+                        reqOcdApply(16385u, nObjCondition::OCD_REASON_HIT, 60.0f, 0u, nObjCollision::INV_THROUGH_TYPE_NONE);
+                        return;
+                    } else {
+                        if (pAttackParam->mAttackID == 14) {
+                            if (!mIsInvalid) {
+                                u32 v3_12 = pAttackParam->mGoodStatusFlag;
+                                for (unsigned int i3_3 = 1; i3_3 != 28; i3_3 += 1u) {
+                                    if (((static_cast<unsigned long>(v3_12) >> static_cast<unsigned long>((i3_3 - 1u) & 31u)) & 1ul) != 0) {
+                                        reqOcdCure(i3_3);
+                                    }
+                                }
+                                u64 v6_11 = pAttackParam->mBadStatusFlag2;
+                                for (unsigned int i6_3 = 0; i6_3 != 31; i6_3 = i6_3 + 1u) {
+                                    if (((static_cast<unsigned long>(v6_11) >> static_cast<unsigned long>(i6_3 & 63u)) & 1ul) != 0) {
+                                        reqOcdCure(i6_3 + 4097u);
+                                    }
+                                }
+                            }
+                        } else {
+                            if (pAttackParam->mAttackID == 13) {
+                                if (!mIsInvalid) {
+                                    u32 v9_12 = pAttackParam->mGoodStatusFlag;
+                                    for (unsigned int i9_3 = 1; i9_3 != 28; i9_3 += 1u) {
+                                        if (((static_cast<unsigned long>(v9_12) >> static_cast<unsigned long>((i9_3 - 1u) & 31u)) & 1ul) != 0) {
+                                            reqOcdApply(i9_3, nObjCondition::OCD_REASON_HIT, 60.0f, 0u, nObjCollision::INV_THROUGH_TYPE_NONE);
+                                        }
+                                    }
+                                    u64 v12_11 = pAttackParam->mBadStatusFlag2;
+                                    for (unsigned int i12_3 = 0; i12_3 != 31; i12_3 = i12_3 + 1u) {
+                                        if (((static_cast<unsigned long>(v12_11) >> static_cast<unsigned long>(i12_3 & 63u)) & 1ul) != 0) {
+                                            reqOcdApply(i12_3 + 4097u, nObjCondition::OCD_REASON_HIT, 60.0f, 0u, nObjCollision::INV_THROUGH_TYPE_NONE);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpOcdCtrl::addOcdDamage(u32 OcdUID, f32 damage, nObjCondition::OCD_REASON reason, f32 cacheTime) {
@@ -347,50 +403,173 @@ __attribute__((weak)) void cpOcdCtrl::applyReqResult(cOcdInfo* pOcdInfo, bool is
     /* stub */
 }
 
-inline void cpOcdCtrl::callFinal(cOcdInfo* pOcdInfo) {
-    if (mIsInvalid) {
-        return;
-    }
-    if (pOcdInfo->mpObjCondition == nullptr) {
-        return;
-    }
-    pOcdInfo->setOcdMode(nObjCondition::OCD_MODE_NONE);
-    pOcdInfo->mpObjCondition->final();
-    mMainActionNo = 0xFFFFFFFF;
-    mMainActPriority = nAction::PRIO_DMG_LOWEST;
-    mReactionStartTiming = 1;
-    mTimerStartTiming = 0;
-}
-
-inline void cpOcdCtrl::reqOcdActionEnd(cOcdInfo* pOcdInfo) {
-    if (mpModel == nullptr) {
-        return;
-    }
-    if (mpModel->mGuardComponent.mpActMgr == nullptr) {
-        return;
-    }
-    if (mpModel->mGuardComponent.mpActionRequest == nullptr) {
-        return;
-    }
-    if (mpModel->isDead()) {
-        return;
-    }
-    if (mpModel->mGuardComponent.mpStateLive != nullptr) {
-        if ((cContextInterface::getStateLive(mpModel->mContextInterface.mpContextInstance, mpModel->mContextInterface.mpContextCharacter) | 4u) == 516) {
-            if (pOcdInfo->mOcdActParam.mEndActionNo != 0xFFFFFFFFu) {
-                mpModel->callbackReqOcdEndAction(pOcdInfo->mOcdActParam.mEndActionNo, pOcdInfo->mOcdActParam.mEndActPriority);
+void cpOcdCtrl::checkOcdRequest(bool isCallFunction) {
+    unsigned int i0_8 = 0;
+    u32 v1_0;
+    unsigned int i1_7;
+    u32 v2_0;
+    for (;;) {
+        if (mOcdList[i0_8].mLength != 0) {
+            v1_0 = mOcdList[i0_8].mLength;
+            i1_7 = 0;
+            for (;;) {
+                if (mOcdList[i0_8].getBuffer()[static_cast<int>(i1_7)] == nullptr) {
+                    v2_0 = v1_0;
+                } else {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[i0_8].getBuffer()[static_cast<int>(i1_7)]) + 8)) == 0) {
+                        v2_0 = v1_0;
+                    } else {
+                        checkReqestOcdMode(static_cast<cOcdInfo*>(mOcdList[i0_8].getBuffer()[static_cast<int>(i1_7)]));
+                        v2_0 = mOcdList[i0_8].mLength;
+                    }
+                }
+                if ((i1_7 + 1u) < v2_0) {
+                    v1_0 = v2_0;
+                    i1_7 += 1u;
+                } else {
+                    break;
+                }
             }
         }
-    } else {
-        if (pOcdInfo->mOcdActParam.mEndActionNo != 0xFFFFFFFFu) {
-            mpModel->callbackReqOcdEndAction(pOcdInfo->mOcdActParam.mEndActionNo, pOcdInfo->mOcdActParam.mEndActPriority);
+        if ((i0_8 + 1u) != 7) {
+            i0_8 = i0_8 + 1u;
+        } else {
+            break;
         }
     }
-}
-
-__attribute__((weak)) void cpOcdCtrl::checkOcdRequest(bool isCallFunction) {
-    DDON_STUB("cpOcdCtrl::checkOcdRequest")
-    /* stub */
+    unsigned int i5_8 = 0;
+    u32 v6_0;
+    unsigned int i6_3;
+    u32 v7_0;
+    for (;;) {
+        if (mOcdList[i5_8].mLength != 0) {
+            v6_0 = mOcdList[i5_8].mLength;
+            i6_3 = 0;
+            for (;;) {
+                if (mOcdList[i5_8].getBuffer()[static_cast<int>(i6_3)] == nullptr) {
+                    v7_0 = v6_0;
+                } else {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[i5_8].getBuffer()[static_cast<int>(i6_3)]) + 8)) == 0) {
+                        v7_0 = v6_0;
+                    } else {
+                        checkAnnihilation(static_cast<cOcdInfo*>(mOcdList[i5_8].getBuffer()[static_cast<int>(i6_3)]));
+                        v7_0 = mOcdList[i5_8].mLength;
+                    }
+                }
+                if ((i6_3 + 1u) < v7_0) {
+                    v6_0 = v7_0;
+                    i6_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if ((i5_8 + 1u) != 7) {
+            i5_8 = i5_8 + 1u;
+        } else {
+            break;
+        }
+    }
+    unsigned int i15_10;
+    if (mIsInvalid) {
+        i15_10 = 0;
+    } else {
+        unsigned int i10_0 = 0;
+        u32 v11_0;
+        unsigned int i11_7;
+        u32 v12_0;
+        for (;;) {
+            if (mOcdList[i10_0].mLength != 0) {
+                v11_0 = mOcdList[i10_0].mLength;
+                i11_7 = 0;
+                for (;;) {
+                    if (mOcdList[i10_0].getBuffer()[static_cast<int>(i11_7)] == nullptr) {
+                        v12_0 = v11_0;
+                    } else {
+                        static_cast<cOcdInfo*>(mOcdList[i10_0].getBuffer()[static_cast<int>(i11_7)])->turnOffChengeRequest();
+                        v12_0 = mOcdList[i10_0].mLength;
+                    }
+                    if ((i11_7 + 1u) < v12_0) {
+                        v11_0 = v12_0;
+                        i11_7 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if ((i10_0 + 1u) != 7) {
+                i10_0 = i10_0 + 1u;
+            } else {
+                break;
+            }
+        }
+        i15_10 = 0;
+    }
+    u32 v16_0;
+    unsigned int i16_3;
+    u32 v17_0;
+    for (;;) {
+        if (mOcdList[i15_10].mLength != 0) {
+            v16_0 = mOcdList[i15_10].mLength;
+            i16_3 = 0;
+            for (;;) {
+                if (mOcdList[i15_10].getBuffer()[static_cast<int>(i16_3)] == nullptr) {
+                    v17_0 = v16_0;
+                } else {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[i15_10].getBuffer()[static_cast<int>(i16_3)]) + 8)) == 0) {
+                        v17_0 = v16_0;
+                    } else {
+                        checkTimerEndNextOcd(static_cast<cOcdInfo*>(mOcdList[i15_10].getBuffer()[static_cast<int>(i16_3)]));
+                        v17_0 = mOcdList[i15_10].mLength;
+                    }
+                }
+                if ((i16_3 + 1u) < v17_0) {
+                    v16_0 = v17_0;
+                    i16_3 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if ((i15_10 + 1u) != 7) {
+            i15_10 = i15_10 + 1u;
+        } else {
+            break;
+        }
+    }
+    unsigned int i20_8 = 0;
+    u32 v21_0;
+    unsigned int i21_7;
+    u32 v22_0;
+    for (;;) {
+        if (mOcdList[i20_8].mLength != 0) {
+            v21_0 = mOcdList[i20_8].mLength;
+            i21_7 = 0;
+            for (;;) {
+                if (mOcdList[i20_8].getBuffer()[static_cast<int>(i21_7)] == nullptr) {
+                    v22_0 = v21_0;
+                } else {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[i20_8].getBuffer()[static_cast<int>(i21_7)]) + 8)) == 0) {
+                        v22_0 = v21_0;
+                    } else {
+                        applyReqResult(static_cast<cOcdInfo*>(mOcdList[i20_8].getBuffer()[static_cast<int>(i21_7)]), isCallFunction);
+                        v22_0 = mOcdList[i20_8].mLength;
+                    }
+                }
+                if ((i21_7 + 1u) < v22_0) {
+                    v21_0 = v22_0;
+                    i21_7 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        if ((i20_8 + 1u) != 7) {
+            i20_8 = i20_8 + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
 __attribute__((weak)) void cpOcdCtrl::reqOcdApply(u32 OcdUID, nObjCondition::OCD_REASON reason, f32 cacheTime, u32 option, nObjCollision::UNIT_INV_THROUGH_TYPE invThroughType) {
@@ -408,8 +587,35 @@ __attribute__((weak)) void cpOcdCtrl::reqOcdApplyCustom(u32 OcdUID, const cOcdCu
 }
 
 __attribute__((weak)) void cpOcdCtrl::reqOcdCure(u32 OcdUID) {
-    DDON_STUB("cpOcdCtrl::reqOcdCure")
-    /* stub */
+    if (mIsInvalid) {
+        return;
+    }
+    if (mpModel == nullptr) {
+        return;
+    }
+    if (mpModel->isEnable()) {
+        if (mpModel->isMaster()) {
+            if (((OcdUID >> 12) & 15u) <= 6u) {
+                if (mOcdList[(OcdUID >> 12) & 15u].mLength != 0) {
+                    if (((OcdUID & 0xFFFF0FFFu) - 1u) < mOcdList[(OcdUID >> 12) & 15u].mLength) {
+                        if (mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)] != nullptr) {
+                            if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)]) + 8)) != 0) {
+                                if (!mIsInvalid) {
+                                    if (mOcdList[(OcdUID >> 12) & 15u].getBuffer()[(OcdUID & 0xFFFF0FFFu) - 1u] != nullptr) {
+                                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[(OcdUID >> 12) & 15u].getBuffer()[(OcdUID & 0xFFFF0FFFu) - 1u]) + 8)) != 0) {
+                                            if (static_cast<cOcdInfo*>(mOcdList[(OcdUID >> 12) & 15u].getBuffer()[(OcdUID & 0xFFFF0FFFu) - 1u])->isActive()) {
+                                                static_cast<cOcdInfo*>(mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)])->reqChangeOcdMode(nObjCondition::OCD_REQ_END, nObjCollision::INV_THROUGH_TYPE_NONE);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void cpOcdCtrl::reqOcdCureForce(u32 OcdUID) {
@@ -448,9 +654,21 @@ __attribute__((weak)) bool cpOcdCtrl::isOcdApplyAble(u32 OcdUID) {
     return {};
 }
 
-__attribute__((weak)) bool cpOcdCtrl::isOcdAlreadyRequest(u32 OcdUID) {
-    DDON_STUB("cpOcdCtrl::isOcdAlreadyRequest")
-    return {};
+bool cpOcdCtrl::isOcdAlreadyRequest(u32 OcdUID) {
+    if (!mIsInvalid) {
+        if (((OcdUID >> 12) & 15u) <= 6u) {
+            if (mOcdList[(OcdUID >> 12) & 15u].mLength != 0) {
+                if (((OcdUID & 0xFFFF0FFFu) - 1u) < mOcdList[(OcdUID >> 12) & 15u].mLength) {
+                    if (mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)] != nullptr) {
+                        if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)]) + 8)) != 0) {
+                            return static_cast<cOcdInfo*>(mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)])->getOcdModeReq() == nObjCondition::OCD_REQ_INIT;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void cpOcdCtrl::resetActiveTimer(u32 OcdUID) {
@@ -477,19 +695,62 @@ void cpOcdCtrl::addOcdSystemFlag(u32 flag) {
     mOcdSystemFlag = flag | mOcdSystemFlag;
 }
 
-__attribute__((weak)) bool cpOcdCtrl::isOcdSystemFlagActive(nObjCondition::OCD_SYSTEM_FLAG flag) const {
-    DDON_STUB("cpOcdCtrl::isOcdSystemFlagActive")
-    return {};
+bool cpOcdCtrl::isOcdSystemFlagActive(nObjCondition::OCD_SYSTEM_FLAG flag) const {
+    if (mIsInvalid) {
+        return false;
+    }
+    return (mOcdSystemFlag & flag) != 0;
 }
 
-__attribute__((weak)) void cpOcdCtrl::cancelOcdReqest() {
-    DDON_STUB("cpOcdCtrl::cancelOcdReqest")
-    /* stub */
+void cpOcdCtrl::cancelOcdReqest() {
+    if (!mIsInvalid) {
+        u32 bank = 0;
+        u32 v1_0;
+        unsigned int i1_3;
+        u32 v2_0;
+        for (;;) {
+            if (mOcdList[bank].mLength != 0) {
+                v1_0 = mOcdList[bank].mLength;
+                i1_3 = 0;
+                for (;;) {
+                    if (mOcdList[bank].getBuffer()[static_cast<int>(i1_3)] == nullptr) {
+                        v2_0 = v1_0;
+                    } else {
+                        static_cast<cOcdInfo*>(mOcdList[bank].getBuffer()[static_cast<int>(i1_3)])->turnOffChengeRequest();
+                        v2_0 = mOcdList[bank].mLength;
+                    }
+                    if ((i1_3 + 1u) < v2_0) {
+                        v1_0 = v2_0;
+                        i1_3 += 1u;
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if ((bank + 1u) != 7) {
+                bank = bank + 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void cpOcdCtrl::cancelOcdReqest(u32 OcdUID) {
-    DDON_STUB("cpOcdCtrl::cancelOcdReqest")
-    /* stub */
+void cpOcdCtrl::cancelOcdReqest(u32 OcdUID) {
+    if (mIsInvalid) {
+        return;
+    }
+    if (((OcdUID >> 12) & 15u) <= 6u) {
+        if (mOcdList[(OcdUID >> 12) & 15u].mLength != 0) {
+            if (((OcdUID & 0xFFFF0FFFu) - 1u) < mOcdList[(OcdUID >> 12) & 15u].mLength) {
+                if (mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)] != nullptr) {
+                    if ((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)]) + 8)) != 0) {
+                        static_cast<cOcdInfo*>(mOcdList[(OcdUID >> 12) & 15u].getBuffer()[static_cast<int>((OcdUID & 0xFFFF0FFFu) - 1u)])->turnOffChengeRequest();
+                    }
+                }
+            }
+        }
+    }
 }
 
 bool cpOcdCtrl::isRecoverEnd() const {
@@ -646,20 +907,6 @@ void cpOcdCtrl::setupOcdCycleEffect() {
 __attribute__((weak)) void cpOcdCtrl::updateOcdCycleEffect() {
     DDON_STUB("cpOcdCtrl::updateOcdCycleEffect")
     /* stub */
-}
-
-inline void cpOcdCtrl::callOcdShader() {
-    if (mpModel == nullptr) {
-        return;
-    }
-    if (mpModel->mpDDMrlMgr == nullptr) {
-        return;
-    }
-    mpModel->mpDDMrlMgr->requestAilmentShader(static_cast<u32>(mOcdShaderType), mShaderPriority);
-    if (mOcdShaderType != nDDOShader::SHADER_MODE_EROSION) {
-        return;
-    }
-    mpModel->mpDDMrlMgr->setErosionLevel(mOcdShaderLv);
 }
 
 void cpOcdCtrl::notifyMoveFreeze() {

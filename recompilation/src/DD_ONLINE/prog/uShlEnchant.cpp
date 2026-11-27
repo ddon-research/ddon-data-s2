@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uShlEnchant.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -21,10 +19,6 @@
 
 const MtDTI& cShlParamEnchant::getDTI() const {
     return cShlParamEnchant::DTI;
-}
-
-inline void* cShlParamEnchant::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cShlParamEnchant::DTI)->memAlloc(sz, align, cShlParamEnchant::DTI.getID());
 }
 
 inline void cShlParamEnchant::operator delete(void* p_addr) {
@@ -63,18 +57,6 @@ MtObject* cShlParamEnchant::MyDTI::newInstance() const {
 
 const MtDTI& uShlEnchant::getDTI() const {
     return uShlEnchant::DTI;
-}
-
-inline void* uShlEnchant::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uShlEnchant::DTI)->memAlloc(sz, align, uShlEnchant::DTI.getID());
-}
-
-inline void uShlEnchant::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uShlEnchant::DTI)->memFree(p_addr);
-}
-
-inline const cShlParamEnchant* uShlEnchant::getShlParam() const {
-    return static_cast<const cShlParamEnchant*>(mpShlParam2);
 }
 
 __attribute__((weak)) void uShlEnchant::setup() {

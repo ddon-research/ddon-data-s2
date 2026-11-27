@@ -965,3 +965,39 @@ inline void uRadialBlurFilter::setMaskRB(const MtFloat2& v) {
     this->mParam.mMaskRectUV.z = v.x;
     this->mParam.mMaskRectUV.w = v.y;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uBloomFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uBloomFilter::DTI)->memFree(p_addr);
+}
+
+inline void uColorCorrectFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uColorCorrectFilter::DTI)->memFree(p_addr);
+}
+
+inline void uColorCorrectFilter::Corrector::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uColorCorrectFilter::Corrector::DTI)->memFree(p_addr);
+}
+
+inline void uDOFFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uDOFFilter::DTI)->memFree(p_addr);
+}
+
+inline void uFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uFilter::DTI)->memFree(p_addr);
+}
+
+inline void uGodRaysFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGodRaysFilter::DTI)->memFree(p_addr);
+}
+
+inline void uMotionBlurFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uMotionBlurFilter::DTI)->memFree(p_addr);
+}
+
+inline void uRadialBlurFilter::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uRadialBlurFilter::DTI)->memFree(p_addr);
+}

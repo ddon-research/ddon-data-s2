@@ -144,3 +144,15 @@ inline const cAttackParam* cHitNode::getAttackParam() const {
 inline u32 cHitNode::getUID() const {
     return this->mUID;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cHitNode::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cHitNode::DTI);
+}
+
+inline void cHitNode::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cHitNode::DTI)->memFree(p_addr);
+}

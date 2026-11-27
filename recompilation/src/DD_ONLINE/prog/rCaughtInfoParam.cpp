@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rCaughtInfoParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -21,27 +19,6 @@ extern template __attribute__((noinline)) void rTbl2<cCaughtInfoParam>::allocDat
 
 const MtDTI& cCaughtInfoParam::getDTI() const {
     return cCaughtInfoParam::DTI;
-}
-
-inline void* cCaughtInfoParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cCaughtInfoParam::DTI)->memAlloc(sz, align, cCaughtInfoParam::DTI.getID());
-}
-
-inline void cCaughtInfoParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCaughtInfoParam::DTI)->memFree(p_addr);
-}
-
-cCaughtInfoParam::cCaughtInfoParam() {
-    mCatchType = 0;
-    mCaughtActionTblNo = 0;
-    mConstOffsetPos.x = MtVector3::Zero.x;
-    mConstOffsetPos.y = MtVector3::Zero.y;
-    mConstOffsetPos.z = MtVector3::Zero.z;
-    mConstOffsetPos.pad_ = 0.0f;
-    mConstOffsetAngle.x = MtVector3::Zero.x;
-    mConstOffsetAngle.y = MtVector3::Zero.y;
-    mConstOffsetAngle.z = MtVector3::Zero.z;
-    mConstOffsetAngle.pad_ = 0.0f;
 }
 
 void cCaughtInfoParam::createProperty(MtPropertyList& s) {
@@ -61,14 +38,6 @@ MtObject* cCaughtInfoParam::MyDTI::newInstance() const {
 
 const MtDTI& rCaughtInfoParam::getDTI() const {
     return rCaughtInfoParam::DTI;
-}
-
-inline void* rCaughtInfoParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rCaughtInfoParam::DTI)->memAlloc(sz, align, rCaughtInfoParam::DTI.getID());
-}
-
-inline void rCaughtInfoParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rCaughtInfoParam::DTI)->memFree(p_addr);
 }
 
 bool rCaughtInfoParam::loadData(MtDataReader& in, cCaughtInfoParam* pData) {

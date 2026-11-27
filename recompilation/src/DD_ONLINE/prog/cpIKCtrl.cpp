@@ -20,6 +20,7 @@
 #include "uCnsIKTarget.h"
 #include "../../XFramework/uConstraint.h"
 #include "uDDOModel.h"
+#include "uFullbodyIKHumanDDO.h"
 #include "../../XFramework/uModel.h"
 #ifndef DDON_STUB
 #define DDON_STUB(name)
@@ -27,10 +28,6 @@
 
 const MtDTI& cIKHandle::getDTI() const {
     return cIKHandle::DTI;
-}
-
-inline void cIKHandle::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cIKHandle::DTI)->memFree(p_addr);
 }
 
 cIKHandle::~cIKHandle() {
@@ -107,25 +104,16 @@ inline cIKHandle::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 
 
 cIKHandle::MyDTI cIKHandle::DTI("cIKHandle", &::MtObject::DTI, 160ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* cIKHandle::MyDTI::newInstance() const {
-    DDON_STUB("cIKHandle::MyDTI::newInstance")
-    return nullptr;
+MtObject* cIKHandle::MyDTI::newInstance() const {
+    return new (16u) cIKHandle;
 }
 
 const MtDTI& cpIKCtrl::getDTI() const {
     return cpIKCtrl::DTI;
 }
 
-inline MtAllocator* cpIKCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpIKCtrl::DTI);
-}
-
 void* cpIKCtrl::operator new(size_t sz, u32 align) {
     return cpIKCtrl::getAllocator()->memAlloc(sz, align, cpIKCtrl::DTI.getID());
-}
-
-inline void cpIKCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpIKCtrl::DTI)->memFree(p_addr);
 }
 
 cpIKCtrl::cpIKCtrl() {
@@ -224,9 +212,39 @@ void cpIKCtrl::move() {
     mpCnsIK[3]->move();
 }
 
-__attribute__((weak)) void cpIKCtrl::after() {
-    DDON_STUB("cpIKCtrl::after")
-    /* stub */
+void cpIKCtrl::after() {
+    uFullbodyIKHumanDDO* v2_4;
+    if (isIKCtrlActive()) {
+        if (mpFBIK != nullptr) {
+            if (!mFBIKActive) {
+                return;
+            } else {
+                if (mpModel == nullptr) {
+                    v2_4 = mpFBIK;
+                } else {
+                    const MtDTI& t0 = mpModel->getDTI();
+                    MT_CTSTR v0_1 = uDDOModel::DTI.mName;
+                    for (const MtDTI* v0_0 = &t0;;) {
+                        if (v0_1 == v0_0->mName) {
+                            break;
+                        } else {
+                            if (v0_0->mpParent != nullptr) {
+                                v0_0 = v0_0->mpParent;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                    v2_4 = mpFBIK;
+                }
+            }
+        } else {
+            return;
+        }
+    } else {
+        return;
+    }
+    v2_4->updateFullbodyIK();
 }
 
 void cpIKCtrl::compMoveAfter() {

@@ -49,16 +49,8 @@ const MtDTI& sContextManager::getDTI() const {
     return sContextManager::DTI;
 }
 
-inline MtAllocator* sContextManager::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sContextManager::DTI);
-}
-
 void* sContextManager::operator new(size_t sz, u32 align) {
     return sContextManager::getAllocator()->memAlloc(sz, align, sContextManager::DTI.getID());
-}
-
-inline void sContextManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sContextManager::DTI)->memFree(p_addr);
 }
 
 sContextManager::sContextManager() {
@@ -134,9 +126,45 @@ __attribute__((weak)) cContextInstance* sContextManager::requestCreateContextIns
     return nullptr;
 }
 
-__attribute__((weak)) cContextInstance* sContextManager::getContextInstFromUniqueId(u32 UniqueId) {
-    DDON_STUB("sContextManager::getContextInstFromUniqueId")
-    return nullptr;
+cContextInstance* sContextManager::getContextInstFromUniqueId(u32 UniqueId) {
+    unsigned int i0_8 = 5;
+    cContext* v1_3;
+    const MtDTI* v2_0;
+    cContext* v6_3;
+    for (;;) {
+        v1_3 = mList[i0_8].getTop();
+        for (;;) {
+            if (v1_3 == nullptr) {
+                break;
+            } else {
+                if (UniqueId == cContextInterface::getUniqueId(static_cast<const cContextInstance*>(v1_3), static_cast<const cContextCharacter*>(nullptr))) {
+                    const MtDTI& t1 = v1_3->getDTI();
+                    MT_CTSTR v2_1 = cContextInstance::DTI.mName;
+                    v2_0 = &t1;
+                    for (;;) {
+                        if (v2_1 == v2_0->mName) {
+                            v6_3 = v1_3;
+                            return static_cast<cContextInstance*>(v6_3);
+                        } else {
+                            if (v2_0->mpParent != nullptr) {
+                                v2_0 = v2_0->mpParent;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            v1_3 = v1_3->mpNext;
+        }
+        if ((i0_8 + 1u) <= 12u) {
+            i0_8 = i0_8 + 1u;
+        } else {
+            v6_3 = nullptr;
+            break;
+        }
+    }
+    return static_cast<cContextInstance*>(v6_3);
 }
 
 __attribute__((weak)) cContextInstance* sContextManager::createContextInstance(u32 id, u32 uniqueId, s32 stageNo, s32 encountArea) {
@@ -144,14 +172,76 @@ __attribute__((weak)) cContextInstance* sContextManager::createContextInstance(u
     return nullptr;
 }
 
-__attribute__((weak)) void sContextManager::onSyncContextInstance(u32 uniqueId) {
-    DDON_STUB("sContextManager::onSyncContextInstance")
-    /* stub */
+void sContextManager::onSyncContextInstance(u32 uniqueId) {
+    unsigned int i0_8 = 5;
+    cContext* v1_3;
+    const MtDTI* v2_0;
+    for (;;) {
+        v1_3 = mList[i0_8].getTop();
+        for (;;) {
+            if (v1_3 == nullptr) {
+                break;
+            } else {
+                if (uniqueId == cContextInterface::getUniqueId(static_cast<const cContextInstance*>(v1_3), static_cast<const cContextCharacter*>(nullptr))) {
+                    const MtDTI& t1 = v1_3->getDTI();
+                    MT_CTSTR v2_1 = cContextInstance::DTI.mName;
+                    v2_0 = &t1;
+                    for (;;) {
+                        if (v2_1 == v2_0->mName) {
+                            if (v1_3 != nullptr) {
+                                cContextInstance* pInst = static_cast<cContextInstance*>(v1_3);
+                                pInst->mIsValid = pInst->mIsValid | 2;
+                            }
+                            return;
+                        } else {
+                            if (v2_0->mpParent != nullptr) {
+                                v2_0 = v2_0->mpParent;
+                            } else {
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            v1_3 = v1_3->mpNext;
+        }
+        if ((i0_8 + 1u) <= 12u) {
+            i0_8 = i0_8 + 1u;
+        } else {
+            break;
+        }
+    }
 }
 
-__attribute__((weak)) cContext* sContextManager::createContext(u32 id) {
-    DDON_STUB("sContextManager::createContext")
-    return nullptr;
+cContext* sContextManager::createContext(u32 id) {
+    const MtDTI* t0 = MtDTI::from(((id * 0x10000u) & 0xFF0000u) + 0x50000000u);
+    MtObject* v2_2;
+    if (t0 == nullptr) {
+        v2_2 = nullptr;
+    } else {
+        MtObject* v0_3 = t0->newInstance();
+        if (v0_3 == nullptr) {
+            v2_2 = nullptr;
+        } else {
+            const MtDTI& t2 = v0_3->getDTI();
+            MT_CTSTR v0_1 = cContext::DTI.mName;
+            for (const MtDTI* v0_0 = &t2;;) {
+                if (v0_1 == v0_0->mName) {
+                    break;
+                } else {
+                    v0_0 = v0_0->mpParent;
+                }
+            }
+            cContext* pCx = static_cast<cContext*>(v0_3);
+            pCx->mId = static_cast<unsigned char>(id);
+            if (!registContext(pCx)) {
+                return nullptr;
+            } else {
+                v2_2 = v0_3;
+            }
+        }
+    }
+    return static_cast<cContext*>(v2_2);
 }
 
 __attribute__((weak)) bool sContextManager::registContext(cContext* pContext) {
@@ -453,7 +543,7 @@ cContextInstHm* sContextManager::getContextPartyPlayerFromMemberIndex(s32 member
         }
     }
     sGame* t0 = sGame::getInstance();
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(t0) + t0->getSelfMemberIndex()) + 216)) == 0) {
+    if (!t0->mIsParty[t0->getSelfMemberIndex()]) {
         return mpContextPlayer;
     } else {
         return nullptr;
@@ -550,9 +640,31 @@ __attribute__((weak)) void sContextManager::initChargeInfoAllContext() {
     /* stub */
 }
 
-__attribute__((weak)) cContextInstance* sContextManager::searchContextInstance(nGroup::ID_CONTEXT Type, u32 UniqueId) {
-    DDON_STUB("sContextManager::searchContextInstance")
-    return nullptr;
+cContextInstance* sContextManager::searchContextInstance(nGroup::ID_CONTEXT Type, u32 UniqueId) {
+    cContext* v1_0;
+    if (static_cast<int>(Type) > 12) {
+        v1_0 = nullptr;
+    } else {
+        for (cContext* v0_2 = mList[Type].getTop();;) {
+            if (v0_2 == nullptr) {
+                v1_0 = nullptr;
+                break;
+            } else {
+                if (static_cast<unsigned int>(v0_2->mId) != static_cast<unsigned int>(Type)) {
+                    v1_0 = nullptr;
+                    break;
+                } else {
+                    if (UniqueId == cContextInterface::getUniqueId(static_cast<const cContextInstance*>(v0_2), static_cast<const cContextCharacter*>(nullptr))) {
+                        v1_0 = v0_2;
+                        break;
+                    } else {
+                        v0_2 = v0_2->mpNext;
+                    }
+                }
+            }
+        }
+    }
+    return static_cast<cContextInstance*>(v1_0);
 }
 
 cContextInstNpc* sContextManager::searchContextNpc(u32 UniqueId) {
@@ -749,14 +861,6 @@ __attribute__((weak)) MtObject* sContextManager::MyDTI::newInstance() const {
 
 const MtDTI& sContextManager::List::getDTI() const {
     return sContextManager::List::DTI;
-}
-
-inline void* sContextManager::List::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(sContextManager::List::DTI)->memAlloc(sz, align, sContextManager::List::DTI.getID());
-}
-
-inline void sContextManager::List::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sContextManager::List::DTI)->memFree(p_addr);
 }
 
 sContextManager::List::~List() {

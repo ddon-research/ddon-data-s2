@@ -132,3 +132,19 @@ inline void cStatusCheck::operator delete[](void* p_addr) {
 inline void* cStatusCheck::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cStatusCheck::DTI)->memAlloc(sz, align, ::cStatusCheck::DTI.::MtDTI::getID());
 }
+
+inline void* cStatusCheck::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cStatusCheck::DTI)->memAlloc(sz, align, ::cStatusCheck::DTI.::MtDTI::getID());
+}
+
+inline void cStatusCheck::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cStatusCheck::DTI)->memFree(p_addr);
+}
+
+inline void* rStatusCheck::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rStatusCheck::DTI)->memAlloc(sz, align, ::rStatusCheck::DTI.::MtDTI::getID());
+}
+
+inline void rStatusCheck::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rStatusCheck::DTI)->memFree(p_addr);
+}

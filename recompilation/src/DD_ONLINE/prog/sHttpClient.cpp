@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "sHttpClient.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -23,10 +24,6 @@
 
 const MtDTI& cGameHttpClient::getDTI() const {
     return cGameHttpClient::DTI;
-}
-
-inline void cGameHttpClient::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cGameHttpClient::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cGameHttpClient::~cGameHttpClient() {
@@ -70,9 +67,21 @@ __attribute__((weak)) void cGameHttpClient::setDownloadPic(MT_CTSTR addr, void* 
     /* stub */
 }
 
-__attribute__((weak)) s32 cGameHttpClient::analyzeDownloadPic() {
-    DDON_STUB("cGameHttpClient::analyzeDownloadPic")
-    return {};
+s32 cGameHttpClient::analyzeDownloadPic() {
+    if (mStream.MtMemoryStream::getPosition() <= 1u) {
+        if (mHandle <= 8u) {
+            sHttpClient::getInstance()->mClientList[mHandle].mErrorCode = 268435506;
+        }
+        return 4;
+    } else {
+        *mpOutputSize = mStream.mLength;
+        void* t0 = MtMemoryAllocator::getAllocator(cResource::DTI)->memAlloc(mStream.mLength, 16u);
+        *mpOutputPtr = t0;
+        if ((*mpOutputPtr) != nullptr) {
+            memcpy(*mpOutputPtr, static_cast<const void*>(mStream.mBuffer), mStream.mLength);
+        }
+        return 2;
+    }
 }
 
 inline cGameHttpClient::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -102,9 +111,15 @@ __attribute__((weak)) MtObject* cGameHttpClient::cLoginBackDoorInfo::MyDTI::newI
     return nullptr;
 }
 
-__attribute__((weak)) void cGameHttpClient::MyListener::onReceiveHeader(const cHttpClient::ResponseHeader* pHeader) {
-    DDON_STUB("cGameHttpClient::MyListener::onReceiveHeader")
-    /* stub */
+void cGameHttpClient::MyListener::onReceiveHeader(const cHttpClient::ResponseHeader* pHeader) {
+    getOwner()->mStatusCode = static_cast<u32>(pHeader->mStatusCode);
+    getOwner()->mContentLength = pHeader->mContentLength;
+    (&getOwner()->mStream)->seek(0, MtStream::ORG_BEGIN);
+    if (pHeader->mStatusCode > 399) {
+        if (getOwner()->mHandle <= 8u) {
+            (sHttpClient::mpInstance)->mClientList[getOwner()->mHandle].mErrorCode = pHeader->mStatusCode | 268435456;
+        }
+    }
 }
 
 __attribute__((weak)) void cGameHttpClient::MyListener::onReceiveData(void* pData, s32 cData) {
@@ -112,17 +127,22 @@ __attribute__((weak)) void cGameHttpClient::MyListener::onReceiveData(void* pDat
     /* stub */
 }
 
-__attribute__((weak)) void cGameHttpClient::MyListener::onErrorEncounterd(s32 error) {
-    DDON_STUB("cGameHttpClient::MyListener::onErrorEncounterd")
-    /* stub */
+void cGameHttpClient::MyListener::onErrorEncounterd(s32 error) {
+    if (error != -1) {
+        if (error != 0) {
+            if (getOwner()->mHandle <= 8u) {
+                sHttpClient::getInstance()->mClientList[getOwner()->mHandle].mErrorCode = static_cast<s32>((error <= -1) ? static_cast<unsigned int>(error) : static_cast<unsigned int>(error | 268435456));
+            }
+        }
+    } else {
+        if (getOwner()->mHandle <= 8u) {
+            sHttpClient::getInstance()->mClientList[getOwner()->mHandle].mErrorCode = 268435508;
+        }
+    }
 }
 
 const MtDTI& cGameHttpClient::cServerEnvironmentInfo::getDTI() const {
     return cGameHttpClient::cServerEnvironmentInfo::DTI;
-}
-
-inline void* cGameHttpClient::cServerEnvironmentInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cGameHttpClient::cServerEnvironmentInfo::DTI)->memAlloc(sz, align, cGameHttpClient::cServerEnvironmentInfo::DTI.getID());
 }
 
 cGameHttpClient::cServerEnvironmentInfo::~cServerEnvironmentInfo() {
@@ -140,16 +160,8 @@ const MtDTI& sHttpClient::getDTI() const {
     return sHttpClient::DTI;
 }
 
-inline MtAllocator* sHttpClient::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sHttpClient::DTI);
-}
-
 void* sHttpClient::operator new(size_t sz, u32 align) {
     return sHttpClient::getAllocator()->memAlloc(sz, align, sHttpClient::DTI.getID());
-}
-
-inline void sHttpClient::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sHttpClient::DTI)->memFree(p_addr);
 }
 
 sHttpClient::sHttpClient() {

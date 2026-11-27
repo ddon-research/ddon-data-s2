@@ -19,7 +19,9 @@
 #include "../../XFramework/cUnit.h"
 #include "cpActionRequest.h"
 #include "cpComponent.h"
+#include "cpOmBlink.h"
 #include "cpOmComponent.h"
+#include "cpRootComponent.h"
 #include "../../generated/shared/nDDOMath.h"
 #include "../../generated/shared/nDDOModel.h"
 #include "nLayout.h"
@@ -36,7 +38,6 @@
 #include "sSetManager.h"
 #include "../../XFramework/sSound.h"
 #include "sSoundExt.h"
-#include "../../XFramework/uBaseModel.h"
 #include "../../XFramework/uCoord.h"
 #include "uDDOModel.h"
 #include "uGUIPick01.h"
@@ -50,14 +51,6 @@ const MtDTI& ItemGetInfo::getDTI() const {
     return ItemGetInfo::DTI;
 }
 
-inline void* ItemGetInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(ItemGetInfo::DTI)->memAlloc(sz, align, ItemGetInfo::DTI.getID());
-}
-
-inline void ItemGetInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(ItemGetInfo::DTI)->memFree(p_addr);
-}
-
 inline ItemGetInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 ItemGetInfo::MyDTI ItemGetInfo::DTI("ItemGetInfo", &::MtObject::DTI, 24ul, 0u, 0u);
@@ -68,10 +61,6 @@ MtObject* ItemGetInfo::MyDTI::newInstance() const {
 
 const MtDTI& cGatherItemList::getDTI() const {
     return cGatherItemList::DTI;
-}
-
-inline MtAllocator* cGatherItemList::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cGatherItemList::DTI);
 }
 
 __attribute__((weak)) void cGatherItemList::operator delete(void* p_addr) {
@@ -285,11 +274,12 @@ bool cGatherItemList::getItemList(u32 groupId, u32 layerNo, u32 posId, MT_CTSTR 
     mItemGetInfo[8].mID = 0;
     mItemGetInfo[8].mItemID = 0;
     mItemGetInfo[8].mNum = 0;
-    *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(this) + 264) = 0;
+    mItemGetInfo[9].mID = 0;
+    mItemGetInfo[9].mItemID = 0;
     mItemGetInfo[9].mNum = 0;
     CDataStageLayoutID frame80(nLayout::createStageLayoutId(static_cast<u32>(sGame::getInstance()->getStageNo()), layerNo, groupId));
     sGame* t0 = sGame::getInstance();
-    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(reinterpret_cast<char*>(t0) + t0->getSelfMemberIndex()) + 216)) != 0) {
+    if (t0->mIsParty[t0->getSelfMemberIndex()]) {
         if (mGatherType != 2) {
             if (mGatherType == 1) {
                 return static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getDropItemList(frame80, posId);
@@ -319,10 +309,6 @@ __attribute__((weak)) MtObject* cGatherItemList::MyDTI::newInstance() const {
 
 const MtDTI& cpOmGather::getDTI() const {
     return cpOmGather::DTI;
-}
-
-inline MtAllocator* cpOmGather::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpOmGather::DTI);
 }
 
 void* cpOmGather::operator new(size_t sz, u32 align) {
@@ -469,8 +455,37 @@ void cpOmGather::setGatherStatus(u32 status) {
 }
 
 __attribute__((weak)) void cpOmGather::setGatherEmpty() {
-    DDON_STUB("cpOmGather::setGatherEmpty")
-    /* stub */
+    uOmModel* puom = mpModel;
+    if (puom == nullptr) {
+        return;
+    }
+    cOmControl* pctrl = puom->mOmComp.mpOmControl;
+    if (pctrl == nullptr) {
+        return;
+    }
+    puom->mPartsDisp[0] = puom->mPartsDisp[0] & 0xFFFFF7FFu;
+    puom->setObjCollisionLayerOn(0u, false);
+    if (puom->mComponentMgr.getRootComponent() != nullptr) {
+        cpOmBlink* p_blink = static_cast<cpOmBlink*>(puom->mComponentMgr.getRootComponent()->find(cpOmBlink::DTI, true, true));
+        if (p_blink != nullptr) {
+            p_blink->setBlinkOff();
+        }
+        puom->mOmComp.finishFx(0, puom);
+        puom->mOmComp.finishFx(1, puom);
+        puom->mOmComp.keyOffSe();
+        puom->mOmComp.mpOmControl->mbMapNone = true;
+        if (pctrl->mOmID == 520171) {
+            puom->mOmComp.setEffect(6, puom);
+        }
+    } else {
+        puom->mOmComp.finishFx(0, puom);
+        puom->mOmComp.finishFx(1, puom);
+        puom->mOmComp.keyOffSe();
+        puom->mOmComp.mpOmControl->mbMapNone = true;
+        if (pctrl->mOmID == 520171) {
+            puom->mOmComp.setEffect(6, puom);
+        }
+    }
 }
 
 void cpOmGather::requestGatherAgain() {

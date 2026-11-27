@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rZone.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtDataReader.h"
 #include "../MT/MtDataWriter.h"
@@ -26,10 +25,6 @@ inline void* rZone::operator new(size_t sz, u32 align) {
 
 const MtDTI& rZone::getDTI() const {
     return rZone::DTI;
-}
-
-inline void rZone::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rZone::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) rZone::~rZone() {
@@ -311,14 +306,6 @@ __attribute__((weak)) MtObject* rZone::MyDTI::newInstance() const {
 
 const MtDTI& rZone::cGroupManager::getDTI() const {
     return rZone::cGroupManager::DTI;
-}
-
-inline void* rZone::cGroupManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rZone::cGroupManager::DTI)->memAlloc(sz, align, rZone::cGroupManager::DTI.mID);
-}
-
-inline void rZone::cGroupManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rZone::cGroupManager::DTI)->memFree(p_addr);
 }
 
 rZone::cGroupManager::~cGroupManager() {

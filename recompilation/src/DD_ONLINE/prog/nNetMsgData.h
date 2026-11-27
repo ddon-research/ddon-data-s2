@@ -10,11 +10,6 @@ namespace nNetwork { class Decoder; }
 namespace nObjCondition { struct stOcdActiveInfo; }
 namespace nObjCondition { struct stOcdActiveMsg; }
 
-// Declarations
-namespace nNetMsgData { struct stNetPos; }
-namespace nNetMsgData { struct stVector3; }
-namespace nNetMsgData { namespace Head { struct stMsgHead; } }
-
 namespace nNetMsgData {
 namespace nCtrl {
     enum NET_MSG_ID
@@ -190,6 +185,11 @@ namespace nTool {
     };
 }  // namespace nTool
 }  // namespace nNetMsgData
+
+// Declarations
+namespace nNetMsgData { struct stNetPos; }
+namespace nNetMsgData { struct stVector3; }
+namespace nNetMsgData { namespace Head { struct stMsgHead; } }
 
 // Type aliases from DWARF
 using f32 = float;

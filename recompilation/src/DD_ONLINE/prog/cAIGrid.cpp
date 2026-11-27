@@ -22,16 +22,8 @@ const MtDTI& cAIGrid::getDTI() const {
     return cAIGrid::DTI;
 }
 
-inline MtAllocator* cAIGrid::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cAIGrid::DTI);
-}
-
 void* cAIGrid::operator new(size_t sz, u32 align) {
     return cAIGrid::getAllocator()->memAlloc(sz, align, cAIGrid::DTI.getID());
-}
-
-inline void cAIGrid::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cAIGrid::DTI)->memFree(p_addr);
 }
 
 cAIGrid::cAIGrid() {
@@ -76,11 +68,11 @@ void cAIGrid::initGridLen(f32 x, f32 z) {
             if (((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) <= 1500) {
                 MtAllocator* t7 = MtMemoryAllocator::getAllocator(cAIGrid::DTI);
                 unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t7) + 0);
-                void* t10 = t7->memAlloc(static_cast<size_t>(((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4), 16u);
+                void* t10 = t7->memAlloc(static_cast<size_t>(static_cast<long>((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4), 16u);
                 if ((mpGridValue = static_cast<s32*>(t10)) != nullptr) {
                     mGridZNum = static_cast<int>(z / t0) + 1;
                     mGridXNum = static_cast<int>(x / t0) + 1;
-                    void* t12 = memset(t10, 0, static_cast<size_t>(((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4));
+                    void* t12 = memset(t10, 0, static_cast<size_t>((static_cast<long>(static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4l));
                 } else {
                     mGridXNum = 0;
                     mGridZNum = 0;
@@ -92,11 +84,11 @@ void cAIGrid::initGridLen(f32 x, f32 z) {
             if (((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) <= 1500) {
                 MtAllocator* t7 = MtMemoryAllocator::getAllocator(cAIGrid::DTI);
                 unsigned long t9 = *reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(t7) + 0);
-                void* t10 = t7->memAlloc(static_cast<size_t>(((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4), 16u);
+                void* t10 = t7->memAlloc(static_cast<size_t>(static_cast<long>((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4), 16u);
                 if ((mpGridValue = static_cast<s32*>(t10)) != nullptr) {
                     mGridZNum = static_cast<int>(z / t0) + 1;
                     mGridXNum = static_cast<int>(x / t0) + 1;
-                    void* t12 = memset(t10, 0, static_cast<size_t>(((static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4));
+                    void* t12 = memset(t10, 0, static_cast<size_t>((static_cast<long>(static_cast<int>(x / t0) + 1) * (static_cast<int>(z / t0) + 1)) * 4l));
                 } else {
                     mGridXNum = 0;
                     mGridZNum = 0;
@@ -110,7 +102,7 @@ void cAIGrid::clearGrid() {
     if (mpGridValue == nullptr) {
         return;
     }
-    memset(static_cast<void*>(mpGridValue), 0, static_cast<size_t>((mGridXNum * mGridZNum) * 4));
+    memset(static_cast<void*>(mpGridValue), 0, static_cast<size_t>((static_cast<long>(mGridXNum) * mGridZNum) * 4l));
 }
 
 __attribute__((weak)) void cAIGrid::moveGridCenter(const MtVector3& centerOfsPos, bool shift) {
@@ -238,8 +230,21 @@ bool cAIGrid::createWayGridSubEnableWayDisableSlant(u32 targetGridX, u32 targetG
     return b3_0;
 }
 
-__attribute__((weak)) const s32* cAIGrid::getGridValue(const MtVector3& pos) const {
-    DDON_STUB("cAIGrid::getGridValue")
+const s32* cAIGrid::getGridValue(const MtVector3& pos) const {
+    MtVector3 frame56((sWorldOffset::mpInstance)->sWorldOffset::getOffsetPos(mGridZeroRealPos));
+    if (static_cast<int>((pos.x - frame56.x) / 150.0f) > -1) {
+        if (static_cast<int>((pos.x - frame56.x) / 150.0f) < mGridXNum) {
+            if (static_cast<int>((pos.z - frame56.z) / 150.0f) > -1) {
+                if (static_cast<int>((pos.z - frame56.z) / 150.0f) < mGridZNum) {
+                    if (((mGridXNum * static_cast<int>((pos.z - frame56.z) / 150.0f)) + static_cast<int>((pos.x - frame56.x) / 150.0f)) > -1) {
+                        if (((mGridXNum * static_cast<int>((pos.z - frame56.z) / 150.0f)) + static_cast<int>((pos.x - frame56.x) / 150.0f)) < (mGridXNum * mGridZNum)) {
+                            return &mpGridValue[(mGridXNum * static_cast<int>((pos.z - frame56.z) / 150.0f)) + static_cast<int>((pos.x - frame56.x) / 150.0f)];
+                        }
+                    }
+                }
+            }
+        }
+    }
     return nullptr;
 }
 
@@ -269,9 +274,18 @@ const s32* cAIGrid::getGridValue(s32 index) const {
     return nullptr;
 }
 
-__attribute__((weak)) bool cAIGrid::getGridPos(MtPoint* pDst, const MtVector3& pos) const {
-    DDON_STUB("cAIGrid::getGridPos")
-    return {};
+bool cAIGrid::getGridPos(MtPoint* pDst, const MtVector3& pos) const {
+    MtVector3 frame72(sWorldOffset::getInstance()->getOffsetPos(mGridZeroRealPos));
+    pDst->x = static_cast<int>((pos.x - frame72.x) / 150.0f);
+    pDst->y = static_cast<int>((pos.z - frame72.z) / 150.0f);
+    if (pDst->x > -1) {
+        if (pDst->x < mGridXNum) {
+            if (pDst->y > -1) {
+                return static_cast<int>((pos.z - frame72.z) / 150.0f) < mGridZNum;
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) bool cAIGrid::getGridNearPos(MtVector3* pDst, const MtVector3& pos, s32 minVal, s32 maxVal, uDDOModel& owner, cAIGrid::NearCheckFunc func, void* pParam) {

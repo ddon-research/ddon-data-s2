@@ -121,3 +121,15 @@ inline bool nFsm::cCameraCtrl::isDisable() const {
 inline void nFsm::cCameraCtrl::setRno1(u8 r1) {
     this->mRno1 = 1;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* nFsm::cCameraCtrl::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::nFsm::cCameraCtrl::DTI);
+}
+
+inline void nFsm::cCameraCtrl::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::nFsm::cCameraCtrl::DTI)->memFree(p_addr);
+}

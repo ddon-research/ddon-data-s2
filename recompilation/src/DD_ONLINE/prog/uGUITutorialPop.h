@@ -114,3 +114,15 @@ inline void* uGUITutorialPop::operator new(size_t sz, void* p_addr) {
 inline void uGUITutorialPop::evPageExit() {
     this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUITutorialPop::updateExit);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUITutorialPop::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUITutorialPop::DTI);
+}
+
+inline void uGUITutorialPop::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUITutorialPop::DTI)->memFree(p_addr);
+}

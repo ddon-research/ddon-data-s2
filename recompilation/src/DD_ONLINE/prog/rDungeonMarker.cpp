@@ -21,14 +21,6 @@ const MtDTI& rDungeonMarker::getDTI() const {
     return rDungeonMarker::DTI;
 }
 
-inline void* rDungeonMarker::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDungeonMarker::DTI)->memAlloc(sz, align, rDungeonMarker::DTI.getID());
-}
-
-inline void rDungeonMarker::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDungeonMarker::DTI)->memFree(p_addr);
-}
-
 u32 rDungeonMarker::getWarpPosNum(s32 groupNo, u32 targetStageNo, s32 targetGroupNo) const {
     if (mWarpInfoList.mLength != 0) {
         u32 i = 0;
@@ -46,18 +38,39 @@ u32 rDungeonMarker::getWarpPosNum(s32 groupNo, u32 targetStageNo, s32 targetGrou
     return 0;
 }
 
-__attribute__((weak)) const MtVector3& rDungeonMarker::getWarpPos(s32 groupNo, u32 targetStageNo, s32 targetGroupNo, u32 index) const {
-    DDON_STUB("rDungeonMarker::getWarpPos")
-    __builtin_unreachable();
+const MtVector3& rDungeonMarker::getWarpPos(s32 groupNo, u32 targetStageNo, s32 targetGroupNo, u32 index) const {
+    const u32 num = *reinterpret_cast<const unsigned int*>(reinterpret_cast<const char*>(this) + 120);
+    const MtVector3* v3_0;
+    if (num == 0) {
+        v3_0 = &MtVector3::Zero;
+    } else {
+        unsigned long v0_3 = *reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 136);
+        for (u32 i = 0;;) {
+            if (groupNo == static_cast<int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_3 + static_cast<unsigned long>(i * 8u)) + 0)) + 40)))) {
+                if ((*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_3 + static_cast<unsigned long>(i * 8u)) + 0)) + 42)) == targetStageNo) {
+                    if (targetGroupNo == static_cast<int>(static_cast<short>(*reinterpret_cast<unsigned short*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_3 + static_cast<unsigned long>(i * 8u)) + 0)) + 44)))) {
+                        if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_3 + static_cast<unsigned long>(i * 8u)) + 0)) + 32)) + (static_cast<long>(static_cast<int>(index)) * 8)) + 0)) + 8)) >= mPositionList.mLength) {
+                            v3_0 = &MtVector3::Zero;
+                        } else {
+                            v3_0 = reinterpret_cast<const MtVector3*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((static_cast<long>(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>((*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(*reinterpret_cast<unsigned long*>(reinterpret_cast<char*>(v0_3 + static_cast<unsigned long>(i * 8u)) + 0)) + 32)) + (static_cast<long>(static_cast<int>(index)) * 8)) + 0)) + 8)) * 8) + (*reinterpret_cast<const unsigned long*>(reinterpret_cast<const char*>(this) + 168))) + 0)) + 16ul);
+                        }
+                        return *v3_0;
+                    }
+                }
+            }
+            if ((i + 1u) < num) {
+                i = i + 1u;
+            } else {
+                break;
+            }
+        }
+        v3_0 = &MtVector3::Zero;
+    }
+    return *v3_0;
 }
 
 MT_CTSTR rDungeonMarker::getExt() const {
     return "dmi";
-}
-
-inline rDungeonMarker::rDungeonMarker() {
-    mWarpStageNo = 0;
-    setAttribute(22u);
 }
 
 __attribute__((noinline)) rDungeonMarker::~rDungeonMarker() {
@@ -165,14 +178,6 @@ const MtDTI& rDungeonMarker::cWarpInfo::getDTI() const {
     return rDungeonMarker::cWarpInfo::DTI;
 }
 
-void* rDungeonMarker::cWarpInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDungeonMarker::cWarpInfo::DTI)->memAlloc(sz, align, rDungeonMarker::cWarpInfo::DTI.getID());
-}
-
-inline void rDungeonMarker::cWarpInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDungeonMarker::cWarpInfo::DTI)->memFree(p_addr);
-}
-
 rDungeonMarker::cWarpInfo::~cWarpInfo() {
     if (mPosIndex.mLength != 0) {
         u32 v0_0 = mPosIndex.mLength;
@@ -220,10 +225,6 @@ const MtDTI& rDungeonMarker::cWarpInfo::cIndex::getDTI() const {
     return rDungeonMarker::cWarpInfo::cIndex::DTI;
 }
 
-inline void rDungeonMarker::cWarpInfo::cIndex::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDungeonMarker::cWarpInfo::cIndex::DTI)->memFree(p_addr);
-}
-
 void rDungeonMarker::cWarpInfo::cIndex::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mIndex", &mIndex, 0u, 0u);
 }
@@ -238,21 +239,6 @@ MtObject* rDungeonMarker::cWarpInfo::cIndex::MyDTI::newInstance() const {
 
 const MtDTI& rDungeonMarker::cPosition::getDTI() const {
     return rDungeonMarker::cPosition::DTI;
-}
-
-void* rDungeonMarker::cPosition::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rDungeonMarker::cPosition::DTI)->memAlloc(sz, align, rDungeonMarker::cPosition::DTI.getID());
-}
-
-inline void rDungeonMarker::cPosition::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rDungeonMarker::cPosition::DTI)->memFree(p_addr);
-}
-
-rDungeonMarker::cPosition::cPosition() {
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
 }
 
 rDungeonMarker::cPosition::~cPosition() {

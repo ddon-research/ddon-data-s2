@@ -274,6 +274,10 @@ inline void uControlNpc::setJobLv(u16 jobLv) {
     this->mJobLv = jobLv;
 }
 
+inline bool uControlNpc::isInvincible() {
+    return this->mIsInvincible;
+}
+
 inline bool uControlNpc::isAttend() {
     return this->mIsAttend;
 }
@@ -292,4 +296,73 @@ inline void uControlNpc::setBaseRot(f32 Rot) {
 
 inline void uControlNpc::resetRnoGetPawnData() {
     this->mRnoGetPawnData = 0;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "../../XFramework/sMain.h"
+
+inline void* uControlNpc::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uControlNpc::DTI)->memAlloc(sz, align, ::uControlNpc::DTI.::MtDTI::getID());
+}
+
+inline void uControlNpc::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uControlNpc::DTI)->memFree(p_addr);
+}
+
+inline uControlNpc::uControlNpc() {
+    this->::uControl::mGitk = 0;
+    this->::uControl::mUniqueId = 0;
+    this->::uControl::mUnitId = 0;
+    this->::uControl::mIsDisp = false;
+    this->::uControl::mNpcId = -1;
+    this->mClothType = 0;
+    this->mIsFsmEventNpc = false;
+    this->mDefNPCMotCategory = 0;
+    this->mDefNPCMotNo = -1;
+    this->mDefTurnType = 0;
+    this->mThinkIndex = 0;
+    this->mJobLv = 0;
+    this->mIsForceDispOff = false;
+    this->mPawnId = 0xFFFFFFFF;
+    this->mMyPawnSlotNo = 0xFFFFFFFF;
+    this->mRentalPawnSlotNo = 0xFFFFFFFF;
+    this->mIsPawnData = false;
+    this->mIsEquip = true;
+    this->mRnoGetPawnData = 0;
+    this->mNpcItem = 0;
+    this->mIsScrAdjOff = false;
+    this->mIsAttend = false;
+    this->mIsDispWepMain = true;
+    this->mIsDispWepSub = true;
+    this->mIsDisableTouchAction = false;
+    this->mDisableLedgerFinger = false;
+    this->mJobId = 0;
+    this->mFinger = 0xFF;
+    this->mVoiceType = 0;
+    this->mUnitType = 0;
+    this->mUnitTypeParam = 0;
+    this->mIsEditData = false;
+    this->mIsSetup = false;
+    this->mIsNpcInfo = false;
+    this->mSex = 0;
+    this->mIsForceListTalk = false;
+    this->mIsInvincible = true;
+    this->mIsNpcArc = true;
+    this->mLantern = 0;
+    this->mIsSetupPawn = false;
+    this->mPlDistCalcTime = ::sMain::getInstance()->::sMain::getFps() / 3.0f;
+    this->mPlDistCalcTimer = 0.0f;
+    this->mMasterChangeCheckTimer = 0.0f;
+    this->mIsEnableTalkAct = false;
+    this->mIsDispElseQuestTalk = true;
+    this->mIsEyeClose = false;
+    this->mIsDispMiniMap = false;
+    this->mIsUseJobParamEx = false;
+    this->mPlDistance = 0.0f;
+    this->mBaseRot = 0.0f;
+    this->mWepAtk = 0.0f;
+    this->mWepMAtk = 0.0f;
+    this->::uControl::mIsSelfDeleteContextInst = true;
 }

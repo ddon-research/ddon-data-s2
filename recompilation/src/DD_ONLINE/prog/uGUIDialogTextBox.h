@@ -137,3 +137,10 @@ inline void uGUIDialogTextBox::evCancel() {
     this->mIsCancel = true;
     this->::uGUIBase::mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIDialogTextBox::updateExit);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIDialogTextBox::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIDialogTextBox::DTI);
+}

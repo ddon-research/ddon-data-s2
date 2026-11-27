@@ -88,16 +88,8 @@ const MtDTI& uGUIAim::getDTI() const {
     return uGUIAim::DTI;
 }
 
-inline MtAllocator* uGUIAim::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIAim::DTI);
-}
-
 void* uGUIAim::operator new(size_t sz, u32 align) {
     return uGUIAim::getAllocator()->memAlloc(sz, align, uGUIAim::DTI.getID());
-}
-
-inline void uGUIAim::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAim::DTI)->memFree(p_addr);
 }
 
 uGUIAim::~uGUIAim() {
@@ -180,9 +172,93 @@ __attribute__((weak)) bool uGUIAim::fixCameraRelatedScreenPos() {
     return {};
 }
 
-__attribute__((weak)) void uGUIAim::adjustScale() {
-    DDON_STUB("uGUIAim::adjustScale")
-    /* stub */
+void uGUIAim::adjustScale() {
+    f32 fScaleRate = getScaleForDefaultResolution(1.0f);
+    switch (static_cast<unsigned int>(mMode - 2)) {
+        case 0:
+        {
+            cGUIInstAnimation* t0 = mData.mpINST_seaker;
+            if (t0 != nullptr) {
+                t0->setScaleX(fScaleRate);
+                t0->setScaleY(fScaleRate);
+                t0->setScaleZ(fScaleRate);
+            }
+            break;
+        }
+        case 1:
+        {
+            cGUIInstAnimation* t1 = mData.mpINST_fix_gauge00;
+            if (t1 != nullptr) {
+                t1->setScaleX(fScaleRate);
+                t1->setScaleY(fScaleRate);
+                t1->setScaleZ(fScaleRate);
+            }
+            break;
+        }
+        case 2:
+        {
+            cGUIInstAnimation* t0 = mData.mpINST_seaker;
+            if (t0 != nullptr) {
+                t0->setScaleX(fScaleRate);
+                t0->setScaleY(fScaleRate);
+                t0->setScaleZ(fScaleRate);
+            }
+            break;
+        }
+        case 3:
+        {
+            cGUIInstAnimation* t2 = mData.mpINST_earcher_reticle;
+            if (t2 != nullptr) {
+                t2->setScaleX(fScaleRate);
+                t2->setScaleY(fScaleRate);
+                t2->setScaleZ(fScaleRate);
+                cGUIInstAnimation* t3 = mData.mpINST_earcher_fullgage;
+                if (t3 != nullptr) {
+                    t3->setScaleX(fScaleRate);
+                    t3->setScaleY(fScaleRate);
+                    t3->setScaleZ(fScaleRate);
+                    cGUIInstAnimation* t4 = mData.mpINST_fix_earcher_critical;
+                    if (t4 != nullptr) {
+                        t4->setScaleX(fScaleRate);
+                        t4->setScaleY(fScaleRate);
+                        t4->setScaleZ(fScaleRate);
+                    }
+                } else {
+                    cGUIInstAnimation* t4 = mData.mpINST_fix_earcher_critical;
+                    if (t4 != nullptr) {
+                        t4->setScaleX(fScaleRate);
+                        t4->setScaleY(fScaleRate);
+                        t4->setScaleZ(fScaleRate);
+                    }
+                }
+            } else {
+                cGUIInstAnimation* t3 = mData.mpINST_earcher_fullgage;
+                if (t3 != nullptr) {
+                    t3->setScaleX(fScaleRate);
+                    t3->setScaleY(fScaleRate);
+                    t3->setScaleZ(fScaleRate);
+                    cGUIInstAnimation* t4 = mData.mpINST_fix_earcher_critical;
+                    if (t4 != nullptr) {
+                        t4->setScaleX(fScaleRate);
+                        t4->setScaleY(fScaleRate);
+                        t4->setScaleZ(fScaleRate);
+                    }
+                } else {
+                    cGUIInstAnimation* t4 = mData.mpINST_fix_earcher_critical;
+                    if (t4 != nullptr) {
+                        t4->setScaleX(fScaleRate);
+                        t4->setScaleY(fScaleRate);
+                        t4->setScaleZ(fScaleRate);
+                    }
+                }
+            }
+            break;
+        }
+        default:
+        {
+            break;
+        }
+    }
 }
 
 void uGUIAim::updateInit() {

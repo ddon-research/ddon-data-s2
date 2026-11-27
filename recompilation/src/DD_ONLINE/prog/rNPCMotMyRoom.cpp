@@ -16,20 +16,6 @@ const MtDTI& rNPCMotMyRoom::getDTI() const {
     return rNPCMotMyRoom::DTI;
 }
 
-inline void* rNPCMotMyRoom::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNPCMotMyRoom::DTI)->memAlloc(sz, align, rNPCMotMyRoom::DTI.getID());
-}
-
-inline void rNPCMotMyRoom::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNPCMotMyRoom::DTI)->memFree(p_addr);
-}
-
-inline rNPCMotMyRoom::rNPCMotMyRoom() {
-    setAttribute(18u);
-    mpArray = nullptr;
-    mArrayNum = 0;
-}
-
 rNPCMotMyRoom::~rNPCMotMyRoom() {
     unsigned int i3 = 0;
     if (mArrayNum != 0) {
@@ -155,14 +141,6 @@ const MtDTI& rNPCMotMyRoom::InfoBinary::getDTI() const {
     return rNPCMotMyRoom::InfoBinary::DTI;
 }
 
-inline void* rNPCMotMyRoom::InfoBinary::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNPCMotMyRoom::InfoBinary::DTI)->memAlloc(sz, align, rNPCMotMyRoom::InfoBinary::DTI.getID());
-}
-
-inline void rNPCMotMyRoom::InfoBinary::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNPCMotMyRoom::InfoBinary::DTI)->memFree(p_addr);
-}
-
 rNPCMotMyRoom::InfoBinary::~InfoBinary() {
     for (u32 i = 0; i < mMotListNum; ++i) {
         mpMotList[i].~MotDataBinary();
@@ -172,8 +150,18 @@ rNPCMotMyRoom::InfoBinary::~InfoBinary() {
 }
 
 __attribute__((weak)) u32 rNPCMotMyRoom::InfoBinary::getMotionNo(u32 idx, u8 sex) {
-    DDON_STUB("rNPCMotMyRoom::InfoBinary::getMotionNo")
-    return {};
+    if (idx < getMotListNum()) {
+        MotDataBinary* data = getMotList(idx);
+        if (data != nullptr) {
+            if (data->mMotNoM >= 0) {
+                if (sex != 0 && data->mMotNoW >= 0) {
+                    return (data->mBankNo << 8) | data->mMotNoW;
+                }
+                return (data->mBankNo << 8) | data->mMotNoM;
+            }
+        }
+    }
+    return 0xffffffffu;
 }
 
 u8 rNPCMotMyRoom::InfoBinary::getProbability(u32 idx) {
@@ -311,14 +299,6 @@ MtObject* rNPCMotMyRoom::InfoBinary::MyDTI::newInstance() const {
 
 const MtDTI& rNPCMotMyRoom::InfoBinary::MotDataBinary::getDTI() const {
     return rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI;
-}
-
-inline void* rNPCMotMyRoom::InfoBinary::MotDataBinary::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI)->memAlloc(sz, align, rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI.getID());
-}
-
-inline void rNPCMotMyRoom::InfoBinary::MotDataBinary::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rNPCMotMyRoom::InfoBinary::MotDataBinary::DTI)->memFree(p_addr);
 }
 
 inline rNPCMotMyRoom::InfoBinary::MotDataBinary::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

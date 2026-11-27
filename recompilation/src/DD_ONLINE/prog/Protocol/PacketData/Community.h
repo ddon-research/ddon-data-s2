@@ -280,3 +280,43 @@ inline void* CDataUpdateMatchingProfileInfo::operator new(size_t sz, void* p_add
 inline CDataUpdateMatchingProfileInfo::CDataUpdateMatchingProfileInfo() {
     this->m_unCharacterID = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataCharacterListElement::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterListElement::DTI);
+}
+
+inline CDataCharacterListElement::CDataCharacterListElement() {
+    this->m_ucOnlineStatus = 0;
+    this->m_usServerID = 0;
+    this->m_BaseInfo.m_wstrClanName.value = nullptr;
+    this->m_BaseInfo.m_CharacterName.m_wstrLastName.value = nullptr;
+    this->m_BaseInfo.m_CharacterName.m_wstrFirstName.value = nullptr;
+}
+
+inline MtAllocator* CDataCharacterName::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterName::DTI);
+}
+
+inline void* CDataCharacterName::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataCharacterName::DTI)->memAlloc(sz, align, ::CDataCharacterName::DTI.::MtDTI::getID());
+}
+
+inline MtAllocator* CDataCommunityCharacterBaseInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataCommunityCharacterBaseInfo::DTI);
+}
+
+inline MtAllocator* CDataFriendInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataFriendInfo::DTI);
+}
+
+inline MtAllocator* CDataJobBaseInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataJobBaseInfo::DTI);
+}
+
+inline MtAllocator* CDataUpdateMatchingProfileInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUpdateMatchingProfileInfo::DTI);
+}

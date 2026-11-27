@@ -157,3 +157,18 @@ inline CDataUseSupportPointRes::CDataUseSupportPointRes() {
     this->m_unAdjustPoint = 0;
     this->m_unTotalPoint = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataSupportRate::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataSupportRate::DTI);
+}
+
+inline MtAllocator* CDataUseSupportPoint::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUseSupportPoint::DTI);
+}
+
+inline MtAllocator* CDataUseSupportPointRes::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataUseSupportPointRes::DTI);
+}

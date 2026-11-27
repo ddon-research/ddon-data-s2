@@ -3,7 +3,6 @@
 #include "cFSMRelate.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,10 +14,6 @@
 
 const MtDTI& cFSMRelate::getDTI() const {
     return cFSMRelate::DTI;
-}
-
-inline MtAllocator* cFSMRelate::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cFSMRelate::DTI);
 }
 
 void* cFSMRelate::operator new(size_t sz, u32 align) {

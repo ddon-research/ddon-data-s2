@@ -16,6 +16,7 @@
 #include "cUnit.h"
 #include "nDrawResource.h"
 #include "nDrawTexture.h"
+#include "nPrim.h"
 #include "rEffect2D.h"
 #include "sEffect.h"
 #include "sMain.h"
@@ -32,10 +33,6 @@ const MtDTI& uEffect2D::getDTI() const {
 
 void* uEffect2D::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(uEffect2D::DTI)->memAlloc(sz, align, uEffect2D::DTI.mID);
-}
-
-inline void uEffect2D::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uEffect2D::DTI)->memFree(p_addr);
 }
 
 uEffect2D::uEffect2D() {
@@ -178,9 +175,27 @@ bool uEffect2D::getBoundary(MtSphere* pdst) {
     return true;
 }
 
-__attribute__((weak)) MT_CTSTR uEffect2D::getName() {
-    DDON_STUB("uEffect2D::getName")
-    return {};
+MT_CTSTR uEffect2D::getName() {
+    rEffect2D* v0_0 = mpEffect2D;
+    unsigned int i0_1;
+    unsigned int v0_3;
+    if (v0_0 == nullptr) {
+        return this->cUnit::getName();
+    } else {
+        i0_1 = 0;
+        v0_3 = 0;
+    }
+    for (;;) {
+        if (v0_0->mPath[i0_1] == 0) {
+            break;
+        } else {
+            if (v0_0->mPath[i0_1] == 92) {
+                v0_3 = i0_1 + 1u;
+            }
+            i0_1 += 1u;
+        }
+    }
+    return &v0_0->mPath[v0_3];
 }
 
 __attribute__((weak)) void uEffect2D::updateWorldMatrix() {

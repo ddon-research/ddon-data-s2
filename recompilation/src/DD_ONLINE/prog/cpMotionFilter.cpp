@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -25,16 +24,8 @@ const MtDTI& cpMotionFilter::getDTI() const {
     return cpMotionFilter::DTI;
 }
 
-inline MtAllocator* cpMotionFilter::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpMotionFilter::DTI);
-}
-
 void* cpMotionFilter::operator new(size_t sz, u32 align) {
     return cpMotionFilter::getAllocator()->memAlloc(sz, align, cpMotionFilter::DTI.getID());
-}
-
-inline void cpMotionFilter::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpMotionFilter::DTI)->memFree(p_addr);
 }
 
 cpMotionFilter::cpMotionFilter() {

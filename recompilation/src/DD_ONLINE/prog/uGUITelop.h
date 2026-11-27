@@ -140,3 +140,15 @@ inline u32 uGUITelop::getMessageIndex() {
 inline u32 uGUITelop::getCurrentPage() {
     return this->mCurrentPage;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUITelop::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUITelop::DTI);
+}
+
+inline void uGUITelop::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUITelop::DTI)->memFree(p_addr);
+}

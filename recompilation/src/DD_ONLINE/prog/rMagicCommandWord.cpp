@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rMagicCommandWord.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -17,14 +15,6 @@
 
 const MtDTI& cMagicCommandWord::getDTI() const {
     return cMagicCommandWord::DTI;
-}
-
-inline void* cMagicCommandWord::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cMagicCommandWord::DTI)->memAlloc(sz, align, cMagicCommandWord::DTI.getID());
-}
-
-inline void cMagicCommandWord::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cMagicCommandWord::DTI)->memFree(p_addr);
 }
 
 void cMagicCommandWord::createProperty(MtPropertyList& s) {
@@ -72,14 +62,6 @@ MtObject* cMagicCommandWord::MyDTI::newInstance() const {
 
 const MtDTI& rMagicCommandWord::getDTI() const {
     return rMagicCommandWord::DTI;
-}
-
-inline void* rMagicCommandWord::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rMagicCommandWord::DTI)->memAlloc(sz, align, rMagicCommandWord::DTI.getID());
-}
-
-inline void rMagicCommandWord::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rMagicCommandWord::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rMagicCommandWord::loadData(MtDataReader& in, cMagicCommandWord* pData) {

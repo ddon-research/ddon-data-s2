@@ -91,3 +91,15 @@ public:
 inline void* uSwingModel::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void uSwingModel::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uSwingModel::DTI)->memFree(p_addr);
+}
+
+inline void uSwingModel::setSwing(rSwingModel* p_resource) {
+    this->mSwing.::cSwingModel::setSwing(p_resource);
+}

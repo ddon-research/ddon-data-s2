@@ -12,6 +12,8 @@
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
 #include "../../MT/MtRandom.h"
+#include "aCharacterEdit.h"
+#include "aLobby.h"
 #include "aStage.h"
 #include "../../XFramework/cArea.h"
 #include "cNetGameServer.h"
@@ -39,16 +41,8 @@ const MtDTI& sAreaExt::getDTI() const {
     return sAreaExt::DTI;
 }
 
-inline MtAllocator* sAreaExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sAreaExt::DTI);
-}
-
 void* sAreaExt::operator new(size_t sz, u32 align) {
     return sAreaExt::getAllocator()->memAlloc(sz, align, sAreaExt::DTI.getID());
-}
-
-inline void sAreaExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sAreaExt::DTI)->memFree(p_addr);
 }
 
 sAreaExt::sAreaExt() {
@@ -102,9 +96,24 @@ __attribute__((weak)) void sAreaExt::reloadViaMenu() {
     /* stub */
 }
 
-__attribute__((weak)) void sAreaExt::jump(const MtDTI& dti) {
-    DDON_STUB("sAreaExt::jump")
-    /* stub */
+void sAreaExt::jump(const MtDTI& dti) {
+    sArchiveManager::getInstance()->setArcLoadMode(0u);
+    MT_CTSTR v0_0 = aCharacterEditGame::DTI.mName;
+    if (v0_0 != dti.mName) {
+        for (const MtDTI* v0_1 = &dti;;) {
+            if (v0_1->mpParent == nullptr) {
+                this->sArea::jump(dti);
+                return;
+            } else {
+                if (v0_0 != v0_1->mpParent->mName) {
+                    v0_1 = v0_1->mpParent;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    jumpStage(160, 0);
 }
 
 void sAreaExt::jumpViaMenu(const MtDTI& dti) {

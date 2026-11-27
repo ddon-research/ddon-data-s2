@@ -297,3 +297,44 @@ inline cAbilityParam::cParamData::cParamData() {
 inline void* rAbilityList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cAbilityData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAbilityData::DTI)->memAlloc(sz, align, ::cAbilityData::DTI.::MtDTI::getID());
+}
+
+inline void cAbilityData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAbilityData::DTI)->memFree(p_addr);
+}
+
+inline void* cAbilityParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAbilityParam::DTI)->memAlloc(sz, align, ::cAbilityParam::DTI.::MtDTI::getID());
+}
+
+inline void cAbilityParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAbilityParam::DTI)->memFree(p_addr);
+}
+
+inline void* cAbilityParam::cParamData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cAbilityParam::cParamData::DTI)->memAlloc(sz, align, ::cAbilityParam::cParamData::DTI.::MtDTI::getID());
+}
+
+inline void cAbilityParam::cParamData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cAbilityParam::cParamData::DTI)->memFree(p_addr);
+}
+
+inline void* rAbilityList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAbilityList::DTI)->memAlloc(sz, align, ::rAbilityList::DTI.::MtDTI::getID());
+}
+
+inline void rAbilityList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAbilityList::DTI)->memFree(p_addr);
+}
+
+inline rAbilityList::rAbilityList() {
+    this->::cResource::setAttribute(18u);
+    this->mDataList.::MtArray::mAutoDelete = true;
+}

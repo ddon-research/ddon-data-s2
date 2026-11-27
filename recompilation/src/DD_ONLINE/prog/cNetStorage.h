@@ -180,3 +180,15 @@ inline u32 cNetStorage::getComId() {
 inline void cNetStorage::setComId(u32 comId) {
     this->mComId = 16;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cNetStorage::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cNetStorage::DTI);
+}
+
+inline void cNetStorage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cNetStorage::DTI)->memFree(p_addr);
+}

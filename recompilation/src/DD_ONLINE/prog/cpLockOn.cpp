@@ -28,16 +28,8 @@ const MtDTI& cpLockOn::getDTI() const {
     return cpLockOn::DTI;
 }
 
-inline MtAllocator* cpLockOn::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpLockOn::DTI);
-}
-
 void* cpLockOn::operator new(size_t sz, u32 align) {
     return cpLockOn::getAllocator()->memAlloc(sz, align, cpLockOn::DTI.getID());
-}
-
-inline void cpLockOn::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpLockOn::DTI)->memFree(p_addr);
 }
 
 cpLockOn::cpLockOn() {
@@ -370,14 +362,6 @@ __attribute__((weak)) MtObject* cpLockOn::MyDTI::newInstance() const {
 
 const MtDTI& cpLockOn::cLockOnTarget::getDTI() const {
     return cpLockOn::cLockOnTarget::DTI;
-}
-
-inline void* cpLockOn::cLockOnTarget::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpLockOn::cLockOnTarget::DTI)->memAlloc(sz, align, cpLockOn::cLockOnTarget::DTI.getID());
-}
-
-inline void cpLockOn::cLockOnTarget::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpLockOn::cLockOnTarget::DTI)->memFree(p_addr);
 }
 
 cpLockOn::cLockOnTarget::cLockOnTarget() {

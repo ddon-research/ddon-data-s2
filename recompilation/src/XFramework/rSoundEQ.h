@@ -19,6 +19,7 @@ class MtPropertyList;
 class MtStream;
 class MtString;
 class MtUI;
+class sSound;
 
 // Declarations
 class rSoundEQ;
@@ -58,6 +59,7 @@ public:
 public:
     class cEQData : public MtObject
     {
+        friend class sSound;
     public:
         class MyDTI;
     public:
@@ -215,4 +217,16 @@ inline rSoundEQ::cEQData::cEQData()
 
 inline u32 rSoundEQ::cEQData::getEQId() {
     return mId;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../MT/MtAllocator.h"
+#include "../MT/MtMemoryAllocator.h"
+
+inline void rSoundEQ::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundEQ::DTI)->memFree(p_addr);
+}
+
+inline void rSoundEQ::cEQData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rSoundEQ::cEQData::DTI)->memFree(p_addr);
 }

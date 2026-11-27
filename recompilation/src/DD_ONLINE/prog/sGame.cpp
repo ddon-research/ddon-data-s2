@@ -138,14 +138,6 @@ const MtDTI& cChargeEffectUID::getDTI() const {
     return cChargeEffectUID::DTI;
 }
 
-inline void* cChargeEffectUID::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cChargeEffectUID::DTI)->memAlloc(sz, align, cChargeEffectUID::DTI.getID());
-}
-
-inline void cChargeEffectUID::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cChargeEffectUID::DTI)->memFree(p_addr);
-}
-
 cChargeEffectUID::cChargeEffectUID() {
     mpRefChargeEffectUID = nullptr;
     mNum = 0;
@@ -234,16 +226,8 @@ const MtDTI& sGame::getDTI() const {
     return sGame::DTI;
 }
 
-inline MtAllocator* sGame::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sGame::DTI);
-}
-
 void* sGame::operator new(size_t sz, u32 align) {
     return sGame::getAllocator()->memAlloc(sz, align, sGame::DTI.getID());
-}
-
-inline void sGame::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sGame::DTI)->memFree(p_addr);
 }
 
 sGame::sGame() {
@@ -601,9 +585,17 @@ __attribute__((weak)) void sGame::onEnteredLand(u32 StageNo) {
     /* stub */
 }
 
-__attribute__((weak)) bool sGame::isEnteredLand(u32 LandId) {
-    DDON_STUB("sGame::isEnteredLand")
-    return {};
+bool sGame::isEnteredLand(u32 LandId) {
+    if (mpLandInfo != nullptr) {
+        if (mpLandInfo->mLandInfo.mLength < LandId) {
+            return false;
+        }
+    } else {
+        if (LandId > 0u) {
+            return false;
+        }
+    }
+    return ((static_cast<unsigned long>(mCharData.mCharData.mEnteredLandInfo.mEnteredLand[LandId >> 5]) >> static_cast<unsigned long>(LandId & 31u)) & 1ul) != 0;
 }
 
 __attribute__((weak)) void sGame::dispLimitJobPointLog(u32 jp, MT_CTSTR pawn_name) {
@@ -630,7 +622,7 @@ void sGame::sendContextFreeMarker() {
 void sGame::resetChargeFlagAll() {
     if (mChargeCourseParam.mLength != 0) {
         for (unsigned int i0_3 = 0;;) {
-            setChargeCourse(*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0_3)]) + 8), false, 0ul, false, false, 0u);
+            setChargeCourse(static_cast<chargeCourseParam*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0_3)])->mCourseId, false, 0ul, false, false, 0u);
             if ((i0_3 + 1u) < mChargeCourseParam.mLength) {
                 i0_3 += 1u;
             } else {
@@ -773,20 +765,59 @@ bool sGame::isChargeCourseEnable(u32 courseId) {
 bool sGame::isChargeCourseEnableIndex(u32 index) {
     if (index < mChargeCourseParam.mLength) {
         if (mChargeCourseParam.getBuffer()[static_cast<int>(index)] != nullptr) {
-            return (*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(mChargeCourseParam.getBuffer()[static_cast<int>(index)]) + 12)) != 0;
+            return static_cast<chargeCourseParam*>(mChargeCourseParam.getBuffer()[static_cast<int>(index)])->mIsEnable;
         }
     }
     return false;
 }
 
-__attribute__((weak)) void sGame::setChargeCourseEndRserve() {
-    DDON_STUB("sGame::setChargeCourseEndRserve")
-    /* stub */
+void sGame::setChargeCourseEndRserve() {
+    u32 v0_0 = getChargeCourseNum();
+    if (v0_0 != 0) {
+        MtObject* * v0_1 = mChargeCourseParam.getBuffer();
+        for (unsigned int i0_2 = 0;;) {
+            if (v0_1[static_cast<int>(i0_2)] != nullptr) {
+                if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 12)) != 0) {
+                    *reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v0_1[static_cast<int>(i0_2)]) + 13) = 1;
+                }
+            }
+            if ((i0_2 + 1u) < v0_0) {
+                i0_2 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
-__attribute__((weak)) void sGame::setChargeCourseEnd() {
-    DDON_STUB("sGame::setChargeCourseEnd")
-    /* stub */
+void sGame::setChargeCourseEnd() {
+    if (getChargeCourseNum() != 0) {
+        u32 v0_0 = getChargeCourseNum();
+        unsigned int i0_3 = 0;
+        u32 v1_0;
+        for (;;) {
+            if (mChargeCourseParam.getBuffer()[static_cast<int>(i0_3)] == nullptr) {
+                v1_0 = v0_0;
+            } else {
+                if (!static_cast<chargeCourseParam*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0_3)])->mIsEnable) {
+                    v1_0 = v0_0;
+                } else {
+                    if (!static_cast<chargeCourseParam*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0_3)])->mEndReserve) {
+                        v1_0 = v0_0;
+                    } else {
+                        setChargeCourse(static_cast<chargeCourseParam*>(mChargeCourseParam.getBuffer()[static_cast<int>(i0_3)])->mCourseId, false, 0ul, true, false, 0u);
+                        v1_0 = getChargeCourseNum();
+                    }
+                }
+            }
+            if ((i0_3 + 1u) < v1_0) {
+                v0_0 = v1_0;
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 const GPCourseInfoVec& sGame::getGPCourseInfoVec() const {
@@ -907,14 +938,14 @@ u32 sGame::getGameTime() const {
     return static_cast<const cGameTime&>(mGameTime).getGameTimeMSec();
 }
 
-__attribute__((weak)) u32 sGame::getGameHour() const {
-    DDON_STUB("sGame::getGameHour")
-    return {};
+u32 sGame::getGameHour() const {
+    u32 t0 = mGameTime.getGameTimeMSec();
+    return static_cast<u32>((static_cast<unsigned long>(static_cast<unsigned int>((((((static_cast<unsigned long>(t0) * 0x10624DD3) >> 38) * 0xC22E4507ul) >> 48) * 0x1517FFFFEAE80ul) + ((static_cast<unsigned long>(t0) * 0x10624DD3) >> 38))) * 0x91A2B3C5ul) >> 43);
 }
 
-__attribute__((weak)) u32 sGame::getGameMinute() const {
-    DDON_STUB("sGame::getGameMinute")
-    return {};
+u32 sGame::getGameMinute() const {
+    u32 t0 = mGameTime.getGameTimeMSec();
+    return static_cast<u32>((static_cast<unsigned long>(static_cast<unsigned int>(((((((static_cast<unsigned long>(t0) * 0x10624DD3) >> 38) * 0xC22E4507ul) >> 48) * 0xFFFEAE80ul) + ((static_cast<unsigned long>(t0) * 0x10624DD3) >> 38)) + (((static_cast<unsigned long>(static_cast<unsigned int>((((((static_cast<unsigned long>(t0) * 0x10624DD3) >> 38) * 0xC22E4507ul) >> 48) * 0x1517FFFFEAE80ul) + ((static_cast<unsigned long>(t0) * 0x10624DD3) >> 38))) * 0x91A2B3C5ul) >> 43) * 0xE0FFFFFF1F0ul))) * 0x88888889ul) >> 37);
 }
 
 u32 sGame::getWeatherID() const {
@@ -1096,9 +1127,13 @@ void sGame::reqPawnTalkLost(uDDOModel* pLostPawn) {
     }
 }
 
-__attribute__((weak)) void sGame::jumpCharEdit(u32 type, u32 retStage, u32 retPos, u32 slotNo) {
-    DDON_STUB("sGame::jumpCharEdit")
-    /* stub */
+void sGame::jumpCharEdit(u32 type, u32 retStage, u32 retPos, u32 slotNo) {
+    mCharEditType = type;
+    mpCharEditReturnArea = nullptr;
+    mCharEditStageNo = retStage;
+    mCharEditRetPosNo = retPos;
+    mCharEditSlotNo = slotNo;
+    static_cast<sAreaExt*>(sArea::getInstance())->jumpStage(160);
 }
 
 void sGame::returnCharEdit() {
@@ -1412,7 +1447,7 @@ __attribute__((weak)) u32 sGame::getArea(s32 stageNo, MtVector3* pPos) {
 u32 sGame::getAreaIdFromIdx(u32 index) {
     if (mpAreaInfo != nullptr) {
         if (index < mpAreaInfo->mAreaInfo.mLength) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpAreaInfo->mAreaInfo.getBuffer()[static_cast<int>(index)]) + 8);
+            return static_cast<rAreaInfo::cAreaInfo*>(mpAreaInfo->mAreaInfo.getBuffer()[static_cast<int>(index)])->mAreaId;
         }
     }
     return 0;
@@ -1477,7 +1512,7 @@ __attribute__((weak)) u32 sGame::getEnableAreaNumInLand(u32 landId) {
 u32 sGame::getLandIdFromIdx(u32 index) {
     if (mpLandInfo != nullptr) {
         if (index < mpLandInfo->mLandInfo.mLength) {
-            return *reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(mpLandInfo->mLandInfo.getBuffer()[static_cast<int>(index)]) + 8);
+            return static_cast<rLandInfo::cLandInfo*>(mpLandInfo->mLandInfo.getBuffer()[static_cast<int>(index)])->mLandId;
         }
     }
     return 0;

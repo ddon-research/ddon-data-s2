@@ -123,3 +123,19 @@ inline void cEquipPreset::operator delete[](void* p_addr) {
 inline void* cEquipPreset::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cEquipPreset::DTI)->memAlloc(sz, align, ::cEquipPreset::DTI.::MtDTI::getID());
 }
+
+inline void* cEquipPreset::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cEquipPreset::DTI)->memAlloc(sz, align, ::cEquipPreset::DTI.::MtDTI::getID());
+}
+
+inline void cEquipPreset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cEquipPreset::DTI)->memFree(p_addr);
+}
+
+inline void* rEquipPreset::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rEquipPreset::DTI)->memAlloc(sz, align, ::rEquipPreset::DTI.::MtDTI::getID());
+}
+
+inline void rEquipPreset::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rEquipPreset::DTI)->memFree(p_addr);
+}

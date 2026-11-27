@@ -55,16 +55,8 @@ const MtDTI& uGUIGaugeEnemy::getDTI() const {
     return uGUIGaugeEnemy::DTI;
 }
 
-inline MtAllocator* uGUIGaugeEnemy::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIGaugeEnemy::DTI);
-}
-
 void* uGUIGaugeEnemy::operator new(size_t sz, u32 align) {
     return uGUIGaugeEnemy::getAllocator()->memAlloc(sz, align, uGUIGaugeEnemy::DTI.getID());
-}
-
-inline void uGUIGaugeEnemy::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIGaugeEnemy::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUIGaugeEnemy::SetTargetIcons(uGUIGaugeEnemy::TargetIcons& targetIcons, uCharacter* character) {
@@ -255,9 +247,33 @@ void uGUIGaugeEnemy::HateIcon::setup(uGUIBase* base, u32 instId_fix_hate, u32 in
     }
 }
 
-__attribute__((weak)) void uGUIGaugeEnemy::HateIcon::updateEvaluationPoint(uCharacter* character) {
-    DDON_STUB("uGUIGaugeEnemy::HateIcon::updateEvaluationPoint")
-    /* stub */
+void uGUIGaugeEnemy::HateIcon::updateEvaluationPoint(uCharacter* character) {
+    if (character != nullptr) {
+        uPlayer* t0 = sPlayerManager::getInstance()->getMyPlayer();
+        if (t0 != nullptr) {
+            cEvaluationName::cEvaluation* const evaluation = character->getEvaluation();
+            if (evaluation != nullptr) {
+                const f32 max_evaluation_point = cEvaluationName::cEvaluation::getCategoryMax(evaluation->getResource(), 5u);
+                if (max_evaluation_point > 0.0f) {
+                    const f32 evaluation_point = evaluation->getUnitEvaPoint(static_cast<uDDOModel*>(t0), 5u);
+                    mLastEvaluationPercent = mEvaluationPercent;
+                    mEvaluationPercent = (100.0f * evaluation_point) / max_evaluation_point;
+                } else {
+                    mLastEvaluationPercent = mEvaluationPercent;
+                    mEvaluationPercent = 0.0f;
+                }
+            } else {
+                mLastEvaluationPercent = mEvaluationPercent;
+                mEvaluationPercent = 0.0f;
+            }
+        } else {
+            mLastEvaluationPercent = mEvaluationPercent;
+            mEvaluationPercent = 0.0f;
+        }
+    } else {
+        mLastEvaluationPercent = mEvaluationPercent;
+        mEvaluationPercent = 0.0f;
+    }
 }
 
 void uGUIGaugeEnemy::HateIcon::resetEvaluationPoint() {
@@ -338,9 +354,8 @@ nGUIExt::OCD_ICON_CATEGORY uGUIGaugeEnemy::IOcdIcon::getOcdIconCategory(u32 para
     }
 }
 
-__attribute__((weak)) nGUIExt::OcdIconParam& uGUIGaugeEnemy::IOcdIcon::refOcdIconParam(u32 paramIndex) {
-    DDON_STUB("uGUIGaugeEnemy::IOcdIcon::refOcdIconParam")
-    __builtin_unreachable();
+nGUIExt::OcdIconParam& uGUIGaugeEnemy::IOcdIcon::refOcdIconParam(u32 paramIndex) {
+    return mOwner.mStatusInfos.elems[(paramIndex <= 1u) ? paramIndex : 0u].mParam;
 }
 
 bool uGUIGaugeEnemy::IOcdIcon::isOcdActive(u32 ocdId) const {

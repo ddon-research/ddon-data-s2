@@ -42,16 +42,8 @@ const MtDTI& cpShlShotCtrl::getDTI() const {
     return cpShlShotCtrl::DTI;
 }
 
-inline MtAllocator* cpShlShotCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpShlShotCtrl::DTI);
-}
-
 void* cpShlShotCtrl::operator new(size_t sz, u32 align) {
     return cpShlShotCtrl::getAllocator()->memAlloc(sz, align, cpShlShotCtrl::DTI.getID());
-}
-
-inline void cpShlShotCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlShotCtrl::DTI)->memFree(p_addr);
 }
 
 cpShlShotCtrl::cpShlShotCtrl() {
@@ -172,53 +164,6 @@ const MtDTI& cpShlShotCtrl::cShlShotReqInfo::getDTI() const {
     return cpShlShotCtrl::cShlShotReqInfo::DTI;
 }
 
-inline void* cpShlShotCtrl::cShlShotReqInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cpShlShotCtrl::cShlShotReqInfo::DTI)->memAlloc(sz, align, cpShlShotCtrl::cShlShotReqInfo::DTI.getID());
-}
-
-inline void cpShlShotCtrl::cShlShotReqInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpShlShotCtrl::cShlShotReqInfo::DTI)->memFree(p_addr);
-}
-
-cpShlShotCtrl::cShlShotReqInfo::cShlShotReqInfo() {
-    mpTarget = nullptr;
-    mPos.x = MtVector3::Zero.x;
-    mPos.y = MtVector3::Zero.y;
-    mPos.z = MtVector3::Zero.z;
-    mPos.pad_ = 0.0f;
-    mDirection.x = MtVector3::AxisZ.x;
-    mDirection.y = MtVector3::AxisZ.y;
-    mDirection.z = MtVector3::AxisZ.z;
-    mDirection.pad_ = 0.0f;
-    mTargetPos.x = MtVector3::Zero.x;
-    mTargetPos.y = MtVector3::Zero.y;
-    mTargetPos.z = MtVector3::Zero.z;
-    mTargetPos.pad_ = 0.0f;
-    mShlUId = 0;
-    mTargetUId = 0;
-    mLockOnIndex = -1;
-    mShotGroup = -1;
-    mShotIndex = -1;
-    mShotTimer = 0.0f;
-    mIsCalcDirTargetPos = false;
-    mIsInherit = false;
-    mShotSts_Guard = 0;
-    mIsNotifyDelete = false;
-    mWork = -1;
-    mIsUseShotCoordMatrix = false;
-    mIsConst = false;
-    mConstUId = 0;
-    mConstJoint = 255;
-    mSharedUID[6] = 0;
-    mSharedUID[7] = 0;
-    mSharedUID[4] = 0;
-    mSharedUID[5] = 0;
-    mSharedUID[2] = 0;
-    mSharedUID[3] = 0;
-    mSharedUID[0] = 0;
-    mSharedUID[1] = 0;
-}
-
 cpShlShotCtrl::cShlShotReqInfo::~cShlShotReqInfo() {
     return;
 }
@@ -226,9 +171,61 @@ cpShlShotCtrl::cShlShotReqInfo::~cShlShotReqInfo() {
 __attribute__((weak)) void cpShlShotCtrl::cShlShotReqInfo::createProperty(MtPropertyList& s) {
 }
 
-__attribute__((weak)) void cpShlShotCtrl::cShlShotReqInfo::copyParam(const cpShlShotCtrl::cShlShotReqInfo& info) {
-    DDON_STUB("cpShlShotCtrl::cShlShotReqInfo::copyParam")
-    /* stub */
+void cpShlShotCtrl::cShlShotReqInfo::copyParam(const cpShlShotCtrl::cShlShotReqInfo& info) {
+    mPos.x = info.mPos.x;
+    mPos.y = info.mPos.y;
+    mPos.z = info.mPos.z;
+    mPos.pad_ = 0.0f;
+    mDirection.x = info.mDirection.x;
+    mDirection.y = info.mDirection.y;
+    mDirection.z = info.mDirection.z;
+    mDirection.pad_ = 0.0f;
+    mTargetPos.x = info.mTargetPos.x;
+    mTargetPos.y = info.mTargetPos.y;
+    mTargetPos.z = info.mTargetPos.z;
+    mTargetPos.pad_ = 0.0f;
+    mTargetUId = info.mTargetUId;
+    mLockOnIndex = info.mLockOnIndex;
+    mShlUId = info.mShlUId;
+    mShotGroup = info.mShotGroup;
+    mShotIndex = info.mShotIndex;
+    mShotTimer = info.mShotTimer;
+    mIsCalcDirTargetPos = info.mIsCalcDirTargetPos;
+    mShotSts_Guard = info.getShotStsPrivate();
+    mIsInherit = info.mIsInherit;
+    mIsNotifyDelete = info.mIsNotifyDelete;
+    mWork = info.mWork;
+    const bool t0 = info.mIsUseShotCoordMatrix;
+    mIsUseShotCoordMatrix = t0;
+    if (t0) {
+        mShlMatrix.m[0].x = info.mShlMatrix.m[0].x;
+        mShlMatrix.m[0].y = info.mShlMatrix.m[0].y;
+        mShlMatrix.m[0].z = info.mShlMatrix.m[0].z;
+        mShlMatrix.m[0].w = info.mShlMatrix.m[0].w;
+        mShlMatrix.m[1].x = info.mShlMatrix.m[1].x;
+        mShlMatrix.m[1].y = info.mShlMatrix.m[1].y;
+        mShlMatrix.m[1].z = info.mShlMatrix.m[1].z;
+        mShlMatrix.m[1].w = info.mShlMatrix.m[1].w;
+        mShlMatrix.m[2].x = info.mShlMatrix.m[2].x;
+        mShlMatrix.m[2].y = info.mShlMatrix.m[2].y;
+        mShlMatrix.m[2].z = info.mShlMatrix.m[2].z;
+        mShlMatrix.m[2].w = info.mShlMatrix.m[2].w;
+        mShlMatrix.m[3].x = info.mShlMatrix.m[3].x;
+        mShlMatrix.m[3].y = info.mShlMatrix.m[3].y;
+        mShlMatrix.m[3].z = info.mShlMatrix.m[3].z;
+        mShlMatrix.m[3].w = info.mShlMatrix.m[3].w;
+    }
+    mIsConst = info.mIsConst;
+    mConstUId = info.mConstUId;
+    mConstJoint = info.mConstJoint;
+    mSharedUID[0] = info.mSharedUID[0];
+    mSharedUID[1] = info.mSharedUID[1];
+    mSharedUID[2] = info.mSharedUID[2];
+    mSharedUID[3] = info.mSharedUID[3];
+    mSharedUID[4] = info.mSharedUID[4];
+    mSharedUID[5] = info.mSharedUID[5];
+    mSharedUID[6] = info.mSharedUID[6];
+    mSharedUID[7] = info.mSharedUID[7];
 }
 
 void cpShlShotCtrl::cShlShotReqInfo::copySharedUID(cpObjCollisionBase* pSrc) {
@@ -243,17 +240,6 @@ void cpShlShotCtrl::cShlShotReqInfo::copySharedUID(cpObjCollisionBase* pSrc) {
     mSharedUID[5] = pSrc->mSharedUID[5];
     mSharedUID[6] = pSrc->mSharedUID[6];
     mSharedUID[7] = pSrc->mSharedUID[7];
-}
-
-inline void cpShlShotCtrl::cShlShotReqInfo::copySharedUIDToObjCollision(cpObjCollisionBase* pDst) {
-    pDst->mSharedUID[0] = mSharedUID[0];
-    pDst->mSharedUID[1] = mSharedUID[1];
-    pDst->mSharedUID[2] = mSharedUID[2];
-    pDst->mSharedUID[3] = mSharedUID[3];
-    pDst->mSharedUID[4] = mSharedUID[4];
-    pDst->mSharedUID[5] = mSharedUID[5];
-    pDst->mSharedUID[6] = mSharedUID[6];
-    pDst->mSharedUID[7] = mSharedUID[7];
 }
 
 inline cpShlShotCtrl::cShlShotReqInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

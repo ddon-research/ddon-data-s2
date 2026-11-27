@@ -33,14 +33,6 @@ const MtDTI& cWSCEpv::getDTI() const {
     return cWSCEpv::DTI;
 }
 
-inline void* cWSCEpv::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWSCEpv::DTI)->memAlloc(sz, align, cWSCEpv::DTI.getID());
-}
-
-inline void cWSCEpv::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWSCEpv::DTI)->memFree(p_addr);
-}
-
 void cWSCEpv::setupCmd(cWeatherScriptIO& io) const {
     cWSCParam* p_param = io.getWSCParam(static_cast<const void*>(this));
     if (p_param == nullptr) {
@@ -83,10 +75,6 @@ const MtDTI& cWSCParam::getDTI() const {
     return cWSCParam::DTI;
 }
 
-inline void cWSCParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWSCParam::DTI)->memFree(p_addr);
-}
-
 cWSCParam::~cWSCParam() {
     DDON_STUB("cWSCParam::~cWSCParam")
     /* stub */
@@ -103,14 +91,6 @@ __attribute__((weak)) MtObject* cWSCParam::MyDTI::newInstance() const {
 
 const MtDTI& cWSCSound::getDTI() const {
     return cWSCSound::DTI;
-}
-
-inline void* cWSCSound::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWSCSound::DTI)->memAlloc(sz, align, cWSCSound::DTI.getID());
-}
-
-inline void cWSCSound::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWSCSound::DTI)->memFree(p_addr);
 }
 
 void cWSCSound::setupCmd(cWeatherScriptIO& io) const {
@@ -154,14 +134,6 @@ MtObject* cWSCSound::MyDTI::newInstance() const {
 
 const MtDTI& cWSCSoundRnd::getDTI() const {
     return cWSCSoundRnd::DTI;
-}
-
-inline void* cWSCSoundRnd::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWSCSoundRnd::DTI)->memAlloc(sz, align, cWSCSoundRnd::DTI.getID());
-}
-
-inline void cWSCSoundRnd::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWSCSoundRnd::DTI)->memFree(p_addr);
 }
 
 void cWSCSoundRnd::setupCmd(cWeatherScriptIO& io) const {
@@ -209,14 +181,6 @@ const MtDTI& cWSCSoundVolume::getDTI() const {
     return cWSCSoundVolume::DTI;
 }
 
-inline void* cWSCSoundVolume::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWSCSoundVolume::DTI)->memAlloc(sz, align, cWSCSoundVolume::DTI.getID());
-}
-
-inline void cWSCSoundVolume::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWSCSoundVolume::DTI)->memFree(p_addr);
-}
-
 __attribute__((weak)) void cWSCSoundVolume::setupCmd(cWeatherScriptIO& io) const {
 }
 
@@ -247,14 +211,6 @@ const MtDTI& cWSCTimer::getDTI() const {
     return cWSCTimer::DTI;
 }
 
-inline void* cWSCTimer::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWSCTimer::DTI)->memAlloc(sz, align, cWSCTimer::DTI.getID());
-}
-
-inline void cWSCTimer::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWSCTimer::DTI)->memFree(p_addr);
-}
-
 bool cWSCTimer::updateCmd(cWeatherScriptIO& io) const {
     return 0.0f >= mEndFrame;
 }
@@ -269,14 +225,6 @@ MtObject* cWSCTimer::MyDTI::newInstance() const {
 
 const MtDTI& cWeatherScriptCmd::getDTI() const {
     return cWeatherScriptCmd::DTI;
-}
-
-inline void* cWeatherScriptCmd::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWeatherScriptCmd::DTI)->memAlloc(sz, align, cWeatherScriptCmd::DTI.getID());
-}
-
-inline void cWeatherScriptCmd::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherScriptCmd::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void cWeatherScriptCmd::setupCmd(cWeatherScriptIO& io) const {
@@ -329,10 +277,6 @@ const MtDTI& cWeatherScriptCmds::getDTI() const {
     return cWeatherScriptCmds::DTI;
 }
 
-inline void cWeatherScriptCmds::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cWeatherScriptCmds::DTI)->memFree(p_addr);
-}
-
 cWeatherScriptCmds::cWeatherScriptCmds() {
     for (u32 i = 0; i < 4; i++) {
         mScripts.elems[i].setAutoDelete(true);
@@ -359,14 +303,6 @@ __attribute__((weak)) MtObject* cWeatherScriptCmds::MyDTI::newInstance() const {
 
 const MtDTI& cWeatherScriptIO::getDTI() const {
     return cWeatherScriptIO::DTI;
-}
-
-inline MtAllocator* cWeatherScriptIO::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cWeatherScriptIO::DTI);
-}
-
-inline void* cWeatherScriptIO::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cWeatherScriptIO::DTI)->memAlloc(sz, align, cWeatherScriptIO::DTI.getID());
 }
 
 __attribute__((weak)) void cWeatherScriptIO::operator delete(void* p_addr) {

@@ -36,16 +36,8 @@ const MtDTI& uEffect2DExt::getDTI() const {
     return uEffect2DExt::DTI;
 }
 
-MtAllocator* uEffect2DExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uEffect2DExt::DTI);
-}
-
 void* uEffect2DExt::operator new(size_t sz, u32 align) {
     return uEffect2DExt::getAllocator()->memAlloc(sz, align, uEffect2DExt::DTI.getID());
-}
-
-inline void uEffect2DExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uEffect2DExt::DTI)->memFree(p_addr);
 }
 
 uEffect2DExt::uEffect2DExt() {
@@ -212,9 +204,5 @@ uEffect2DExt::MyDTI uEffect2DExt::DTI("uEffect2DExt", &::uEffect2D::DTI, 560ul, 
 __attribute__((weak)) MtObject* uEffect2DExt::MyDTI::newInstance() const {
     DDON_STUB("uEffect2DExt::MyDTI::newInstance")
     return nullptr;
-}
-
-void uEffect2DExt::CORRECT_COLOR_PARAM::ZONE_PARAM::operator delete[](void* padr) {
-    MtMemoryAllocator::getAllocator(uEffect2DExt::DTI)->memFree(padr);
 }
 

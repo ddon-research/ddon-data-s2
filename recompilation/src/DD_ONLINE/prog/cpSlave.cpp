@@ -4,7 +4,6 @@
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "cContextInterface.h"
 #include "cDelegate.h"
@@ -28,16 +27,8 @@ const MtDTI& cpSlave::getDTI() const {
     return cpSlave::DTI;
 }
 
-inline MtAllocator* cpSlave::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cpSlave::DTI);
-}
-
 void* cpSlave::operator new(size_t sz, u32 align) {
     return cpSlave::getAllocator()->memAlloc(sz, align, cpSlave::DTI.getID());
-}
-
-inline void cpSlave::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cpSlave::DTI)->memFree(p_addr);
 }
 
 cpSlave::cpSlave() {
@@ -92,9 +83,16 @@ void cpSlave::updatePtr() {
     mpModel = nullptr;
 }
 
-__attribute__((weak)) void cpSlave::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
-    DDON_STUB("cpSlave::applyWorldOffset")
-    /* stub */
+void cpSlave::applyWorldOffset(const MtVector3& offset, const MtVector3& absolute_offset) {
+    mMoveTargetPos.x = offset.x + mMoveTargetPos.x;
+    mMoveTargetPos.y = offset.y + mMoveTargetPos.y;
+    mMoveTargetPos.z = offset.z + mMoveTargetPos.z;
+    mBeginMyPos.x = offset.x + mBeginMyPos.x;
+    mBeginMyPos.y = offset.y + mBeginMyPos.y;
+    mBeginMyPos.z = offset.z + mBeginMyPos.z;
+    mTargetPos.x = offset.x + mTargetPos.x;
+    mTargetPos.y = offset.y + mTargetPos.y;
+    mTargetPos.z = offset.z + mTargetPos.z;
 }
 
 __attribute__((weak)) u32 cpSlave::callbackGetAction() {
@@ -198,13 +196,6 @@ void cpSlave::interpolatePos() {
             }
         }
     }
-}
-
-inline void cpSlave::setMoveTragetPos(const MtVector3& pos) {
-    mMoveTargetPos.x = pos.x;
-    mMoveTargetPos.y = pos.y;
-    mMoveTargetPos.z = pos.z;
-    mMoveTargetPos.pad_ = 0.0f;
 }
 
 __attribute__((weak)) bool cpSlave::interpolatePosForMove() {

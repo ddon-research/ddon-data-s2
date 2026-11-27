@@ -64,6 +64,7 @@ public:
 public:
     class cUnitData : public MtObject
     {
+        friend class cLayoutSet;
     public:
         class MyDTI;
     public:
@@ -234,4 +235,26 @@ inline u32 cLayoutSet::getSubGroupBit() const {
 
 inline void* cLayoutSet::cUnitData::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+inline cLayoutSet::cUnitData::cUnitData() {
+    this->mState = static_cast<cLayoutSet::STATE>(0);
+    this->mUnitID = 0;
+    this->mPrio = 0;
+    this->mpPreset = nullptr;
+    this->mType = 0;
+    this->mpDti = nullptr;
+    this->mpSetInfo = nullptr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cLayoutSet::cUnitData::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cLayoutSet::cUnitData::DTI)->memAlloc(sz, align, ::cLayoutSet::cUnitData::DTI.::MtDTI::getID());
+}
+
+inline void cLayoutSet::cUnitData::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cLayoutSet::cUnitData::DTI)->memFree(p_addr);
 }

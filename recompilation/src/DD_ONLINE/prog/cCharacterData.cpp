@@ -43,16 +43,8 @@ const MtDTI& cCharacterData::getDTI() const {
     return cCharacterData::DTI;
 }
 
-inline MtAllocator* cCharacterData::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cCharacterData::DTI);
-}
-
 void* cCharacterData::operator new[](size_t sz, u32 align) {
     return cCharacterData::getAllocator()->memAlloc(sz, align, cCharacterData::DTI.getID());
-}
-
-inline void cCharacterData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cCharacterData::DTI)->memFree(p_addr);
 }
 
 void cCharacterData::operator delete[](void* p_addr) {
@@ -106,10 +98,6 @@ __attribute__((weak)) void cCharacterData::setMesseageSetPacket(CharacterMsgSetV
 
 void cCharacterData::setInviteWait(bool flag, bool sendFlag) {
     mCharData.mMatchProfile.mInviteWait = flag;
-}
-
-inline void cCharacterData::serializeQuestEtcF(BitWriter& w) const {
-    w.writeU32(mCharData.mQuestEtcF);
 }
 
 __attribute__((weak)) void cCharacterData::setRefPawnHistry(u32 pawnId, const cCharacterData::stPawnData* pPawnData) {

@@ -117,10 +117,32 @@ inline rAreaInfoJointArea::cAreaInfoJointArea::cAreaInfoJointArea() {
 }
 
 // Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDataReader.h"
+#include "../../MT/MtMemoryAllocator.h"
 
 inline bool rAreaInfoJointArea::cAreaInfoJointArea::load(MtDataReader& r) {
     mAreaId = r.readU32();
     mMAJAId = r.readU32();
     return true;
+}
+
+inline void* rAreaInfoJointArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::DTI)->memAlloc(sz, align, ::rAreaInfoJointArea::DTI.::MtDTI::getID());
+}
+
+inline void rAreaInfoJointArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::DTI)->memFree(p_addr);
+}
+
+inline rAreaInfoJointArea::rAreaInfoJointArea() {
+    this->::cResource::setAttribute(22u);
+}
+
+inline void* rAreaInfoJointArea::cAreaInfoJointArea::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memAlloc(sz, align, ::rAreaInfoJointArea::cAreaInfoJointArea::DTI.::MtDTI::getID());
+}
+
+inline void rAreaInfoJointArea::cAreaInfoJointArea::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rAreaInfoJointArea::cAreaInfoJointArea::DTI)->memFree(p_addr);
 }

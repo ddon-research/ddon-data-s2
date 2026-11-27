@@ -358,3 +358,19 @@ inline void* uGUIMissionInfo::cItem::operator new(size_t sz, void* p_addr) {
 
 inline uGUIMissionInfo::missionInfo::missionInfo() {
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIMissionInfo::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIMissionInfo::DTI);
+}
+
+inline void uGUIMissionInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMissionInfo::DTI)->memFree(p_addr);
+}
+
+inline void uGUIMissionInfo::cItem::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIMissionInfo::cItem::DTI)->memFree(p_addr);
+}

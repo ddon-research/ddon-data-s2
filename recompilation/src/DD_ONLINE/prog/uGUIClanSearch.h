@@ -248,3 +248,23 @@ inline uGUIClanSearch::cGUIPageListSearchClan::cGUIPageListSearchClan() {
 inline void* uGUIClanSearchBase::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void uGUIClanSearch::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIClanSearch::DTI)->memFree(p_addr);
+}
+
+inline void* uGUIClanSearch::cGUIPageListSearchClan::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::uGUIClanSearch::cGUIPageListSearchClan::DTI)->memAlloc(sz, align, ::uGUIClanSearch::cGUIPageListSearchClan::DTI.::MtDTI::getID());
+}
+
+inline void uGUIClanSearch::cGUIPageListSearchClan::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIClanSearch::cGUIPageListSearchClan::DTI)->memFree(p_addr);
+}
+
+inline void uGUIClanSearchBase::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIClanSearchBase::DTI)->memFree(p_addr);
+}

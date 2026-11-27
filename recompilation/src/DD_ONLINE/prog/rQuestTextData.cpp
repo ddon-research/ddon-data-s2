@@ -20,20 +20,8 @@ const MtDTI& rQuestTextData::getDTI() const {
     return rQuestTextData::DTI;
 }
 
-inline void* rQuestTextData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rQuestTextData::DTI)->memAlloc(sz, align, rQuestTextData::DTI.getID());
-}
-
-inline void rQuestTextData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rQuestTextData::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rQuestTextData::getExt() const {
     return "qtd";
-}
-
-inline rQuestTextData::rQuestTextData() {
-    setAttribute(22u);
 }
 
 rQuestTextData::~rQuestTextData() {
@@ -111,25 +99,12 @@ const MtDTI& rQuestTextData::cTextData::getDTI() const {
     return rQuestTextData::cTextData::DTI;
 }
 
-void* rQuestTextData::cTextData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rQuestTextData::cTextData::DTI)->memAlloc(sz, align, rQuestTextData::cTextData::DTI.getID());
-}
-
-inline void rQuestTextData::cTextData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rQuestTextData::cTextData::DTI)->memFree(p_addr);
-}
-
 rQuestTextData::cTextData::~cTextData() {
 }
 
 void rQuestTextData::cTextData::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mType", &mType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mMsgGmdIdx", &mMsgGmdIdx, 0u, 0u);
-}
-
-void rQuestTextData::cTextData::load(MtDataReader& r) {
-    mType = r.readU32();
-    mMsgGmdIdx = r.readU32();
 }
 
 inline rQuestTextData::cTextData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

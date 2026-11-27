@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cRemoteProcedure.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemory.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -20,10 +18,6 @@
 
 const MtDTI& cRemoteProcedure::getDTI() const {
     return cRemoteProcedure::DTI;
-}
-
-inline void cRemoteProcedure::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cRemoteProcedure::DTI)->memFree(p_addr);
 }
 
 cRemoteProcedure::cRemoteProcedure() {
@@ -79,8 +73,20 @@ bool cRemoteProcedure::processRemoteCallDefault(cRemoteCall& call, bool isParall
 }
 
 __attribute__((weak)) bool cRemoteProcedure::processRemoteCallBoth(cRemoteCall& call, s32 member_id) {
-    DDON_STUB("cRemoteProcedure::processRemoteCallBoth")
-    return {};
+    bool result = false;
+    IStateMachineRpcReceiver* t1 = getRpcReceiveStateMachine();
+    if (t1 != nullptr && t1->processRemoteCallInStateMachine(call, true)) {
+        result = true;
+    } else {
+        result = processRemoteCall(call, true, member_id);
+    }
+    t1 = getRpcReceiveStateMachine();
+    if (t1 != nullptr && t1->processRemoteCallInStateMachine(call, false)) {
+        result = true;
+    } else {
+        result = processRemoteCall(call, false, member_id) | result;
+    }
+    return result;
 }
 
 bool cRemoteProcedure::processRemoteCall(cRemoteCall& call, bool issParallel, s32 member_id) {

@@ -1,9 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUIAnnounce.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
-#include "../../MT/MtColor.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
 #include "../../MT/MtMemoryAllocator.h"
@@ -43,16 +43,8 @@ const MtDTI& uGUIAnnounce::getDTI() const {
     return uGUIAnnounce::DTI;
 }
 
-inline MtAllocator* uGUIAnnounce::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIAnnounce::DTI);
-}
-
 void* uGUIAnnounce::operator new(size_t sz, u32 align) {
     return uGUIAnnounce::getAllocator()->memAlloc(sz, align, uGUIAnnounce::DTI.getID());
-}
-
-inline void uGUIAnnounce::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIAnnounce::DTI)->memFree(p_addr);
 }
 
 uGUIAnnounce::~uGUIAnnounce() {
@@ -84,9 +76,174 @@ __attribute__((weak)) void uGUIAnnounce::callbackAnimationEvent(u32 instanceID, 
     /* stub */
 }
 
-__attribute__((weak)) bool uGUIAnnounce::checkSameMsg(MT_CTSTR pMsg, MT_CTSTR pAnalyze0, MT_CTSTR pAnalyze1, u32 analyzeNum1, u32 analyzeNum2) {
-    DDON_STUB("uGUIAnnounce::checkSameMsg")
-    return {};
+bool uGUIAnnounce::checkSameMsg(MT_CTSTR pMsg, MT_CTSTR pAnalyze0, MT_CTSTR pAnalyze1, u32 analyzeNum1, u32 analyzeNum2) {
+    if (pMsg != (&mText.mStr[0])) {
+        if (pMsg != nullptr) {
+            if (strcmp(&mText.mStr[0], pMsg) == 0) {
+                if (pAnalyze0 != nullptr) {
+                    if (mMsgAnalyzerWork[0].mAnalyzeMsg.value != nullptr) {
+                        if (strcmp(pAnalyze0, reinterpret_cast<const char*>(mMsgAnalyzerWork[0].mAnalyzeMsg.value->str)) == 0) {
+                            if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                                if (pAnalyze1 != nullptr) {
+                                    if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                                        if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                                            return false;
+                                        }
+                                    } else {
+                                        if ((*pAnalyze1) != '\0') {
+                                            return false;
+                                        }
+                                    }
+                                }
+                                return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+                            }
+                        }
+                    } else {
+                        if ((*pAnalyze0) == '\0') {
+                            if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                                if (pAnalyze1 != nullptr) {
+                                    if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                                        if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                                            return false;
+                                        }
+                                    } else {
+                                        if ((*pAnalyze1) != '\0') {
+                                            return false;
+                                        }
+                                    }
+                                }
+                                return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+                            }
+                        }
+                    }
+                } else {
+                    if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                        if (pAnalyze1 != nullptr) {
+                            if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                                if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                                    return false;
+                                }
+                            } else {
+                                if ((*pAnalyze1) != '\0') {
+                                    return false;
+                                }
+                            }
+                        }
+                        return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+                    }
+                }
+            }
+        } else {
+            if (mText.mLength == 0) {
+                if (pAnalyze0 != nullptr) {
+                    if (mMsgAnalyzerWork[0].mAnalyzeMsg.value != nullptr) {
+                        if (strcmp(pAnalyze0, reinterpret_cast<const char*>(mMsgAnalyzerWork[0].mAnalyzeMsg.value->str)) == 0) {
+                            if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                                if (pAnalyze1 != nullptr) {
+                                    if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                                        if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                                            return false;
+                                        }
+                                    } else {
+                                        if ((*pAnalyze1) != '\0') {
+                                            return false;
+                                        }
+                                    }
+                                }
+                                return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+                            }
+                        }
+                    } else {
+                        if ((*pAnalyze0) == '\0') {
+                            if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                                if (pAnalyze1 != nullptr) {
+                                    if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                                        if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                                            return false;
+                                        }
+                                    } else {
+                                        if ((*pAnalyze1) != '\0') {
+                                            return false;
+                                        }
+                                    }
+                                }
+                                return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+                            }
+                        }
+                    }
+                } else {
+                    if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                        if (pAnalyze1 != nullptr) {
+                            if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                                if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                                    return false;
+                                }
+                            } else {
+                                if ((*pAnalyze1) != '\0') {
+                                    return false;
+                                }
+                            }
+                        }
+                        return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+                    }
+                }
+            }
+        }
+    } else {
+        if (pAnalyze0 != nullptr) {
+            if (mMsgAnalyzerWork[0].mAnalyzeMsg.value != nullptr) {
+                if (strcmp(pAnalyze0, reinterpret_cast<const char*>(mMsgAnalyzerWork[0].mAnalyzeMsg.value->str)) == 0) {
+                    if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                        if (pAnalyze1 != nullptr) {
+                            if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                                if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                                    return false;
+                                }
+                            } else {
+                                if ((*pAnalyze1) != '\0') {
+                                    return false;
+                                }
+                            }
+                        }
+                        return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+                    }
+                }
+            } else {
+                if ((*pAnalyze0) == '\0') {
+                    if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                        if (pAnalyze1 != nullptr) {
+                            if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                                if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                                    return false;
+                                }
+                            } else {
+                                if ((*pAnalyze1) != '\0') {
+                                    return false;
+                                }
+                            }
+                        }
+                        return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+                    }
+                }
+            }
+        } else {
+            if (mMsgAnalyzerWork[0].mAnalyzeNum == static_cast<int>(analyzeNum1)) {
+                if (pAnalyze1 != nullptr) {
+                    if (mMsgAnalyzerWork[1].mAnalyzeMsg.value != nullptr) {
+                        if (strcmp(pAnalyze1, reinterpret_cast<const char*>(mMsgAnalyzerWork[1].mAnalyzeMsg.value->str)) != 0) {
+                            return false;
+                        }
+                    } else {
+                        if ((*pAnalyze1) != '\0') {
+                            return false;
+                        }
+                    }
+                }
+                return mMsgAnalyzerWork[1].mAnalyzeNum == static_cast<int>(analyzeNum2);
+            }
+        }
+    }
+    return false;
 }
 
 __attribute__((weak)) void uGUIAnnounce::updateInit() {
@@ -132,9 +289,65 @@ void uGUIAnnounce::updateEntryBoardReady() {
     }
 }
 
-__attribute__((weak)) void uGUIAnnounce::updateEntryBoardDepart() {
-    DDON_STUB("uGUIAnnounce::updateEntryBoardDepart")
-    /* stub */
+void uGUIAnnounce::updateEntryBoardDepart() {
+    u32 t0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->mMyBoardInfo.memberNumMin;
+    s32 t1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->getGameSessionMemberNum(true);
+    nQuest::SCHEDULE_ID scid(sQuestManagerExt::getInstance()->getNowCallEntryBoardScheduleID());
+    bool t2 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getSessionManager()->isPartyLarge(true);
+    if (t0 != 0) {
+        if (!!t2) {
+            if (t1 >= static_cast<int>(t0)) {
+                if (t1 != 0) {
+                    s32 v0_0 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->getLeaderMemberIndex();
+                    if (v0_0 != 0) {
+                        u32 v0_1 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.mLength;
+                        if (v0_1 != 0) {
+                            MtObject* * v0_2 = static_cast<sNetworkExt*>(sNetwork::getInstance())->getGameServer()->mPartyMemberInfoVec.mpArray;
+                            unsigned int i0_4 = 0;
+                            MtObject* v1_3;
+                            for (;;) {
+                                v1_3 = v0_2[static_cast<int>(i0_4)];
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_3) + 24)) == static_cast<unsigned int>(v0_0)) {
+                                    if ((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v1_3) + 120)) > 3) {
+                                        break;
+                                    } else {
+                                        if (((12ul >> static_cast<unsigned long>((*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(v1_3) + 120)) & 15)) & 1ul) == 0) {
+                                            break;
+                                        }
+                                    }
+                                }
+                                if ((i0_4 + 1u) < v0_1) {
+                                    i0_4 += 1u;
+                                } else {
+                                    mType = 0;
+                                    mFrame = 0.0f;
+                                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
+                                    return;
+                                }
+                            }
+                            if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(v1_3) + 116)) != 0xFFFFFFFFu) {
+                                if ((*reinterpret_cast<unsigned int*>(reinterpret_cast<char*>(sArea::getInstance()->mpArea[2]) + 320)) == 0) {
+                                    if (!static_cast<sGUIExt*>(sGUI::getInstance())->mIsEntryDepart) {
+                                        if (sQuestManagerExt::getInstance()->isEnableEntryBoard()) {
+                                            if (sQuestManagerExt::getInstance()->isDistributionSituation(scid)) {
+                                                bool t3 = sQuestManagerExt::getInstance()->isCycleContentsPlayNow();
+                                                if (!t3) {
+                                                    return;
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    mType = 0;
+    mFrame = 0.0f;
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIAnnounce::updateWait);
 }
 
 void uGUIAnnounce::updateEntryBoardReentry() {
@@ -227,24 +440,6 @@ void uGUIAnnounce::updateEndWait() {
 
 void uGUIAnnounce::updateExit() {
     end();
-}
-
-inline void uGUIAnnounce::adjustWindowColor() {
-    if (mpObjColAdjWindow != nullptr) {
-        if (mColor != 0) {
-            mpObjColAdjWindow->mAmbientColor.rgba = 0xF0FC8;
-        } else {
-            mpObjColAdjWindow->mAmbientColor.rgba = 0xFF9B00;
-        }
-    }
-    if (mpObjColAdjText == nullptr) {
-        return;
-    }
-    if (mColor != 0) {
-        mpObjColAdjText->mAmbientColor.rgba = 166;
-    } else {
-        mpObjColAdjText->mAmbientColor.rgba = 0xA66200;
-    }
 }
 
 inline uGUIAnnounce::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

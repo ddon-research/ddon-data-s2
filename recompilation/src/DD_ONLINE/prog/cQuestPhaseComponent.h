@@ -174,3 +174,27 @@ inline cQuestPhaseCpDivide::cPlayerState::cPlayerState() {
     this->mCharacterId = 0;
     this->mHasChanged = false;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void cQuestPhaseComponent::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPhaseComponent::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestPhaseCpDivide::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseCpDivide::DTI)->memAlloc(sz, align, ::cQuestPhaseCpDivide::DTI.::MtDTI::getID());
+}
+
+inline void cQuestPhaseCpDivide::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPhaseCpDivide::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestPhaseCpDivide::cPlayerState::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestPhaseCpDivide::cPlayerState::DTI)->memAlloc(sz, align, ::cQuestPhaseCpDivide::cPlayerState::DTI.::MtDTI::getID());
+}
+
+inline void cQuestPhaseCpDivide::cPlayerState::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestPhaseCpDivide::cPlayerState::DTI)->memFree(p_addr);
+}

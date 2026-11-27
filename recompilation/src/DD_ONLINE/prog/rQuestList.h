@@ -250,3 +250,40 @@ inline void* rQuestList::operator new(size_t sz, void* p_addr) {
 inline void cQuestSet::operator delete(void* p_addr) {
     MtMemoryAllocator::getAllocator(cQuestSet::DTI)->memFree(p_addr);
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cQuestGroup::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestGroup::DTI)->memAlloc(sz, align, ::cQuestGroup::DTI.::MtDTI::getID());
+}
+
+inline void cQuestGroup::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestGroup::DTI)->memFree(p_addr);
+}
+
+inline void* cQuestSet::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestSet::DTI)->memAlloc(sz, align, ::cQuestSet::DTI.::MtDTI::getID());
+}
+
+inline void* cQuestStage::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cQuestStage::DTI)->memAlloc(sz, align, ::cQuestStage::DTI.::MtDTI::getID());
+}
+
+inline void cQuestStage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cQuestStage::DTI)->memFree(p_addr);
+}
+
+inline void* rQuestList::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rQuestList::DTI)->memAlloc(sz, align, ::rQuestList::DTI.::MtDTI::getID());
+}
+
+inline void rQuestList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rQuestList::DTI)->memFree(p_addr);
+}
+
+inline rQuestList::rQuestList() {
+    this->::cResource::setAttribute(22u);
+    this->mbNoDelete = false;
+}

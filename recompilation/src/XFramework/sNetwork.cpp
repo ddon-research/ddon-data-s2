@@ -3,7 +3,6 @@
 #include <_pthread.h>
 #include <stdlib.h>
 #include "sNetwork.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
 #include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtNetContext.h"
@@ -31,10 +30,6 @@
 
 const MtDTI& sNetwork::getDTI() const {
     return sNetwork::DTI;
-}
-
-inline void sNetwork::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sNetwork::DTI)->memFree(p_addr);
 }
 
 sNetwork::sNetwork(MtNetCore::InitParam* param) {
@@ -316,9 +311,33 @@ __attribute__((weak)) MtNetContext* sNetwork::getContext() {
     return nullptr;
 }
 
-__attribute__((weak)) MtNetFriendList* sNetwork::getFriendList() {
-    DDON_STUB("sNetwork::getFriendList")
-    return nullptr;
+MtNetFriendList* sNetwork::getFriendList() {
+    unsigned int i0_1 = 0;
+    unsigned int v1_0;
+    unsigned int v1_2;
+    s32 v1_3;
+    for (;;) {
+        if ((mContext[i0_1].mState | 2) == 2) {
+            if ((i0_1 + 1u) <= 3u) {
+                i0_1 = i0_1 + 1u;
+            } else {
+                v1_0 = 0;
+                v1_2 = i0_1 + 1u;
+                v1_3 = mContext[i0_1].mState | 2;
+                break;
+            }
+        } else {
+            v1_0 = i0_1;
+            v1_2 = i0_1;
+            v1_3 = mContext[i0_1].mState | 2;
+            break;
+        }
+    }
+    if (mContext[v1_0].mpContext != nullptr) {
+        return mContext[v1_0].mpContext->getFriendList();
+    } else {
+        return nullptr;
+    }
 }
 
 __attribute__((weak)) MtNetContext* sNetwork::getContext(u32 user_index, s32 service) {
@@ -469,14 +488,22 @@ const nNetwork::SessionDatabase* sNetwork::getSessionDatabase() const {
     }
 }
 
-__attribute__((weak)) void sNetwork::setReceiveCallback(u32 callback_index, MtObject* pobj, sNetwork::RECEIVE_CALLBACK callback) {
-    DDON_STUB("sNetwork::setReceiveCallback")
-    /* stub */
+void sNetwork::setReceiveCallback(u32 callback_index, MtObject* pobj, sNetwork::RECEIVE_CALLBACK callback) {
+    mCallbackEntry[callback_index].mpObject = pobj;
+    mCallbackEntry[callback_index].mpCallback = callback;
+    if (mpSession[0] == nullptr) {
+        return;
+    }
+    mpSession[0]->mCallback.nNetwork::Callback::set(static_cast<s32>(callback_index), static_cast<nNetwork::ReceiverBase*>(&mCallbackEntry[callback_index]), true, false);
 }
 
-__attribute__((weak)) void sNetwork::clearReceiveCallback(u32 callback_index) {
-    DDON_STUB("sNetwork::clearReceiveCallback")
-    /* stub */
+void sNetwork::clearReceiveCallback(u32 callback_index) {
+    mCallbackEntry[callback_index].mpCallback = static_cast<nNetwork::Receiver<MtObject>::RECEIVE_CALLBACK>(0);
+    mCallbackEntry[callback_index].mpObject = nullptr;
+    if (mpSession[0] == nullptr) {
+        return;
+    }
+    mpSession[0]->mCallback.nNetwork::Callback::clear(static_cast<s32>(callback_index));
 }
 
 __attribute__((weak)) void sNetwork::bootupSessionEx(u32 session_num, const MtDTI& dti) {

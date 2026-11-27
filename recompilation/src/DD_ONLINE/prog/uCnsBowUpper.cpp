@@ -1,10 +1,8 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uCnsBowUpper.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -18,14 +16,6 @@
 
 const MtDTI& uCnsBowUpper::getDTI() const {
     return uCnsBowUpper::DTI;
-}
-
-inline void* uCnsBowUpper::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uCnsBowUpper::DTI)->memAlloc(sz, align, uCnsBowUpper::DTI.getID());
-}
-
-inline void uCnsBowUpper::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uCnsBowUpper::DTI)->memFree(p_addr);
 }
 
 uCnsBowUpper::uCnsBowUpper() {

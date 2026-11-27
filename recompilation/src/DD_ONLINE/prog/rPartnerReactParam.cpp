@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rPartnerReactParam.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtProperty.h"
 #include "../../MT/MtPropertyList.h"
@@ -15,14 +13,6 @@
 
 const MtDTI& cPartnerReactParam::getDTI() const {
     return cPartnerReactParam::DTI;
-}
-
-inline void* cPartnerReactParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cPartnerReactParam::DTI)->memAlloc(sz, align, cPartnerReactParam::DTI.getID());
-}
-
-inline void cPartnerReactParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cPartnerReactParam::DTI)->memFree(p_addr);
 }
 
 cPartnerReactParam::~cPartnerReactParam() {
@@ -55,14 +45,6 @@ MtObject* cPartnerReactParam::MyDTI::newInstance() const {
 
 const MtDTI& rPartnerReactParam::getDTI() const {
     return rPartnerReactParam::DTI;
-}
-
-inline void* rPartnerReactParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rPartnerReactParam::DTI)->memAlloc(sz, align, rPartnerReactParam::DTI.getID());
-}
-
-inline void rPartnerReactParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rPartnerReactParam::DTI)->memFree(p_addr);
 }
 
 bool rPartnerReactParam::loadData(MtDataReader& in, cPartnerReactParam* pData) {

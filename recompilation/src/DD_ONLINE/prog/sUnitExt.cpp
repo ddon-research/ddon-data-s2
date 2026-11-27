@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "sUnitExt.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -22,16 +23,8 @@ const MtDTI& sUnitExt::getDTI() const {
     return sUnitExt::DTI;
 }
 
-inline MtAllocator* sUnitExt::getAllocator() {
-    return MtMemoryAllocator::getAllocator(sUnitExt::DTI);
-}
-
 void* sUnitExt::operator new(size_t sz, u32 align) {
     return sUnitExt::getAllocator()->memAlloc(sz, align, sUnitExt::DTI.getID());
-}
-
-inline void sUnitExt::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sUnitExt::DTI)->memFree(p_addr);
 }
 
 sUnitExt::~sUnitExt() {
@@ -175,9 +168,36 @@ __attribute__((weak)) void sUnitExt::unitAllUpdatePtrSingle() {
     /* stub */
 }
 
-__attribute__((weak)) void sUnitExt::evAddUnit(cUnit& unit) {
-    DDON_STUB("sUnitExt::evAddUnit")
-    /* stub */
+void sUnitExt::evAddUnit(cUnit& unit) {
+    const MtDTI& t0 = unit.getDTI();
+    MT_CTSTR v0_1 = uDDOModel::DTI.mName;
+    for (const MtDTI* v0_0 = &t0;;) {
+        if (v0_1 == v0_0->mName) {
+            u32 t1 = mDDOModelArray.mLength;
+            u32 t2 = mDDOModelArray.mBufsiz;
+            if (t1 < t2) {
+                mDDOModelArray.mLength = t1 + 1u;
+                mDDOModelArray.mpArray[t1] = static_cast<MtObject*>(&unit);
+            } else {
+                void* t3 = MtMemoryAllocator::getAllocator(MtArray::DTI)->memAlloc(static_cast<size_t>(t2 + 32u) * 8, 16u);
+                memset(t3, 0, static_cast<size_t>(t2 + 32u) * 8);
+                memcpy(t3, static_cast<const void*>(mDDOModelArray.mpArray), static_cast<size_t>(mDDOModelArray.mLength) * 8);
+                MtMemoryAllocator::getAllocator(MtArray::DTI)->memFree(static_cast<void*>(mDDOModelArray.mpArray));
+                mDDOModelArray.mpArray = static_cast<MtObject* *>(t3);
+                mDDOModelArray.mBufsiz = t2 + 32u;
+                u32 t4 = mDDOModelArray.mLength;
+                mDDOModelArray.mLength = t4 + 1u;
+                mDDOModelArray.mpArray[t4] = static_cast<MtObject*>(&unit);
+            }
+            return;
+        } else {
+            if (v0_0->mpParent != nullptr) {
+                v0_0 = v0_0->mpParent;
+            } else {
+                break;
+            }
+        }
+    }
 }
 
 __attribute__((weak)) void sUnitExt::evRemoveUnit(cUnit& unit) {

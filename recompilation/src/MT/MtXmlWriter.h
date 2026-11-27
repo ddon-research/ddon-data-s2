@@ -4,7 +4,7 @@
 #include <cstddef>
 
 // Dependencies
-#include "MtCharset.h"
+#include "MtCharSet.h"
 
 // Forward declarations
 class MtStream;

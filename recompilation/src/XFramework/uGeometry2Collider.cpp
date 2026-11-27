@@ -1,7 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "uGeometry2Collider.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtCollection.h"
 #include "../MT/MtCollision.h"
 #include "../MT/MtCollisionUtil.h"
@@ -27,10 +26,6 @@ __attribute__((weak)) void uGeometry2Collider::usage() {
 
 const MtDTI& uGeometry2Collider::getDTI() const {
     return uGeometry2Collider::DTI;
-}
-
-inline void uGeometry2Collider::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGeometry2Collider::DTI)->memFree(p_addr);
 }
 
 uGeometry2Collider::~uGeometry2Collider() {
@@ -94,10 +89,6 @@ const MtDTI& uGeometry2Collider::cContactInfo::getDTI() const {
     return uGeometry2Collider::cContactInfo::DTI;
 }
 
-inline void uGeometry2Collider::cContactInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGeometry2Collider::cContactInfo::DTI)->memFree(p_addr);
-}
-
 uGeometry2Collider::cContactInfo::~cContactInfo() {
 }
 
@@ -128,14 +119,6 @@ __attribute__((weak)) MtObject* uGeometry2Collider::cContactInfo::MyDTI::newInst
 
 const MtDTI& uGeometry2Collider::cNodeGeometryInfo::getDTI() const {
     return uGeometry2Collider::cNodeGeometryInfo::DTI;
-}
-
-inline void* uGeometry2Collider::cNodeGeometryInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uGeometry2Collider::cNodeGeometryInfo::DTI)->memAlloc(sz, align, uGeometry2Collider::cNodeGeometryInfo::DTI.mID);
-}
-
-inline void uGeometry2Collider::cNodeGeometryInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGeometry2Collider::cNodeGeometryInfo::DTI)->memFree(p_addr);
 }
 
 uGeometry2Collider::cNodeGeometryInfo::~cNodeGeometryInfo() {

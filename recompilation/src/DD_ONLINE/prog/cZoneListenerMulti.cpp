@@ -32,20 +32,6 @@ const MtDTI& cZoneContactInfo::getDTI() const {
     return cZoneContactInfo::DTI;
 }
 
-inline void* cZoneContactInfo::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneContactInfo::DTI)->memAlloc(sz, align, cZoneContactInfo::DTI.getID());
-}
-
-inline void cZoneContactInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneContactInfo::DTI)->memFree(p_addr);
-}
-
-inline cZoneContactInfo::cZoneContactInfo() {
-    mOffset = MtVector3::Zero;
-    mHandle = -1;
-    mGroupId = -1;
-}
-
 void cZoneContactInfo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mHandle", &mHandle, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mGroupId", &mGroupId, 0u, 0u);
@@ -62,10 +48,6 @@ MtObject* cZoneContactInfo::MyDTI::newInstance() const {
 
 const MtDTI& cZoneContactInfoList::getDTI() const {
     return cZoneContactInfoList::DTI;
-}
-
-inline void cZoneContactInfoList::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneContactInfoList::DTI)->memFree(p_addr);
 }
 
 cZoneContactInfoList::~cZoneContactInfoList() {
@@ -153,10 +135,6 @@ const MtDTI& cZoneContactPairInfo::getDTI() const {
     return cZoneContactPairInfo::DTI;
 }
 
-inline void cZoneContactPairInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneContactPairInfo::DTI)->memFree(p_addr);
-}
-
 void cZoneContactPairInfo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mBasic", static_cast<MtObject*>(&mBasic), 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mObject", static_cast<MtObject*>(&mObject), 0u, 0u);
@@ -173,10 +151,6 @@ __attribute__((weak)) MtObject* cZoneContactPairInfo::MyDTI::newInstance() const
 
 const MtDTI& cZoneListenerMulti::getDTI() const {
     return cZoneListenerMulti::DTI;
-}
-
-inline void cZoneListenerMulti::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneListenerMulti::DTI)->memFree(p_addr);
 }
 
 cZoneListenerMulti::~cZoneListenerMulti() {
@@ -197,10 +171,6 @@ const MtDTI& cZoneMultiListener::getDTI() const {
     return cZoneMultiListener::DTI;
 }
 
-inline void cZoneMultiListener::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneMultiListener::DTI)->memFree(p_addr);
-}
-
 cZoneMultiListener::cZoneMultiListener() {
     DDON_STUB("cZoneMultiListener::cZoneMultiListener")
     /* stub */
@@ -211,9 +181,13 @@ __attribute__((weak)) void cZoneMultiListener::moveMultiListener(cZoneMultiStack
     /* stub */
 }
 
-__attribute__((weak)) void cZoneMultiListener::notified(const nZone::cLayoutElement& e) {
-    DDON_STUB("cZoneMultiListener::notified")
-    /* stub */
+void cZoneMultiListener::notified(const nZone::cLayoutElement& e) {
+    if (mNotifiedStackNum <= 47u) {
+        mNotifiedStack.elems[mNotifiedStackNum].pElement = &e;
+        u32 t0 = mNotifiedStackNum;
+        mNotifiedStack.elems[(t0 <= 47u) ? t0 : 0u].Handle = mCheckHandle;
+        mNotifiedStackNum = t0 + 1u;
+    }
 }
 
 MtVector3 cZoneMultiListener::myPos() {
@@ -236,10 +210,6 @@ __attribute__((weak)) MtObject* cZoneMultiListener::MyDTI::newInstance() const {
 
 const MtDTI& cZoneMultiStack::getDTI() const {
     return cZoneMultiStack::DTI;
-}
-
-inline void cZoneMultiStack::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneMultiStack::DTI)->memFree(p_addr);
 }
 
 cZoneMultiStack::~cZoneMultiStack() {
@@ -343,10 +313,6 @@ __attribute__((weak)) MtObject* cZoneMultiStack::MyDTI::newInstance() const {
 
 const MtDTI& cZoneMultiStackNode::getDTI() const {
     return cZoneMultiStackNode::DTI;
-}
-
-inline void cZoneMultiStackNode::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cZoneMultiStackNode::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cZoneMultiStackNode::~cZoneMultiStackNode() {

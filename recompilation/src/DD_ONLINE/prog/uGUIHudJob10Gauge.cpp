@@ -18,16 +18,8 @@ const MtDTI& uGUIHudJob10Gauge::getDTI() const {
     return uGUIHudJob10Gauge::DTI;
 }
 
-inline MtAllocator* uGUIHudJob10Gauge::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIHudJob10Gauge::DTI);
-}
-
 void* uGUIHudJob10Gauge::operator new(size_t sz, u32 align) {
     return uGUIHudJob10Gauge::getAllocator()->memAlloc(sz, align, uGUIHudJob10Gauge::DTI.getID());
-}
-
-inline void uGUIHudJob10Gauge::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIHudJob10Gauge::DTI)->memFree(p_addr);
 }
 
 uGUIHudJob10Gauge::uGUIHudJob10Gauge() {

@@ -31,6 +31,7 @@ class rGUI;
 class rSoundRequest;
 class sGUIExt;
 class sScenario;
+class uGUIBazaar;
 class uGUIItemBase01;
 
 // Declarations
@@ -50,6 +51,7 @@ class uGUISystemMsg : public uGUIBase
     friend class cGUIUtility;
     friend class sGUIExt;
     friend class sScenario;
+    friend class uGUIBazaar;
     friend class uGUIItemBase01;
 public:
     enum EXIT_FUNC_TYPE
@@ -379,4 +381,20 @@ inline void* uGUISystemMsg::cPageInfo::operator new(size_t sz, void* p_addr) {
 
 inline void* uGUISystemMsg::cChoiceInfo::operator new(size_t sz, void* p_addr) {
     return p_addr;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUISystemMsg::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUISystemMsg::DTI);
+}
+
+inline void uGUISystemMsg::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUISystemMsg::DTI)->memFree(p_addr);
+}
+
+inline void uGUISystemMsg::cPageInfo::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUISystemMsg::cPageInfo::DTI)->memFree(p_addr);
 }

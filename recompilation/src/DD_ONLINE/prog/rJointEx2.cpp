@@ -1,11 +1,9 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rJointEx2.h"
-#include "../../MT/MtAllocator.h"
 #include "../../MT/MtDTI.h"
 #include "../../MT/MtDataReader.h"
 #include "../../MT/MtMath.h"
-#include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../generated/shared/nDDOIO.h"
 #include "rTbl2.h"
@@ -21,26 +19,6 @@ const MtDTI& cJointEx2::getDTI() const {
     return cJointEx2::DTI;
 }
 
-inline void* cJointEx2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cJointEx2::DTI)->memAlloc(sz, align, cJointEx2::DTI.getID());
-}
-
-inline void cJointEx2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cJointEx2::DTI)->memFree(p_addr);
-}
-
-cJointEx2::cJointEx2() {
-    mJntNo = 0;
-    mRefJntNo = 0;
-    mAxis = 7;
-    mRate = 0.5f;
-    mTwistRate = 0.0f;
-    mRotAdd = MtVector3::Zero;
-    mLimitAxis = 0;
-    mLimitMin = 0.0f;
-    mLimitMax = 0.0f;
-}
-
 inline cJointEx2::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 cJointEx2::MyDTI cJointEx2::DTI("cJointEx2", &::MtObject::DTI, 64ul, 0u, 0u);
@@ -51,14 +29,6 @@ MtObject* cJointEx2::MyDTI::newInstance() const {
 
 const MtDTI& rJointEx2::getDTI() const {
     return rJointEx2::DTI;
-}
-
-inline void* rJointEx2::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rJointEx2::DTI)->memAlloc(sz, align, rJointEx2::DTI.getID());
-}
-
-inline void rJointEx2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rJointEx2::DTI)->memFree(p_addr);
 }
 
 rJointEx2::~rJointEx2() {

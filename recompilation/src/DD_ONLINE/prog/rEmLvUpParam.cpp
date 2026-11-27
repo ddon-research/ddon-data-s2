@@ -19,16 +19,8 @@ const MtDTI& cEmLvUpParam::getDTI() const {
     return cEmLvUpParam::DTI;
 }
 
-MtAllocator* cEmLvUpParam::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cEmLvUpParam::DTI);
-}
-
 void* cEmLvUpParam::operator new(size_t sz, u32 align) {
     return cEmLvUpParam::getAllocator()->memAlloc(sz, align, cEmLvUpParam::DTI.getID());
-}
-
-inline void cEmLvUpParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cEmLvUpParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) cEmLvUpParam::cEmLvUpParam() {
@@ -54,9 +46,53 @@ __attribute__((noinline)) cEmLvUpParam::cEmLvUpParam() {
         this->mGuardDefWep_Cor = 1.0f;
 }
 
-__attribute__((weak)) void cEmLvUpParam::copy(const cEmLvUpParam* pParam) {
-    DDON_STUB("cEmLvUpParam::copy")
-    /* stub */
+void cEmLvUpParam::copy(const cEmLvUpParam* pParam) {
+    mLv = pParam->mLv;
+    mAttackBasePhys_Cor = pParam->mAttackBasePhys_Cor;
+    mHp_Cor[0] = pParam->mHp_Cor[0];
+    mShP_Cor[0] = pParam->mShP_Cor[0];
+    mBlP_Cor[0] = pParam->mBlP_Cor[0];
+    mHp_Cor[1] = pParam->mHp_Cor[1];
+    mShP_Cor[1] = pParam->mShP_Cor[1];
+    mBlP_Cor[1] = pParam->mBlP_Cor[1];
+    mHp_Cor[2] = pParam->mHp_Cor[2];
+    mShP_Cor[2] = pParam->mShP_Cor[2];
+    mBlP_Cor[2] = pParam->mBlP_Cor[2];
+    mHp_Cor[3] = pParam->mHp_Cor[3];
+    mShP_Cor[3] = pParam->mShP_Cor[3];
+    mBlP_Cor[3] = pParam->mBlP_Cor[3];
+    mHp_Cor[4] = pParam->mHp_Cor[4];
+    mShP_Cor[4] = pParam->mShP_Cor[4];
+    mBlP_Cor[4] = pParam->mBlP_Cor[4];
+    mHp_Cor[5] = pParam->mHp_Cor[5];
+    mShP_Cor[5] = pParam->mShP_Cor[5];
+    mBlP_Cor[5] = pParam->mBlP_Cor[5];
+    mHp_Cor[6] = pParam->mHp_Cor[6];
+    mShP_Cor[6] = pParam->mShP_Cor[6];
+    mBlP_Cor[6] = pParam->mBlP_Cor[6];
+    mHp_Cor[7] = pParam->mHp_Cor[7];
+    mShP_Cor[7] = pParam->mShP_Cor[7];
+    mBlP_Cor[7] = pParam->mBlP_Cor[7];
+    mHp_Cor[8] = pParam->mHp_Cor[8];
+    mShP_Cor[8] = pParam->mShP_Cor[8];
+    mBlP_Cor[8] = pParam->mBlP_Cor[8];
+    mHp_Cor[9] = pParam->mHp_Cor[9];
+    mShP_Cor[9] = pParam->mShP_Cor[9];
+    mBlP_Cor[9] = pParam->mBlP_Cor[9];
+    mOcd_Cor = pParam->mOcd_Cor;
+    mAttackWepPhys_Cor = pParam->mAttackWepPhys_Cor;
+    mAttackWepMagic_Cor = pParam->mAttackWepMagic_Cor;
+    mDefenceWepPhys_Cor = pParam->mDefenceWepPhys_Cor;
+    mDefenceWepMagic_Cor = pParam->mDefenceWepMagic_Cor;
+    mAttackBasePhys_Cor = pParam->mAttackBasePhys_Cor;
+    mAttackBaseMagic_Cor = pParam->mAttackBaseMagic_Cor;
+    mDefenceBasePhys_Cor = pParam->mDefenceBasePhys_Cor;
+    mDefenceBaseMagic_Cor = pParam->mDefenceBaseMagic_Cor;
+    mPower_Cor = pParam->mPower_Cor;
+    mGuardDefBase_Cor = pParam->mGuardDefBase_Cor;
+    mGuardDefWep_Cor = pParam->mGuardDefWep_Cor;
+    mDownP_Cor = pParam->mDownP_Cor;
+    mShakeP_Cor = pParam->mShakeP_Cor;
 }
 
 inline cEmLvUpParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -70,14 +106,6 @@ __attribute__((weak)) MtObject* cEmLvUpParam::MyDTI::newInstance() const {
 
 const MtDTI& rEmLvUpParam::getDTI() const {
     return rEmLvUpParam::DTI;
-}
-
-inline void* rEmLvUpParam::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rEmLvUpParam::DTI)->memAlloc(sz, align, rEmLvUpParam::DTI.getID());
-}
-
-inline void rEmLvUpParam::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rEmLvUpParam::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) bool rEmLvUpParam::loadData(MtDataReader& in, cEmLvUpParam* pData) {

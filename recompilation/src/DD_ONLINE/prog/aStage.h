@@ -713,6 +713,10 @@ inline rSoundAttributeSe* aStage::getSoundAttributeSe() {
     return this->mprSoundAttribute;
 }
 
+inline rWaypoint* aStage::getWaypoint() {
+    return this->mpWaypoint;
+}
+
 inline s32 aStage::getReqEventId() const {
     return this->mReqEventId;
 }
@@ -740,4 +744,62 @@ inline void aStage::initGetAnnounce() {
 
 inline void aStage::initEventLoading() {
     this->mLoadingTimer = 0.0f;
+}
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+#include "aMenu.h"
+#include "aTitle.h"
+#include "rStageInfo.h"
+#include "res_ptr.h"
+#include "sZoneStatus.h"
+#include "../../XFramework/uScheduler.h"
+
+inline void aStage::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::aStage::DTI)->memFree(p_addr);
+}
+
+inline void aStage::move_to_menu() {
+    if (this->mGuardData.mJmpStatus == 0) {
+        this->mGuardData.mJmpStatus = 1;
+        this->mGuardData.mJmpStageNo = -1;
+        this->mJmpFadeType = 0;
+        this->mGuardData.mJmpPosNo = 0;
+        this->mpJmpDTI = static_cast<const MtDTI*>(&::aMenu::DTI);
+    }
+    this->::cArea::mRno = 1;
+}
+
+inline void aStage::move_to_title() {
+    if (this->mGuardData.mJmpStatus == 0) {
+        this->mGuardData.mJmpStatus = 1;
+        this->mGuardData.mJmpStageNo = -1;
+        this->mJmpFadeType = 0;
+        this->mGuardData.mJmpPosNo = 0;
+        this->mpJmpDTI = static_cast<const MtDTI*>(&::aTitle::DTI);
+    }
+    this->::cArea::mRno = 1;
+}
+
+inline void aStage::updatePtrWeather() {
+    if (this->mpLightSchdl == nullptr) {
+        return;
+    }
+    if ((this->mpLightSchdl->::cUnit::mBeFlag - 1u) > 1u) {
+        this->mpLightSchdl = nullptr;
+    }
+}
+
+inline void aStage::loadResZoneStatus() {
+    if ((::sZoneStatus::mpInstance) != nullptr) {
+        (::sZoneStatus::mpInstance)->::sZoneStatus::releaseZoneStatus();
+    }
+    if (this->mpStageInfo == nullptr) {
+        return;
+    }
+    if ((::sZoneStatus::mpInstance) == nullptr) {
+        return;
+    }
+    (::sZoneStatus::mpInstance)->::sZoneStatus::addZoneStatus(this->mpStageInfo->mpZoneStatus.mpPtr, ::MtVector3::Zero);
 }

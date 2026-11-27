@@ -147,3 +147,15 @@ public:
 inline void* uGUIGaugeArtsV01_03::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* uGUIGaugeArtsV01_03::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::uGUIGaugeArtsV01_03::DTI);
+}
+
+inline void uGUIGaugeArtsV01_03::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::uGUIGaugeArtsV01_03::DTI)->memFree(p_addr);
+}

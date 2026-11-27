@@ -70,3 +70,15 @@ inline CDataQuickPartyMatching::CDataQuickPartyMatching() {
     this->m_unParam1 = 0;
     this->m_unParam2 = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../../../MT/MtAllocator.h"
+#include "../../../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* CDataQuickPartyMatching::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuickPartyMatching::DTI);
+}
+
+inline void* CDataQuickPartyMatching::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::CDataQuickPartyMatching::DTI)->memAlloc(sz, align, ::CDataQuickPartyMatching::DTI.::MtDTI::getID());
+}

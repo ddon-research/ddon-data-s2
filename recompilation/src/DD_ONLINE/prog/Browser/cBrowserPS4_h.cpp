@@ -36,10 +36,6 @@ const MtDTI& cBrowserKeepString::getDTI() const {
     return cBrowserKeepString::DTI;
 }
 
-inline void cBrowserKeepString::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBrowserKeepString::DTI)->memFree(p_addr);
-}
-
 cBrowserKeepString::~cBrowserKeepString() {
     DDON_STUB("cBrowserKeepString::~cBrowserKeepString")
     /* stub */
@@ -58,16 +54,8 @@ const MtDTI& cBrowserPS4::getDTI() const {
     return cBrowserPS4::DTI;
 }
 
-inline MtAllocator* cBrowserPS4::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cBrowserPS4::DTI);
-}
-
 void* cBrowserPS4::operator new(size_t sz, u32 align) {
     return cBrowserPS4::getAllocator()->memAlloc(sz, align, cBrowserPS4::DTI.getID());
-}
-
-inline void cBrowserPS4::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cBrowserPS4::DTI)->memFree(p_addr);
 }
 
 cBrowserPS4::cBrowserPS4() {
@@ -176,8 +164,32 @@ u32 cBrowserPS4::checkValidDevice() {
 }
 
 __attribute__((weak)) bool cBrowserPS4::checkInputMouse() {
-    DDON_STUB("cBrowserPS4::checkInputMouse")
-    return {};
+    sMouse::TYPE mouse_type = static_cast<sMouseExt*>(sMouse::getInstance())->getCurrentType();
+    if (sMouse::getInstance()->isActive()) {
+        u64 t0 = sMouse::getInstance()->mState[mouse_type].pos.xy;
+        u64 t1 = (sBrowser::mpInstance)->mPos.xy;
+        s32 t2 = (sBrowser::mpInstance)->mSize.w;
+        f32 t3 = cGUIUtility::getScaleForDefaultResolution(1.0f);
+        if (static_cast<int>(t0) >= static_cast<int>(t1)) {
+            if (static_cast<int>(static_cast<unsigned long>(t1) + static_cast<unsigned long>(static_cast<int>(t3 * static_cast<float>(t2)))) >= static_cast<int>(t0)) {
+                if (static_cast<int>(static_cast<unsigned long>(t1 >> 32) + static_cast<unsigned long>(static_cast<int>(t3 * static_cast<float>(t2)))) >= static_cast<int>(t0 >> 32)) {
+                    if (static_cast<int>(t0 >> 32) >= static_cast<int>(t1 >> 32)) {
+                        if (sMouse::getInstance()->mState[mouse_type].ax == 0) {
+                            if (sMouse::getInstance()->mState[mouse_type].ay == 0) {
+                                if (sMouse::getInstance()->mState[mouse_type].az == 0) {
+                                    return (static_cast<sMouseExt*>(sMouse::getInstance())->mStateExt.on | sMouse::getInstance()->mState[mouse_type].on) != 0;
+                                }
+                            }
+                        }
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    } else {
+        return false;
+    }
 }
 
 __attribute__((weak)) bool cBrowserPS4::setDrawBuffer(void* pDst, u32 pitch, u32 width, u32 height, u32 bpp) {

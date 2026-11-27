@@ -120,3 +120,19 @@ inline void cPlayerExpTable::operator delete[](void* p_addr) {
 inline void* cPlayerExpTable::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPlayerExpTable::DTI)->memAlloc(sz, align, ::cPlayerExpTable::DTI.::MtDTI::getID());
 }
+
+inline void* cPlayerExpTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPlayerExpTable::DTI)->memAlloc(sz, align, ::cPlayerExpTable::DTI.::MtDTI::getID());
+}
+
+inline void cPlayerExpTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPlayerExpTable::DTI)->memFree(p_addr);
+}
+
+inline void* rPlayerExpTable::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPlayerExpTable::DTI)->memAlloc(sz, align, ::rPlayerExpTable::DTI.::MtDTI::getID());
+}
+
+inline void rPlayerExpTable::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPlayerExpTable::DTI)->memFree(p_addr);
+}

@@ -378,3 +378,19 @@ inline void* sEventManager::cNpcId::operator new(size_t sz, void* p_addr) {
 inline sEventManager::cNpcId::cNpcId() {
     this->mNpcId = 0;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* sEventManager::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sEventManager::DTI);
+}
+
+inline void sEventManager::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::sEventManager::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* sEventManager::cNpcId::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::sEventManager::cNpcId::DTI);
+}

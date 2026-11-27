@@ -31,26 +31,12 @@
 #define DDON_STUB(name)
 #endif
 
-static const u32 contentsControlNum[3] = {
-    1,
-    1,
-    2,
-};
-
 const MtDTI& uGUIPhotoUpload::getDTI() const {
     return uGUIPhotoUpload::DTI;
 }
 
-inline MtAllocator* uGUIPhotoUpload::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPhotoUpload::DTI);
-}
-
 void* uGUIPhotoUpload::operator new(size_t sz, u32 align) {
     return uGUIPhotoUpload::getAllocator()->memAlloc(sz, align, uGUIPhotoUpload::DTI.getID());
-}
-
-inline void uGUIPhotoUpload::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPhotoUpload::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIPhotoUpload::~uGUIPhotoUpload() {
@@ -152,8 +138,171 @@ __attribute__((weak)) void uGUIPhotoUpload::setProc(uGUIPhotoUpload::PR proc) {
 }
 
 __attribute__((weak)) void uGUIPhotoUpload::adjustCursor() {
-    DDON_STUB("uGUIPhotoUpload::adjustCursor")
-    /* stub */
+    unsigned int i0_3;
+    s32 v0_8;
+    s32 v0_9;
+    s32 v1_8;
+    s32 v1_9;
+    if (mpVCtrl != nullptr) {
+        if (mpHCtrl != nullptr) {
+            if (mRefrenceUIArray.mLength == 0) {
+                v1_8 = mpVCtrl->getCurrentPos();
+                v1_9 = mpHCtrl->getCurrentPos();
+                if (static_cast<unsigned int>(mProc - 9) > 1) {
+                    if (static_cast<unsigned int>(mProc - 2) <= 3) {
+                        if (v1_8 != 2) {
+                            if (v1_8 == 1) {
+                                mReference.mComment.uGUIBase::cReferenceUITextBox::setFocus(true);
+                            } else {
+                                if (v1_8 == 0) {
+                                    mReference.mPulldown.uGUIBase::cReferenceUIPullDown::setFocus(true);
+                                }
+                            }
+                        } else {
+                            if (v1_9 != 0) {
+                                mReference.mBtn01.uGUIBase::cReferenceUIButton::setFocus(true);
+                            } else {
+                                mReference.mBtn00.uGUIBase::cReferenceUIButton::setFocus(true);
+                            }
+                        }
+                    }
+                } else {
+                    mReference.mBtn02.uGUIBase::cReferenceUIButton::setFocus(true);
+                }
+                return;
+            } else {
+                i0_3 = 0;
+                v0_8 = mpVCtrl->getCurrentPos();
+                v0_9 = mpHCtrl->getCurrentPos();
+            }
+        } else {
+            if (mRefrenceUIArray.mLength == 0) {
+                v1_8 = mpVCtrl->getCurrentPos();
+                v1_9 = 0;
+                if (static_cast<unsigned int>(mProc - 9) > 1) {
+                    if (static_cast<unsigned int>(mProc - 2) <= 3) {
+                        if (v1_8 != 2) {
+                            if (v1_8 == 1) {
+                                mReference.mComment.uGUIBase::cReferenceUITextBox::setFocus(true);
+                            } else {
+                                if (v1_8 == 0) {
+                                    mReference.mPulldown.uGUIBase::cReferenceUIPullDown::setFocus(true);
+                                }
+                            }
+                        } else {
+                            if (v1_9 != 0) {
+                                mReference.mBtn01.uGUIBase::cReferenceUIButton::setFocus(true);
+                            } else {
+                                mReference.mBtn00.uGUIBase::cReferenceUIButton::setFocus(true);
+                            }
+                        }
+                    }
+                } else {
+                    mReference.mBtn02.uGUIBase::cReferenceUIButton::setFocus(true);
+                }
+                return;
+            } else {
+                i0_3 = 0;
+                v0_8 = mpVCtrl->getCurrentPos();
+                v0_9 = 0;
+            }
+        }
+    } else {
+        if (mpHCtrl != nullptr) {
+            if (mRefrenceUIArray.mLength == 0) {
+                v1_8 = 0;
+                v1_9 = mpHCtrl->getCurrentPos();
+                if (static_cast<unsigned int>(mProc - 9) > 1) {
+                    if (static_cast<unsigned int>(mProc - 2) <= 3) {
+                        if (v1_8 != 2) {
+                            if (v1_8 == 1) {
+                                mReference.mComment.uGUIBase::cReferenceUITextBox::setFocus(true);
+                            } else {
+                                if (v1_8 == 0) {
+                                    mReference.mPulldown.uGUIBase::cReferenceUIPullDown::setFocus(true);
+                                }
+                            }
+                        } else {
+                            if (v1_9 != 0) {
+                                mReference.mBtn01.uGUIBase::cReferenceUIButton::setFocus(true);
+                            } else {
+                                mReference.mBtn00.uGUIBase::cReferenceUIButton::setFocus(true);
+                            }
+                        }
+                    }
+                } else {
+                    mReference.mBtn02.uGUIBase::cReferenceUIButton::setFocus(true);
+                }
+                return;
+            } else {
+                i0_3 = 0;
+                v0_8 = 0;
+                v0_9 = mpHCtrl->getCurrentPos();
+            }
+        } else {
+            if (mRefrenceUIArray.mLength == 0) {
+                v1_8 = 0;
+                v1_9 = 0;
+                if (static_cast<unsigned int>(mProc - 9) > 1) {
+                    if (static_cast<unsigned int>(mProc - 2) <= 3) {
+                        if (v1_8 != 2) {
+                            if (v1_8 == 1) {
+                                mReference.mComment.uGUIBase::cReferenceUITextBox::setFocus(true);
+                            } else {
+                                if (v1_8 == 0) {
+                                    mReference.mPulldown.uGUIBase::cReferenceUIPullDown::setFocus(true);
+                                }
+                            }
+                        } else {
+                            if (v1_9 != 0) {
+                                mReference.mBtn01.uGUIBase::cReferenceUIButton::setFocus(true);
+                            } else {
+                                mReference.mBtn00.uGUIBase::cReferenceUIButton::setFocus(true);
+                            }
+                        }
+                    }
+                } else {
+                    mReference.mBtn02.uGUIBase::cReferenceUIButton::setFocus(true);
+                }
+                return;
+            } else {
+                i0_3 = 0;
+                v0_8 = 0;
+                v0_9 = 0;
+            }
+        }
+    }
+    for (;;) {
+        static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i0_3)])->setFocus(false);
+        if ((i0_3 + 1u) < mRefrenceUIArray.mLength) {
+            i0_3 += 1u;
+        } else {
+            v1_8 = v0_8;
+            v1_9 = v0_9;
+            break;
+        }
+    }
+    if (static_cast<unsigned int>(mProc - 9) > 1) {
+        if (static_cast<unsigned int>(mProc - 2) <= 3) {
+            if (v1_8 != 2) {
+                if (v1_8 == 1) {
+                    mReference.mComment.uGUIBase::cReferenceUITextBox::setFocus(true);
+                } else {
+                    if (v1_8 == 0) {
+                        mReference.mPulldown.uGUIBase::cReferenceUIPullDown::setFocus(true);
+                    }
+                }
+            } else {
+                if (v1_9 != 0) {
+                    mReference.mBtn01.uGUIBase::cReferenceUIButton::setFocus(true);
+                } else {
+                    mReference.mBtn00.uGUIBase::cReferenceUIButton::setFocus(true);
+                }
+            }
+        }
+    } else {
+        mReference.mBtn02.uGUIBase::cReferenceUIButton::setFocus(true);
+    }
 }
 
 __attribute__((weak)) void uGUIPhotoUpload::updateInput() {
@@ -217,10 +366,6 @@ __attribute__((weak)) MtObject* uGUIPhotoUpload::MyDTI::newInstance() const {
 
 const MtDTI& uGUIPhotoUpload::cCate::getDTI() const {
     return uGUIPhotoUpload::cCate::DTI;
-}
-
-inline void uGUIPhotoUpload::cCate::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPhotoUpload::cCate::DTI)->memFree(p_addr);
 }
 
 inline uGUIPhotoUpload::cCate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

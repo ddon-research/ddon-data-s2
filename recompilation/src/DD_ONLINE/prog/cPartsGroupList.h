@@ -80,3 +80,15 @@ public:
 inline void* cPartsGroupList::operator new(size_t sz, void* p_addr) {
     return p_addr;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline MtAllocator* cPartsGroupList::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cPartsGroupList::DTI);
+}
+
+inline void cPartsGroupList::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPartsGroupList::DTI)->memFree(p_addr);
+}

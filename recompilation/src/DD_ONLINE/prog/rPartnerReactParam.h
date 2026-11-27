@@ -136,3 +136,19 @@ inline void cPartnerReactParam::operator delete[](void* p_addr) {
 inline void* cPartnerReactParam::operator new[](size_t sz, u32 align) {
     return ::MtMemoryAllocator::getAllocator(::cPartnerReactParam::DTI)->memAlloc(sz, align, ::cPartnerReactParam::DTI.::MtDTI::getID());
 }
+
+inline void* cPartnerReactParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cPartnerReactParam::DTI)->memAlloc(sz, align, ::cPartnerReactParam::DTI.::MtDTI::getID());
+}
+
+inline void cPartnerReactParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cPartnerReactParam::DTI)->memFree(p_addr);
+}
+
+inline void* rPartnerReactParam::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::rPartnerReactParam::DTI)->memAlloc(sz, align, ::rPartnerReactParam::DTI.::MtDTI::getID());
+}
+
+inline void rPartnerReactParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::rPartnerReactParam::DTI)->memFree(p_addr);
+}

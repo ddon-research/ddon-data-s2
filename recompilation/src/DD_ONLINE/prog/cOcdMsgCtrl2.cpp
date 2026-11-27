@@ -22,10 +22,6 @@ const MtDTI& cOcdMsgCtrl2::getDTI() const {
     return cOcdMsgCtrl2::DTI;
 }
 
-inline void cOcdMsgCtrl2::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cOcdMsgCtrl2::DTI)->memFree(p_addr);
-}
-
 cOcdMsgCtrl2::cOcdMsgCtrl2() {
     DDON_STUB("cOcdMsgCtrl2::cOcdMsgCtrl2")
     /* stub */

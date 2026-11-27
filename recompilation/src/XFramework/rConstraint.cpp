@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "rConstraint.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -15,10 +13,6 @@
 
 const MtDTI& rConstraint::getDTI() const {
     return rConstraint::DTI;
-}
-
-inline void rConstraint::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rConstraint::DTI)->memFree(p_addr);
 }
 
 rConstraint::rConstraint() {

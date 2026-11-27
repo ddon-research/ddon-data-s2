@@ -468,3 +468,71 @@ inline cWeatherScriptIO::cWeatherScriptIO() {
     this->mReqSoundVolumeAdd = 0.0f;
     this->mRetSoundVolumeSub = 0.0f;
 }
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../MT/MtAllocator.h"
+#include "../../MT/MtMemoryAllocator.h"
+
+inline void* cWSCEpv::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWSCEpv::DTI)->memAlloc(sz, align, ::cWSCEpv::DTI.::MtDTI::getID());
+}
+
+inline void cWSCEpv::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWSCEpv::DTI)->memFree(p_addr);
+}
+
+inline void cWSCParam::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWSCParam::DTI)->memFree(p_addr);
+}
+
+inline void* cWSCSound::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWSCSound::DTI)->memAlloc(sz, align, ::cWSCSound::DTI.::MtDTI::getID());
+}
+
+inline void cWSCSound::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWSCSound::DTI)->memFree(p_addr);
+}
+
+inline void* cWSCSoundRnd::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWSCSoundRnd::DTI)->memAlloc(sz, align, ::cWSCSoundRnd::DTI.::MtDTI::getID());
+}
+
+inline void cWSCSoundRnd::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWSCSoundRnd::DTI)->memFree(p_addr);
+}
+
+inline void* cWSCSoundVolume::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWSCSoundVolume::DTI)->memAlloc(sz, align, ::cWSCSoundVolume::DTI.::MtDTI::getID());
+}
+
+inline void cWSCSoundVolume::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWSCSoundVolume::DTI)->memFree(p_addr);
+}
+
+inline void* cWSCTimer::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWSCTimer::DTI)->memAlloc(sz, align, ::cWSCTimer::DTI.::MtDTI::getID());
+}
+
+inline void cWSCTimer::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWSCTimer::DTI)->memFree(p_addr);
+}
+
+inline void* cWeatherScriptCmd::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherScriptCmd::DTI)->memAlloc(sz, align, ::cWeatherScriptCmd::DTI.::MtDTI::getID());
+}
+
+inline void cWeatherScriptCmd::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherScriptCmd::DTI)->memFree(p_addr);
+}
+
+inline void cWeatherScriptCmds::operator delete(void* p_addr) {
+    ::MtMemoryAllocator::getAllocator(::cWeatherScriptCmds::DTI)->memFree(p_addr);
+}
+
+inline MtAllocator* cWeatherScriptIO::getAllocator() {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherScriptIO::DTI);
+}
+
+inline void* cWeatherScriptIO::operator new(size_t sz, u32 align) {
+    return ::MtMemoryAllocator::getAllocator(::cWeatherScriptIO::DTI)->memAlloc(sz, align, ::cWeatherScriptIO::DTI.::MtDTI::getID());
+}

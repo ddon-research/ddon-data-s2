@@ -1,5 +1,6 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
+#include <string.h>
 #include "uGUICaplinkProfile.h"
 #include "../../MT/MtAllocator.h"
 #include "../../MT/MtCollection.h"
@@ -8,6 +9,7 @@
 #include "../../MT/MtMemoryAllocator.h"
 #include "../../MT/MtObject.h"
 #include "../../MT/MtString.h"
+#include "../../XFramework/cCaplinkContext.h"
 #include "../../XFramework/cCaplinkDataDef.h"
 #include "../../XFramework/cCaplinkUserProfileContentListGet.h"
 #include "cControl.h"
@@ -120,16 +122,8 @@ const MtDTI& uGUICaplinkProfile::getDTI() const {
     return uGUICaplinkProfile::DTI;
 }
 
-inline MtAllocator* uGUICaplinkProfile::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUICaplinkProfile::DTI);
-}
-
 void* uGUICaplinkProfile::operator new(size_t sz, u32 align) {
     return uGUICaplinkProfile::getAllocator()->memAlloc(sz, align, uGUICaplinkProfile::DTI.getID());
-}
-
-inline void uGUICaplinkProfile::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkProfile::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUICaplinkProfile::~uGUICaplinkProfile() {
@@ -171,9 +165,23 @@ void uGUICaplinkProfile::draw(cDraw* pDraw) {
     this->uGUIBase::draw(pDraw);
 }
 
-__attribute__((weak)) void uGUICaplinkProfile::setUniqueId(uGUIBase* pParent, MT_CTSTR unique_id) {
-    DDON_STUB("uGUICaplinkProfile::setUniqueId")
-    /* stub */
+void uGUICaplinkProfile::setUniqueId(uGUIBase* pParent, MT_CTSTR unique_id) {
+    mpParent = pParent;
+    if (unique_id != nullptr) {
+        if (unique_id != (&mUniqueId.mStr[0])) {
+            size_t t0 = strlen(unique_id);
+            mUniqueId.mLength = (static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u;
+            if (((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u) != 0) {
+                memcpy(static_cast<void*>(&mUniqueId.mStr[0]), static_cast<const void*>(unique_id), static_cast<size_t>((static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u));
+                mUniqueId.mStr[(static_cast<int>(t0) <= 32) ? static_cast<unsigned int>(t0) : 32u] = 0;
+            } else {
+                mUniqueId.mStr[0] = 0;
+            }
+        }
+    } else {
+        mUniqueId.mStr[0] = 0;
+        mUniqueId.mLength = 0;
+    }
 }
 
 __attribute__((weak)) void uGUICaplinkProfile::setFlowId(u32 flow_id) {
@@ -209,10 +217,10 @@ void uGUICaplinkProfile::updateMove() {
     switch (mFlowId - 1u) {
         case 0:
         {
-            if (sCaplinkManager::getInstance()->mUserProfileGetAns.mStatus != 0) {
-                if (sCaplinkManager::getInstance()->mUserProfileGetAns.mStatus != 3) {
-                    if (sCaplinkManager::getInstance()->mUserProfileGetAns.mStatus == 2) {
-                        mFriendIndex = sCaplinkManager::getInstance()->getFriendIndex(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 7556))));
+            if (sCaplinkManager::getInstance()->mUserProfileGetAns.getStatus() != 0) {
+                if (sCaplinkManager::getInstance()->mUserProfileGetAns.getStatus() != 3) {
+                    if (sCaplinkManager::getInstance()->mUserProfileGetAns.getStatus() == 2) {
+                        mFriendIndex = sCaplinkManager::getInstance()->getFriendIndex(&mUniqueId.mStr[0]);
                         setFlowId(2u);
                     }
                 } else {
@@ -225,11 +233,11 @@ void uGUICaplinkProfile::updateMove() {
         }
         case 1:
         {
-            if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.mStatus != 0) {
-                if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.mStatus == 3) {
+            if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.getStatus() != 0) {
+                if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.getStatus() == 3) {
                     setFlowId(6u);
                 } else {
-                    if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.mStatus == 2) {
+                    if (sCaplinkManager::getInstance()->mUserProfileContentListGetAns.getStatus() == 2) {
                         setupList();
                         if (mMode != 0) {
                             setFlowId(5u);
@@ -291,12 +299,12 @@ void uGUICaplinkProfile::setupInfo() {
     setObjectMessage(static_cast<cGUIObject*>(t2), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 63u), 0u, false);
     cGUIObjMessage* t3 = mInfo.mpObjMsgCommentTitle;
     setObjectMessage(static_cast<cGUIObject*>(t3), static_cast<sGUIExt*>(sGUI::getInstance())->getMsgFromIdxInfo(mpGUIMsgs.elems[0], 62u), 0u, false);
-    bool t4 = sCaplinkManager::getInstance()->isMyUniqueId(reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(this) + 7556))));
+    bool t4 = sCaplinkManager::getInstance()->isMyUniqueId(&mUniqueId.mStr[0]);
     sCaplinkManager* t5 = sCaplinkManager::getInstance();
     if (t4) {
-        setObjectMessageFit(mInfo.mpObjMsgId, reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t5) + 9724))), 33ul);
-        setObjectMessageFit(mInfo.mpObjMsgComment, reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t5) + 10116))), 513ul);
-        setObjectMessageFit(mInfo.mpObjMsgName, reinterpret_cast<MT_CTSTR>(&(*reinterpret_cast<unsigned char*>(reinterpret_cast<char*>(t5) + 9764))), 81ul);
+        setObjectMessageFit(mInfo.mpObjMsgId, &t5->mMyProfile.mUniqueId.mStr[0], 33ul);
+        setObjectMessageFit(mInfo.mpObjMsgComment, &t5->mMyProfile.mComment.mStr[0], 513ul);
+        setObjectMessageFit(mInfo.mpObjMsgName, &t5->mMyProfile.mNickname.mStr[0], 81ul);
         mInfo.mProfIcon.request(t5->mMyProfile.mIconIndex);
     } else {
         setObjectMessageFit(mInfo.mpObjMsgId, &t5->mUserProfileGetAns.mUserProfile.mUniqueId[0], 33ul);
@@ -356,14 +364,6 @@ void uGUICaplinkProfile::hideListItem(uGUIBase::cScrollListItemBase* pItemBase) 
     setObjectMessage(static_cast<cGUIObject*>(pItem->mpObjMsgCharacter), "", 0u, false);
 }
 
-inline void uGUICaplinkProfile::eventAdjustCursor() {
-    if (mGame.mListCtrl.mpVCtrl != nullptr) {
-        mGame.mListCtrl.setListPos(static_cast<u32>(mGame.mListCtrl.mpVCtrl->mCurrentPos), false);
-    } else {
-        mGame.mListCtrl.setListPos(0u, false);
-    }
-}
-
 u32 uGUICaplinkProfile::evCtrlDecide(cControl::Message* msg) {
     if (msg != nullptr) {
         msg->changeSE = 4;
@@ -408,25 +408,16 @@ const MtDTI& uGUICaplinkProfile::cListItem::getDTI() const {
     return uGUICaplinkProfile::cListItem::DTI;
 }
 
-inline void uGUICaplinkProfile::cListItem::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkProfile::cListItem::DTI)->memFree(p_addr);
-}
-
 inline uGUICaplinkProfile::cListItem::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
 
 uGUICaplinkProfile::cListItem::MyDTI uGUICaplinkProfile::cListItem::DTI("uGUICaplinkProfile::cListItem", &::uGUIBase::cScrollListItemBase::DTI, 184ul, 0u, 0u);
 
-__attribute__((weak)) MtObject* uGUICaplinkProfile::cListItem::MyDTI::newInstance() const {
-    DDON_STUB("uGUICaplinkProfile::cListItem::MyDTI::newInstance")
-    return nullptr;
+MtObject* uGUICaplinkProfile::cListItem::MyDTI::newInstance() const {
+    return new (16u) uGUICaplinkProfile::cListItem;
 }
 
 const MtDTI& uGUICaplinkProfile::cListInfo::getDTI() const {
     return uGUICaplinkProfile::cListInfo::DTI;
-}
-
-inline void uGUICaplinkProfile::cListInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUICaplinkProfile::cListInfo::DTI)->memFree(p_addr);
 }
 
 inline uGUICaplinkProfile::cListInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

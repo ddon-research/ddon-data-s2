@@ -2,6 +2,7 @@
 set(DDON_SOURCES
   src/XFramework/cAIConditionTree.cpp
   src/XFramework/cAIFSM.cpp
+  src/XFramework/cAISvFSM.cpp
   src/XFramework/cAISvUserProcess.cpp
   src/DD_ONLINE/prog/cFSMBase.cpp
   src/DD_ONLINE/prog/cFSMCore.cpp
@@ -12,7 +13,6 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/nFsm.cpp
   src/XFramework/rAIConditionTree.cpp
   src/DD_ONLINE/prog/rAbilityList.cpp
-  src/DD_ONLINE/prog/sLightExt.cpp
   src/DD_ONLINE/prog/rAdjustParam.cpp
   src/DD_ONLINE/prog/rAnimalData.cpp
   src/DD_ONLINE/prog/rAreaInfo.cpp
@@ -48,12 +48,14 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/sHttpClient.cpp
   src/DD_ONLINE/prog/sMarker.cpp
   src/DD_ONLINE/prog/sMouseExt.cpp
-  src/XFramework/sShadow.cpp
   src/DD_ONLINE/prog/uEditSaveLoadFlow.cpp
   src/DD_ONLINE/prog/uGUICharaEditPartsWrap.cpp
   src/DD_ONLINE/prog/uGUICharacterEdit.cpp
   src/DD_ONLINE/prog/uGUIGPConfirm.cpp
   src/DD_ONLINE/prog/uGUIGPShop.cpp
+  src/DD_ONLINE/prog/uGUIMap.cpp
+  src/DD_ONLINE/prog/uGUIMapMini.cpp
+  src/DD_ONLINE/prog/uGUIQuestList.cpp
   src/DD_ONLINE/prog/uGUISaveListComment.cpp
   src/DD_ONLINE/prog/rCharacterEditColorDef.cpp
   src/DD_ONLINE/prog/rCharacterEditModelPalette.cpp
@@ -69,7 +71,6 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rCraftSkillCost.cpp
   src/DD_ONLINE/prog/rCraftSkillSpd.cpp
   src/DD_ONLINE/prog/rCraftUpGradeExp.cpp
-  src/DD_ONLINE/prog/rCycleQuestInfo.cpp
   src/DD_ONLINE/prog/rDDOModelMontageEm.cpp
   src/DD_ONLINE/prog/rDmVecWeightParam.cpp
   src/DD_ONLINE/prog/rDungeonMarker.cpp
@@ -115,9 +116,6 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rGatheringItem.cpp
   src/XFramework/cBVHGrass.cpp
   src/XFramework/rGrass.cpp
-  src/XFramework/rGrassWind.cpp
-  src/XFramework/uGrassEffect.cpp
-  src/XFramework/uGrassWind.cpp
   src/DD_ONLINE/prog/rHeadCtrl.cpp
   src/DD_ONLINE/prog/rHumanEnemyCustomSkill.cpp
   src/DD_ONLINE/prog/rHumanEnemyEquip.cpp
@@ -141,16 +139,20 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cWeatherScript.cpp
   src/DD_ONLINE/prog/cZoneListenerLight.cpp
   src/DD_ONLINE/prog/cpTransparencyCtrl.cpp
+  src/DD_ONLINE/prog/cpWaypoint.cpp
   src/DD_ONLINE/prog/sEnvMapManager.cpp
   src/DD_ONLINE/prog/sNpcManager.cpp
   src/DD_ONLINE/prog/sSoundManager.cpp
   src/DD_ONLINE/prog/sWeatherManager.cpp
   src/DD_ONLINE/prog/sZoneUnitCtrl.cpp
+  src/DD_ONLINE/prog/uControlEnemy.cpp
   src/XFramework/uFog.cpp
   src/DD_ONLINE/prog/uNpc.cpp
   src/XFramework/uSky.cpp
   src/DD_ONLINE/prog/uSkyCloud.cpp
   src/DD_ONLINE/prog/uSkyExt.cpp
+  src/DD_ONLINE/prog/uSkyGrassWind.cpp
+  src/DD_ONLINE/prog/cpOmBlink.cpp
   src/DD_ONLINE/prog/cpOmGather.cpp
   src/DD_ONLINE/prog/sControlManager.cpp
   src/DD_ONLINE/prog/uGUIPick01.cpp
@@ -197,14 +199,13 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rPartsCtrlTable.cpp
   src/XFramework/cAIPathTrace.cpp
   src/DD_ONLINE/prog/cAIRouteInfo.cpp
-  src/DD_ONLINE/prog/cState.cpp
+  src/XFramework/cAISvDynamicPathFinding.cpp
   src/DD_ONLINE/prog/cpInputKeyboard.cpp
   src/DD_ONLINE/prog/cpInputPad.cpp
   src/DD_ONLINE/prog/cpPathFinding.cpp
   src/DD_ONLINE/prog/cpPawnThink.cpp
   src/DD_ONLINE/prog/cpSequenceCtrl.cpp
   src/DD_ONLINE/prog/cpStateManager.cpp
-  src/DD_ONLINE/prog/sAIExt.cpp
   src/DD_ONLINE/prog/rPawnQuestTalk.cpp
   src/DD_ONLINE/prog/rPlPartsInfo.cpp
   src/DD_ONLINE/prog/rPlantTree.cpp
@@ -315,7 +316,6 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rTblMenuOption.cpp
   src/DD_ONLINE/prog/rTexDetailEdit.cpp
   src/DD_ONLINE/prog/rTutorialDialogMessage.cpp
-  src/DD_ONLINE/prog/rTutorialQuestGroup.cpp
   src/DD_ONLINE/prog/rWarpLocation.cpp
   src/DD_ONLINE/prog/rWaypoint2.cpp
   src/DD_ONLINE/prog/rWeaponOffset.cpp
@@ -326,12 +326,14 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rkThinkData.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Achievement.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/AreaMaster.cpp
+  src/DD_ONLINE/prog/Protocol/PacketData/Bazaar.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/BoxGacha.cpp
   src/DD_ONLINE/prog/Protocol/LoginSession/C2L.cpp
   src/DD_ONLINE/prog/Protocol/UserSession/C2S.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Character.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/CharacterCommon.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/CharacterEdit.cpp
+  src/DD_ONLINE/prog/Protocol/PacketData/CharacterItem.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/CharacterParam.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Cheat.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Clan.cpp
@@ -345,6 +347,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/Protocol/PacketData/EntryBoard.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/GP.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Gacha.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/HttpPatchManager.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Item.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/ItemSort.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/JobMaster.cpp
@@ -357,7 +360,7 @@ set(DDON_SOURCES
   src/MT/MtAllocator.cpp
   src/MT/MtBigInt.cpp
   src/MT/MtCRC.cpp
-  src/MT/MtCharset.cpp
+  src/MT/MtCharSet.cpp
   src/MT/MtCipher.cpp
   src/MT/MtCollection.cpp
   src/MT/MtCollection.instances.cpp
@@ -407,6 +410,7 @@ set(DDON_SOURCES
   src/MT/MtNetPS4PsnSocket.cpp
   src/MT/MtNetRanking.cpp
   src/MT/MtNetRequest.cpp
+  src/MT/MtNetResolver.cpp
   src/MT/MtNetSession.cpp
   src/MT/MtNetSocket.cpp
   src/MT/MtNetStorage2.cpp
@@ -436,6 +440,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/Protocol/PacketData/Pawn.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Quest.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/QuickParty.cpp
+  src/DD_ONLINE/prog/Protocol/PacketData/RaidBoss.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Ranking.cpp
   src/DD_ONLINE/prog/Protocol/UserSession/S2C.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/ScreenShot.cpp
@@ -451,8 +456,14 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/Protocol/PacketData/Warp.cpp
   src/DD_ONLINE/prog/Protocol/PacketData/Weather.cpp
   src/DD_ONLINE/prog/aBase.cpp
+  src/DD_ONLINE/prog/aCharacterEdit.cpp
   src/DD_ONLINE/prog/aGame.cpp
+  src/DD_ONLINE/prog/aInit.cpp
+  src/DD_ONLINE/prog/aLobby.cpp
+  src/DD_ONLINE/prog/aMenu.cpp
   src/DD_ONLINE/prog/aStage.cpp
+  src/DD_ONLINE/prog/aTitle.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/xvia/atomic.cpp
   src/generated/shared/basegfxcontext.cpp
   src/generated/shared/boolInVec.cpp
   src/generated/shared/buffer.cpp
@@ -467,8 +478,10 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cAcquirementData.cpp
   src/DD_ONLINE/prog/cActList.cpp
   src/DD_ONLINE/prog/cAction.cpp
+  src/DD_ONLINE/prog/cActiveQuestManager.cpp
   src/DD_ONLINE/prog/cArcLoader.cpp
   src/XFramework/cArea.cpp
+  src/DD_ONLINE/prog/cAreaExt.cpp
   src/DD_ONLINE/prog/cAreaHit.cpp
   src/DD_ONLINE/prog/cAreaReleaseManager.cpp
   src/DD_ONLINE/prog/cBakeModel.cpp
@@ -552,6 +565,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cChildRegionStatus.cpp
   src/XFramework/cColliderParam.cpp
   src/DD_ONLINE/prog/cComponentManager.cpp
+  src/DD_ONLINE/prog/cConstModelParam.cpp
   src/DD_ONLINE/prog/cContext.cpp
   src/DD_ONLINE/prog/cContextInstance.cpp
   src/DD_ONLINE/prog/cContextInterface.cpp
@@ -562,6 +576,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cCraftRecipe.cpp
   src/DD_ONLINE/prog/cCraftSkill.cpp
   src/DD_ONLINE/prog/cCursor.cpp
+  src/DD_ONLINE/prog/cCycle04QuestManager.cpp
   src/DD_ONLINE/prog/cCycleQuestManagerBase.cpp
   src/DD_ONLINE/prog/cCycleQuestSubCategoryManager.cpp
   src/DD_ONLINE/prog/cDDMaterialCtrl.cpp
@@ -607,12 +622,15 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cHitInfoAfterLocal.cpp
   src/DD_ONLINE/prog/cHitNode.cpp
   src/XFramework/cHttpClient.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/xXFramework/cHttpClient_C.cpp
   src/DD_ONLINE/prog/cHumanActBow.cpp
   src/DD_ONLINE/prog/cHumanActId.cpp
   src/DD_ONLINE/prog/cHumanAction.cpp
+  src/DD_ONLINE/prog/cHumanActionClimb.cpp
   src/DD_ONLINE/prog/cInputTextKeyboardHook.cpp
   src/XFramework/cInstancing.cpp
   src/DD_ONLINE/prog/cItemParam.cpp
+  src/DD_ONLINE/prog/cJob10Action.cpp
   src/DD_ONLINE/prog/cJumpParamCtrl.cpp
   src/DD_ONLINE/prog/cKeyCustom.cpp
   src/DD_ONLINE/prog/cLayoutSet.cpp
@@ -639,17 +657,21 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cOcdCache.cpp
   src/DD_ONLINE/prog/cOcdCustomReqInfo.cpp
   src/DD_ONLINE/prog/cOcdDamageInfo.cpp
+  src/DD_ONLINE/prog/cOcdGoodStatus.cpp
+  src/DD_ONLINE/prog/cOcdGoodStatusHuman.cpp
   src/DD_ONLINE/prog/cOcdInfo.cpp
   src/DD_ONLINE/prog/cOcdMsgCtrl2.cpp
   src/DD_ONLINE/prog/cOcdParamRes.cpp
   src/DD_ONLINE/prog/cOmComponent.cpp
   src/DD_ONLINE/prog/cOmControl.cpp
+  src/DD_ONLINE/prog/cOpeningMovie.cpp
   src/DD_ONLINE/prog/cPRTManager.cpp
   src/DD_ONLINE/prog/cPacket.cpp
   src/DD_ONLINE/prog/cParentRegionStatus.cpp
   src/XFramework/cParticle.cpp
   src/XFramework/cParticle2D.cpp
   src/XFramework/cParticleGenerator.cpp
+  src/XFramework/cParticleGeneratorPolygon.cpp
   src/XFramework/cParticleManager.cpp
   src/DD_ONLINE/prog/cPawnActInterface.cpp
   src/DD_ONLINE/prog/cPawnQuestManager.cpp
@@ -662,20 +684,26 @@ set(DDON_SOURCES
   src/XFramework/cPrimBufferManager.cpp
   src/XFramework/cPrimObj.cpp
   src/XFramework/cPrimTagList.cpp
+  src/XFramework/cPrimTagManager.cpp
   src/XFramework/cPrimTexHandle.cpp
   src/XFramework/cPrimTexHandleManager.cpp
+  src/DD_ONLINE/prog/cQuestDeliverManager.cpp
   src/DD_ONLINE/prog/cQuestEventArg.cpp
   src/DD_ONLINE/prog/cQuestFunctionManagerBAse.cpp
   src/DD_ONLINE/prog/cQuestManagerBase.cpp
+  src/DD_ONLINE/prog/cQuestMarkerManager.cpp
+  src/DD_ONLINE/prog/cQuestMemoryPool.cpp
   src/DD_ONLINE/prog/cQuestPhaseComponent.cpp
   src/DD_ONLINE/prog/cQuestPhaseEvent.cpp
   src/DD_ONLINE/prog/cQuestPhaseManager.cpp
   src/DD_ONLINE/prog/cQuestPhaseState.cpp
   src/DD_ONLINE/prog/cQuestPhaseState001.cpp
   src/DD_ONLINE/prog/cQuestPhaseState002.cpp
+  src/DD_ONLINE/prog/cQuestResourceManager.cpp
   src/DD_ONLINE/prog/cQuestSvNotice.cpp
   src/DD_ONLINE/prog/cQuestSvNoticeManager.cpp
   src/DD_ONLINE/prog/cQuestSvRequest.cpp
+  src/DD_ONLINE/prog/cQuestSyncDataManager.cpp
   src/DD_ONLINE/prog/cQuestTask.cpp
   src/DD_ONLINE/prog/cQuestTaskParam.cpp
   src/DD_ONLINE/prog/cQuestUnitManager.cpp
@@ -690,6 +718,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cSetInfo.cpp
   src/DD_ONLINE/prog/cSetInfoCoord.cpp
   src/DD_ONLINE/prog/cSetInfoOm.cpp
+  src/DD_ONLINE/prog/cSetQuestManager.cpp
   src/DD_ONLINE/prog/cShlNotifyInfo.cpp
   src/XFramework/cSoundCompressor.cpp
   src/XFramework/cSoundEffect.cpp
@@ -703,13 +732,16 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cStageCtrl.cpp
   src/DD_ONLINE/prog/cStageEpvCtrl.cpp
   src/DD_ONLINE/prog/cStaminaCtrl.cpp
+  src/DD_ONLINE/prog/cState.cpp
   src/XFramework/cStateMachine.cpp
   src/XFramework/cStateMachineBase.cpp
   src/XFramework/cSwing.cpp
   src/XFramework/cSystem.cpp
+  src/DD_ONLINE/prog/cSystemCheck.cpp
   src/DD_ONLINE/prog/cTalkMsgData.cpp
   src/DD_ONLINE/prog/cTalkState.cpp
   src/DD_ONLINE/prog/cThinkMgr.cpp
+  src/DD_ONLINE/prog/cTutorialQuestManager.cpp
   src/DD_ONLINE/prog/cUIObject.cpp
   src/XFramework/cUnit.cpp
   src/XFramework/cUserManagerListener.cpp
@@ -741,9 +773,20 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cpCheckWallCliff.cpp
   src/DD_ONLINE/prog/cpComponent.cpp
   src/DD_ONLINE/prog/cpDDMrlMgr.cpp
+  src/DD_ONLINE/prog/cpEfcFootSmoke.cpp
+  src/DD_ONLINE/prog/cpEfcSequenceGeneral.cpp
+  src/DD_ONLINE/prog/cpEfcTouchDownSmoke.cpp
+  src/DD_ONLINE/prog/cpEfcWeaponAfterimage.cpp
   src/DD_ONLINE/prog/cpEffectProvider.cpp
   src/DD_ONLINE/prog/cpEffectStatusManager.cpp
+  src/DD_ONLINE/prog/cpEmLvUpCtrl.cpp
+  src/DD_ONLINE/prog/cpEmParamCtrl.cpp
+  src/DD_ONLINE/prog/cpEnemyEffect.cpp
+  src/DD_ONLINE/prog/cpEnemyLocalEst.cpp
+  src/DD_ONLINE/prog/cpEnemyLocalShel.cpp
+  src/DD_ONLINE/prog/cpEnemyMaterial.cpp
   src/DD_ONLINE/prog/cpEnemyReact.cpp
+  src/DD_ONLINE/prog/cpEnemySound.cpp
   src/DD_ONLINE/prog/cpEnemyThink.cpp
   src/DD_ONLINE/prog/cpEquip.cpp
   src/DD_ONLINE/prog/cpErosionEnemy.cpp
@@ -776,17 +819,20 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cpLegCtrl.cpp
   src/DD_ONLINE/prog/cpLockOn.cpp
   src/DD_ONLINE/prog/cpLockOnTargetManager.cpp
+  src/DD_ONLINE/prog/cpModelConst.cpp
   src/DD_ONLINE/prog/cpMotionFilter.cpp
   src/DD_ONLINE/prog/cpMotionHistory.cpp
   src/DD_ONLINE/prog/cpMotionRate.cpp
   src/DD_ONLINE/prog/cpMotionSe.cpp
   src/DD_ONLINE/prog/cpNpc.cpp
   src/DD_ONLINE/prog/cpObjCollision.cpp
+  src/DD_ONLINE/prog/cpObjCollision.instances.cpp
   src/DD_ONLINE/prog/cpOcdCtrl.cpp
   src/DD_ONLINE/prog/cpOmComponent.cpp
   src/DD_ONLINE/prog/cpPartsCtrl.cpp
   src/DD_ONLINE/prog/cpPivotCtrl.cpp
   src/DD_ONLINE/prog/cpReaction.cpp
+  src/DD_ONLINE/prog/cpReturnTerritory.cpp
   src/DD_ONLINE/prog/cpRootComponent.cpp
   src/DD_ONLINE/prog/cpRotateCtrl.cpp
   src/DD_ONLINE/prog/cpSafePos.cpp
@@ -798,9 +844,11 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/cpStatusChange.cpp
   src/DD_ONLINE/prog/cpStatusCheck.cpp
   src/DD_ONLINE/prog/cpTalk.cpp
+  src/DD_ONLINE/prog/cpTalkPawn.cpp
   src/DD_ONLINE/prog/cpThinkBase.cpp
   src/DD_ONLINE/prog/cpTinyChain.cpp
   src/DD_ONLINE/prog/cpVibration.cpp
+  src/DD_ONLINE/prog/cpWallExitCtrl.cpp
   src/DD_ONLINE/prog/cpWallMaria.cpp
   src/DD_ONLINE/prog/cpWorkRate.cpp
   src/DD_ONLINE/prog/cpjob10.cpp
@@ -808,15 +856,25 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/ctl_storageArray.cpp
   src/generated/shared/dataformats.cpp
   src/generated/shared/depthrendertarget.cpp
+  src/generated/shared/directory.cpp
   src/generated/shared/dispatchcommandbuffer.cpp
   src/generated/shared/drawcommandbuffer.cpp
   src/generated/shared/floatInVec.cpp
   src/generated/shared/gpumem.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/utility/hash.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/httpPatch.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/httpPatchClient.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/httpPatchEntry.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/httpPatchFileCtrl.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/httpPatchListener.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/httpPatchResultCtrl.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/httpPatchTypes.cpp
   src/generated/shared/json2.cpp
   src/generated/shared/lwcue_base.cpp
   src/generated/shared/lwcue_graphics.cpp
   src/generated/shared/lwgfxcontext.cpp
   src/XFramework/nAutomation.cpp
+  src/generated/shared/nCameraGame.cpp
   src/DD_ONLINE/prog/nCastUtility.cpp
   src/DD_ONLINE/prog/nCharacterData.cpp
   src/DD_ONLINE/prog/nCharacterEdit.cpp
@@ -825,6 +883,7 @@ set(DDON_SOURCES
   src/generated/shared/nDDOIO.cpp
   src/generated/shared/nDDOMath.cpp
   src/DD_ONLINE/prog/nDDOUtility.cpp
+  src/XFramework/nDrawBlendState.cpp
   src/XFramework/nDrawBuffer.cpp
   src/XFramework/nDrawCommandCache.cpp
   src/XFramework/nDrawConstantTable.cpp
@@ -871,6 +930,7 @@ set(DDON_SOURCES
   src/XFramework/nNetworkDatabase.cpp
   src/XFramework/nNetworkMatch.cpp
   src/XFramework/nNetworkMember.cpp
+  src/XFramework/nNetworkPacket.cpp
   src/XFramework/nNetworkProtocol.cpp
   src/XFramework/nNetworkQueue.cpp
   src/XFramework/nNetworkRanking.cpp
@@ -890,6 +950,34 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/nObjCondition.cpp
   src/DD_ONLINE/prog/nOcdMsg.cpp
   src/DD_ONLINE/prog/nPawn.cpp
+  src/XFramework/nPhysicsBarrier.cpp
+  src/XFramework/nPhysicsBase.cpp
+  src/XFramework/nPhysicsCallback.cpp
+  src/XFramework/nPhysicsCommand.cpp
+  src/XFramework/nPhysicsConstraintObject.cpp
+  src/XFramework/nPhysicsIDArray.cpp
+  src/XFramework/nPhysicsInertiaTensor.cpp
+  src/XFramework/nPhysicsIsland.cpp
+  src/XFramework/nPhysicsList.cpp
+  src/XFramework/nPhysicsListenerStatus.cpp
+  src/XFramework/nPhysicsLockFreePipe.cpp
+  src/XFramework/nPhysicsMass.cpp
+  src/XFramework/nPhysicsMaterial.cpp
+  src/XFramework/nPhysicsMathMatrix.cpp
+  src/XFramework/nPhysicsMathMatrix3.cpp
+  src/XFramework/nPhysicsMathQuaternion.cpp
+  src/XFramework/nPhysicsMathVector3.cpp
+  src/XFramework/nPhysicsMathVector4.cpp
+  src/XFramework/nPhysicsPhantom.cpp
+  src/XFramework/nPhysicsPower.cpp
+  src/XFramework/nPhysicsRigidBody.cpp
+  src/XFramework/nPhysicsSPU.cpp
+  src/XFramework/nPhysicsShape.cpp
+  src/XFramework/nPhysicsShapes.cpp
+  src/XFramework/nPhysicsStackMemory.cpp
+  src/XFramework/nPhysicsStruct.cpp
+  src/XFramework/nPhysicsSystem.cpp
+  src/XFramework/nPhysicsThread.cpp
   src/XFramework/nPrim.cpp
   src/DD_ONLINE/prog/nQuest.cpp
   src/DD_ONLINE/prog/nRegionStatus.cpp
@@ -897,10 +985,13 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/nShlStick.cpp
   src/generated/shared/nSound.cpp
   src/generated/shared/nSoundZone.cpp
+  src/XFramework/nSyncPoint.cpp
   src/DD_ONLINE/prog/nTalk.cpp
   src/generated/shared/nUnicode.cpp
   src/DD_ONLINE/prog/nWeather.cpp
   src/XFramework/nZone.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/network/networkHttpDownloadManager.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/xvia/path.cpp
   src/XFramework/rAIFSM.cpp
   src/XFramework/rAIPathBase.cpp
   src/DD_ONLINE/prog/rAIPawnActNoSwitch.cpp
@@ -928,6 +1019,7 @@ set(DDON_SOURCES
   src/XFramework/rConstraint.cpp
   src/XFramework/rConvexHull.cpp
   src/DD_ONLINE/prog/rCraftRecipe.cpp
+  src/DD_ONLINE/prog/rCycleQuestInfo.cpp
   src/DD_ONLINE/prog/rDDOModelMontage.cpp
   src/XFramework/rDeformWeightMap.cpp
   src/XFramework/rDynamicSbc.cpp
@@ -946,7 +1038,9 @@ set(DDON_SOURCES
   src/XFramework/rGUIFont.cpp
   src/XFramework/rGUIMessage.cpp
   src/XFramework/rGeometry2.cpp
+  src/XFramework/rGeometry2Group.cpp
   src/XFramework/rGeometry3.cpp
+  src/XFramework/rGrassWind.cpp
   src/DD_ONLINE/prog/rItemList.cpp
   src/DD_ONLINE/prog/rJobLevelUpTbl.cpp
   src/DD_ONLINE/prog/rJointInfo.cpp
@@ -966,6 +1060,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/rOccluderExt.cpp
   src/DD_ONLINE/prog/rOcdIrAdj.cpp
   src/DD_ONLINE/prog/rOcdParam.cpp
+  src/DD_ONLINE/prog/rOmLoadList.cpp
   src/DD_ONLINE/prog/rOutlineParamList.cpp
   src/DD_ONLINE/prog/rPawnAI.cpp
   src/DD_ONLINE/prog/rPriorityThink.cpp
@@ -977,6 +1072,8 @@ set(DDON_SOURCES
   src/XFramework/rRigidBody.cpp
   src/DD_ONLINE/prog/rScenario.cpp
   src/XFramework/rScheduler.cpp
+  src/XFramework/rShader2.cpp
+  src/XFramework/rShaderCache.cpp
   src/XFramework/rShaderPackage.cpp
   src/DD_ONLINE/prog/rShlLimit.cpp
   src/DD_ONLINE/prog/rShopGoods.cpp
@@ -1006,6 +1103,7 @@ set(DDON_SOURCES
   src/XFramework/rTexture.cpp
   src/XFramework/rTextureJpeg.cpp
   src/DD_ONLINE/prog/rTutorialList.cpp
+  src/DD_ONLINE/prog/rTutorialQuestGroup.cpp
   src/XFramework/rVertices.cpp
   src/XFramework/rVibration.cpp
   src/DD_ONLINE/prog/rWaypoint.cpp
@@ -1015,8 +1113,11 @@ set(DDON_SOURCES
   src/XFramework/rZone.cpp
   src/generated/shared/regs.cpp
   src/generated/shared/rendertarget.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/utility/requestQueue.cpp
+  src/DD_ONLINE/prog/HttpPatchDL/modules/httpPatch/utility/requestQueue.instances.cpp
   src/DD_ONLINE/prog/res_ptr.cpp
   src/XFramework/sAI.cpp
+  src/DD_ONLINE/prog/sAIExt.cpp
   src/DD_ONLINE/prog/sAIPawnNotice.cpp
   src/DD_ONLINE/prog/sAIPawnSys.cpp
   src/DD_ONLINE/prog/sAIPawnTalkMgr.cpp
@@ -1027,37 +1128,52 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/sAreaHit.cpp
   src/DD_ONLINE/prog/sBakingJointOrder.cpp
   src/DD_ONLINE/prog/sBazaarManager.cpp
+  src/XFramework/sBenchmark.cpp
   src/DD_ONLINE/prog/sBrowser.cpp
   src/XFramework/sCamera.cpp
   src/DD_ONLINE/prog/sCameraExt.cpp
   src/DD_ONLINE/prog/sCaplinkManager.cpp
+  src/XFramework/sCapture.cpp
   src/DD_ONLINE/prog/sChat.cpp
+  src/DD_ONLINE/prog/sClanKyoten.cpp
   src/XFramework/sCollision.cpp
   src/DD_ONLINE/prog/sCollisionExt.cpp
+  src/XFramework/sCommonDialog.cpp
   src/DD_ONLINE/prog/sContextManager.cpp
+  src/XFramework/sCoprocessor.cpp
   src/DD_ONLINE/prog/sCraftManager.cpp
+  src/DD_ONLINE/prog/sDDOMain.cpp
   src/DD_ONLINE/prog/sDialogBase.cpp
   src/XFramework/sEffect.cpp
   src/DD_ONLINE/prog/sEffectExt.cpp
   src/DD_ONLINE/prog/sEnemyManager.cpp
   src/DD_ONLINE/prog/sEventManager.cpp
+  src/XFramework/sFile.cpp
   src/DD_ONLINE/prog/sFlag.cpp
   src/XFramework/sGUI.cpp
   src/DD_ONLINE/prog/sGUIExt.cpp
   src/DD_ONLINE/prog/sGame.cpp
   src/DD_ONLINE/prog/sGeneralPoint.cpp
   src/XFramework/sGpuParticle.cpp
+  src/XFramework/sGrass.cpp
+  src/XFramework/sGuideBase.cpp
+  src/DD_ONLINE/prog/sGuideExt.cpp
+  src/DD_ONLINE/prog/sHttpPatch.cpp
   src/DD_ONLINE/prog/sIME.cpp
   src/DD_ONLINE/prog/sIMEPS4.cpp
   src/DD_ONLINE/prog/sInputManager.cpp
+  src/DD_ONLINE/prog/sInputText.cpp
   src/DD_ONLINE/prog/sItemManager.cpp
   src/XFramework/sKeyboard.cpp
   src/DD_ONLINE/prog/sKeyboardExt.cpp
   src/DD_ONLINE/prog/sKeyboardInterface.cpp
+  src/DD_ONLINE/prog/sLightExt.cpp
   src/DD_ONLINE/prog/sLockOnManager.cpp
   src/XFramework/sMain.cpp
   src/DD_ONLINE/prog/sMenu.cpp
   src/XFramework/sMouse.cpp
+  src/XFramework/sMovie.cpp
+  src/DD_ONLINE/prog/sMyRoom.cpp
   src/XFramework/sNetwork.cpp
   src/DD_ONLINE/prog/sNetworkExt.cpp
   src/DD_ONLINE/prog/sObjCollision.cpp
@@ -1067,6 +1183,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/sOmManager.cpp
   src/XFramework/sPad.cpp
   src/DD_ONLINE/prog/sPadExt.cpp
+  src/DD_ONLINE/prog/sPhysicsExt.cpp
   src/XFramework/sPlatformUtil.cpp
   src/DD_ONLINE/prog/sPlayerManager.cpp
   src/XFramework/sPrimitive.cpp
@@ -1074,8 +1191,10 @@ set(DDON_SOURCES
   src/XFramework/sRemoteProcedure.cpp
   src/DD_ONLINE/prog/sRemoteProcedureExt.cpp
   src/XFramework/sRender.cpp
+  src/DD_ONLINE/prog/sRenderExt.cpp
   src/XFramework/sResource.cpp
   src/DD_ONLINE/prog/sResourceExt.cpp
+  src/DD_ONLINE/prog/sReward.cpp
   src/XFramework/sSavedata.cpp
   src/DD_ONLINE/prog/sSavedataExt.cpp
   src/DD_ONLINE/prog/sScenario.cpp
@@ -1084,9 +1203,14 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/sScreenShot.cpp
   src/DD_ONLINE/prog/sSetManager.cpp
   src/XFramework/sShader2.cpp
+  src/XFramework/sShadow.cpp
   src/XFramework/sSound.cpp
   src/DD_ONLINE/prog/sSoundExt.cpp
+  src/XFramework/sSyncPoint.cpp
   src/DD_ONLINE/prog/sTalkManager.cpp
+  src/XFramework/sTool.cpp
+  src/XFramework/sToolBase.cpp
+  src/DD_ONLINE/prog/sToolExt.cpp
   src/DD_ONLINE/prog/sTutorialGuide.cpp
   src/XFramework/sUnit.cpp
   src/DD_ONLINE/prog/sUnitExt.cpp
@@ -1097,7 +1221,9 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/sWorkRate.cpp
   src/DD_ONLINE/prog/sWorldOffset.cpp
   src/XFramework/sZone.cpp
+  src/DD_ONLINE/prog/sZoneStatus.cpp
   src/generated/shared/sampler.cpp
+  src/generated/shared/str.cpp
   src/generated/shared/texture.cpp
   src/DD_ONLINE/prog/uAimCheck.cpp
   src/DD_ONLINE/prog/uAnimal.cpp
@@ -1109,6 +1235,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uCameraGame.cpp
   src/DD_ONLINE/prog/uCharacter.cpp
   src/DD_ONLINE/prog/uCharacterEdit.cpp
+  src/DD_ONLINE/prog/uCharacterSelect.cpp
   src/DD_ONLINE/prog/uCnsBoneScale.cpp
   src/DD_ONLINE/prog/uCnsBowUpper.cpp
   src/DD_ONLINE/prog/uCnsDDOIK.cpp
@@ -1130,11 +1257,12 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uCnsWeapon.cpp
   src/XFramework/uConstraint.cpp
   src/DD_ONLINE/prog/uControl.cpp
-  src/DD_ONLINE/prog/uControlEnemy.cpp
   src/DD_ONLINE/prog/uControlNpc.cpp
   src/XFramework/uCoord.cpp
   src/DD_ONLINE/prog/uCorePointSearch.cpp
   src/DD_ONLINE/prog/uCustomSimSoftBody.cpp
+  src/DD_ONLINE/prog/uDDOActorModel.cpp
+  src/DD_ONLINE/prog/uDDOActorModelPl.cpp
   src/DD_ONLINE/prog/uDDOModel.cpp
   src/XFramework/uDynamicSbc.cpp
   src/DD_ONLINE/prog/uEfCam.cpp
@@ -1150,13 +1278,25 @@ set(DDON_SOURCES
   src/XFramework/uFilter.cpp
   src/XFramework/uFreeCamera.cpp
   src/XFramework/uFullbodyIKHuman2.cpp
+  src/DD_ONLINE/prog/uFullbodyIKHumanDDO.cpp
   src/XFramework/uGUI.cpp
   src/DD_ONLINE/prog/uGUIActionPalette.cpp
   src/DD_ONLINE/prog/uGUIAim.cpp
   src/DD_ONLINE/prog/uGUIAnnounce.cpp
   src/DD_ONLINE/prog/uGUIAreaMaster.cpp
+  src/DD_ONLINE/prog/uGUIArisenCard.cpp
+  src/DD_ONLINE/prog/uGUIArisenCardPop.cpp
+  src/DD_ONLINE/prog/uGUIArisenCardPopPawn.cpp
   src/DD_ONLINE/prog/uGUIBase.cpp
   src/DD_ONLINE/prog/uGUIBaseExt.cpp
+  src/DD_ONLINE/prog/uGUIBazaar.cpp
+  src/DD_ONLINE/prog/uGUIBazaarDealSheet.cpp
+  src/DD_ONLINE/prog/uGUIBazaarHistory.cpp
+  src/DD_ONLINE/prog/uGUIBazaarItemSearch.cpp
+  src/DD_ONLINE/prog/uGUIBazaarPopBuy.cpp
+  src/DD_ONLINE/prog/uGUIBazaarPopInfo.cpp
+  src/DD_ONLINE/prog/uGUIBazaarPopItemList.cpp
+  src/DD_ONLINE/prog/uGUIBazaarPopPriceSetting.cpp
   src/DD_ONLINE/prog/uGUIBoughtBox.cpp
   src/DD_ONLINE/prog/uGUIBoxGachaInfo.cpp
   src/DD_ONLINE/prog/uGUIBrowserBG.cpp
@@ -1176,10 +1316,14 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uGUICaplinkTrophyReceive.cpp
   src/DD_ONLINE/prog/uGUICaplinkTrophyTop.cpp
   src/DD_ONLINE/prog/uGUICharacterEditPopCard.cpp
+  src/DD_ONLINE/prog/uGUICharacterSelect.cpp
   src/DD_ONLINE/prog/uGUIChargesHUD.cpp
   src/DD_ONLINE/prog/uGUIChat.cpp
+  src/DD_ONLINE/prog/uGUIClanEdit.cpp
+  src/DD_ONLINE/prog/uGUIClanEmblem.cpp
   src/DD_ONLINE/prog/uGUIClanScout.cpp
   src/DD_ONLINE/prog/uGUIClanSearch.cpp
+  src/DD_ONLINE/prog/uGUIClanStatus.cpp
   src/DD_ONLINE/prog/uGUICommunityList.cpp
   src/DD_ONLINE/prog/uGUIContentsBoard.cpp
   src/DD_ONLINE/prog/uGUICraft.cpp
@@ -1189,8 +1333,11 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uGUIEngageInfo.cpp
   src/DD_ONLINE/prog/uGUIEntryBoard.cpp
   src/DD_ONLINE/prog/uGUIEntryBoardInfo.cpp
+  src/DD_ONLINE/prog/uGUIEntryBoardPopRecruit.cpp
+  src/DD_ONLINE/prog/uGUIEntryBoardRecruit.cpp
   src/DD_ONLINE/prog/uGUIEventSkip.cpp
   src/DD_ONLINE/prog/uGUIFKeyPalette.cpp
+  src/DD_ONLINE/prog/uGUIFreeGroupChat.cpp
   src/DD_ONLINE/prog/uGUIGPShopDialog.cpp
   src/DD_ONLINE/prog/uGUIGainInfo.cpp
   src/DD_ONLINE/prog/uGUIGameMenu.cpp
@@ -1214,8 +1361,8 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uGUIKeyConfig.cpp
   src/DD_ONLINE/prog/uGUILoading.cpp
   src/DD_ONLINE/prog/uGUILoginBonus.cpp
-  src/DD_ONLINE/prog/uGUIMap.cpp
-  src/DD_ONLINE/prog/uGUIMapMini.cpp
+  src/DD_ONLINE/prog/uGUIMail.cpp
+  src/DD_ONLINE/prog/uGUIMailDetail.cpp
   src/DD_ONLINE/prog/uGUIMenuAreaInfo.cpp
   src/DD_ONLINE/prog/uGUIMenuCmdPawn.cpp
   src/DD_ONLINE/prog/uGUIMenuComm.cpp
@@ -1229,6 +1376,8 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uGUINpcWindow.cpp
   src/DD_ONLINE/prog/uGUIOption.cpp
   src/DD_ONLINE/prog/uGUIPSStore.cpp
+  src/DD_ONLINE/prog/uGUIPartyList.cpp
+  src/DD_ONLINE/prog/uGUIPawnReview.cpp
   src/DD_ONLINE/prog/uGUIPhoto.cpp
   src/DD_ONLINE/prog/uGUIPhotoAlbum.cpp
   src/DD_ONLINE/prog/uGUIPhotoUpload.cpp
@@ -1242,6 +1391,11 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uGUIPopEventTop.cpp
   src/DD_ONLINE/prog/uGUIPopFilter.cpp
   src/DD_ONLINE/prog/uGUIPopNumber01.cpp
+  src/DD_ONLINE/prog/uGUIPopPartyList.cpp
+  src/DD_ONLINE/prog/uGUIPopPartyMember.cpp
+  src/DD_ONLINE/prog/uGUIPopPawnList.cpp
+  src/DD_ONLINE/prog/uGUIPopPawnPoint.cpp
+  src/DD_ONLINE/prog/uGUIPopProfile.cpp
   src/DD_ONLINE/prog/uGUIPopRmcQuestInfo.cpp
   src/DD_ONLINE/prog/uGUIPopSkillInfo.cpp
   src/DD_ONLINE/prog/uGUIPopTopSel.cpp
@@ -1250,7 +1404,6 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uGUIQuestBoardBase.cpp
   src/DD_ONLINE/prog/uGUIQuestDelivery.cpp
   src/DD_ONLINE/prog/uGUIQuestInfo.cpp
-  src/DD_ONLINE/prog/uGUIQuestList.cpp
   src/DD_ONLINE/prog/uGUIQueueAnnounce.cpp
   src/DD_ONLINE/prog/uGUIQueueAnnounceLvUp.cpp
   src/DD_ONLINE/prog/uGUIQuickParty.cpp
@@ -1258,8 +1411,11 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uGUIRankingBoard.cpp
   src/DD_ONLINE/prog/uGUIRetry.cpp
   src/DD_ONLINE/prog/uGUIRetrySelect.cpp
+  src/DD_ONLINE/prog/uGUIRimStone.cpp
   src/DD_ONLINE/prog/uGUIRimWarp.cpp
+  src/DD_ONLINE/prog/uGUIServerSelect.cpp
   src/DD_ONLINE/prog/uGUIServerUIBase.cpp
+  src/DD_ONLINE/prog/uGUIServerUIDialog.cpp
   src/DD_ONLINE/prog/uGUIShakeEnemy.cpp
   src/DD_ONLINE/prog/uGUIShakeStick.cpp
   src/DD_ONLINE/prog/uGUIShopTitle.cpp
@@ -1269,6 +1425,7 @@ set(DDON_SOURCES
   src/DD_ONLINE/prog/uGUISystemMsg.cpp
   src/DD_ONLINE/prog/uGUITelop.cpp
   src/DD_ONLINE/prog/uGUITextHud.cpp
+  src/DD_ONLINE/prog/uGUITitle.cpp
   src/DD_ONLINE/prog/uGUITutorialAnnounce.cpp
   src/DD_ONLINE/prog/uGUITutorialPop.cpp
   src/DD_ONLINE/prog/uGUIUseItemBase.cpp
@@ -1279,19 +1436,24 @@ set(DDON_SOURCES
   src/XFramework/uGeometry2Group.cpp
   src/XFramework/uGeometry2GroupCollider.cpp
   src/XFramework/uGeometry3.cpp
+  src/XFramework/uGrassEffect.cpp
+  src/XFramework/uGrassWind.cpp
   src/DD_ONLINE/prog/uHuman.cpp
   src/DD_ONLINE/prog/uHumanEnemy.cpp
   src/DD_ONLINE/prog/uJobEquip.cpp
   src/DD_ONLINE/prog/uLargeEnemyCamera.cpp
   src/XFramework/uLight.cpp
+  src/DD_ONLINE/prog/uLightExt.cpp
   src/DD_ONLINE/prog/uMockUpModel.cpp
   src/XFramework/uModel.cpp
+  src/XFramework/uModelEx.cpp
   src/XFramework/uMovie.cpp
   src/DD_ONLINE/prog/uOmInstancing.cpp
   src/DD_ONLINE/prog/uOmModel.cpp
   src/DD_ONLINE/prog/uOmSwingModel.cpp
   src/DD_ONLINE/prog/uPlayer.cpp
   src/XFramework/uScheduler.cpp
+  src/DD_ONLINE/prog/uScrModel.cpp
   src/XFramework/uScreenSpace.cpp
   src/XFramework/uScrollCollision.cpp
   src/XFramework/uScrollCollisionGeometry.cpp
@@ -1308,6 +1470,7 @@ set(DDON_SOURCES
   src/XFramework/uSimpleEffect.cpp
   src/DD_ONLINE/prog/uSkyFog.cpp
   src/DD_ONLINE/prog/uSkyLight.cpp
+  src/DD_ONLINE/prog/uSkyWaterModel.cpp
   src/DD_ONLINE/prog/uSoundGenerator.cpp
   src/DD_ONLINE/prog/uSoundMotionSe.cpp
   src/DD_ONLINE/prog/uSoundOcclusion.cpp

@@ -59,7 +59,6 @@ class uHuman;
 class uPlayer;
 
 // Declarations
-struct CrestElementParam;
 struct PawnFeedbackComment;
 class cGUIUtility;
 
@@ -80,21 +79,6 @@ using s32 = int;
 using u32 = unsigned int;
 using u64 = __uint64_t;
 using u8 = unsigned char;
-
-struct CrestElementParam
-{
-public:
-    enum TYPE
-    {
-        TYPE_HIDE = 0,
-        TYPE_PLUS_NUMBER = 1,
-        TYPE_MINUS_PERCENT = 2,
-        TYPE_ABILITY = 3,
-    };
-public:
-    TYPE mType;  // offset: 0x0
-    u32 mMsgId;  // offset: 0x4
-};
 
 struct PawnFeedbackComment
 {
@@ -390,3 +374,20 @@ public:
     static const u32 ICON_TAG_FLAG_INVERT = 1;
     static const u32 ICON_TAG_FLAG_BLANK_OFF = 2;
 };
+
+// Included after the classes: the generic bodies below need these complete.
+#include "../../XFramework/cGUIObject.h"
+
+inline f32 cGUIUtility::getPosY(const cGUIObj2D* p) {
+    return p->mPosition.y;
+}
+
+inline void cGUIUtility::setColor(cGUIObjPolygon* pObj, const MtColor& color) {
+    if (pObj == nullptr) {
+        return;
+    }
+    pObj->::cGUIObjPolygon::setColor(color, 0u);
+    pObj->::cGUIObjPolygon::setColor(color, 1u);
+    pObj->::cGUIObjPolygon::setColor(color, 2u);
+    pObj->::cGUIObjPolygon::setColor(color, 3u);
+}

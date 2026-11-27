@@ -25,16 +25,8 @@ const MtDTI& uGUIMouseOverCursor::getDTI() const {
     return uGUIMouseOverCursor::DTI;
 }
 
-inline MtAllocator* uGUIMouseOverCursor::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIMouseOverCursor::DTI);
-}
-
 void* uGUIMouseOverCursor::operator new(size_t sz, u32 align) {
     return uGUIMouseOverCursor::getAllocator()->memAlloc(sz, align, uGUIMouseOverCursor::DTI.getID());
-}
-
-inline void uGUIMouseOverCursor::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMouseOverCursor::DTI)->memFree(p_addr);
 }
 
 __attribute__((noinline)) uGUIMouseOverCursor::~uGUIMouseOverCursor() {
@@ -153,10 +145,6 @@ __attribute__((weak)) MtObject* uGUIMouseOverCursor::MyDTI::newInstance() const 
 
 const MtDTI& uGUIMouseOverCursor::cMOC::getDTI() const {
     return uGUIMouseOverCursor::cMOC::DTI;
-}
-
-inline void uGUIMouseOverCursor::cMOC::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIMouseOverCursor::cMOC::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) void uGUIMouseOverCursor::cMOC::setAlpha(u8 uAlpha) {

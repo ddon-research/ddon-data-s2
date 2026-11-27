@@ -29,16 +29,8 @@ const MtDTI& cFSMTaskCtrl::getDTI() const {
     return cFSMTaskCtrl::DTI;
 }
 
-inline MtAllocator* cFSMTaskCtrl::getAllocator() {
-    return MtMemoryAllocator::getAllocator(cFSMTaskCtrl::DTI);
-}
-
 void* cFSMTaskCtrl::operator new(size_t sz, u32 align) {
     return cFSMTaskCtrl::getAllocator()->memAlloc(sz, align, cFSMTaskCtrl::DTI.getID());
-}
-
-inline void cFSMTaskCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cFSMTaskCtrl::DTI)->memFree(p_addr);
 }
 
 __attribute__((weak)) uFSMTask* cFSMTaskCtrl::getFSMTask(MT_CTSTR name) const {
@@ -102,14 +94,6 @@ const MtDTI& uFSMTask::getDTI() const {
     return uFSMTask::DTI;
 }
 
-inline void* uFSMTask::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uFSMTask::DTI)->memAlloc(sz, align, uFSMTask::DTI.getID());
-}
-
-inline void uFSMTask::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uFSMTask::DTI)->memFree(p_addr);
-}
-
 void uFSMTask::forcedTermination() {
     if (mpCore == nullptr) {
         return;
@@ -168,7 +152,7 @@ void uFSMTask::move() {
                             break;
                         } else {
                             cUnit* pOwner = static_cast<cUnit*>(v0_3);
-                            if (static_cast<cUnit*>(v0_3)->isEnable()) {
+                            if (pOwner->isEnable()) {
                                 break;
                             } else {
                                 if (mpCore != nullptr) {

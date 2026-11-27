@@ -20,20 +20,8 @@ const MtDTI& rSituationMsgCtrl::getDTI() const {
     return rSituationMsgCtrl::DTI;
 }
 
-inline void* rSituationMsgCtrl::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSituationMsgCtrl::DTI)->memAlloc(sz, align, rSituationMsgCtrl::DTI.getID());
-}
-
-inline void rSituationMsgCtrl::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSituationMsgCtrl::DTI)->memFree(p_addr);
-}
-
 MT_CTSTR rSituationMsgCtrl::getExt() const {
     return "smc";
-}
-
-inline rSituationMsgCtrl::rSituationMsgCtrl() {
-    setAttribute(22u);
 }
 
 rSituationMsgCtrl::~rSituationMsgCtrl() {
@@ -97,14 +85,6 @@ MtObject* rSituationMsgCtrl::MyDTI::newInstance() const {
 
 const MtDTI& rSituationMsgCtrl::cSituationData::getDTI() const {
     return rSituationMsgCtrl::cSituationData::DTI;
-}
-
-void* rSituationMsgCtrl::cSituationData::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(rSituationMsgCtrl::cSituationData::DTI)->memAlloc(sz, align, rSituationMsgCtrl::cSituationData::DTI.getID());
-}
-
-inline void rSituationMsgCtrl::cSituationData::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(rSituationMsgCtrl::cSituationData::DTI)->memFree(p_addr);
 }
 
 rSituationMsgCtrl::cSituationData::~cSituationData() {

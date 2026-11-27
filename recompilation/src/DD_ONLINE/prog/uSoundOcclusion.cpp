@@ -64,10 +64,6 @@ const MtDTI& cSoundOcclusionLayoutInfo::getDTI() const {
     return cSoundOcclusionLayoutInfo::DTI;
 }
 
-inline void cSoundOcclusionLayoutInfo::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundOcclusionLayoutInfo::DTI)->memFree(p_addr);
-}
-
 cSoundOcclusionLayoutInfo::~cSoundOcclusionLayoutInfo() {
 }
 
@@ -111,14 +107,6 @@ const MtDTI& cSoundOcclusionListener::getDTI() const {
     return cSoundOcclusionListener::DTI;
 }
 
-inline void* cSoundOcclusionListener::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cSoundOcclusionListener::DTI)->memAlloc(sz, align, cSoundOcclusionListener::DTI.getID());
-}
-
-inline void cSoundOcclusionListener::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(cSoundOcclusionListener::DTI)->memFree(p_addr);
-}
-
 cSoundOcclusionListener::~cSoundOcclusionListener() {
 }
 
@@ -135,10 +123,6 @@ MtObject* cSoundOcclusionListener::MyDTI::newInstance() const {
 
 const MtDTI& nSoundOcclusion::cBaseContents::getDTI() const {
     return nSoundOcclusion::cBaseContents::DTI;
-}
-
-inline void nSoundOcclusion::cBaseContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cBaseContents::DTI)->memFree(p_addr);
 }
 
 nSoundOcclusion::cBaseContents::~cBaseContents() {
@@ -172,10 +156,6 @@ const MtDTI& nSoundOcclusion::cCategory::getDTI() const {
     return nSoundOcclusion::cCategory::DTI;
 }
 
-inline void nSoundOcclusion::cCategory::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cCategory::DTI)->memFree(p_addr);
-}
-
 nSoundOcclusion::cCategory::~cCategory() {
 }
 
@@ -197,10 +177,6 @@ MtObject* nSoundOcclusion::cCategory::MyDTI::newInstance() const {
 
 const MtDTI& nSoundOcclusion::cFreeWorkContents::getDTI() const {
     return nSoundOcclusion::cFreeWorkContents::DTI;
-}
-
-inline void nSoundOcclusion::cFreeWorkContents::operator delete(void* p_addr) {
-    ::MtMemoryAllocator::getAllocator(::nSoundOcclusion::cFreeWorkContents::DTI)->memFree(p_addr);
 }
 
 nSoundOcclusion::cFreeWorkContents::~cFreeWorkContents() {
@@ -231,16 +207,8 @@ const MtDTI& uSoundOcclusion::getDTI() const {
     return uSoundOcclusion::DTI;
 }
 
-inline MtAllocator* uSoundOcclusion::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uSoundOcclusion::DTI);
-}
-
 void* uSoundOcclusion::operator new(size_t sz, u32 align) {
     return uSoundOcclusion::getAllocator()->memAlloc(sz, align, uSoundOcclusion::DTI.getID());
-}
-
-inline void uSoundOcclusion::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundOcclusion::DTI)->memFree(p_addr);
 }
 
 uSoundOcclusion::uSoundOcclusion() {
@@ -372,14 +340,6 @@ const MtDTI& uSoundOcclusion::cBoundingBox::getDTI() const {
     return uSoundOcclusion::cBoundingBox::DTI;
 }
 
-inline void* uSoundOcclusion::cBoundingBox::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uSoundOcclusion::cBoundingBox::DTI)->memAlloc(sz, align, uSoundOcclusion::cBoundingBox::DTI.getID());
-}
-
-inline void uSoundOcclusion::cBoundingBox::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundOcclusion::cBoundingBox::DTI)->memFree(p_addr);
-}
-
 uSoundOcclusion::cBoundingBox::~cBoundingBox() {
     if (mpStaticBoundingArray != nullptr) {
         MtMemory::mpAllocatorType[14]->memFree(static_cast<void*>(mpStaticBoundingArray));
@@ -427,20 +387,8 @@ MtObject* uSoundOcclusion::cBoundingBox::MyDTI::newInstance() const {
     return new (16u) uSoundOcclusion::cBoundingBox;
 }
 
-inline void uSoundOcclusion::cBoundingBox::PairWork::operator delete[](void* padr) {
-    MtMemory::mpAllocatorType[14]->memFree(padr);
-}
-
 const MtDTI& uSoundOcclusion::cHollowManager::getDTI() const {
     return uSoundOcclusion::cHollowManager::DTI;
-}
-
-inline void* uSoundOcclusion::cHollowManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uSoundOcclusion::cHollowManager::DTI)->memAlloc(sz, align, uSoundOcclusion::cHollowManager::DTI.getID());
-}
-
-inline void uSoundOcclusion::cHollowManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundOcclusion::cHollowManager::DTI)->memFree(p_addr);
 }
 
 uSoundOcclusion::cHollowManager::~cHollowManager() {
@@ -470,14 +418,6 @@ MtObject* uSoundOcclusion::cHollowManager::MyDTI::newInstance() const {
 
 const MtDTI& uSoundOcclusion::cOcclusionGroupManager::getDTI() const {
     return uSoundOcclusion::cOcclusionGroupManager::DTI;
-}
-
-inline void* uSoundOcclusion::cOcclusionGroupManager::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(uSoundOcclusion::cOcclusionGroupManager::DTI)->memAlloc(sz, align, uSoundOcclusion::cOcclusionGroupManager::DTI.getID());
-}
-
-inline void uSoundOcclusion::cOcclusionGroupManager::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uSoundOcclusion::cOcclusionGroupManager::DTI)->memFree(p_addr);
 }
 
 uSoundOcclusion::cOcclusionGroupManager::~cOcclusionGroupManager() {

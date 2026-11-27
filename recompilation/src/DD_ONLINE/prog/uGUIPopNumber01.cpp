@@ -28,16 +28,8 @@ const MtDTI& uGUIPopNumber01::getDTI() const {
     return uGUIPopNumber01::DTI;
 }
 
-inline MtAllocator* uGUIPopNumber01::getAllocator() {
-    return MtMemoryAllocator::getAllocator(uGUIPopNumber01::DTI);
-}
-
 void* uGUIPopNumber01::operator new(size_t sz, u32 align) {
     return uGUIPopNumber01::getAllocator()->memAlloc(sz, align, uGUIPopNumber01::DTI.getID());
-}
-
-inline void uGUIPopNumber01::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(uGUIPopNumber01::DTI)->memFree(p_addr);
 }
 
 uGUIPopNumber01::~uGUIPopNumber01() {
@@ -150,24 +142,96 @@ __attribute__((weak)) void uGUIPopNumber01::moveEvent() {
     /* stub */
 }
 
-__attribute__((weak)) void uGUIPopNumber01::updateInit() {
-    DDON_STUB("uGUIPopNumber01::updateInit")
-    /* stub */
+void uGUIPopNumber01::updateInit() {
+    if (mRefrenceUIArray.mLength == 0) {
+        mRefNumBox.uGUIBase::cReferenceUINumBox::update();
+        setKeyControl();
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateWait);
+        return;
+    }
+    unsigned int i3 = 0;
+    do {
+        static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i3)])->update();
+        i3 += 1u;
+    } while (i3 < mRefrenceUIArray.mLength);
+    mRefNumBox.uGUIBase::cReferenceUINumBox::update();
+    setKeyControl();
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateWait);
 }
 
-__attribute__((weak)) void uGUIPopNumber01::updateWait() {
-    DDON_STUB("uGUIPopNumber01::updateWait")
-    /* stub */
+void uGUIPopNumber01::updateWait() {
+    if (mRefrenceUIArray.mLength == 0) {
+        mRefNumBox.uGUIBase::cReferenceUINumBox::update();
+        return;
+    }
+    unsigned int i3 = 0;
+    do {
+        static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i3)])->update();
+        i3 += 1u;
+    } while (i3 < mRefrenceUIArray.mLength);
+    mRefNumBox.uGUIBase::cReferenceUINumBox::update();
 }
 
-__attribute__((weak)) void uGUIPopNumber01::updateNumEdit() {
-    DDON_STUB("uGUIPopNumber01::updateNumEdit")
-    /* stub */
+void uGUIPopNumber01::updateNumEdit() {
+    if (mRefrenceUIArray.mLength == 0) {
+        mRefNumBox.uGUIBase::cReferenceUINumBox::update();
+        if (mRefNumBox.mMode == uGUIBase::cReferenceUINumBox::MODE_DEFAULT) {
+            mpCtrlV->setFocus(true);
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateWait);
+        }
+        return;
+    }
+    unsigned int i3 = 0;
+    do {
+        static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i3)])->update();
+        i3 += 1u;
+    } while (i3 < mRefrenceUIArray.mLength);
+    mRefNumBox.uGUIBase::cReferenceUINumBox::update();
+    if (mRefNumBox.mMode == uGUIBase::cReferenceUINumBox::MODE_DEFAULT) {
+        mpCtrlV->setFocus(true);
+        mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateWait);
+    }
 }
 
-__attribute__((weak)) void uGUIPopNumber01::updatePopListDialog() {
-    DDON_STUB("uGUIPopNumber01::updatePopListDialog")
-    /* stub */
+void uGUIPopNumber01::updatePopListDialog() {
+    if (mRefrenceUIArray.mLength != 0) {
+        for (unsigned int i0_3 = 0;;) {
+            static_cast<cReferenceUIBase*>(mRefrenceUIArray.getBuffer()[static_cast<int>(i0_3)])->update();
+            if ((i0_3 + 1u) < mRefrenceUIArray.mLength) {
+                i0_3 += 1u;
+            } else {
+                break;
+            }
+        }
+    }
+    mRefNumBox.uGUIBase::cReferenceUINumBox::update();
+    uGUIBase* v2_10 = mpDialog;
+    if (v2_10 != nullptr) {
+        const MtDTI& t0 = v2_10->getDTI();
+        MT_CTSTR v2_1 = uGUIPopListDialog::DTI.mName;
+        for (const MtDTI* v2_0 = &t0;;) {
+            if (v2_1 == v2_0->mName) {
+                break;
+            } else {
+                if (v2_0->mpParent != nullptr) {
+                    v2_0 = v2_0->mpParent;
+                } else {
+                    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateExit);
+                    return;
+                }
+            }
+        }
+        uGUIPopListDialog* pUnit = static_cast<uGUIPopListDialog*>(v2_10);
+        if (pUnit->getSelect() == uGUIPopListDialog::SELECT_ID_CANCEL) {
+            mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateWait);
+            return;
+        } else {
+            if (pUnit->getSelect() != uGUIPopListDialog::SELECT_ID_DECIDE) {
+                return;
+            }
+        }
+    }
+    mpCurrentFunc = static_cast<void(uGUIBase::*)()>(&::uGUIPopNumber01::updateExit);
 }
 
 void uGUIPopNumber01::updateExit() {

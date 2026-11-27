@@ -18,23 +18,27 @@ class MtPoint;
 class MtSize;
 class MtVector3;
 class MtVector4;
-class cAnimParticle2D;
 class cDraw;
+class cEffectAnim;
 class cEffectValueU32;
-class cLine2D;
-class cModel2D;
-class cPolyline2D;
 class cPrim;
-class cTexline2D;
 namespace nEffect { struct KEYFRAME_INDEX; }
 namespace nPrim { struct Material; }
 namespace nPrim { struct Rect; }
 namespace nPrim { struct Vertex; }
+class rEffectAnim;
 class uEffect2D;
 
 // Declarations
+class cAnimParticle2D;
+class cLine2D;
+class cModel2D;
 class cParticle2D;
 class cParticle2DGenerator;
+class cParticle2DMoveCommon;
+class cParticle2DMoveCustom;
+class cPolyline2D;
+class cTexline2D;
 
 // Type aliases from DWARF
 using f32 = float;
@@ -422,6 +426,243 @@ private:
     MtColor* mpOrgPlaceColor;  // offset: 0x128
     u32 mGeneratorOptionFlag;  // offset: 0x130
     u32 mGenerator32ec;  // offset: 0x134
+};
+
+class cParticle2DMoveCommon
+{
+public:
+    const MtFloat2& getDir() const;
+    void setDir(const MtFloat2& Dir);
+protected:
+    MtFloat2 mDir;  // offset: 0x0
+};
+
+class cParticle2DMoveCustom : public cParticle2DMoveCommon
+{
+public:
+    const MtFloat2& getOfs() const;
+    void setOfs(const MtFloat2& Ofs);
+protected:
+    MtFloat2 mOfs;  // offset: 0x8
+};
+
+class cAnimParticle2D : public cParticle2D
+{
+public:
+    void initPatNoRate(f32 PatNoRate);
+    void initPatNoKeyframeRate(f32 PatNoKeyframeRate);
+    cEffectAnim* getAnim();
+    f32 getPatNoKeyframeRate();
+    void setCurPatNoRate(f32 PatNoRate);
+    rEffectAnim::SEQ_PAT* getSeqPat(rEffectAnim* pAnim, f32 InpRate) const;
+    nPrim::Rect getSeqPatRect(rEffectAnim* pAnim, f32 InpRate) const;
+protected:
+    cEffectAnim mAnim;  // offset: 0x68
+    f32 mPatNoRate[2];  // offset: 0x78
+    f32 mPatNoKeyframeRate;  // offset: 0x80
+    u32 mAnimParticle327c;  // offset: 0x84
+};
+
+class cLine2D : public cParticle2D
+{
+public:
+    void initLine(rEffect2D::E2D_PARTICLE_LINE* pLineParam);
+    void initHeadColor(const MtColor& Color);
+    void initPlaceColor(const MtColor& Color);
+    u32 getColorPlaceNo() const;
+    u32 getColorPlaceType() const;
+    bool isColorPlace() const;
+    const MtColor& getBaseHeadColor() const;
+    const MtColor& getBasePlaceColor() const;
+    u32 getBaseHeadColorKeyframeRate() const;
+    u32 getBasePlaceColorKeyframeRate() const;
+    const MtColor& getCurHeadColor() const;
+    const MtColor& getCurPlaceColor() const;
+    MtColor* getCurColorPtr();
+    void setBaseHeadColor(const MtColor& Color);
+    void setBasePlaceColor(const MtColor& Color);
+    void setBaseHeadColorKeyframeRate(u32 KeyframeRate);
+    void setBasePlaceColorKeyframeRate(u32 KeyframeRate);
+    void setCurHeadColor(const MtColor& Color);
+    void setCurPlaceColor(const MtColor& Color);
+    void updateHeadColor();
+    void updatePlaceColor();
+    MtVector3 interpolateParam(f32 InpRate);
+    MtColor interpolateHeadColor(s32 IntInpRate);
+    MtColor interpolatePlaceColor(s32 IntInpRate);
+protected:
+    MtColor mColor[2][2];  // offset: 0x68
+    MtColor mBaseHeadColor;  // offset: 0x78
+    MtColor mBasePlaceColor;  // offset: 0x7c
+    u32 mBaseHeadColorKeyframeRate : 16;  // offset: 0x80
+    u32 mBasePlaceColorKeyframeRate : 16;  // offset: 0x80
+    u32 mColorPlaceNo : 8;  // offset: 0x84
+    u32 mColorPlaceType : 4;  // offset: 0x84
+    u32 mLine047d : 4;  // offset: 0x84
+    u32 mLine087e : 8;  // offset: 0x84
+    u32 mLine087f : 8;  // offset: 0x84
+};
+
+class cModel2D : public cParticle2D
+{
+public:
+    void initModel(rEffect2D::E2D_PARTICLE_MODEL* pModelParam);
+    void initPartsNo(f32 PartsNo, f32 PartsSpeed, u32 PrimitiveNo);
+    void initColor(const MtColor& Color);
+    void initModelScale(const MtVector4& ModelScale, const MtVector3& ModelScaleAdd);
+    void initModelAnimFlag(u32 AnimFlag);
+    void initRot(const MtVector3& Rot, const MtVector3& RotAdd);
+    void initTexScrollWorkOffset(u32 Offset);
+    f32 getPartsNo() const;
+    f32 getPartsSpeed() const;
+    u32 getPrimitiveNo() const;
+    u32 getRotOrder() const;
+    u32 getModelAnimFlag() const;
+    f32 getEnvMapPower() const;
+    const MtColor& getBaseColor() const;
+    u32 getBaseColorKeyframeRate() const;
+    const MtColor& getCurColor() const;
+    MtColor* getCurColorPtr();
+    const MtVector3& getModelScaleAdd() const;
+    const MtVector3& getCurRot() const;
+    const MtVector3& getOldRot() const;
+    const MtVector3& getRotAdd() const;
+    bool isTexScroll() const;
+    void setPartsNo(f32 PartsNo, u32 PrimitiveNo);
+    void setBaseColor(const MtColor& Color);
+    void setBaseColorKeyframeRate(u32 KeyframeRate);
+    void setCurColor(const MtColor& Color);
+    void setCurModelScale(const MtVector4& ModelScale);
+    void setCurRot(const MtVector3& Rot);
+    void setRotAdd(const MtVector3&);
+    void setEnvMapPower(f32);
+    void updateColor();
+    void updateModelScale();
+    void updateRot(f32 Coef);
+    MtColor interpolateColor(s32 IntInpRate);
+    MtVector4 interpolateParam(f32 InpRate);
+    MtVector3 interpolateRot(f32 InpRate);
+    MtVector3 interpolateModelScale(f32 InpRate);
+    MtFloat2 interpolateTexScrollOffset(f32 InpRate);
+protected:
+    MtVector3 mRot[2];  // offset: 0x70
+    MtVector4 mModelScale[2];  // offset: 0x90
+    MtColor mColor[2];  // offset: 0xb0
+    MtColor mBaseColor;  // offset: 0xb8
+    u32 mBaseColorKeyframeRate : 16;  // offset: 0xbc
+    u32 mTexScrollWorkOffset : 16;  // offset: 0xbc
+    MtVector3 mRotAdd;  // offset: 0xc0
+    MtVector3 mModelScaleAdd;  // offset: 0xd0
+    f32 mPartsNo;  // offset: 0xe0
+    f32 mPartsSpeed;  // offset: 0xe4
+    u32 mPrimitiveNo : 8;  // offset: 0xe8
+    u32 mRotOrder : 4;  // offset: 0xe8
+    u32 mModel04d9 : 4;  // offset: 0xe8
+    u32 mModelAnimFlag : 16;  // offset: 0xe8
+    f32 mEnvMapPower;  // offset: 0xec
+};
+
+class cPolyline2D : public cAnimParticle2D
+{
+public:
+    void initPolyline(rEffect2D::E2D_PARTICLE_POLYLINE* pPolylineParam);
+    void initHeadColor(const MtColor& Color);
+    void initPlaceColor(const MtColor& Color);
+    void initBaseHeadSize(f32 Size, f32 SizeAdd);
+    void initHeadSize(f32 Size);
+    void initBasePlaceSize(f32 Size, f32 SizeAdd);
+    void initPlaceSize(f32 Size);
+    u32 getColorPlaceNo() const;
+    u32 getColorPlaceType() const;
+    bool isColorPlace() const;
+    u32 getSizePlaceNo() const;
+    u32 getSizePlaceType() const;
+    bool isSizePlace() const;
+    const MtColor& getBaseHeadColor() const;
+    const MtColor& getBasePlaceColor() const;
+    u32 getBaseHeadColorKeyframeRate() const;
+    u32 getBasePlaceColorKeyframeRate() const;
+    const MtColor& getCurHeadColor() const;
+    const MtColor& getCurPlaceColor() const;
+    MtColor* getCurColorPtr();
+    f32 getBaseHeadSize() const;
+    f32 getBaseHeadSizeAdd() const;
+    f32 getBasePlaceSize() const;
+    f32 getBasePlaceSizeAdd() const;
+    f32 getCurHeadSize() const;
+    f32 getCurPlaceSize() const;
+    void setBaseHeadColor(const MtColor& Color);
+    void setBasePlaceColor(const MtColor& Color);
+    void setBaseHeadColorKeyframeRate(u32 KeyframeRate);
+    void setBasePlaceColorKeyframeRate(u32 KeyframeRate);
+    void setCurHeadColor(const MtColor& Color);
+    void setCurPlaceColor(const MtColor& Color);
+    void setBaseHeadSize(f32 Size);
+    void setBasePlaceSize(f32 Size);
+    void setCurHeadSize(f32 Size);
+    void setCurPlaceSize(f32 Size);
+    void updateHeadColor();
+    void updatePlaceColor();
+    MtVector4 interpolateParam(f32 InpRate);
+    MtColor interpolateHeadColor(s32 IntInpRate);
+    MtColor interpolatePlaceColor(s32 IntInpRate);
+protected:
+    f32 mHeadSize[2];  // offset: 0x88
+    f32 mPlaceSize[2];  // offset: 0x90
+    MtColor mColor[2][2];  // offset: 0x98
+    f32 mBaseHeadSize;  // offset: 0xa8
+    f32 mBaseHeadSizeAdd;  // offset: 0xac
+    f32 mBasePlaceSize;  // offset: 0xb0
+    f32 mBasePlaceSizeAdd;  // offset: 0xb4
+    MtColor mBaseHeadColor;  // offset: 0xb8
+    MtColor mBasePlaceColor;  // offset: 0xbc
+    u32 mBaseHeadColorKeyframeRate : 16;  // offset: 0xc0
+    u32 mBasePlaceColorKeyframeRate : 16;  // offset: 0xc0
+    u32 mColorPlaceNo : 8;  // offset: 0xc4
+    u32 mSizePlaceNo : 8;  // offset: 0xc4
+    u32 mColorPlaceType : 4;  // offset: 0xc4
+    u32 mSizePlaceType : 4;  // offset: 0xc4
+    u32 mPolyline04bf : 8;  // offset: 0xc4
+};
+
+class cTexline2D : public cAnimParticle2D
+{
+public:
+    void initTexline(rEffect2D::E2D_PARTICLE_TEXLINE* pTexlineParam);
+    void initHeadColor(const MtColor& Color);
+    void initPlaceColor(const MtColor& Color);
+    u32 getColorPlaceNo() const;
+    u32 getColorPlaceType() const;
+    bool isColorPlace() const;
+    const MtColor& getBaseHeadColor() const;
+    const MtColor& getBasePlaceColor() const;
+    u32 getBaseHeadColorKeyframeRate() const;
+    u32 getBasePlaceColorKeyframeRate() const;
+    const MtColor& getCurHeadColor() const;
+    const MtColor& getCurPlaceColor() const;
+    MtColor* getCurColorPtr();
+    void setBaseHeadColor(const MtColor& Color);
+    void setBasePlaceColor(const MtColor& Color);
+    void setBaseHeadColorKeyframeRate(u32 KeyframeRate);
+    void setBasePlaceColorKeyframeRate(u32 KeyframeRate);
+    void setCurHeadColor(const MtColor& Color);
+    void setCurPlaceColor(const MtColor& Color);
+    void updateHeadColor();
+    void updatePlaceColor();
+    MtVector3 interpolateParam(f32 InpRate);
+    MtColor interpolateHeadColor(s32 IntInpRate);
+    MtColor interpolatePlaceColor(s32 IntInpRate);
+protected:
+    MtColor mColor[2][2];  // offset: 0x88
+    MtColor mBaseHeadColor;  // offset: 0x98
+    MtColor mBasePlaceColor;  // offset: 0x9c
+    u32 mBaseHeadColorKeyframeRate : 16;  // offset: 0xa0
+    u32 mBasePlaceColorKeyframeRate : 16;  // offset: 0xa0
+    u32 mColorPlaceNo : 8;  // offset: 0xa4
+    u32 mColorPlaceType : 4;  // offset: 0xa4
+    u32 mTexline049d : 4;  // offset: 0xa4
+    u32 mTexline089e : 8;  // offset: 0xa4
+    u32 mTexline089f : 8;  // offset: 0xa4
 };
 
 inline u32 cParticle2DGenerator::getGeneratorNo() const {

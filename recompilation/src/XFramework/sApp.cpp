@@ -12,6 +12,7 @@
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
 #include "../MT/MtString.h"
+#include "../MT/MtType.h"
 #include "cSystem.h"
 #include "nAutomation.h"
 #include "sMain.h"
@@ -26,10 +27,6 @@ const MtDTI& sApp::getDTI() const {
 
 void* sApp::operator new(size_t sz, u32 align) {
     return MtMemoryAllocator::getAllocator(sApp::DTI)->memAlloc(sz, align, sApp::DTI.mID);
-}
-
-inline void sApp::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sApp::DTI)->memFree(p_addr);
 }
 
 sApp::sApp(MT_CTSTR remote_config_name) {
@@ -181,10 +178,6 @@ const MtDTI& sApp::Item::getDTI() const {
     return sApp::Item::DTI;
 }
 
-inline void sApp::Item::operator delete(void* p_addr) {
-    MtMemoryAllocator::getAllocator(sApp::Item::DTI)->memFree(p_addr);
-}
-
 void sApp::Item::createProperty(MtPropertyList& s) {
     switch (static_cast<unsigned int>(mType - 1)) {
         case 0:
@@ -279,9 +272,32 @@ void sApp::Item::setEnumValue(s32 v) {
     mProp.setInteger(v);
 }
 
-__attribute__((weak)) MT_CTSTR sApp::Item::getEnumName() {
-    DDON_STUB("sApp::Item::getEnumName")
-    return {};
+MT_CTSTR sApp::Item::getEnumName() {
+    s32 v = mProp.getInteger();
+    const MT_ENUM* v0_3 = mpEnum;
+    const char* v2_1;
+    if (v0_3->name != nullptr) {
+        MT_CTSTR v0_1 = v0_3->name;
+        unsigned int v0_2 = 0;
+        for (unsigned int i0_4 = 1;;) {
+            if (v0_3[v0_2].value == v) {
+                v2_1 = v0_1;
+                return v2_1;
+            } else {
+                if (v0_3[i0_4].name != nullptr) {
+                    v0_1 = v0_3[i0_4].name;
+                    v0_2 = i0_4;
+                    i0_4 += 1u;
+                } else {
+                    break;
+                }
+            }
+        }
+        v2_1 = "Unknown";
+    } else {
+        v2_1 = "Unknown";
+    }
+    return v2_1;
 }
 
 __attribute__((weak)) void sApp::Item::setEnumName(MT_CTSTR) {

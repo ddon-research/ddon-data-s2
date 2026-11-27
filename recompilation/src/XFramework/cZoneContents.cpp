@@ -1,9 +1,7 @@
 // Reconstructed from the game's DWARF debug information.
 #include <new>
 #include "cZoneContents.h"
-#include "../MT/MtAllocator.h"
 #include "../MT/MtDTI.h"
-#include "../MT/MtMemoryAllocator.h"
 #include "../MT/MtObject.h"
 #include "../MT/MtProperty.h"
 #include "../MT/MtPropertyList.h"
@@ -19,10 +17,6 @@ inline void cZoneContents::operator delete(void* p_addr) {
 
 const MtDTI& cZoneContents::getDTI() const {
     return cZoneContents::DTI;
-}
-
-inline void* cZoneContents::operator new(size_t sz, u32 align) {
-    return MtMemoryAllocator::getAllocator(cZoneContents::DTI)->memAlloc(sz, align, cZoneContents::DTI.mID);
 }
 
 cZoneContents::cZoneContents() {

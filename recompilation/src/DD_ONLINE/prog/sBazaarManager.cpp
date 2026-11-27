@@ -765,14 +765,14 @@ sBazaarManager::cBazaarCharListData::~cBazaarCharListData() {
 }
 
 void sBazaarManager::cBazaarCharListData::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\345\207\272\345\223\201\347\212\266\346\263\201", &mState, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240ID", &mItemId, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\200\213\346\225\260", &mNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\215\230\344\276\241", &mPrice, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\243\262\344\270\212\351\207\221", &mProceeds, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\220\343\202\266\343\203\274ID", &mBazaarId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "出品状況", &mState, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アイテムID", &mItemId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "個数", &mNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "単価", &mPrice, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "売上金", &mProceeds, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "バザーID", &mBazaarId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "CharID", &mCharId, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\267\343\203\274\343\202\261\343\203\263\343\202\271ID", &mSequence, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "シーケンスID", &mSequence, 0u, 0u);
 }
 
 __attribute__((weak)) void sBazaarManager::cBazaarCharListData::calcElapsedTime() {
@@ -796,7 +796,7 @@ sBazaarManager::cBazaarProceedsCtrl::~cBazaarProceedsCtrl() {
 }
 
 void sBazaarManager::cBazaarProceedsCtrl::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\345\243\262\344\270\212\351\207\221", &mProceeds, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "売上金", &mProceeds, 0u, 0u);
 }
 
 inline sBazaarManager::cBazaarProceedsCtrl::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -841,7 +841,7 @@ sBazaarManager::cBazaarItemListCtrl::~cBazaarItemListCtrl() {
 
 void sBazaarManager::cBazaarItemListCtrl::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mItemList", static_cast<MtObject*>(&mItemList), 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "\344\273\266\346\225\260", reinterpret_cast<MT_MFUNC>(&::sBazaarManager::cBazaarItemListCtrl::getListNum), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "件数", reinterpret_cast<MT_MFUNC>(&::sBazaarManager::cBazaarItemListCtrl::getListNum), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 void sBazaarManager::cBazaarItemListCtrl::setSelectNo(s32 index) {
@@ -896,9 +896,9 @@ const MtDTI& sBazaarManager::cBazaarItemListData::getDTI() const {
 }
 
 void sBazaarManager::cBazaarItemListData::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240ID", &mItemId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アイテムID", &mItemId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mpItemParam", reinterpret_cast<MtObject* *>(&mpItemParam), 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\344\273\266\346\225\260", &mEventNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "件数", &mEventNum, 0u, 0u);
 }
 
 inline sBazaarManager::cBazaarItemListData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -1101,13 +1101,13 @@ sBazaarManager::cBazaarItemInfoData::~cBazaarItemInfoData() {
 }
 
 void sBazaarManager::cBazaarItemInfoData::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240ID", &mItemId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アイテムID", &mItemId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mpItemParam", reinterpret_cast<MtObject* *>(&mpItemParam), 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\220\343\202\266\343\203\274ID", &mBazaarId, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\267\343\203\274\343\202\261\343\203\263\343\202\271", &mSequence, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\200\213\346\225\260", &mNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\215\230\344\276\241", &mPrice, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CSTRING, "\345\207\272\345\223\201\346\227\245\346\231\202", reinterpret_cast<MT_MFUNC>(&::sBazaarManager::cBazaarItemInfoData::getExhibitTimeStr), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "バザーID", &mBazaarId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "シーケンス", &mSequence, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "個数", &mNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "単価", &mPrice, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CSTRING, "出品日時", reinterpret_cast<MT_MFUNC>(&::sBazaarManager::cBazaarItemInfoData::getExhibitTimeStr), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 __attribute__((weak)) MT_CTSTR sBazaarManager::cBazaarItemInfoData::getExhibitTimeStr() {
@@ -1128,10 +1128,10 @@ const MtDTI& sBazaarManager::cBazaarItemHistoryData::getDTI() const {
 }
 
 void sBazaarManager::cBazaarItemHistoryData::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240ID", &mItemId, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アイテムID", &mItemId, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mpItemParam", reinterpret_cast<MtObject* *>(&mpItemParam), 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\200\213\346\225\260", &mNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\215\230\344\276\241", &mPrice, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "個数", &mNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "単価", &mPrice, 0u, 0u);
 }
 
 inline sBazaarManager::cBazaarItemHistoryData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

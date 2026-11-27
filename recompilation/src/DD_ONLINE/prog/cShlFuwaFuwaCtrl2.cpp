@@ -77,12 +77,12 @@ cShlFuwaFuwaInfo2::~cShlFuwaFuwaInfo2() {
 }
 
 void cShlFuwaFuwaInfo2::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\345\221\250\346\234\237", &mPeriod, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\202\261\343\203\274\343\203\253", &mScale, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\251\343\203\263\343\203\200\343\203\240", &mRandom, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\234\211\345\212\271\346\231\202\351\226\223", &mTime, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\243\234\351\226\223\343\203\225\343\203\254\343\203\274\343\203\240", &mInterFrame, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\201\265\343\202\217\343\201\265\343\202\217\343\202\252\343\203\227\343\202\267\343\203\247\343\203\263", &mFuwaFuwaOption, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "周期", &mPeriod, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "スケール", &mScale, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ランダム", &mRandom, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "有効時間", &mTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "補間フレーム", &mInterFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ふわふわオプション", &mFuwaFuwaOption, 0u, 0u);
 }
 
 void cShlFuwaFuwaInfo2::copy(const cShlFuwaFuwaInfo2& srcInfo) {

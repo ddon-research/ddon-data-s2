@@ -47,11 +47,11 @@ void uGeometry2Group::createProperty(MtPropertyList& s) {
     this->cUnit::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "OwnerInfo", static_cast<MtObject*>(&mOwnerSystem), 6u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "Resource", "resource", reinterpret_cast<MT_MFUNC>(&::uGeometry2Group::getResourceForUI), reinterpret_cast<MT_MFUNC>(&::uGeometry2Group::setResourceForUI), 2u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\346\217\217\347\224\273ON", static_cast<MT_MFUNC>(&::uGeometry2Group::setGeometryGroupDispAllON), 10u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\217\217\347\224\273OFF", static_cast<MT_MFUNC>(&::uGeometry2Group::setGeometryGroupDispAllOFF), 10u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\252\343\203\255\343\203\274\343\203\211", static_cast<MT_MFUNC>(&::uGeometry2Group::restoreGeometryFromResource), 10u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\253\343\203\201\343\202\271\343\203\254\343\203\203\343\203\211ON/OFF", &mFlgMultiThread, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\234\200\345\260\217\343\202\260\343\203\253\343\203\274\343\203\227\346\225\260", &mMultiThreadGroupNumMin, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "描画ON", static_cast<MT_MFUNC>(&::uGeometry2Group::setGeometryGroupDispAllON), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "描画OFF", static_cast<MT_MFUNC>(&::uGeometry2Group::setGeometryGroupDispAllOFF), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "リロード", static_cast<MT_MFUNC>(&::uGeometry2Group::restoreGeometryFromResource), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "マルチスレッドON/OFF", &mFlgMultiThread, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "最小グループ数", &mMultiThreadGroupNumMin, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "GeometryGroup", static_cast<MtObject*>(&mGeometryGroupArray), 6u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mGeometryGroupArray", static_cast<MtObject*>(&mGeometryGroupArray), 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mOwnerSystem", static_cast<MtObject*>(&mOwnerSystem), 0u, 0u);

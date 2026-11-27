@@ -449,7 +449,7 @@ __attribute__((weak)) void cpOmLadder::kill() {
 
 void cpOmLadder::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mHeight", &mHeight, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\206\215\350\250\255\345\256\232", static_cast<MT_MFUNC>(&::cpOmLadder::setupModelUnit), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "再設定", static_cast<MT_MFUNC>(&::cpOmLadder::setupModelUnit), 10u);
 }
 
 __attribute__((weak)) void cpOmLadder::compMoveAfter() {

@@ -67,7 +67,7 @@ __attribute__((noinline)) cContextCharacter::~cContextCharacter() {
 }
 
 void cContextCharacter::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\350\241\214\345\213\225\343\203\252\343\202\257\343\202\250\343\202\271\343\203\210", &mIsReqAction, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "行動リクエスト", &mIsReqAction, 1u, 0u);
 }
 
 MtUI* cContextCharacter::createUI(MtProperty& prop) {

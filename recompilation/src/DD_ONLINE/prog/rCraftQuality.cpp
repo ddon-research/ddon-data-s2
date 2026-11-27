@@ -16,10 +16,10 @@ const MtDTI& cCraftQualityData::getDTI() const {
 }
 
 void cCraftQualityData::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\351\201\251\345\277\234\343\202\242\343\202\244\343\203\206\343\203\240ID", &mItemNo, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\223\201\350\263\252\343\203\234\343\203\274\343\203\212\343\202\271", &mBonus, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\251\343\203\263\343\202\257\344\270\212\351\231\220", &mRankLimit, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\254\343\203\231\343\203\253", &mLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "適応アイテムID", &mItemNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "品質ボーナス", &mBonus, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ランク上限", &mRankLimit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "レベル", &mLv, 0u, 0u);
 }
 
 inline cCraftQualityData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

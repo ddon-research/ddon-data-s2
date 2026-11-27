@@ -293,8 +293,8 @@ MtUI* nSoundTrigger::cCurveSetContents::createUI(MtProperty& prop) {
 void nSoundTrigger::cCurveSetContents::createProperty(MtPropertyList& s) {
     this->::cZoneContents::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "CurveSet:A", "resource", static_cast<void*>(&mpCurveSetA), 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223CurveSet AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cCurveSetContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221CurveSet BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cCurveSetContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓CurveSet AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cCurveSetContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑CurveSet BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cCurveSetContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "CurveSet:B", "resource", static_cast<void*>(&mpCurveSetB), 0u, 0u);
 }
 
@@ -340,8 +340,8 @@ MtUI* nSoundTrigger::cDirectionalSetContents::createUI(MtProperty& prop) {
 void nSoundTrigger::cDirectionalSetContents::createProperty(MtPropertyList& s) {
     this->::cZoneContents::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "DirectionalSet:A", "resource", static_cast<void*>(&mpDirectionalSetA), 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223DirectionalSet AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cDirectionalSetContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221DirectionalSet BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cDirectionalSetContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓DirectionalSet AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cDirectionalSetContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑DirectionalSet BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cDirectionalSetContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "DirectionalSet:B", "resource", static_cast<void*>(&mpDirectionalSetB), 0u, 0u);
 }
 
@@ -389,8 +389,8 @@ void nSoundTrigger::cEQContents::createProperty(MtPropertyList& s) {
     s << ::MtProperty(static_cast<MtObject*>(this), "EQ:A", "resource", static_cast<void*>(&mpEQA), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "EQID:A", &mEQIdA, 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "FadeTime:A", &mFadeTimeA, 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223EQ AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cEQContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221EQ BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cEQContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓EQ AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cEQContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑EQ BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cEQContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "EQ:B", "resource", static_cast<void*>(&mpEQB), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "EQID:B", &mEQIdB, 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "FadeTime:B", &mFadeTimeB, 0u, 0u);
@@ -432,8 +432,8 @@ void nSoundTrigger::cFreeWorkContents::createProperty(MtPropertyList& s) {
     s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkA1", &mFreeWorkA[1], 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkA2", &mFreeWorkA[2], 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkA3", &mFreeWorkA[3], 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork \342\206\223AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cFreeWorkContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork \342\206\221BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cFreeWorkContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork ↓AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cFreeWorkContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "FreeWork ↑BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cFreeWorkContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkB0", &mFreeWorkB[0], 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkB1", &mFreeWorkB[1], 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "FreeWorkB2", &mFreeWorkB[2], 0u, 0u);
@@ -485,8 +485,8 @@ MtUI* nSoundTrigger::cPlaySeqSeContents::createUI(MtProperty& prop) {
 void nSoundTrigger::cPlaySeqSeContents::createProperty(MtPropertyList& s) {
     this->::cZoneContents::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "SequenceSe:A", "resource", static_cast<void*>(&mpSequenceSeA), 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223SequenceSe AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cPlaySeqSeContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221SequenceSe BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cPlaySeqSeContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓SequenceSe AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cPlaySeqSeContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑SequenceSe BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cPlaySeqSeContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "SequenceSe:B", "resource", static_cast<void*>(&mpSequenceSeB), 0u, 0u);
 }
 
@@ -535,8 +535,8 @@ void nSoundTrigger::cReverbContents::createProperty(MtPropertyList& s) {
     s << ::MtProperty(static_cast<MtObject*>(this), "ReverbID:A", &mReverbIdA, 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "EffectNo:A", &mEffectNoA, 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "FadeTime:A", &mFadeTimeA, 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223Reverb AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cReverbContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221Reverb BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cReverbContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓Reverb AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cReverbContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑Reverb BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cReverbContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "Reverb:B", "resource", static_cast<void*>(&mpReverbB), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "ReverbID:B", &mReverbIdB, 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "EffectNo:B", &mEffectNoB, 0u, 0u);
@@ -585,8 +585,8 @@ void nSoundTrigger::cSeContents::createProperty(MtPropertyList& s) {
     this->::cZoneContents::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "SeRequest:A", "resource", static_cast<void*>(&mpRequestA), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "SeRequestNo:A", &mRequestNoA, 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223Se AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cSeContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221Se BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cSeContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓Se AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cSeContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑Se BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cSeContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "SeRequest:B", "resource", static_cast<void*>(&mpRequestB), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "SeRequestNo:B", &mRequestNoB, 0u, 0u);
 }
@@ -623,8 +623,8 @@ MtUI* nSoundTrigger::cStopSeqSeContents::createUI(MtProperty& prop) {
 void nSoundTrigger::cStopSeqSeContents::createProperty(MtPropertyList& s) {
     this->::cZoneContents::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "StopGroupID:A", &mStopGroupId[0][0], 32u, 4u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223StopGroupID AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cStopSeqSeContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221StopGroupID BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cStopSeqSeContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓StopGroupID AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cStopSeqSeContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑StopGroupID BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cStopSeqSeContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "StopGroupID:B", &mStopGroupId[1][0], 32u, 4u);
 }
 
@@ -675,8 +675,8 @@ void nSoundTrigger::cStreamContents::createProperty(MtPropertyList& s) {
     this->::cZoneContents::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "StreamRequest:A", "resource", static_cast<void*>(&mpStreamRequestA), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "StreamRequestNo:A", &mStreamRequestNoA, 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223Stream AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cStreamContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221Stream BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cStreamContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓Stream AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cStreamContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑Stream BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cStreamContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "StreamRequest:B", "resource", static_cast<void*>(&mpStreamRequestB), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "StreamRequestNo:B", &mStreamRequestNoB, 0u, 0u);
 }
@@ -723,8 +723,8 @@ void nSoundTrigger::cSubMixerContents::createProperty(MtPropertyList& s) {
     this->::cZoneContents::createProperty(s);
     s << ::MtProperty(static_cast<MtObject*>(this), "SubMixer:A", "resource", static_cast<void*>(&mpSubMixerA), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "SubMixerID:A", &mSubMixerIdA, 0u, 0u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\223SubMixer AtoB\342\206\223", static_cast<MT_MFUNC>(&::nSoundTrigger::cSubMixerContents::copyAToB), 10u);
-    s << ::MtProperty(static_cast<MtObject*>(this), "\342\206\221SubMixer BtoA\342\206\221", static_cast<MT_MFUNC>(&::nSoundTrigger::cSubMixerContents::copyBToA), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↓SubMixer AtoB↓", static_cast<MT_MFUNC>(&::nSoundTrigger::cSubMixerContents::copyAToB), 10u);
+    s << ::MtProperty(static_cast<MtObject*>(this), "↑SubMixer BtoA↑", static_cast<MT_MFUNC>(&::nSoundTrigger::cSubMixerContents::copyBToA), 10u);
     s << ::MtProperty(static_cast<MtObject*>(this), "SubMixer:B", "resource", static_cast<void*>(&mpSubMixerB), 0u, 0u);
     s << ::MtProperty(static_cast<MtObject*>(this), "SubMixerID:B", &mSubMixerIdB, 0u, 0u);
 }

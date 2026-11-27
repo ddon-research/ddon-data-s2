@@ -17,8 +17,8 @@ const MtDTI& cPlayerExpTable::getDTI() const {
 }
 
 void cPlayerExpTable::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\345\277\205\350\246\201\347\265\214\351\250\223\345\200\244", &mNeedExp, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\276\227\343\202\211\343\202\214\343\202\213\350\201\267\346\245\255\343\203\235\343\202\244\343\203\263\343\203\210", &mGainJobPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "必要経験値", &mNeedExp, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "得られる職業ポイント", &mGainJobPoint, 0u, 0u);
 }
 
 inline cPlayerExpTable::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

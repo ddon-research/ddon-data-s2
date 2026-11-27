@@ -29,9 +29,9 @@ cOcdImmuneParamRes::cOcdImmuneParamRes() {
 }
 
 void cOcdImmuneParamRes::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\347\225\260\345\270\270\345\220\215\347\247\260", &mOcdUID, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\205\215\347\226\253\345\212\233\350\243\234\346\255\243\345\200\244", &mImmuneRate, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\243\234\346\255\243\345\233\236\346\225\260", &mImmuneNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "異常名称", &mOcdUID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "免疫力補正値", &mImmuneRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "補正回数", &mImmuneNum, 0u, 0u);
 }
 
 inline cOcdImmuneParamRes::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -120,15 +120,15 @@ void cOcdStatusParamRes::copyEffectiveParam(const cOcdStatusParamRes& param) {
 }
 
 void cOcdStatusParamRes::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\347\225\260\345\270\270\345\220\215\347\247\260", &mOcdUID, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\225\260\345\270\270\346\234\211\347\204\241", &mIsEffective, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "\350\200\220\346\200\247\345\200\244", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getEndurance), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setEndurance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\346\231\202\351\226\223\347\265\214\351\201\216\343\201\247\346\262\273\343\202\213", &mIsTimeRecover, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "\346\234\211\345\212\271\346\231\202\351\226\223", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getActiveTime), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setActiveTime), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\345\276\205\346\251\237\346\231\202\351\226\223", &mCureWaitTime, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "\345\233\236\345\276\251\351\207\217", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getCureValue), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setCureValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "\346\261\216\347\224\250\343\203\221\343\203\251\343\203\241\343\203\274\343\202\2770", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getFreeParam0), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setFreeParam0), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "\346\261\216\347\224\250\343\203\221\343\203\251\343\203\241\343\203\274\343\202\2771", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getFreeParam1), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setFreeParam1), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "異常名称", &mOcdUID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "異常有無", &mIsEffective, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "耐性値", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getEndurance), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setEndurance), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "時間経過で治る", &mIsTimeRecover, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "有効時間", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getActiveTime), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setActiveTime), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "回復待機時間", &mCureWaitTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "回復量", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getCureValue), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setCureValue), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "汎用パラメータ0", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getFreeParam0), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setFreeParam0), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_F32, "汎用パラメータ1", reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::getFreeParam1), reinterpret_cast<MT_MFUNC>(&::cOcdStatusParamRes::setFreeParam1), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 
 f32 cOcdStatusParamRes::getEndurance() const {

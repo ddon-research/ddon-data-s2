@@ -51,11 +51,11 @@ sClanKyoten::~sClanKyoten() {
 void sClanKyoten::createProperty(MtPropertyList& s) {
     this->cSystem::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mbClanK", &mbClanK, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\357\274\221\357\274\246\350\247\243\346\224\276", &mbOpenLot[1], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\357\274\221\357\274\246\350\270\212\343\202\212\345\240\264\350\247\243\346\224\276", &mbOpenLot[2], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\357\274\222\357\274\246\350\247\243\346\224\276", &mbOpenLot[3], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\257\343\203\251\343\203\263\343\203\225\343\203\251\343\203\203\343\202\260\350\247\243\346\224\276", &mbOpenLot[4], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\235\343\203\274\343\203\263\351\232\212\350\247\243\346\224\276", &mbOpenLot[5], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "１Ｆ解放", &mbOpenLot[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "１Ｆ踊り場解放", &mbOpenLot[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "２Ｆ解放", &mbOpenLot[3], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "クランフラッグ解放", &mbOpenLot[4], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ポーン隊解放", &mbOpenLot[5], 0u, 0u);
     createPawnProperty(s);
     createShopProperty(s);
 }

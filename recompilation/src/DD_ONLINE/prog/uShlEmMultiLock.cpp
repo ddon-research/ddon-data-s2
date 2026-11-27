@@ -41,14 +41,14 @@ MtDTI& cShlParamMultiLock::getShlDTI() const {
 
 void cShlParamMultiLock::createProperty(MtPropertyList& s) {
     this->cShlParamGenerator::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\224\237\346\210\220\343\201\231\343\202\213\343\202\267\343\202\247\343\203\253\343\201\256\345\220\221\343\201\215\343\201\256\350\250\210\347\256\227\343\202\222\343\201\227\343\201\252\343\201\204", &mNoCalcTgtDir, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\255\343\203\203\343\202\257\343\202\252\343\203\263\346\234\200\345\244\247\346\225\260", &mLockNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\227\343\203\254\343\202\244\343\203\244\343\203\274\345\212\240\347\256\227\347\202\271\346\225\260", &mPlayerPoint, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\235\343\203\274\343\203\263\345\212\240\347\256\227\347\202\271\346\225\260", &mPawnPoint, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\357\274\256\357\274\260\357\274\243\345\212\240\347\256\227\347\202\271\346\225\260", &mNpcPoint, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\267\235\351\233\242", static_cast<MtObject*>(&mDist[0]), 32u, 4u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\247\222\345\272\246", static_cast<MtObject*>(&mAngle[0]), 32u, 4u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\251\225\344\276\241\345\200\244", static_cast<MtObject*>(&mEval[0]), 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "生成するシェルの向きの計算をしない", &mNoCalcTgtDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ロックオン最大数", &mLockNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "プレイヤー加算点数", &mPlayerPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ポーン加算点数", &mPawnPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ＮＰＣ加算点数", &mNpcPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "距離", static_cast<MtObject*>(&mDist[0]), 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "角度", static_cast<MtObject*>(&mAngle[0]), 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "評価値", static_cast<MtObject*>(&mEval[0]), 32u, 4u);
 }
 
 __attribute__((weak)) void cShlParamMultiLock::copy(const cShlParamBase* pParamBase) {
@@ -74,8 +74,8 @@ const MtDTI& cShlParamMultiLock::cRangePointTbl::getDTI() const {
 }
 
 void cShlParamMultiLock::cRangePointTbl::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\347\257\204\345\233\262", &mRange, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\202\271\346\225\260", &mPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "範囲", &mRange, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "点数", &mPoint, 0u, 0u);
 }
 
 MtUIList* cShlParamMultiLock::cRangePointTbl::createUIList(MtUIList* pList) {
@@ -99,8 +99,8 @@ const MtDTI& cShlParamMultiLock::cShootCtrlParamMultiLock::getDTI() const {
 }
 
 void cShlParamMultiLock::cShootCtrlParamMultiLock::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\260\343\203\253\343\203\274\343\203\227", &mGroup, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\273\343\203\203\343\203\210\344\275\215\347\275\256", reinterpret_cast<s32*>(&mShlSetLocate), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "グループ", &mGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "セット位置", reinterpret_cast<s32*>(&mShlSetLocate), 0u, 0u);
     this->cShlParamGenerator::cShootCtrlParam::createProperty(s);
 }
 
@@ -146,10 +146,10 @@ __attribute__((noinline)) uShlEmMultiLock::~uShlEmMultiLock() {
 
 void uShlEmMultiLock::createProperty(MtPropertyList& s) {
     this->uDDOModel::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\267\343\202\247\343\203\253\343\202\273\343\203\203\343\203\210\345\220\210\350\250\210\346\225\260", &mShlSetNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\260\343\203\253\343\203\274\343\203\227\346\257\216\343\201\256\343\202\267\343\202\247\343\203\253\343\202\273\343\203\203\343\203\210\346\225\260", &mShlSetNumGrp[0], 32u, 6u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\255\343\203\203\343\202\257\343\202\252\343\203\263\346\234\200\345\244\247\346\225\260", &mLockNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\241\343\202\244\343\203\263\343\202\277\343\203\274\343\202\262\343\203\203\343\203\210\343\201\270\343\201\256\345\237\272\346\272\226\343\203\231\343\202\257\343\203\210\343\203\253", &mBaseVec, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "シェルセット合計数", &mShlSetNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "グループ毎のシェルセット数", &mShlSetNumGrp[0], 32u, 6u);
+    s << MtProperty(static_cast<MtObject*>(this), "ロックオン最大数", &mLockNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "メインターゲットへの基準ベクトル", &mBaseVec, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTmpTargetArray", static_cast<MtObject*>(&mTmpTargetArray), 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTargetArray", static_cast<MtObject*>(&mTargetArray), 0u, 0u);
 }

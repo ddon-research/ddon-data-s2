@@ -16,11 +16,11 @@ const MtDTI& cCraftSkillCostData::getDTI() const {
 }
 
 void cCraftSkillCostData::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\202\255\343\203\253\345\220\210\350\250\210", &mTotal, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\211\212\346\270\233\347\216\207(\357\274\221\344\272\272)", &mCostRate1, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\211\212\346\270\233\347\216\207(\357\274\222\344\272\272)", &mCostRate2, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\211\212\346\270\233\347\216\207(\357\274\223\344\272\272)", &mCostRate3, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\211\212\346\270\233\347\216\207(\357\274\224\344\272\272)", &mCostRate4, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "スキル合計", &mTotal, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "削減率(１人)", &mCostRate1, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "削減率(２人)", &mCostRate2, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "削減率(３人)", &mCostRate3, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "削減率(４人)", &mCostRate4, 0u, 0u);
 }
 
 f32 cCraftSkillCostData::getRate(u32 num) {

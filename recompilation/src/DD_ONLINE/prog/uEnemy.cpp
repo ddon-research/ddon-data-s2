@@ -323,8 +323,8 @@ __attribute__((weak)) void uEnemy::updateHeadCtrl() {
 
 void uEnemy::createProperty(MtPropertyList& s) {
     this->uDDOModel::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\277\343\203\274\343\202\262\343\203\203\343\203\210\343\202\277\343\202\244\343\203\227", &mTargetType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "UI\343\201\214\345\244\247\343\201\215\343\201\204\343\201\213", &mIsBigUI, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ターゲットタイプ", &mTargetType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "UIが大きいか", &mIsBigUI, 0u, 0u);
 }
 
 __attribute__((weak)) void uEnemy::setupBeforeContext(bool initSet) {

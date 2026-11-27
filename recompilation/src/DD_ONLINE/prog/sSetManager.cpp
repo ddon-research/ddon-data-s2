@@ -104,7 +104,7 @@ __attribute__((noinline)) sSetManager::~sSetManager() {
 void sSetManager::createProperty(MtPropertyList& s) {
     this->cSystem::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mIsSetup", &mIsSetup, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\210\206\345\211\262\347\204\241\345\212\271\343\203\246\343\203\213\343\203\203\343\203\210\343\201\257SBC\347\204\241\343\201\217\343\201\246\343\202\202\343\202\273\343\203\203\343\203\210\343\201\213", &mIsSetPersistentEvenIfNoSbc, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "分割無効ユニットはSBC無くてもセットか", &mIsSetPersistentEvenIfNoSbc, 0u, 0u);
 }
 
 MtUI* sSetManager::createUI(MtProperty& prop) {

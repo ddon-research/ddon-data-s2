@@ -101,7 +101,7 @@ const MtDTI& cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::g
 void cShlParamGeneErosionTentacle::cShootCtrlParamGeneErosionTentacle::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "shlNo", &shlNo, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "shlPawnNoticeNo", &shlPawnNoticeNo, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\263\343\202\242\343\203\235\343\202\244\343\203\263\343\203\210\343\202\277\343\202\244\343\203\227", &coretype, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "コアポイントタイプ", &coretype, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "constJointNo", &constJointNo, 0u, 0u);
 }
 

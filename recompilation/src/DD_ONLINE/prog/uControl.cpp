@@ -69,18 +69,18 @@ uControl::~uControl() {
 void uControl::createProperty(MtPropertyList& s) {
     this->cUnit::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "RPC", reinterpret_cast<MtObject* *>(&mpNetRpc), 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\256\241\347\220\206\343\203\242\343\203\207\343\203\253", reinterpret_cast<MtObject* *>(&mpModel), 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\255\343\203\243\343\203\251\346\203\205\345\240\261\343\202\263\343\203\263\343\203\206\343\202\255\343\202\271\343\203\210", reinterpret_cast<MtObject* *>(&mpContext), 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\244\343\203\263\343\202\271\343\202\277\343\203\263\343\202\271\346\203\205\345\240\261\343\202\263\343\203\263\343\203\206\343\202\255\343\202\271\343\203\210", reinterpret_cast<MtObject* *>(&mpContextInst), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "管理モデル", reinterpret_cast<MtObject* *>(&mpModel), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "キャラ情報コンテキスト", reinterpret_cast<MtObject* *>(&mpContext), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "インスタンス情報コンテキスト", reinterpret_cast<MtObject* *>(&mpContextInst), 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_BOOL, "uControl::isMaster", reinterpret_cast<MT_MFUNC>(&::uControl::isMaster), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\351\200\232\344\277\241\343\201\231\343\202\213\343\201\213\357\274\237", &mIsCommunicate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "通信するか？", &mIsCommunicate, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mIsUpdateAction", &mIsUpdateAction, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mIsSaveSendAct", &mIsSaveSendAct, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mSendActIntervalTimer", &mSendActIntervalTimer, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mForcePeriodic", reinterpret_cast<s32*>(&mForcePeriodic), 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mBossCondSendInterval", &mBossCondSendInterval, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "\345\272\247\346\250\231", reinterpret_cast<MT_MFUNC>(&::uControl::getNetPos), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\254\343\202\244\343\202\242\343\202\246\343\203\210\346\203\205\345\240\261", static_cast<MtObject*>(&mLayout), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_VECTOR3, "座標", reinterpret_cast<MT_MFUNC>(&::uControl::getNetPos), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "レイアウト情報", static_cast<MtObject*>(&mLayout), 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mCorePointSendInterval", &mCorePointSendInterval, 0u, 0u);
 }
 

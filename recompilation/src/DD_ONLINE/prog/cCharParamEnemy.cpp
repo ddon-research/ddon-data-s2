@@ -76,53 +76,53 @@ __attribute__((noinline)) cCharParamEnemy::cCharParamEnemy() {
 
 void cCharParamEnemy::createProperty(MtPropertyList& s) {
     this->cCharParam::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\237\272\347\244\216\347\211\251\347\220\206\346\224\273\346\222\203\345\212\233", &mAttackBasePhys, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\237\272\347\244\216\351\255\224\346\263\225\346\224\273\346\222\203\345\212\233", &mAttackBaseMagic, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\243\205\345\202\231\347\211\251\347\220\206\346\224\273\346\222\203\345\212\233", &mAttackWepPhys, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\243\205\345\202\231\351\255\224\346\263\225\346\224\273\346\222\203\345\212\233", &mAttackWepMagic, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\237\272\347\244\216\347\211\251\347\220\206\351\230\262\345\276\241\345\212\233", &mDefenceBasePhys, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\237\272\347\244\216\351\255\224\346\263\225\351\230\262\345\276\241\345\212\233", &mDefenceBaseMagic, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\243\205\345\202\231\347\211\251\347\220\206\351\230\262\345\276\241\345\212\233", &mDefenceWepPhys, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\243\205\345\202\231\351\255\224\346\263\225\351\230\262\345\276\241\345\212\233", &mDefenceWepMagic, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\255\213\345\212\233", &mPower, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\254\343\203\274\343\203\211\345\237\272\347\244\216\346\224\273\346\222\203\345\212\233", &mGuardAttackBase, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\254\343\203\274\343\203\211\345\237\272\347\244\216\351\230\262\345\276\241\345\212\233", &mGuardDefenceBase, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\254\343\203\274\343\203\211\350\243\205\345\202\231\351\230\262\345\276\241\345\212\233", &mGuardDefenceWep, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\255\246\345\231\250\343\201\256\347\250\256\351\241\236", &mWeaponTypeSe, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\344\275\223\343\201\256\343\202\265\343\202\244\343\202\272", &mEnemyBodySizeSe, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\227\343\203\203\343\202\267\343\203\245\343\202\260\343\203\253\343\203\274\343\203\227", &mPushGroup, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "SCR\345\275\223\343\201\237\343\202\212\345\261\236\346\200\247", &mScrAdjustType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "SCR\345\275\223\343\201\237\343\202\212\343\202\265\343\202\244\343\202\272", &mScrAdjustSize, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\351\207\217", &mWeight, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\242\343\203\207\343\203\253\343\202\271\343\202\261\343\203\274\343\203\253\345\200\244", &mEnemyScaleBase, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\225\265\346\200\235\350\200\203\343\203\206\343\203\274\343\203\226\343\203\253\343\201\256\343\202\271\343\202\261\343\203\274\343\203\253\345\200\244", &mcThinkMgrScaleParam, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\217\272\343\201\225\343\201\266\343\202\211\343\202\214\343\202\242\343\202\257\343\202\267\343\203\247\343\203\263\343\202\222\345\217\226\343\202\213", &mIsShakedActionEnemy, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\200\222\343\202\212\346\231\202\343\201\256\346\217\272\343\201\225\343\201\266\343\202\212\345\200\244\345\233\236\345\276\251\345\200\215\347\216\207", &mShakeCureRateRage, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\201\244\343\201\213\343\201\276\343\202\214\343\201\256\343\202\277\343\202\244\343\203\227", &mHangdType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\217\272\343\201\225\343\201\266\343\202\212\343\202\262\343\203\274\343\202\270\343\201\253\343\203\200\343\202\246\343\203\263\345\200\244\344\275\277\347\224\250", &mIsDispDownGuage, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\263\343\203\201\343\203\243\343\203\263\343\203\210\344\275\277\343\201\206\357\274\237", &mIsUseEnchant, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\263\343\203\201\343\203\243\343\203\263\343\203\210\343\202\277\343\202\244\343\203\227", &mEnchantType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "基礎物理攻撃力", &mAttackBasePhys, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "基礎魔法攻撃力", &mAttackBaseMagic, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "装備物理攻撃力", &mAttackWepPhys, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "装備魔法攻撃力", &mAttackWepMagic, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "基礎物理防御力", &mDefenceBasePhys, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "基礎魔法防御力", &mDefenceBaseMagic, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "装備物理防御力", &mDefenceWepPhys, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "装備魔法防御力", &mDefenceWepMagic, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "筋力", &mPower, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ガード基礎攻撃力", &mGuardAttackBase, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ガード基礎防御力", &mGuardDefenceBase, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ガード装備防御力", &mGuardDefenceWep, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "武器の種類", &mWeaponTypeSe, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "体のサイズ", &mEnemyBodySizeSe, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "プッシュグループ", &mPushGroup, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SCR当たり属性", &mScrAdjustType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "SCR当たりサイズ", &mScrAdjustSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "重量", &mWeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "モデルスケール値", &mEnemyScaleBase, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "敵思考テーブルのスケール値", &mcThinkMgrScaleParam, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "揺さぶられアクションを取る", &mIsShakedActionEnemy, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "怒り時の揺さぶり値回復倍率", &mShakeCureRateRage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "つかまれのタイプ", &mHangdType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "揺さぶりゲージにダウン値使用", &mIsDispDownGuage, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "エンチャント使う？", &mIsUseEnchant, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "エンチャントタイプ", &mEnchantType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mJumpAttackSpeed", static_cast<MtObject*>(&mJumpAttackSpeed[0]), 32u, 4u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\343\202\222\345\217\227\343\201\221\343\202\213\351\253\230\343\201\225", &mFallDamageCheckHeight, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\226\343\203\254\343\203\263\343\203\211\346\225\260", &mUseMotionBlendNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\261\245\346\255\264\343\203\226\343\203\254\343\203\263\343\203\211\344\275\277\347\224\250", &mUseMotionHistory, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\261\245\346\255\264\343\203\226\343\203\254\343\203\263\343\203\211\346\225\260", &mUseMotionHistoryNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\252\343\202\277\343\203\274\343\203\263\343\203\206\343\203\252\343\203\210\343\203\252\343\203\274\347\266\231\347\266\232\343\202\277\343\202\244\343\203\240", &mReturnTerritoryContTime, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\212\274\343\201\225\343\201\210\344\273\230\343\201\221\345\212\271\343\201\215\346\230\223\343\201\225", &mBeardownEffective, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ダメージを受ける高さ", &mFallDamageCheckHeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ブレンド数", &mUseMotionBlendNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "履歴ブレンド使用", &mUseMotionHistory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "履歴ブレンド数", &mUseMotionHistoryNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "リターンテリトリー継続タイム", &mReturnTerritoryContTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "押さえ付け効き易さ", &mBeardownEffective, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mGuardCounter", static_cast<MtObject*>(&mGuardCounter[0]), 32u, 10u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\254\343\203\274\343\203\211\343\203\252\343\202\242\343\202\257\343\202\267\343\203\247\343\203\263\343\203\201\343\202\247\343\203\203\343\202\257", &mGuardReactionCheckType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\230\216\343\202\213\343\201\204\343\201\250\343\201\215\343\201\256\343\203\252\343\203\263\343\202\257\343\201\231\343\202\213\347\257\204\345\233\262", &mEnemyLinkRadiusA, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\232\227\343\201\204\346\231\202\343\201\256\343\203\252\343\203\263\343\202\257\343\201\231\343\202\213\347\257\204\345\233\262\343\202\222\350\250\255\345\256\232", &mEnemyLinkRadiusBOn, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\232\227\343\201\204\346\231\202\343\201\256\343\203\252\343\203\263\343\202\257\343\201\231\343\202\213\347\257\204\345\233\262", &mEnemyLinkRadiusB, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\224\267\346\200\247\343\201\256\345\240\264\345\220\210", &mEvaluationPLSex[0], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\245\263\346\200\247\343\201\256\345\240\264\345\220\210", &mEvaluationPLSex[1], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\202\271\343\203\200\343\202\246\343\203\263\346\231\202\343\201\256\346\274\224\345\207\272\343\202\222\343\201\227\343\201\252\343\201\204", &mDownPerformanceOff, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\204\252\345\213\242\346\233\262\343\202\222\343\202\263\343\203\274\343\203\253\343\201\227\343\201\252\343\201\204", &mIsNoneAdbantageBGM, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\343\201\256\347\211\271\346\256\212\350\250\255\345\256\232\343\202\277\343\202\244\343\203\227", &mDamageSpecialAdjType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\343\203\234\343\203\274\343\203\212\343\202\271\343\203\225\343\203\251\343\202\260", &mDamageBounisFlag, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\201\256\343\201\221\343\201\236\343\202\212\346\231\202\343\201\253\347\226\262\343\202\214\345\200\244\343\201\214\346\270\233\343\202\213\345\211\262\345\220\210", &mShrinkBounisShakeRate, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\267\343\203\274\343\202\261\343\203\263\343\202\271\346\234\211\345\212\271\346\231\202\343\201\256\343\202\206\343\201\225\343\201\266\343\202\212\350\243\234\346\255\243\345\200\215\347\216\207", &mShakeRateSequence, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "GUI\343\201\256\350\241\250\347\244\272\351\240\230\345\237\237\345\200\215\347\216\207", &mScaleDispGui, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ガードリアクションチェック", &mGuardReactionCheckType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "明るいときのリンクする範囲", &mEnemyLinkRadiusA, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "暗い時のリンクする範囲を設定", &mEnemyLinkRadiusBOn, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "暗い時のリンクする範囲", &mEnemyLinkRadiusB, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "男性の場合", &mEvaluationPLSex[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "女性の場合", &mEvaluationPLSex[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "チャンスダウン時の演出をしない", &mDownPerformanceOff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "優勢曲をコールしない", &mIsNoneAdbantageBGM, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ダメージの特殊設定タイプ", &mDamageSpecialAdjType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ダメージボーナスフラグ", &mDamageBounisFlag, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "のけぞり時に疲れ値が減る割合", &mShrinkBounisShakeRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "シーケンス有効時のゆさぶり補正倍率", &mShakeRateSequence, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "GUIの表示領域倍率", &mScaleDispGui, 0u, 0u);
 }
 
 MtUI* cCharParamEnemy::createUI(MtProperty& prop) {
@@ -148,10 +148,10 @@ const MtDTI& cCharParamEnemy::cJumpAttackSpeed::getDTI() const {
 }
 
 void cCharParamEnemy::cJumpAttackSpeed::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\346\234\211\345\212\271\343\203\225\343\203\251\343\202\260", &mIsValid, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\211\215\346\226\271\351\200\237\345\272\246", &mSpeedZ, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\357\274\271\345\210\235\351\200\237", &mSpeedY, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\345\212\233", &mGravity, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "有効フラグ", &mIsValid, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "前方速度", &mSpeedZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Ｙ初速", &mSpeedY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "重力", &mGravity, 0u, 0u);
 }
 
 MtUI* cCharParamEnemy::cJumpAttackSpeed::createUI(MtProperty& prop) {
@@ -171,8 +171,8 @@ const MtDTI& cCharParamEnemy::cGuardCounter::getDTI() const {
 }
 
 void cCharParamEnemy::cGuardCounter::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\254\343\203\274\343\203\211\345\233\236\346\225\260(\344\273\245\344\270\213)", &mTimes, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\217\215\346\222\203\347\242\272\347\216\207(\357\274\205\344\273\245\344\270\213\343\201\247\345\217\215\346\222\203)", &mPercent, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ガード回数(以下)", &mTimes, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "反撃確率(％以下で反撃)", &mPercent, 0u, 0u);
 }
 
 MtUI* cCharParamEnemy::cGuardCounter::createUI(MtProperty& prop) {

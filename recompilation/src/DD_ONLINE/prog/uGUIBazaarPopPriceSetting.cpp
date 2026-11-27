@@ -50,8 +50,8 @@ __attribute__((noinline)) uGUIBazaarPopPriceSetting::~uGUIBazaarPopPriceSetting(
 
 void uGUIBazaarPopPriceSetting::createProperty(MtPropertyList& s) {
     this->uGUI::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\351\226\213\345\247\213", static_cast<MT_MFUNC>(&::uGUIBazaarPopPriceSetting::begin), 10u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\265\202\344\272\206", static_cast<MT_MFUNC>(&::uGUIBazaarPopPriceSetting::hide), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "開始", static_cast<MT_MFUNC>(&::uGUIBazaarPopPriceSetting::begin), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "終了", static_cast<MT_MFUNC>(&::uGUIBazaarPopPriceSetting::hide), 10u);
 }
 
 bool uGUIBazaarPopPriceSetting::loadResource() {

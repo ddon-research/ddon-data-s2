@@ -17,14 +17,14 @@ const MtDTI& cEmDamageDirInfo::getDTI() const {
 }
 
 void cEmDamageDirInfo::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\346\225\265\343\202\253\343\203\206\343\202\264\343\203\252\343\203\274", &mEmCategory, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\252\343\202\242\343\202\257\343\202\267\343\203\247\343\203\263\343\202\277\343\202\244\343\203\227", &mDmReactionType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\226\271\345\220\221\345\210\244\345\256\232\343\202\277\343\202\244\343\203\227", &mDirJudgeType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\226\271\345\220\221\350\243\234\346\255\243\343\201\231\343\202\213", &mIsAdjustDir, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\351\207\217\350\243\234\346\255\243(XZ\350\273\270\346\226\271\345\220\221\351\200\237\345\272\246)", &mIsWeightSpeedXZ, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\351\207\217\350\243\234\346\255\243(XZ\350\273\270\346\226\271\345\220\221\346\270\233\351\200\237)", &mIsWeightSpeedY, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\351\207\217\350\243\234\346\255\243(Y\350\273\270\346\226\271\345\220\221\351\200\237\345\272\246)", &mIsWeightAccXZ, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\351\207\217\350\243\234\346\255\243(Y\350\273\270\346\226\271\345\220\221\346\270\233\351\200\237)", &mIsWeightAccY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "敵カテゴリー", &mEmCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "リアクションタイプ", &mDmReactionType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "方向判定タイプ", &mDirJudgeType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "方向補正する", &mIsAdjustDir, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "重量補正(XZ軸方向速度)", &mIsWeightSpeedXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "重量補正(XZ軸方向減速)", &mIsWeightSpeedY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "重量補正(Y軸方向速度)", &mIsWeightAccXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "重量補正(Y軸方向減速)", &mIsWeightAccY, 0u, 0u);
 }
 
 inline cEmDamageDirInfo::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

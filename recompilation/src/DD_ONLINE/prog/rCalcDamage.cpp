@@ -43,7 +43,7 @@ const MtDTI& cBlowSaveEmLvParam::getDTI() const {
 
 void cBlowSaveEmLvParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "Lv", &mKeyLv, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244", &mSaveRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "減算値", &mSaveRate, 0u, 0u);
 }
 
 inline cBlowSaveEmLvParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -59,8 +59,8 @@ const MtDTI& cCalcDamageAtdmAdj::getDTI() const {
 }
 
 void cCalcDamageAtdmAdj::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224", &mAtdmRate, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "攻防比", &mAtdmRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ダメージ補正", &mDamageAdj, 0u, 0u);
 }
 
 inline cCalcDamageAtdmAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -76,8 +76,8 @@ const MtDTI& cCalcDamageAtdmAdjRate::getDTI() const {
 }
 
 void cCalcDamageAtdmAdjRate::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\346\255\246\345\231\250\346\224\273\346\222\203\351\230\262\345\276\241\345\212\233", &mKeyValue, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224\343\201\270\343\201\256\350\243\234\346\255\243", &mAtdmAdjRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "武器攻撃防御力", &mKeyValue, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "攻防比への補正", &mAtdmAdjRate, 0u, 0u);
 }
 
 inline cCalcDamageAtdmAdjRate::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -93,13 +93,13 @@ const MtDTI& cCalcDamageLvAdj::getDTI() const {
 }
 
 void cCalcDamageLvAdj::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\254\343\203\231\343\203\253\345\267\256", &mLvDiff, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mLvAdj[0], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\201\256\343\201\221\343\201\236\343\202\212\350\243\234\346\255\243", &mLvAdj[1], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\201\266\343\201\243\351\243\233\343\201\263\350\243\234\346\255\243", &mLvAdj[2], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\212\266\346\205\213\347\225\260\345\270\270\350\243\234\346\255\243", &mLvAdj[3], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\202\246\343\203\263\345\200\244\350\243\234\346\255\243", &mLvAdj[4], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\202\277\343\203\237\343\203\212\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mLvAdj[5], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "レベル差", &mLvDiff, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ダメージ補正", &mLvAdj[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "のけぞり補正", &mLvAdj[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ぶっ飛び補正", &mLvAdj[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "状態異常補正", &mLvAdj[3], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ダウン値補正", &mLvAdj[4], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "スタミナダメージ補正", &mLvAdj[5], 0u, 0u);
 }
 
 inline cCalcDamageLvAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -116,9 +116,9 @@ const MtDTI& cDamageSaveEmLvParam::getDTI() const {
 
 void cDamageSaveEmLvParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "Lv", &mKeyLv, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260A", &mSaveParamA, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260B", &mSaveParamB, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260C", &mSaveParamC, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "減算値係数A", &mSaveParamA, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "減算値係数B", &mSaveParamB, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "減算値係数C", &mSaveParamC, 0u, 0u);
 }
 
 inline cDamageSaveEmLvParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -134,7 +134,7 @@ const MtDTI& cDamageSpecialAdj::getDTI() const {
 }
 
 void cDamageSpecialAdj::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\343\201\270\343\201\256\345\211\262\345\220\210", &mDamageRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ダメージへの割合", &mDamageRate, 0u, 0u);
 }
 
 inline cDamageSpecialAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -150,22 +150,22 @@ const MtDTI& cDmJobAdjParam::getDTI() const {
 }
 
 void cDmJobAdjParam::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\203\247\343\203\226\343\202\277\343\202\244\343\203\227", &mJobType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\257\343\202\267\343\203\247\343\203\263\345\200\215\347\216\207\350\243\234\346\255\243", &mActionRateAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mDamageAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\202\277\343\203\237\343\203\212\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mStaminaDamageAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\263\343\203\201\343\203\243\343\203\263\343\203\210\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mEnchantDamageAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\226\262\345\212\264\345\200\244\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mTiredDamageAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\201\343\203\243\343\203\263\343\202\271\346\224\273\345\212\233\343\203\200\343\203\241\343\203\274\343\202\270\350\243\234\346\255\243", &mChanceDamageAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\203\223\343\203\252\343\203\206\343\202\243\345\220\271\343\201\215\351\243\233\343\201\260\343\201\227\345\212\233\350\243\234\346\255\243", &mAbilityBlowAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\344\272\272\351\226\223\346\225\265\347\212\266\346\205\213\347\225\260\345\270\270\345\212\240\347\256\227\350\243\234\346\255\243", &mHumanEmOcdAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224\347\211\251\347\220\206\346\234\200\345\244\247\345\200\244", &mAtDmRateMaxPhys, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\351\230\262\346\257\224\351\255\224\346\263\225\346\234\200\345\244\247\345\200\244", &mAtDmRateMaxMagic, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\350\250\210\347\256\227\350\243\234\346\255\243A", &mHealBaseMagicAdjAdd, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\350\250\210\347\256\227\350\243\234\346\255\243B", &mHealBaseMagicAdjMulti, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\350\250\210\347\256\227\350\243\234\346\255\243C", &mHealWepMagicAdjAdd, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\233\236\345\276\251\350\250\210\347\256\227\350\243\234\346\255\243D", &mHealWepMagicAdjMulti, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\220\271\343\201\215\351\243\233\343\201\260\343\201\227\345\200\244\343\201\270\346\270\233\347\256\227\345\200\244\344\277\202\346\225\260", &mShrinkBlowSaveAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ジョブタイプ", &mJobType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アクション倍率補正", &mActionRateAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ダメージ補正", &mDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "スタミナダメージ補正", &mStaminaDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "エンチャントダメージ補正", &mEnchantDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "疲労値ダメージ補正", &mTiredDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "チャンス攻力ダメージ補正", &mChanceDamageAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アビリティ吹き飛ばし力補正", &mAbilityBlowAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "人間敵状態異常加算補正", &mHumanEmOcdAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "攻防比物理最大値", &mAtDmRateMaxPhys, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "攻防比魔法最大値", &mAtDmRateMaxMagic, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "回復計算補正A", &mHealBaseMagicAdjAdd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "回復計算補正B", &mHealBaseMagicAdjMulti, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "回復計算補正C", &mHealWepMagicAdjAdd, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "回復計算補正D", &mHealWepMagicAdjMulti, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "吹き飛ばし値へ減算値係数", &mShrinkBlowSaveAdj, 0u, 0u);
 }
 
 inline cDmJobAdjParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -181,10 +181,10 @@ const MtDTI& cDmJobPawnAdjParam::getDTI() const {
 }
 
 void cDmJobPawnAdjParam::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\203\247\343\203\226\343\202\277\343\202\244\343\203\227", &mJobType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\264\240\344\275\223\346\224\273\346\222\203\343\201\253\345\257\276\343\201\231\343\202\213\350\243\234\346\255\243", &mBaseAttackAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\264\240\344\275\223\351\255\224\346\263\225\346\224\273\346\222\203\343\201\253\345\257\276\343\201\231\343\202\213\350\243\234\346\255\243", &mBaseMagicAttackAdj, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\201\256\343\201\221\343\201\236\343\202\212\343\201\266\343\201\243\351\243\233\343\201\263\346\224\273\346\222\203\343\201\253\345\257\276\343\201\231\343\202\213\350\243\234\346\255\243", &mBaseBlowShrinkAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ジョブタイプ", &mJobType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "素体攻撃に対する補正", &mBaseAttackAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "素体魔法攻撃に対する補正", &mBaseMagicAttackAdj, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "のけぞりぶっ飛び攻撃に対する補正", &mBaseBlowShrinkAdj, 0u, 0u);
 }
 
 inline cDmJobPawnAdjParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -201,8 +201,8 @@ const MtDTI& cDmLvPawnAdjParam::getDTI() const {
 
 void cDmLvPawnAdjParam::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "Lv", &mKeyLv, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "LV\344\270\213\351\247\204(\347\264\240\344\275\223)", &mLvAdjRateBase, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "LV\344\270\213\351\247\204(Wep)", &mLvAdjRateWep, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LV下駄(素体)", &mLvAdjRateBase, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "LV下駄(Wep)", &mLvAdjRateWep, 0u, 0u);
 }
 
 inline cDmLvPawnAdjParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -218,8 +218,8 @@ const MtDTI& cErosionShakeConvert::getDTI() const {
 }
 
 void cErosionShakeConvert::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\346\224\273\346\222\203\346\217\272\343\201\225\343\201\266\343\202\212\343\203\254\343\203\274\343\203\210", &mKeyShakesRate, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\263\343\202\242\343\203\235\343\202\244\343\203\263\343\203\210\343\201\256\345\212\240\347\256\227\346\231\202\351\226\223(Frame)", &mAddCoreTime, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "攻撃揺さぶりレート", &mKeyShakesRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "コアポイントの加算時間(Frame)", &mAddCoreTime, 0u, 0u);
 }
 
 inline cErosionShakeConvert::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -235,12 +235,12 @@ const MtDTI& cShrinkBlowValue::getDTI() const {
 }
 
 void cShrinkBlowValue::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\277\343\202\244\343\203\227", &mDamageType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\250\201\345\212\233\350\250\255\345\256\232", &mLv, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "XZ\350\273\270\346\226\271\345\220\221\351\200\237\345\272\246", &mSpeedXZ, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "XZ\350\273\270\346\226\271\345\220\221\346\270\233\351\200\237", &mAccelerateXZ, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "Y\350\273\270\346\226\271\345\220\221\351\200\237\345\272\246", &mSpeedY, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "Y\350\273\270\346\226\271\345\220\221\346\270\233\351\200\237", &mGravityY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "タイプ", &mDamageType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "威力設定", &mLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "XZ軸方向速度", &mSpeedXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "XZ軸方向減速", &mAccelerateXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Y軸方向速度", &mSpeedY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Y軸方向減速", &mGravityY, 0u, 0u);
 }
 
 inline cShrinkBlowValue::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

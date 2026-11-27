@@ -60,7 +60,7 @@ uGUIBazaarPopItemList::~uGUIBazaarPopItemList() {
 
 void uGUIBazaarPopItemList::createProperty(MtPropertyList& s) {
     this->uGUI::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\265\202\344\272\206", static_cast<MT_MFUNC>(&::uGUIBazaarPopItemList::hide), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "終了", static_cast<MT_MFUNC>(&::uGUIBazaarPopItemList::hide), 10u);
 }
 
 bool uGUIBazaarPopItemList::loadResource() {

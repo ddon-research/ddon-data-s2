@@ -58,8 +58,8 @@ __attribute__((noinline)) uGUIBazaarItemSearch::~uGUIBazaarItemSearch() {
 
 void uGUIBazaarItemSearch::createProperty(MtPropertyList& s) {
     this->uGUI::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\351\226\213\345\247\213", static_cast<MT_MFUNC>(&::uGUIBazaarItemSearch::begin), 10u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\265\202\344\272\206", static_cast<MT_MFUNC>(&::uGUIBazaarItemSearch::hide), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "開始", static_cast<MT_MFUNC>(&::uGUIBazaarItemSearch::begin), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "終了", static_cast<MT_MFUNC>(&::uGUIBazaarItemSearch::hide), 10u);
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_STRING, "Filter", reinterpret_cast<MT_MFUNC>(&::uGUIBazaarItemSearch::getKeyword), reinterpret_cast<MT_MFUNC>(&::uGUIBazaarItemSearch::setKeyword), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
 }
 

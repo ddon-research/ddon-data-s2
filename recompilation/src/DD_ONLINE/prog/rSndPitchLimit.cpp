@@ -16,10 +16,10 @@ const MtDTI& cSndPitchLimitData::getDTI() const {
 }
 
 void cSndPitchLimitData::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\277\343\202\244\343\203\227", &mVoiceType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\200\247\345\210\245", &mSex, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\344\270\212\351\231\220", &mLimitUpper, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\344\270\213\351\231\220", &mLimitDowner, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "タイプ", &mVoiceType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "性別", &mSex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "上限", &mLimitUpper, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "下限", &mLimitDowner, 0u, 0u);
 }
 
 inline cSndPitchLimitData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

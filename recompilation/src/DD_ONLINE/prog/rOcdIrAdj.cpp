@@ -16,8 +16,8 @@ const MtDTI& cOcdIrAdj::getDTI() const {
 }
 
 void cOcdIrAdj::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\254\343\203\231\343\203\253", &mLv, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\251\343\203\263\343\202\257\345\200\244", &mOcdRank, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "レベル", &mLv, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ランク値", &mOcdRank, 0u, 0u);
 }
 
 inline cOcdIrAdj::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -33,8 +33,8 @@ const MtDTI& cOcdIrAdjPL::getDTI() const {
 }
 
 void cOcdIrAdjPL::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240\343\203\251\343\203\263\343\202\257", &mItemLank, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\250\210\347\256\227\345\274\217\343\201\247\344\275\277\343\201\206\343\203\251\343\203\263\343\202\257", &mOcdRank, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アイテムランク", &mItemLank, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "計算式で使うランク", &mOcdRank, 0u, 0u);
 }
 
 inline cOcdIrAdjPL::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

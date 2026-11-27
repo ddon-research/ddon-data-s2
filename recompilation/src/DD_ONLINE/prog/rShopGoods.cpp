@@ -25,20 +25,20 @@ void* cShopGoods::operator new(size_t sz, u32 align) {
 }
 
 void cShopGoods::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\345\225\206\345\223\201\343\202\253\343\203\206\343\202\264\343\203\252", &mCategory, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\225\206\345\223\201ID", &mID, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\344\276\241\346\240\274", &mPrice, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\235\343\202\244\343\203\263\343\203\210\347\250\256\345\210\245", &mGoldType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\262\251\345\243\262\347\250\256\345\210\245", &mSaleType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\277\205\350\246\201\345\245\275\346\204\237\345\272\246", &mRequiedFavorite, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\262\251\345\243\262\351\226\213\345\247\213\346\227\245", static_cast<MtObject*>(&mStartDate), 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\262\251\345\243\262\347\265\202\344\272\206\346\227\245", static_cast<MtObject*>(&mEndDate), 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\234\250\345\272\253\346\225\260", &mStockNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\234\200\345\244\247\345\234\250\345\272\253\346\225\260", &mMaxStockNum, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\234\250\345\272\253\350\243\234\345\205\205\345\215\230\344\275\215", &mReplenishRate, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\234\250\345\272\253\350\243\234\345\205\205\346\235\241\344\273\266", &mReplenishType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\262\343\203\274\343\203\240\345\206\205\346\227\245\346\225\260", &mInGameDays, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\217\276\345\256\237\343\201\256\346\227\245\344\273\230", static_cast<MtObject*>(&mRealDate), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "商品カテゴリ", &mCategory, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "商品ID", &mID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "価格", &mPrice, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ポイント種別", &mGoldType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "販売種別", &mSaleType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "必要好感度", &mRequiedFavorite, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "販売開始日", static_cast<MtObject*>(&mStartDate), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "販売終了日", static_cast<MtObject*>(&mEndDate), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "在庫数", &mStockNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "最大在庫数", &mMaxStockNum, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "在庫補充単位", &mReplenishRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "在庫補充条件", &mReplenishType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ゲーム内日数", &mInGameDays, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "現実の日付", static_cast<MtObject*>(&mRealDate), 0u, 0u);
 }
 
 inline cShopGoods::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
@@ -54,9 +54,9 @@ const MtDTI& cShopGoods::rDate::getDTI() const {
 }
 
 void cShopGoods::rDate::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\345\271\264", &mYear, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\234\210", &mMonth, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\227\245", &mDay, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "年", &mYear, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "月", &mMonth, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "日", &mDay, 0u, 0u);
 }
 
 bool cShopGoods::rDate::load(MtDataReader& in) {

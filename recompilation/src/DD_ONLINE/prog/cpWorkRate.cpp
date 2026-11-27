@@ -62,12 +62,12 @@ void cpWorkRate::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "RATE2", &mSpeed[2], 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "RATE3", &mSpeed[3], 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "ASSASSIN_FINISH", &mSpeed[4], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\212\266\346\205\213\347\225\260\345\270\270\343\201\256\343\200\214\351\201\205\345\273\266\343\200\215\343\201\253\343\202\210\343\202\213\345\244\211\345\214\226", &mSpeed[5], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\212\266\346\205\213\347\225\260\345\270\270\343\201\256\345\201\234\346\255\242\347\263\273(\351\273\204\351\207\221\345\214\226,\347\237\263\345\214\226,\345\207\215\347\265\220)\343\201\253\343\202\210\343\202\213\345\244\211\345\214\226", &mSpeed[6], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\225\265\347\224\250\343\200\202\347\212\266\346\205\213\345\244\211\345\214\226\343\201\253\343\202\210\343\202\213\345\212\271\346\236\234", &mSpeed[7], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "STAMINA\345\210\207\343\202\214\343\202\254\343\203\274\343\203\211\343\203\226\343\203\254\343\202\244\343\202\257", &mSpeed[8], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\212\266\346\205\213\347\225\260\345\270\270\343\201\256\343\200\214\346\265\270\351\243\237\343\200\215\343\201\253\343\202\210\343\202\213\345\244\211\345\214\226", &mSpeed[9], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\212\266\346\205\213\347\225\260\345\270\270\343\201\256\346\200\222\343\202\212\343\201\256\343\201\221\343\201\236\343\202\212\343\201\253\343\202\210\343\202\213\345\212\271\346\236\234", &mSpeed[10], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "状態異常の「遅延」による変化", &mSpeed[5], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "状態異常の停止系(黄金化,石化,凍結)による変化", &mSpeed[6], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "敵用。状態変化による効果", &mSpeed[7], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "STAMINA切れガードブレイク", &mSpeed[8], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "状態異常の「浸食」による変化", &mSpeed[9], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "状態異常の怒りのけぞりによる効果", &mSpeed[10], 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mRate", &mRate, 0u, 0u);
 }
 

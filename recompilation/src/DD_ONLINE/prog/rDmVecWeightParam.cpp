@@ -16,11 +16,11 @@ const MtDTI& cDmVecWeightParam::getDTI() const {
 }
 
 void cDmVecWeightParam::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\351\207\215\351\207\217", &mWeight, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "XZ\351\200\237\345\272\246\350\243\234\346\255\243", &mWeightAdjSpeedXZ, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "Y\351\200\237\345\272\246\350\243\234\346\255\243", &mWeightAdjSpeedY, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "XZ\345\212\240\351\200\237\345\272\246\350\243\234\346\255\243", &mWeightAdjAccXZ, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "Y\345\212\240\351\200\237\345\272\246\350\243\234\346\255\243", &mWeightAdjAccY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "重量", &mWeight, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "XZ速度補正", &mWeightAdjSpeedXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Y速度補正", &mWeightAdjSpeedY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "XZ加速度補正", &mWeightAdjAccXZ, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "Y加速度補正", &mWeightAdjAccY, 0u, 0u);
 }
 
 inline cDmVecWeightParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

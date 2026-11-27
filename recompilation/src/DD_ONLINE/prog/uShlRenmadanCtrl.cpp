@@ -118,11 +118,11 @@ void cShlParamRenmadanCtrl::cRenmaSubCtrlParam::createProperty(MtPropertyList& s
 }
 
 void cShlParamRenmadanCtrl::cRenmaSubCtrlParam::createPropertyTool(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\347\231\272\345\260\204\345\276\205\343\201\241\346\231\202\351\226\223", &waitFrame, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "発射待ち時間", &waitFrame, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "No", &shlNo, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\231\272\345\260\204\343\202\252\343\203\225\343\202\273\343\203\203\343\203\210", &offset, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\231\272\345\260\204\350\247\222\345\272\246X", &degX, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\231\272\345\260\204\350\247\222\345\272\246Y", &degY, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "発射オフセット", &offset, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "発射角度X", &degX, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "発射角度Y", &degY, 0u, 0u);
 }
 
 inline cShlParamRenmadanCtrl::cRenmaSubCtrlParam::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

@@ -60,7 +60,7 @@ void cOcdBase::createProperty(MtPropertyList& s) {
     mStatusParam.cOcdStatusParam::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mImmuneMode", reinterpret_cast<s32*>(&mImmuneMode), 0u, 0u);
     mImmuneParam.cOcdImmuneParam::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\277\343\202\244\343\203\236\343\203\274\346\233\264\346\226\260\351\200\237\345\272\246", &mActiveTimerRate, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "タイマー更新速度", &mActiveTimerRate, 0u, 0u);
 }
 
 void cOcdBase::setup() {

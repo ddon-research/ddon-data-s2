@@ -47,7 +47,7 @@ cShlParamBreath::~cShlParamBreath() {
 
 void cShlParamBreath::createProperty(MtPropertyList& s) {
     this->cShlParamBase::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\231\272\345\260\204\344\275\215\347\275\256\343\201\250\345\220\221\343\201\215", &FireMatrix, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "発射位置と向き", &FireMatrix, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mNoneLockOnShopType", &mNoneLockOnShopType, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "limitAngle", &limitAngle, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "dieDist", &dieDist, 0u, 0u);
@@ -62,11 +62,11 @@ void cShlParamBreath::createPropertyCollision(MtPropertyList& s) {
     this->cShlParamBase::createPropertyCollision(s);
     s << MtProperty(static_cast<MtObject*>(this), "EPV Hit Index", &mHitEpvIndex, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "EPV Hit No", &mHitEpvNo, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\231\272\345\260\204\346\231\202\343\202\265\343\202\244\343\202\272(\357\275\236\345\200\215)", &mHitStartSize, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\234\200\345\244\247\346\231\202\343\202\265\343\202\244\343\202\272(\357\275\236\345\200\215)", &mHitLimitSize, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\265\343\202\244\343\202\272\345\244\211\345\214\226\351\226\213\345\247\213\350\267\235\351\233\242", &mHitSizeChangeStartDist, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\244\211\345\214\226\350\267\235\351\233\242\343\202\271\343\203\206\343\203\203\343\203\227(\357\275\236cm\346\257\216)", &mHitStepDist, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\203\206\343\203\203\343\203\227\346\257\216\343\201\256\345\244\211\345\214\226\343\202\265\343\202\244\343\202\272", &mHitStepSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "発射時サイズ(～倍)", &mHitStartSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "最大時サイズ(～倍)", &mHitLimitSize, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "サイズ変化開始距離", &mHitSizeChangeStartDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "変化距離ステップ(～cm毎)", &mHitStepDist, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ステップ毎の変化サイズ", &mHitStepSize, 0u, 0u);
 }
 
 void cShlParamBreath::createPropertyEffect(MtPropertyList& s) {

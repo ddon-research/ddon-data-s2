@@ -268,7 +268,7 @@ void cpIKCtrl::updatePtr() {
 void cpIKCtrl::createProperty(MtPropertyList& s) {
     this->cpComponent::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mpResource", "resource", reinterpret_cast<MT_MFUNC>(&::cpIKCtrl::getResource), reinterpret_cast<MT_MFUNC>(&::cpIKCtrl::setResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\346\233\264\346\226\260", static_cast<MT_MFUNC>(&::cpIKCtrl::init), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "更新", static_cast<MT_MFUNC>(&::cpIKCtrl::init), 10u);
     s << MtProperty(static_cast<MtObject*>(this), "mFBIKActive", &mFBIKActive, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mIKHandle", static_cast<MtObject*>(&mIKHandle[0]), 32u, 5u);
     s << MtProperty(static_cast<MtObject*>(this), "mpCnsIK", reinterpret_cast<MtObject* *>(&mpCnsIK[0]), 32u, 4u);

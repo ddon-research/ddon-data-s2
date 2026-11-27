@@ -35,7 +35,7 @@ cWeaponResTable::~cWeaponResTable() {
 void cWeaponResTable::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mMTag", &mMTag, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mArcTag", &mArcTag, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\200\247\345\210\245", &mSex, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "性別", &mSex, 0u, 0u);
 }
 
 u64 cWeaponResTable::getModelResId() {

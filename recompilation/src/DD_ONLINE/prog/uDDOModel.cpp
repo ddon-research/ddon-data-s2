@@ -324,8 +324,8 @@ void uDDOModel::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mTouchType", reinterpret_cast<s32*>(&mTouchType), 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mpTouchTarget", reinterpret_cast<MtObject* *>(&mpTouchTarget), 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mIsNoTouch", &mIsNoTouch, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\267\343\202\247\343\203\253\345\211\212\351\231\244\343\203\223\343\203\203\343\203\210", &mShlDeleteBit, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\207\252\345\267\261\346\255\273\344\272\241\343\203\225\343\203\251\343\202\260", &mIsSelfDead, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "シェル削除ビット", &mShlDeleteBit, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "自己死亡フラグ", &mIsSelfDead, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTargetUIJointNo", &mTargetUIJointNo, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTargetUIOffset", &mTargetUIOffset, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "CommandCacheReset", static_cast<MT_MFUNC>(&::uDDOModel::requestCommandCacheReset), 10u);

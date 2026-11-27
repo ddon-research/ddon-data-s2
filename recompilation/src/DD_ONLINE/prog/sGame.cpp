@@ -252,7 +252,7 @@ void sGame::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mIsReqChangeServer", &mIsReqChangeServer, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mStageCtrl", static_cast<MtObject*>(&mStageCtrl), 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "NextStage", reinterpret_cast<MT_MFUNC>(&::sGame::getNextStage), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\227\343\203\254\343\202\244\343\203\244\343\203\274\343\202\222\345\213\225\343\201\221\343\201\252\343\201\217\343\201\231\343\202\213", &mDisableActionPlayer, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "プレイヤーを動けなくする", &mDisableActionPlayer, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mIsParty", &mIsParty[0], 32u, 8u);
 }
 

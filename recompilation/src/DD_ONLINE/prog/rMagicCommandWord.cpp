@@ -18,38 +18,38 @@ const MtDTI& cMagicCommandWord::getDTI() const {
 }
 
 void cMagicCommandWord::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "01\346\226\207\345\255\227\347\233\256", &mWord.elems[0], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "02\346\226\207\345\255\227\347\233\256", &mWord.elems[1], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "03\346\226\207\345\255\227\347\233\256", &mWord.elems[2], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "04\346\226\207\345\255\227\347\233\256", &mWord.elems[3], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "05\346\226\207\345\255\227\347\233\256", &mWord.elems[4], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "06\346\226\207\345\255\227\347\233\256", &mWord.elems[5], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "07\346\226\207\345\255\227\347\233\256", &mWord.elems[6], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "08\346\226\207\345\255\227\347\233\256", &mWord.elems[7], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "09\346\226\207\345\255\227\347\233\256", &mWord.elems[8], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "10\346\226\207\345\255\227\347\233\256", &mWord.elems[9], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "11\346\226\207\345\255\227\347\233\256", &mWord.elems[10], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "12\346\226\207\345\255\227\347\233\256", &mWord.elems[11], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "13\346\226\207\345\255\227\347\233\256", &mWord.elems[12], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "14\346\226\207\345\255\227\347\233\256", &mWord.elems[13], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "15\346\226\207\345\255\227\347\233\256", &mWord.elems[14], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "16\346\226\207\345\255\227\347\233\256", &mWord.elems[15], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "17\346\226\207\345\255\227\347\233\256", &mWord.elems[16], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "18\346\226\207\345\255\227\347\233\256", &mWord.elems[17], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "19\346\226\207\345\255\227\347\233\256", &mWord.elems[18], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "20\346\226\207\345\255\227\347\233\256", &mWord.elems[19], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "21\346\226\207\345\255\227\347\233\256", &mWord.elems[20], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "22\346\226\207\345\255\227\347\233\256", &mWord.elems[21], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "23\346\226\207\345\255\227\347\233\256", &mWord.elems[22], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "24\346\226\207\345\255\227\347\233\256", &mWord.elems[23], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "25\346\226\207\345\255\227\347\233\256", &mWord.elems[24], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "26\346\226\207\345\255\227\347\233\256", &mWord.elems[25], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "27\346\226\207\345\255\227\347\233\256", &mWord.elems[26], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "28\346\226\207\345\255\227\347\233\256", &mWord.elems[27], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "29\346\226\207\345\255\227\347\233\256", &mWord.elems[28], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "30\346\226\207\345\255\227\347\233\256", &mWord.elems[29], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "31\346\226\207\345\255\227\347\233\256", &mWord.elems[30], 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "32\346\226\207\345\255\227\347\233\256", &mWord.elems[31], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "01文字目", &mWord.elems[0], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "02文字目", &mWord.elems[1], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "03文字目", &mWord.elems[2], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "04文字目", &mWord.elems[3], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "05文字目", &mWord.elems[4], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "06文字目", &mWord.elems[5], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "07文字目", &mWord.elems[6], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "08文字目", &mWord.elems[7], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "09文字目", &mWord.elems[8], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "10文字目", &mWord.elems[9], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "11文字目", &mWord.elems[10], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "12文字目", &mWord.elems[11], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "13文字目", &mWord.elems[12], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "14文字目", &mWord.elems[13], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "15文字目", &mWord.elems[14], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "16文字目", &mWord.elems[15], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "17文字目", &mWord.elems[16], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "18文字目", &mWord.elems[17], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "19文字目", &mWord.elems[18], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "20文字目", &mWord.elems[19], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "21文字目", &mWord.elems[20], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "22文字目", &mWord.elems[21], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "23文字目", &mWord.elems[22], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "24文字目", &mWord.elems[23], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "25文字目", &mWord.elems[24], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "26文字目", &mWord.elems[25], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "27文字目", &mWord.elems[26], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "28文字目", &mWord.elems[27], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "29文字目", &mWord.elems[28], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "30文字目", &mWord.elems[29], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "31文字目", &mWord.elems[30], 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "32文字目", &mWord.elems[31], 0u, 0u);
 }
 
 inline cMagicCommandWord::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}

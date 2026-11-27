@@ -45,8 +45,8 @@ void rSoundAreaInfo::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "DayBgm2", &mDayBgmNo2, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "NightBgm2", &mNightBgmNo2, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "NoramlBgm2", &mBgmNo2, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\210\246\351\227\230", &mBtlBgmNo, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\246\343\203\210\343\203\255", &mBtlBgmOutroNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "戦闘", &mBtlBgmNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アウトロ", &mBtlBgmOutroNo, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "BattleBgmStqr", "resource", static_cast<void*>(&mpBtlBgmSTQRes), 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mIsCycle", &mIsCycle, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "CycleBgm", &mCycleBgmNo, 0u, 0u);

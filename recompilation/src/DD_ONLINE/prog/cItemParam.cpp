@@ -30,8 +30,8 @@ cCraftParam::~cCraftParam() {
 }
 
 void cCraftParam::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\254\343\203\241\343\203\263\343\203\210ID", &mCraftElementItemNo[0], 32u, 4u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\274\267\345\214\226\347\264\240\346\235\220", &mCraftPlusParam, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "エレメントID", &mCraftElementItemNo[0], 32u, 4u);
+    s << MtProperty(static_cast<MtObject*>(this), "強化素材", &mCraftPlusParam, 0u, 0u);
 }
 
 void cCraftParam::init() {
@@ -140,15 +140,15 @@ __attribute__((weak)) void cItemParam::copyParam(const cItemParam* pSrc) {
 }
 
 void cItemParam::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240ID", &mItemParam.mItemNo, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CSTRING, "\343\202\242\343\202\244\343\203\206\343\203\240\345\220\215", reinterpret_cast<MT_MFUNC>(&::cItemParam::getItemName), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "\345\200\213\346\225\260", reinterpret_cast<MT_MFUNC>(&::cItemParam::getItemNum), reinterpret_cast<MT_MFUNC>(&::cItemParam::setItemNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "アイテムID", &mItemParam.mItemNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CSTRING, "アイテム名", reinterpret_cast<MT_MFUNC>(&::cItemParam::getItemName), static_cast<MT_MFUNC>(0), 131u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_U32, "個数", reinterpret_cast<MT_MFUNC>(&::cItemParam::getItemNum), reinterpret_cast<MT_MFUNC>(&::cItemParam::setItemNum), 128u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
     s << MtProperty(static_cast<MtObject*>(this), "mWstrUID", &mWstrUID, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\253\343\203\251\343\203\274", &mColorNo, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\274\267\345\214\226\345\272\246", &mEquipPoint, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\243\205\345\202\231\346\236\240", &mSlotType, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\242\343\202\244\343\203\206\343\203\240\343\203\221\343\203\251\343\203\241\343\203\274\343\202\277", reinterpret_cast<MtObject* *>(&mpItemResParam), 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\257\343\203\251\343\203\225\343\203\210", static_cast<MtObject*>(&mCraftParam), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "カラー", &mColorNo, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "強化度", &mEquipPoint, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "装備枠", &mSlotType, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "アイテムパラメータ", reinterpret_cast<MtObject* *>(&mpItemResParam), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "クラフト", static_cast<MtObject*>(&mCraftParam), 0u, 0u);
 }
 
 static auto ddon_emit_0x0196fd50 __attribute__((used)) = &cItemParam::getItemNum;

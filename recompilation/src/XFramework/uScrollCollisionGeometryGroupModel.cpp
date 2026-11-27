@@ -68,11 +68,11 @@ __attribute__((noinline)) uScrollCollisionGeometryGroupModel::~uScrollCollisionG
 
 void uScrollCollisionGeometryGroupModel::createProperty(MtPropertyList& s) {
     this->cUnit::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\252\343\203\274\343\203\212\343\203\274\347\231\273\351\214\262", &mFlgOwnerRegist, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\202\252\343\203\241\343\203\210\343\203\252\343\202\260\343\203\253\343\203\274\343\203\227\343\203\252\343\202\275\343\203\274\343\202\271(.geo2g)", "resource", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometryGroupModel::getRegistResource), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometryGroupModel::registResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "\343\202\252\343\203\274\343\203\212\343\203\274\343\203\242\343\203\207\343\203\253(uModel)", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometryGroupModel::getOwner), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometryGroupModel::registOwner), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\202\252\343\203\241\343\203\210\343\203\252\343\202\260\343\203\253\343\203\274\343\203\227\343\203\246\343\203\213\343\203\203\343\203\210", reinterpret_cast<MtObject* *>(&mpGeometryGroupUnit_Inside), 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\202\252\343\203\241\343\203\210\343\203\252\343\203\246\343\203\213\343\203\203\343\203\210\343\203\252\343\202\271\343\203\210", static_cast<MtObject*>(&mGeometryUnitArray), 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "オーナー登録", &mFlgOwnerRegist, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ジオメトリグループリソース(.geo2g)", "resource", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometryGroupModel::getRegistResource), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometryGroupModel::registResource), 0u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_CLASSREF, "オーナーモデル(uModel)", reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometryGroupModel::getOwner), reinterpret_cast<MT_MFUNC>(&::uScrollCollisionGeometryGroupModel::registOwner), 144u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
+    s << MtProperty(static_cast<MtObject*>(this), "ジオメトリグループユニット", reinterpret_cast<MtObject* *>(&mpGeometryGroupUnit_Inside), 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ジオメトリユニットリスト", static_cast<MtObject*>(&mGeometryUnitArray), 1u, 0u);
 }
 
 MT_CTSTR uScrollCollisionGeometryGroupModel::getName() {

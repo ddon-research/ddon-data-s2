@@ -45,21 +45,21 @@ __attribute__((weak)) void cContextInstChar::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "mIsLost", &mIsLost, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mIsRescue", &mIsRescue, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mIsReturnTerritory", &mIsReturnTerritory, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\350\241\214\345\213\225\347\225\252\345\217\267", &mActNo[0], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\247\273\345\213\225\351\200\237\345\272\246", &mMoveSpeed, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\247\273\345\213\225\346\226\271\345\220\221", &mMoveAngle, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "行動番号", &mActNo[0], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "移動速度", &mMoveSpeed, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "移動方向", &mMoveAngle, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTargetUid", &mTargetUid, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTargetPos.x", &mTargetPos.x, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTargetPos.y", &mTargetPos.y, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mTargetPos.z", &mTargetPos.z, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\205\261\351\200\232\343\203\257\343\203\274\343\202\257", &mCommonWork, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "PL,\346\225\265\347\224\250\350\207\252\347\224\261\343\203\257\343\203\274\343\202\257", &mCustomWork, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\263\343\203\201\343\203\243\343\203\263\343\203\210\345\200\215\347\216\207", &mEnchantRate, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\212\266\346\205\213\347\225\260\345\270\270\345\200\244", &mAilmentDamage, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\224\237\346\255\273\343\202\271\343\203\206\343\203\274\343\203\210", &mStateLive, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "共通ワーク", &mCommonWork, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "PL,敵用自由ワーク", &mCustomWork, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "エンチャント倍率", &mEnchantRate, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "状態異常値", &mAilmentDamage, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "生死ステート", &mStateLive, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), MtProperty::TYPE_S32, "LV", reinterpret_cast<MT_MFUNC>(&::cContextInstChar::getLv), reinterpret_cast<MT_MFUNC>(&::cContextInstChar::setLv), 129u, static_cast<MT_MFUNC>(0), static_cast<MT_MFUNC>(0));
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\242\343\203\263\343\202\277\343\203\274\343\202\270\343\203\245\345\233\272\345\256\232\347\225\252\345\217\267", &mMontageFixNo, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\242\343\203\263\343\202\277\343\203\274\343\202\270\343\203\245\343\203\251\343\203\263\343\203\200\343\203\240\345\200\244", &mMontageRandom, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "モンタージュ固定番号", &mMontageFixNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "モンタージュランダム値", &mMontageRandom, 1u, 0u);
 }
 
 MtUI* cContextInstChar::createUI(MtProperty& prop) {
@@ -369,22 +369,22 @@ __attribute__((weak)) void cContextInstHm::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "PawnId", &mPawnId, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "PlLoadWep", &mPlayerLoadWeapon, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "PlLoadStatus", &mPlayerLoadStatus, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\255\343\202\271\343\203\210\346\231\202\351\226\223", &mLostTime, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\271\343\203\206\343\203\274\343\202\270", &mStageNo, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\210\235\346\234\237\345\272\247\346\250\231Index", &mStartPosNo, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\200\247\345\210\245", &mSex, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\253\343\203\251\343\203\274\343\202\277\343\202\244\343\203\227", &mColor, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\270\343\203\247\343\203\226", &mJob, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ロスト時間", &mLostTime, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ステージ", &mStageNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "初期座標Index", &mStartPosNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "性別", &mSex, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "カラータイプ", &mColor, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "ジョブ", &mJob, 1u, 0u);
     mEquip.cEquipData::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\344\275\215\347\275\256\345\272\247\346\250\231", &mPosFreeMarker[0], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\271\343\203\206\343\203\274\343\202\270No.", &mStageNoFreeMarker[0], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\260\343\203\253\343\203\274\343\203\227No.", &mGroupNoFreeMarker[0], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\344\275\215\347\275\256\345\272\247\346\250\231", &mPosFreeMarker[1], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\271\343\203\206\343\203\274\343\202\270No.", &mStageNoFreeMarker[1], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\260\343\203\253\343\203\274\343\203\227No.", &mGroupNoFreeMarker[1], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\344\275\215\347\275\256\345\272\247\346\250\231", &mPosFreeMarker[2], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\271\343\203\206\343\203\274\343\202\270No.", &mStageNoFreeMarker[2], 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\203\236\343\203\203\343\203\227\343\201\256\343\203\225\343\203\252\343\203\274\343\203\236\343\203\274\343\202\253\343\203\274\343\202\260\343\203\253\343\203\274\343\203\227No.", &mGroupNoFreeMarker[2], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカー位置座標", &mPosFreeMarker[0], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカーステージNo.", &mStageNoFreeMarker[0], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカーグループNo.", &mGroupNoFreeMarker[0], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカー位置座標", &mPosFreeMarker[1], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカーステージNo.", &mStageNoFreeMarker[1], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカーグループNo.", &mGroupNoFreeMarker[1], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカー位置座標", &mPosFreeMarker[2], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカーステージNo.", &mStageNoFreeMarker[2], 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "マップのフリーマーカーグループNo.", &mGroupNoFreeMarker[2], 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "Ability099", &mIsAbility098, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "Guts", &mIsGutsDisable, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "Ability370", &mIsAbility370, 1u, 0u);
@@ -469,7 +469,7 @@ cContextInstance::~cContextInstance() {
 __attribute__((weak)) void cContextInstance::createProperty(MtPropertyList& s) {
     this->cContext::createProperty(s);
     s << MtProperty(static_cast<MtObject*>(this), "mUniqueId", &mUniqueId, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\234\211\345\212\271\346\200\247", &mIsValid, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "有効性", &mIsValid, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mSetWaitFlag", &mSetWaitFlag, 0u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "PosX", &mNetPos.x, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "PosY", &mNetPos.y, 1u, 0u);
@@ -477,10 +477,10 @@ __attribute__((weak)) void cContextInstance::createProperty(MtPropertyList& s) {
     s << MtProperty(static_cast<MtObject*>(this), "Dir", &mNetDir, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "Stage", &mStageNo, 1u, 0u);
     s << MtProperty(static_cast<MtObject*>(this), "mMasterIndex", &mMasterIndex, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\263\343\202\253\343\202\246\343\203\263\343\203\210\343\202\250\343\203\252\343\202\242", &mMainEncountArea, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\216\264\343\201\277\343\202\277\343\202\244\343\203\227", &mCatchType, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\216\264\343\201\277\347\233\270\346\211\213UID", &mCatchTargetUid, 1u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\346\216\264\343\201\277\343\202\263\343\203\263\343\202\271\343\203\210\351\226\242\347\257\200", &mCatchJointNo, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "エンカウントエリア", &mMainEncountArea, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "掴みタイプ", &mCatchType, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "掴み相手UID", &mCatchTargetUid, 1u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "掴みコンスト関節", &mCatchJointNo, 1u, 0u);
 }
 
 MtUI* cContextInstance::createUI(MtProperty& prop) {

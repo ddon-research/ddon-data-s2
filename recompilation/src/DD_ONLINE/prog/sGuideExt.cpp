@@ -34,7 +34,7 @@ sGuideExt::~sGuideExt() {
 
 void sGuideExt::createProperty(MtPropertyList& s) {
     this->sGuideBase::createProperty(s);
-    s << MtProperty(static_cast<MtObject*>(this), "\345\206\205\351\203\250\346\226\207\350\250\200\343\201\256\345\210\235\346\234\237\345\214\226", static_cast<MT_MFUNC>(&::sGuideExt::initInnerString), 10u);
+    s << MtProperty(static_cast<MtObject*>(this), "内部文言の初期化", static_cast<MT_MFUNC>(&::sGuideExt::initInnerString), 10u);
 }
 
 __attribute__((weak)) void sGuideExt::initInnerString() {

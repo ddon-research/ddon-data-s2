@@ -119,8 +119,8 @@ void cGUIVarInt::createEventProperty(MtPropertyList& s) {
 
 const MT_CTSTR* cGUIVarInt::getEventPropertyTooltip() {
     static const MT_CTSTR tooltip[2] = {
-        "\347\217\276\345\234\250\343\201\256\345\200\244\343\202\222\357\274\213\357\274\221\343\201\231\343\202\213",
-        "\347\217\276\345\234\250\343\201\256\345\200\244\343\202\222\357\274\215\357\274\221\343\201\231\343\202\213",
+        "現在の値を＋１する",
+        "現在の値を－１する",
     };
     return tooltip;
 }

@@ -2091,8 +2091,8 @@ const MtDTI& sItemManager::cItemBag::cAreaMasterSuppyData::getDTI() const {
 }
 
 void sItemManager::cItemBag::cAreaMasterSuppyData::createProperty(MtPropertyList& s) {
-    s << MtProperty(static_cast<MtObject*>(this), "\343\202\250\343\203\252\343\202\242ID", &mAreaID, 0u, 0u);
-    s << MtProperty(static_cast<MtObject*>(this), "\347\240\264\346\243\204", &mIsCancel, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "エリアID", &mAreaID, 0u, 0u);
+    s << MtProperty(static_cast<MtObject*>(this), "破棄", &mIsCancel, 0u, 0u);
 }
 
 inline sItemManager::cItemBag::cAreaMasterSuppyData::MyDTI::MyDTI(MT_CTSTR class_name, MtDTI* ps, size_t size, u32 id, u32 attr) : MtDTI(class_name, ps, size, id, attr, 0u) {}
